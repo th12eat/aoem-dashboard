@@ -784,7 +784,13 @@ function renderTMG() {
     return;
   }
 
-  const dataArray = currentTmgSub === 'announced' ? season7Data.announced : season7Data.completed;
+  let dataArray;
+  if (currentTmgSub === 'announced') {
+    const completedSeries = new Set((season7Data.completed || []).map(e => e.series));
+    dataArray = (season7Data.announced || []).filter(e => !completedSeries.has(e.series));
+  } else {
+    dataArray = season7Data.completed;
+  }
 
   if (!dataArray || dataArray.length === 0) {
     container.innerHTML = '<div class="error-msg">No data available for this view.</div>';
