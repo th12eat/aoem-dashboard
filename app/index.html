@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Era8 Command Center - DKP &amp; TMG Dashboard</title>
+<style>
+:root {
+  --bg-primary: #0d0d1a;
+  --bg-secondary: #1a1a2e;
+  --bg-tertiary: #16213e;
+  --bg-card: #1e2a4a;
+  --border-color: #2a3a5e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a8c0;
+  --text-muted: #6a7590;
+  --accent-gold: #ffd700;
+  --accent-gold-dim: #b8960f;
+  --alliance-wc1: #ffd700;
+  --alliance-mythic: #4fc3f7;
+  --alliance-reunions: #66bb6a;
+  --alliance-aurora: #ff9800;
+  --status-elite: #ffd700;
+  --status-strong: #c0c0c0;
+  --status-tryhard: #cd7f32;
+  --status-waterboy: #42a5f5;
+  --status-cannon: #757575;
+  --status-doormat: #ef5350;
+  --incident-kicked: #ef5350;
+  --incident-swapped: #ffca28;
+  --incident-note: #90a4ae;
+  --success: #66bb6a;
+  --danger: #ef5350;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  z-index: 9999;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  border-bottom: 2px solid var(--accent-gold-dim);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-title h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.header-title .subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.header-badge {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-gold-dim);
+  border-radius: 4px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.7rem;
+  color: var(--accent-gold);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+  display: flex;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 2rem;
+  gap: 0;
+}
+
+.nav-tab {
+  padding: 0.9rem 1.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.nav-tab:hover {
+  color: var(--text-primary);
+  background: rgba(255, 215, 0, 0.03);
+}
+
+.nav-tab.active {
+  color: var(--accent-gold);
+  border-bottom-color: var(--accent-gold);
+  background: rgba(255, 215, 0, 0.05);
+}
+
+/* Main Content */
+.main-content {
+  padding: 1.5rem 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Controls Bar */
+.controls-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 200px;
+  max-width: 350px;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.6rem 1rem 0.6rem 2.4rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-box input:focus {
+  border-color: var(--accent-gold-dim);
+}
+
+.search-box::before {
+  content: '\1F50D';
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  opacity: 0.5;
+}
+
+.filter-group {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 0.9rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent-gold-dim);
+  color: var(--text-primary);
+}
+
+.filter-btn.active {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+/* Sub-navigation for TMG */
+.sub-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sub-nav-btn {
+  padding: 0.5rem 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sub-nav-btn:hover {
+  border-color: var(--accent-gold-dim);
+}
+
+.sub-nav-btn.active {
+  background: var(--accent-gold);
+  color: var(--bg-primary);
+  border-color: var(--accent-gold);
+}
+
+/* Tables */
+.table-container {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.series-section {
+  margin-bottom: 1.5rem;
+}
+
+.series-header {
+  background: linear-gradient(90deg, var(--bg-tertiary), transparent);
+  padding: 0.7rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-left: 3px solid var(--accent-gold);
+  margin-bottom: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+thead th {
+  background: var(--bg-tertiary);
+  padding: 0.7rem 0.8rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+
+tbody tr {
+  border-bottom: 1px solid rgba(42, 58, 94, 0.5);
+  transition: background 0.15s;
+}
+
+tbody tr:hover {
+  background: rgba(255, 215, 0, 0.03);
+}
+
+tbody td {
+  padding: 0.55rem 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+/* Alliance badge */
+.alliance-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.alliance-WC1 { color: var(--alliance-wc1); border: 1px solid var(--alliance-wc1); }
+.alliance-Mythic { color: var(--alliance-mythic); border: 1px solid var(--alliance-mythic); }
+.alliance-Reunions { color: var(--alliance-reunions); border: 1px solid var(--alliance-reunions); }
+.alliance-AuroraCog, .alliance-CoG, .alliance-COG { color: var(--alliance-aurora); border: 1px solid var(--alliance-aurora); }
+.alliance-Others, .alliance-null { color: var(--text-muted); border: 1px solid var(--text-muted); }
+
+/* Status pills */
+.status-pill {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.status-ELITE { background: rgba(255, 215, 0, 0.15); color: var(--status-elite); border: 1px solid rgba(255, 215, 0, 0.3); }
+.status-STRONG-WARRIOR { background: rgba(192, 192, 192, 0.1); color: var(--status-strong); border: 1px solid rgba(192, 192, 192, 0.3); }
+.status-TRY-HARD-AMATEUR { background: rgba(205, 127, 50, 0.1); color: var(--status-tryhard); border: 1px solid rgba(205, 127, 50, 0.3); }
+.status-WATER-BOY { background: rgba(66, 165, 245, 0.1); color: var(--status-waterboy); border: 1px solid rgba(66, 165, 245, 0.3); }
+.status-CANNON-FODDER { background: rgba(117, 117, 117, 0.1); color: var(--status-cannon); border: 1px solid rgba(117, 117, 117, 0.3); }
+.status-OFFICIAL-DOORMAT { background: rgba(239, 83, 80, 0.1); color: var(--status-doormat); border: 1px solid rgba(239, 83, 80, 0.3); }
+
+/* Incident type */
+.incident-kicked { background: rgba(239, 83, 80, 0.15); color: var(--incident-kicked); }
+.incident-swapped { background: rgba(255, 202, 40, 0.15); color: var(--incident-swapped); }
+.incident-note { background: rgba(144, 164, 174, 0.1); color: var(--incident-note); }
+
+.incident-type-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* DKP Score coloring */
+.dkp-positive { color: var(--success); font-weight: 700; }
+.dkp-negative { color: var(--danger); font-weight: 700; }
+.dkp-zero { color: var(--text-muted); }
+
+/* Rank number styling */
+.rank-num {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.rank-1 { color: var(--accent-gold); }
+.rank-2 { color: #c0c0c0; }
+.rank-3 { color: #cd7f32; }
+
+/* Power formatting */
+.power-val {
+  font-family: 'Courier New', monospace;
+  color: var(--text-secondary);
+}
+
+/* Loading state */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.loading::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--accent-gold);
+  border-radius: 50%;
+  margin-left: 0.8rem;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error state */
+.error-msg {
+  padding: 2rem;
+  text-align: center;
+  color: var(--danger);
+  font-size: 0.85rem;
+}
+
+/* Stats summary */
+.stats-bar {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.8rem 1.2rem;
+  min-width: 120px;
+}
+
+.stat-card .stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  font-family: 'Courier New', monospace;
+}
+
+.stat-card .stat-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0.2rem;
+}
+
+/* Notes column */
+.notes-cell {
+  white-space: normal !important;
+  max-width: 300px !important;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* View container */
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 1rem;
+  }
+
+  .header {
+    padding: 0.8rem 1rem;
+  }
+
+  .nav-tabs {
+    padding: 0 1rem;
+    overflow-x: auto;
+  }
+
+  table {
+    font-size: 0.75rem;
+  }
+
+  tbody td, thead th {
+    padding: 0.4rem 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-title h1 {
+    font-size: 1rem;
+  }
+
+  .controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  .filter-group {
+    flex-wrap: wrap;
+  }
+
+  .stats-bar {
+    gap: 0.8rem;
+  }
+
+  .stat-card {
+    min-width: 90px;
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+/* Scrollable table wrapper */
+.table-scroll {
+  overflow-x: auto;
+}
+
+/* Total count display */
+.result-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding: 0.5rem 0;
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-title">
+    <div>
+      <h1>Era8 Command Center</h1>
+      <div class="subtitle">DKP Tracker &amp; TMG Management System</div>
+    </div>
+  </div>
+  <div class="header-badge">SERVER: ERA8 // LIVE</div>
+</header>
+
+<nav class="nav-tabs">
+  <div class="nav-tab active" data-view="dkp">DKP Leaderboard</div>
+  <div class="nav-tab" data-view="tmg">TMG Board</div>
+  <div class="nav-tab" data-view="incidents">Incidents</div>
+  <div class="nav-tab" data-view="history">History</div>
+</nav>
+
+<main class="main-content">
+
+  <!-- DKP LEADERBOARD VIEW -->
+  <div class="view active" id="view-dkp">
+    <div class="stats-bar" id="dkp-stats"></div>
+    <div class="controls-bar">
+      <div class="search-box">
+        <input type="text" id="dkp-search" placeholder="Search player name...">
+      </div>
+      <div class="filter-group" id="dkp-alliance-filter">
+        <button class="filter-btn active" data-alliance="all">All</button>
+        <button class="filter-btn" data-alliance="WC1">WC1</button>
+        <button class="filter-btn" data-alliance="Reunions">Reunions</button>
+        <button class="filter-btn" data-alliance="Mythic">Mythic</button>
+        <button class="filter-btn" data-alliance="AuroraCog">AuroraCog</button>
+      </div>
+    </div>
+    <div class="result-count" id="dkp-count"></div>
+    <div class="table-container">
+      <div class="table-scroll">
+        <table id="dkp-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player Name</th>
+              <th>Alliance</th>
+              <th>Power</th>
+              <th>Merits</th>
+              <th>Raw Event Pts</th>
+              <th>Reg. Bonus</th>
+              <th>Absence Pen.</th>
+              <th>Medals</th>
+              <th>DKP Final</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="dkp-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TMG BOARD VIEW -->
+  <div class="view" id="view-tmg">
+    <div class="sub-nav" id="tmg-sub-nav">
+      <button class="sub-nav-btn active" data-sub="announced">Announced</button>
+      <button class="sub-nav-btn" data-sub="completed">Completed</button>
+    </div>
+    <div id="tmg-content"></div>
+  </div>
+
+  <!-- INCIDENTS VIEW -->
+  <div class="view" id="view-incidents">
+    <div class="stats-bar" id="incidents-stats"></div>
+    <div class="table-container">
+      <div class="table-scroll">
+        <table id="incidents-table">
+          <thead>
+            <tr>
+              <th>Season</th>
+              <th>Series</th>
+              <th>Player</th>
+              <th>Alliance</th>
+              <th>Target Rank</th>
+              <th>Final Rank</th>
+              <th>Type</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="incidents-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY VIEW -->
+  <div class="view" id="view-history">
+    <div id="history-content"></div>
+  </div>
+
+</main>
+
+<script>
+// ========== STATE ==========
+let playersData = [];
+let season7Data = null;
+let season6Data = null;
+let incidentsData = [];
+let currentView = 'dkp';
+let currentTmgSub = 'announced';
+let dkpAllianceFilter = 'all';
+let dkpSearchQuery = '';
+
+// ========== DATA LOADING ==========
+async function fetchJSON(path) {
+  try {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.error(`Failed to load ${path}:`, e);
+    return null;
+  }
+}
+
+async function loadAllData() {
+  const [players, season7, season6, incidents] = await Promise.all([
+    fetchJSON('../data/players.json'),
+    fetchJSON('../data/tmg/season7.json'),
+    fetchJSON('../data/tmg/season6.json'),
+    fetchJSON('../data/incidents.json')
+  ]);
+
+  if (players) {
+    playersData = players.sort((a, b) => b.dkp_final - a.dkp_final);
+  }
+  if (season7) season7Data = season7;
+  if (season6) season6Data = season6;
+  if (incidents) incidentsData = incidents;
+
+  renderCurrentView();
+}
+
+// ========== UTILITIES ==========
+function formatPower(power) {
+  if (power === null || power === undefined) return '-';
+  if (typeof power === 'string') return power;
+  if (power >= 1e9) return (power / 1e9).toFixed(1) + 'B';
+  if (power >= 1e6) return (power / 1e6).toFixed(1) + 'M';
+  if (power >= 1e3) return (power / 1e3).toFixed(0) + 'K';
+  return power.toString();
+}
+
+function getAllianceClass(alliance) {
+  if (!alliance) return 'alliance-null';
+  const upper = alliance.toUpperCase();
+  if (upper === 'WC1') return 'alliance-WC1';
+  if (upper === 'MYTHIC') return 'alliance-Mythic';
+  if (upper === 'REUNIONS') return 'alliance-Reunions';
+  if (upper === 'AURORACOG' || upper === 'COG' || upper === 'AURORAGODCOURT') return 'alliance-AuroraCog';
+  return 'alliance-Others';
+}
+
+function getStatusClass(status) {
+  if (!status) return '';
+  return 'status-' + status.replace(/\s+/g, '-');
+}
+
+function getDkpClass(val) {
+  if (val > 0) return 'dkp-positive';
+  if (val < 0) return 'dkp-negative';
+  return 'dkp-zero';
+}
+
+function getRankClass(rank) {
+  if (rank <= 3) return `rank-num rank-${rank}`;
+  return 'rank-num';
+}
+
+function escapeHtml(str) {
+  if (!str) return '-';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function matchesAlliance(playerAlliance, filter) {
+  if (filter === 'all') return true;
+  if (!playerAlliance) return false;
+  const pa = playerAlliance.toUpperCase();
+  const f = filter.toUpperCase();
+  if (f === 'AURORACOG') {
+    return pa === 'AURORACOG' || pa === 'COG' || pa === 'AURORAGODCOURT';
+  }
+  return pa === f;
+}
+
+// ========== RENDER: DKP LEADERBOARD ==========
+function renderDKP() {
+  const filtered = playersData.filter(p => {
+    const matchAlliance = matchesAlliance(p.alliance, dkpAllianceFilter);
+    const matchSearch = dkpSearchQuery === '' ||
+      p.name.toLowerCase().includes(dkpSearchQuery.toLowerCase());
+    return matchAlliance && matchSearch;
+  });
+
+  // Stats
+  const statsEl = document.getElementById('dkp-stats');
+  const totalPlayers = playersData.length;
+  const eliteCount = playersData.filter(p => p.status === 'ELITE').length;
+  const avgDkp = totalPlayers > 0 ? (playersData.reduce((s, p) => s + p.dkp_final, 0) / totalPlayers).toFixed(0) : 0;
+  statsEl.innerHTML = `
+    <div class="stat-card"><div class="stat-value">${totalPlayers}</div><div class="stat-label">Total Players</div></div>
+    <div class="stat-card"><div class="stat-value">${eliteCount}</div><div class="stat-label">Elite Status</div></div>
+    <div class="stat-card"><div class="stat-value">${avgDkp}</div><div class="stat-label">Avg DKP</div></div>
+    <div class="stat-card"><div class="stat-value">${filtered.length}</div><div class="stat-label">Showing</div></div>
+  `;
+
+  // Count
+  document.getElementById('dkp-count').textContent = `Displaying ${filtered.length} of ${totalPlayers} players`;
+
+  // Table
+  const tbody = document.getElementById('dkp-tbody');
+  tbody.innerHTML = filtered.map((p, i) => `
+    <tr>
+      <td class="${getRankClass(i + 1)}">${i + 1}</td>
+      <td><strong>${escapeHtml(p.name)}</strong></td>
+      <td><span class="alliance-badge ${getAllianceClass(p.alliance)}">${escapeHtml(p.alliance) || 'N/A'}</span></td>
+      <td class="power-val">${formatPower(p.power)}</td>
+      <td>${escapeHtml(p.merits)}</td>
+      <td>${p.raw_event_points}</td>
+      <td>${p.regularity_bonus}</td>
+      <td>${p.absence_penalty}</td>
+      <td>${p.medals_gained}</td>
+      <td class="${getDkpClass(p.dkp_final)}">${p.dkp_final}</td>
+      <td><span class="status-pill ${getStatusClass(p.status)}">${escapeHtml(p.status)}</span></td>
+    </tr>
+  `).join('');
+}
+
+// ========== RENDER: TMG BOARD ==========
+function renderTMG() {
+  const container = document.getElementById('tmg-content');
+
+  if (!season7Data) {
+    container.innerHTML = '<div class="error-msg">Failed to load Season 7 data.</div>';
+    return;
+  }
+
+  const dataArray = currentTmgSub === 'announced' ? season7Data.announced : season7Data.completed;
+
+  if (!dataArray || dataArray.length === 0) {
+    container.innerHTML = '<div class="error-msg">No data available for this view.</div>';
+    return;
+  }
+
+  // Group by series
+  const grouped = {};
+  dataArray.forEach(entry => {
+    const series = entry.series || 1;
+    if (!grouped[series]) grouped[series] = [];
+    grouped[series].push(entry);
+  });
+
+  const showFinalRank = currentTmgSub === 'completed';
+
+  let html = '';
+  Object.keys(grouped).sort((a, b) => Number(a) - Number(b)).forEach(series => {
+    const entries = grouped[series];
+    html += `
+      <div class="series-section">
+        <div class="series-header">Series ${series} &mdash; ${entries.length} Slots</div>
+        <div class="table-container" style="border-radius: 0 0 6px 6px; margin-bottom: 1.5rem;">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Player</th>
+                  <th>Alliance</th>
+                  <th>Date</th>
+                  <th>Power</th>
+                  <th>Merits</th>
+                  <th>Target Spend</th>
+                  <th>Medals</th>
+                  ${showFinalRank ? '<th>Final Rank</th>' : ''}
+                </tr>
+              </thead>
+              <tbody>
+                ${entries.map(e => `
+                  <tr>
+                    <td class="${getRankClass(e.target_rank)}">${e.target_rank}</td>
+                    <td><strong>${escapeHtml(e.player)}</strong></td>
+                    <td><span class="alliance-badge ${getAllianceClass(e.alliance)}">${escapeHtml(e.alliance) || 'N/A'}</span></td>
+                    <td>${escapeHtml(e.date)}</td>
+                    <td class="power-val">${formatPower(e.power)}</td>
+                    <td>${escapeHtml(e.merits)}</td>
+                    <td>${escapeHtml(e.target_spend)}</td>
+                    <td>${e.medals_gained != null ? e.medals_gained : '-'}</td>
+                    ${showFinalRank ? `<td>${e.final_rank != null ? e.final_rank : '<span style="color:var(--text-muted)">Pending</span>'}</td>` : ''}
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+// ========== RENDER: INCIDENTS ==========
+function renderIncidents() {
+  // Stats
+  const statsEl = document.getElementById('incidents-stats');
+  const kicked = incidentsData.filter(i => i.type === 'kicked').length;
+  const swapped = incidentsData.filter(i => i.type === 'swapped').length;
+  const notes = incidentsData.filter(i => i.type === 'note').length;
+  statsEl.innerHTML = `
+    <div class="stat-card"><div class="stat-value">${incidentsData.length}</div><div class="stat-label">Total Incidents</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--incident-kicked)">${kicked}</div><div class="stat-label">Kicked</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--incident-swapped)">${swapped}</div><div class="stat-label">Swapped</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--incident-note)">${notes}</div><div class="stat-label">Notes</div></div>
+  `;
+
+  const tbody = document.getElementById('incidents-tbody');
+  tbody.innerHTML = incidentsData.map(inc => {
+    const typeClass = `incident-${inc.type}`;
+    return `
+      <tr class="${typeClass}">
+        <td>${inc.season}</td>
+        <td>${inc.series}</td>
+        <td><strong>${escapeHtml(inc.player)}</strong></td>
+        <td><span class="alliance-badge ${getAllianceClass(inc.alliance)}">${escapeHtml(inc.alliance) || 'N/A'}</span></td>
+        <td class="rank-num">${inc.target_rank}</td>
+        <td>${escapeHtml(String(inc.final_rank || '-'))}</td>
+        <td><span class="incident-type-badge ${typeClass}">${inc.type}</span></td>
+        <td class="notes-cell">${escapeHtml(inc.notes)}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ========== RENDER: HISTORY ==========
+function renderHistory() {
+  const container = document.getElementById('history-content');
+
+  if (!season6Data) {
+    container.innerHTML = '<div class="error-msg">Failed to load Season 6 data.</div>';
+    return;
+  }
+
+  const entries = season6Data.entries || [];
+
+  if (entries.length === 0) {
+    container.innerHTML = '<div class="error-msg">No history data available.</div>';
+    return;
+  }
+
+  // Group by series
+  const grouped = {};
+  entries.forEach(entry => {
+    const series = entry.series || 1;
+    if (!grouped[series]) grouped[series] = [];
+    grouped[series].push(entry);
+  });
+
+  let html = `<div class="series-header" style="margin-bottom:1rem; border-radius:4px;">Season 6 &mdash; Historical Record</div>`;
+
+  Object.keys(grouped).sort((a, b) => Number(a) - Number(b)).forEach(series => {
+    const seriesEntries = grouped[series];
+    html += `
+      <div class="series-section">
+        <div class="series-header">Series ${series} &mdash; ${seriesEntries.length} Participants</div>
+        <div class="table-container" style="border-radius: 0 0 6px 6px; margin-bottom: 1.5rem;">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Player</th>
+                  <th>Alliance</th>
+                  <th>Date</th>
+                  <th>Power</th>
+                  <th>Merits</th>
+                  <th>Target Spend</th>
+                  <th>Actual Spend</th>
+                  <th>Final Rank</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${seriesEntries.map(e => `
+                  <tr>
+                    <td class="${getRankClass(e.target_rank)}">${e.target_rank}</td>
+                    <td><strong>${escapeHtml(e.player)}</strong></td>
+                    <td><span class="alliance-badge ${getAllianceClass(e.alliance)}">${escapeHtml(e.alliance) || 'N/A'}</span></td>
+                    <td>${escapeHtml(e.date)}</td>
+                    <td class="power-val">${escapeHtml(e.power)}</td>
+                    <td>${escapeHtml(e.merits)}</td>
+                    <td>${escapeHtml(e.target_spend)}</td>
+                    <td>${escapeHtml(e.actual_spend)}</td>
+                    <td>${e.final_rank != null ? e.final_rank : '<span style="color:var(--text-muted)">N/A</span>'}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+// ========== VIEW SWITCHING ==========
+function renderCurrentView() {
+  switch (currentView) {
+    case 'dkp': renderDKP(); break;
+    case 'tmg': renderTMG(); break;
+    case 'incidents': renderIncidents(); break;
+    case 'history': renderHistory(); break;
+  }
+}
+
+function switchView(view) {
+  currentView = view;
+
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.view === view);
+  });
+
+  document.querySelectorAll('.view').forEach(v => {
+    v.classList.toggle('active', v.id === `view-${view}`);
+  });
+
+  renderCurrentView();
+}
+
+// ========== EVENT LISTENERS ==========
+document.addEventListener('DOMContentLoaded', () => {
+  // Navigation tabs
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => switchView(tab.dataset.view));
+  });
+
+  // DKP alliance filter
+  document.getElementById('dkp-alliance-filter').addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    dkpAllianceFilter = btn.dataset.alliance;
+    document.querySelectorAll('#dkp-alliance-filter .filter-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.alliance === dkpAllianceFilter);
+    });
+    renderDKP();
+  });
+
+  // DKP search
+  document.getElementById('dkp-search').addEventListener('input', (e) => {
+    dkpSearchQuery = e.target.value;
+    renderDKP();
+  });
+
+  // TMG sub-nav
+  document.getElementById('tmg-sub-nav').addEventListener('click', (e) => {
+    const btn = e.target.closest('.sub-nav-btn');
+    if (!btn) return;
+    currentTmgSub = btn.dataset.sub;
+    document.querySelectorAll('#tmg-sub-nav .sub-nav-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.sub === currentTmgSub);
+    });
+    renderTMG();
+  });
+
+  // Load data
+  loadAllData();
+});
+</script>
+
+</body>
+</html>

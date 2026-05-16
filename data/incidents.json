@@ -1,0 +1,352 @@
+[
+  {
+    "season": 6,
+    "series": 1,
+    "player": "Chris 為ーサ",
+    "alliance": "COG",
+    "target_rank": 8,
+    "final_rank": "Swapped",
+    "notes": null,
+    "type": "swapped"
+  },
+  {
+    "season": 6,
+    "series": 1,
+    "player": "HatAY",
+    "alliance": "WC1",
+    "target_rank": 10,
+    "final_rank": "Kicked :(",
+    "notes": "Gilix kicked HatAY out of rank.",
+    "type": "kicked"
+  },
+  {
+    "season": 6,
+    "series": 2,
+    "player": "HatAY",
+    "alliance": "WC1",
+    "target_rank": 4,
+    "final_rank": "4.0",
+    "notes": "Kicked from TMG previous x2; bumped to 4th for this TMG.",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 2,
+    "player": "OAK",
+    "alliance": "WC1",
+    "target_rank": 10,
+    "final_rank": "Kicked :(",
+    "notes": "Royal kicked OAK out of rank. Punished with 2 week removal from alliance + kicked from KL. Very sincerely apology; had a newborn child and was distracted.",
+    "type": "kicked"
+  },
+  {
+    "season": 6,
+    "series": 3,
+    "player": "CaPiFK8",
+    "alliance": "WC1",
+    "target_rank": 1,
+    "final_rank": "1.0",
+    "notes": "Guerrilaz should have had 1st but was booted due to Daorro. Guerrilaz would like a new placement.",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 3,
+    "player": "Rikkshaaarob",
+    "alliance": "WC1",
+    "target_rank": 5,
+    "final_rank": "6.0",
+    "notes": "Negatively impacted. May like another attempt.",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 3,
+    "player": "PabloEscobar",
+    "alliance": "WC1",
+    "target_rank": 7,
+    "final_rank": "8.0",
+    "notes": "Would like another attempt due to negative impact.",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 3,
+    "player": "Chongowagon",
+    "alliance": "WC1",
+    "target_rank": 10,
+    "final_rank": "Kicked :(",
+    "notes": "Selfish Leovite (GoodByeAOEm) deliberately sabotaged TMG. Will be zeroed into oblivion.",
+    "type": "kicked"
+  },
+  {
+    "season": 6,
+    "series": 4,
+    "player": "NoSoyUnGnomo",
+    "alliance": "COG",
+    "target_rank": 7,
+    "final_rank": "N/A",
+    "notes": "HeroForSale kicked NoSoyUnGnomo with 29.1M points.",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 4,
+    "player": "Raeinos",
+    "alliance": "WC1",
+    "target_rank": 9,
+    "final_rank": "N/A",
+    "notes": "JustAlone kicked Raeinos with 28.2M points.",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 4,
+    "player": "TrueGustavo",
+    "alliance": null,
+    "target_rank": 10,
+    "final_rank": "10.0",
+    "notes": "No preference on rank.",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 5,
+    "player": "Engelsman",
+    "alliance": "WC1",
+    "target_rank": 7,
+    "final_rank": "Kicked :(",
+    "notes": "Player Koffing kicked Engelsman from TMG List..",
+    "type": "kicked"
+  },
+  {
+    "season": 6,
+    "series": 5,
+    "player": "Melodias",
+    "alliance": null,
+    "target_rank": 8,
+    "final_rank": "10.0",
+    "notes": "Player Hamburg1 kicked Melodias from position.",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 5,
+    "player": "Raeinos",
+    "alliance": "WC1",
+    "target_rank": 10,
+    "final_rank": "Kicked :(",
+    "notes": "As a result of Koffing and Hamburg1, Raeinos was kicked from TMG List.",
+    "type": "kicked"
+  },
+  {
+    "season": 6,
+    "series": 6,
+    "player": "Guerrilaz",
+    "alliance": "WC1",
+    "target_rank": 1,
+    "final_rank": "3.0",
+    "notes": "Rank reduced due to Lucius287 taking 1st with 87.7M and Ovid taking 2nd with 83.9M",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 6,
+    "player": "Racnathor",
+    "alliance": "WC1",
+    "target_rank": 2,
+    "final_rank": "4.0",
+    "notes": "Rank reduced due to Lucius287 taking 1st with 87.7M and Ovid taking 2nd with 83.9M",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 6,
+    "player": "XYX001",
+    "alliance": "CoG",
+    "target_rank": 3,
+    "final_rank": "5.0",
+    "notes": "Rank reduced due to Lucius287 taking 1st with 87.7M and Ovid taking 2nd with 83.9M",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 6,
+    "player": "Mikon",
+    "alliance": "WC1",
+    "target_rank": 4,
+    "final_rank": "7.0",
+    "notes": "Rank reduced due to Lucius287 taking 1st with 87.7M, Ovid taking 2nd with 83.9M, and WuKong taking 6th with 33M",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 6,
+    "player": "Rikkshaaarob",
+    "alliance": "WC1",
+    "target_rank": 5,
+    "final_rank": "Kicked :(",
+    "notes": "May have quit the game?",
+    "type": "kicked"
+  },
+  {
+    "season": 6,
+    "series": 6,
+    "player": "SinLucifer",
+    "alliance": "CoG",
+    "target_rank": 6,
+    "final_rank": "Kicked :(",
+    "notes": "Kicked due to Lucius287 taking 1st with 87.7M, Ovid taking 2nd with 83.9M, and WuKong taking 6th with 33M",
+    "type": "kicked"
+  },
+  {
+    "season": 6,
+    "series": 6,
+    "player": "Stefanve",
+    "alliance": "WC1",
+    "target_rank": 7,
+    "final_rank": "9.0",
+    "notes": "Rank reduced due to Lucius287 taking 1st with 87.7M, Ovid taking 2nd with 83.9M, and WuKong taking 6th with 33M",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 6,
+    "player": "~WuKong~",
+    "alliance": "WC1",
+    "target_rank": 6,
+    "final_rank": "6.0",
+    "notes": "Rank reduced due to Lucius287 taking 1st with 87.7M and Ovid taking 2nd with 83.9M",
+    "type": "note"
+  },
+  {
+    "season": 6,
+    "series": 6,
+    "player": "OAK",
+    "alliance": "WC1",
+    "target_rank": 9,
+    "final_rank": "Kicked :(",
+    "notes": "Kicked due to Lucius287 taking 1st with 87.7M, Ovid taking 2nd with 83.9M, and WuKong taking 6th with 33M",
+    "type": "kicked"
+  },
+  {
+    "season": 6,
+    "series": 6,
+    "player": "SADIoAoEm",
+    "alliance": "WC1",
+    "target_rank": 10,
+    "final_rank": "Kicked :(",
+    "notes": "Kicked due to Lucius287 taking 1st with 87.7M, Ovid taking 2nd with 83.9M, WuKong taking 6th with 33M, and Gridlockd taking 10th with 28.6M",
+    "type": "kicked"
+  },
+  {
+    "season": 7,
+    "series": 1,
+    "player": "PabloEscobar",
+    "alliance": "WC1",
+    "target_rank": 5,
+    "final_rank": "6.0",
+    "notes": "Pablo was knocked down 1 rank by ~Dudulik~",
+    "type": "note"
+  },
+  {
+    "season": 7,
+    "series": 1,
+    "player": "Sinobin",
+    "alliance": "WC1",
+    "target_rank": 6,
+    "final_rank": "Kicked :(",
+    "notes": "Macklemore broke ranks.",
+    "type": "kicked"
+  },
+  {
+    "season": 7,
+    "series": 1,
+    "player": "Rumil",
+    "alliance": "WC1",
+    "target_rank": 7,
+    "final_rank": "9.0",
+    "notes": "Rumil was knocked down 2 ranks by ~Dudulik~ and Macklemore",
+    "type": "note"
+  },
+  {
+    "season": 7,
+    "series": 1,
+    "player": "Dudulik",
+    "alliance": "WC1",
+    "target_rank": 8,
+    "final_rank": "5.0",
+    "notes": "OldyGlady broke ranks.",
+    "type": "note"
+  },
+  {
+    "season": 7,
+    "series": 1,
+    "player": "Daviddr46",
+    "alliance": "WC1",
+    "target_rank": 9,
+    "final_rank": "Kicked :(",
+    "notes": "Rumil was knocked down 1 rank",
+    "type": "kicked"
+  },
+  {
+    "season": 7,
+    "series": 1,
+    "player": "Tony01",
+    "alliance": "CoG",
+    "target_rank": 10,
+    "final_rank": "Kicked :(",
+    "notes": "YXY001 broke ranks.",
+    "type": "kicked"
+  },
+  {
+    "season": 7,
+    "series": 2,
+    "player": "Noun",
+    "alliance": "WC1",
+    "target_rank": 1,
+    "final_rank": null,
+    "notes": "2nd due to kingdomofkor broke",
+    "type": "note"
+  },
+  {
+    "season": 7,
+    "series": 2,
+    "player": "SGEMarkus",
+    "alliance": "WC1",
+    "target_rank": 2,
+    "final_rank": null,
+    "notes": "3rd",
+    "type": "note"
+  },
+  {
+    "season": 7,
+    "series": 2,
+    "player": "SADIoAoEm",
+    "alliance": "WC1",
+    "target_rank": 6,
+    "final_rank": null,
+    "notes": "*Preferential placement awarded due to having been de-ranked in Season 6; Series 6.",
+    "type": "note"
+  },
+  {
+    "season": 7,
+    "series": 2,
+    "player": "Daviddr46",
+    "alliance": "WC1",
+    "target_rank": 7,
+    "final_rank": null,
+    "notes": "*Preferential placement awarded due to being kicked in Season 7; Series 1.",
+    "type": "note"
+  },
+  {
+    "season": 7,
+    "series": 2,
+    "player": "SparkleFarts",
+    "alliance": "WC1",
+    "target_rank": 8,
+    "final_rank": null,
+    "notes": "*Gave up placement in Season 6, multiple times, due to others being kicked/de-ranked.",
+    "type": "note"
+  }
+]
