@@ -1,0 +1,116 @@
+name: Retry Failed Submissions
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  retry:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install @anthropic-ai/sdk
+
+      - name: Find failed submissions
+        id: find
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'event-submission,processing-failed',
+              state: 'open',
+              per_page: 5
+            });
+            core.setOutput('issues', JSON.stringify(issues.data.map(i => i.number)));
+            core.setOutput('count', issues.data.length);
+
+      - name: Process each failed issue
+        if: steps.find.outputs.count > 0
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            const issues = JSON.parse('${{ steps.find.outputs.issues }}');
+
+            for (const issueNum of issues) {
+              const issue = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNum
+              });
+
+              const body = issue.data.body || '';
+              const imagePattern = /!\[.*?\]\((.*?)\)|<img[^>]+src="([^"]+)"/g;
+              const urls = [];
+              let match;
+              while ((match = imagePattern.exec(body)) !== null) {
+                urls.push(match[1] || match[2]);
+              }
+
+              const title = issue.data.title.toLowerCase();
+              const types = ['wonders', 'dawns', 'gee', 'kvk', 'deserts', 'tmg'];
+              const eventType = types.find(t => title.includes(t)) || 'unknown';
+
+              try {
+                const env = {
+                  ...process.env,
+                  IMAGE_URLS: JSON.stringify(urls),
+                  EVENT_TYPE: eventType
+                };
+                execSync('node scripts/process-screenshot.js', { env, stdio: 'inherit' });
+
+                // Commit changes
+                execSync('git config user.name "AoEM Bot"');
+                execSync('git config user.email "bot@era8.local"');
+                execSync('git add data/');
+                try {
+                  execSync(`git commit -m "Update ${eventType} data from issue #${issueNum} (retry)"`);
+                  execSync('git push');
+                } catch (e) {
+                  // No changes to commit
+                }
+
+                // Remove failed label, comment success
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNum,
+                  name: 'processing-failed'
+                });
+
+                const fs = require('fs');
+                let summary = 'Retry successful.';
+                try { summary = fs.readFileSync('/tmp/processing-summary.txt', 'utf8'); } catch(e) {}
+
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNum,
+                  body: `## Retry Successful\n\n${summary}\n\n---\n_Retried automatically by Era8 Bot_`
+                });
+
+              } catch (err) {
+                console.error(`Retry failed for issue #${issueNum}: ${err.message}`);
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNum,
+                  body: `## Retry Failed\n\nStill unable to process: ${err.message}\n\nWill try again in 6 hours.`
+                });
+              }
+            }
