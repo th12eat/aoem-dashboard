@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 6 — Showdown Saturday | Era 8</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0a0c14;
+    --bg-card: #11141f;
+    --border: #1e2435;
+    --text-primary: #e8eaf0;
+    --text-secondary: #8a90a5;
+    --text-muted: #565c72;
+    --accent-gold: #d4a843;
+    --accent-gold-dim: #a17e2f;
+    --accent-red: #c43d3d;
+    --accent-red-dim: #8a2b2b;
+    --accent-blue: #3d7cc4;
+    --accent-blue-dim: #2b5a8a;
+    --accent-green: #3daa6d;
+    --accent-green-dim: #2a7a4c;
+    --wc1: #d4a843;
+    --myt: #3d7cc4;
+    --reu: #3daa6d;
+    --agc: #c47a3d;
+    --server-n: #5ba3d9;
+    --server-e: #d47a3d;
+    --server-s: #b85da0;
+    --server-w: #4db8a8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  .flyer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* -- LANG SWITCHER -- */
+  .lang-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .lang-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 1px;
+    padding: 5px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .lang-btn:hover { color: var(--accent-gold); border-color: var(--accent-gold-dim); }
+  .lang-btn.active { background: rgba(212,168,67,0.12); border-color: var(--accent-gold-dim); color: var(--accent-gold); }
+
+  /* -- HEADER -- */
+  .header {
+    text-align: center;
+    padding: 36px 20px 28px;
+    position: relative;
+    border-bottom: 2px solid var(--accent-gold-dim);
+    margin-bottom: 28px;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at center top, rgba(212,168,67,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .event-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 6px;
+  }
+
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(44px, 8vw, 68px);
+    letter-spacing: 3px;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  .header h1 span { color: var(--accent-gold); }
+
+  .header .subtitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .time-row {
+    margin-top: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(212,168,67,0.1);
+    border: 1px solid var(--accent-gold-dim);
+    border-radius: 8px;
+    padding: 8px 22px;
+  }
+
+  .time-row .label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+  }
+
+  .time-row .time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+  }
+
+  .time-row .divider {
+    width: 1px;
+    height: 26px;
+    background: var(--accent-gold-dim);
+  }
+
+  /* -- COUNTDOWN -- */
+  .countdown-bar {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+
+  .cd-block {
+    text-align: center;
+    min-width: 56px;
+  }
+
+  .cd-block .val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--accent-gold);
+    line-height: 1;
+  }
+
+  .cd-block .unit {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .cd-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .section { margin-bottom: 26px; }
+
+  .sh {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sh .n {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--accent-gold);
+    color: var(--bg-deep);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .blurb {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .blurb strong { color: var(--text-primary); font-weight: 600; }
+  .blurb .gold { color: var(--accent-gold); font-weight: 600; }
+
+  .map-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 10px;
+    touch-action: manipulation;
+    overflow: hidden;
+  }
+
+  .map-wrap svg { width: 100%; max-width: 680px; height: auto; }
+
+  /* Alliance zone hover/tap interaction */
+  .alliance-zone { cursor: pointer; pointer-events: auto; }
+  .alliance-zone .zone-fill { pointer-events: all; }
+
+  .map-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .map-legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .map-legend .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .stat-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+
+  .stat-box .val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--accent-gold);
+    line-height: 1.1;
+  }
+
+  .stat-box .lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  .tp-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  @media (max-width: 500px) {
+    .tp-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .tp-card {
+    border-radius: 8px;
+    padding: 12px 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    text-align: center;
+  }
+
+  .tp-card .a {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  .tp-card .t {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .tp-card .rank {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .tp-card.wc1 { border-color: var(--wc1); }
+  .tp-card.wc1 .a { color: var(--wc1); }
+  .tp-card.myt { border-color: var(--myt); }
+  .tp-card.myt .a { color: var(--myt); }
+  .tp-card.reu { border-color: var(--reu); }
+  .tp-card.reu .a { color: var(--reu); }
+  .tp-card.agc { border-color: var(--agc); }
+  .tp-card.agc .a { color: var(--agc); }
+
+  .strat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+
+  .strat h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
+  .strat ul { list-style: none; padding: 0; }
+
+  .strat li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    padding: 3px 0 3px 16px;
+    position: relative;
+  }
+
+  .strat li::before {
+    content: '\25B8';
+    position: absolute;
+    left: 0;
+    color: var(--accent-gold-dim);
+  }
+
+  .strat li strong { color: var(--text-primary); font-weight: 600; }
+
+  .role-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  @media (max-width: 500px) {
+    .role-grid { grid-template-columns: 1fr; }
+  }
+
+  .role-grid .role:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .role {
+    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+
+  .role h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+
+  .role p {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .role.f h4 { color: var(--accent-red); }
+  .role.f { border-color: var(--accent-red-dim); }
+  .role.r h4 { color: var(--accent-gold); }
+  .role.r { border-color: var(--accent-gold-dim); }
+  .role.x h4 { color: var(--accent-blue); }
+  .role.x { border-color: var(--accent-blue-dim); }
+  .role.s h4 { color: var(--accent-green); }
+  .role.s { border-color: var(--accent-green-dim); }
+  .role.m h4 { color: var(--text-muted); }
+  .role.m { border-color: var(--border); }
+
+  .co {
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .co.warn {
+    background: rgba(196,61,61,0.08);
+    border: 1px solid var(--accent-red-dim);
+  }
+  .co.warn strong { color: var(--accent-red); }
+
+  .co.info {
+    background: rgba(61,124,196,0.08);
+    border: 1px solid var(--accent-blue-dim);
+  }
+  .co.info strong { color: var(--accent-blue); }
+
+  .co.gold {
+    background: rgba(212,168,67,0.08);
+    border: 1px solid var(--accent-gold-dim);
+  }
+  .co.gold strong { color: var(--accent-gold); }
+
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .sched-row {
+    display: contents;
+  }
+
+  .sched-row > * {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+
+  .sched-row:last-child > * { border-bottom: none; }
+
+  .sched-time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent-gold);
+    background: var(--bg-card);
+    justify-content: center;
+    min-width: 80px;
+  }
+
+  .sched-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+  }
+
+  .sched-desc strong { color: var(--text-primary); }
+
+  .sched-cd {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-gold);
+    background: rgba(212,168,67,0.06);
+    justify-content: center;
+    min-width: 90px;
+    text-align: center;
+  }
+
+  .sched-header {
+    display: contents;
+  }
+
+  .sched-header > * {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-card);
+  }
+
+  .footer {
+    text-align: center;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    margin-top: 28px;
+  }
+
+  .footer .tagline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--accent-gold);
+  }
+
+  .footer .sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+    font-size: 13px;
+  }
+
+  .ranking-table th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ranking-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+
+  .ranking-table tr.era8 td { color: var(--text-primary); background: rgba(212,122,61,0.06); }
+  .ranking-table .rank-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--accent-gold);
+  }
+  .ranking-table .tp-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  .tp-30 { background: rgba(212,168,67,0.2); color: var(--accent-gold); }
+  .tp-20 { background: rgba(61,124,196,0.2); color: var(--accent-blue); }
+  .tp-10 { background: rgba(61,170,109,0.2); color: var(--accent-green); }
+  .tp-0 { background: rgba(86,92,114,0.2); color: var(--text-muted); }
+
+  details summary {
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-primary);
+    padding: 10px 0;
+    list-style: none;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::after {
+    content: ' [tap to expand]';
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+  details[open] summary::after {
+    content: ' [tap to collapse]';
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+</style>
+</head>
+<body>
+<div class="flyer">
+
+  <!-- LANG SWITCHER -->
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+    <button class="lang-btn" onclick="switchLang('fr')">FR</button>
+    <button class="lang-btn" onclick="switchLang('es')">ES</button>
+    <button class="lang-btn" onclick="switchLang('ko')">KO</button>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="event-tag" data-i18n="event_tag">Primordial Conflict &middot; Era 8</div>
+    <h1><span data-i18n="title_prefix">DAY 6 &mdash;</span> <span style="color:var(--accent-gold)" data-i18n="title_highlight">THE SHOWDOWN</span></h1>
+    <div class="subtitle" data-i18n="subtitle">Saturday May 16 &middot; Host: Era 92 &middot; Location: Orange Phoenix (EAST)</div>
+    <div class="time-row">
+      <div>
+        <div class="label" data-i18n="camps_open_lbl">Faction Camp</div>
+        <div class="time">17:00 UTC</div>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="label">WC1 Early</div>
+        <div class="time">18:30 UTC</div>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="label" data-i18n="contest_start_lbl">Contest Start</div>
+        <div class="time">19:00 UTC</div>
+      </div>
+    </div>
+
+    <!-- COUNTDOWN -->
+    <div class="countdown-bar" id="countdown">
+      <div class="cd-block"><div class="val" id="cd-h">--</div><div class="unit">Hours</div></div>
+      <div class="cd-block"><div class="val" id="cd-m">--</div><div class="unit">Min</div></div>
+      <div class="cd-block"><div class="val" id="cd-s">--</div><div class="unit">Sec</div></div>
+    </div>
+    <div class="cd-label" id="cd-label">Until Contest Start</div>
+  </div>
+
+  <!-- 1. SCHEDULE -->
+  <div class="section">
+    <div class="sh"><span class="n">1</span> <span data-i18n="s1_sched_title">Showdown Schedule</span></div>
+    <div class="schedule-grid">
+      <div class="sched-header">
+        <div></div>
+        <div></div>
+        <div data-i18n="sched_countdown">Countdown</div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">16:30</div>
+        <div class="sched-desc" data-i18n="sched_1630_desc"><strong>Cross-border Invasion Camp</strong> &mdash; Players from all kingdoms can relocate to the showdown map</div>
+        <div class="sched-cd" data-cd="2026-05-16T16:30:00Z"></div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">17:00</div>
+        <div class="sched-desc" data-i18n="sched_1700_desc"><strong>Cross-border Faction Camp</strong> &mdash; Relocate to your own faction's camp. Top 6 alliances get early access (T-30/20/10)</div>
+        <div class="sched-cd" data-cd="2026-05-16T17:00:00Z"></div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">18:30</div>
+        <div class="sched-desc" data-i18n="sched_1830_desc"><strong>WC1 Early Teleport</strong> &mdash; Rank #2 alliance can position 30 min early (refineries not yet active)</div>
+        <div class="sched-cd" data-cd="2026-05-16T18:30:00Z"></div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">19:00</div>
+        <div class="sched-desc" data-i18n="sched_1900_desc"><strong>Contest for Essence Refinery</strong> &mdash; Refineries open for contest. Occupy to earn KP. Fight for Primordial Essences.</div>
+        <div class="sched-cd" data-cd="2026-05-16T19:00:00Z"></div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">21:00</div>
+        <div class="sched-desc" data-i18n="sched_2100_desc"><strong>Clearing the Battlefield</strong> &mdash; Refineries enter protection. Final holder gets end bonus. Open-field Essence gathering continues.</div>
+        <div class="sched-cd" data-cd="2026-05-16T21:00:00Z"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. THE MAP -->
+  <div class="section">
+    <div class="sh"><span class="n">2</span> <span data-i18n="s2_map_title">The Battlefield</span></div>
+    <p class="blurb">
+      <strong data-i18n="s2_blurb_host">Host: Era 92.</strong> <span data-i18n="s2_blurb_1">Each server teleports into one corner of the IC map via cross-border faction camps.</span> <strong data-i18n="s2_blurb_pos">Era 8 is in the EAST corner. Orange Phoenix (EAST).</strong> <span data-i18n="s2_blurb_2">8 Essence Refineries are fixed in a grid around the Imperial City.</span>
+    </p>
+
+    <!-- SVG MAP - Era 8 now in EAST (right) position -->
+    <div class="map-wrap">
+      <svg id="battlemap" viewBox="-280 -240 1080 1000" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(212,168,67,0.15)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <symbol id="castle" viewBox="0 0 20 20">
+            <rect x="2" y="14" width="16" height="4" fill="white"/>
+            <rect x="4" y="8" width="12" height="6" fill="white"/>
+            <rect x="3" y="5" width="3" height="3" fill="white"/>
+            <rect x="8.5" y="5" width="3" height="3" fill="white"/>
+            <rect x="14" y="5" width="3" height="3" fill="white"/>
+            <rect x="4" y="3" width="1.5" height="2" fill="white"/>
+            <rect x="6" y="3" width="1.5" height="2" fill="white"/>
+            <rect x="9.25" y="3" width="1.5" height="2" fill="white"/>
+            <rect x="11.25" y="3" width="1.5" height="2" fill="white"/>
+            <rect x="14.5" y="3" width="1.5" height="2" fill="white"/>
+            <rect x="16.5" y="3" width="1.5" height="2" fill="white"/>
+            <rect x="8" y="12" width="4" height="6" rx="2" fill="#1a3a6a"/>
+          </symbol>
+        </defs>
+
+        <rect x="-280" y="-240" width="1080" height="1000" fill="#0d0f18" rx="12"/>
+
+        <!-- Outer diamond -->
+        <polygon points="260,-50 570,260 260,570 -50,260" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+
+        <!-- Server corner chunks - N=Era 92, E=Era 8 (us), S=Era 16, W=Era 22 -->
+        <!-- North = Era 92 (blue/owl, 3rd, host) -->
+        <polygon points="105,105 260,-50 415,105 375,145 260,30 145,145" fill="rgba(91,163,217,0.12)" stroke="rgba(91,163,217,0.35)" stroke-width="1.5"/>
+        <!-- East = Era 8 (orange/phoenix, 2nd - US!) -->
+        <polygon points="415,105 570,260 415,415 375,375 490,260 375,145" fill="rgba(212,122,61,0.18)" stroke="rgba(212,122,61,0.5)" stroke-width="2"/>
+        <!-- South = Era 16 (teal/lion, 1st) -->
+        <polygon points="415,415 260,570 105,415 145,375 260,490 375,375" fill="rgba(77,184,168,0.12)" stroke="rgba(77,184,168,0.35)" stroke-width="1.5"/>
+        <!-- West = Era 22 (purple/dragon, 4th) -->
+        <polygon points="105,415 -50,260 105,105 145,145 30,260 145,375" fill="rgba(184,93,160,0.12)" stroke="rgba(184,93,160,0.35)" stroke-width="1.5"/>
+
+        <!-- Corner caps -->
+        <!-- North cap = Era 92 -->
+        <polygon points="210,-100 260,-150 310,-100 360,-50 310,0 260,-50 210,0 160,-50" fill="rgba(91,163,217,0.18)" stroke="rgba(91,163,217,0.5)" stroke-width="1.5"/>
+        <!-- East cap = Era 8 (highlighted) -->
+        <polygon points="620,210 670,260 620,310 570,360 520,310 570,260 520,210 570,160" fill="rgba(212,122,61,0.25)" stroke="rgba(212,122,61,0.7)" stroke-width="2"/>
+        <!-- South cap = Era 16 -->
+        <polygon points="310,620 260,670 210,620 160,570 210,520 260,570 310,520 360,570" fill="rgba(77,184,168,0.18)" stroke="rgba(77,184,168,0.5)" stroke-width="1.5"/>
+        <!-- West cap = Era 22 -->
+        <polygon points="-100,310 -150,260 -100,210 -50,160 0,210 -50,260 0,310 -50,360" fill="rgba(184,93,160,0.18)" stroke="rgba(184,93,160,0.5)" stroke-width="1.5"/>
+
+        <!-- Inner diamond -->
+        <polygon points="260,30 490,260 260,490 30,260" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+        <!-- IC -->
+        <circle cx="260" cy="260" r="80" fill="url(#glow)"/>
+        <circle cx="260" cy="260" r="36" fill="none" stroke="rgba(212,168,67,0.5)" stroke-width="2" stroke-dasharray="4,3"/>
+        <circle cx="260" cy="260" r="6" fill="#d4a843"/>
+        <text x="260" y="240" text-anchor="middle" fill="#d4a843" font-family="Bebas Neue,sans-serif" font-size="13" letter-spacing="2">IMPERIAL CITY</text>
+
+        <!-- Grid lines -->
+        <line x1="260" y1="119" x2="189" y2="189" stroke="rgba(212,168,67,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="189" y1="189" x2="119" y2="260" stroke="rgba(212,168,67,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="260" y1="119" x2="331" y2="189" stroke="rgba(212,168,67,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="331" y1="189" x2="401" y2="260" stroke="rgba(212,168,67,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="119" y1="260" x2="189" y2="331" stroke="rgba(212,168,67,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="189" y1="331" x2="260" y2="401" stroke="rgba(212,168,67,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="401" y1="260" x2="331" y2="331" stroke="rgba(212,168,67,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="331" y1="331" x2="260" y2="401" stroke="rgba(212,168,67,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="189" y1="189" x2="260" y2="260" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="331" y1="189" x2="260" y2="260" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="189" y1="331" x2="260" y2="260" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="331" y1="331" x2="260" y2="260" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+        <!-- Corner labels - UPDATED positions -->
+        <!-- North = Era 92 (host) -->
+        <text x="260" y="-200" text-anchor="middle" fill="rgba(91,163,217,0.9)" font-family="Barlow Condensed,sans-serif" font-size="22" font-weight="600" letter-spacing="1">ERA 92 (HOST)</text>
+        <text x="260" y="-176" text-anchor="middle" fill="rgba(91,163,217,0.6)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="500">#3 &middot; 12.4B</text>
+        <polygon points="260,-168 272,-156 248,-156" fill="#5ba3d9"/>
+
+        <!-- East = Era 8 (US!) -->
+        <polygon points="680,260 696,248 696,272" fill="#d47a3d"/>
+        <text x="706" y="255" text-anchor="start" fill="rgba(212,122,61,1)" font-family="Barlow Condensed,sans-serif" font-size="24" font-weight="700" letter-spacing="1">ERA 8</text>
+        <text x="706" y="278" text-anchor="start" fill="rgba(212,122,61,0.7)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="500">#2 &middot; 22.5B</text>
+
+        <!-- South = Era 16 (1st place) -->
+        <polygon points="260,688 272,704 248,704" fill="#4db8a8"/>
+        <text x="260" y="734" text-anchor="middle" fill="rgba(77,184,168,0.9)" font-family="Barlow Condensed,sans-serif" font-size="22" font-weight="600" letter-spacing="1">ERA 16</text>
+        <text x="260" y="756" text-anchor="middle" fill="rgba(77,184,168,0.6)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="500">#1 &middot; 26.1B</text>
+
+        <!-- West = Era 22 (4th place) -->
+        <polygon points="-160,260 -176,248 -176,272" fill="#b85da0"/>
+        <text x="-186" y="255" text-anchor="end" fill="rgba(184,93,160,0.9)" font-family="Barlow Condensed,sans-serif" font-size="22" font-weight="600" letter-spacing="1">ERA 22</text>
+        <text x="-186" y="278" text-anchor="end" fill="rgba(184,93,160,0.6)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="500">#4 &middot; 7.38B</text>
+
+        <!-- Dashed approach lines -->
+        <line x1="260" y1="100" x2="260" y2="224" stroke="rgba(91,163,217,0.12)" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="420" y1="260" x2="296" y2="260" stroke="rgba(212,122,61,0.2)" stroke-width="1.5" stroke-dasharray="3,4"/>
+        <line x1="260" y1="420" x2="260" y2="296" stroke="rgba(77,184,168,0.12)" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="100" y1="260" x2="224" y2="260" stroke="rgba(184,93,160,0.12)" stroke-width="1" stroke-dasharray="3,4"/>
+
+        <!-- Refineries -->
+        <polygon points="260,91 286,117 260,143 234,117" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="250" y="107" width="20" height="20"/>
+        <text x="260" y="160" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="20" font-weight="600">R1</text>
+
+        <polygon points="331,161 357,187 331,213 305,187" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="321" y="177" width="20" height="20"/>
+        <text x="331" y="230" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="20" font-weight="600">R2</text>
+
+        <polygon points="401,234 427,260 401,286 375,260" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="391" y="250" width="20" height="20"/>
+        <text x="401" y="303" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="20" font-weight="600">R3</text>
+
+        <polygon points="331,305 357,331 331,357 305,331" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="321" y="321" width="20" height="20"/>
+        <text x="331" y="374" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="20" font-weight="600">R4</text>
+
+        <polygon points="260,375 286,401 260,427 234,401" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="250" y="391" width="20" height="20"/>
+        <text x="260" y="444" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="20" font-weight="600">R5</text>
+
+        <polygon points="189,305 215,331 189,357 163,331" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="179" y="321" width="20" height="20"/>
+        <text x="189" y="374" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="20" font-weight="600">R6</text>
+
+        <polygon points="119,234 145,260 119,286 93,260" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="109" y="250" width="20" height="20"/>
+        <text x="119" y="303" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="20" font-weight="600">R7</text>
+
+        <polygon points="189,161 215,187 189,213 163,187" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="179" y="177" width="20" height="20"/>
+        <text x="189" y="230" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="20" font-weight="600">R8</text>
+
+        <!-- "YOU ARE HERE" marker on East -->
+        <circle cx="570" cy="260" r="12" fill="none" stroke="#d47a3d" stroke-width="2" stroke-dasharray="3,2">
+          <animate attributeName="r" values="12;18;12" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="570" cy="260" r="5" fill="#d47a3d"/>
+
+        <!-- War Machine / Siege pressure indicators from Era 92 alliances -->
+        <!-- Caution symbol definition -->
+        <defs>
+          <symbol id="siege-warn" viewBox="0 0 24 24">
+            <polygon points="12,2 22,20 2,20" fill="none" stroke="rgba(255,200,50,0.9)" stroke-width="2" stroke-linejoin="round"/>
+            <text x="12" y="18" text-anchor="middle" fill="rgba(255,200,50,0.9)" font-family="Barlow,sans-serif" font-size="14" font-weight="700">!</text>
+          </symbol>
+        </defs>
+
+        <!-- OPS — from NE, curves outward (away from mountain) then around to elbow end -->
+        <circle cx="480" cy="-20" r="4" fill="rgba(91,163,217,0.7)"/>
+        <text x="480" y="-32" text-anchor="middle" fill="rgba(91,163,217,0.9)" font-family="Barlow Condensed,sans-serif" font-size="21" font-weight="600">OPS</text>
+        <path d="M 480,-16 C 440,-10 400,20 415,80 C 430,120 440,135 440,145" stroke="rgba(91,163,217,0.6)" stroke-width="2" fill="none" stroke-dasharray="5,4" stroke-linecap="round"/>
+        <polygon points="440,157 434,145 446,145" fill="rgba(91,163,217,0.7)"/>
+
+        <!-- TAK — from further NEE, curves outward then around -->
+        <circle cx="640" cy="20" r="4" fill="rgba(91,163,217,0.7)"/>
+        <text x="640" y="8" text-anchor="middle" fill="rgba(91,163,217,0.9)" font-family="Barlow Condensed,sans-serif" font-size="21" font-weight="600">TAK</text>
+        <path d="M 636,24 C 600,30 540,40 480,70 C 440,90 430,120 430,140" stroke="rgba(91,163,217,0.6)" stroke-width="2" fill="none" stroke-dasharray="5,4" stroke-linecap="round"/>
+        <polygon points="430,152 424,140 436,140" fill="rgba(91,163,217,0.7)"/>
+
+        <!-- MKS — from NEE, curves outward then around -->
+        <circle cx="720" cy="80" r="4" fill="rgba(91,163,217,0.7)"/>
+        <text x="720" y="68" text-anchor="middle" fill="rgba(91,163,217,0.9)" font-family="Barlow Condensed,sans-serif" font-size="21" font-weight="600">MKS</text>
+        <path d="M 716,84 C 660,90 570,80 500,100 C 450,115 420,130 420,145" stroke="rgba(91,163,217,0.6)" stroke-width="2" fill="none" stroke-dasharray="5,4" stroke-linecap="round"/>
+        <polygon points="420,157 414,145 426,145" fill="rgba(91,163,217,0.7)"/>
+
+        <!-- Siege warning icon at NE approach — outside elbow -->
+        <use href="#siege-warn" x="500" y="68" width="48" height="48"/>
+        <text x="524" y="130" text-anchor="middle" fill="rgba(255,200,50,0.8)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="600">SIEGE</text>
+
+        <!-- MKM — from SE, curves outward (away from mountain) then around to elbow end -->
+        <circle cx="560" cy="530" r="4" fill="rgba(91,163,217,0.7)"/>
+        <text x="560" y="548" text-anchor="middle" fill="rgba(91,163,217,0.9)" font-family="Barlow Condensed,sans-serif" font-size="21" font-weight="600">MKM</text>
+        <path d="M 556,526 C 520,510 460,490 430,440 C 415,410 415,390 415,380" stroke="rgba(91,163,217,0.6)" stroke-width="2" fill="none" stroke-dasharray="5,4" stroke-linecap="round"/>
+        <polygon points="415,368 409,380 421,380" fill="rgba(91,163,217,0.7)"/>
+
+        <!-- Siege warning icon at SE approach — outside elbow -->
+        <use href="#siege-warn" x="480" y="400" width="48" height="48"/>
+        <text x="504" y="462" text-anchor="middle" fill="rgba(255,200,50,0.8)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="600">SIEGE</text>
+      </svg>
+    </div>
+
+    <div class="map-legend">
+      <span><span class="dot" style="background:#5ba3d9"></span> Era 92</span>
+      <span><span class="dot" style="background:#d47a3d;box-shadow:0 0 6px #d47a3d"></span> Era 8</span>
+      <span><span class="dot" style="background:#4db8a8"></span> Era 16</span>
+      <span><span class="dot" style="background:#b85da0"></span> Era 22</span>
+      <span><span class="dot" style="background:#d4a843"></span> Refinery</span>
+    </div>
+
+    <div class="co gold">
+      <strong data-i18n="s2_callout_strong">Our natural refinery is R3 (East).</strong> <span data-i18n="s2_callout_text">R2 is contested with Era 92 (North). R4 is contested with Era 16 (South, rank 1 &mdash; strongest server). To win we need 3-4 refineries. Era 22 (West) is rank 4 and weakest &mdash; their refineries (R6/R7) are vulnerable if we can reach them.</span>
+    </div>
+  </div>
+
+  <!-- 3. ALLIANCE RANKINGS & TELEPORT -->
+  <div class="section">
+    <div class="sh"><span class="n">3</span> <span data-i18n="s3_title">Alliance Rankings &amp; Teleport Windows</span></div>
+    <p class="blurb"><strong data-i18n="s3_blurb_1">Top 6 alliances teleport early.</strong></p>
+
+    <!-- Era 8 Zone Zoom (East position) -->
+    <div class="map-wrap" style="margin-top:16px;">
+      <svg id="era8zoom" viewBox="280 60 430 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;">
+        <rect x="280" y="60" width="430" height="400" fill="#0d0f18" rx="12"/>
+
+        <!-- Alliance colored zones — matching v3 elbow/cap split pattern (rotated for East) -->
+        <!-- WC1: full bottom half of elbow + bottom inner cap -->
+        <polygon points="375,375 490,260 570,260 415,415" fill="rgba(212,168,67,0.35)"/>
+        <polygon points="570,360 520,310 570,260" fill="rgba(212,168,67,0.35)"/>
+        <!-- MyT: outer portion of top half of elbow -->
+        <polygon points="415,105 375,145 476,246 516,206" fill="rgba(61,124,196,0.35)"/>
+        <!-- REU: inner portion of top half + top inner cap -->
+        <polygon points="516,206 476,246 490,260 570,260" fill="rgba(61,170,109,0.35)"/>
+        <polygon points="570,160 520,210 570,260" fill="rgba(61,170,109,0.35)"/>
+        <!-- AGC: outer cap -->
+        <polygon points="570,160 620,210 670,260 620,310 570,360" fill="rgba(196,122,61,0.35)"/>
+
+        <!-- Elbow outline (outer diamond V) -->
+        <polyline points="415,105 570,260 415,415" fill="none" stroke="rgba(212,122,61,0.35)" stroke-width="2"/>
+        <!-- Elbow outline (inner diamond V) -->
+        <polyline points="375,145 490,260 375,375" fill="none" stroke="rgba(212,122,61,0.35)" stroke-width="2"/>
+        <!-- Elbow connecting edges -->
+        <line x1="415" y1="105" x2="375" y2="145" stroke="rgba(212,122,61,0.35)" stroke-width="2"/>
+        <line x1="415" y1="415" x2="375" y2="375" stroke="rgba(212,122,61,0.35)" stroke-width="2"/>
+
+        <!-- Cap outline -->
+        <polyline points="570,160 620,210 670,260 620,310 570,360" fill="none" stroke="rgba(212,122,61,0.5)" stroke-width="2"/>
+        <!-- Cap connectors -->
+        <line x1="570" y1="160" x2="520" y2="210" stroke="rgba(212,122,61,0.5)" stroke-width="2"/>
+        <line x1="570" y1="360" x2="520" y2="310" stroke="rgba(212,122,61,0.5)" stroke-width="2"/>
+
+        <!-- Internal dividers (dashed) -->
+        <line x1="490" y1="260" x2="570" y2="260" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="570" y1="160" x2="570" y2="360" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="476" y1="246" x2="516" y2="206" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+        <!-- Refineries inside the inner diamond (left of elbow) -->
+        <polygon points="331,161 357,187 331,213 305,187" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="321" y="177" width="20" height="20"/>
+        <text x="331" y="230" text-anchor="middle" fill="var(--accent-gold)" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="700">R2</text>
+        <polygon points="401,234 427,260 401,286 375,260" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="391" y="250" width="20" height="20"/>
+        <text x="401" y="302" text-anchor="middle" fill="var(--accent-gold)" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="700">R3</text>
+        <polygon points="331,305 357,331 331,357 305,331" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.5"/>
+        <use href="#castle" x="321" y="321" width="20" height="20"/>
+        <text x="331" y="374" text-anchor="middle" fill="var(--accent-gold)" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="700">R4</text>
+
+        <!-- Adjacent server territory slivers (subdued, extending off screen at 45°) -->
+        <polygon points="375,145 415,105 215,-95 175,-55" fill="rgba(91,163,217,0.10)" stroke="rgba(91,163,217,0.2)" stroke-width="1"/>
+        <polygon points="375,375 415,415 215,615 175,575" fill="rgba(77,184,168,0.10)" stroke="rgba(77,184,168,0.2)" stroke-width="1"/>
+
+        <!-- Alliance labels -->
+        <text x="460" y="330" text-anchor="middle" fill="var(--wc1)" font-family="Bebas Neue,sans-serif" font-size="22" letter-spacing="1">WC1</text>
+        <text x="455" y="195" text-anchor="middle" fill="var(--myt)" font-family="Bebas Neue,sans-serif" font-size="22" letter-spacing="1">MyT</text>
+        <text x="540" y="235" text-anchor="middle" fill="var(--reu)" font-family="Bebas Neue,sans-serif" font-size="22" letter-spacing="1">REU</text>
+        <text x="610" y="265" text-anchor="middle" fill="var(--agc)" font-family="Bebas Neue,sans-serif" font-size="22" letter-spacing="1">AGC</text>
+
+        <!-- Rally leader pulsing dots -->
+        <!-- AGC: on the vertical dashed line, middle -->
+        <circle cx="570" cy="260" r="6" fill="none" stroke="#c47a3d" stroke-width="1.5" stroke-dasharray="2,2">
+          <animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="570" cy="260" r="3" fill="#c47a3d"/>
+
+        <!-- REU: on inner elbow line between (375,145) and (490,260), in REU's section -->
+        <circle cx="483" cy="253" r="6" fill="none" stroke="#3daa6d" stroke-width="1.5" stroke-dasharray="2,2">
+          <animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="483" cy="253" r="3" fill="#3daa6d"/>
+
+        <!-- MyT: inner elbow corner adjacent to Era 92 -->
+        <circle cx="375" cy="145" r="6" fill="none" stroke="#3d7cc4" stroke-width="1.5" stroke-dasharray="2,2">
+          <animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="375" cy="145" r="3" fill="#3d7cc4"/>
+
+        <!-- WC1: inner elbow corner adjacent to Era 16 -->
+        <circle cx="375" cy="375" r="6" fill="none" stroke="#d4a843" stroke-width="1.5" stroke-dasharray="2,2">
+          <animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="375" cy="375" r="3" fill="#d4a843"/>
+
+        <!-- Neighboring server labels -->
+        <text x="370" y="100" text-anchor="middle" fill="rgba(91,163,217,0.7)" font-family="Barlow Condensed,sans-serif" font-size="13" font-weight="600">Era 92</text>
+        <text x="370" y="440" text-anchor="middle" fill="rgba(77,184,168,0.7)" font-family="Barlow Condensed,sans-serif" font-size="13" font-weight="600">Era 16</text>
+        <text x="620" y="380" text-anchor="middle" fill="rgba(212,122,61,0.9)" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="600" letter-spacing="1" data-i18n-svg="era8_zone">ERA 8 ZONE</text>
+
+        <!-- Rally Captains legend -->
+        <circle cx="590" cy="80" r="6" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-dasharray="2,2">
+          <animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="590" cy="80" r="3" fill="rgba(255,255,255,0.5)"/>
+        <text x="604" y="84" text-anchor="start" fill="rgba(255,255,255,0.7)" font-family="Barlow Condensed,sans-serif" font-size="13" font-weight="600">Rally Captains</text>
+      </svg>
+    </div>
+
+    <details>
+      <summary>Alliance Rankings</summary>
+      <table class="ranking-table">
+        <tr><th>#</th><th>Alliance</th><th>Server</th><th>Points</th><th>Early</th></tr>
+        <tr><td class="rank-badge">1</td><td>[TKH] KrakenHunters</td><td>Era 16</td><td>18.7B</td><td><span class="tp-badge tp-30">T-30</span></td></tr>
+        <tr class="era8"><td class="rank-badge">2</td><td><strong>[eRa] WorldClass</strong></td><td>Era 8</td><td>11.2B</td><td><span class="tp-badge tp-30">T-30</span></td></tr>
+        <tr><td class="rank-badge">3</td><td>[OPS] OnePiece</td><td>Era 92</td><td>8.3B</td><td><span class="tp-badge tp-20">T-20</span></td></tr>
+        <tr><td class="rank-badge">4</td><td>[REC] RealmOfCrown</td><td>Era 22</td><td>6.17B</td><td><span class="tp-badge tp-20">T-20</span></td></tr>
+        <tr><td class="rank-badge">5</td><td>[TWH] WhaleHunters</td><td>Era 16</td><td>3.1B</td><td><span class="tp-badge tp-10">T-10</span></td></tr>
+        <tr><td class="rank-badge">6</td><td>[REV] RealmOfValor</td><td>Era 22</td><td>2.93B</td><td><span class="tp-badge tp-10">T-10</span></td></tr>
+        <tr class="era8"><td class="rank-badge">7</td><td>[REU] Reunions</td><td>Era 8</td><td>2.56B</td><td><span class="tp-badge tp-0">T+0</span></td></tr>
+        <tr class="era8"><td class="rank-badge">8</td><td>[Myt] Mythic</td><td>Era 8</td><td>2.53B</td><td><span class="tp-badge tp-0">T+0</span></td></tr>
+        <tr><td class="rank-badge">9</td><td>[MKM] MKM</td><td>Era 92</td><td>2.03B</td><td><span class="tp-badge tp-0">T+0</span></td></tr>
+        <tr class="era8"><td class="rank-badge">10</td><td>[eRa] AuroraGodCourt</td><td>Era 8</td><td>1.94B</td><td><span class="tp-badge tp-0">T+0</span></td></tr>
+      </table>
+    </details>
+
+    <div class="tp-grid">
+      <div class="tp-card wc1">
+        <div class="a">WC1</div>
+        <div class="t">18:30 UTC</div>
+        <div class="rank">Rank #2 &bull; T-30</div>
+      </div>
+      <div class="tp-card reu">
+        <div class="a">REU</div>
+        <div class="t">19:00 UTC</div>
+        <div class="rank">Rank #7 &bull; T+0</div>
+      </div>
+      <div class="tp-card myt">
+        <div class="a">Myt</div>
+        <div class="t">19:00 UTC</div>
+        <div class="rank">Rank #8 &bull; T+0</div>
+      </div>
+      <div class="tp-card agc">
+        <div class="a">AGC</div>
+        <div class="t">19:00 UTC</div>
+        <div class="rank">Rank #10 &bull; T+0</div>
+      </div>
+    </div>
+
+    <div class="co info" style="margin-top:10px;" data-i18n="wc1_early_info">
+      <strong>WC1 can position 30 minutes early.</strong> Use this time to set up near R3 and R2 so you're ready to rally the instant contest begins at 19:00. Everyone else arrives at 19:00 &mdash; reinforce immediately on entry.
+    </div>
+  </div>
+
+  <!-- 4. SCORING -->
+  <div class="section">
+    <div class="sh"><span class="n">4</span> <span data-i18n="s4_title">Scoring</span></div>
+
+    <h3 style="color:var(--accent-gold); font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; margin:12px 0 6px;" data-i18n="score_kp_title">Kingdom Points (KP)</h3>
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="val">1M/s</div>
+        <div class="lbl" data-i18n="score_kp_per_held">Per refinery held</div>
+      </div>
+      <div class="stat-box">
+        <div class="val">800M</div>
+        <div class="lbl" data-i18n="score_kp_per_end">Per refinery at contest end</div>
+      </div>
+      <div class="stat-box">
+        <div class="val">6.4B</div>
+        <div class="lbl" data-i18n="score_kp_total_end">Total end-bonus (8 refineries)</div>
+      </div>
+      <div class="stat-box">
+        <div class="val">2 HR</div>
+        <div class="lbl" data-i18n="score_kp_duration">Contest duration</div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--accent-red); font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; margin:12px 0 6px;" data-i18n="score_elim_title">Elimination Points (KP + Essence)</h3>
+    <p style="font-size:13px; margin:0 0 6px; color:var(--text-muted);" data-i18n="score_elim_desc">Combat earns KP for the kingdom AND counts toward Primordial Essence (1 per 500 pts, max 70K). Tier gap rule: only scores if tier difference &le; 2.</p>
+    <div style="overflow-x:auto;">
+      <table class="ranking-table" style="font-size:12px; margin:0 auto;">
+        <tr><th>Tier</th><th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>T6</th><th>T7</th><th>T8</th><th>T9</th></tr>
+        <tr><td><strong data-i18n="score_row_wound">Gravely Wound</strong></td><td>1</td><td>2</td><td>3</td><td>4</td><td>6</td><td>9</td><td>15</td><td>24</td><td>36</td></tr>
+        <tr><td><strong data-i18n="score_row_elim">Eliminate (5&times;)</strong></td><td>5</td><td>10</td><td>15</td><td>20</td><td>30</td><td>45</td><td>75</td><td>120</td><td>180</td></tr>
+        <tr><td><strong data-i18n="score_row_loss">Own Loss (2&times;)</strong></td><td>2</td><td>4</td><td>6</td><td>8</td><td>12</td><td>18</td><td>30</td><td>48</td><td>72</td></tr>
+      </table>
+    </div>
+
+    <h3 style="color:var(--accent-green); font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; margin:12px 0 6px;" data-i18n="score_essence_title">Primordial Essence (Personal Currency)</h3>
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="val">1/s</div>
+        <div class="lbl" data-i18n="score_essence_garrison">Per player garrisoned/stationed at a refinery (min 50K units)</div>
+      </div>
+      <div class="stat-box">
+        <div class="val">1 per 500pts</div>
+        <div class="lbl" data-i18n="score_essence_combat">From combat on IC plots (max 70K total)</div>
+      </div>
+    </div>
+
+    <div class="co info" data-i18n="score_terminology_note">
+      <strong>Terminology note:</strong> <em>Primordial Dew</em> converts 10:1 into <em>Primordial Points</em> (which count toward KP). <em>Primordial Essence</em> is a separate personal currency earned only on Day 6 &mdash; it does NOT convert to KP. Both matter, but KP wins the war.
+    </div>
+  </div>
+
+  <!-- 5. GAME PLAN -->
+  <div class="section">
+    <div class="sh"><span class="n">5</span> <span data-i18n="s5_title">Game Plan</span></div>
+
+    <div class="co warn" style="margin-bottom:10px;" data-i18n="plan_win_condition">
+      <strong>Win Condition:</strong> The kingdom with the most <strong>Kingdom Points (KP)</strong> at event end wins. KP carries over from Battle Stage &mdash; we start ~3.6B behind Era 16.
+    </div>
+
+    <div class="co warn" style="margin-bottom:10px; font-size:15px; font-weight:600;" data-i18n="plan_zeroed_warning">
+      <strong style="font-size:16px;">&#9888; HEAVY RISK OF GETTING ZEROED.</strong> Call out incoming threats and reinforce where possible. Otherwise &mdash; <strong>BUBBLE UP.</strong>
+    </div>
+
+    <h3 style="color:var(--accent-blue); font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; margin:12px 0 6px;" data-i18n="plan_rules_title">Key Rules</h3>
+    <ul style="margin:0 0 10px 16px; font-size:14px; line-height:1.6;">
+      <li data-i18n="plan_rule_1"><strong>Refineries can ONLY be attacked via rally</strong> &mdash; no solo marches, no war machines</li>
+      <li data-i18n="plan_rule_2"><strong>Essence-farming marches:</strong> Any tier (T1&ndash;T9) with 50K+ units qualifies for Primordial Essence. Use this for low-risk marches only. All combat marches should be max tier, full capacity, ready for war.</li>
+      <li data-i18n="plan_rule_3">Only one troop per player per refinery earns Essence</li>
+      <li data-i18n="plan_rule_4"><strong>If you need to stay bubbled, do NOT attack anyone.</strong> If you do, re-bubble immediately. HIGH RISK OF BEING ZEROED.</li>
+    </ul>
+
+    <!-- Strategy map - full battlefield with east zoom inset and curved arrows -->
+    <div class="map-wrap" style="margin-bottom:14px;">
+      <svg id="stratmap" viewBox="-30 70 770 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;">
+        <rect x="-280" y="-240" width="1080" height="1000" fill="#0d0f18" rx="12"/>
+
+        <!-- Outer diamond -->
+        <polygon points="260,-50 570,260 260,570 -50,260" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+        <!-- Server corner chunks - ALL SUBDUED except East -->
+        <!-- North = Era 92 (subdued) -->
+        <polygon points="105,105 260,-50 415,105 375,145 260,30 145,145" fill="rgba(91,163,217,0.05)" stroke="rgba(91,163,217,0.15)" stroke-width="1"/>
+        <!-- East = Era 8 (highlighted) -->
+        <polygon points="415,105 570,260 415,415 375,375 490,260 375,145" fill="rgba(212,122,61,0.18)" stroke="rgba(212,122,61,0.5)" stroke-width="2"/>
+        <!-- South = Era 16 (subdued) -->
+        <polygon points="415,415 260,570 105,415 145,375 260,490 375,375" fill="rgba(77,184,168,0.05)" stroke="rgba(77,184,168,0.15)" stroke-width="1"/>
+        <!-- West = Era 22 (subdued) -->
+        <polygon points="105,415 -50,260 105,105 145,145 30,260 145,375" fill="rgba(184,93,160,0.05)" stroke="rgba(184,93,160,0.15)" stroke-width="1"/>
+
+        <!-- Corner caps (subdued except East) -->
+        <polygon points="210,-100 260,-150 310,-100 360,-50 310,0 260,-50 210,0 160,-50" fill="rgba(91,163,217,0.06)" stroke="rgba(91,163,217,0.2)" stroke-width="1"/>
+        <polygon points="620,210 670,260 620,310 570,360 520,310 570,260 520,210 570,160" fill="rgba(212,122,61,0.2)" stroke="rgba(212,122,61,0.6)" stroke-width="2"/>
+        <polygon points="310,620 260,670 210,620 160,570 210,520 260,570 310,520 360,570" fill="rgba(77,184,168,0.06)" stroke="rgba(77,184,168,0.2)" stroke-width="1"/>
+        <polygon points="-100,310 -150,260 -100,210 -50,160 0,210 -50,260 0,310 -50,360" fill="rgba(184,93,160,0.06)" stroke="rgba(184,93,160,0.2)" stroke-width="1"/>
+
+        <!-- Inner diamond -->
+        <polygon points="260,30 490,260 260,490 30,260" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
+
+        <!-- IC -->
+        <circle cx="260" cy="260" r="36" fill="none" stroke="rgba(212,168,67,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="260" cy="260" r="5" fill="#d4a843"/>
+
+        <!-- Grid lines -->
+        <line x1="260" y1="119" x2="189" y2="189" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="189" y1="189" x2="119" y2="260" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="260" y1="119" x2="331" y2="189" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="331" y1="189" x2="401" y2="260" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="119" y1="260" x2="189" y2="331" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="189" y1="331" x2="260" y2="401" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="401" y1="260" x2="331" y2="331" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="331" y1="331" x2="260" y2="401" stroke="rgba(212,168,67,0.08)" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+        <!-- Refineries (diamond style, same as main map) -->
+        <polygon points="260,91 286,117 260,143 234,117" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.2"/>
+        <use href="#castle" x="250" y="107" width="20" height="20"/>
+        <text x="260" y="156" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="600">R1</text>
+
+        <polygon points="331,161 357,187 331,213 305,187" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.2"/>
+        <use href="#castle" x="321" y="177" width="20" height="20"/>
+        <text x="331" y="226" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="600">R2</text>
+
+        <polygon points="401,234 427,260 401,286 375,260" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.2"/>
+        <use href="#castle" x="391" y="250" width="20" height="20"/>
+        <text x="401" y="299" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="600">R3</text>
+
+        <polygon points="331,305 357,331 331,357 305,331" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.2"/>
+        <use href="#castle" x="321" y="321" width="20" height="20"/>
+        <text x="331" y="370" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="600">R4</text>
+
+        <polygon points="260,375 286,401 260,427 234,401" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.2"/>
+        <use href="#castle" x="250" y="391" width="20" height="20"/>
+        <text x="260" y="440" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="600">R5</text>
+
+        <polygon points="189,305 215,331 189,357 163,331" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.2"/>
+        <use href="#castle" x="179" y="321" width="20" height="20"/>
+        <text x="189" y="370" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="600">R6</text>
+
+        <polygon points="119,234 145,260 119,286 93,260" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.2"/>
+        <use href="#castle" x="109" y="250" width="20" height="20"/>
+        <text x="119" y="299" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="600">R7</text>
+
+        <polygon points="189,161 215,187 189,213 163,187" fill="#1a3a6a" stroke="#3d7cc4" stroke-width="1.2"/>
+        <use href="#castle" x="179" y="177" width="20" height="20"/>
+        <text x="189" y="226" text-anchor="middle" fill="#d4a843" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="600">R8</text>
+
+        <!-- Taxi rally arrow (grows from inner elbow point 490,260 toward West) -->
+        <defs>
+          <linearGradient id="taxiGrad" x1="100%" y1="0%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="white" stop-opacity="0.05"/>
+            <stop offset="30%" stop-color="white" stop-opacity="0.12"/>
+            <stop offset="70%" stop-color="white" stop-opacity="0.28"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0.45"/>
+          </linearGradient>
+          <!-- Clip: everything left of the inner diamond's east edge (260,30 → 490,260 → 260,490) -->
+          <clipPath id="taxiClip">
+            <polygon points="260,30 490,260 260,490 -300,490 -300,30"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#taxiClip)">
+          <!-- Body: starts behind elbow (wider than visible), clipped at inner diamond edge -->
+          <path d="M 500,130
+                   C 480,190 440,228 360,245
+                   C 270,258 150,256 35,254
+                   L 35,266
+                   C 150,264 270,262 360,275
+                   C 440,292 480,330 500,390 Z"
+                fill="url(#taxiGrad)"/>
+          <!-- Arrowhead (opaque background, flat back edge matching shaft end) -->
+          <polygon points="-15,260 35,238 35,282" fill="#0d0f18"/>
+          <polygon points="-15,260 35,238 35,282" fill="rgba(255,255,255,0.45)"/>
+        </g>
+        <text x="260" y="298" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="Barlow Condensed,sans-serif" font-size="16" font-weight="600" letter-spacing="1">TAXI RALLY</text>
+
+        <!-- Alliance zones and arrows grouped for hover/tap interaction -->
+        <g id="zone-wc1" class="alliance-zone" data-alliance="wc1">
+          <g opacity="0.45">
+            <polygon points="375,375 490,260 570,260 415,415" fill="#d4a843" class="zone-fill"/>
+            <polygon points="570,360 520,310 570,260" fill="#d4a843" class="zone-fill"/>
+          </g>
+          <!-- Arrow to R4 — curves up then flattens into arrowhead -->
+          <path d="M 375,375 C 380,355 370,325 351,325" stroke="#d4a843" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <polygon points="339,325 351,319 351,331" fill="#d4a843"/>
+          <!-- Arrow to R5 — sweeps down then flattens left -->
+          <path d="M 375,375 C 355,390 310,400 280,401" stroke="#d4a843" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <polygon points="268,401 280,395 280,407" fill="#d4a843"/>
+        </g>
+
+        <g id="zone-myt" class="alliance-zone" data-alliance="myt">
+          <g opacity="0.45">
+            <polygon points="415,105 375,145 476,246 516,206" fill="#3d7cc4" class="zone-fill"/>
+          </g>
+          <!-- Arrow to R2 — curves down then flattens into arrowhead -->
+          <path d="M 375,145 C 380,165 370,175 351,175" stroke="#3d7cc4" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <polygon points="339,175 351,169 351,181" fill="#3d7cc4"/>
+          <!-- Arrow to R1 — arcs up then flattens left -->
+          <path d="M 375,145 C 340,130 300,118 280,117" stroke="#3d7cc4" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <polygon points="268,117 280,111 280,123" fill="#3d7cc4"/>
+        </g>
+
+        <g id="zone-reu" class="alliance-zone" data-alliance="reu">
+          <g opacity="0.45">
+            <polygon points="516,206 476,246 490,260 570,260" fill="#3daa6d" class="zone-fill"/>
+            <polygon points="570,160 520,210 570,260" fill="#3daa6d" class="zone-fill"/>
+          </g>
+          <!-- Arrow to R3 — short curve flattening left -->
+          <path d="M 495,240 C 470,242 445,250 421,254" stroke="#3daa6d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <polygon points="409,254 421,248 421,260" fill="#3daa6d"/>
+          <!-- Arrow to R2 — arcs up then flattens left -->
+          <path d="M 495,240 C 450,215 395,187 351,187" stroke="#3daa6d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <polygon points="339,187 351,181 351,193" fill="#3daa6d"/>
+        </g>
+
+        <g id="zone-agc" class="alliance-zone" data-alliance="agc">
+          <g opacity="0.45">
+            <polygon points="570,160 620,210 670,260 620,310 570,360" fill="#c47a3d" class="zone-fill"/>
+          </g>
+          <!-- Arrow to R3 — middle prong, mostly straight left -->
+          <path d="M 590,260 C 540,260 480,262 421,266" stroke="#c47a3d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <polygon points="409,266 421,260 421,272" fill="#c47a3d"/>
+          <!-- Arrow to R2 — upper prong, arcs up then flattens left -->
+          <path d="M 590,260 C 540,235 400,200 351,199" stroke="#c47a3d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <polygon points="339,199 351,193 351,205" fill="#c47a3d"/>
+          <!-- Arrow to R4 — lower prong, arcs down then flattens left -->
+          <path d="M 590,260 C 540,285 400,335 351,337" stroke="#c47a3d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <polygon points="339,337 351,331 351,343" fill="#c47a3d"/>
+        </g>
+
+        <!-- Anti-siege crossed swords — outside elbow, near MyT/Era92 border -->
+        <g transform="translate(450,85)">
+          <line x1="-10" y1="-10" x2="10" y2="10" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="10" y1="-10" x2="-10" y2="10" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="-10" y1="-10" x2="-13" y2="-13" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="10" y1="-10" x2="13" y2="-13" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="-10" y1="10" x2="-13" y2="13" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="10" y1="10" x2="13" y2="13" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="-3" y="-2" width="6" height="4" fill="#c43d3d" rx="1"/>
+        </g>
+        <text x="450" y="109" text-anchor="middle" fill="#c43d3d" font-family="Barlow Condensed,sans-serif" font-size="11" font-weight="600">ANTI-SIEGE</text>
+
+        <!-- Anti-siege crossed swords — outside elbow, near WC1/Era16 border -->
+        <g transform="translate(450,435)">
+          <line x1="-10" y1="-10" x2="10" y2="10" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="10" y1="-10" x2="-10" y2="10" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="-10" y1="-10" x2="-13" y2="-13" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="10" y1="-10" x2="13" y2="-13" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="-10" y1="10" x2="-13" y2="13" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="10" y1="10" x2="13" y2="13" stroke="#c43d3d" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="-3" y="-2" width="6" height="4" fill="#c43d3d" rx="1"/>
+        </g>
+        <text x="450" y="459" text-anchor="middle" fill="#c43d3d" font-family="Barlow Condensed,sans-serif" font-size="11" font-weight="600">ANTI-SIEGE</text>
+
+        <!-- Corner labels (subdued) -->
+        <text x="260" y="-160" text-anchor="middle" fill="rgba(91,163,217,0.5)" font-family="Barlow Condensed,sans-serif" font-size="18" font-weight="600">Era 92</text>
+        <text x="260" y="700" text-anchor="middle" fill="rgba(77,184,168,0.5)" font-family="Barlow Condensed,sans-serif" font-size="18" font-weight="600">Era 16</text>
+        <text x="-160" y="265" text-anchor="end" fill="rgba(184,93,160,0.5)" font-family="Barlow Condensed,sans-serif" font-size="18" font-weight="600">Era 22</text>
+
+        <!-- Era 8 label (bright) -->
+        <text x="690" y="265" text-anchor="start" fill="rgba(212,122,61,1)" font-family="Barlow Condensed,sans-serif" font-size="22" font-weight="700" letter-spacing="1">ERA 8</text>
+
+        <!-- Alliance legend -->
+        <text x="680" y="310" text-anchor="start" fill="var(--wc1)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="600">&#9654; WC1</text>
+        <text x="680" y="328" text-anchor="start" fill="var(--myt)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="600">&#9654; MyT</text>
+        <text x="680" y="346" text-anchor="start" fill="var(--reu)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="600">&#9654; REU</text>
+        <text x="680" y="364" text-anchor="start" fill="var(--agc)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="600">&#9654; AGC</text>
+      </svg>
+    </div>
+
+    <div class="strat">
+      <h3 style="color:var(--accent-gold);" data-i18n="strat_refinery">Refinery Control (East Position)</h3>
+      <ul>
+        <li><strong style="color:var(--wc1);">WC1</strong> &mdash; <span data-i18n="strat_wc1">Position near R5 and R4 during early access (18:30). At 19:00 when refineries go live, rally both immediately.</span></li>
+        <li><strong style="color:var(--myt);">Myt</strong> &mdash; <span data-i18n="strat_myt">Position near R1 and R2 during early access (18:30). At 19:00 when refineries go live, rally both immediately.</span></li>
+        <li><strong style="color:var(--reu);">REU</strong> &mdash; <span data-i18n="strat_reu">Position near R3 and support wherever needed.</span></li>
+        <li><strong style="color:var(--agc);">AGC</strong> &mdash; <span data-i18n="strat_agc">Support wherever needed &mdash; specifically siege defense.</span></li>
+      </ul>
+    </div>
+
+    <div class="strat">
+      <h3 style="color:var(--accent-blue);" data-i18n="strat_taxi">Taxi Rallies</h3>
+      <ul>
+        <li data-i18n="taxi_1">R4+ creates rally aimed at enemy citadel across the map &rarr; ferries players toward refineries</li>
+        <li data-i18n="taxi_2">Officers kick/disband to dump players near refineries &mdash; reinforce immediately</li>
+        <li data-i18n="taxi_3">Critical for getting REU/Myt/AGC into position fast after 19:00</li>
+      </ul>
+    </div>
+
+    <div class="strat">
+      <h3 style="color:var(--accent-green);" data-i18n="strat_endgame">Endgame (21:00 UTC)</h3>
+      <ul>
+        <li><strong data-i18n="end_1_strong">Do NOT abandon a refinery</strong><span data-i18n="end_1_post"> &mdash; 800M only pays the holder at 21:00</span></li>
+        <li data-i18n="end_2">Even a last-second flip = 800M. Rally hard to recapture.</li>
+        <li data-i18n="end_3">At 21:00 refineries enter protection (can't be contested), but the battle isn't over. Open-field gathering of Primordial Essence continues for an estimated 2-4 hours.</li>
+        <li data-i18n="end_4">Open-field phase is optional. Do NOT feed KP via eliminations. If you can't compete in open field, use low-tier 50K+ unit marches to stay safe (bubble up &amp; don't attack).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6. KNOW YOUR ROLE -->
+  <div class="section">
+    <div class="sh"><span class="n">6</span> <span data-i18n="s6_title">Know Your Role</span></div>
+    <div class="role-grid">
+      <div class="role f">
+        <h4 data-i18n="role_kraken_title">Krakens</h4>
+        <p data-i18n="role_kraken_desc">Be in the main rallies and garrisons. Fight open field where necessary. You are the heavy hitters.</p>
+      </div>
+      <div class="role x">
+        <h4 data-i18n="role_fighter_title">Fighters</h4>
+        <p data-i18n="role_fighter_desc">Same as Krakens but avoid opposing Krakens &mdash; giving up eliminations costs KP. Play smart: stay in rallies and garrisons if possible, otherwise fight what you can handle.</p>
+      </div>
+      <div class="role r">
+        <h4 data-i18n="role_rally_title">Rally/Taxi Leaders</h4>
+        <p data-i18n="role_rally_desc">Run taxi rallies from 19:00 to ferry players to refineries. Launch attack rallies on enemy refineries when called. Kick/disband on command.</p>
+      </div>
+      <div class="role s">
+        <h4 data-i18n="role_siege_title">Siege Defenders</h4>
+        <p data-i18n="role_siege_desc">Dedicated to clearing incoming siege. Ignore the main objective until all siege is exhausted, then default back to Fighter/Kraken role.</p>
+      </div>
+      <div class="role m">
+        <h4 style="color:var(--text-muted);" data-i18n="role_filler_title">Fillers</h4>
+        <p data-i18n="role_filler_desc">Perma-bubbled players only here to sneak Primordial Essence from refinery courtyards. Do NOT garrison. Do NOT attack anyone or you lose your bubble.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. I CAN'T PARTICIPATE? -->
+  <div class="section">
+    <div class="sh"><span class="n">7</span> <span data-i18n="s7_title">I Can't Participate?</span></div>
+    <ul style="margin:0 0 10px 16px; font-size:14px; line-height:1.7; color:var(--text-secondary);">
+      <li data-i18n="cant_1"><strong style="color:var(--text-primary);">Yes you can!</strong> Bubble up, attack nobody, and send low-tier 50K+ unit marches into the refinery squares to earn Primordial Essence.</li>
+      <li data-i18n="cant_2">If you don't want the Essence rewards, you can stay back on Era 8 &mdash; but know you could safely participate with minimal losses.</li>
+      <li data-i18n="cant_3">The open-field phase after 21:00 is also low-risk if you stay bubbled and don't attack.</li>
+    </ul>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="tagline" data-i18n="footer_tagline">Era 8 &mdash; Hold The East</div>
+    <div class="sub" data-i18n="footer_sub">Primordial Conflict &middot; Day 6 Showdown &middot; Saturday May 16 &middot; 19:00-21:00 UTC</div>
+  </div>
+
+</div>
+
+<script>
+const TRANSLATIONS = {"fr": {"event_tag": "Conflit Primordial \u00b7 \u00c8re 8", "title_prefix": "JOUR 6 \u2014", "title_highlight": "L'AFFRONTEMENT", "subtitle": "Samedi 16 Mai \u00b7 H\u00f4te: Era 92 \u00b7 Localisation: Ph\u00e9nix Orange (EST)", "contest_start_lbl": "D\u00e9but du Contest", "camps_open_lbl": "Camp Faction", "s1_sched_title": "Programme du Showdown", "s2_map_title": "Le Champ de Bataille", "s2_blurb_host": "H\u00f4te : Era 92.", "s2_blurb_1": "Chaque serveur t\u00e9l\u00e9porte dans un coin de la carte CI via les camps de faction.", "s2_blurb_pos": "L'\u00c8re 8 est dans le coin EST. Ph\u00e9nix Orange (EST).", "s2_blurb_2": "8 Raffineries d'Essence sont fix\u00e9es en grille autour de la Cit\u00e9 Imp\u00e9riale.", "s2_callout_strong": "Notre raffinerie naturelle est R3 (Est).", "s2_callout_text": "R2 est contest\u00e9e avec Era 92 (Nord), R4 avec Era 16 (Sud). Pour gagner il faut 3-4 raffineries \u2014 R3 + au moins 2 contest\u00e9es. Era 22 est rang 4 avec 7.38B \u2014 les plus faibles.", "s3_title": "Classement & T\u00e9l\u00e9portation", "s3_blurb_1": "Les 6 meilleures alliances t\u00e9l\u00e9portent plus t\u00f4t.", "s4_title": "Scoring", "s5_title": "Plan de Jeu", "strat_refinery": "Contr\u00f4le des Raffineries (Position Est)", "strat_wc1": "Se positionner pr\u00e8s de R5 et R4 pendant l'acc\u00e8s anticip\u00e9 (18h30). \u00c0 19h00 quand les raffineries s'activent, rallier les deux imm\u00e9diatement.", "strat_myt": "Se positionner pr\u00e8s de R1 et R2 pendant l'acc\u00e8s anticip\u00e9 (18h30). \u00c0 19h00 quand les raffineries s'activent, rallier les deux imm\u00e9diatement.", "strat_reu": "Se positionner pr\u00e8s de R3 et soutenir o\u00f9 n\u00e9cessaire.", "strat_agc": "Soutenir o\u00f9 n\u00e9cessaire \u2014 sp\u00e9cifiquement la d\u00e9fense anti-si\u00e8ge.", "strat_taxi": "Rallyes Taxi", "taxi_1": "R4+ cr\u00e9e un rallye vers la citadelle ennemie \u2192 transporte les joueurs vers les raffineries", "taxi_2": "Officiers \u00e9jectent/dissolvent pour d\u00e9poser pr\u00e8s des raffineries \u2014 renforcez imm\u00e9diatement", "taxi_3": "Crucial pour positionner REU/Myt/AGC vite apr\u00e8s 19h00", "strat_endgame": "Fin de Partie (21:00 UTC)", "end_1_strong": "N'abandonnez PAS une raffinerie", "end_1_post": " \u2014 les 800M ne vont qu'au d\u00e9tenteur \u00e0 21h00", "end_2": "M\u00eame un retournement de derni\u00e8re seconde = 800M. Ralliez fort.", "s6_title": "Conna\u00eetre Votre R\u00f4le", "footer_tagline": "\u00c8re 8 \u2014 Tenez l'Est", "footer_sub": "Conflit Primordial \u00b7 Jour 6 \u00b7 Samedi 16 Mai \u00b7 19:00-21:00 UTC", "sched_countdown": "Compte \u00e0 rebours", "sched_1630_desc": "<strong>Camp d'invasion transfrontali\u00e8re</strong> &mdash; Les joueurs de tous les royaumes peuvent se d\u00e9placer sur la carte du showdown", "sched_1700_desc": "<strong>Camp de faction transfrontali\u00e8re</strong> &mdash; Rejoignez le camp de votre faction. Les 6 meilleures alliances ont un acc\u00e8s anticip\u00e9 (T-30/20/10)", "sched_1830_desc": "<strong>T\u00e9l\u00e9portation anticip\u00e9e WC1</strong> &mdash; L'alliance rang #2 peut se positionner 30 min avant (raffineries pas encore actives)", "sched_1900_desc": "<strong>Concours pour les Raffineries d'Essence</strong> &mdash; Les raffineries ouvrent au concours. Occupez pour gagner des KP. Combattez pour les Essences Primordiales.", "sched_2100_desc": "<strong>Nettoyage du champ de bataille</strong> &mdash; Les raffineries entrent en protection. Le dernier occupant re\u00e7oit le bonus final. La r\u00e9colte d'Essence en champ ouvert continue.", "wc1_early_info": "<strong>WC1 peut se positionner 30 minutes avant.</strong> Utilisez ce temps pour vous installer pr\u00e8s de R3 et R2 afin d'\u00eatre pr\u00eat \u00e0 rallier d\u00e8s le d\u00e9but du concours \u00e0 19h00. Tous les autres arrivent \u00e0 19h00 &mdash; renforcez imm\u00e9diatement.", "score_kp_title": "Points de Royaume (KP)", "score_kp_per_held": "Par raffinerie tenue", "score_kp_per_end": "Par raffinerie en fin de concours", "score_kp_total_end": "Bonus total de fin (8 raffineries)", "score_kp_duration": "Dur\u00e9e du concours", "score_elim_title": "Points d'\u00c9limination (KP + Essence)", "score_elim_desc": "Le combat rapporte des KP pour le royaume ET compte pour l'Essence Primordiale (1 pour 500 pts, max 70K). R\u00e8gle d'\u00e9cart de tier : ne marque que si la diff\u00e9rence de tier \u2264 2.", "score_row_wound": "Blessure Grave", "score_row_elim": "\u00c9limination (5\u00d7)", "score_row_loss": "Perte propre (2\u00d7)", "score_essence_title": "Essence Primordiale (Monnaie Personnelle)", "score_essence_garrison": "Par joueur en garnison/stationn\u00e9 \u00e0 une raffinerie (min 50K unit\u00e9s)", "score_essence_combat": "Du combat sur les parcelles IC (max 70K total)", "score_terminology_note": "<strong>Note terminologique :</strong> <em>Ros\u00e9e Primordiale</em> se convertit 10:1 en <em>Points Primordiaux</em> (qui comptent pour les KP). <em>Essence Primordiale</em> est une monnaie personnelle s\u00e9par\u00e9e gagn\u00e9e uniquement au Jour 6 &mdash; elle ne se convertit PAS en KP. Les deux comptent, mais les KP gagnent la guerre.", "plan_win_condition": "<strong>Condition de victoire :</strong> Le royaume avec le plus de <strong>Points de Royaume (KP)</strong> \u00e0 la fin gagne. Les KP sont report\u00e9s de l'\u00e9tape de bataille &mdash; nous commen\u00e7ons ~3.6B derri\u00e8re Era 16.", "plan_zeroed_warning": "<strong style=\"font-size:16px;\">&#9888; RISQUE \u00c9LEV\u00c9 D'\u00caTRE Z\u00c9RO.</strong> Signalez les menaces et renforcez o\u00f9 possible. Sinon &mdash; <strong>BULLE ACTIVE.</strong>", "plan_rules_title": "R\u00e8gles Cl\u00e9s", "plan_rule_1": "<strong>Les raffineries ne peuvent \u00catre attaqu\u00e9es QUE par rallye</strong> &mdash; pas de marches solo, pas de machines de guerre", "plan_rule_2": "<strong>Marches de farming d'Essence :</strong> Tout tier (T1&ndash;T9) avec 50K+ unit\u00e9s qualifie pour l'Essence Primordiale. Utilisez ceci pour les marches \u00e0 faible risque uniquement. Toutes les marches de combat doivent \u00eatre tier max, capacit\u00e9 pleine, pr\u00eates au combat.", "plan_rule_3": "Une seule troupe par joueur par raffinerie gagne de l'Essence", "plan_rule_4": "<strong>Si vous devez rester en bulle, N'ATTAQUEZ PERSONNE.</strong> Si vous le faites, remettez la bulle imm\u00e9diatement. RISQUE \u00c9LEV\u00c9 D'\u00caTRE Z\u00c9RO.", "end_3": "\u00c0 21h00 les raffineries entrent en protection (non contestables), mais la bataille n'est pas termin\u00e9e. La r\u00e9colte d'Essence Primordiale en champ ouvert continue pendant 2-4 heures estim\u00e9es.", "end_4": "La phase en champ ouvert est optionnelle. Ne donnez PAS de KP via les \u00e9liminations. Si vous ne pouvez pas rivaliser, utilisez des marches 50K+ de tier bas pour rester en s\u00e9curit\u00e9 (bulle + n'attaquez pas).", "role_kraken_title": "Krakens", "role_kraken_desc": "Soyez dans les rallyes et garnisons principaux. Combattez en champ ouvert si n\u00e9cessaire. Vous \u00eates les gros frappeurs.", "role_fighter_title": "Combattants", "role_fighter_desc": "Comme les Krakens mais \u00e9vitez les Krakens adverses &mdash; les \u00e9liminations co\u00fbtent des KP. Jouez intelligent : restez dans les rallyes et garnisons si possible, sinon combattez ce que vous pouvez g\u00e9rer.", "role_rally_title": "Leaders Rallye/Taxi", "role_rally_desc": "Lancez des rallyes taxi d\u00e8s 19h00 pour transporter les joueurs aux raffineries. Lancez des rallyes d'attaque sur les raffineries ennemies quand demand\u00e9. Expulsez/dissolvez sur ordre.", "role_siege_title": "D\u00e9fenseurs de Si\u00e8ge", "role_siege_desc": "D\u00e9di\u00e9s \u00e0 nettoyer les si\u00e8ges entrants. Ignorez l'objectif principal jusqu'\u00e0 ce que tout si\u00e8ge soit \u00e9puis\u00e9, puis revenez au r\u00f4le Combattant/Kraken.", "role_filler_title": "Remplisseurs", "role_filler_desc": "Joueurs en bulle permanente ici uniquement pour r\u00e9colter l'Essence Primordiale dans les cours des raffineries. Ne garrisonnez PAS. N'attaquez PERSONNE ou vous perdez votre bulle.", "s7_title": "Je Ne Peux Pas Participer ?", "cant_1": "<strong style=\"color:var(--text-primary);\">Bien s\u00fbr que oui !</strong> Mettez la bulle, n'attaquez personne, et envoyez des marches 50K+ de tier bas dans les zones de raffinerie pour gagner de l'Essence Primordiale.", "cant_2": "Si vous ne voulez pas les r\u00e9compenses d'Essence, vous pouvez rester sur Era 8 &mdash; mais sachez que vous pourriez participer en s\u00e9curit\u00e9 avec des pertes minimales.", "cant_3": "La phase en champ ouvert apr\u00e8s 21h00 est aussi \u00e0 faible risque si vous restez en bulle et n'attaquez pas."}, "es": {"event_tag": "Conflicto Primordial \u00b7 Era 8", "title_prefix": "D\u00cdA 6 \u2014", "title_highlight": "EL ENFRENTAMIENTO", "subtitle": "S\u00e1bado 16 Mayo \u00b7 Host: Era 92 \u00b7 Ubicaci\u00f3n: F\u00e9nix Naranja (ESTE)", "contest_start_lbl": "Inicio del Concurso", "camps_open_lbl": "Camp Facci\u00f3n", "s1_sched_title": "Programa del Showdown", "s2_map_title": "El Campo de Batalla", "s2_blurb_host": "Host: Era 92.", "s2_blurb_1": "Cada servidor se teletransporta a una esquina del mapa de la CI a trav\u00e9s de campamentos de facci\u00f3n.", "s2_blurb_pos": "Era 8 est\u00e1 en la esquina ESTE. F\u00e9nix Naranja (ESTE).", "s2_blurb_2": "8 Refiner\u00edas de Esencia est\u00e1n fijas en una cuadr\u00edcula alrededor de la Ciudad Imperial.", "s2_callout_strong": "Nuestra refiner\u00eda natural es R3 (Este).", "s2_callout_text": "R2 se disputa con Era 92 (Norte), R4 con Era 16 (Sur). Para ganar necesitamos 3-4 refiner\u00edas \u2014 R3 + al menos 2 disputadas. Era 22 es rango 4 con 7.38B \u2014 los m\u00e1s d\u00e9biles.", "s3_title": "Rankings & Teletransporte", "s3_blurb_1": "Las 6 mejores alianzas teletransportan antes.", "s4_title": "Scoring", "s5_title": "Plan de Juego", "strat_refinery": "Control de Refiner\u00edas (Posici\u00f3n Este)", "strat_wc1": "Posicionarse cerca de R5 y R4 durante acceso anticipado (18:30). A las 19:00 cuando las refiner\u00edas se activen, ralliar ambas de inmediato.", "strat_myt": "Posicionarse cerca de R1 y R2 durante acceso anticipado (18:30). A las 19:00 cuando las refiner\u00edas se activen, ralliar ambas de inmediato.", "strat_reu": "Posicionarse cerca de R3 y apoyar donde sea necesario.", "strat_agc": "Apoyar donde sea necesario \u2014 espec\u00edficamente defensa anti-asedio.", "strat_taxi": "Rallies Taxi", "taxi_1": "R4+ crea rally hacia ciudadela enemiga \u2192 transporta jugadores a refiner\u00edas", "taxi_2": "Oficiales expulsan/disuelven para dejar jugadores \u2014 refuercen de inmediato", "taxi_3": "Crucial para posicionar REU/Myt/AGC r\u00e1pido despu\u00e9s de 19:00", "strat_endgame": "Final (21:00 UTC)", "end_1_strong": "NO abandonen una refiner\u00eda", "end_1_post": " \u2014 los 800M solo van al que la tenga a las 21:00", "end_2": "Un volteo de \u00faltimo segundo = 800M. Rally fuerte para recapturar.", "s6_title": "Conoce Tu Rol", "footer_tagline": "Era 8 \u2014 Mantened el Este", "footer_sub": "Conflicto Primordial \u00b7 D\u00eda 6 \u00b7 S\u00e1bado 16 Mayo \u00b7 19:00-21:00 UTC", "sched_countdown": "Cuenta regresiva", "sched_1630_desc": "<strong>Campamento de Invasi\u00f3n Transfronteriza</strong> &mdash; Jugadores de todos los reinos pueden reubicarse en el mapa del showdown", "sched_1700_desc": "<strong>Campamento de Facci\u00f3n Transfronterizo</strong> &mdash; Reub\u00edcate en el campamento de tu facci\u00f3n. Las 6 mejores alianzas obtienen acceso anticipado (T-30/20/10)", "sched_1830_desc": "<strong>Teletransporte Anticipado WC1</strong> &mdash; La alianza rango #2 puede posicionarse 30 min antes (refiner\u00edas a\u00fan no activas)", "sched_1900_desc": "<strong>Concurso por la Refiner\u00eda de Esencia</strong> &mdash; Las refiner\u00edas abren a concurso. Ocupa para ganar KP. Lucha por Esencias Primordiales.", "sched_2100_desc": "<strong>Limpieza del Campo de Batalla</strong> &mdash; Las refiner\u00edas entran en protecci\u00f3n. El \u00faltimo ocupante recibe el bonus final. La recolecci\u00f3n de Esencia en campo abierto contin\u00faa.", "wc1_early_info": "<strong>WC1 puede posicionarse 30 minutos antes.</strong> Usa este tiempo para ubicarte cerca de R3 y R2 para estar listo para ralliar en cuanto comience el concurso a las 19:00. Todos los dem\u00e1s llegan a las 19:00 &mdash; refuerza inmediatamente al entrar.", "score_kp_title": "Puntos de Reino (KP)", "score_kp_per_held": "Por refiner\u00eda mantenida", "score_kp_per_end": "Por refiner\u00eda al final del concurso", "score_kp_total_end": "Bonus total de fin (8 refiner\u00edas)", "score_kp_duration": "Duraci\u00f3n del concurso", "score_elim_title": "Puntos de Eliminaci\u00f3n (KP + Esencia)", "score_elim_desc": "El combate otorga KP para el reino Y cuenta para Esencia Primordial (1 por 500 pts, m\u00e1x 70K). Regla de diferencia de tier: solo puntea si la diferencia de tier \u2264 2.", "score_row_wound": "Herida Grave", "score_row_elim": "Eliminaci\u00f3n (5\u00d7)", "score_row_loss": "P\u00e9rdida Propia (2\u00d7)", "score_essence_title": "Esencia Primordial (Moneda Personal)", "score_essence_garrison": "Por jugador en guarnici\u00f3n/estacionado en una refiner\u00eda (m\u00edn 50K unidades)", "score_essence_combat": "Del combate en parcelas IC (m\u00e1x 70K total)", "score_terminology_note": "<strong>Nota terminol\u00f3gica:</strong> <em>Roc\u00edo Primordial</em> se convierte 10:1 en <em>Puntos Primordiales</em> (que cuentan para KP). <em>Esencia Primordial</em> es una moneda personal separada ganada solo en el D\u00eda 6 &mdash; NO se convierte en KP. Ambos importan, pero los KP ganan la guerra.", "plan_win_condition": "<strong>Condici\u00f3n de Victoria:</strong> El reino con m\u00e1s <strong>Puntos de Reino (KP)</strong> al final del evento gana. Los KP se acumulan desde la Etapa de Batalla &mdash; empezamos ~3.6B detr\u00e1s de Era 16.", "plan_zeroed_warning": "<strong style=\"font-size:16px;\">&#9888; ALTO RIESGO DE SER ELIMINADO POR COMPLETO.</strong> Reporta amenazas y refuerza donde sea posible. De lo contrario &mdash; <strong>ACTIVA LA BURBUJA.</strong>", "plan_rules_title": "Reglas Clave", "plan_rule_1": "<strong>Las refiner\u00edas SOLO pueden ser atacadas con rally</strong> &mdash; sin marcha individual, sin m\u00e1quinas de guerra", "plan_rule_2": "<strong>Marchas de farmeo de Esencia:</strong> Cualquier tier (T1&ndash;T9) con 50K+ unidades califica para Esencia Primordial. \u00dasalo solo para marchas de bajo riesgo. Todas las marchas de combate deben ser tier m\u00e1ximo, capacidad completa, listas para la guerra.", "plan_rule_3": "Solo una tropa por jugador por refiner\u00eda gana Esencia", "plan_rule_4": "<strong>Si necesitas quedarte con burbuja, NO ataques a nadie.</strong> Si lo haces, vuelve a poner la burbuja inmediatamente. ALTO RIESGO DE SER ELIMINADO.", "end_3": "A las 21:00 las refiner\u00edas entran en protecci\u00f3n (no se pueden disputar), pero la batalla no termin\u00f3. La recolecci\u00f3n de Esencia Primordial en campo abierto contin\u00faa por unas 2-4 horas.", "end_4": "La fase de campo abierto es opcional. NO alimentes KP con eliminaciones. Si no puedes competir en campo abierto, usa marchas de tier bajo con 50K+ unidades para mantenerte seguro (burbuja + no ataques).", "role_kraken_title": "Krakens", "role_kraken_desc": "Participa en los rallies y guarniciones principales. Pelea en campo abierto cuando sea necesario. Eres el que golpea duro.", "role_fighter_title": "Luchadores", "role_fighter_desc": "Igual que los Krakens pero evita a los Krakens enemigos &mdash; dar eliminaciones cuesta KP. Juega inteligente: qu\u00e9date en rallies y guarniciones si es posible, sino pelea lo que puedas manejar.", "role_rally_title": "L\u00edderes de Rally/Taxi", "role_rally_desc": "Lanza rallies taxi desde las 19:00 para transportar jugadores a las refiner\u00edas. Lanza rallies de ataque contra refiner\u00edas enemigas cuando se solicite. Expulsa/disuelve bajo orden.", "role_siege_title": "Defensores de Asedio", "role_siege_desc": "Dedicados a limpiar el asedio entrante. Ignora el objetivo principal hasta que todo el asedio se agote, luego vuelve al rol de Luchador/Kraken.", "role_filler_title": "Rellenos", "role_filler_desc": "Jugadores con burbuja permanente solo para obtener Esencia Primordial de los patios de refiner\u00edas. NO hagas guarnici\u00f3n. NO ataques a nadie o perder\u00e1s tu burbuja.", "s7_title": "\u00bfNo Puedo Participar?", "cant_1": "<strong style=\"color:var(--text-primary);\">\u00a1Claro que s\u00ed!</strong> Pon la burbuja, no ataques a nadie, y env\u00eda marchas de tier bajo con 50K+ unidades a las zonas de refiner\u00eda para ganar Esencia Primordial.", "cant_2": "Si no quieres las recompensas de Esencia, puedes quedarte en Era 8 &mdash; pero sabe que podr\u00edas participar con seguridad y p\u00e9rdidas m\u00ednimas.", "cant_3": "La fase de campo abierto despu\u00e9s de las 21:00 tambi\u00e9n es de bajo riesgo si te quedas con burbuja y no atacas."}, "ko": {"event_tag": "\ud0dc\uace0\uc758 \ucda9\ub3cc \u00b7 \uc2dc\ub300 8", "title_prefix": "6\uc77c\ucc28 \u2014", "title_highlight": "\ucd5c\uc885 \uacb0\uc804", "subtitle": "\ud1a0\uc694\uc77c 5\uc6d4 16\uc77c \u00b7 \ud638\uc2a4\ud2b8: Era 92 \u00b7 \uc704\uce58: \uc624\ub80c\uc9c0 \ud53c\ub2c9\uc2a4 (\ub3d9\ucabd)", "contest_start_lbl": "\ub300\ud68c \uc2dc\uc791", "camps_open_lbl": "\uc9c4\uc601 \uce60\ud504", "s1_sched_title": "\uc1fc\ub2e4\uc6b4 \uc77c\uc815", "s2_map_title": "\uc804\uc7a5", "s2_blurb_host": "\ud638\uc2a4\ud2b8: Era 92.", "s2_blurb_1": "\uac01 \uc11c\ubc84\ub294 \uc9c4\uc601 \uce0c\ud504\ub97c \ud1b5\ud574 IC \ub9f5\uc758 \ud55c \ucf54\ub108\ub85c \ud154\ub808\ud3ec\ud2b8\ud569\ub2c8\ub2e4.", "s2_blurb_pos": "Era 8\uc740 \ub3d9\ucabd \ucf54\ub108\uc5d0 \uc788\uc2b5\ub2c8\ub2e4. \uc624\ub80c\uc9c0 \ud53c\ub2c9\uc2a4 (\ub3d9\ucabd).", "s2_blurb_2": "8\uac1c \uc5d0\uc13c\uc2a4 \uc815\uc81c\uc18c\uac00 \ud669\uc81c \ub3c4\uc2dc \uc8fc\uc704\uc5d0 \uadf8\ub9ac\ub4dc\ub85c \ubc30\uce58\ub429\ub2c8\ub2e4.", "s2_callout_strong": "\uc6b0\ub9ac \uc790\uc5f0 \uc815\uc81c\uc18c\ub294 R3(\ub3d9\ucabd)\uc785\ub2c8\ub2e4.", "s2_callout_text": "R2\ub294 Era 92(\ubd81)\uacfc \ubd84\uc7c1, R4\ub294 Era 16(\ub0a8)\uacfc \ubd84\uc7c1. \uc2b9\ub9ac\ud558\ub824\uba74 3-4\uac1c \ud544\uc694 \u2014 R3 + \ubd84\uc7c1 2\uac1c \uc774\uc0c1. Era 22\uc740 4\uc704 7.38B \u2014 \ucd5c\uc57d\uccb4.", "s3_title": "\ub7ad\ud0b9 & \ud154\ub808\ud3ec\ud2b8", "s3_blurb_1": "\uc0c1\uc704 6\uac1c \ub3d9\ub9f9\uc740 \uc870\uae30 \ud154\ub808\ud3ec\ud2b8 \uac00\ub2a5.", "s4_title": "\uc810\uc218", "s5_title": "\uc791\uc804 \uacc4\ud68d", "strat_refinery": "\uc815\uc81c\uc18c \ud1b5\uc81c (\ub3d9\ucabd \uc704\uce58)", "strat_wc1": "18:30 \uc870\uae30 \uc811\uadfc \uc2dc R5\uc640 R4 \uadfc\ucc98 \ubc30\uce58. 19:00 \uc815\uc81c\uc18c \ud65c\uc131\ud654 \uc2dc \ub458 \ub2e4 \uc989\uc2dc \ub7a0\ub9ac.", "strat_myt": "18:30 \uc870\uae30 \uc811\uadfc \uc2dc R1\uacfc R2 \uadfc\ucc98 \ubc30\uce58. 19:00 \uc815\uc81c\uc18c \ud65c\uc131\ud654 \uc2dc \ub458 \ub2e4 \uc989\uc2dc \ub7a0\ub9ac.", "strat_reu": "R3 \uadfc\ucc98 \ubc30\uce58 \ubc0f \ud544\uc694\ud55c \uacf3 \uc9c0\uc6d0.", "strat_agc": "\ud544\uc694\ud55c \uacf3 \uc9c0\uc6d0 \u2014 \ud2b9\ud788 \uacf5\uc131 \ubc29\uc5b4.", "strat_taxi": "\ud0dd\uc2dc \ub7a0\ub9ac", "taxi_1": "R4+\uac00 \uc801 \uc131\ucc44 \ubc29\ud5a5 \ub7a0\ub9ac \u2192 \uc815\uc81c\uc18c\ub85c \uc774\uc1a1", "taxi_2": "\uc7a5\uad50\uac00 \ucd94\ubc29/\ud574\uc0b0 \u2192 \uc815\uc81c\uc18c \uadfc\ucc98 \ubc30\uce58 \u2014 \uc989\uc2dc \uc9c0\uc6d0", "taxi_3": "19:00 \uc774\ud6c4 REU/Myt/AGC \ube60\ub978 \ubc30\uce58\uc5d0 \ud544\uc218", "strat_endgame": "\ub9c8\ubb34\ub9ac (21:00 UTC)", "end_1_strong": "\uc815\uc81c\uc18c \ud3ec\uae30 \uae08\uc9c0", "end_1_post": " \u2014 800M\uc740 21:00 \uc810\uc720\uc790\uc5d0\uac8c\ub9cc", "end_2": "\ub9c8\uc9c0\ub9c9 \uc21c\uac04 \ub4a4\uc9d1\uae30 = 800M. \uac15\ud558\uac8c \ub7a0\ub9ac.", "s6_title": "\uc5ed\ud560 \ud30c\uc545", "footer_tagline": "\uc2dc\ub300 8 \u2014 \ub3d9\ucabd\uc744 \uc0ac\uc218\ud558\ub77c", "footer_sub": "\ud0dc\uace0\uc758 \ucda9\ub3cc \u00b7 6\uc77c\ucc28 \u00b7 \ud1a0\uc694\uc77c 5/16 \u00b7 19:00-21:00 UTC", "sched_countdown": "\uce74\uc6b4\ud2b8\ub2e4\uc6b4", "sched_1630_desc": "<strong>\uad6d\uacbd \uce68\uacf5 \uce0c\ud504</strong> &mdash; \ubaa8\ub4e0 \uc655\uad6d\uc758 \ud50c\ub808\uc774\uc5b4\uac00 \uc1fc\ub2e4\uc6b4 \ub9f5\uc73c\ub85c \uc774\ub3d9 \uac00\ub2a5", "sched_1700_desc": "<strong>\uad6d\uacbd \uc9c4\uc601 \uce0c\ud504</strong> &mdash; \uc790\uc2e0\uc758 \uc9c4\uc601 \uce0c\ud504\ub85c \uc774\ub3d9. \uc0c1\uc704 6\uac1c \ub3d9\ub9f9\uc740 \uc870\uae30 \uc811\uadfc \uac00\ub2a5 (T-30/20/10)", "sched_1830_desc": "<strong>WC1 \uc870\uae30 \ud154\ub808\ud3ec\ud2b8</strong> &mdash; \ub7ad\ud0b9 #2 \ub3d9\ub9f9\uc774 30\ubd84 \uc804\uc5d0 \ubc30\uce58 \uac00\ub2a5 (\uc815\uc81c\uc18c \uc544\uc9c1 \ube44\ud65c\uc131)", "sched_1900_desc": "<strong>\uc5d0\uc13c\uc2a4 \uc815\uc81c\uc18c \uacbd\ud569</strong> &mdash; \uc815\uc81c\uc18c \uacbd\ud569 \uc2dc\uc791. \uc810\ub839\ud558\uc5ec KP \ud68d\ub4dd. \ud0dc\uace0\uc758 \uc5d0\uc13c\uc2a4\ub97c \uc704\ud574 \uc804\ud22c.", "sched_2100_desc": "<strong>\uc804\uc7a5 \uc815\ub9ac</strong> &mdash; \uc815\uc81c\uc18c \ubcf4\ud638 \uc9c4\uc785. \ub9c8\uc9c0\ub9c9 \uc810\uc720\uc790\uac00 \uc885\ub8cc \ubcf4\ub108\uc2a4 \ud68d\ub4dd. \uc624\ud508\ud544\ub4dc \uc5d0\uc13c\uc2a4 \uc218\uc9d1 \uacc4\uc18d.", "wc1_early_info": "<strong>WC1\uc740 30\ubd84 \uc804\uc5d0 \ubc30\uce58 \uac00\ub2a5\ud569\ub2c8\ub2e4.</strong> \uc774 \uc2dc\uac04\uc744 \ud65c\uc6a9\ud558\uc5ec R3\uacfc R2 \uadfc\ucc98\uc5d0 \ubc30\uce58\ud558\uc5ec 19:00 \uacbd\ud569 \uc2dc\uc791 \uc989\uc2dc \ub7a0\ub9ac\ud560 \uc900\ube44\ub97c \ud558\uc138\uc694. \ub098\uba38\uc9c0\ub294 19:00\uc5d0 \ub3c4\ucc29 &mdash; \uc989\uc2dc \uc9c0\uc6d0\ud558\uc138\uc694.", "score_kp_title": "\uc655\uad6d \ud3ec\uc778\ud2b8 (KP)", "score_kp_per_held": "\uc815\uc81c\uc18c \ubcf4\uc720 \ub2f9", "score_kp_per_end": "\uacbd\ud569 \uc885\ub8cc \uc2dc \uc815\uc81c\uc18c \ub2f9", "score_kp_total_end": "\uc885\ub8cc \ubcf4\ub108\uc2a4 \ud569\uacc4 (8\uac1c \uc815\uc81c\uc18c)", "score_kp_duration": "\uacbd\ud569 \uc9c0\uc18d \uc2dc\uac04", "score_elim_title": "\uc81c\uac70 \ud3ec\uc778\ud2b8 (KP + \uc5d0\uc13c\uc2a4)", "score_elim_desc": "\uc804\ud22c\ub294 \uc655\uad6d\uc5d0 KP\ub97c \uc8fc\uace0 \ud0dc\uace0\uc758 \uc5d0\uc13c\uc2a4\uc5d0\ub3c4 \ubc18\uc601\ub429\ub2c8\ub2e4 (500\uc810\ub2f9 1, \ucd5c\ub300 70K). \ud2f0\uc5b4 \ucc28\uc774 \uaddc\uce59: \ud2f0\uc5b4 \ucc28\uc774 \u2264 2\uc77c \ub54c\ub9cc \uc810\uc218 \ud68d\ub4dd.", "score_row_wound": "\uc911\uc0c1", "score_row_elim": "\uc81c\uac70 (5\u00d7)", "score_row_loss": "\uc790\uccb4 \uc190\uc2e4 (2\u00d7)", "score_essence_title": "\ud0dc\uace0\uc758 \uc5d0\uc13c\uc2a4 (\uac1c\uc778 \ud1b5\ud654)", "score_essence_garrison": "\uc815\uc81c\uc18c\uc5d0 \uc8fc\ub454/\ubc30\uce58\ub41c \ud50c\ub808\uc774\uc5b4\ub2f9 (\ucd5c\uc18c 50K \uc720\ub2db)", "score_essence_combat": "IC \uad6c\uc5ed \uc804\ud22c\uc5d0\uc11c (\ucd5c\ub300 70K \ucd1d\ud569)", "score_terminology_note": "<strong>\uc6a9\uc5b4 \uc548\ub0b4:</strong> <em>\ud0dc\uace0\uc758 \uc774\uc2ac</em>\uc740 10:1\ub85c <em>\ud0dc\uace0\uc758 \ud3ec\uc778\ud2b8</em>\ub85c \ubcc0\ud658\ub429\ub2c8\ub2e4 (KP\uc5d0 \ubc18\uc601). <em>\ud0dc\uace0\uc758 \uc5d0\uc13c\uc2a4</em>\ub294 6\uc77c\ucc28\uc5d0\ub9cc \ud68d\ub4dd\ud558\ub294 \ubcc4\ub3c4 \uac1c\uc778 \ud1b5\ud654 &mdash; KP\ub85c \ubcc0\ud658\ub418\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4. \ub458 \ub2e4 \uc911\uc694\ud558\uc9c0\ub9cc KP\uac00 \uc804\uc7c1\uc744 \uc774\uae41\ub2c8\ub2e4.", "plan_win_condition": "<strong>\uc2b9\ub9ac \uc870\uac74:</strong> \uc774\ubca4\ud2b8 \uc885\ub8cc \uc2dc \uac00\uc7a5 \ub9ce\uc740 <strong>\uc655\uad6d \ud3ec\uc778\ud2b8 (KP)</strong>\ub97c \uac00\uc9c4 \uc655\uad6d\uc774 \uc2b9\ub9ac. KP\ub294 \uc804\ud22c \ub2e8\uacc4\uc5d0\uc11c \uc774\uc6d4 &mdash; Era 16\ubcf4\ub2e4 ~3.6B \ub4a4\uc9c0\ub294 \uc0c1\ud0dc\ub85c \uc2dc\uc791.", "plan_zeroed_warning": "<strong style=\"font-size:16px;\">&#9888; \uc81c\ub85c\ub420 \uc704\ud5d8\uc774 \ub192\uc2b5\ub2c8\ub2e4.</strong> \uc704\ud611\uc744 \ubcf4\uace0\ud558\uace0 \uac00\ub2a5\ud55c \uacf3\uc5d0 \uc9c0\uc6d0\ud558\uc138\uc694. \uadf8\ub807\uc9c0 \uc54a\uc73c\uba74 &mdash; <strong>\ubc84\ube14 \ud65c\uc131\ud654.</strong>", "plan_rules_title": "\ud575\uc2ec \uaddc\uce59", "plan_rule_1": "<strong>\uc815\uc81c\uc18c\ub294 \ub7a0\ub9ac\ub85c\ub9cc \uacf5\uaca9 \uac00\ub2a5</strong> &mdash; \uc194\ub85c \ud589\uad70 \ubd88\uac00, \uacf5\uc131 \ubb34\uae30 \ubd88\uac00", "plan_rule_2": "<strong>\uc5d0\uc13c\uc2a4 \ud30c\ubc0d \ud589\uad70:</strong> \ubaa8\ub4e0 \ud2f0\uc5b4 (T1&ndash;T9) 50K+ \uc720\ub2db\uc73c\ub85c \ud0dc\uace0\uc758 \uc5d0\uc13c\uc2a4 \uc790\uaca9 \ud68d\ub4dd. \uc800\uc704\ud5d8 \ud589\uad70\uc5d0\ub9cc \uc0ac\uc6a9. \ubaa8\ub4e0 \uc804\ud22c \ud589\uad70\uc740 \ucd5c\ub300 \ud2f0\uc5b4, \uc804\uccb4 \uc6a9\ub7c9, \uc804\ud22c \uc900\ube44 \uc644\ub8cc.", "plan_rule_3": "\ud50c\ub808\uc774\uc5b4\ub2f9 \uc815\uc81c\uc18c\ub2f9 \ud558\ub098\uc758 \ubd80\ub300\ub9cc \uc5d0\uc13c\uc2a4 \ud68d\ub4dd", "plan_rule_4": "<strong>\ubc84\ube14\uc744 \uc720\uc9c0\ud574\uc57c \ud55c\ub2e4\uba74 \uc808\ub300 \uacf5\uaca9\ud558\uc9c0 \ub9c8\uc138\uc694.</strong> \uacf5\uaca9\ud588\ub2e4\uba74 \uc989\uc2dc \ubc84\ube14\uc744 \ub2e4\uc2dc \ud65c\uc131\ud654\ud558\uc138\uc694. \uc81c\ub85c\ub420 \uc704\ud5d8\uc774 \ub192\uc2b5\ub2c8\ub2e4.", "end_3": "21:00\uc5d0 \uc815\uc81c\uc18c\ub294 \ubcf4\ud638\uc5d0 \ub4e4\uc5b4\uac11\ub2c8\ub2e4 (\uacbd\ud569 \ubd88\uac00). \ud558\uc9c0\ub9cc \uc804\ud22c\ub294 \ub05d\ub098\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4. \uc624\ud508\ud544\ub4dc \ud0dc\uace0\uc758 \uc5d0\uc13c\uc2a4 \uc218\uc9d1\uc774 \uc57d 2-4\uc2dc\uac04 \uacc4\uc18d\ub429\ub2c8\ub2e4.", "end_4": "\uc624\ud508\ud544\ub4dc \ub2e8\uacc4\ub294 \uc120\ud0dd\uc0ac\ud56d\uc785\ub2c8\ub2e4. \uc81c\uac70\ub85c KP\ub97c \ub0ad\ube44\ud558\uc9c0 \ub9c8\uc138\uc694. \uc624\ud508\ud544\ub4dc\uc5d0\uc11c \uacbd\uc7c1\ud560 \uc218 \uc5c6\ub2e4\uba74 \uc800\ud2f0\uc5b4 50K+ \uc720\ub2db \ud589\uad70\uc73c\ub85c \uc548\uc804\ud558\uac8c (\ubc84\ube14 + \uacf5\uaca9 \uae08\uc9c0).", "role_kraken_title": "\ud06c\ub77c\ucf04", "role_kraken_desc": "\uc8fc\uc694 \ub7a0\ub9ac\uc640 \uc218\ube44\ub300\uc5d0 \ucc38\uc5ec\ud558\uc138\uc694. \ud544\uc694\uc2dc \uc624\ud508\ud544\ub4dc \uc804\ud22c. \ub2f9\uc2e0\uc774 \ud575\uc2ec \uc804\ub825\uc785\ub2c8\ub2e4.", "role_fighter_title": "\uc804\ud22c\uc6d0", "role_fighter_desc": "\ud06c\ub77c\ucf04\uacfc \ub3d9\uc77c\ud558\uc9c0\ub9cc \uc0c1\ub300 \ud06c\ub77c\ucf04\uc744 \ud53c\ud558\uc138\uc694 &mdash; \uc81c\uac70\ub2f9\ud558\uba74 KP \uc190\uc2e4. \uc2a4\ub9c8\ud2b8\ud558\uac8c: \uac00\ub2a5\ud558\uba74 \ub7a0\ub9ac\uc640 \uc218\ube44\ub300\uc5d0 \uba38\ubb34\ub974\uace0, \uc544\ub2c8\uba74 \uac10\ub2f9\ud560 \uc218 \uc788\ub294 \uc0c1\ub300\uc640 \uc804\ud22c.", "role_rally_title": "\ub7a0\ub9ac/\ud0dd\uc2dc \ub9ac\ub354", "role_rally_desc": "19:00\ubd80\ud130 \ud0dd\uc2dc \ub7a0\ub9ac\ub97c \uc6b4\uc601\ud558\uc5ec \ud50c\ub808\uc774\uc5b4\ub97c \uc815\uc81c\uc18c\ub85c \uc774\uc1a1. \uc694\uccad \uc2dc \uc801 \uc815\uc81c\uc18c\uc5d0 \uacf5\uaca9 \ub7a0\ub9ac \ubc1c\ub3d9. \uba85\ub839\uc5d0 \ub530\ub77c \ucd94\ubc29/\ud574\uc0b0.", "role_siege_title": "\uacf5\uc131 \ubc29\uc5b4\uc790", "role_siege_desc": "\ub4e4\uc5b4\uc624\ub294 \uacf5\uc131\uc744 \uc81c\uac70\ud558\ub294 \ub370 \uc804\ub150. \ubaa8\ub4e0 \uacf5\uc131\uc774 \uc18c\uc9c4\ub420 \ub54c\uae4c\uc9c0 \uc8fc \ubaa9\ud45c\ub97c \ubb34\uc2dc\ud558\uace0, \uc774\ud6c4 \uc804\ud22c\uc6d0/\ud06c\ub77c\ucf04 \uc5ed\ud560\ub85c \ubcf5\uadc0.", "role_filler_title": "\ud544\ub7ec", "role_filler_desc": "\uc815\uc81c\uc18c \ub9c8\ub2f9\uc5d0\uc11c \ud0dc\uace0\uc758 \uc5d0\uc13c\uc2a4\ub97c \ubab0\ub798 \uc218\uc9d1\ud558\ub294 \uc601\uad6c \ubc84\ube14 \ud50c\ub808\uc774\uc5b4. \uc218\ube44\ub300 \uae08\uc9c0. \uc808\ub300 \uacf5\uaca9\ud558\uc9c0 \ub9c8\uc138\uc694 \uc548 \uadf8\ub7ec\uba74 \ubc84\ube14\uc744 \uc783\uc2b5\ub2c8\ub2e4.", "s7_title": "\ucc38\uc5ec\ud560 \uc218 \uc5c6\ub098\uc694?", "cant_1": "<strong style=\"color:var(--text-primary);\">\ubb3c\ub860 \uac00\ub2a5\ud569\ub2c8\ub2e4!</strong> \ubc84\ube14\uc744 \ud65c\uc131\ud654\ud558\uace0, \uc544\ubb34\ub3c4 \uacf5\uaca9\ud558\uc9c0 \ub9d0\uace0, \uc800\ud2f0\uc5b4 50K+ \uc720\ub2db \ud589\uad70\uc744 \uc815\uc81c\uc18c \uad6c\uc5ed\uc73c\ub85c \ubcf4\ub0b4 \ud0dc\uace0\uc758 \uc5d0\uc13c\uc2a4\ub97c \ud68d\ub4dd\ud558\uc138\uc694.", "cant_2": "\uc5d0\uc13c\uc2a4 \ubcf4\uc0c1\uc744 \uc6d0\ud558\uc9c0 \uc54a\uc73c\uba74 Era 8\uc5d0 \uba38\ubb3c\ub7ec\ub3c4 \ub429\ub2c8\ub2e4 &mdash; \ud558\uc9c0\ub9cc \ucd5c\uc18c \uc190\uc2e4\ub85c \uc548\uc804\ud558\uac8c \ucc38\uc5ec\ud560 \uc218 \uc788\ub2e4\ub294 \uac83\uc744 \uc54c\uc544\ub450\uc138\uc694.", "cant_3": "21:00 \uc774\ud6c4 \uc624\ud508\ud544\ub4dc \ub2e8\uacc4\ub3c4 \ubc84\ube14\uc744 \uc720\uc9c0\ud558\uace0 \uacf5\uaca9\ud558\uc9c0 \uc54a\uc73c\uba74 \uc800\uc704\ud5d8\uc785\ub2c8\ub2e4."}};
+
+const enSnapshot = {};
+let currentLang = 'en';
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    enSnapshot[el.getAttribute('data-i18n')] = el.innerHTML;
+  });
+  document.querySelectorAll('[data-i18n-svg]').forEach(function(el) {
+    enSnapshot[el.getAttribute('data-i18n-svg')] = el.textContent;
+  });
+  startCountdowns();
+  initZoneInteraction();
+});
+
+function initZoneInteraction() {
+  var stratSvg = document.getElementById('stratmap');
+  if (!stratSvg) return;
+  var zoneIds = ['zone-wc1', 'zone-myt', 'zone-reu', 'zone-agc'];
+  var zones = zoneIds.map(function(id) { return document.getElementById(id); }).filter(Boolean);
+  if (!zones.length) return;
+
+  var activeId = null;
+
+  function activate(id) {
+    if (activeId === id) {
+      deactivate();
+      return;
+    }
+    activeId = id;
+    zones.forEach(function(z) {
+      if (z.id === id) {
+        z.setAttribute('opacity', '1');
+      } else {
+        z.setAttribute('opacity', '0.08');
+      }
+    });
+  }
+
+  function deactivate() {
+    activeId = null;
+    zones.forEach(function(z) {
+      z.setAttribute('opacity', '1');
+    });
+  }
+
+  zones.forEach(function(zone) {
+    function handler(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      activate(zone.id);
+    }
+    zone.addEventListener('click', handler);
+    zone.addEventListener('touchend', handler);
+  });
+
+  stratSvg.addEventListener('click', function(e) {
+    if (!e.target.closest('.alliance-zone')) deactivate();
+  });
+  stratSvg.addEventListener('touchend', function(e) {
+    if (!e.target.closest('.alliance-zone')) deactivate();
+  });
+}
+
+function switchLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b) {
+    b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase());
+  });
+
+  if (lang === 'en') {
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (enSnapshot[key] !== undefined) el.innerHTML = enSnapshot[key];
+    });
+    document.querySelectorAll('[data-i18n-svg]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-svg');
+      if (enSnapshot[key] !== undefined) el.textContent = enSnapshot[key];
+    });
+  } else {
+    var t = TRANSLATIONS[lang];
+    if (!t) return;
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+    document.querySelectorAll('[data-i18n-svg]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-svg');
+      if (t[key] !== undefined) el.textContent = t[key];
+    });
+  }
+}
+
+// Countdown timers
+var CONTEST_START = new Date('2026-05-16T19:00:00Z').getTime();
+
+function startCountdowns() {
+  updateMainCountdown();
+  updateScheduleCountdowns();
+  setInterval(function() {
+    updateMainCountdown();
+    updateScheduleCountdowns();
+  }, 1000);
+}
+
+function updateMainCountdown() {
+  var now = Date.now();
+  var diff = CONTEST_START - now;
+  var label = document.getElementById('cd-label');
+
+  if (diff <= 0) {
+    // Contest might be running or over
+    var contestEnd = new Date('2026-05-16T21:00:00Z').getTime();
+    diff = contestEnd - now;
+    if (diff <= 0) {
+      document.getElementById('cd-h').textContent = '00';
+      document.getElementById('cd-m').textContent = '00';
+      document.getElementById('cd-s').textContent = '00';
+      label.textContent = 'Contest Complete';
+      return;
+    }
+    label.textContent = 'Contest Ends In';
+    label.style.color = 'var(--accent-red)';
+  } else {
+    label.textContent = 'Until Contest Start (19:00 UTC)';
+  }
+
+  var hours = Math.floor(diff / 3600000);
+  var mins = Math.floor((diff % 3600000) / 60000);
+  var secs = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById('cd-h').textContent = String(hours).padStart(2, '0');
+  document.getElementById('cd-m').textContent = String(mins).padStart(2, '0');
+  document.getElementById('cd-s').textContent = String(secs).padStart(2, '0');
+}
+
+function updateScheduleCountdowns() {
+  document.querySelectorAll('[data-cd]').forEach(function(el) {
+    var target = new Date(el.getAttribute('data-cd')).getTime();
+    var diff = target - Date.now();
+    if (diff <= 0) {
+      el.textContent = 'LIVE';
+      el.style.color = 'var(--accent-green)';
+    } else if (diff < 86400000) {
+      var h = Math.floor(diff / 3600000);
+      var m = Math.floor((diff % 3600000) / 60000);
+      el.textContent = h + 'h ' + m + 'm';
+    } else {
+      var d = Math.floor(diff / 86400000);
+      var h = Math.floor((diff % 86400000) / 3600000);
+      el.textContent = d + 'd ' + h + 'h';
+    }
+  });
+}
+</script>
+
+<script>
+(function() {
+  var svg = document.getElementById('battlemap');
+  if (!svg) return;
+  var wrap = svg.parentElement;
+  var scale = 1, startDist = 0, startScale = 1;
+
+  wrap.style.overflow = 'hidden';
+  svg.style.transformOrigin = 'center center';
+  svg.style.transition = 'transform 0.1s ease-out';
+
+  function getDistance(touches) {
+    var dx = touches[0].clientX - touches[1].clientX;
+    var dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  wrap.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 2) { e.preventDefault(); startDist = getDistance(e.touches); startScale = scale; }
+  }, { passive: false });
+
+  wrap.addEventListener('touchmove', function(e) {
+    if (e.touches.length === 2) { e.preventDefault(); scale = Math.min(Math.max(startScale * (getDistance(e.touches) / startDist), 1), 4); svg.style.transform = 'scale(' + scale + ')'; }
+  }, { passive: false });
+
+  wrap.addEventListener('touchend', function() { if (scale <= 1.05) { scale = 1; svg.style.transform = 'scale(1)'; } });
+
+  var lastTap = 0;
+  wrap.addEventListener('touchend', function() { var now = Date.now(); if (now - lastTap < 300) { scale = 1; svg.style.transform = 'scale(1)'; } lastTap = now; });
+
+  wrap.addEventListener('wheel', function(e) { e.preventDefault(); scale = Math.min(Math.max(scale + (e.deltaY > 0 ? -0.15 : 0.15), 1), 4); svg.style.transform = 'scale(' + scale + ')'; }, { passive: false });
+})();
+</script>
+</body>
+</html>

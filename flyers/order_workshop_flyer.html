@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Workshop — Era8 Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#d4a017; --gold-light:#f0c842; --gold-dim:#7a5c0e;
+  --teal:#1abc9c; --crimson:#c0392b;
+  --bg:#09090c; --bg2:#0e0f14; --bg3:#14151c;
+  --border:rgba(212,160,23,0.25); --text:#e8dcc8; --dim:#7a7060;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;}
+.page{max-width:860px;margin:0 auto;padding:18px;}
+
+/* LANG SWITCHER */
+.lang-bar{display:flex;justify-content:flex-end;gap:6px;margin-bottom:14px;}
+.lang-btn{font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:var(--bg2);color:var(--dim);cursor:pointer;transition:all .15s;}
+.lang-btn:hover{color:var(--gold-light);border-color:rgba(212,160,23,0.5);}
+.lang-btn.active{background:rgba(212,160,23,0.12);border-color:rgba(212,160,23,0.5);color:var(--gold-light);}
+
+/* HEADER */
+.header{text-align:center;padding:28px 0 20px;border-bottom:1px solid var(--border);margin-bottom:18px;}
+.header-pre{font-size:10px;letter-spacing:5px;color:var(--gold-dim);text-transform:uppercase;margin-bottom:6px;}
+.header-title{font-family:'Cinzel Decorative',serif;font-size:30px;color:var(--gold-light);text-shadow:0 0 40px rgba(212,160,23,0.4);margin-bottom:4px;}
+.header-sub{font-size:11px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.4;}
+.ctitle{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:10px;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+
+/* TIMING */
+.time-block{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.time-block:last-child{border-bottom:none;padding-bottom:0;}
+.time-icon{font-size:22px;width:32px;text-align:center;flex-shrink:0;}
+.time-val{font-family:'Cinzel',serif;font-size:18px;color:var(--gold-light);font-weight:700;}
+
+/* SPAWN */
+.spawn-info{text-align:center;padding:6px 0;}
+.spawn-big{font-size:38px;margin-bottom:6px;}
+.spawn-line{font-family:'Cinzel',serif;font-size:13px;color:var(--gold-light);margin-bottom:4px;}
+.spawn-sub{font-size:11px;color:var(--dim);}
+.r45-badge{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:5px 12px;border-radius:12px;background:rgba(212,160,23,0.15);border:1px solid rgba(212,160,23,0.35);font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;}
+
+/* REWARDS */
+.reward-box{border-radius:5px;padding:10px 12px;text-align:center;margin-bottom:8px;}
+.reward-box:last-child{margin-bottom:0;}
+.rb-capture{background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.3);}
+.rb-hold{background:rgba(26,188,156,0.08);border:1px solid rgba(26,188,156,0.25);}
+.rb-num{font-family:'Cinzel Decorative',serif;font-size:28px;line-height:1;}
+.rb-capture .rb-num{color:var(--gold-light);text-shadow:0 0 20px rgba(212,160,23,0.5);}
+.rb-hold .rb-num{color:var(--teal);}
+.rb-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+.rb-capture .rb-label{color:var(--gold-dim);}
+.rb-hold .rb-label{color:rgba(26,188,156,0.6);}
+.rb-sub{font-size:11px;color:var(--dim);margin-top:3px;line-height:1.4;}
+
+/* ZONE DIAGRAM */
+.zone-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.sq-diagram{position:relative;width:188px;height:188px;margin-top:20px;}
+.sq-outer{position:absolute;inset:0;border:2px dashed rgba(212,160,23,0.35);background:rgba(212,160,23,0.03);border-radius:3px;}
+.sq-label-outer{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dim);white-space:nowrap;}
+.sq-ws{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;background:rgba(212,160,23,0.12);border:2px solid var(--gold);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:3;}
+.sq-march{position:absolute;width:20px;height:20px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:11px;z-index:4;}
+.march-friendly{background:rgba(26,188,156,0.2);border:1px solid rgba(26,188,156,0.5);}
+.march-t1{background:rgba(58,123,213,0.2);border:1px solid rgba(58,123,213,0.45);}
+.march-kraken{background:rgba(212,160,23,0.15);border:1px solid rgba(212,160,23,0.4);}
+.march-enemy{background:rgba(192,57,43,0.2);border:1px solid rgba(192,57,43,0.5);}
+.zr-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;}
+.zr-row:last-child{border-bottom:none;}
+.zr-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.zr-em{color:var(--gold-light);font-weight:700;}
+
+/* ROLES */
+.role-card{border-radius:6px;padding:12px 10px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;}
+.role-card:last-child{margin-bottom:0;}
+.rc-fighter{background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.35);}
+.rc-kraken{background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.3);}
+.rc-support{background:rgba(58,123,213,0.1);border:1px solid rgba(58,123,213,0.3);}
+.rc-icon{font-size:26px;flex-shrink:0;}
+.rc-title{font-family:'Cinzel',serif;font-size:12px;font-weight:700;margin-bottom:3px;}
+.rc-fighter .rc-title{color:#e74c3c;}
+.rc-kraken .rc-title{color:var(--gold-light);}
+.rc-support .rc-title{color:#7aadff;}
+.rc-desc{font-size:12px;color:var(--dim);line-height:1.5;}
+.rc-desc em{font-style:normal;color:var(--text);}
+
+/* STRATEGY */
+.ws-target-row{display:flex;gap:10px;margin:10px 0;}
+.ws-t-node{flex:1;border-radius:6px;padding:10px 8px;text-align:center;}
+.wst-go{background:rgba(26,188,156,0.1);border:2px solid rgba(26,188,156,0.4);}
+.wst-skip{background:rgba(192,57,43,0.06);border:2px dashed rgba(192,57,43,0.25);opacity:0.5;}
+.wst-icon{font-size:22px;}
+.wst-badge{font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+.wst-go .wst-badge{color:var(--teal);}
+.wst-skip .wst-badge{color:rgba(192,57,43,0.6);}
+.ws-reasoning{background:var(--bg3);border-left:3px solid var(--gold-dim);border-radius:0 4px 4px 0;padding:8px 10px;font-size:12px;color:var(--dim);line-height:1.5;}
+.ws-reasoning strong{color:var(--gold);}
+.opp-row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:10px 0;}
+.opp-side{border-radius:6px;padding:10px;text-align:center;}
+.opp-bad{background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.3);}
+.opp-good{background:rgba(26,188,156,0.08);border:1px solid rgba(26,188,156,0.25);}
+.opp-icon{font-size:22px;margin-bottom:4px;}
+.opp-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.opp-bad .opp-lbl{color:rgba(192,57,43,0.7);}
+.opp-good .opp-lbl{color:rgba(26,188,156,0.6);}
+.opp-val{font-family:'Cinzel',serif;font-size:15px;}
+.opp-bad .opp-val{color:#e74c3c;}
+.opp-good .opp-val{color:var(--teal);}
+.opp-sub{font-size:10px;color:var(--dim);margin-top:3px;line-height:1.4;}
+.vs-mid{font-family:'Cinzel',serif;font-size:16px;color:var(--gold-dim);text-align:center;}
+.opp-warning{background:var(--bg3);border-left:3px solid var(--crimson);border-radius:0 4px 4px 0;padding:8px 10px;font-size:11px;color:var(--dim);line-height:1.5;}
+.opp-warning strong{color:var(--text);}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:12px;margin:22px 0 14px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.div-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-dim);white-space:nowrap;}
+
+/* CITADELS */
+.cit-panels{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.cit-panel{background:var(--bg3);border-radius:6px;padding:14px 14px 10px;}
+.cit-panel-title{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.cit-panel.panel-ours .cit-panel-title{color:var(--teal);}
+.cit-panel.panel-theirs .cit-panel-title{color:#e74c3c;}
+.cit-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.cit-row:last-child{border-bottom:none;padding-bottom:0;}
+.cit-tri{flex-shrink:0;width:36px;height:32px;}
+.cit-tri svg{width:100%;height:100%;}
+.cit-row-name{font-family:'Cinzel',serif;font-size:11px;font-weight:700;}
+.cit-row-desc{font-size:11px;color:var(--dim);line-height:1.4;margin-top:1px;}
+.cit-row-action{display:inline-block;margin-top:3px;font-size:9px;text-transform:uppercase;letter-spacing:1px;padding:1px 7px;border-radius:6px;font-weight:700;}
+.act-reinforce{background:rgba(58,123,213,0.2);color:#7aadff;border:1px solid rgba(58,123,213,0.4);}
+.act-support{background:rgba(232,197,58,0.15);color:#f0d060;border:1px solid rgba(232,197,58,0.3);}
+.act-ignore{background:rgba(255,255,255,0.04);color:var(--dim);border:1px dashed rgba(255,255,255,0.15);}
+.act-attack{background:rgba(231,76,60,0.2);color:#e74c3c;border:1px solid rgba(231,76,60,0.4);}
+
+.footer{text-align:center;padding:16px 0;border-top:1px solid var(--border);margin-top:20px;font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;}
+
+@media(max-width:580px){
+  .row2,.row3{grid-template-columns:1fr;}
+  .header-title{font-size:22px;}
+  .cit-panels{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('fr')">FR</button>
+  <button class="lang-btn" onclick="setLang('es')">ES</button>
+  <button class="lang-btn" onclick="setLang('ko')">한국어</button>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-pre" data-t="header_pre"></div>
+  <div class="header-title" data-t="header_title"></div>
+  <div class="header-sub" data-t="header_sub"></div>
+</div>
+
+<!-- ROW 1 -->
+<div class="row3">
+  <div class="card">
+    <div class="ctitle" data-t="when_title"></div>
+    <div class="time-block">
+      <div class="time-icon">🕓</div>
+      <div>
+        <div class="time-val">04:00–05:00</div>
+        <div style="font-size:10px;color:var(--dim)" data-t="utc_1hr"></div>
+      </div>
+    </div>
+    <div class="time-block">
+      <div class="time-icon">🕓</div>
+      <div>
+        <div class="time-val">16:00–17:00</div>
+        <div style="font-size:10px;color:var(--dim)" data-t="utc_1hr"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle" data-t="spawn_title"></div>
+    <div class="spawn-info">
+      <div class="spawn-big">🏭🏭🏭</div>
+      <div class="spawn-line" data-t="spawn_line"></div>
+      <div class="spawn-sub" data-t="spawn_sub"></div>
+      <div class="r45-badge" data-t="r45_badge"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle" data-t="rewards_title"></div>
+    <div class="reward-box rb-capture">
+      <div class="rb-num">600M</div>
+      <div class="rb-label" data-t="pts_capture"></div>
+      <div class="rb-sub" data-t="pts_capture_sub"></div>
+    </div>
+    <div class="reward-box rb-hold">
+      <div class="rb-num">+500</div>
+      <div class="rb-label" data-t="pts_hold"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 2 -->
+<div class="row2">
+  <div class="card">
+    <div class="ctitle" data-t="zone_title"></div>
+    <div class="zone-wrap">
+      <div class="sq-diagram">
+        <div class="sq-outer">
+          <div class="sq-label-outer" data-t="zone_label"></div>
+        </div>
+        <div class="sq-ws">🏭</div>
+        <div class="sq-march march-friendly" style="top:18%;left:30%;">⚔</div>
+        <div class="sq-march march-friendly" style="top:25%;left:55%;">⚔</div>
+        <div class="sq-march march-friendly" style="top:55%;left:60%;">⚔</div>
+        <div class="sq-march march-friendly" style="top:62%;left:28%;">⚔</div>
+        <div class="sq-march march-t1" style="top:8%;right:4%;">🛡</div>
+        <div class="sq-march march-t1" style="top:28%;right:4%;">🛡</div>
+        <div class="sq-march march-t1" style="top:48%;right:4%;">🛡</div>
+        <div class="sq-march march-t1" style="top:68%;right:4%;">🛡</div>
+        <div class="sq-march march-kraken" style="top:18%;left:4%;">🐙</div>
+        <div class="sq-march march-kraken" style="top:42%;left:4%;">🐙</div>
+        <div class="sq-march march-kraken" style="top:66%;left:4%;">🐙</div>
+        <div class="sq-march march-enemy" style="top:38%;left:-28px;">😡</div>
+        <div style="position:absolute;top:43%;left:-8px;font-size:11px;color:rgba(192,57,43,0.5);">→</div>
+        <div style="position:absolute;bottom:-18px;left:2px;font-size:8px;color:rgba(192,57,43,0.5);letter-spacing:1px;" data-t="diag_enemy"></div>
+        <div style="position:absolute;bottom:-18px;right:2px;font-size:8px;color:rgba(58,123,213,0.55);letter-spacing:1px;" data-t="diag_t1"></div>
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <div class="zr-row"><div class="zr-icon">🚶</div><div data-t="zr_teleport"></div></div>
+      <div class="zr-row"><div class="zr-icon">♾️</div><div data-t="zr_nocap"></div></div>
+      <div class="zr-row"><div class="zr-icon">👥</div><div data-t="zr_more"></div></div>
+      <div class="zr-row"><div class="zr-icon">⏬</div><div data-t="zr_timer"></div></div>
+      <div class="zr-row"><div class="zr-icon">⚖️</div><div data-t="zr_tier"></div></div>
+    </div>
+    <div style="margin-top:10px;background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.35);border-radius:5px;padding:9px 12px;display:flex;align-items:flex-start;gap:8px;">
+      <span style="font-size:18px;flex-shrink:0;">🔒</span>
+      <div style="font-size:12px;line-height:1.5;" data-t="stay_inside"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle" data-t="role_title"></div>
+    <div class="role-card rc-fighter">
+      <div class="rc-icon">⚔️</div>
+      <div class="rc-body">
+        <div class="rc-title" data-t="role_fighter_name"></div>
+        <div class="rc-desc" data-t="role_fighter_desc"></div>
+      </div>
+    </div>
+    <div class="role-card rc-kraken">
+      <div class="rc-icon">🐙</div>
+      <div class="rc-body">
+        <div class="rc-title" data-t="role_kraken_name"></div>
+        <div class="rc-desc" data-t="role_kraken_desc"></div>
+      </div>
+    </div>
+    <div class="role-card rc-support">
+      <div class="rc-icon">🛡️</div>
+      <div class="rc-body">
+        <div class="rc-title" data-t="role_support_name"></div>
+        <div class="rc-desc" data-t="role_support_desc"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERTS ROW -->
+<div class="row2">
+  <div class="card" style="border-color:rgba(192,57,43,0.4);">
+    <div class="ctitle" style="color:rgba(192,57,43,0.7);" data-t="lost_title"></div>
+    <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.6;">
+      <span style="font-size:22px;flex-shrink:0;">🏃</span>
+      <div data-t="lost_body"></div>
+    </div>
+  </div>
+  <div class="card" style="border-color:rgba(232,197,58,0.35);">
+    <div class="ctitle" style="color:rgba(232,197,58,0.6);" data-t="citwatch_title"></div>
+    <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.6;">
+      <span style="font-size:22px;flex-shrink:0;">📢</span>
+      <div data-t="citwatch_body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STRATEGIES -->
+<div class="row2">
+  <div class="card">
+    <div class="ctitle" data-t="strat1_title"></div>
+    <div class="ws-target-row">
+      <div class="ws-t-node wst-go"><div class="wst-icon">🏭</div><div class="wst-badge" data-t="take"></div></div>
+      <div class="ws-t-node wst-skip"><div class="wst-icon">🏭</div><div class="wst-badge" data-t="skip"></div></div>
+      <div class="ws-t-node wst-go"><div class="wst-icon">🏭</div><div class="wst-badge" data-t="take"></div></div>
+    </div>
+    <div class="ws-reasoning" data-t="strat1_body"></div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle" data-t="strat2_title"></div>
+    <div class="opp-row">
+      <div class="opp-side opp-bad">
+        <div class="opp-icon">⚔️⏳</div>
+        <div class="opp-lbl" data-t="opp_bad_lbl"></div>
+        <div class="opp-val">–500 pts/s</div>
+        <div class="opp-sub" data-t="opp_bad_sub"></div>
+      </div>
+      <div class="vs-mid" data-t="vs"></div>
+      <div class="opp-side opp-good">
+        <div class="opp-icon">🏭⏱️</div>
+        <div class="opp-lbl" data-t="opp_good_lbl"></div>
+        <div class="opp-val">+500 pts/s</div>
+        <div class="opp-sub" data-t="opp_good_sub"></div>
+      </div>
+    </div>
+    <div class="opp-warning" data-t="strat2_body"></div>
+  </div>
+</div>
+
+<!-- ADDENDUM -->
+<div class="divider"><div class="div-label" data-t="addendum_label"></div></div>
+
+<div class="card">
+  <div class="ctitle" data-t="cit_title"></div>
+  <p style="font-size:12px;color:var(--dim);margin-bottom:14px;text-align:center;" data-t="cit_intro"></p>
+
+  <div class="cit-panels">
+    <div class="cit-panel panel-ours">
+      <div class="cit-panel-title" data-t="our_map"></div>
+      <div class="cit-row">
+        <div class="cit-tri"><svg viewBox="0 0 36 32" xmlns="http://www.w3.org/2000/svg"><polygon points="18,2 34,30 2,30" fill="rgba(58,123,213,0.22)" stroke="#3a7bd5" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <div class="cit-row-text">
+          <div class="cit-row-name" style="color:#7aadff" data-t="col_blue"></div>
+          <div class="cit-row-desc" data-t="our_blue_desc"></div>
+          <span class="cit-row-action act-reinforce" data-t="act_reinforce"></span>
+        </div>
+      </div>
+      <div class="cit-row">
+        <div class="cit-tri"><svg viewBox="0 0 36 32" xmlns="http://www.w3.org/2000/svg"><polygon points="18,2 34,30 2,30" fill="rgba(232,197,58,0.18)" stroke="#e8c53a" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <div class="cit-row-text">
+          <div class="cit-row-name" style="color:#f0d060" data-t="col_yellow"></div>
+          <div class="cit-row-desc" data-t="our_yellow_desc"></div>
+          <span class="cit-row-action act-support" data-t="act_support"></span>
+        </div>
+      </div>
+      <div class="cit-row">
+        <div class="cit-tri"><svg viewBox="0 0 36 32" xmlns="http://www.w3.org/2000/svg"><polygon points="18,2 34,30 2,30" fill="rgba(231,76,60,0.08)" stroke="rgba(231,76,60,0.38)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="3 2.5"/></svg></div>
+        <div class="cit-row-text">
+          <div class="cit-row-name" style="color:rgba(231,76,60,0.6)" data-t="col_red"></div>
+          <div class="cit-row-desc" data-t="our_red_desc"></div>
+          <span class="cit-row-action act-ignore" data-t="act_ignore"></span>
+        </div>
+      </div>
+      <div class="cit-row">
+        <div class="cit-tri"><svg viewBox="0 0 36 32" xmlns="http://www.w3.org/2000/svg"><polygon points="18,2 34,30 2,30" fill="rgba(155,89,182,0.2)" stroke="#9b59b6" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <div class="cit-row-text">
+          <div class="cit-row-name" style="color:#c39bd3" data-t="col_purple"></div>
+          <div class="cit-row-desc" data-t="our_purple_desc"></div>
+          <span class="cit-row-action act-attack" data-t="act_attack"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cit-panel panel-theirs">
+      <div class="cit-panel-title" data-t="their_map"></div>
+      <div class="cit-row">
+        <div class="cit-tri"><svg viewBox="0 0 36 32" xmlns="http://www.w3.org/2000/svg"><polygon points="18,2 34,30 2,30" fill="rgba(58,123,213,0.22)" stroke="#3a7bd5" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <div class="cit-row-text">
+          <div class="cit-row-name" style="color:#7aadff" data-t="col_blue"></div>
+          <div class="cit-row-desc" data-t="their_blue_desc"></div>
+          <span class="cit-row-action act-reinforce" data-t="act_reinforce"></span>
+        </div>
+      </div>
+      <div class="cit-row">
+        <div class="cit-tri"><svg viewBox="0 0 36 32" xmlns="http://www.w3.org/2000/svg"><polygon points="18,2 34,30 2,30" fill="rgba(232,197,58,0.18)" stroke="#e8c53a" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <div class="cit-row-text">
+          <div class="cit-row-name" style="color:#f0d060" data-t="col_yellow"></div>
+          <div class="cit-row-desc" data-t="their_yellow_desc"></div>
+          <span class="cit-row-action act-support" data-t="act_support"></span>
+        </div>
+      </div>
+      <div class="cit-row">
+        <div class="cit-tri"><svg viewBox="0 0 36 32" xmlns="http://www.w3.org/2000/svg"><polygon points="18,2 34,30 2,30" fill="rgba(231,76,60,0.2)" stroke="#e74c3c" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <div class="cit-row-text">
+          <div class="cit-row-name" style="color:#e74c3c" data-t="col_red"></div>
+          <div class="cit-row-desc" data-t="their_red_desc"></div>
+          <span class="cit-row-action act-attack" data-t="act_attack"></span>
+        </div>
+      </div>
+      <div class="cit-row">
+        <div class="cit-tri"><svg viewBox="0 0 36 32" xmlns="http://www.w3.org/2000/svg"><polygon points="18,2 34,30 2,30" fill="rgba(155,89,182,0.08)" stroke="rgba(155,89,182,0.38)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="3 2.5"/></svg></div>
+        <div class="cit-row-text">
+          <div class="cit-row-name" style="color:rgba(155,89,182,0.6)" data-t="col_purple"></div>
+          <div class="cit-row-desc" data-t="their_purple_desc"></div>
+          <span class="cit-row-action act-ignore" data-t="act_ignore"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:10px;color:var(--dim);text-align:center;margin-top:10px;font-style:italic;" data-t="cit_caption"></p>
+</div>
+
+<div class="footer" data-t="footer"></div>
+</div>
+
+<script>
+const T = {
+  en: {
+    header_pre: "⚔ Era8 · Alliance Event Brief",
+    header_title: "Order Workshop",
+    header_sub: "Teleport · Occupy · Hold · Accumulate",
+    when_title: "⏱ When",
+    utc_1hr: "UTC · 1 hour",
+    spawn_title: "📍 What Spawns",
+    spawn_line: "3 Workshops",
+    spawn_sub: "1 per Zone 2 region<br>random placement each round",
+    r45_badge: "👑 R4 / R5 — mark targets",
+    rewards_title: "🏆 Rewards",
+    pts_capture: "pts on capture",
+    pts_capture_sub: "400M cap + 200M if leading at end",
+    pts_hold: "pts / sec / person inside",
+    zone_title: "🗺 The Zone",
+    zone_label: "Large square capture zone",
+    diag_enemy: "ENEMY →",
+    diag_t1: "T1 FAR EDGE",
+    zr_teleport: "Teleport nearby → <span class='zr-em'>walk in</span>",
+    zr_nocap: "<span class='zr-em'>No player cap</span> — flood it",
+    zr_more: "<span class='zr-em'>More people = faster</span> timer",
+    zr_timer: "Timer → 0 = <span class='zr-em'>captured</span> (permanent)",
+    zr_tier: "<span class='zr-em'>T1 &amp; T8 count equally</span> for pts/sec inside the square",
+    stay_inside: "<strong style='color:var(--gold-light)'>Stay inside until fully capped.</strong> Do not leave to farm, PvP, or otherwise — every person counts toward the timer.",
+    role_title: "🎭 Your Role",
+    role_fighter_name: "Fighter",
+    role_fighter_desc: "<em>Get inside. Fight.</em> Displace enemy marches, contest the zone.",
+    role_kraken_name: "Kraken (Fighter)",
+    role_kraken_desc: "<em>Block their entry.</em> Position between the enemy and the Workshop — cut off their flow of troops walking in.",
+    role_support_name: "Non-Fighter",
+    role_support_desc: "<em>Tier 1 marches only.</em> Place on the <em>far edge</em> — away from enemy flow. Adds presence &amp; pts/sec without risk.",
+    lost_title: "⚠ If We've Lost a Workshop",
+    lost_body: "<strong style='color:var(--text)'>Retreat to your occupied Workshop immediately.</strong> Don't bleed out fighting a lost cause — every second inside your held Workshop earns pts. Retreating forces <em>them</em> to come fight you, which pulls <em>them</em> away from <em>their</em> Workshop and costs <em>them</em> pts/sec too.",
+    citwatch_title: "🏰 Citadel Watch",
+    citwatch_body: "This is a <strong style='color:var(--text)'>1-hour PvP window.</strong> If your citadel is vulnerable or under threat during the event, <strong style='color:var(--gold-light)'>bubble up immediately.</strong> Don't assume someone else has seen it.",
+    strat1_title: "🧠 Target 2, Not 3",
+    take: "✅ Take",
+    skip: "🚫 Skip",
+    strat1_body: "3 workshops = forces spread thin = slower caps + fewer people soaking pts/sec in each.<br><br><strong>Pick 2. Dominate them.</strong> Chase the 3rd only if leadership calls it.",
+    strat2_title: "⚖️ Don't Compound the Problem",
+    opp_bad_lbl: "Chasing 3rd",
+    opp_bad_sub: "Away from your held WS<br>Feeding enemy Kraken PvP pts",
+    vs: "VS",
+    opp_good_lbl: "Standing in ours",
+    opp_good_sub: "Passive. No losses.<br>Every second counts.",
+    strat2_body: "600M cap pts sounds great — but every minute away costs <strong>500 pts/s/person</strong> from your held workshop, plus free PvP points to the enemy. <strong>Only push for it if ordered.</strong>",
+    addendum_label: "📋 Addendum — Citadel Colours",
+    cit_title: "🏰 Reading Citadels on the Minimap",
+    cit_intro: "Citadels appear as <strong style='color:var(--text)'>▲ pyramid icons</strong> on the minimap. What a colour means depends on <em style='color:var(--text);font-style:normal'>which map you're on.</em>",
+    our_map: "🗺 On Our Server Map",
+    their_map: "🗺 On Enemy Server Map",
+    col_blue: "Blue", col_yellow: "Yellow", col_red: "Red", col_purple: "Purple",
+    our_blue_desc: "Our alliance",
+    our_yellow_desc: "Era8 ally, not our alliance",
+    our_red_desc: "Era8 player, unallied with us",
+    our_purple_desc: "Opponent server player on our map",
+    their_blue_desc: "Our alliance (cross-border)",
+    their_yellow_desc: "Era8 ally on enemy map",
+    their_red_desc: "Enemy (invader from their server)",
+    their_purple_desc: "Opponent server, unallied with them",
+    act_reinforce: "Reinforce", act_support: "Support", act_ignore: "Leave Alone", act_attack: "Attack",
+    cit_caption: "Solid outline = act on · Dashed outline = ignore",
+    footer: "WC1 · Era8 · Order Workshop Event Brief"
+  },
+
+  fr: {
+    header_pre: "⚔ Era8 · Briefing Événement Alliance",
+    header_title: "Atelier de l'Ordre",
+    header_sub: "Téléporter · Occuper · Tenir · Accumuler",
+    when_title: "⏱ Horaires",
+    utc_1hr: "UTC · 1 heure",
+    spawn_title: "📍 Ce qui Apparaît",
+    spawn_line: "3 Ateliers",
+    spawn_sub: "1 par région Zone 2<br>placement aléatoire à chaque tour",
+    r45_badge: "👑 R4 / R5 — marquer les cibles",
+    rewards_title: "🏆 Récompenses",
+    pts_capture: "pts à la capture",
+    pts_capture_sub: "400M capture + 200M si en tête à la fin",
+    pts_hold: "pts / sec / personne à l'intérieur",
+    zone_title: "🗺 La Zone",
+    zone_label: "Grande zone de capture carrée",
+    diag_enemy: "ENNEMI →",
+    diag_t1: "T1 BORD LOIN",
+    zr_teleport: "Téléporter près → <span class='zr-em'>entrer à pied</span>",
+    zr_nocap: "<span class='zr-em'>Pas de limite</span> — inondez-la",
+    zr_more: "<span class='zr-em'>Plus de monde = plus rapide</span>",
+    zr_timer: "Minuterie → 0 = <span class='zr-em'>capturé</span> (permanent)",
+    zr_tier: "<span class='zr-em'>T1 &amp; T8 comptent pareil</span> pour pts/sec dans la zone",
+    stay_inside: "<strong style='color:var(--gold-light)'>Restez à l'intérieur jusqu'à la capture complète.</strong> Ne partez pas farmer, faire du PvP, ou autre — chaque personne compte pour le minuteur.",
+    role_title: "🎭 Votre Rôle",
+    role_fighter_name: "Combattant",
+    role_fighter_desc: "<em>Entrez. Combattez.</em> Déplacez les marches ennemies, contestez la zone.",
+    role_kraken_name: "Kraken (Combattant)",
+    role_kraken_desc: "<em>Bloquez leur entrée.</em> Positionnez-vous entre l'ennemi et l'Atelier — coupez leur flux de troupes.",
+    role_support_name: "Non-Combattant",
+    role_support_desc: "<em>Marches Tier 1 uniquement.</em> Placez-les sur le <em>bord opposé</em> à l'ennemi. Ajoute présence &amp; pts/sec sans risque.",
+    lost_title: "⚠ Si Nous Avons Perdu un Atelier",
+    lost_body: "<strong style='color:var(--text)'>Repliez-vous immédiatement vers votre Atelier occupé.</strong> Ne gaspillez pas vos troupes — chaque seconde dans votre atelier rapporte des pts. Se replier force <em>l'ennemi</em> à venir vous combattre, ce qui les éloigne de <em>leur</em> atelier et leur coûte des pts/sec.",
+    citwatch_title: "🏰 Surveillance Citadelle",
+    citwatch_body: "C'est une <strong style='color:var(--text)'>fenêtre PvP d'1 heure.</strong> Si votre citadelle est vulnérable, <strong style='color:var(--gold-light)'>bouclier immédiatement.</strong> Ne supposez pas que quelqu'un d'autre l'a vu.",
+    strat1_title: "🧠 Cibler 2, Pas 3",
+    take: "✅ Prendre",
+    skip: "🚫 Ignorer",
+    strat1_body: "3 ateliers = forces dispersées = captures plus lentes + moins de pts/sec par atelier.<br><br><strong>Choisissez 2. Dominez-les.</strong> Chassez le 3e uniquement sur ordre.",
+    strat2_title: "⚖️ Ne Pas Aggraver les Choses",
+    opp_bad_lbl: "Chasser le 3e",
+    opp_bad_sub: "Loin de votre atelier tenu<br>Offrant des pts PvP à l'ennemi",
+    vs: "VS",
+    opp_good_lbl: "Rester dans le nôtre",
+    opp_good_sub: "Passif. Aucune perte.<br>Chaque seconde compte.",
+    strat2_body: "600M pts semble bien — mais chaque minute loin coûte <strong>500 pts/s/personne</strong> de votre atelier tenu, plus des pts PvP gratuits à l'ennemi. <strong>Ne poussez que si ordonné.</strong>",
+    addendum_label: "📋 Addendum — Couleurs des Citadelles",
+    cit_title: "🏰 Lire les Citadelles sur la Minimap",
+    cit_intro: "Les citadelles apparaissent comme des <strong style='color:var(--text)'>▲ icônes pyramide</strong> sur la minimap. La signification d'une couleur dépend de <em style='color:var(--text);font-style:normal'>quelle carte vous regardez.</em>",
+    our_map: "🗺 Sur Notre Carte",
+    their_map: "🗺 Sur la Carte Ennemie",
+    col_blue: "Bleu", col_yellow: "Jaune", col_red: "Rouge", col_purple: "Violet",
+    our_blue_desc: "Notre alliance",
+    our_yellow_desc: "Allié Era8, pas notre alliance",
+    our_red_desc: "Joueur Era8, non-allié",
+    our_purple_desc: "Joueur serveur adverse sur notre carte",
+    their_blue_desc: "Notre alliance (cross-serveur)",
+    their_yellow_desc: "Allié Era8 sur carte ennemie",
+    their_red_desc: "Ennemi (envahisseur de leur serveur)",
+    their_purple_desc: "Serveur adverse, non-allié avec eux",
+    act_reinforce: "Renforcer", act_support: "Soutenir", act_ignore: "Laisser", act_attack: "Attaquer",
+    cit_caption: "Contour plein = agir · Contour pointillé = ignorer",
+    footer: "WC1 · Era8 · Briefing Événement Atelier de l'Ordre"
+  },
+
+  es: {
+    header_pre: "⚔ Era8 · Resumen de Evento de Alianza",
+    header_title: "Taller de la Orden",
+    header_sub: "Teleportar · Ocupar · Mantener · Acumular",
+    when_title: "⏱ Horario",
+    utc_1hr: "UTC · 1 hora",
+    spawn_title: "📍 Qué Aparece",
+    spawn_line: "3 Talleres",
+    spawn_sub: "1 por región Zona 2<br>ubicación aleatoria cada ronda",
+    r45_badge: "👑 R4 / R5 — marcar objetivos",
+    rewards_title: "🏆 Recompensas",
+    pts_capture: "pts al capturar",
+    pts_capture_sub: "400M captura + 200M si vas primero al final",
+    pts_hold: "pts / seg / persona dentro",
+    zone_title: "🗺 La Zona",
+    zone_label: "Gran zona de captura cuadrada",
+    diag_enemy: "ENEMIGO →",
+    diag_t1: "T1 BORDE LEJANO",
+    zr_teleport: "Teleportar cerca → <span class='zr-em'>entrar caminando</span>",
+    zr_nocap: "<span class='zr-em'>Sin límite de jugadores</span> — inúndalo",
+    zr_more: "<span class='zr-em'>Más gente = más rápido</span>",
+    zr_timer: "Temporizador → 0 = <span class='zr-em'>capturado</span> (permanente)",
+    zr_tier: "<span class='zr-em'>T1 y T8 cuentan igual</span> para pts/seg dentro del cuadrado",
+    stay_inside: "<strong style='color:var(--gold-light)'>Permanece dentro hasta que esté completamente capturado.</strong> No salgas a farmear, PvP u otra cosa — cada persona cuenta para el temporizador.",
+    role_title: "🎭 Tu Rol",
+    role_fighter_name: "Combatiente",
+    role_fighter_desc: "<em>Entra. Pelea.</em> Desplaza las marchas enemigas, contesta la zona.",
+    role_kraken_name: "Kraken (Combatiente)",
+    role_kraken_desc: "<em>Bloquea su entrada.</em> Posiciónate entre el enemigo y el Taller — corta su flujo de tropas al entrar.",
+    role_support_name: "No-Combatiente",
+    role_support_desc: "<em>Solo marchas Nivel 1.</em> Colócalas en el <em>borde lejano</em> — lejos del flujo enemigo. Añade presencia &amp; pts/seg sin riesgo.",
+    lost_title: "⚠ Si Hemos Perdido un Taller",
+    lost_body: "<strong style='color:var(--text)'>Retírate inmediatamente a tu Taller ocupado.</strong> No desperdicies tropas — cada segundo dentro de tu taller gana pts. Retirarse obliga al <em>enemigo</em> a venir a luchar contigo, alejándolos de <em>su</em> taller y costándoles pts/seg.",
+    citwatch_title: "🏰 Vigilancia de Ciudadela",
+    citwatch_body: "Esta es una <strong style='color:var(--text)'>ventana PvP de 1 hora.</strong> Si tu ciudadela está vulnerable, <strong style='color:var(--gold-light)'>activa el escudo inmediatamente.</strong> No asumas que alguien más lo ha visto.",
+    strat1_title: "🧠 Atacar 2, No 3",
+    take: "✅ Tomar",
+    skip: "🚫 Saltar",
+    strat1_body: "3 talleres = fuerzas dispersas = capturas más lentas + menos pts/seg por taller.<br><br><strong>Elige 2. Domínalos.</strong> Ve por el 3ro solo si liderazgo lo ordena.",
+    strat2_title: "⚖️ No Empeores el Problema",
+    opp_bad_lbl: "Perseguir el 3ro",
+    opp_bad_sub: "Lejos de tu taller<br>Dando pts PvP al enemigo",
+    vs: "VS",
+    opp_good_lbl: "Quedarse en el nuestro",
+    opp_good_sub: "Pasivo. Sin pérdidas.<br>Cada segundo cuenta.",
+    strat2_body: "600M pts suena bien — pero cada minuto fuera cuesta <strong>500 pts/s/persona</strong> de tu taller, más pts PvP gratis al enemigo. <strong>Solo persíguelo si se ordena.</strong>",
+    addendum_label: "📋 Addendum — Colores de Ciudadelas",
+    cit_title: "🏰 Leer Ciudadelas en el Minimapa",
+    cit_intro: "Las ciudadelas aparecen como <strong style='color:var(--text)'>▲ iconos pirámide</strong> en el minimapa. Lo que significa un color depende de <em style='color:var(--text);font-style:normal'>en qué mapa estés.</em>",
+    our_map: "🗺 En Nuestro Mapa",
+    their_map: "🗺 En el Mapa Enemigo",
+    col_blue: "Azul", col_yellow: "Amarillo", col_red: "Rojo", col_purple: "Morado",
+    our_blue_desc: "Nuestra alianza",
+    our_yellow_desc: "Aliado Era8, no nuestra alianza",
+    our_red_desc: "Jugador Era8, no aliado con nosotros",
+    our_purple_desc: "Jugador servidor contrario en nuestro mapa",
+    their_blue_desc: "Nuestra alianza (cross-servidor)",
+    their_yellow_desc: "Aliado Era8 en mapa enemigo",
+    their_red_desc: "Enemigo (invasor de su servidor)",
+    their_purple_desc: "Servidor contrario, no aliado con ellos",
+    act_reinforce: "Reforzar", act_support: "Apoyar", act_ignore: "Dejar", act_attack: "Atacar",
+    cit_caption: "Contorno sólido = actuar · Contorno punteado = ignorar",
+    footer: "WC1 · Era8 · Resumen Evento Taller de la Orden"
+  },
+
+  ko: {
+    header_pre: "⚔ Era8 · 동맹 이벤트 브리핑",
+    header_title: "질서의 작업장",
+    header_sub: "텔레포트 · 점령 · 유지 · 축적",
+    when_title: "⏱ 시간",
+    utc_1hr: "UTC · 1시간",
+    spawn_title: "📍 스폰 정보",
+    spawn_line: "작업장 3개",
+    spawn_sub: "존 2 지역당 1개<br>매 라운드 무작위 배치",
+    r45_badge: "👑 R4 / R5 — 목표 지정",
+    rewards_title: "🏆 보상",
+    pts_capture: "점령 시 포인트",
+    pts_capture_sub: "점령 400M + 종료 시 선두 200M",
+    pts_hold: "pts / 초 / 내부 인원",
+    zone_title: "🗺 구역",
+    zone_label: "대형 사각형 점령 구역",
+    diag_enemy: "적군 →",
+    diag_t1: "T1 반대편 가장자리",
+    zr_teleport: "근처 텔레포트 → <span class='zr-em'>걸어서 진입</span>",
+    zr_nocap: "<span class='zr-em'>인원 제한 없음</span> — 밀어넣으세요",
+    zr_more: "<span class='zr-em'>인원 많을수록 = 더 빠른</span> 타이머",
+    zr_timer: "타이머 → 0 = <span class='zr-em'>점령 완료</span> (영구)",
+    zr_tier: "<span class='zr-em'>T1 &amp; T8 동일하게 적용</span> — 사각형 내 pts/초",
+    stay_inside: "<strong style='color:var(--gold-light)'>완전히 점령될 때까지 내부에 머무르세요.</strong> 파밍, PvP 또는 다른 이유로 나가지 마세요 — 모든 인원이 타이머에 기여합니다.",
+    role_title: "🎭 역할",
+    role_fighter_name: "전투원",
+    role_fighter_desc: "<em>들어가서 싸우세요.</em> 적 행군을 밀어내고 구역을 장악하세요.",
+    role_kraken_name: "크라켄 (전투원)",
+    role_kraken_desc: "<em>진입을 막으세요.</em> 적과 작업장 사이에 위치하여 적 병력의 진입 흐름을 차단하세요.",
+    role_support_name: "비전투원",
+    role_support_desc: "<em>1티어 행군만.</em> 적 흐름에서 <em>먼 가장자리</em>에 배치하세요. 위험 없이 존재감 &amp; pts/초 추가.",
+    lost_title: "⚠ 작업장을 잃었을 때",
+    lost_body: "<strong style='color:var(--text)'>즉시 점령한 작업장으로 후퇴하세요.</strong> 이미 진 싸움에서 병력을 낭비하지 마세요 — 점령한 작업장 내부에 있는 매 초가 포인트입니다. 후퇴하면 <em>적</em>이 우리에게 싸우러 와야 하고, <em>그들</em>이 <em>자신들의</em> 작업장을 떠나게 되어 pts/초를 잃게 됩니다.",
+    citwatch_title: "🏰 성채 감시",
+    citwatch_body: "이것은 <strong style='color:var(--text)'>1시간 PvP 창</strong>입니다. 이벤트 중 성채가 취약하거나 위협받고 있다면, <strong style='color:var(--gold-light)'>즉시 방어막을 사용하세요.</strong> 다른 사람이 봤을 거라고 가정하지 마세요.",
+    strat1_title: "🧠 3개 말고 2개 목표",
+    take: "✅ 점령",
+    skip: "🚫 건너뜀",
+    strat1_body: "작업장 3개 = 병력 분산 = 느린 점령 + 각 작업장의 pts/초 인원 감소.<br><br><strong>2개 선택. 완전히 지배하세요.</strong> 3번째는 지도부 지시가 있을 때만 추격.",
+    strat2_title: "⚖️ 문제를 키우지 마세요",
+    opp_bad_lbl: "3번째 추격",
+    opp_bad_sub: "점령 작업장 이탈<br>적 크라켄에 PvP 포인트 제공",
+    vs: "VS",
+    opp_good_lbl: "우리 작업장 유지",
+    opp_good_sub: "수동적. 손실 없음.<br>매 초가 중요.",
+    strat2_body: "600M 포인트가 매력적으로 들리지만 — 자리를 비운 매 분마다 점령 작업장에서 <strong>500pts/초/인원</strong>을 잃고, 적에게 무료 PvP 포인트를 줍니다. <strong>지시가 있을 때만 추격하세요.</strong>",
+    addendum_label: "📋 부록 — 성채 색상",
+    cit_title: "🏰 미니맵에서 성채 읽기",
+    cit_intro: "성채는 미니맵에서 <strong style='color:var(--text)'>▲ 피라미드 아이콘</strong>으로 표시됩니다. 색상의 의미는 <em style='color:var(--text);font-style:normal'>어느 맵에 있느냐에 따라 다릅니다.</em>",
+    our_map: "🗺 우리 서버 맵",
+    their_map: "🗺 적 서버 맵",
+    col_blue: "파랑", col_yellow: "노랑", col_red: "빨강", col_purple: "보라",
+    our_blue_desc: "우리 동맹",
+    our_yellow_desc: "Era8 동맹, 우리 동맹 아님",
+    our_red_desc: "Era8 플레이어, 비동맹",
+    our_purple_desc: "우리 맵의 상대 서버 플레이어",
+    their_blue_desc: "우리 동맹 (크로스 서버)",
+    their_yellow_desc: "적 맵의 Era8 동맹",
+    their_red_desc: "적 (상대 서버 침략자)",
+    their_purple_desc: "상대 서버, 그들과 비동맹",
+    act_reinforce: "강화", act_support: "지원", act_ignore: "무시", act_attack: "공격",
+    cit_caption: "실선 = 행동 필요 · 점선 = 무시",
+    footer: "WC1 · Era8 · 질서의 작업장 이벤트 브리핑"
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const strings = T[lang];
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    if (strings[key] !== undefined) el.innerHTML = strings[key];
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === lang || (lang === 'ko' && btn.textContent === '한국어'));
+  });
+  document.documentElement.lang = lang;
+}
+
+// Init with English
+setLang('en');
+</script>
+</body>
+</html>

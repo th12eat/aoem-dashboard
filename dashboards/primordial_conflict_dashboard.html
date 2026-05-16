@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primordial Conflict — Era8 War Room</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0a0a0f;
+    --bg-card: #12121c;
+    --bg-card-hover: #1a1a2a;
+    --border: #2a2a3a;
+    --border-glow: #6b4c9a44;
+    --text-primary: #e8e4f0;
+    --text-secondary: #9a92a8;
+    --text-muted: #5e5870;
+    --accent-purple: #9b6dff;
+    --accent-purple-dim: #6b4c9a;
+    --accent-gold: #d4a843;
+    --accent-gold-dim: #8a7030;
+    --accent-teal: #4ecdc4;
+    --accent-red: #e74c5e;
+    --accent-blue: #5b8def;
+    --accent-green: #4caf7d;
+    --accent-orange: #e8944a;
+    --dew-color: #b06cef;
+    --essence-color: #d4a843;
+    --points-color: #4ecdc4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Crimson Text', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 0%, #6b4c9a15 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, #d4a84310 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── Header ─── */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+  }
+
+  .header h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 2.6rem;
+    letter-spacing: 0.12em;
+    background: linear-gradient(135deg, var(--accent-gold), #f0d878, var(--accent-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .header .subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .server-badges {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .server-badge {
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid;
+  }
+
+  .server-badge.home {
+    background: var(--accent-gold)15;
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+  }
+  .server-badge.opponent {
+    background: var(--text-muted)10;
+    border-color: var(--border);
+    color: var(--text-secondary);
+  }
+
+  /* ─── Tabs ─── */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 12px 24px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+
+  .tab:hover { color: var(--text-secondary); }
+
+  .tab.active {
+    color: var(--accent-gold);
+  }
+
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-gold);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ─── Timeline ─── */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .day-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 12px;
+    text-align: center;
+    position: relative;
+    transition: all 0.25s;
+  }
+
+  .day-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent-purple-dim);
+  }
+
+  .day-card.current {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 20px var(--accent-gold)20;
+  }
+
+  .day-card .day-num {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: var(--text-muted);
+    line-height: 1;
+  }
+
+  .day-card.current .day-num {
+    color: var(--accent-gold);
+  }
+
+  .day-card .day-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .day-card .day-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  .day-card .phase-tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .phase-tag.scout { background: var(--accent-blue)20; color: var(--accent-blue); }
+  .phase-tag.battle { background: var(--accent-red)20; color: var(--accent-red); }
+  .phase-tag.select { background: var(--accent-gold)20; color: var(--accent-gold); }
+  .phase-tag.showdown { background: var(--accent-purple)20; color: var(--accent-purple); }
+  .phase-tag.recovery { background: var(--accent-green)20; color: var(--accent-green); }
+
+  /* ─── Section Cards ─── */
+  .section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .section h2 {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section h2 .icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+  }
+
+  .section h3 {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin: 16px 0 8px;
+  }
+
+  .section p, .section li {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .section ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .section li {
+    padding: 4px 0 4px 20px;
+    position: relative;
+  }
+
+  .section li::before {
+    content: '›';
+    position: absolute;
+    left: 4px;
+    color: var(--accent-purple-dim);
+    font-weight: 700;
+  }
+
+  /* ─── Currency Grid ─── */
+  .currency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .currency-card {
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .currency-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .currency-card.dew::before { background: var(--dew-color); }
+  .currency-card.essence::before { background: var(--essence-color); }
+  .currency-card.points::before { background: var(--points-color); }
+
+  .currency-card .curr-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .currency-card.dew .curr-name { color: var(--dew-color); }
+  .currency-card.essence .curr-name { color: var(--essence-color); }
+  .currency-card.points .curr-name { color: var(--points-color); }
+
+  .currency-card .curr-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .currency-card .curr-sources {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── Points Table ─── */
+  .points-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 0.9rem;
+  }
+
+  .points-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .points-table td {
+    text-align: center;
+    padding: 6px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border)44;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+
+  .points-table tr:hover td {
+    background: var(--bg-card-hover);
+  }
+
+  .points-table .tier-label {
+    color: var(--accent-purple);
+    font-weight: 500;
+  }
+
+  /* ─── Info Callouts ─── */
+  .callout {
+    background: var(--bg-deep);
+    border-left: 3px solid;
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .callout.warning {
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+  }
+
+  .callout.info {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+  }
+
+  .callout.important {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+  }
+
+  .callout.strategy {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+  }
+
+  .callout strong {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    opacity: 0.8;
+  }
+
+  /* ─── Two Column Layout ─── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ─── Workshop Times ─── */
+  .workshop-times {
+    display: flex;
+    gap: 12px;
+    margin: 12px 0;
+  }
+
+  .time-block {
+    flex: 1;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .time-block .time-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--accent-purple);
+  }
+
+  .time-block .time-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ─── Teleport Priority ─── */
+  .teleport-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .tp-slot {
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+
+  .tp-slot .tp-rank {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--accent-gold);
+  }
+
+  .tp-slot .tp-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-purple);
+    margin-top: 4px;
+  }
+
+  .tp-slot .tp-desc {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ─── Unknown / TBD ─── */
+  .tbd {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: var(--accent-orange)15;
+    color: var(--accent-orange);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── Footer ─── */
+  .footer {
+    text-align: center;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── Responsive ─── */
+/* ─── Intel Tables ─── */
+  .server-compare {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .server-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .server-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .server-card.s008::before { background: var(--accent-gold); }
+  .server-card.s016::before { background: var(--accent-red); }
+  .server-card.s092::before { background: var(--accent-blue); }
+  .server-card.s022::before { background: var(--accent-purple); }
+
+  .server-card .sc-header {
+    margin-bottom: 12px;
+  }
+
+  .server-card .sc-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    display: block;
+  }
+
+  .server-card.s008 .sc-name { color: var(--accent-gold); }
+  .server-card.s016 .sc-name { color: var(--accent-red); }
+  .server-card.s092 .sc-name { color: var(--accent-blue); }
+  .server-card.s022 .sc-name { color: var(--accent-purple); }
+
+  .server-card .sc-rank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-top: 3px;
+  }
+
+  .server-card .sc-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border)44;
+    font-size: 0.9rem;
+  }
+
+  .server-card .sc-stat-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .server-card .sc-stat-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--text-primary);
+  }
+
+  .roster-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  .roster-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .roster-table th:last-child { text-align: right; }
+
+  .roster-table td {
+    padding: 4px 8px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border)22;
+  }
+
+  .roster-table td:last-child {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+  }
+
+  .roster-table td.alliance-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .roster-table tr:hover td { background: var(--bg-card-hover); }
+
+  .roster-table .highlight td { color: var(--accent-gold); }
+
+  .bar-chart {
+    display: flex;
+    align-items: end;
+    gap: 12px;
+    height: 120px;
+    margin: 16px 0;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .bar {
+    width: 100%;
+    max-width: 60px;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    min-height: 4px;
+    transition: height 0.3s;
+  }
+
+  .bar-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    text-align: center;
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .bar-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+    margin-bottom: 3px;
+    text-align: center;
+  }
+
+  .section-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin: 16px 0 8px;
+  }
+  @media (max-width: 900px) {
+    .timeline { grid-template-columns: repeat(4, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .teleport-grid { grid-template-columns: repeat(3, 1fr); }
+    .header h1 { font-size: 1.8rem; }
+  }
+
+  @media (max-width: 600px) {
+    .timeline { grid-template-columns: repeat(2, 1fr); }
+    .container { padding: 16px 12px; }
+    .section { padding: 20px 16px; }
+    .tab { padding: 10px 14px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>Primordial Conflict</h1>
+    <div class="subtitle">Era 8 — War Room Dashboard</div>
+    <div class="server-badges">
+      <span class="server-badge home">E#008 ★ Home</span>
+      <span class="server-badge opponent">E#016</span>
+      <span class="server-badge opponent">E#022</span>
+      <span class="server-badge opponent">E#092</span>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('overview')">Overview</button>
+    <button class="tab" onclick="switchTab('schedule')">Day-by-Day</button>
+    <button class="tab" onclick="switchTab('currencies')">Currencies</button>
+    <button class="tab" onclick="switchTab('scoring')">Scoring</button>
+    <button class="tab" onclick="switchTab('tech')">Alchemy Tech</button>
+    <button class="tab" onclick="switchTab('intel')">Server Intel</button>
+    <button class="tab" onclick="switchTab('strategy')">Strategy Notes</button>
+  </div>
+
+  <!-- ═══════════════════ OVERVIEW TAB ═══════════════════ -->
+  <div class="tab-content active" id="tab-overview">
+
+    <!-- Timeline -->
+    <div class="timeline">
+      <div class="day-card">
+        <div class="day-num">1</div>
+        <div class="day-label">Complete</div>
+        <div class="day-desc">Scouting &amp; matching</div>
+        <span class="phase-tag scout">Scout</span>
+      </div>
+      <div class="day-card">
+        <div class="day-num">2</div>
+        <div class="day-label">Complete</div>
+        <div class="day-desc">E#008 vs E#016</div>
+        <span class="phase-tag battle">Split</span>
+      </div>
+      <div class="day-card">
+        <div class="day-num">3</div>
+        <div class="day-label">Complete</div>
+        <div class="day-desc">E#008 vs E#092</div>
+        <span class="phase-tag battle">Swept ✓</span>
+      </div>
+      <div class="day-card current">
+        <div class="day-num">4</div>
+        <div class="day-label">Today</div>
+        <div class="day-desc">E#008 vs E#022</div>
+        <span class="phase-tag battle">Battle</span>
+      </div>
+      <div class="day-card">
+        <div class="day-num">5</div>
+        <div class="day-label">Selection</div>
+        <div class="day-desc">Winner picks battlefield</div>
+        <span class="phase-tag select">Select</span>
+      </div>
+      <div class="day-card">
+        <div class="day-num">6</div>
+        <div class="day-label">Showdown</div>
+        <div class="day-desc">All 4 servers clash</div>
+        <span class="phase-tag showdown">Showdown</span>
+      </div>
+      <div class="day-card">
+        <div class="day-num">7</div>
+        <div class="day-label">Recovery</div>
+        <div class="day-desc">Partial troop restore</div>
+        <span class="phase-tag recovery">Recovery</span>
+      </div>
+    </div>
+
+    <!-- Live Scoreboard -->
+    <div class="section">
+      <h2>Battle Stage Scoreboard</h2>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 12px;">Updated: Day 4 (near complete) · E#008 vs E#092 · E#016 vs E#022</p>
+      <table class="points-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th style="text-align:left">Server</th>
+            <th>Points</th>
+            <th>Kingdom Dew</th>
+            <th>Day 4 Opponent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: var(--accent-red)08;">
+            <td style="color:var(--accent-red); font-weight:700;">🥇 1st</td>
+            <td style="text-align:left; color:var(--accent-red); font-weight:700;">E#016 👑</td>
+            <td style="color:var(--accent-red);">19.8B</td>
+            <td>19M</td>
+            <td>vs E#022</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent-gold); font-weight:700;">🥈 2nd</td>
+            <td style="text-align:left; color:var(--accent-gold); font-weight:700;">E#008 ★</td>
+            <td style="color:var(--accent-gold);">15.3B</td>
+            <td>20.3M</td>
+            <td>vs E#092</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-secondary);">🥉 3rd</td>
+            <td style="text-align:left; color:var(--accent-blue);">E#092</td>
+            <td>8.27B</td>
+            <td>17M</td>
+            <td>vs E#008</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-muted);">4th</td>
+            <td style="text-align:left; color:var(--accent-purple);">E#022</td>
+            <td style="color:var(--text-muted);">5.38B</td>
+            <td>11.9M</td>
+            <td>vs E#016</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top: 16px;">Workshop Results Tracker</h3>
+      <table class="points-table" style="margin-top: 8px;">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th style="text-align:left">Matchup</th>
+            <th>04:00 Result</th>
+            <th>16:00 Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Day 2</td>
+            <td style="text-align:left;">E#008 vs E#016</td>
+            <td style="color:var(--accent-gold);">E#008 2/3</td>
+            <td style="color:var(--accent-red);">E#016 2/3</td>
+          </tr>
+          <tr>
+            <td>Day 2</td>
+            <td style="text-align:left;">E#092 vs E#022</td>
+            <td style="color:var(--accent-blue);">E#092 ~3/3</td>
+            <td style="color:var(--accent-blue);">E#092 ~3/3</td>
+          </tr>
+          <tr>
+            <td>Day 3</td>
+            <td style="text-align:left;">E#008 vs E#092</td>
+            <td style="color:var(--accent-gold);">E#008 3/3 ✓</td>
+            <td style="color:var(--accent-gold);">E#008 3/3 ✓</td>
+          </tr>
+          <tr>
+            <td>Day 3</td>
+            <td style="text-align:left;">E#016 vs E#022</td>
+            <td style="color:var(--accent-red);">E#016 ~3/3</td>
+            <td style="color:var(--accent-red);">E#016 ~3/3</td>
+          </tr>
+          <tr>
+            <td>Day 4</td>
+            <td style="text-align:left;">E#008 vs E#022</td>
+            <td style="color:var(--text-muted);">Expected 3/3</td>
+            <td style="color:var(--text-muted);">Expected 3/3</td>
+          </tr>
+          <tr>
+            <td>Day 4</td>
+            <td style="text-align:left;">E#016 vs E#092</td>
+            <td style="color:var(--text-muted);">Expected E#016</td>
+            <td style="color:var(--text-muted);">Expected E#016</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout important" style="margin-top: 12px;">
+        <strong>E#016 Has Likely Won the Battle Stage</strong>
+        E#016 leads with 19.8B vs our 15.3B — a 4.5B gap with only Day 4 left. They aced E#022 today while we aced E#092. Tomorrow (Day 4) both servers face easy opponents (E#008 vs E#022, E#016 vs E#092) and are expected to sweep. The gap is likely insurmountable. E#016 will pick the Day 6 showdown location, time, and gain the Stage Winner Extra Buffs (+7.5% Attack, +7.5% Defense).
+      </div>
+
+      <div class="callout strategy" style="margin-top: 12px;">
+        <strong>Silver Lining</strong>
+        Era 8 leads Kingdom Dew gathered (20.3M vs E#016's 19M) — meaning our tech tree progress is ahead. We also have 4 alliances in the top 10 (eRa #2, Myt #7, REU #8, eRà #9). The showdown is what matters most for final standings, and being well-buffed from farming could offset the Stage Winner advantage.
+      </div>
+    </div>
+
+    <!-- Player Rankings -->
+    <div class="section">
+      <h2>Top 50 Player Rankings</h2>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 4px;">Battle Stage standings by individual points. Server representation: E#016 (20), E#008 (16), E#092 (8), E#022 (6).</p>
+
+      <div class="two-col">
+        <div>
+          <table class="roster-table">
+            <thead><tr><th>#</th><th>Player</th><th>Server</th><th style="text-align:right">Points</th><th style="text-align:right">Dew</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Ysendy</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>896M</td><td>302K</td></tr>
+              <tr><td>2</td><td>Delaynômore</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>881M</td><td>156K</td></tr>
+              <tr class="highlight"><td>3</td><td>Lumberjack</td><td class="alliance-tag">eRa</td><td>860M</td><td>238K</td></tr>
+              <tr class="highlight"><td>4</td><td>時宗</td><td class="alliance-tag">eRa</td><td>844M</td><td>244K</td></tr>
+              <tr><td>5</td><td>Metal76</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>797M</td><td>289K</td></tr>
+              <tr><td>6</td><td>SyMteX</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>681M</td><td>434K</td></tr>
+              <tr><td>7</td><td>suwonsamsung</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>617M</td><td>335K</td></tr>
+              <tr><td>8</td><td>TeamTW</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>604M</td><td>327K</td></tr>
+              <tr><td>9</td><td>CaptFlint</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>599M</td><td>129K</td></tr>
+              <tr><td>10</td><td>AbuGala</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>587M</td><td>222K</td></tr>
+              <tr><td>11</td><td>MisterMuffin</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>574M</td><td>301K</td></tr>
+              <tr><td>12</td><td>Chris1909</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>549M</td><td>326K</td></tr>
+              <tr><td>13</td><td>Ticklepink</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>478M</td><td>113K</td></tr>
+              <tr class="highlight"><td>14</td><td>민트</td><td class="alliance-tag">REU</td><td>452M</td><td>217K</td></tr>
+              <tr><td>15</td><td>UnChartered</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>441M</td><td>130K</td></tr>
+              <tr class="highlight"><td>16</td><td>Raeinos</td><td class="alliance-tag">eRa</td><td>403M</td><td>294K</td></tr>
+              <tr><td>17</td><td>ArNyB</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>393M</td><td>270K</td></tr>
+              <tr><td>18</td><td>Elessar</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>392M</td><td>345K</td></tr>
+              <tr><td>19</td><td>FleoDeDurin</td><td class="alliance-tag" style="color:var(--accent-red)">TWH</td><td>387M</td><td>161K</td></tr>
+              <tr><td>20</td><td>DmscTheThird</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>384M</td><td>212K</td></tr>
+              <tr><td>21</td><td>NemmΩ</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>372M</td><td>225K</td></tr>
+              <tr><td>22</td><td>ZINY</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>363M</td><td>342K</td></tr>
+              <tr class="highlight"><td>23</td><td>Sebasxit22</td><td class="alliance-tag">Myt</td><td>332M</td><td>137K</td></tr>
+              <tr><td>24</td><td>牛奶xingxing</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>328M</td><td>327K</td></tr>
+              <tr><td>25</td><td>Booleon</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>317M</td><td>141K</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <table class="roster-table">
+            <thead><tr><th>#</th><th>Player</th><th>Server</th><th style="text-align:right">Points</th><th style="text-align:right">Dew</th></tr></thead>
+            <tbody>
+              <tr class="highlight"><td>26</td><td>Tonci</td><td class="alliance-tag">eRa</td><td>315M</td><td>227K</td></tr>
+              <tr><td>27</td><td>WinterBane</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>309M</td><td>280K</td></tr>
+              <tr class="highlight"><td>28</td><td>NoSoyUnGnomo</td><td class="alliance-tag">eRa</td><td>308M</td><td>502K</td></tr>
+              <tr><td>29</td><td>SneakySneaky</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>301M</td><td>110K</td></tr>
+              <tr><td>30</td><td>NAGAN</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>292M</td><td>144K</td></tr>
+              <tr><td>31</td><td>Sawadeekub</td><td class="alliance-tag" style="color:var(--accent-purple)">REC</td><td>288M</td><td>323K</td></tr>
+              <tr class="highlight"><td>32</td><td>TommyTorpedo</td><td class="alliance-tag">eRa</td><td>282M</td><td>412K</td></tr>
+              <tr><td>33</td><td>Dwarf✿34</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>277M</td><td>349K</td></tr>
+              <tr class="highlight"><td>34</td><td>Collin6666</td><td class="alliance-tag">eRa</td><td>258M</td><td>160K</td></tr>
+              <tr class="highlight"><td>35</td><td>MuRage</td><td class="alliance-tag">eRa</td><td>249M</td><td>136K</td></tr>
+              <tr class="highlight"><td>36</td><td>SILENTWRAITH</td><td class="alliance-tag">eRa</td><td>239M</td><td>264K</td></tr>
+              <tr><td>37</td><td>Drfamous</td><td class="alliance-tag" style="color:var(--accent-purple)">REC</td><td>222M</td><td>240K</td></tr>
+              <tr class="highlight"><td>38</td><td>조온마난색기</td><td class="alliance-tag">REU</td><td>217M</td><td>133K</td></tr>
+              <tr class="highlight"><td>39</td><td>Sarda</td><td class="alliance-tag">eRa</td><td>214M</td><td>345K</td></tr>
+              <tr><td>40</td><td>JINAN</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>214M</td><td>188K</td></tr>
+              <tr><td>41</td><td>GoWipeUrAss</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>208M</td><td>138K</td></tr>
+              <tr class="highlight"><td>42</td><td>Kira</td><td class="alliance-tag">eRa</td><td>198M</td><td>270K</td></tr>
+              <tr><td>43</td><td>HORRIBLE</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>196M</td><td>236K</td></tr>
+              <tr><td>44</td><td>FONGhong</td><td class="alliance-tag" style="color:var(--accent-purple)">REC</td><td>193M</td><td>285K</td></tr>
+              <tr class="highlight"><td>45</td><td>ibubu☘JP</td><td class="alliance-tag">eRa</td><td>185M</td><td>208K</td></tr>
+              <tr class="highlight"><td>46</td><td>Stefanve</td><td class="alliance-tag">eRa</td><td>178M</td><td>227K</td></tr>
+              <tr><td>47</td><td>Jaxonjaxoff</td><td class="alliance-tag" style="color:var(--accent-purple)">REC</td><td>171M</td><td>301K</td></tr>
+              <tr><td>48</td><td>RagingTuna</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>164M</td><td>241K</td></tr>
+              <tr><td>49</td><td>Ŀìċħŧ</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>157M</td><td>90.8K</td></tr>
+              <tr class="highlight"><td>50</td><td>Ephe</td><td class="alliance-tag">Myt</td><td>148M</td><td>186K</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout strategy" style="margin-top: 12px;">
+        <strong>Player Insights</strong>
+        E#016 dominates with 20 of the top 50, but Era 8 has 16 — competitive depth. Lumberjack (#3) and 時宗 (#4) are within striking distance of the top. E#092's top players (SyMteX, suwonsamsung, TeamTW) are heavy Dew farmers — note SyMteX at 434K resources. NoSoyUnGnomo leads all Dew farming at 502K. TommyTorpedo at #32 with 412K Dew is one of the top farmers overall.
+      </div>
+    </div>
+
+    <!-- Quick Reference -->
+    <div class="section">
+      <h2>Event Structure</h2>
+      <p>Primordial Conflict is a 4-server round-robin KvK. Three days of 1v1 battles (Days 2–4) where you face each opponent once, followed by a battlefield selection by the leading kingdom (Day 5), and a massive 4-way showdown (Day 6). Day 7 provides partial troop recovery.</p>
+
+      <h3>Core Loop</h3>
+      <p>During battle days, you earn <em>Primordial Dew</em> by gathering at Alchemy Pools and fighting over Order Workshops (which open twice daily). Dew converts to Primordial Points for scoring. On the showdown day, Essence Refineries appear around the chosen Imperial City — holding these generates <em>Primordial Essence</em> (premium currency) and massive Kingdom Points.</p>
+
+      <div class="callout info">
+        <strong>Key Difference from TME</strong>
+        This is a 4-way event, not 2-way. Round-robin scoring determines who picks the Day 6 battlefield. Workshop fights happen in 1-hour windows twice daily across 3 days. Cross-border tiles also open on the map during the Battle Stage, so enemy players can hunt gatherers — stay alert while farming.
+      </div>
+    </div>
+
+    <!-- Key Objectives -->
+    <div class="two-col">
+      <div class="section">
+        <h2>Order Workshops (Days 2–4)</h2>
+        <p>3 workshops spawn per contest at <strong style="color:var(--accent-purple)">04:00–05:00</strong> and <strong style="color:var(--accent-purple)">16:00–17:00 UTC</strong> daily (1 hour each). They spawn in Zone 2 regions (1 per region, random placement) and alternate between your map and the opponent's map.</p>
+        <ul>
+          <li>During contests, you can teleport to enemy cross-border camps</li>
+          <li>No cap on how many players fit inside — swarm them</li>
+          <li>Capture is fast with numbers (~12–15min with 100+ players)</li>
+          <li>Once fully captured, they cannot be un-captured</li>
+          <li>Completed capture: 600M Kingdom Points per workshop</li>
+          <li>Occupying at contest end: additional 200M Kingdom Points per workshop</li>
+          <li>After capture, sit inside to soak additional points; PvP to deny enemy points</li>
+          <li>After the 1hr contest ends, all troops on enemy map are auto-returned</li>
+          <li>Participants get 30K Dew per round (does NOT generate points)</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Essence Refineries (Day 6)</h2>
+        <p>Eight refineries spawn around the Imperial City of the chosen showdown kingdom. This is the main event.</p>
+        <ul>
+          <li>Occupying kingdom gets 1M Kingdom Points per second</li>
+          <li>Each refinery grants 800M Kingdom Points at contest end to last holder</li>
+          <li>Players garrisoning/near refineries earn Primordial Essences per second</li>
+          <li>Combat on IC plots also generates Essence (capped)</li>
+          <li>8 refineries × 800M = 6.4B points available at end alone</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SCHEDULE TAB ═══════════════════ -->
+  <div class="tab-content" id="tab-schedule">
+
+    <div class="section">
+      <h2>Day 1 — Matching Display Stage</h2>
+      <p>View event rules, participating kingdoms' info, event schedule, and reward details. No combat or gathering available yet. Use this time to scout opponent servers and coordinate alliance strategy.</p>
+      <div class="callout strategy">
+        <strong>Action Items</strong>
+        Scout enemy server power levels. Coordinate Dew gathering assignments. Brief alliance leads on workshop contest times (04:00–05:00 and 16:00–17:00 UTC, 1hr each).
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Days 2–4 — Battle Stage (Round Robin)</h2>
+      <p>Each day, your kingdom is paired 1v1 against a different opponent. Matchups rotate daily with priority given to kingdoms that haven't faced each other yet. Two activities run simultaneously:</p>
+
+      <h3>Alchemy Pool Gathering</h3>
+      <ul>
+        <li>Pools of levels 1–4 appear on the world map throughout the stage</li>
+        <li>Level 4 pools spawn near the Imperial City only, refresh every 12h, last 12h</li>
+        <li>Lv.4 pools are guarded by Corrupted Hyenas — must kill them first</li>
+        <li>Killing blow on a hyena grants +10% gather speed at that pool (tagging alone doesn't count)</li>
+        <li>Hyenas don't respawn — 1 per Lv.4 pool, refreshes every 12h with the pool. Only 3 Lv.4 pools found near IC</li>
+        <li>Lv.1–3 pools only allow 1 gatherer; Lv.4 pools allow up to 40 simultaneous gatherers</li>
+        <li>Minimum 50,000 units required per march to gather</li>
+      </ul>
+
+      <table class="points-table" style="margin-top: 12px;">
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Dew Capacity</th>
+            <th>Base Farm Rate</th>
+            <th>Min Units</th>
+            <th>Max Gatherers</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tier-label">Lv. 1</td>
+            <td>1,200</td>
+            <td>180/hr</td>
+            <td>50,000</td>
+            <td>1</td>
+            <td>World map</td>
+          </tr>
+          <tr>
+            <td class="tier-label">Lv. 2</td>
+            <td>1,800</td>
+            <td>198/hr</td>
+            <td>50,000</td>
+            <td>1</td>
+            <td>World map</td>
+          </tr>
+          <tr>
+            <td class="tier-label">Lv. 3</td>
+            <td>3,600</td>
+            <td>216/hr</td>
+            <td>50,000</td>
+            <td>1</td>
+            <td>World map</td>
+          </tr>
+          <tr>
+            <td class="tier-label">Lv. 4</td>
+            <td style="color:var(--accent-gold)">1,200,000</td>
+            <td style="color:var(--accent-gold)">431/hr</td>
+            <td>None</td>
+            <td style="color:var(--accent-gold)">40 (1 per account)</td>
+            <td>Near IC only (3 spawns, guarded)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:8px; font-size:0.82rem; color:var(--text-muted);">Lv. 4 pools are massively larger than Lv. 1–3 — 1.2M capacity with up to 40 simultaneous gatherers, but only 1 march per account. Only 3 spawn near the Imperial City, guarded by Corrupted Hyenas (1 per pool, killing blow required for buff, refresh every 12h). Optimal gathering: 1 march on Lv.4 + 4 marches on Lv.3 nodes.</p>
+
+      <h3>Order Workshop Contests</h3>
+      <div class="workshop-times">
+        <div class="time-block">
+          <div class="time-val">04:00</div>
+          <div class="time-label">to 05:00 UTC</div>
+        </div>
+        <div class="time-block">
+          <div class="time-val">16:00</div>
+          <div class="time-label">to 17:00 UTC</div>
+        </div>
+      </div>
+      <ul>
+        <li>3 workshops spawn per contest — one in each Zone 2 region, randomly placed</li>
+        <li>Workshops alternate between your map and the enemy's map</li>
+        <li>Cross-border camp teleportation only available during the 1hr contest window</li>
+        <li>No cap on players inside a workshop zone — send everyone</li>
+        <li>Capture is fast with numbers (~12–15 min with 100+ players)</li>
+        <li>Once fully captured, a workshop cannot be un-captured</li>
+        <li>Completed capture: 600M Kingdom Points; occupying at end: +200M Kingdom Points</li>
+        <li>After capture, stay inside to soak additional points; PvP to deny enemy points</li>
+        <li>All troops auto-returned to home server when the hour ends — no lingering</li>
+      </ul>
+
+      <div class="callout info">
+        <strong>PvP Scope During Battle Stage</strong>
+        PvP during Days 2–4 centers on Order Workshops, but cross-border tiles also open around the map during the Battle Stage. Enemy players can roam your server and hunt gatherers. Workshop troops are auto-returned after the 1hr window, but the cross-border access means you should stay alert while farming.
+      </div>
+
+      <div class="callout warning">
+        <strong>Attrition Warning</strong>
+        That's 6 workshop contests (1hr each) across 3 days BEFORE the showdown. Budget troops and healing accordingly — don't blow everything on Day 2.
+      </div>
+
+      <div class="callout important">
+        <strong>Day 6 Showdown — PvP Risk TBD</strong>
+        The Essence Refinery stage on Day 6 may involve longer-term PvP exposure including potential zeroing. Unlike workshops where you're auto-returned after 1hr, the showdown mechanics for cross-border duration are still being confirmed.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Day 5 — Battlefield Selection Stage</h2>
+      <p>The kingdom ranked first in Battle Stage points earns the right to choose the showdown location and time. The king of the winning kingdom designates which server hosts the showdown and when it occurs. Deadline: <strong style="color:var(--accent-red)">12:00 UTC</strong>.</p>
+      <ul>
+        <li>If the winning kingdom has no king, the R5 of the highest-power alliance chooses</li>
+        <li>You pick WHICH kingdom's map to fight on — huge strategic advantage</li>
+        <li>You also pick the TIME of the showdown</li>
+      </ul>
+      <div class="callout strategy">
+        <strong>Strategy</strong>
+        Winning the Battle Stage is critical. The ability to pick the time lets you choose a window that favors your server's active hours and hurts opponents' timezone coverage.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Day 6 — The Showdown</h2>
+      <p>All four kingdoms converge on the chosen battlefield. 8 Essence Refineries appear around that kingdom's Imperial City.</p>
+
+      <h3>Teleport Priority (Top 6 Battle Stage Alliances)</h3>
+      <div class="teleport-grid">
+        <div class="tp-slot">
+          <div class="tp-rank">1st &amp; 2nd</div>
+          <div class="tp-time">−30m</div>
+          <div class="tp-desc">Early access</div>
+        </div>
+        <div class="tp-slot">
+          <div class="tp-rank">3rd &amp; 4th</div>
+          <div class="tp-time">−20m</div>
+          <div class="tp-desc">Early access</div>
+        </div>
+        <div class="tp-slot">
+          <div class="tp-rank">5th &amp; 6th</div>
+          <div class="tp-time">−10m</div>
+          <div class="tp-desc">Early access</div>
+        </div>
+      </div>
+      <p style="margin-top: 12px;">Players can only relocate to their own faction's cross-border camp. Camps open 30 minutes before the contest begins.</p>
+
+      <div class="callout important">
+        <strong>4-Way Fight</strong>
+        Unlike TME's 2-server invasion, this is all 4 servers on one map competing for 8 refineries. Alliances between servers, target prioritization, and refinery allocation are all in play.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Day 7 — Recovery Stage</h2>
+      <p>Partial recovery of units lost in battles against players from other kingdoms. Casualties are calculated from battle reports. No manual recovery is possible after this stage — what you get back is what you get.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ CURRENCIES TAB ═══════════════════ -->
+  <div class="tab-content" id="tab-currencies">
+
+    <div class="section">
+      <h2>Currency System</h2>
+      <p>The naming is confusing, so here's the clean breakdown. There are three currencies and one scoring system.</p>
+    </div>
+
+    <div class="currency-grid">
+      <div class="currency-card dew">
+        <div class="curr-name">Primordial Dew</div>
+        <div class="curr-desc">
+          The primary currency with two tracked pools:<br><br>
+          <strong style="color:var(--text-primary)">Personal Dew</strong> — what you individually gather. Converts to Primordial Points at a rate of 100 Dew → 10K Points. Also spent at the Alchemist Black Market and contributes to Alchemy Technology thresholds.<br><br>
+          <strong style="color:var(--text-primary)">Kingdom Dew</strong> — server-wide aggregate total. Likely fills automatically as the whole server gathers. Used as a prerequisite threshold for Alchemy Technology nodes.
+        </div>
+        <div class="curr-sources">Sources: Alchemy Pools · Order Workshop occupation · Workshop participation (30K, no points)</div>
+      </div>
+
+      <div class="currency-card essence">
+        <div class="curr-name">Primordial Essence</div>
+        <div class="curr-desc">
+          Premium currency available only during the Day 6 Showdown. Refined from Dew at Essence Refineries. Earned by garrisoning or stationing near refineries, and through combat on IC plots (capped). Exchangeable at the Alchemist Black Market for higher-tier rewards.
+        </div>
+        <div class="curr-sources">Sources: Essence Refineries (Day 6 only) · Combat on IC plots (capped)</div>
+      </div>
+
+      <div class="currency-card points">
+        <div class="curr-name">Primordial Points / Kingdom Points</div>
+        <div class="curr-desc">
+          The scoring system — not a spendable currency. Determines round-robin matchup results and who picks the Day 5 battlefield. Earned from Dew gathering (100 Dew = 10K pts), combat kills, workshop occupation, and refinery control. Kingdom Points are the server-wide total.
+        </div>
+        <div class="curr-sources">Score only · Not spendable · Determines battlefield selection</div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top: 20px;">
+      <h2>Currency Flow</h2>
+      <div class="callout info">
+        <strong>How it all connects</strong>
+        Gather Dew → generates Points (scoring) → contributes to Kingdom Dew pool (tech tree thresholds) → Personal Dew also usable at Black Market. On Day 6, Dew converts to Essence at refineries → Essence is the premium Black Market currency.
+      </div>
+
+      <div class="callout warning">
+        <strong>Unconfirmed — Needs verification after reset</strong>
+        Whether Alchemy Technology "consumes" Personal Dew or just requires a threshold is still unclear. The screenshot shows "Requirements: Personal Dew 0/20,000" which could be either a gate or a spend. Will update once Day 2 unlocks more info.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SCORING TAB ═══════════════════ -->
+  <div class="tab-content" id="tab-scoring">
+
+    <div class="section">
+      <h2>Points from Gathering</h2>
+      <p>For every 100 Personal Primordial Dew gathered, you earn 10,000 Personal Primordial Points. The 30K Dew awarded for workshop participation does <em>not</em> generate points.</p>
+    </div>
+
+    <div class="section">
+      <h2>Points from Stationing</h2>
+      <p>For every second of valid stationing in an occupied Order Workshop, earn 5 Primordial Dew (equivalent to 500 Points). Stationing is valid only when troop count exceeds the minimum requirement. Each player can have at most 1 troop validly stationed at a time.</p>
+    </div>
+
+    <div class="section">
+      <h2>Points from Combat</h2>
+      <p>Combat is valid only when the tier difference between units doesn't exceed 2 tiers. Points scale by enemy unit tier:</p>
+
+      <table class="points-table">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>T6</th><th>T7</th><th>T8</th><th>T9</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tier-label">Gravely Wound</td>
+            <td>1</td><td>2</td><td>3</td><td>4</td><td>6</td><td>9</td><td>15</td><td>24</td><td>36</td>
+          </tr>
+          <tr>
+            <td class="tier-label">Eliminate (5×)</td>
+            <td>5</td><td>10</td><td>15</td><td>20</td><td>30</td><td>45</td><td>75</td><td>120</td><td>180</td>
+          </tr>
+          <tr>
+            <td class="tier-label">Own Loss (2×)</td>
+            <td>2</td><td>4</td><td>6</td><td>8</td><td>12</td><td>18</td><td>30</td><td>48</td><td>72</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout warning" style="margin-top: 16px;">
+        <strong>Tier Gap Rule</strong>
+        Combat only scores points if the tier difference is ≤ 2. So T9 vs T7 counts, but T9 vs T6 does not. This prevents point farming with throwaway low-tier troops.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Points from Objectives</h2>
+
+      <h3>Order Workshops (Days 2–4)</h3>
+      <ul>
+        <li>3 workshops per contest window (6 per day, 18 across 3 battle days)</li>
+        <li>Fully capturing a workshop: <strong style="color:var(--points-color)">600M</strong> Kingdom Points per workshop</li>
+        <li>Occupying a workshop at contest end: additional <strong style="color:var(--points-color)">200M</strong> Kingdom Points per workshop</li>
+        <li>Once captured, workshops cannot be un-captured — stay inside to soak additional points</li>
+        <li>Max per contest (3 workshops): <strong style="color:var(--points-color)">2.4B</strong> Kingdom Points (capture + occupation)</li>
+      </ul>
+
+      <h3>Essence Refineries (Day 6)</h3>
+      <ul>
+        <li>Occupying kingdom: <strong style="color:var(--points-color)">1M</strong> Kingdom Points per second while held</li>
+        <li>Each refinery at contest end: <strong style="color:var(--points-color)">800M</strong> Kingdom Points to last holder</li>
+        <li>8 refineries × 800M = <strong style="color:var(--points-color)">6.4B</strong> points available from end-of-contest alone</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ TECH TAB ═══════════════════ -->
+  <div class="tab-content" id="tab-tech">
+
+    <div class="section">
+      <h2>Alchemy Technology</h2>
+      <p>A server-wide buff tree that unlocks as the kingdom accumulates Primordial Dew. Each node provides combat or gathering buffs for the entire server.</p>
+
+      <h3>How Unlocking Works <span class="tbd">UNCONFIRMED</span></h3>
+      <p>Each tech node has two requirements that must both be met:</p>
+      <ul>
+        <li><strong style="color:var(--accent-gold)">Kingdom Dew</strong> — a server-wide threshold (e.g., 1M). Likely fills automatically as everyone gathers collectively. The inner ring shows escalating milestones: 1M, 2.5M, 4M, 5M, 6M, 7M, 8M, 9M.</li>
+        <li><strong style="color:var(--text-primary)">Personal Dew</strong> — an individual threshold (e.g., 20,000). Likely a participation gate rather than a spend — you need to have gathered enough to qualify for the buff.</li>
+      </ul>
+
+      <div class="callout warning">
+        <strong>Needs Confirmation</strong>
+        We don't yet know if Personal Dew is consumed (spent) or just checked as a threshold. If it's a spend, that creates a tradeoff between tech buffs and Black Market shopping. If it's a threshold, it's just a participation gate. Will verify after Day 2 unlocks.
+      </div>
+
+      <h3>Tech Tree Nodes</h3>
+      <table class="points-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Node</th>
+            <th style="text-align:left">Buff</th>
+            <th>Kingdom Dew</th>
+            <th>Personal Dew</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left; color:var(--text-primary)">Weapon Refinement I</td>
+            <td style="text-align:left; color:var(--accent-green)">+7.5% All Unit Types' Attack</td>
+            <td>1M</td>
+            <td>20,000</td>
+          </tr>
+          <tr>
+            <td style="text-align:left; color:var(--text-primary)">Alloy Armor I</td>
+            <td style="text-align:left; color:var(--accent-green)">+7.5% All Unit Types' Defense</td>
+            <td>2.5M</td>
+            <td>50,000</td>
+          </tr>
+          <tr>
+            <td style="text-align:left; color:var(--text-primary)">Health Elixir I</td>
+            <td style="text-align:left; color:var(--accent-green)">+4% All Unit Types' Health</td>
+            <td>4M</td>
+            <td>80,000</td>
+          </tr>
+          <tr>
+            <td style="text-align:left; color:var(--text-primary)">Gathering Techniques</td>
+            <td style="text-align:left; color:var(--accent-teal)">+15% Gathering Speed in the World</td>
+            <td>5M</td>
+            <td>100,000</td>
+          </tr>
+          <tr>
+            <td style="text-align:left; color:var(--text-primary)">Weapon Refinement II</td>
+            <td style="text-align:left; color:var(--accent-green)">+7.5% All Unit Attack · +5% Attack in Rally Battles</td>
+            <td>6M</td>
+            <td>120,000</td>
+          </tr>
+          <tr>
+            <td style="text-align:left; color:var(--text-primary)">Alloy Armor II</td>
+            <td style="text-align:left; color:var(--accent-green)">+7.5% All Unit Defense · +5% Defense in Rally Battles</td>
+            <td>7M</td>
+            <td>140,000</td>
+          </tr>
+          <tr>
+            <td style="text-align:left; color:var(--text-primary)">Health Elixir II</td>
+            <td style="text-align:left; color:var(--accent-green)">+4% All Unit Types' Health</td>
+            <td>8M</td>
+            <td>160,000</td>
+          </tr>
+          <tr>
+            <td style="text-align:left; color:var(--text-primary)">Art of War</td>
+            <td style="text-align:left; color:var(--accent-green)">+4,000 Troop Capacity · +20% Rally March Speed</td>
+            <td>9M</td>
+            <td>180,000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Cumulative Totals (Full Tree)</h3>
+      <p>If you unlock all 8 nodes, total buffs are: +15% Attack, +15% Defense, +8% Health, +15% Gathering Speed, +5% Rally Attack, +5% Rally Defense, +4,000 Troop Capacity, +20% Rally March Speed. Kingdom Dew required: 9M total. Personal Dew required: 180K total (cumulative or just the final gate — <span class="tbd">UNCONFIRMED</span>).</p>
+
+      <h3>Stage Winner Extra Buffs</h3>
+      <p>The kingdom that wins the Battle Stage (Days 2–4 points) and earns battlefield selection also unlocks bonus buffs on the final two tech nodes:</p>
+      <table class="points-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Attached To</th>
+            <th style="text-align:left">Stage Winner Extra Buff</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left; color:var(--accent-gold)">Health Elixir II</td>
+            <td style="text-align:left; color:var(--accent-gold)">+7.5% All Unit Types' Attack</td>
+          </tr>
+          <tr>
+            <td style="text-align:left; color:var(--accent-gold)">Art of War</td>
+            <td style="text-align:left; color:var(--accent-gold)">+7.5% All Unit Types' Defense</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout strategy" style="margin-top: 12px;">
+        <strong>Winning the Battle Stage matters even more than we thought</strong>
+        The Stage Winner doesn't just pick the battlefield — they also get an extra +7.5% Attack and +7.5% Defense on top of the standard tech buffs. That's a significant stat edge going into the Day 6 showdown.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ INTEL TAB ═══════════════════ -->
+  <div class="tab-content" id="tab-intel">
+
+    <!-- Server Overview Cards -->
+    <div class="server-compare">
+      <div class="server-card s008">
+        <div class="sc-header">
+          <span class="sc-name">E#008 — Era 8 ★</span>
+          <span class="sc-rank">Stellar Dynasty #27</span>
+        </div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val">時宗 · 407M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val">156M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val">eRa · 17.6B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val">~47.3B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Merits (Player)</span><span class="sc-stat-val">민트 · 290M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Total Alliance Merits</span><span class="sc-stat-val">~3.35B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val">4 alliances</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val">Mixed EN/KR/JP</span></div>
+      </div>
+
+      <div class="server-card s016">
+        <div class="sc-header">
+          <span class="sc-name">E#016 — Era 16 👑</span>
+          <span class="sc-rank">Stellar Dynasty #7</span>
+        </div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val">AVATON · 271M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val">163M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val">TKH · 20.1B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val">~48.0B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Merits (Player)</span><span class="sc-stat-val">ImSoDzy · 427M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Total Alliance Merits</span><span class="sc-stat-val">~3.0B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val">1 mega-family</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val">EN-dominant</span></div>
+      </div>
+
+      <div class="server-card s092">
+        <div class="sc-header">
+          <span class="sc-name">E#092 — Era 92</span>
+          <span class="sc-rank">Stellar Dynasty #40</span>
+        </div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val">TeamTW · 331M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val">123M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val">OPS · 14.1B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val">~28.4B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Merits (Player)</span><span class="sc-stat-val">수원 · 294M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Total Alliance Merits</span><span class="sc-stat-val">~1.19B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val">3 large alliances</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val">KR/TW dominant</span></div>
+      </div>
+
+      <div class="server-card s022">
+        <div class="sc-header">
+          <span class="sc-name">E#022 — Era 22</span>
+          <span class="sc-rank">Stellar Dynasty #66</span>
+        </div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val">OwL^ · 306M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val">150M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val">REC · 19.9B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val">~42.4B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Merits (Player)</span><span class="sc-stat-val">IamSplender · 241M</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Total Alliance Merits</span><span class="sc-stat-val">~1.96B</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val">3 Realm alliances</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val">EN/JP mixed</span></div>
+      </div>
+    </div>
+
+    <!-- Threat Assessment -->
+    <div class="section">
+      <h2>Threat Assessment</h2>
+
+      <div class="callout important">
+        <strong>1. E#016 (Stellar Dynasty #7) — Primary Threat 👑</strong>
+        Highest Stellar Dynasty rank by far. All top 24 players are [TKH] — single command structure means fast, coordinated responses. Highest individual merits (ImSoDzy at 427M) and flattest power curve (deep roster all above 163M). Their weakness: single timezone/command vulnerability. Total alliance power across TKH/TWH/TSH/DRA is ~48B.
+      </div>
+
+      <div class="callout warning">
+        <strong>2. E#092 (Stellar Dynasty #40) — Dangerous Top-End</strong>
+        Highest individual power player (TeamTW 331M), strong top 5, but merits drop off a cliff after rank 8. Korean/Taiwanese player base means 04:00 UTC (1PM KST) is their strong window; 16:00 UTC (1AM KST) is their weak window. Multi-alliance structure (OPS/TAK/MKM) may cause coordination friction.
+      </div>
+
+      <div class="callout info">
+        <strong>3. E#022 (Stellar Dynasty #66) — Power Without Merits</strong>
+        Massive raw alliance power (~42B across top 4) but lowest SD rank in the group. The Realm family (REC/REV/ReD) has huge rosters but the fighting culture is thinner — only REC has significant merits (1.56B). Western/Japanese mixed base. Least experienced in competitive KvK based on rankings.
+      </div>
+
+      <div class="callout strategy">
+        <strong>E#008 (Stellar Dynasty #27) — Our Position</strong>
+        Highest top player (時宗 407M), highest total alliance power (~47B), and strong merits spread across eRa/REU/Myt. Multi-alliance coordination is the biggest challenge. REU's Korean players give timezone coverage that pure-English servers lack. 민트 leading merits at 290M from REU shows cross-alliance fighting strength.
+      </div>
+    </div>
+
+    <!-- Top 10 Power Rosters Side by Side -->
+    <div class="two-col">
+      <div class="section">
+        <h2>E#008 — Top 12 Power</h2>
+        <table class="roster-table">
+          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th>Power</th></tr></thead>
+          <tbody>
+            <tr class="highlight"><td>1</td><td>時宗</td><td class="alliance-tag">eRa</td><td>407M</td></tr>
+            <tr><td>2</td><td>민트</td><td class="alliance-tag">REU</td><td>286M</td></tr>
+            <tr><td>3</td><td>XnJinX</td><td class="alliance-tag">eRa</td><td>255M</td></tr>
+            <tr><td>4</td><td>Collin6666</td><td class="alliance-tag">eRa</td><td>250M</td></tr>
+            <tr><td>5</td><td>Macklemore</td><td class="alliance-tag">eRa</td><td>246M</td></tr>
+            <tr><td>6</td><td>BloodYoda</td><td class="alliance-tag">eRa</td><td>239M</td></tr>
+            <tr><td>7</td><td>Lumberjack</td><td class="alliance-tag">eRa</td><td>228M</td></tr>
+            <tr><td>8</td><td>ibubu☘JP</td><td class="alliance-tag">eRa</td><td>220M</td></tr>
+            <tr><td>9</td><td>MuRage</td><td class="alliance-tag">eRa</td><td>217M</td></tr>
+            <tr><td>10</td><td>TommyTorpedo</td><td class="alliance-tag">eRa</td><td>217M</td></tr>
+            <tr><td>11</td><td>또라에몽</td><td class="alliance-tag">REU</td><td>207M</td></tr>
+            <tr><td>12</td><td>Astrah</td><td class="alliance-tag">eRa</td><td>189M</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>E#016 — Top 12 Power</h2>
+        <table class="roster-table">
+          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th>Power</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>AVATON</td><td class="alliance-tag">TKH</td><td>271M</td></tr>
+            <tr><td>2</td><td>ImSoDzy</td><td class="alliance-tag">TKH</td><td>250M</td></tr>
+            <tr><td>3</td><td>DmscTheThird</td><td class="alliance-tag">TKH</td><td>246M</td></tr>
+            <tr><td>4</td><td>CaptFlint</td><td class="alliance-tag">TKH</td><td>246M</td></tr>
+            <tr><td>5</td><td>Ysendy</td><td class="alliance-tag">TKH</td><td>242M</td></tr>
+            <tr><td>6</td><td>MisterMuffin</td><td class="alliance-tag">TKH</td><td>237M</td></tr>
+            <tr><td>7</td><td>Metal76</td><td class="alliance-tag">TKH</td><td>208M</td></tr>
+            <tr><td>8</td><td>WØØDŸ</td><td class="alliance-tag">TKH</td><td>208M</td></tr>
+            <tr><td>9</td><td>heråclius虎</td><td class="alliance-tag">TKH</td><td>201M</td></tr>
+            <tr><td>10</td><td>mochitaro</td><td class="alliance-tag">TKH</td><td>197M</td></tr>
+            <tr><td>11</td><td>Elessar</td><td class="alliance-tag">TKH</td><td>196M</td></tr>
+            <tr><td>12</td><td>Ticklepink</td><td class="alliance-tag">TKH</td><td>191M</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="section">
+        <h2>E#092 — Top 12 Power</h2>
+        <table class="roster-table">
+          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th>Power</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>TeamTW</td><td class="alliance-tag">OPS</td><td>331M</td></tr>
+            <tr><td>2</td><td>JINAN</td><td class="alliance-tag">OPS</td><td>319M</td></tr>
+            <tr><td>3</td><td>SyMteX</td><td class="alliance-tag">OPS</td><td>293M</td></tr>
+            <tr><td>4</td><td>수원</td><td class="alliance-tag">OPS</td><td>252M</td></tr>
+            <tr><td>5</td><td>ILUM</td><td class="alliance-tag">OPS</td><td>223M</td></tr>
+            <tr><td>6</td><td>aAMEN</td><td class="alliance-tag">OPS</td><td>217M</td></tr>
+            <tr><td>7</td><td>CCC溫度計</td><td class="alliance-tag">OPS</td><td>207M</td></tr>
+            <tr><td>8</td><td>smartman</td><td class="alliance-tag">OPS</td><td>189M</td></tr>
+            <tr><td>9</td><td>ZINY</td><td class="alliance-tag">OPS</td><td>189M</td></tr>
+            <tr><td>10</td><td>牛奶xingxing</td><td class="alliance-tag">OPS</td><td>182M</td></tr>
+            <tr><td>11</td><td>WinterBane</td><td class="alliance-tag">OPS</td><td>175M</td></tr>
+            <tr><td>12</td><td>춘돌</td><td class="alliance-tag">OPS</td><td>161M</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>E#022 — Top 12 Power</h2>
+        <table class="roster-table">
+          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th>Power</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>OwL^</td><td class="alliance-tag">REC</td><td>306M</td></tr>
+            <tr><td>2</td><td>actaNverba</td><td class="alliance-tag">REC</td><td>254M</td></tr>
+            <tr><td>3</td><td>bZoVV</td><td class="alliance-tag">REC</td><td>237M</td></tr>
+            <tr><td>4</td><td>Drfamous</td><td class="alliance-tag">REC</td><td>234M</td></tr>
+            <tr><td>5</td><td>IamSplender</td><td class="alliance-tag">REC</td><td>219M</td></tr>
+            <tr><td>6</td><td>Journe</td><td class="alliance-tag">REC</td><td>212M</td></tr>
+            <tr><td>7</td><td>FONGhong</td><td class="alliance-tag">REC</td><td>204M</td></tr>
+            <tr><td>8</td><td>PATRONx</td><td class="alliance-tag">REC</td><td>200M</td></tr>
+            <tr><td>9</td><td>のら猫</td><td class="alliance-tag">REC</td><td>196M</td></tr>
+            <tr><td>10</td><td>RicoRoady</td><td class="alliance-tag">REC</td><td>195M</td></tr>
+            <tr><td>11</td><td>Telltell</td><td class="alliance-tag">--</td><td>193M</td></tr>
+            <tr><td>12</td><td>りんご同盟のようたん</td><td class="alliance-tag">REC</td><td>188M</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Alliance Power Comparison -->
+    <div class="section">
+      <h2>Alliance Comparison</h2>
+
+      <table class="roster-table">
+        <thead>
+          <tr><th>Server</th><th>Alliance #1</th><th>Power</th><th>Merits</th><th>Alliance #2</th><th>Power</th><th>Merits</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--accent-gold)">E#008</td>
+            <td>eRa WorldClass</td><td>17.6B</td><td>1.57B</td>
+            <td>eRà AuroraGodCourt</td><td>11.2B</td><td>170M</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent-gold)">E#008</td>
+            <td>Myt Mythic</td><td>10.0B</td><td>762M</td>
+            <td>REU Reunions</td><td>8.5B</td><td>842M</td>
+          </tr>
+          <tr><td colspan="7" style="border-bottom: 1px solid var(--border);"></td></tr>
+          <tr>
+            <td style="color:var(--accent-red)">E#016</td>
+            <td>TKH KrakenHunters</td><td>20.1B</td><td>2.48B</td>
+            <td>TWH WhaleHunters</td><td>14.0B</td><td>324M</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent-red)">E#016</td>
+            <td>TSH SharkHunters</td><td>11.6B</td><td>207M</td>
+            <td>DRA DragonDen</td><td>2.3B</td><td>20M</td>
+          </tr>
+          <tr><td colspan="7" style="border-bottom: 1px solid var(--border);"></td></tr>
+          <tr>
+            <td style="color:var(--accent-blue)">E#092</td>
+            <td>OPS ☠OnePiece☠</td><td>14.1B</td><td>888M</td>
+            <td>TAK LEGENDARY</td><td>7.2B</td><td>239M</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent-blue)">E#092</td>
+            <td>MKM 虛度光陰</td><td>6.6B</td><td>58M</td>
+            <td>RZN 2ndBattalion</td><td>644M</td><td>5.9M</td>
+          </tr>
+          <tr><td colspan="7" style="border-bottom: 1px solid var(--border);"></td></tr>
+          <tr>
+            <td style="color:var(--accent-purple)">E#022</td>
+            <td>REC RealmOfCrown</td><td>19.9B</td><td>1.56B</td>
+            <td>REV RealmOfValor</td><td>12.5B</td><td>198M</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent-purple)">E#022</td>
+            <td>ReD RealmOfDawn</td><td>7.7B</td><td>127M</td>
+            <td>BDR BlueDRAGON</td><td>2.3B</td><td>33M</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Timezone Analysis -->
+    <div class="section">
+      <h2>Timezone & Workshop Vulnerability</h2>
+      <p>Order Workshops contest at <strong style="color:var(--accent-purple)">04:00–05:00 UTC</strong> and <strong style="color:var(--accent-purple)">16:00–17:00 UTC</strong> (1hr each). Here's how that maps:</p>
+
+      <table class="roster-table" style="margin-top: 12px;">
+        <thead>
+          <tr><th>Server</th><th>Primary TZ</th><th>04:00 UTC</th><th>16:00 UTC</th><th>Weak Window</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--accent-gold)">E#008</td>
+            <td>Mixed US/KR/JP</td>
+            <td>11PM CDT / 1PM KST</td>
+            <td>11AM CDT / 1AM KST</td>
+            <td style="color:var(--accent-orange)">04:00 for US, 16:00 for KR</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent-red)">E#016</td>
+            <td>EN-dominant (US/EU?)</td>
+            <td>Late night US / Early EU</td>
+            <td>Midday US / Evening EU</td>
+            <td style="color:var(--accent-green)">04:00 UTC</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent-blue)">E#092</td>
+            <td>KR/TW dominant</td>
+            <td>1PM KST ✓</td>
+            <td>1AM KST ✗</td>
+            <td style="color:var(--accent-green)">16:00 UTC</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent-purple)">E#022</td>
+            <td>EN/JP mixed</td>
+            <td>1PM JST / Late night EU</td>
+            <td>1AM JST / Afternoon EU</td>
+            <td style="color:var(--accent-orange)">Split</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout strategy" style="margin-top: 12px;">
+        <strong>Exploitable Windows</strong>
+        E#016 is weakest at 04:00 UTC (night for US/EU). E#092 is weakest at 16:00 UTC (1AM KST). Era 8's mixed timezone base (REU's Korean players cover 04:00, eRa's Western players cover 16:00) is actually an advantage — you have decent coverage for both windows.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════ STRATEGY TAB ═══════════════════ -->
+  <div class="tab-content" id="tab-strategy">
+
+    <div class="section">
+      <h2>Strategic Considerations for Era 8</h2>
+
+      <div class="callout strategy">
+        <strong>Workshop Contest Timing</strong>
+        04:00–05:00 UTC and 16:00–17:00 UTC are the critical 1-hour windows. For Kansas City (CDT, UTC-5), that's 11:00 PM–midnight and 11:00 AM–noon. The morning contest is prime time; the overnight one will need coordination with international alliance members.
+      </div>
+
+      <div class="callout strategy">
+        <strong>Troop Conservation</strong>
+        6 workshop contests (1hr each) across Days 2–4 before the Day 6 showdown even starts. Don't treat each workshop like a TME invasion — you need to pace your losses. The good news: you're auto-returned after each hour, so losses are contained to the contest window. Save your best for Day 6.
+      </div>
+
+      <div class="callout strategy">
+        <strong>Alliance Roles</strong>
+        With 4 alliances (WC1, MyT, REU, AGC), consider splitting responsibilities: two alliances contest workshops while two focus on Alchemy Pool farming to push tech tree and points. Rotate daily.
+      </div>
+
+      <div class="callout strategy">
+        <strong>Day 5 Battlefield Pick</strong>
+        If Era 8 wins the Battle Stage, the king (or top alliance R5) gets to pick both the time and the map. Pick a timezone that maximizes your active players while minimizing opponents'. Picking your OWN map means you're already positioned — no teleportation needed for your side.
+      </div>
+
+      <div class="callout strategy">
+        <strong>Day 6 — 4-Way Politics</strong>
+        Unlike TME's clean 1v1, this is a 4-way fight over 8 refineries. That means temporary truces, target prioritization, and backstabs are all on the table. Coordinate with the weaker servers to gang up on the strongest threat, or negotiate refinery splits.
+      </div>
+
+      <div class="callout important">
+        <strong>Unknowns Still to Resolve</strong>
+        Does Alchemy Tech consume or just gate Personal Dew? · What is the minimum troop requirement for valid stationing? · What are the cross-border camp build requirements? · Day 6 showdown: how long are players on the enemy map? Is zeroing a risk? · Black Market item options and costs.
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Primordial Conflict Dashboard · Era 8 · Last updated: Day 4 Battle Stage · Unconfirmed items marked <span class="tbd">TBD</span>
+  </div>
+
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
