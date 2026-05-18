@@ -871,10 +871,6 @@ function TMECommandCenter(){
     setUiLang(code);
   },[]);
 
-  const utcNow=()=>{const d=new Date();return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,"0")}-${String(d.getUTCDate()).padStart(2,"0")} ${String(d.getUTCHours()).padStart(2,"0")}:${String(d.getUTCMinutes()).padStart(2,"0")} UTC`;};
-  const updateStage=(idx,field,value)=>{setConfig(p=>{const s=[...p.prepStages];s[idx]={...s[idx],[field]:parseFloat(value)||0};return{...p,prepStages:s,prepLastUpdated:utcNow()};});};
-  const updateRole=(tag,field,value,idx)=>{setConfig(p=>{const roles={...p.roles},r={...roles[tag]};if(idx!==undefined){const arr=[...r[field]];arr[idx]=value;r[field]=arr;}else r[field]=value;roles[tag]=r;return{...p,roles};});};
-  const updateExpected=(idx,value)=>{setConfig(p=>{const a=[...p.alliances];a[idx]={...a[idx],expected:value};return{...p,alliances:a};});};
 
   const tlPhases=Array.from({length:9},(_,i)=>({phase:t[`tl${i}Phase`],desc:t[`tl${i}Desc`]}));
   const tlTimesCalc=()=>{
@@ -903,7 +899,6 @@ function TMECommandCenter(){
     {id:"roles",label:`\uD83D\uDC65 ${t.tabRoles}`},
   ];
   const card={background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:16,marginBottom:12};
-  const inp={background:"#0f172a",border:"1px solid #334155",borderRadius:4,padding:"5px 8px",color:"#e2e8f0",fontSize:11,fontFamily:"'JetBrains Mono',monospace",width:"100%"};
 
   return(
     <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'JetBrains Mono','Fira Code',monospace"}}>
@@ -959,7 +954,7 @@ function TMECommandCenter(){
                     <div style={{fontSize:9,color:"#fbbf24"}}>{a.teleportTime}</div>
                   </div>
                   <div style={{fontSize:11,color:"#cbd5e1",textAlign:"center"}}>{a.allies}</div>
-                  <div style={{textAlign:"center"}}><input value={a.expected} onChange={e=>updateExpected(i,e.target.value)} style={{...inp,width:40,textAlign:"center",padding:"3px 4px",fontSize:11}} placeholder="—"/></div>
+                  <div style={{fontSize:11,color:"#cbd5e1",textAlign:"center"}}>{a.expected||"\u2014"}</div>
                   <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.power)}</div>
                   <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.merits)}</div>
                 </div>
@@ -1034,8 +1029,8 @@ function TMECommandCenter(){
 
           <div style={card}>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-              <label style={{fontSize:11,color:"#94a3b8"}}>{t.oppServerLabel}<input value={config.oppServer} onChange={e=>setConfig(p=>({...p,oppServer:e.target.value}))} style={{...inp,marginTop:2}}/></label>
-              <label style={{fontSize:11,color:"#94a3b8"}}>{t.invTimeLabel}<input value={config.invasionTime} onChange={e=>setConfig(p=>({...p,invasionTime:e.target.value}))} style={{...inp,marginTop:2}}/></label>
+              <div style={{fontSize:11,color:"#94a3b8"}}>{t.oppServerLabel}<div style={{color:"#e2e8f0",fontSize:12,marginTop:2}}>{config.oppServer}</div></div>
+              <div style={{fontSize:11,color:"#94a3b8"}}>{t.invTimeLabel}<div style={{color:"#e2e8f0",fontSize:12,marginTop:2}}>{config.invasionTime}</div></div>
             </div>
             <div style={{fontSize:11,color:isDefense?"#f87171":"#4ade80",marginTop:10,fontWeight:700}}>
               {isDefense?"\uD83D\uDEE1\uFE0F Defending":"\u2694\uFE0F Attacking"} (auto: {config.totalOur} vs {config.totalOpp})
@@ -1119,16 +1114,6 @@ function TMECommandCenter(){
             </div>
             <PrepChart stages={config.prepStages} t={t}/>
           </div>
-          <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:8}}>{"\u270F\uFE0F"} {t.editStage}</div>
-            {config.prepStages.map((s,i)=>(
-              <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 70px 70px",gap:6,marginBottom:6,alignItems:"center"}}>
-                <span style={{fontSize:11,color:"#cbd5e1"}}>{t[s.nameKey]||s.nameKey}</span>
-                <input type="number" step="0.1" value={s.ourPts} onChange={e=>updateStage(i,"ourPts",e.target.value)} style={{...inp,border:"1px solid #1e40af",color:"#60a5fa",textAlign:"center",width:"auto"}}/>
-                <input type="number" step="0.1" value={s.oppPts} onChange={e=>updateStage(i,"oppPts",e.target.value)} style={{...inp,border:"1px solid #991b1b",color:"#f87171",textAlign:"center",width:"auto"}}/>
-              </div>
-            ))}
-          </div>
         </>)}
 
         {activeTab==="roles"&&(<>
@@ -1141,22 +1126,22 @@ function TMECommandCenter(){
               <div style={{marginBottom:10}}>
                 <div style={{fontSize:10,color:"#fbbf24",marginBottom:2,letterSpacing:1}}>{"\uD83D\uDCE3"} {t.rallyLead}</div>
                 <div style={{fontSize:9,color:"#64748b",marginBottom:4}}>{t.rallyLeadDesc}</div>
-                <input value={config.roles[a.tag]?.rallyLead} onChange={e=>updateRole(a.tag,"rallyLead",e.target.value)} style={inp}/>
+                <div style={{fontSize:12,color:"#e2e8f0"}}>{config.roles[a.tag]?.rallyLead||"\u2014"}</div>
               </div>
               <div style={{marginBottom:10}}>
                 <div style={{fontSize:10,color:"#fbbf24",marginBottom:2,letterSpacing:1}}>{"\uD83D\uDE95"} {t.taxiRunners}</div>
                 <div style={{fontSize:9,color:"#64748b",marginBottom:4}}>{t.taxiRunnersDesc}</div>
-                {config.roles[a.tag]?.taxiRunners.map((n,i)=>(<input key={i} value={n} onChange={e=>updateRole(a.tag,"taxiRunners",e.target.value,i)} style={{...inp,marginBottom:3}}/>))}
+                <div style={{fontSize:12,color:"#e2e8f0"}}>{config.roles[a.tag]?.taxiRunners.filter(x=>x!=="TBD").join(", ")||"\u2014"}</div>
               </div>
               <div style={{marginBottom:10}}>
                 <div style={{fontSize:10,color:"#fbbf24",marginBottom:2,letterSpacing:1}}>{"\uD83C\uDFAF"} {t.siegeCoord}</div>
                 <div style={{fontSize:9,color:"#64748b",marginBottom:4}}>{t.siegeCoordDesc}</div>
-                <input value={config.roles[a.tag]?.siegeCoord} onChange={e=>updateRole(a.tag,"siegeCoord",e.target.value)} style={inp}/>
+                <div style={{fontSize:12,color:"#e2e8f0"}}>{config.roles[a.tag]?.siegeCoord||"\u2014"}</div>
               </div>
               <div>
                 <div style={{fontSize:10,color:"#fbbf24",marginBottom:2,letterSpacing:1}}>{"\uD83D\uDD27"} {t.siegeHelpers}</div>
                 <div style={{fontSize:9,color:"#64748b",marginBottom:4}}>{t.siegeHelpersDesc}</div>
-                {config.roles[a.tag]?.siegeHelpers.map((n,i)=>(<input key={i} value={n} onChange={e=>updateRole(a.tag,"siegeHelpers",e.target.value,i)} style={{...inp,marginBottom:3}}/>))}
+                <div style={{fontSize:12,color:"#e2e8f0"}}>{config.roles[a.tag]?.siegeHelpers.filter(x=>x!=="TBD").join(", ")||"\u2014"}</div>
               </div>
             </div>
           ))}
