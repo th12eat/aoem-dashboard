@@ -18,40 +18,14 @@ const { useState, useCallback, useMemo, useEffect, useRef } = React;
 
 /* ═══════════════════════════════════════════════════
    LOCALIZATION SYSTEM
-   Pre-generate translations on first use, cache them.
-   Switching languages after first translation is instant.
+   Static translations — instant language switching.
    ═══════════════════════════════════════════════════ */
 const LANGUAGES = [
-  { code: "en", label: "English", colors: [["#BF0A30",0,0,1,1],["#fff",0,.15,1,.12],["#fff",0,.39,1,.12],["#fff",0,.63,1,.12],["#fff",0,.87,1,.13],["#002868",0,0,.45,.54]] }, // US — stripes + blue canton
-  { code: "ko", label: "한국어", colors: [["#fff",0,0,1,1],["#CD2E3A",.25,.15,.5,.35],["#0047A0",.25,.5,.5,.35]] }, // KR — white + red top / blue bottom split
-  { code: "es", label: "Español", colors: [["#c60b1e",0,0,1,.25],["#ffc400",0,.25,1,.5],["#c60b1e",0,.75,1,.25]] }, // ES
-  { code: "pt", label: "Português", colors: [["#006600",0,0,.4,1],["#FF0000",.4,0,.6,1]] }, // PT — green left, red right
-  { code: "no", label: "Norsk", colors: [["#EF2B2D",0,0,1,1],["#fff",.22,0,.2,1],["#fff",0,.35,1,.3],["#002868",.26,0,.12,1],["#002868",0,.39,1,.22]] }, // NO — red bg, white cross, blue inner cross
-  { code: "sv", label: "Svenska", colors: [["#006AA7",0,0,1,1],["#FECC02",.22,0,.14,1],["#FECC02",0,.38,1,.24]] }, // SE
-  { code: "fi", label: "Suomi", colors: [["#fff",0,0,1,1],["#003580",.22,0,.16,1],["#003580",0,.38,1,.24]] }, // FI
-  { code: "de", label: "Deutsch", colors: [["#000",0,0,1,.33],["#D00",0,.33,1,.34],["#FFCE00",0,.67,1,.33]] }, // DE
-  { code: "fr", label: "Français", colors: [["#002395",0,0,.33,1],["#fff",.33,0,.34,1],["#ED2939",.67,0,.33,1]] }, // FR
-  { code: "ar", label: "العربية", colors: [["#006C35",0,0,1,.33],["#fff",0,.33,1,.34],["#000",0,.67,1,.33]] }, // SA
-  { code: "hi", label: "हिन्दी", colors: [["#FF9933",0,0,1,.33],["#fff",0,.33,1,.34],["#138808",0,.67,1,.33]] }, // IN
-  { code: "ta", label: "தமிழ்", colors: [["#FF9933",0,0,1,.33],["#fff",0,.33,1,.34],["#138808",0,.67,1,.33]] }, // IN
-  { code: "fa", label: "فارسی", colors: [["#239f40",0,0,1,.33],["#fff",0,.33,1,.34],["#DA0000",0,.67,1,.33]] }, // IR
-  { code: "vi", label: "Tiếng Việt", colors: [["#DA251D",0,0,1,1],["#FFFF00",.35,.25,.3,.5]] }, // VN
-  { code: "th", label: "ไทย", colors: [["#A51931",0,0,1,.17],["#F4F5F8",0,.17,1,.16],["#2D2A4A",0,.33,1,.34],["#F4F5F8",0,.67,1,.16],["#A51931",0,.83,1,.17]] }, // TH
-  { code: "si", label: "සිංහල", colors: [["#FFBE29",0,0,1,1],["#8D153A",.25,.1,.65,.8]] }, // LK
-  { code: "ja", label: "日本語", colors: [["#fff",0,0,1,1],["#BC002D",.35,.25,.3,.5]] }, // JP — white + red circle
-  { code: "zh", label: "中文", colors: [["#DE2910",0,0,1,1],["#FFDE00",.08,.15,.12,.2]] }, // CN — red + yellow star
+  { code: "en", label: "EN" },
+  { code: "fr", label: "FR" },
+  { code: "es", label: "ES" },
+  { code: "ko", label: "KO" },
 ];
-
-function Flag({ colors, size = 20 }) {
-  const h = Math.round(size * 0.7);
-  return (
-    <svg width={size} height={h} viewBox={`0 0 ${size} ${h}`} style={{ borderRadius: 2, display: "block", border: "1px solid #334155" }}>
-      {colors.map(([fill, x, y, w, ht], i) => (
-        <rect key={i} x={x * size} y={y * h} width={w * size} height={ht * h} fill={fill} />
-      ))}
-    </svg>
-  );
-}
 
 const EN = {
   headerSub: "Age of Empires Mobile — Command Center",
@@ -116,13 +90,10 @@ const EN = {
   briefTitle: "SHAREABLE BRIEF",
   briefDesc: "Copy this condensed battle plan to share in Discord or in-game chat.",
   copy: "Copy",
-  translating: "Translating...",
-  cached: "Cached",
   icHoldTitle: "IC HOLD RULES",
   icHoldRule1: "4-hour IC contest window after gates fall",
   icHoldRule2: "Win by: holding IC longest over 4hrs OR holding 1 consecutive hour",
   icHoldRule3: "After 4hrs, map reverts to open PvP for 2 more hours before event ends",
-  // Map labels
   mapRally: "RALLY",
   mapRallyLeader: "RALLY LEADER",
   mapSiegeLeader: "SIEGE LEADER",
@@ -137,17 +108,14 @@ const EN = {
   krakenDesc: "High-power players to target with remaining siege after gates fall. Citadel HP ~1.25M.",
   mapInner: "inner",
   mapOuter: "outer",
-  // Tower names
   towerSword: "Sword",
   towerArrow: "Arrow",
   towerCavalry: "Cavalry",
   towerPike: "Pike",
-  // Alliance roles
   rolePrimaryStrike: "Primary Strike / IC Hold",
   roleSecondaryStrike: "Secondary Strike / Support",
   roleFlanking: "Flanking / Tower Control",
   roleTowerHold: "Tower Hold / Taxi Rallies",
-  // Timeline phases
   tl0Phase: "Map Opens", tl0Desc: "Cross-server PvP begins. Scout enemy positions. Do NOT teleport yet.",
   tl1Phase: "WC1 Teleports", tl1Desc: "WC1 teleports to outer position. Secure Swordsman Tower (N). Build war machines.",
   tl2Phase: "MyT Teleports", tl2Desc: "MyT teleports to outer position. Secure Cavalry Tower (S). Position war machines.",
@@ -159,36 +127,307 @@ const EN = {
   tl8Phase: "Open PvP (2hr)", tl8Desc: "Map reverts to open PvP. Teleportation stays open 2 more hours. Event ends after.",
 };
 
-// Cache object: { langCode: { ...translatedStrings } }
-const L10N_CACHE = { en: EN };
+const FR = {
+  headerSub: "Age of Empires Mobile — Centre de Commandement",
+  headerTitle: "LE PLUS PUISSANT EMPIRE",
+  defending: "DEFENSE",
+  attacking: "ATTAQUE",
+  invasionLabel: "Invasion : Dimanche",
+  tabOverview: "Apercu",
+  tabMap: "Carte",
+  tabTimeline: "Chronologie",
+  tabPrep: "Prep",
+  tabRoles: "Roles",
+  tabBrief: "Resume",
+  sitBrief: "BRIEFING DE SITUATION",
+  wonPrepWith: "a gagne la prep avec",
+  vsOur: "contre nos",
+  theyInvade: "Ils envahissent notre carte.",
+  weInvade: "Nous envahissons leur carte.",
+  strategy: "Strategie :",
+  stratDefense: "WC1 + AGC sur la ligne NE, MyT + REU sur la ligne SE. WC1 prend IC. Swordsman Tower est prioritaire.",
+  stratOffense: "WC1 + AGC sur la ligne NW, MyT + REU sur la ligne SW. WC1 prend IC. Swordsman Tower est prioritaire.",
+  allianceOverview: "APERCU DES ALLIANCES",
+  colRole: "Role",
+  colAllies: "Allies",
+  colExpected: "Attendus",
+  colPower: "Puissance",
+  colMerits: "Merites",
+  colTotal: "TOTAL",
+  config: "CONFIG",
+  oppServerLabel: "Serveur Adverse",
+  invTimeLabel: "Heure d'Invasion",
+  wonPrepCheck: "Nous avons gagne la prep (passer en ATTAQUE)",
+  battlefield: "CHAMP DE BATAILLE",
+  defPositions: "POSITIONS DEFENSIVES",
+  offPositions: "POSITIONS OFFENSIVES",
+  mapDesc: "Chaque alliance a une zone de teleportation designee. Les sections colorees indiquent ou se teleporter.",
+  towerAssign: "ASSIGNATION DES TOURS",
+  towerWarn: "Pikeman (W) probablement concede — WC1 tente si Swordsman est securise.",
+  warMachines: "MACHINES DE GUERRE (Par Alliance)",
+  siegeDesc: "Trebs et Rams sur les portes d'abord. Apres la chute des portes, le siege restant chasse les Krakens ennemis (citadelles baleines). Escalades reparties comme points de saut entre la porte et IC.",
+  siegeWarn: "4h de construction — une fois utilisees, disparues. Siege uniquement en DEFENSE.",
+  siegeStats: "Rams : ~500 dmg/2s (infini) | Trebs : ~2500 dmg/3s (50 tirs) | PV Citadelle : ~1.25M",
+  defTimeline: "CHRONOLOGIE DE DEFENSE",
+  offTimeline: "CHRONOLOGIE D'ATTAQUE",
+  prepResults: "RESULTATS DES ETAPES DE PREP",
+  editStage: "MODIFIER LES POINTS D'ETAPE (Milliards)",
+  rallyLead: "CHEF DE RALLYE",
+  rallyLeadDesc: "Communique les timings de rallye a l'alliance",
+  taxiRunners: "COUREURS TAXI (3-4)",
+  taxiRunnersDesc: "Transportent les joueurs vers IC via des rallyes taxi",
+  siegeCoord: "COORDINATEUR DE SIEGE",
+  siegeCoordDesc: "Coordonne le deploiement et le ciblage des machines de guerre",
+  siegeHelpers: "ASSISTANTS DE SIEGE (3-4)",
+  siegeHelpersDesc: "Construisent et deploient les machines de guerre selon les directives",
+  taxiProtocol: "PROTOCOLE DE RALLYE TAXI",
+  taxiStep1: "L'officier rallye la citadelle ennemie en face de IC",
+  taxiStep2: "Les joueurs rejoignent — le rallye avance lentement vers IC",
+  taxiStep3: "Pres de la cour → l'officier expulse ou dissout",
+  taxiStep4: "Les joueurs expulses renforcent IC / la cour immediatement",
+  taxiStep5: "Repeter en continu — c'est la bouee de sauvetage",
+  taxiWarn: "Seuls les officiers R5 et R4 peuvent expulser/dissoudre les rallyes.",
+  briefTitle: "RESUME PARTAGEABLE",
+  briefDesc: "Copiez ce plan de bataille condense pour le partager sur Discord ou dans le chat en jeu.",
+  copy: "Copier",
+  icHoldTitle: "REGLES DE CONTROLE IC",
+  icHoldRule1: "Fenetre de contestation IC de 4 heures apres la chute des portes",
+  icHoldRule2: "Victoire par : controle IC le plus long sur 4h OU 1 heure consecutive",
+  icHoldRule3: "Apres 4h, la carte revient en PvP ouvert pour 2 heures supplementaires avant la fin",
+  mapRally: "RALLYE",
+  mapRallyLeader: "CHEF DE RALLYE",
+  mapSiegeLeader: "CHEF DE SIEGE",
+  mapGateRing: "Anneau de Portes",
+  mapICZone: "Zone IC",
+  mapGates: "Portes",
+  mapRallyStaging: "Zone de Rallye",
+  mapSiegeStaging: "Zone de Siege",
+  oppIntel: "RENSEIGNEMENTS ADVERSES",
+  oppAlliancesSub: "Meilleures alliances de",
+  krakenTargets: "CIBLES DE SIEGE (Krakens)",
+  krakenDesc: "Joueurs puissants a cibler avec le siege restant apres la chute des portes. PV Citadelle ~1.25M.",
+  mapInner: "interieur",
+  mapOuter: "exterieur",
+  towerSword: "Sword",
+  towerArrow: "Arrow",
+  towerCavalry: "Cavalry",
+  towerPike: "Pike",
+  rolePrimaryStrike: "Frappe Principale / Controle IC",
+  roleSecondaryStrike: "Frappe Secondaire / Support",
+  roleFlanking: "Flanquement / Controle des Tours",
+  roleTowerHold: "Tenue de Tour / Rallyes Taxi",
+  tl0Phase: "Ouverture de la Carte", tl0Desc: "Le PvP inter-serveurs commence. Reperer les positions ennemies. Ne PAS se teleporter encore.",
+  tl1Phase: "WC1 se Teleporte", tl1Desc: "WC1 se teleporte en position exterieure. Securiser Swordsman Tower (N). Construire les machines de guerre.",
+  tl2Phase: "MyT se Teleporte", tl2Desc: "MyT se teleporte en position exterieure. Securiser Cavalry Tower (S). Positionner les machines de guerre.",
+  tl3Phase: "REU se Teleporte", tl3Desc: "REU se teleporte en position interieure pres de Archer Tower (E). Tenter Pikeman (W) si faisable.",
+  tl4Phase: "Portes Deverrouillees + AGC", tl4Desc: "AGC se teleporte en position interieure pres de Archer Tower. TOUS engagent. Portes attaquables. Deployer le siege.",
+  tl5Phase: "Siege des Portes", tl5Desc: "Trebs et Rams sur les portes. Apres la chute, le siege restant chasse les Krakens ennemis. Escalades comme points de saut.",
+  tl6Phase: "Assaut IC", tl6Desc: "Foncer sur IC avec les marches les plus fortes. WC1 entre en premier. Tous les autres remplissent la cour. Rallyes taxi critiques.",
+  tl7Phase: "Contestation IC (4h)", tl7Desc: "Tenir IC pendant 1 heure consecutive OU le plus longtemps sur 4h. Rotation des renforts. Cour = victoire.",
+  tl8Phase: "PvP Ouvert (2h)", tl8Desc: "La carte revient en PvP ouvert. La teleportation reste ouverte 2 heures de plus. Fin de l'evenement.",
+};
 
-async function fetchTranslation(langCode) {
-  if (L10N_CACHE[langCode]) return L10N_CACHE[langCode];
-  const lang = LANGUAGES.find(l => l.code === langCode)?.label || langCode;
-  const keys = Object.keys(EN);
-  const payload = keys.map(k => `${k}|||${EN[k]}`).join("\n");
-  const resp = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514", max_tokens: 8000,
-      messages: [{ role: "user", content: `Translate the values in these key-value pairs into ${lang}. Format: key|||value. Keep keys unchanged. Keep alliance tags (WC1, MyT, REU, AGC), server names, times (UTC), numbers, emoji, and compass directions (NE/SE/NW/SW/N/S/E/W) exactly as-is. Translate everything else. Output ONLY the same key|||translated_value format, one per line. No extra text.\n\n${payload}` }]
-    })
-  });
-  const data = await resp.json();
-  const raw = data.content?.map(c => c.text || "").join("") || "";
-  const result = { ...EN };
-  raw.split("\n").forEach(line => {
-    const idx = line.indexOf("|||");
-    if (idx > 0) {
-      const k = line.substring(0, idx).trim();
-      const v = line.substring(idx + 3).trim();
-      if (EN[k] !== undefined && v) result[k] = v;
-    }
-  });
-  L10N_CACHE[langCode] = result;
-  return result;
-}
+const ES = {
+  headerSub: "Age of Empires Mobile — Centro de Mando",
+  headerTitle: "EL IMPERIO MAS PODEROSO",
+  defending: "DEFENDIENDO",
+  attacking: "ATACANDO",
+  invasionLabel: "Invasion: Domingo",
+  tabOverview: "Resumen",
+  tabMap: "Mapa",
+  tabTimeline: "Cronologia",
+  tabPrep: "Prep",
+  tabRoles: "Roles",
+  tabBrief: "Informe",
+  sitBrief: "INFORME DE SITUACION",
+  wonPrepWith: "gano la prep con",
+  vsOur: "contra nuestros",
+  theyInvade: "Ellos invaden nuestro mapa.",
+  weInvade: "Nosotros invadimos su mapa.",
+  strategy: "Estrategia:",
+  stratDefense: "WC1 + AGC en linea NE, MyT + REU en linea SE. WC1 toma IC. Swordsman Tower es prioridad.",
+  stratOffense: "WC1 + AGC en linea NW, MyT + REU en linea SW. WC1 toma IC. Swordsman Tower es prioridad.",
+  allianceOverview: "RESUMEN DE ALIANZAS",
+  colRole: "Rol",
+  colAllies: "Aliados",
+  colExpected: "Esperados",
+  colPower: "Poder",
+  colMerits: "Meritos",
+  colTotal: "TOTAL",
+  config: "CONFIG",
+  oppServerLabel: "Servidor Oponente",
+  invTimeLabel: "Hora de Invasion",
+  wonPrepCheck: "Ganamos la prep (cambiar a ATAQUE)",
+  battlefield: "CAMPO DE BATALLA",
+  defPositions: "POSICIONES DEFENSIVAS",
+  offPositions: "POSICIONES OFENSIVAS",
+  mapDesc: "Cada alianza tiene una zona de teletransporte designada. Las secciones coloreadas muestran donde teletransportarse.",
+  towerAssign: "ASIGNACION DE TORRES",
+  towerWarn: "Pikeman (W) probablemente concedido — WC1 intenta si Swordsman esta asegurado.",
+  warMachines: "MAQUINAS DE GUERRA (Por Alianza)",
+  siegeDesc: "Trebs y Rams en las puertas primero. Despues de la caida de las puertas, el asedio restante caza Krakens enemigos (ciudadelas ballena). Escalades se distribuyen como puntos de salto entre la puerta e IC.",
+  siegeWarn: "4h de construccion — una vez usadas, desaparecen. Asedio solo en DEFENSA.",
+  siegeStats: "Rams: ~500 dmg/2s (infinito) | Trebs: ~2500 dmg/3s (50 disparos) | HP Ciudadela: ~1.25M",
+  defTimeline: "CRONOLOGIA DE DEFENSA",
+  offTimeline: "CRONOLOGIA DE ATAQUE",
+  prepResults: "RESULTADOS DE ETAPAS DE PREP",
+  editStage: "EDITAR PUNTOS DE ETAPA (Miles de millones)",
+  rallyLead: "LIDER DE RALLY",
+  rallyLeadDesc: "Comunica los tiempos de rally a la alianza",
+  taxiRunners: "CORREDORES TAXI (3-4)",
+  taxiRunnersDesc: "Transportan jugadores hacia IC via rallies taxi",
+  siegeCoord: "COORDINADOR DE ASEDIO",
+  siegeCoordDesc: "Coordina el despliegue y objetivo de las maquinas de guerra",
+  siegeHelpers: "AYUDANTES DE ASEDIO (3-4)",
+  siegeHelpersDesc: "Construyen y despliegan maquinas de guerra segun indicaciones",
+  taxiProtocol: "PROTOCOLO DE RALLY TAXI",
+  taxiStep1: "El oficial hace rally en la ciudadela enemiga frente a IC",
+  taxiStep2: "Los jugadores se unen — el rally avanza lentamente hacia IC",
+  taxiStep3: "Cerca del patio → el oficial expulsa o disuelve",
+  taxiStep4: "Los jugadores expulsados refuerzan IC / patio inmediatamente",
+  taxiStep5: "Repetir continuamente — esto es la linea vital",
+  taxiWarn: "Solo oficiales R5 y R4 pueden expulsar/disolver rallies.",
+  briefTitle: "INFORME COMPARTIBLE",
+  briefDesc: "Copia este plan de batalla condensado para compartir en Discord o en el chat del juego.",
+  copy: "Copiar",
+  icHoldTitle: "REGLAS DE CONTROL IC",
+  icHoldRule1: "Ventana de contestacion IC de 4 horas tras la caida de puertas",
+  icHoldRule2: "Ganar por: mantener IC mas tiempo en 4h O mantener 1 hora consecutiva",
+  icHoldRule3: "Despues de 4h, el mapa vuelve a PvP abierto por 2 horas mas antes del fin",
+  mapRally: "RALLY",
+  mapRallyLeader: "LIDER DE RALLY",
+  mapSiegeLeader: "LIDER DE ASEDIO",
+  mapGateRing: "Anillo de Puertas",
+  mapICZone: "Zona IC",
+  mapGates: "Puertas",
+  mapRallyStaging: "Zona de Rally",
+  mapSiegeStaging: "Zona de Asedio",
+  oppIntel: "INTELIGENCIA DEL OPONENTE",
+  oppAlliancesSub: "Mejores alianzas de",
+  krakenTargets: "OBJETIVOS DE ASEDIO (Krakens)",
+  krakenDesc: "Jugadores de alto poder a atacar con asedio restante tras la caida de puertas. HP Ciudadela ~1.25M.",
+  mapInner: "interior",
+  mapOuter: "exterior",
+  towerSword: "Sword",
+  towerArrow: "Arrow",
+  towerCavalry: "Cavalry",
+  towerPike: "Pike",
+  rolePrimaryStrike: "Ataque Principal / Control IC",
+  roleSecondaryStrike: "Ataque Secundario / Soporte",
+  roleFlanking: "Flanqueo / Control de Torres",
+  roleTowerHold: "Defensa de Torre / Rallies Taxi",
+  tl0Phase: "Apertura del Mapa", tl0Desc: "Comienza el PvP entre servidores. Explorar posiciones enemigas. NO teletransportarse aun.",
+  tl1Phase: "WC1 se Teletransporta", tl1Desc: "WC1 se teletransporta a posicion exterior. Asegurar Swordsman Tower (N). Construir maquinas de guerra.",
+  tl2Phase: "MyT se Teletransporta", tl2Desc: "MyT se teletransporta a posicion exterior. Asegurar Cavalry Tower (S). Posicionar maquinas de guerra.",
+  tl3Phase: "REU se Teletransporta", tl3Desc: "REU se teletransporta a posicion interior cerca de Archer Tower (E). Intentar Pikeman (W) si es factible.",
+  tl4Phase: "Puertas Desbloqueadas + AGC", tl4Desc: "AGC se teletransporta a posicion interior cerca de Archer Tower. TODOS atacan. Puertas atacables. Desplegar asedio.",
+  tl5Phase: "Asedio de Puertas", tl5Desc: "Trebs y Rams en las puertas. Tras la caida, el asedio restante caza Krakens enemigos. Escalades como puntos de salto.",
+  tl6Phase: "Asalto IC", tl6Desc: "Avanzar hacia IC con las marchas mas fuertes. WC1 entra primero. Todos los demas llenan el patio. Rallies taxi criticos.",
+  tl7Phase: "Contestacion IC (4h)", tl7Desc: "Mantener IC por 1 hora consecutiva O el mayor tiempo en 4h. Rotar refuerzos. Patio = victoria.",
+  tl8Phase: "PvP Abierto (2h)", tl8Desc: "El mapa vuelve a PvP abierto. El teletransporte sigue abierto 2 horas mas. Fin del evento.",
+};
+
+const KO = {
+  headerSub: "Age of Empires Mobile — \uCEE4\uB9E8\uB4DC \uC13C\uD130",
+  headerTitle: "\uAC00\uC7A5 \uAC15\uB300\uD55C \uC81C\uAD6D",
+  defending: "\uBC29\uC5B4",
+  attacking: "\uACF5\uACA9",
+  invasionLabel: "\uCE68\uACF5: \uC77C\uC694\uC77C",
+  tabOverview: "\uAC1C\uC694",
+  tabMap: "\uC9C0\uB3C4",
+  tabTimeline: "\uD0C0\uC784\uB77C\uC778",
+  tabPrep: "\uC900\uBE44",
+  tabRoles: "\uC5ED\uD560",
+  tabBrief: "\uBE0C\uB9AC\uD551",
+  sitBrief: "\uC0C1\uD669 \uBE0C\uB9AC\uD551",
+  wonPrepWith: "\uC774 \uC900\uBE44\uC5D0\uC11C \uC2B9\uB9AC",
+  vsOur: "\uC6B0\uB9AC\uC758",
+  theyInvade: "\uC801\uC774 \uC6B0\uB9AC \uC9C0\uB3C4\uB97C \uCE68\uACF5\uD569\uB2C8\uB2E4.",
+  weInvade: "\uC6B0\uB9AC\uAC00 \uC801 \uC9C0\uB3C4\uB97C \uCE68\uACF5\uD569\uB2C8\uB2E4.",
+  strategy: "\uC804\uB7B5:",
+  stratDefense: "WC1 + AGC NE \uB77C\uC778, MyT + REU SE \uB77C\uC778. WC1\uC774 IC \uC810\uB839. Swordsman Tower \uC6B0\uC120.",
+  stratOffense: "WC1 + AGC NW \uB77C\uC778, MyT + REU SW \uB77C\uC778. WC1\uC774 IC \uC810\uB839. Swordsman Tower \uC6B0\uC120.",
+  allianceOverview: "\uC5F0\uB9F9 \uAC1C\uC694",
+  colRole: "\uC5ED\uD560",
+  colAllies: "\uB3D9\uB9F9",
+  colExpected: "\uC608\uC0C1",
+  colPower: "\uC804\uB825",
+  colMerits: "\uACF5\uD6C8",
+  colTotal: "\uD569\uACC4",
+  config: "\uC124\uC815",
+  oppServerLabel: "\uC0C1\uB300 \uC11C\uBC84",
+  invTimeLabel: "\uCE68\uACF5 \uC2DC\uAC04",
+  wonPrepCheck: "\uC900\uBE44 \uC2B9\uB9AC (\uACF5\uACA9\uC73C\uB85C \uC804\uD658)",
+  battlefield: "\uC804\uC7A5",
+  defPositions: "\uBC29\uC5B4 \uC704\uCE58",
+  offPositions: "\uACF5\uACA9 \uC704\uCE58",
+  mapDesc: "\uAC01 \uC5F0\uB9F9\uC740 \uC9C0\uC815\uB41C \uD154\uB808\uD3EC\uD2B8 \uC874\uC744 \uAC00\uC9D1\uB2C8\uB2E4. \uC0C9\uC0C1 \uAD6C\uC5ED\uC774 \uD154\uB808\uD3EC\uD2B8 \uC704\uCE58\uB97C \uB098\uD0C0\uB0C5\uB2C8\uB2E4.",
+  towerAssign: "\uD0C0\uC6CC \uBC30\uC815",
+  towerWarn: "Pikeman (W) \uD3EC\uAE30 \uAC00\uB2A5\uC131 — Swordsman \uD655\uBCF4 \uC2DC WC1 \uC2DC\uB3C4.",
+  warMachines: "\uACF5\uC131 \uBB34\uAE30 (\uC5F0\uB9F9\uB2F9)",
+  siegeDesc: "Trebs\uC640 Rams\uB97C \uBA3C\uC800 \uBB38\uC5D0 \uBC30\uCE58. \uBB38 \uD568\uB77D \uD6C4 \uB0A8\uC740 \uACF5\uC131 \uBB34\uAE30\uB85C \uC801 Krakens(\uACE0\uB798 \uC131\uCC44) \uC0AC\uB0E5. Escalades\uB294 \uBB38\uACFC IC \uC0AC\uC774 \uC810\uD504 \uD3EC\uC778\uD2B8\uB85C \uBC30\uCE58.",
+  siegeWarn: "4\uC2DC\uAC04 \uAC74\uC124 \uC2DC\uAC04 — \uC0AC\uC6A9\uD558\uBA74 \uC18C\uBA78. \uACF5\uC131\uC740 \uBC29\uC5B4 \uC2DC\uC5D0\uB9CC.",
+  siegeStats: "Rams: ~500 dmg/2s (\uBB34\uD55C) | Trebs: ~2500 dmg/3s (50\uBC1C) | \uC131\uCC44 HP: ~1.25M",
+  defTimeline: "\uBC29\uC5B4 \uD0C0\uC784\uB77C\uC778",
+  offTimeline: "\uACF5\uACA9 \uD0C0\uC784\uB77C\uC778",
+  prepResults: "\uC900\uBE44 \uB2E8\uACC4 \uACB0\uACFC",
+  editStage: "\uB2E8\uACC4 \uD3EC\uC778\uD2B8 \uD3B8\uC9D1 (\uC2ED\uC5B5)",
+  rallyLead: "\uB7A0\uB9AC \uB9AC\uB354",
+  rallyLeadDesc: "\uC5F0\uB9F9\uC5D0 \uB7A0\uB9AC \uD0C0\uC774\uBC0D \uC804\uB2EC",
+  taxiRunners: "\uD0DD\uC2DC \uB7EC\uB108 (3-4)",
+  taxiRunnersDesc: "\uD0DD\uC2DC \uB7A0\uB9AC\uB85C \uD50C\uB808\uC774\uC5B4\uB97C IC\uB85C \uC774\uB3D9",
+  siegeCoord: "\uACF5\uC131 \uCF54\uB514\uB124\uC774\uD130",
+  siegeCoordDesc: "\uACF5\uC131 \uBB34\uAE30 \uBC30\uCE58 \uBC0F \uD0C0\uAC9F \uC870\uC728",
+  siegeHelpers: "\uACF5\uC131 \uBCF4\uC870 (3-4)",
+  siegeHelpersDesc: "\uC9C0\uC2DC\uC5D0 \uB530\uB77C \uACF5\uC131 \uBB34\uAE30 \uAC74\uC124 \uBC0F \uBC30\uCE58",
+  taxiProtocol: "\uD0DD\uC2DC \uB7A0\uB9AC \uD504\uB85C\uD1A0\uCF5C",
+  taxiStep1: "\uC7A5\uAD50\uAC00 IC \uAC74\uB108\uD3B8 \uC801 \uC131\uCC44\uC5D0 \uB7A0\uB9AC",
+  taxiStep2: "\uD50C\uB808\uC774\uC5B4 \uD569\uB958 — \uB7A0\uB9AC\uAC00 IC \uBC29\uD5A5\uC73C\uB85C \uC774\uB3D9",
+  taxiStep3: "\uC548\uB728 \uADFC\uCC98 \u2192 \uC7A5\uAD50\uAC00 \uCD94\uBC29 \uB610\uB294 \uD574\uC0B0",
+  taxiStep4: "\uCD94\uBC29\uB41C \uD50C\uB808\uC774\uC5B4\uB294 \uC989\uC2DC IC / \uC548\uB728 \uC9C0\uC6D0",
+  taxiStep5: "\uACC4\uC18D \uBC18\uBCF5 — \uC774\uAC83\uC774 \uC0DD\uBA85\uC120",
+  taxiWarn: "R5\uC640 R4 \uC7A5\uAD50\uB9CC \uB7A0\uB9AC \uCD94\uBC29/\uD574\uC0B0 \uAC00\uB2A5.",
+  briefTitle: "\uACF5\uC720\uC6A9 \uBE0C\uB9AC\uD551",
+  briefDesc: "\uC774 \uC694\uC57D\uB41C \uC804\uD22C \uACC4\uD68D\uC744 Discord \uB610\uB294 \uC778\uAC8C\uC784 \uCC44\uD305\uC5D0 \uACF5\uC720\uD558\uC138\uC694.",
+  copy: "\uBCF5\uC0AC",
+  icHoldTitle: "IC \uC810\uB839 \uADDC\uCE59",
+  icHoldRule1: "\uBB38 \uD568\uB77D \uD6C4 4\uC2DC\uAC04 IC \uACBD\uC7C1 \uCC3D",
+  icHoldRule2: "\uC2B9\uB9AC \uC870\uAC74: 4\uC2DC\uAC04 \uB3D9\uC548 \uAC00\uC7A5 \uC624\uB798 IC \uC810\uB839 \uB610\uB294 1\uC2DC\uAC04 \uC5F0\uC18D \uC810\uB839",
+  icHoldRule3: "4\uC2DC\uAC04 \uD6C4 \uC9C0\uB3C4\uB294 \uC774\uBCA4\uD2B8 \uC885\uB8CC \uC804 2\uC2DC\uAC04 \uC790\uC720 PvP\uB85C \uC804\uD658",
+  mapRally: "\uB7A0\uB9AC",
+  mapRallyLeader: "\uB7A0\uB9AC \uB9AC\uB354",
+  mapSiegeLeader: "\uACF5\uC131 \uB9AC\uB354",
+  mapGateRing: "\uBB38 \uB9C1",
+  mapICZone: "IC \uAD6C\uC5ED",
+  mapGates: "\uBB38",
+  mapRallyStaging: "\uB7A0\uB9AC \uC9D1\uACB0\uC9C0",
+  mapSiegeStaging: "\uACF5\uC131 \uC9D1\uACB0\uC9C0",
+  oppIntel: "\uC0C1\uB300 \uC815\uBCF4",
+  oppAlliancesSub: "\uC0C1\uC704 \uC5F0\uB9F9",
+  krakenTargets: "\uACF5\uC131 \uBAA9\uD45C (Krakens)",
+  krakenDesc: "\uBB38 \uD568\uB77D \uD6C4 \uB0A8\uC740 \uACF5\uC131\uC73C\uB85C \uACF5\uACA9\uD560 \uACE0\uC804\uB825 \uD50C\uB808\uC774\uC5B4. \uC131\uCC44 HP ~1.25M.",
+  mapInner: "\uB0B4\uBD80",
+  mapOuter: "\uC678\uBD80",
+  towerSword: "Sword",
+  towerArrow: "Arrow",
+  towerCavalry: "Cavalry",
+  towerPike: "Pike",
+  rolePrimaryStrike: "\uC8FC\uB825 \uACF5\uACA9 / IC \uC810\uB839",
+  roleSecondaryStrike: "\uBCF4\uC870 \uACF5\uACA9 / \uC9C0\uC6D0",
+  roleFlanking: "\uCE21\uBA74 \uACF5\uACA9 / \uD0C0\uC6CC \uC81C\uC5B4",
+  roleTowerHold: "\uD0C0\uC6CC \uBC29\uC5B4 / \uD0DD\uC2DC \uB7A0\uB9AC",
+  tl0Phase: "\uC9C0\uB3C4 \uC624\uD508", tl0Desc: "\uD06C\uB85C\uC2A4 \uC11C\uBC84 PvP \uC2DC\uC791. \uC801 \uC704\uCE58 \uC815\uCC30. \uC544\uC9C1 \uD154\uB808\uD3EC\uD2B8 \uAE08\uC9C0.",
+  tl1Phase: "WC1 \uD154\uB808\uD3EC\uD2B8", tl1Desc: "WC1 \uC678\uBD80 \uC704\uCE58\uB85C \uD154\uB808\uD3EC\uD2B8. Swordsman Tower (N) \uD655\uBCF4. \uACF5\uC131 \uBB34\uAE30 \uAC74\uC124.",
+  tl2Phase: "MyT \uD154\uB808\uD3EC\uD2B8", tl2Desc: "MyT \uC678\uBD80 \uC704\uCE58\uB85C \uD154\uB808\uD3EC\uD2B8. Cavalry Tower (S) \uD655\uBCF4. \uACF5\uC131 \uBB34\uAE30 \uBC30\uCE58.",
+  tl3Phase: "REU \uD154\uB808\uD3EC\uD2B8", tl3Desc: "REU \uB0B4\uBD80 \uC704\uCE58\uB85C \uD154\uB808\uD3EC\uD2B8 Archer Tower (E) \uADFC\uCC98. Pikeman (W) \uAC00\uB2A5\uC2DC \uC2DC\uB3C4.",
+  tl4Phase: "\uBB38 \uD574\uC81C + AGC", tl4Desc: "AGC \uB0B4\uBD80 \uC704\uCE58 Archer Tower \uADFC\uCC98\uB85C \uD154\uB808\uD3EC\uD2B8. \uC804\uC6D0 \uAD50\uC804. \uBB38 \uACF5\uACA9 \uAC00\uB2A5. \uACF5\uC131 \uBC30\uCE58.",
+  tl5Phase: "\uBB38 \uACF5\uC131", tl5Desc: "Trebs\uC640 Rams\uB97C \uBB38\uC5D0 \uBC30\uCE58. \uBB38 \uD568\uB77D \uD6C4 \uB0A8\uC740 \uACF5\uC131\uC73C\uB85C \uC801 Krakens \uC0AC\uB0E5. Escalades\uB294 \uC810\uD504 \uD3EC\uC778\uD2B8.",
+  tl6Phase: "IC \uB3CC\uACA9", tl6Desc: "\uCD5C\uAC15 \uBCD1\uB825\uC73C\uB85C IC \uB3CC\uACA9. WC1 \uBA3C\uC800 \uC9C4\uC785. \uB098\uBA38\uC9C0 \uC548\uB728 \uCC44\uC6C0. \uD0DD\uC2DC \uB7A0\uB9AC \uD544\uC218.",
+  tl7Phase: "IC \uACBD\uC7C1 (4\uC2DC\uAC04)", tl7Desc: "1\uC2DC\uAC04 \uC5F0\uC18D \uC810\uB839 \uB610\uB294 4\uC2DC\uAC04 \uCD5C\uC7A5 \uC810\uB839. \uC9C0\uC6D0\uBCD1 \uAD50\uB300. \uC548\uB728 = \uC2B9\uB9AC.",
+  tl8Phase: "\uC790\uC720 PvP (2\uC2DC\uAC04)", tl8Desc: "\uC9C0\uB3C4 \uC790\uC720 PvP \uC804\uD658. \uD154\uB808\uD3EC\uD2B8 2\uC2DC\uAC04 \uB354 \uC720\uC9C0. \uC774\uBCA4\uD2B8 \uC885\uB8CC.",
+};
+
+const TRANSLATIONS = { en: EN, fr: FR, es: ES, ko: KO };
 
 function genOppCode(name) {
   const m = name.match(/\d+/);
@@ -542,51 +781,20 @@ function sumF(arr,f){return arr.reduce((s,a)=>s+(parseInt(String(a[f]).replace(/
 function fmtN(n){if(n>=1e9)return(n/1e9).toFixed(2)+"B";if(n>=1e6)return(n/1e6).toFixed(1)+"M";return n.toLocaleString();}
 
 /* ═══════════════════════════════════════════════════
-   LANGUAGE PICKER (custom dropdown with flag emoji)
+   LANGUAGE PICKER (button bar)
    ═══════════════════════════════════════════════════ */
-function LangPicker({ value, onChange, disabled, cached }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-  const current = LANGUAGES.find(l => l.code === value) || LANGUAGES[0];
-
-  useEffect(() => {
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener("pointerdown", handler);
-    return () => document.removeEventListener("pointerdown", handler);
-  }, []);
-
+function LangPicker({ value, onChange }) {
   return (
-    <div ref={ref} style={{ position: "relative", direction: "ltr" }}>
-      <button onClick={() => !disabled && setOpen(!open)} style={{
-        background: "#0f172a", border: "1px solid #334155", borderRadius: 6, padding: "4px 10px",
-        color: "#fbbf24", fontSize: 12, fontFamily: "inherit", cursor: disabled ? "wait" : "pointer",
-        display: "flex", alignItems: "center", gap: 6, opacity: disabled ? 0.6 : 1,
-      }}>
-        <Flag colors={current.colors} size={22}/>
-        <span style={{ fontSize: 10 }}>{current.label}</span>
-        <span style={{ fontSize: 8, color: "#64748b", marginLeft: 2 }}>{"\u25BC"}</span>
-      </button>
-      {open && (
-        <div style={{
-          position: "absolute", top: "100%", left: "50%", transform: "translateX(-50%)", marginTop: 4,
-          background: "#0f172a", border: "1px solid #334155", borderRadius: 8, padding: 4,
-          zIndex: 100, maxHeight: 280, overflowY: "auto", minWidth: 180,
-          boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
-        }}>
-          {LANGUAGES.map(l => (
-            <button key={l.code} onClick={() => { onChange(l.code); setOpen(false); }} style={{
-              display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "6px 10px",
-              background: l.code === value ? "#1e293b" : "transparent", border: "none", borderRadius: 4,
-              color: l.code === value ? "#fbbf24" : "#cbd5e1", cursor: "pointer", fontSize: 11, fontFamily: "inherit",
-              textAlign: "left",
-            }}>
-              <Flag colors={l.colors} size={24}/>
-              <span style={{ flex: 1 }}>{l.label}</span>
-              {cached.has(l.code) && l.code !== "en" && <span style={{ fontSize: 9, color: "#4ade80" }}>{"\u2713"}</span>}
-            </button>
-          ))}
-        </div>
-      )}
+    <div style={{ display: "flex", gap: 4 }}>
+      {LANGUAGES.map(l => (
+        <button key={l.code} onClick={() => onChange(l.code)} style={{
+          padding: "4px 10px", fontSize: 11, fontFamily: "inherit", fontWeight: 600,
+          letterSpacing: 1, borderRadius: 4, cursor: "pointer",
+          background: l.code === value ? "rgba(251,191,36,0.15)" : "#0f172a",
+          border: l.code === value ? "1px solid #fbbf24" : "1px solid #334155",
+          color: l.code === value ? "#fbbf24" : "#64748b",
+        }}>{l.label}</button>
+      ))}
     </div>
   );
 }
@@ -599,21 +807,13 @@ function TMECommandCenter(){
   const[activeTab,setActiveTab]=useState("overview");
   const[uiLang,setUiLang]=useState("en");
   const[t,setT]=useState(EN);
-  const[loading,setLoading]=useState(false);
-  const[cached,setCached]=useState(new Set(["en"]));
 
   const isDefense=!config.weWonPrep;
   const oppCode=genOppCode(config.oppServer);
 
-  const handleLang=useCallback(async(code)=>{
-    if(L10N_CACHE[code]){setT(L10N_CACHE[code]);setUiLang(code);return;}
-    setLoading(true);
-    try{
-      const result=await fetchTranslation(code);
-      setT(result);setUiLang(code);
-      setCached(prev=>new Set([...prev,code]));
-    }catch(e){console.error(e);}
-    setLoading(false);
+  const handleLang=useCallback((code)=>{
+    setT(TRANSLATIONS[code]||EN);
+    setUiLang(code);
   },[]);
 
   const updateStage=(idx,field,value)=>{setConfig(p=>{const s=[...p.prepStages];s[idx]={...s[idx],[field]:parseFloat(value)||0};return{...p,prepStages:s};});};
@@ -632,15 +832,13 @@ function TMECommandCenter(){
   ];
   const card={background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:16,marginBottom:12};
   const inp={background:"#0f172a",border:"1px solid #334155",borderRadius:4,padding:"5px 8px",color:"#e2e8f0",fontSize:11,fontFamily:"'JetBrains Mono',monospace",width:"100%"};
-  const isRTL=uiLang==="ar"||uiLang==="fa";
 
   return(
-    <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'JetBrains Mono','Fira Code',monospace",direction:isRTL?"rtl":"ltr"}}>
+    <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'JetBrains Mono','Fira Code',monospace"}}>
       {/* Header */}
       <div style={{background:"linear-gradient(90deg,#0f172a,#1e3a5f,#0f172a)",borderBottom:"2px solid #fbbf24",padding:16,textAlign:"center",position:"sticky",top:0,zIndex:10}}>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:6}}>
-          <LangPicker value={uiLang} onChange={handleLang} disabled={loading} cached={cached}/>
-          {loading&&<span style={{fontSize:10,color:"#fbbf24"}}>{"\u23F3"} {t.translating}</span>}
+          <LangPicker value={uiLang} onChange={handleLang}/>
         </div>
         <div style={{fontSize:11,color:"#fbbf24",letterSpacing:3,textTransform:"uppercase",marginBottom:4}}>{t.headerSub}</div>
         <div style={{fontSize:22,fontWeight:800,color:"#f8fafc",letterSpacing:1}}>{t.headerTitle}</div>
@@ -653,7 +851,7 @@ function TMECommandCenter(){
       </div>
 
       {/* Tabs */}
-      <div style={{display:"flex",overflowX:"auto",background:"#0f172a",borderBottom:"1px solid #1e3a5f",padding:"0 8px",direction:"ltr"}}>
+      <div style={{display:"flex",overflowX:"auto",background:"#0f172a",borderBottom:"1px solid #1e3a5f",padding:"0 8px"}}>
         {tabs.map(tb=>(
           <button key={tb.id} onClick={()=>setActiveTab(tb.id)} style={{flex:"none",padding:"10px 14px",fontSize:11,fontFamily:"inherit",background:activeTab===tb.id?"#1e293b":"transparent",color:activeTab===tb.id?"#fbbf24":"#64748b",border:"none",borderBottom:activeTab===tb.id?"2px solid #fbbf24":"2px solid transparent",cursor:"pointer",whiteSpace:"nowrap"}}>{tb.label}</button>
         ))}
@@ -892,7 +1090,7 @@ function TMECommandCenter(){
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:4}}>{"\uD83D\uDCDC"} {t.briefTitle}</div>
             <div style={{fontSize:10,color:"#64748b",marginBottom:10}}>{t.briefDesc}</div>
-            <pre style={{whiteSpace:"pre-wrap",wordBreak:"break-word",fontSize:11,lineHeight:1.7,color:"#cbd5e1",background:"#0a0e1a",padding:12,borderRadius:6,border:"1px solid #1e3a5f",maxHeight:500,overflowY:"auto",direction:"ltr"}}>{briefText}</pre>
+            <pre style={{whiteSpace:"pre-wrap",wordBreak:"break-word",fontSize:11,lineHeight:1.7,color:"#cbd5e1",background:"#0a0e1a",padding:12,borderRadius:6,border:"1px solid #1e3a5f",maxHeight:500,overflowY:"auto"}}>{briefText}</pre>
             <button onClick={()=>navigator.clipboard?.writeText(briefText)} style={{marginTop:8,padding:"6px 16px",fontSize:11,background:"#1e3a5f",border:"1px solid #334155",borderRadius:4,color:"#fbbf24",cursor:"pointer",fontFamily:"inherit"}}>{"\uD83D\uDCCB"} {t.copy}</button>
           </div>
         )}
