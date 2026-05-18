@@ -1045,7 +1045,7 @@ function TMECommandCenter(){
           <div style={card}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
               <div style={{fontSize:13,fontWeight:700,color:"#fbbf24"}}>{"\uD83D\uDDFA\uFE0F"} {t.battlefield} {"\u2014"} {mapIsDefense?t.defPositions:t.offPositions}</div>
-              <button onClick={()=>setMapViewOverride(v=>v===null?!isDefense:v===isDefense?!isDefense:null)} style={{padding:"4px 12px",fontSize:10,background:mapViewOverride!==null?"#1e3a5f":"#0f172a",border:"1px solid #334155",borderRadius:4,color:mapViewOverride!==null?"#fbbf24":"#64748b",cursor:"pointer",fontFamily:"monospace"}}>{mapIsDefense?"\uD83D\uDEE1\uFE0F DEF":"\u2694\uFE0F OFF"} \u21C4</button>
+              <button onClick={()=>setMapViewOverride(v=>v===null?!isDefense:v===isDefense?!isDefense:null)} style={{padding:"4px 12px",fontSize:10,background:mapViewOverride!==null?"#1e3a5f":"#0f172a",border:"1px solid #334155",borderRadius:4,color:mapViewOverride!==null?"#fbbf24":"#64748b",cursor:"pointer",fontFamily:"monospace"}}>{mapIsDefense?"\uD83D\uDEE1\uFE0F DEF":"\u2694\uFE0F ATK"}</button>
             </div>
             <div style={{fontSize:10,color:"#94a3b8",marginBottom:12}}>{t.mapDesc}</div>
             <ZoomableMap>
