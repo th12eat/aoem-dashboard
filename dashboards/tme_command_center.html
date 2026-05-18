@@ -456,10 +456,10 @@ const DEFAULT_CONFIG = {
   invasionTime: "11:00 UTC",
   weWonPrep: false,
   alliances: [
-    { tag: "WC1", roleKey: "rolePrimaryStrike", teleportTime: "10:30 UTC", position: "NE-inner", tower: "Swordsman (N) / Pikeman (W)", color: "#3b82f6", allies: 168, expected: "", power: "17,236,872,426", merits: "1,493,190,936" },
-    { tag: "MyT", roleKey: "roleFlanking", teleportTime: "10:40 UTC", position: "SE-outer", tower: "Cavalry (S)", color: "#22c55e", allies: 153, expected: "", power: "10,077,180,519", merits: "744,926,645" },
-    { tag: "REU", roleKey: "roleSecondaryStrike", teleportTime: "10:50 UTC", position: "SE-inner", tower: "Archer (E)", color: "#f59e0b", allies: 118, expected: "", power: "8,634,995,031", merits: "825,232,103" },
-    { tag: "AGC", roleKey: "roleTowerHold", teleportTime: "11:00 UTC", position: "NE-outer", tower: "Archer (E)", color: "#ef4444", allies: 169, expected: "", power: "11,113,145,620", merits: "154,684,345" },
+    { tag: "WC1", roleKey: "rolePrimaryStrike", teleportTime: "10:30 UTC", position: "NE-inner", tower: "Swordsman (N) / Pikeman (W)", color: "#3b82f6", allies: 169, expected: "", power: "17,908,224,376", merits: "1,739,585,234" },
+    { tag: "MyT", roleKey: "roleFlanking", teleportTime: "10:40 UTC", position: "SE-outer", tower: "Cavalry (S)", color: "#22c55e", allies: 150, expected: "", power: "10,101,551,325", merits: "798,173,643" },
+    { tag: "REU", roleKey: "roleSecondaryStrike", teleportTime: "10:50 UTC", position: "SE-inner", tower: "Archer (E)", color: "#f59e0b", allies: 125, expected: "", power: "9,258,414,137", merits: "841,540,304" },
+    { tag: "AGC", roleKey: "roleTowerHold", teleportTime: "11:00 UTC", position: "NE-outer", tower: "Archer (E)", color: "#ef4444", allies: 169, expected: "", power: "11,382,271,011", merits: "178,993,536" },
   ],
   prepStages: [
     { name: "Resource Gathering", ourPts: 2.89, oppPts: 3.09, won: false },
@@ -636,10 +636,8 @@ function DiamondMap({ alliances, isDefense, t }) {
     {x:oW.x-pb,y:oW.y+20,dir:"W",tag:"AGC",color:"#ef4444",targetX:oW.x+55,targetY:oW.y+10},
     {x:wc1RallyLdrPt.x+18,y:wc1RallyLdrPt.y,dir:"NE",tag:"WC1",color:"#3b82f6",targetX:cx+gateR*Math.cos(-Math.PI/4),targetY:cy+gateR*Math.sin(-Math.PI/4)},
   ]:[
-    {x:oE.x+pb,y:oE.y-20,dir:"E",tag:"",color:"#f87171"},
-    {x:oE.x+pb,y:oE.y+20,dir:"E",tag:"",color:"#f87171"},
-    {x:oN.x+28,y:oN.y-pb,dir:"N",tag:"",color:"#f87171"},
-    {x:oN.x-28,y:oN.y-pb,dir:"N",tag:"",color:"#f87171"},
+    {x:oN.x,y:oN.y-pb,dir:"N",tag:"",color:"#f87171"},
+    {x:oW.x-pb,y:oW.y,dir:"W",tag:"",color:"#f87171"},
     {x:oS.x,y:oS.y+pb,dir:"S",tag:"",color:"#f87171"},
   ];
 
@@ -932,7 +930,7 @@ function TMECommandCenter(){
                     <div style={{fontSize:9,color:"#fbbf24"}}>{a.teleportTime}</div>
                   </div>
                   <div style={{fontSize:11,color:"#cbd5e1",textAlign:"center"}}>{a.allies}</div>
-                  <div style={{textAlign:"center"}}><input value={a.expected} onChange={e=>updateExpected(i,e.target.value)} style={{...inp,width:40,textAlign:"center",padding:"3px 4px",fontSize:11}} placeholder="\u2014"/></div>
+                  <div style={{textAlign:"center"}}><input value={a.expected} onChange={e=>updateExpected(i,e.target.value)} style={{...inp,width:40,textAlign:"center",padding:"3px 4px",fontSize:11}} placeholder="—"/></div>
                   <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.power)}</div>
                   <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.merits)}</div>
                 </div>
