@@ -624,9 +624,12 @@ function DiamondMap({ alliances, isDefense, t }) {
     rallyMarkers.push({pt:lerp(iSW,iW,pushDist),color:a4?.color||"#f59e0b"});
   }
 
+  // WC1 rally leader point for gate-to-leader dashed line
+  const wc1RallyLdrPt=isDefense?lerp(iNE3,iE,pushDist):lerp(iNW23,iN,pushDist);
+  const wc1Gate=isDefense?gates[1]:gates[2]; // NE gate on defense, NW gate on offense
+
   // Siege markers — arrows only on defense; on offense show positions without arrows (enemy sieges us)
   const pb=28;
-  const wc1RallyLdrPt=lerp(iNE3,iE,pushDist);
   const siegeMarkers=isDefense?[
     {x:oN.x-28,y:oN.y-pb,dir:"N",tag:"AGC",color:"#ef4444",targetX:mid(oN,oW).x+30,targetY:mid(oN,oW).y+30},
     {x:oN.x+28,y:oN.y-pb,dir:"N",tag:"WC1",color:"#3b82f6",targetX:mid(oN,oW).x+50,targetY:mid(oN,oW).y+10},
@@ -748,6 +751,14 @@ function DiamondMap({ alliances, isDefense, t }) {
           </g>
         );
       })}
+
+      {/* WC1 rally leader — gate connection */}
+      {(()=>{
+        const dx=wc1Gate.x-wc1RallyLdrPt.x, dy=wc1Gate.y-wc1RallyLdrPt.y;
+        const len=Math.sqrt(dx*dx+dy*dy)||1;
+        const nx=dx/len, ny=dy/len;
+        return <line x1={wc1RallyLdrPt.x+nx*12} y1={wc1RallyLdrPt.y+ny*12} x2={wc1Gate.x-nx*8} y2={wc1Gate.y-ny*8} stroke="#fbbf24" strokeWidth="2" strokeDasharray="5,4" opacity="0.8"/>;
+      })()}
 
       {/* IC */}
       <circle cx={cx} cy={cy} r="36" fill="url(#icGlow)"/>
@@ -1032,8 +1043,9 @@ function TMECommandCenter(){
             ))}
             <div style={{fontSize:10,color:"#f59e0b",marginTop:8}}>{"\u26A0\uFE0F"} {isDefense?t.towerWarn:t.towerWarnOff}</div>
           </div>
-          {isDefense&&(<div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:8}}>{"\uD83D\uDCA3"} {t.warMachines}</div>
+          <div style={{...card,opacity:isDefense?1:0.4}}>
+            <div style={{fontSize:13,fontWeight:700,color:isDefense?"#fbbf24":"#64748b",marginBottom:8}}>{"\uD83D\uDCA3"} {t.warMachines}</div>
+            {!isDefense&&<div style={{fontSize:11,color:"#f59e0b",marginBottom:8,textAlign:"center"}}>{"\u26A0\uFE0F"} {t.siegeWarn}</div>}
             <div style={{display:"grid",gridTemplateColumns:"auto 1fr 1fr 1fr",gap:"6px 16px",fontSize:11}}>
               <div></div><div style={{color:"#94a3b8",textAlign:"center"}}>Trebs (12)</div><div style={{color:"#94a3b8",textAlign:"center"}}>Rams (3)</div><div style={{color:"#94a3b8",textAlign:"center"}}>Esc (3)</div>
               {computedAlliances.map(a=>[
@@ -1045,12 +1057,8 @@ function TMECommandCenter(){
             </div>
             <div style={{fontSize:10,color:"#94a3b8",marginTop:8,lineHeight:1.6}}>{t.siegeDesc}</div>
             <div style={{fontSize:10,color:"#64748b",marginTop:4}}>{t.siegeStats}</div>
-            <div style={{fontSize:10,color:"#f59e0b",marginTop:6}}>{"\u26A0\uFE0F"} {t.siegeWarn}</div>
-          </div>)}
-          {!isDefense&&(<div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#64748b",marginBottom:8}}>{"\uD83D\uDCA3"} {t.warMachines}</div>
-            <div style={{fontSize:12,color:"#f59e0b",textAlign:"center",padding:"16px 0"}}>{"\u26A0\uFE0F"} {t.siegeWarn}</div>
-          </div>)}
+            {isDefense&&<div style={{fontSize:10,color:"#f59e0b",marginTop:6}}>{"\u26A0\uFE0F"} {t.siegeWarn}</div>}
+          </div>
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:8}}>{"\uD83C\uDFDB\uFE0F"} {t.icHoldTitle}</div>
             <ul style={{margin:0,paddingLeft:18,fontSize:11,color:"#cbd5e1",lineHeight:1.8}}>
