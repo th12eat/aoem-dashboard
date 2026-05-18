@@ -834,7 +834,7 @@ function TMECommandCenter(){
   const[uiLang,setUiLang]=useState("en");
   const[t,setT]=useState(EN);
 
-  const isDefense=!config.weWonPrep;
+  const isDefense=config.totalOur < config.totalOpp;
   const oppCode=genOppCode(config.oppServer);
 
   const tpOffsets=[-30,-20,-10,0];
@@ -1019,9 +1019,9 @@ function TMECommandCenter(){
               <label style={{fontSize:11,color:"#94a3b8"}}>{t.oppServerLabel}<input value={config.oppServer} onChange={e=>setConfig(p=>({...p,oppServer:e.target.value}))} style={{...inp,marginTop:2}}/></label>
               <label style={{fontSize:11,color:"#94a3b8"}}>{t.invTimeLabel}<input value={config.invasionTime} onChange={e=>setConfig(p=>({...p,invasionTime:e.target.value}))} style={{...inp,marginTop:2}}/></label>
             </div>
-            <label style={{fontSize:11,color:"#94a3b8",display:"flex",alignItems:"center",gap:8,marginTop:10}}>
-              <input type="checkbox" checked={config.weWonPrep} onChange={e=>setConfig(p=>({...p,weWonPrep:e.target.checked}))}/>{t.wonPrepCheck}
-            </label>
+            <div style={{fontSize:11,color:isDefense?"#f87171":"#4ade80",marginTop:10,fontWeight:700}}>
+              {isDefense?"\uD83D\uDEE1\uFE0F Defending":"\u2694\uFE0F Attacking"} (auto: {config.totalOur} vs {config.totalOpp})
+            </div>
           </div>
         </>)}
 
