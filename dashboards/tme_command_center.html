@@ -486,6 +486,7 @@ const DEFAULT_CONFIG = {
   ],
   totalOur: 2.89,
   totalOpp: 3.09,
+  prepLastUpdated: "2026-05-18 04:00 UTC",
   oppAlliances: [
     { rank: 1, tag: "E38", name: "TheLastWolf", allies: 160, power: "17,825,083,183", merits: "1,701,935,323" },
     { rank: 2, tag: "K38", name: "Republic\uD55C\uAD6D", allies: 150, power: "11,735,334,303", merits: "710,232,458" },
@@ -870,7 +871,8 @@ function TMECommandCenter(){
     setUiLang(code);
   },[]);
 
-  const updateStage=(idx,field,value)=>{setConfig(p=>{const s=[...p.prepStages];s[idx]={...s[idx],[field]:parseFloat(value)||0};return{...p,prepStages:s};});};
+  const utcNow=()=>{const d=new Date();return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,"0")}-${String(d.getUTCDate()).padStart(2,"0")} ${String(d.getUTCHours()).padStart(2,"0")}:${String(d.getUTCMinutes()).padStart(2,"0")} UTC`;};
+  const updateStage=(idx,field,value)=>{setConfig(p=>{const s=[...p.prepStages];s[idx]={...s[idx],[field]:parseFloat(value)||0};return{...p,prepStages:s,prepLastUpdated:utcNow()};});};
   const updateRole=(tag,field,value,idx)=>{setConfig(p=>{const roles={...p.roles},r={...roles[tag]};if(idx!==undefined){const arr=[...r[field]];arr[idx]=value;r[field]=arr;}else r[field]=value;roles[tag]=r;return{...p,roles};});};
   const updateExpected=(idx,value)=>{setConfig(p=>{const a=[...p.alliances];a[idx]={...a[idx],expected:value};return{...p,alliances:a};});};
 
@@ -1107,7 +1109,10 @@ function TMECommandCenter(){
 
         {activeTab==="prep"&&(<>
           <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:4}}>{"\uD83D\uDCCA"} {t.prepResults}</div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+              <div style={{fontSize:13,fontWeight:700,color:"#fbbf24"}}>{"\uD83D\uDCCA"} {t.prepResults}</div>
+              <div style={{fontSize:9,color:"#64748b",fontFamily:"monospace"}}>Updated: {config.prepLastUpdated}</div>
+            </div>
             <div style={{display:"flex",justifyContent:"space-between",marginBottom:12,fontSize:12}}>
               <span><span style={{color:"#60a5fa"}}>{"\u25A0"}</span> Era8: <strong>{config.totalOur}B</strong></span>
               <span><span style={{color:"#f87171"}}>{"\u25A0"}</span> {config.oppServer}: <strong>{config.totalOpp}B</strong></span>
