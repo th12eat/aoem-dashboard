@@ -38,7 +38,11 @@ const EN = {
   tabTimeline: "Timeline",
   tabPrep: "Prep",
   tabRoles: "Roles",
-  tabBrief: "Brief",
+  prepStage1: "Resource Gathering",
+  prepStage2: "Unit Training",
+  prepStage3: "Tribal Eliminations",
+  prepStage4: "Speed Up Consumption",
+  prepStage5: "Power Boost",
   sitBrief: "SITUATION BRIEF",
   wonPrepWith: "is winning prep with",
   vsOur: "vs our",
@@ -140,7 +144,11 @@ const FR = {
   tabTimeline: "Chronologie",
   tabPrep: "Prep",
   tabRoles: "Roles",
-  tabBrief: "Resume",
+  prepStage1: "Collecte de Ressources",
+  prepStage2: "Entrainement d'Unites",
+  prepStage3: "Eliminations Tribales",
+  prepStage4: "Consommation d'Accelerations",
+  prepStage5: "Augmentation de Puissance",
   sitBrief: "BRIEFING DE SITUATION",
   wonPrepWith: "est en train de gagner la prep avec",
   vsOur: "contre nos",
@@ -242,7 +250,11 @@ const ES = {
   tabTimeline: "Cronologia",
   tabPrep: "Prep",
   tabRoles: "Roles",
-  tabBrief: "Informe",
+  prepStage1: "Recoleccion de Recursos",
+  prepStage2: "Entrenamiento de Unidades",
+  prepStage3: "Eliminaciones Tribales",
+  prepStage4: "Consumo de Aceleraciones",
+  prepStage5: "Aumento de Poder",
   sitBrief: "INFORME DE SITUACION",
   wonPrepWith: "esta ganando la prep con",
   vsOur: "contra nuestros",
@@ -344,7 +356,11 @@ const KO = {
   tabTimeline: "\uD0C0\uC784\uB77C\uC778",
   tabPrep: "\uC900\uBE44",
   tabRoles: "\uC5ED\uD560",
-  tabBrief: "\uBE0C\uB9AC\uD551",
+  prepStage1: "\uC790\uC6D0 \uC218\uC9D1",
+  prepStage2: "\uBD80\uB300 \uD6C8\uB828",
+  prepStage3: "\uBD80\uC871 \uC81C\uAC70",
+  prepStage4: "\uAC00\uC18D \uC0AC\uC6A9",
+  prepStage5: "\uC804\uB825 \uC99D\uAC15",
   sitBrief: "\uC0C1\uD669 \uBE0C\uB9AC\uD551",
   wonPrepWith: "\uC774 \uC900\uBE44\uC5D0\uC11C \uC774\uAE30\uACE0 \uC788\uC74C",
   vsOur: "\uC6B0\uB9AC\uC758",
@@ -462,11 +478,11 @@ const DEFAULT_CONFIG = {
     { tag: "AGC", roleKey: "roleTowerHold", teleportTime: "11:00 UTC", position: "NE-outer", tower: "Archer (E)", color: "#ef4444", allies: 169, expected: "", power: "11,382,271,011", merits: "178,993,536" },
   ],
   prepStages: [
-    { name: "Resource Gathering", ourPts: 2.89, oppPts: 3.09, won: false },
-    { name: "Unit Training", ourPts: 0, oppPts: 0, won: false },
-    { name: "Tribal Eliminations", ourPts: 0, oppPts: 0, won: false },
-    { name: "Speed Up Consumption", ourPts: 0, oppPts: 0, won: false },
-    { name: "Power Boost", ourPts: 0, oppPts: 0, won: false },
+    { nameKey: "prepStage1", ourPts: 2.89, oppPts: 3.09, won: false },
+    { nameKey: "prepStage2", ourPts: 0, oppPts: 0, won: false },
+    { nameKey: "prepStage3", ourPts: 0, oppPts: 0, won: false },
+    { nameKey: "prepStage4", ourPts: 0, oppPts: 0, won: false },
+    { nameKey: "prepStage5", ourPts: 0, oppPts: 0, won: false },
   ],
   totalOur: 2.89,
   totalOpp: 3.09,
@@ -796,10 +812,10 @@ function DiamondMap({ alliances, isDefense, t }) {
   );
 }
 
-function PrepChart({stages}){
+function PrepChart({stages,t}){
   const mx=Math.max(...stages.map(s=>Math.max(s.ourPts,s.oppPts)));
   const icon=s=>{if(s.ourPts===0&&s.oppPts===0)return"\u2014";return s.won?"\u2705":"\u274C";};
-  return(<div style={{display:"flex",flexDirection:"column",gap:10}}>{stages.map((s,i)=>(<div key={i}><div style={{fontSize:12,color:"#cbd5e1",fontFamily:"monospace",marginBottom:3}}>{icon(s)} {s.name}</div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#60a5fa",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.ourPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.ourPts/mx)*100:0}%`,background:"linear-gradient(90deg,#1e40af,#3b82f6)",borderRadius:3}}/></div></div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#f87171",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.oppPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.oppPts/mx)*100:0}%`,background:"linear-gradient(90deg,#991b1b,#ef4444)",borderRadius:3}}/></div></div></div>))}</div>);
+  return(<div style={{display:"flex",flexDirection:"column",gap:10}}>{stages.map((s,i)=>(<div key={i}><div style={{fontSize:12,color:"#cbd5e1",fontFamily:"monospace",marginBottom:3}}>{icon(s)} {t[s.nameKey]||s.nameKey}</div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#60a5fa",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.ourPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.ourPts/mx)*100:0}%`,background:"linear-gradient(90deg,#1e40af,#3b82f6)",borderRadius:3}}/></div></div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#f87171",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.oppPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.oppPts/mx)*100:0}%`,background:"linear-gradient(90deg,#991b1b,#ef4444)",borderRadius:3}}/></div></div></div>))}</div>);
 }
 
 function fmt(str){const n=parseInt(String(str).replace(/,/g,""),10);if(n>=1e9)return(n/1e9).toFixed(2)+"B";if(n>=1e6)return(n/1e6).toFixed(1)+"M";return str;}
@@ -877,12 +893,10 @@ function TMECommandCenter(){
   };
   const tlTimes=tlTimesCalc();
 
-  const briefText=`=== TME: Era8 vs ${config.oppServer} (${isDefense?"DEF":"OFF"}) ===\nSunday ${config.invasionTime}\n\n${computedAlliances.map(a=>`[${a.tag}] ${a.position} | ${a.tower} | TP: ${a.teleportTime}`).join("\n")}\n\nTOWERS: WC1\u2192Sword/Pike | MyT\u2192Cav | AGC/REU\u2192Archer\nIC: 4hrs, 1hr consecutive or longest. Then 2hr open PvP.\nSIEGE: Gates\u2192Krakens. Defense only.\nTrebs ~2500/3s (50) | Rams ~500/2s (\u221E) | Citadel ~1.25M HP\nEscalades = jump points gate\u2192IC\n\n${Object.entries(config.roles).map(([tag,r])=>`[${tag}] Rally:${r.rallyLead} Taxi:${r.taxiRunners.filter(x=>x!=="TBD").join(",")||"TBD"} Siege:${r.siegeCoord}`).join("\n")}`;
-
   const tabs=[
     {id:"overview",label:`\uD83D\uDCCB ${t.tabOverview}`},{id:"map",label:`\uD83D\uDDFA\uFE0F ${t.tabMap}`},
     {id:"timeline",label:`\u23F1\uFE0F ${t.tabTimeline}`},{id:"prep",label:`\uD83D\uDCCA ${t.tabPrep}`},
-    {id:"roles",label:`\uD83D\uDC65 ${t.tabRoles}`},{id:"brief",label:`\uD83D\uDCDC ${t.tabBrief}`},
+    {id:"roles",label:`\uD83D\uDC65 ${t.tabRoles}`},
   ];
   const card={background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:16,marginBottom:12};
   const inp={background:"#0f172a",border:"1px solid #334155",borderRadius:4,padding:"5px 8px",color:"#e2e8f0",fontSize:11,fontFamily:"'JetBrains Mono',monospace",width:"100%"};
@@ -1093,13 +1107,13 @@ function TMECommandCenter(){
               <span><span style={{color:"#60a5fa"}}>{"\u25A0"}</span> Era8: <strong>{config.totalOur}B</strong></span>
               <span><span style={{color:"#f87171"}}>{"\u25A0"}</span> {config.oppServer}: <strong>{config.totalOpp}B</strong></span>
             </div>
-            <PrepChart stages={config.prepStages}/>
+            <PrepChart stages={config.prepStages} t={t}/>
           </div>
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:8}}>{"\u270F\uFE0F"} {t.editStage}</div>
             {config.prepStages.map((s,i)=>(
               <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 70px 70px",gap:6,marginBottom:6,alignItems:"center"}}>
-                <span style={{fontSize:11,color:"#cbd5e1"}}>{s.name}</span>
+                <span style={{fontSize:11,color:"#cbd5e1"}}>{t[s.nameKey]||s.nameKey}</span>
                 <input type="number" step="0.1" value={s.ourPts} onChange={e=>updateStage(i,"ourPts",e.target.value)} style={{...inp,border:"1px solid #1e40af",color:"#60a5fa",textAlign:"center",width:"auto"}}/>
                 <input type="number" step="0.1" value={s.oppPts} onChange={e=>updateStage(i,"oppPts",e.target.value)} style={{...inp,border:"1px solid #991b1b",color:"#f87171",textAlign:"center",width:"auto"}}/>
               </div>
@@ -1145,14 +1159,6 @@ function TMECommandCenter(){
           </div>
         </>)}
 
-        {activeTab==="brief"&&(
-          <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:4}}>{"\uD83D\uDCDC"} {t.briefTitle}</div>
-            <div style={{fontSize:10,color:"#64748b",marginBottom:10}}>{t.briefDesc}</div>
-            <pre style={{whiteSpace:"pre-wrap",wordBreak:"break-word",fontSize:11,lineHeight:1.7,color:"#cbd5e1",background:"#0a0e1a",padding:12,borderRadius:6,border:"1px solid #1e3a5f",maxHeight:500,overflowY:"auto"}}>{briefText}</pre>
-            <button onClick={()=>navigator.clipboard?.writeText(briefText)} style={{marginTop:8,padding:"6px 16px",fontSize:11,background:"#1e3a5f",border:"1px solid #334155",borderRadius:4,color:"#fbbf24",cursor:"pointer",fontFamily:"inherit"}}>{"\uD83D\uDCCB"} {t.copy}</button>
-          </div>
-        )}
       </div>
 
       <div style={{textAlign:"center",padding:16,fontSize:9,color:"#334155",borderTop:"1px solid #1e3a5f"}}>TME Command Center {"\u00B7"} TommyTorpedo {"\u00B7"} Era8 {"\u00B7"} v1.4</div>
