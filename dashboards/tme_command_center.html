@@ -40,10 +40,11 @@ const EN = {
   tabRoles: "Roles",
   tabBrief: "Brief",
   sitBrief: "SITUATION BRIEF",
-  wonPrepWith: "won prep with",
+  wonPrepWith: "is winning prep with",
   vsOur: "vs our",
-  theyInvade: "They invade our map.",
-  weInvade: "We invade their map.",
+  atPresent: "At present,",
+  theyInvade: "they invade our map.",
+  weInvade: "we invade their map.",
   strategy: "Strategy:",
   stratDefense: "WC1 + AGC on NE line, MyT + REU on SE line. WC1 takes IC. Swordsman Tower is priority.",
   stratOffense: "WC1 + AGC on NW line, MyT + REU on SW line. WC1 takes IC. Swordsman Tower is priority.",
@@ -64,6 +65,7 @@ const EN = {
   mapDesc: "Each alliance has a designated teleport zone. Colored sections show where to teleport.",
   towerAssign: "TOWER ASSIGNMENTS",
   towerWarn: "Pikeman (W) likely conceded — WC1 attempts if Swordsman secured.",
+  towerWarnOff: "Archer Tower (E) is low priority — contest only if opportunity arises.",
   warMachines: "WAR MACHINES (Per Alliance)",
   siegeDesc: "Trebuchets & rams on gates first. After gates fall, remaining siege hunts enemy Krakens (whale citadels). Escalades spread as jump points between gate and IC.",
   siegeWarn: "4hr build time — once spent, gone. Siege only on DEFENSE.",
@@ -105,7 +107,7 @@ const EN = {
   oppIntel: "OPPONENT INTEL",
   oppAlliancesSub: "Top alliances from",
   krakenTargets: "SIEGE TARGETS (Krakens)",
-  krakenDesc: "High-power players to target with remaining siege after gates fall. Citadel HP ~1.25M.",
+  krakenDesc: "Ranked by merit:power ratio (M:P) — higher ratio = more combat-active. Citadel HP ~1.25M.",
   mapInner: "inner",
   mapOuter: "outer",
   towerSword: "Sword",
@@ -140,10 +142,11 @@ const FR = {
   tabRoles: "Roles",
   tabBrief: "Resume",
   sitBrief: "BRIEFING DE SITUATION",
-  wonPrepWith: "a gagne la prep avec",
+  wonPrepWith: "est en train de gagner la prep avec",
   vsOur: "contre nos",
-  theyInvade: "Ils envahissent notre carte.",
-  weInvade: "Nous envahissons leur carte.",
+  atPresent: "Actuellement,",
+  theyInvade: "ils envahissent notre carte.",
+  weInvade: "nous envahissons leur carte.",
   strategy: "Strategie :",
   stratDefense: "WC1 + AGC sur la ligne NE, MyT + REU sur la ligne SE. WC1 prend IC. Swordsman Tower est prioritaire.",
   stratOffense: "WC1 + AGC sur la ligne NW, MyT + REU sur la ligne SW. WC1 prend IC. Swordsman Tower est prioritaire.",
@@ -164,6 +167,7 @@ const FR = {
   mapDesc: "Chaque alliance a une zone de teleportation designee. Les sections colorees indiquent ou se teleporter.",
   towerAssign: "ASSIGNATION DES TOURS",
   towerWarn: "Pikeman (W) probablement concede — WC1 tente si Swordsman est securise.",
+  towerWarnOff: "Archer Tower (E) est basse priorite — contester seulement si opportunite.",
   warMachines: "MACHINES DE GUERRE (Par Alliance)",
   siegeDesc: "Trebs et Rams sur les portes d'abord. Apres la chute des portes, le siege restant chasse les Krakens ennemis (citadelles baleines). Escalades reparties comme points de saut entre la porte et IC.",
   siegeWarn: "4h de construction — une fois utilisees, disparues. Siege uniquement en DEFENSE.",
@@ -205,7 +209,7 @@ const FR = {
   oppIntel: "RENSEIGNEMENTS ADVERSES",
   oppAlliancesSub: "Meilleures alliances de",
   krakenTargets: "CIBLES DE SIEGE (Krakens)",
-  krakenDesc: "Joueurs puissants a cibler avec le siege restant apres la chute des portes. PV Citadelle ~1.25M.",
+  krakenDesc: "Classes par ratio merites:puissance (M:P) — ratio eleve = plus actif au combat. PV Citadelle ~1.25M.",
   mapInner: "interieur",
   mapOuter: "exterieur",
   towerSword: "Sword",
@@ -240,10 +244,11 @@ const ES = {
   tabRoles: "Roles",
   tabBrief: "Informe",
   sitBrief: "INFORME DE SITUACION",
-  wonPrepWith: "gano la prep con",
+  wonPrepWith: "esta ganando la prep con",
   vsOur: "contra nuestros",
-  theyInvade: "Ellos invaden nuestro mapa.",
-  weInvade: "Nosotros invadimos su mapa.",
+  atPresent: "Actualmente,",
+  theyInvade: "ellos invaden nuestro mapa.",
+  weInvade: "nosotros invadimos su mapa.",
   strategy: "Estrategia:",
   stratDefense: "WC1 + AGC en linea NE, MyT + REU en linea SE. WC1 toma IC. Swordsman Tower es prioridad.",
   stratOffense: "WC1 + AGC en linea NW, MyT + REU en linea SW. WC1 toma IC. Swordsman Tower es prioridad.",
@@ -264,6 +269,7 @@ const ES = {
   mapDesc: "Cada alianza tiene una zona de teletransporte designada. Las secciones coloreadas muestran donde teletransportarse.",
   towerAssign: "ASIGNACION DE TORRES",
   towerWarn: "Pikeman (W) probablemente concedido — WC1 intenta si Swordsman esta asegurado.",
+  towerWarnOff: "Archer Tower (E) es baja prioridad — contestar solo si surge oportunidad.",
   warMachines: "MAQUINAS DE GUERRA (Por Alianza)",
   siegeDesc: "Trebs y Rams en las puertas primero. Despues de la caida de las puertas, el asedio restante caza Krakens enemigos (ciudadelas ballena). Escalades se distribuyen como puntos de salto entre la puerta e IC.",
   siegeWarn: "4h de construccion — una vez usadas, desaparecen. Asedio solo en DEFENSA.",
@@ -305,7 +311,7 @@ const ES = {
   oppIntel: "INTELIGENCIA DEL OPONENTE",
   oppAlliancesSub: "Mejores alianzas de",
   krakenTargets: "OBJETIVOS DE ASEDIO (Krakens)",
-  krakenDesc: "Jugadores de alto poder a atacar con asedio restante tras la caida de puertas. HP Ciudadela ~1.25M.",
+  krakenDesc: "Clasificados por ratio meritos:poder (M:P) — ratio alto = mas activo en combate. HP Ciudadela ~1.25M.",
   mapInner: "interior",
   mapOuter: "exterior",
   towerSword: "Sword",
@@ -340,8 +346,9 @@ const KO = {
   tabRoles: "\uC5ED\uD560",
   tabBrief: "\uBE0C\uB9AC\uD551",
   sitBrief: "\uC0C1\uD669 \uBE0C\uB9AC\uD551",
-  wonPrepWith: "\uC774 \uC900\uBE44\uC5D0\uC11C \uC2B9\uB9AC",
+  wonPrepWith: "\uC774 \uC900\uBE44\uC5D0\uC11C \uC774\uAE30\uACE0 \uC788\uC74C",
   vsOur: "\uC6B0\uB9AC\uC758",
+  atPresent: "\uD604\uC7AC,",
   theyInvade: "\uC801\uC774 \uC6B0\uB9AC \uC9C0\uB3C4\uB97C \uCE68\uACF5\uD569\uB2C8\uB2E4.",
   weInvade: "\uC6B0\uB9AC\uAC00 \uC801 \uC9C0\uB3C4\uB97C \uCE68\uACF5\uD569\uB2C8\uB2E4.",
   strategy: "\uC804\uB7B5:",
@@ -364,6 +371,7 @@ const KO = {
   mapDesc: "\uAC01 \uC5F0\uB9F9\uC740 \uC9C0\uC815\uB41C \uD154\uB808\uD3EC\uD2B8 \uC874\uC744 \uAC00\uC9D1\uB2C8\uB2E4. \uC0C9\uC0C1 \uAD6C\uC5ED\uC774 \uD154\uB808\uD3EC\uD2B8 \uC704\uCE58\uB97C \uB098\uD0C0\uB0C5\uB2C8\uB2E4.",
   towerAssign: "\uD0C0\uC6CC \uBC30\uC815",
   towerWarn: "Pikeman (W) \uD3EC\uAE30 \uAC00\uB2A5\uC131 — Swordsman \uD655\uBCF4 \uC2DC WC1 \uC2DC\uB3C4.",
+  towerWarnOff: "Archer Tower (E) \uB0AE\uC740 \uC6B0\uC120\uC21C\uC704 — \uAE30\uD68C\uAC00 \uC788\uC744 \uB54C\uB9CC \uACBD\uC7C1.",
   warMachines: "\uACF5\uC131 \uBB34\uAE30 (\uC5F0\uB9F9\uB2F9)",
   siegeDesc: "Trebs\uC640 Rams\uB97C \uBA3C\uC800 \uBB38\uC5D0 \uBC30\uCE58. \uBB38 \uD568\uB77D \uD6C4 \uB0A8\uC740 \uACF5\uC131 \uBB34\uAE30\uB85C \uC801 Krakens(\uACE0\uB798 \uC131\uCC44) \uC0AC\uB0E5. Escalades\uB294 \uBB38\uACFC IC \uC0AC\uC774 \uC810\uD504 \uD3EC\uC778\uD2B8\uB85C \uBC30\uCE58.",
   siegeWarn: "4\uC2DC\uAC04 \uAC74\uC124 \uC2DC\uAC04 — \uC0AC\uC6A9\uD558\uBA74 \uC18C\uBA78. \uACF5\uC131\uC740 \uBC29\uC5B4 \uC2DC\uC5D0\uB9CC.",
@@ -405,7 +413,7 @@ const KO = {
   oppIntel: "\uC0C1\uB300 \uC815\uBCF4",
   oppAlliancesSub: "\uC0C1\uC704 \uC5F0\uB9F9",
   krakenTargets: "\uACF5\uC131 \uBAA9\uD45C (Krakens)",
-  krakenDesc: "\uBB38 \uD568\uB77D \uD6C4 \uB0A8\uC740 \uACF5\uC131\uC73C\uB85C \uACF5\uACA9\uD560 \uACE0\uC804\uB825 \uD50C\uB808\uC774\uC5B4. \uC131\uCC44 HP ~1.25M.",
+  krakenDesc: "\uACF5\uD6C8:\uC804\uB825 \uBE44\uC728(M:P)\uC73C\uB85C \uC815\uB82C — \uBE44\uC728\uC774 \uB192\uC744\uC218\uB85D \uC804\uD22C \uD65C\uB3D9\uC774 \uD65C\uBC1C. \uC131\uCC44 HP ~1.25M.",
   mapInner: "\uB0B4\uBD80",
   mapOuter: "\uC678\uBD80",
   towerSword: "Sword",
@@ -469,18 +477,20 @@ const DEFAULT_CONFIG = {
     { rank: 4, tag: "NAS", name: "NewAllieSparta", allies: 149, power: "7,193,506,001", merits: "107,554,795" },
   ],
   krakens: [
-    { rank: 1, name: "Arcaneaura", alliance: "E38", power: "291,865,767" },
-    { rank: 2, name: "HungryJoker", alliance: "E38", power: "278,136,398" },
-    { rank: 3, name: "gamers2604", alliance: "E38", power: "272,437,389" },
-    { rank: 4, name: "Tob\u00FF", alliance: "--", power: "259,361,292" },
-    { rank: 5, name: "B\u00E0Tri\u1EC7u", alliance: "E38", power: "250,137,629" },
-    { rank: 6, name: "Patatan", alliance: "E38", power: "242,796,135" },
-    { rank: 7, name: "Shinsunchi", alliance: "E38", power: "241,016,304" },
-    { rank: 8, name: "\u541B\u4E3B9316507", alliance: "--", power: "236,097,425" },
-    { rank: 9, name: "\u2744RiverHorseM", alliance: "E38", power: "235,518,510" },
-    { rank: 10, name: "SlickWhiskey", alliance: "E38", power: "225,235,926" },
-    { rank: 11, name: "RealD\u2078\u2074", alliance: "K38", power: "218,372,686" },
-    { rank: 12, name: "Kaspar~|~", alliance: "E38", power: "214,967,013" },
+    { rank: 1, name: "HungryJoker", alliance: "E38", power: "278,136,398", merits: "441,096,243", ratio: "1.59" },
+    { rank: 2, name: "Arcaneaura", alliance: "E38", power: "291,865,767", merits: "368,294,653", ratio: "1.26" },
+    { rank: 3, name: "B\u00E0Tri\u1EC7u", alliance: "E38", power: "250,137,629", merits: "305,213,521", ratio: "1.22" },
+    { rank: 4, name: "gamers2604", alliance: "E38", power: "272,437,389", merits: "280,614,894", ratio: "1.03" },
+    { rank: 5, name: "Tob\u00FF", alliance: "--", power: "259,361,292", merits: "241,082,656", ratio: "0.93" },
+    { rank: 6, name: "Danathon", alliance: "--", power: "197,334,229", merits: "171,304,276", ratio: "0.87" },
+    { rank: 7, name: "Kaspar~|~", alliance: "E38", power: "214,967,013", merits: "166,438,804", ratio: "0.77" },
+    { rank: 8, name: "TheEnigma", alliance: "E38", power: "205,934,599", merits: "128,552,149", ratio: "0.62" },
+    { rank: 9, name: "Babyface\u54E5", alliance: "E38", power: "166,649,148", merits: "99,628,115", ratio: "0.60" },
+    { rank: 10, name: "Marikosama", alliance: "E38", power: "169,200,930", merits: "100,203,641", ratio: "0.59" },
+    { rank: 11, name: "Beaufort23", alliance: "E38", power: "199,516,168", merits: "115,569,797", ratio: "0.58" },
+    { rank: 12, name: "Benson\u00B9\u02E2\u1D57", alliance: "K38", power: "204,925,867", merits: "102,221,120", ratio: "0.50" },
+    { rank: 13, name: "DeviLDog", alliance: "E38", power: "183,280,825", merits: "88,371,848", ratio: "0.48" },
+    { rank: 14, name: "RealD\u2078\u2074", alliance: "K38", power: "218,372,686", merits: "100,321,372", ratio: "0.46" },
   ],
   roles: {
     WC1: { rallyLead: "TBD", taxiRunners: ["TBD","TBD","TBD","TBD"], siegeCoord: "TBD", siegeHelpers: ["TBD","TBD","TBD","TBD"] },
@@ -566,7 +576,7 @@ function DiamondMap({ alliances, isDefense, t }) {
     "SW-outer":[oSW,oS,iS,iSW],
     "SW-inner":[oW,oSW,iSW,iW],
   };
-  const offRemap={"NE-outer":"NW-outer","NE-inner":"NW-inner","SE-outer":"SW-outer","SE-inner":"SW-inner"};
+  const offRemap={"NE-outer":"NW-inner","NE-inner":"NW-outer","SE-outer":"SW-outer","SE-inner":"SW-inner"};
   const enemyKeys=isDefense?["NW-outer","NW-inner","SW-outer","SW-inner"]:["NE-outer","NE-inner","SE-outer","SE-inner"];
   const aZone=a=>{const k=isDefense?a.position:offRemap[a.position];return{key:k,pts:zones[k]};};
   const centroid=pts=>({x:pts.reduce((s,p)=>s+p.x,0)/pts.length,y:pts.reduce((s,p)=>s+p.y,0)/pts.length});
@@ -603,18 +613,16 @@ function DiamondMap({ alliances, isDefense, t }) {
   } else {
     const a1=alliances.find(a=>a.position==="NE-outer"),a2=alliances.find(a=>a.position==="NE-inner");
     const a3=alliances.find(a=>a.position==="SE-outer"),a4=alliances.find(a=>a.position==="SE-inner");
-    rallyMarkers.push({pt:lerp(iNW3,iN,pushDist),color:a1?.color||"#ef4444"});
-    rallyMarkers.push({pt:lerp(iNW3,iW,pushDist),color:a2?.color||"#3b82f6"});
+    // On offense: NE-outer(AGC) maps to NW-inner, NE-inner(WC1) maps to NW-outer (swapped)
+    rallyMarkers.push({pt:lerp(iNW3,iW,pushDist),color:a1?.color||"#ef4444"});  // AGC inner
+    rallyMarkers.push({pt:lerp(iNW3,iN,pushDist),color:a2?.color||"#3b82f6"});  // WC1 outer
     rallyMarkers.push({pt:lerp(iSW,iS,pushDist),color:a3?.color||"#22c55e"});
     rallyMarkers.push({pt:lerp(iSW,iW,pushDist),color:a4?.color||"#f59e0b"});
   }
 
-  // Siege markers — OUTSIDE red boundary (siege drives inward from outside invasion zone)
-  // N: AGC + WC1, S: MyT, W: REU + WC1 + AGC, NE: WC1 (gate attack)
-  const pb=28; // push-back distance outside outer diamond
-  // WC1 gate siege position — next to WC1 rally leader marker (NE-inner side of inner diamond)
-  const wc1RallyLdrPt=isDefense?lerp(iNE3,iE,pushDist):{x:lerp(iNW3,iW,pushDist).x,y:lerp(iNW3,iW,pushDist).y};
-  const wc1GateOffX=isDefense?18:-18;
+  // Siege markers — DEFENSE ONLY (no siege on offense)
+  const pb=28;
+  const wc1RallyLdrPt=lerp(iNE3,iE,pushDist);
   const siegeMarkers=isDefense?[
     {x:oN.x-28,y:oN.y-pb,dir:"N",tag:"AGC",color:"#ef4444",targetX:mid(oN,oW).x+30,targetY:mid(oN,oW).y+30},
     {x:oN.x+28,y:oN.y-pb,dir:"N",tag:"WC1",color:"#3b82f6",targetX:mid(oN,oW).x+50,targetY:mid(oN,oW).y+10},
@@ -622,16 +630,8 @@ function DiamondMap({ alliances, isDefense, t }) {
     {x:oW.x-pb,y:oW.y-20,dir:"W",tag:"REU",color:"#f59e0b",targetX:oW.x+55,targetY:oW.y-10},
     {x:oW.x-pb,y:oW.y,dir:"W",tag:"WC1",color:"#3b82f6",targetX:oW.x+55,targetY:oW.y},
     {x:oW.x-pb,y:oW.y+20,dir:"W",tag:"AGC",color:"#ef4444",targetX:oW.x+55,targetY:oW.y+10},
-    {x:wc1RallyLdrPt.x+wc1GateOffX,y:wc1RallyLdrPt.y,dir:"NE",tag:"WC1",color:"#3b82f6",targetX:cx+gateR*Math.cos(-Math.PI/4),targetY:cy+gateR*Math.sin(-Math.PI/4)},
-  ]:[
-    {x:oN.x-28,y:oN.y-pb,dir:"N",tag:"AGC",color:"#ef4444",targetX:mid(oN,oE).x-30,targetY:mid(oN,oE).y+30},
-    {x:oN.x+28,y:oN.y-pb,dir:"N",tag:"WC1",color:"#3b82f6",targetX:mid(oN,oE).x-50,targetY:mid(oN,oE).y+10},
-    {x:oS.x,y:oS.y+pb,dir:"S",tag:"MyT",color:"#22c55e",targetX:mid(oS,oE).x-30,targetY:mid(oS,oE).y-30},
-    {x:oW.x-pb,y:oW.y-20,dir:"W",tag:"REU",color:"#f59e0b",targetX:mid(oW,oS).x+30,targetY:mid(oW,oS).y-10},
-    {x:oW.x-pb,y:oW.y,dir:"W",tag:"WC1",color:"#3b82f6",targetX:mid(oW,oS).x+30,targetY:mid(oW,oS).y},
-    {x:oW.x-pb,y:oW.y+20,dir:"W",tag:"AGC",color:"#ef4444",targetX:mid(oW,oS).x+30,targetY:mid(oW,oS).y+10},
-    {x:wc1RallyLdrPt.x+wc1GateOffX,y:wc1RallyLdrPt.y,dir:"NW",tag:"WC1",color:"#3b82f6",targetX:cx+gateR*Math.cos(Math.PI+Math.PI/4),targetY:cy+gateR*Math.sin(Math.PI+Math.PI/4)},
-  ];
+    {x:wc1RallyLdrPt.x+18,y:wc1RallyLdrPt.y,dir:"NE",tag:"WC1",color:"#3b82f6",targetX:cx+gateR*Math.cos(-Math.PI/4),targetY:cy+gateR*Math.sin(-Math.PI/4)},
+  ]:[];
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} style={{width:"100%",maxWidth:620,margin:"0 auto",display:"block"}}>
@@ -701,6 +701,14 @@ function DiamondMap({ alliances, isDefense, t }) {
           </g>
         );
       })}
+
+      {/* No-siege label on offense */}
+      {!isDefense&&(
+        <g transform={`translate(${w-8},${h-8})`}>
+          <rect x="-130" y="-22" width="130" height="22" rx="4" fill="#0f172a" opacity="0.85" stroke="#f59e0b" strokeWidth="1"/>
+          <text x="-65" y="-7" fontSize="9" fill="#f59e0b" fontFamily="monospace" fontWeight="bold" textAnchor="middle">{"\u26A0\uFE0F"} NO SIEGE ON OFFENSE</text>
+        </g>
+      )}
 
       {/* Rally arrows — two segments: rally leader → gate → IC */}
       {rallyMids.map((from,i)=>{
@@ -773,7 +781,8 @@ function DiamondMap({ alliances, isDefense, t }) {
 
 function PrepChart({stages}){
   const mx=Math.max(...stages.map(s=>Math.max(s.ourPts,s.oppPts)));
-  return(<div style={{display:"flex",flexDirection:"column",gap:10}}>{stages.map((s,i)=>(<div key={i}><div style={{fontSize:12,color:"#cbd5e1",fontFamily:"monospace",marginBottom:3}}>{s.won?"\u2705":"\u274C"} {s.name}</div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#60a5fa",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.ourPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${(s.ourPts/mx)*100}%`,background:"linear-gradient(90deg,#1e40af,#3b82f6)",borderRadius:3}}/></div></div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#f87171",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.oppPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${(s.oppPts/mx)*100}%`,background:"linear-gradient(90deg,#991b1b,#ef4444)",borderRadius:3}}/></div></div></div>))}</div>);
+  const icon=s=>{if(s.ourPts===0&&s.oppPts===0)return"\u2014";return s.won?"\u2705":"\u274C";};
+  return(<div style={{display:"flex",flexDirection:"column",gap:10}}>{stages.map((s,i)=>(<div key={i}><div style={{fontSize:12,color:"#cbd5e1",fontFamily:"monospace",marginBottom:3}}>{icon(s)} {s.name}</div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#60a5fa",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.ourPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.ourPts/mx)*100:0}%`,background:"linear-gradient(90deg,#1e40af,#3b82f6)",borderRadius:3}}/></div></div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#f87171",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.oppPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.oppPts/mx)*100:0}%`,background:"linear-gradient(90deg,#991b1b,#ef4444)",borderRadius:3}}/></div></div></div>))}</div>);
 }
 
 function fmt(str){const n=parseInt(String(str).replace(/,/g,""),10);if(n>=1e9)return(n/1e9).toFixed(2)+"B";if(n>=1e6)return(n/1e6).toFixed(1)+"M";return str;}
@@ -811,6 +820,16 @@ function TMECommandCenter(){
   const isDefense=!config.weWonPrep;
   const oppCode=genOppCode(config.oppServer);
 
+  const tpOffsets=[-30,-20,-10,0];
+  const computedAlliances=(()=>{
+    const m=config.invasionTime.match(/(\d{1,2}):(\d{2})/);
+    const baseMin=(m?parseInt(m[1],10):11)*60+(m?parseInt(m[2],10):0);
+    const tz=config.invasionTime.replace(/\d{1,2}:\d{2}\s*/,"").trim()||"UTC";
+    const pad=n=>String(n).padStart(2,"0");
+    const fmt=mins=>{const h=Math.floor(((mins%1440)+1440)%1440/60);const mn=((mins%60)+60)%60;return`${pad(h)}:${pad(mn)} ${tz}`;};
+    return config.alliances.map((a,i)=>({...a,teleportTime:fmt(baseMin+tpOffsets[i])}));
+  })();
+
   const handleLang=useCallback((code)=>{
     setT(TRANSLATIONS[code]||EN);
     setUiLang(code);
@@ -821,9 +840,27 @@ function TMECommandCenter(){
   const updateExpected=(idx,value)=>{setConfig(p=>{const a=[...p.alliances];a[idx]={...a[idx],expected:value};return{...p,alliances:a};});};
 
   const tlPhases=Array.from({length:9},(_,i)=>({phase:t[`tl${i}Phase`],desc:t[`tl${i}Desc`]}));
-  const tlTimes=["09:00 UTC","10:30 UTC","10:40 UTC","10:50 UTC","11:00 UTC","11:00\u201311:30","Gates Fall","+0 to +4hrs","+4hrs"];
+  const tlTimesCalc=()=>{
+    const m=config.invasionTime.match(/(\d{1,2}):(\d{2})/);
+    const baseMin=(m?parseInt(m[1],10):11)*60+(m?parseInt(m[2],10):0);
+    const tz=config.invasionTime.replace(/\d{1,2}:\d{2}\s*/,"").trim()||"UTC";
+    const pad=n=>String(n).padStart(2,"0");
+    const fmt=mins=>{const h=Math.floor(((mins%1440)+1440)%1440/60);const mn=((mins%60)+60)%60;return`${pad(h)}:${pad(mn)} ${tz}`;};
+    return[
+      fmt(baseMin-120),
+      fmt(baseMin-30),
+      fmt(baseMin-20),
+      fmt(baseMin-10),
+      fmt(baseMin),
+      `${fmt(baseMin)}\u2013${fmt(baseMin+30)}`,
+      "Gates Fall",
+      "+0 to +4hrs",
+      "+4hrs",
+    ];
+  };
+  const tlTimes=tlTimesCalc();
 
-  const briefText=useMemo(()=>`=== TME: Era8 vs ${config.oppServer} (${isDefense?"DEF":"OFF"}) ===\nSunday ${config.invasionTime}\n\n${config.alliances.map(a=>`[${a.tag}] ${a.position} | ${a.tower} | TP: ${a.teleportTime}`).join("\n")}\n\nTOWERS: WC1\u2192Sword/Pike | MyT\u2192Cav | AGC/REU\u2192Archer\nIC: 4hrs, 1hr consecutive or longest. Then 2hr open PvP.\nSIEGE: Gates\u2192Krakens. Defense only.\nTrebs ~2500/3s (50) | Rams ~500/2s (\u221E) | Citadel ~1.25M HP\nEscalades = jump points gate\u2192IC\n\n${Object.entries(config.roles).map(([tag,r])=>`[${tag}] Rally:${r.rallyLead} Taxi:${r.taxiRunners.filter(x=>x!=="TBD").join(",")||"TBD"} Siege:${r.siegeCoord}`).join("\n")}`,[config,isDefense]);
+  const briefText=`=== TME: Era8 vs ${config.oppServer} (${isDefense?"DEF":"OFF"}) ===\nSunday ${config.invasionTime}\n\n${computedAlliances.map(a=>`[${a.tag}] ${a.position} | ${a.tower} | TP: ${a.teleportTime}`).join("\n")}\n\nTOWERS: WC1\u2192Sword/Pike | MyT\u2192Cav | AGC/REU\u2192Archer\nIC: 4hrs, 1hr consecutive or longest. Then 2hr open PvP.\nSIEGE: Gates\u2192Krakens. Defense only.\nTrebs ~2500/3s (50) | Rams ~500/2s (\u221E) | Citadel ~1.25M HP\nEscalades = jump points gate\u2192IC\n\n${Object.entries(config.roles).map(([tag,r])=>`[${tag}] Rally:${r.rallyLead} Taxi:${r.taxiRunners.filter(x=>x!=="TBD").join(",")||"TBD"} Siege:${r.siegeCoord}`).join("\n")}`;
 
   const tabs=[
     {id:"overview",label:`\uD83D\uDCCB ${t.tabOverview}`},{id:"map",label:`\uD83D\uDDFA\uFE0F ${t.tabMap}`},
@@ -863,7 +900,7 @@ function TMECommandCenter(){
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\u26A1"} {t.sitBrief}</div>
             <div style={{fontSize:12,lineHeight:1.8,color:"#cbd5e1"}}>
-              <p style={{margin:"0 0 8px"}}><strong style={{color:"#f87171"}}>{config.oppServer}</strong> {t.wonPrepWith} <strong>{config.totalOpp}B</strong> {t.vsOur} <strong>{config.totalOur}B</strong>. {isDefense?t.theyInvade:t.weInvade}</p>
+              <p style={{margin:"0 0 8px"}}><strong style={{color:"#f87171"}}>{config.oppServer}</strong> {t.wonPrepWith} <strong>{config.totalOpp}B</strong> {t.vsOur} <strong>{config.totalOur}B</strong>. {t.atPresent} {isDefense?t.theyInvade:t.weInvade}</p>
               <p style={{margin:0}}><strong>{t.strategy}</strong> {isDefense?t.stratDefense:t.stratOffense}</p>
             </div>
           </div>
@@ -879,7 +916,7 @@ function TMECommandCenter(){
                 <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colPower}</span>
                 <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colMerits}</span>
               </div>
-              {config.alliances.map((a,i)=>(
+              {computedAlliances.map((a,i)=>(
                 <div key={a.tag} style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 52px 65px 65px",gap:6,alignItems:"center",padding:8,background:"#0f172a",borderRadius:6,borderLeft:`3px solid ${a.color}`,marginBottom:i<3?6:0,minWidth:440}}>
                   <div style={{fontSize:13,fontWeight:800,color:a.color}}>{a.tag}</div>
                   <div>
@@ -939,18 +976,22 @@ function TMECommandCenter(){
             <div style={{fontSize:13,fontWeight:700,color:"#f59e0b",marginBottom:6}}>{"\uD83D\uDC0B"} {t.krakenTargets}</div>
             <div style={{fontSize:10,color:"#64748b",marginBottom:10}}>{t.krakenDesc}</div>
             <div style={{overflowX:"auto"}}>
-              <div style={{display:"grid",gridTemplateColumns:"28px 1fr 52px 75px",gap:6,padding:"0 8px",marginBottom:6,minWidth:300}}>
+              <div style={{display:"grid",gridTemplateColumns:"28px 1fr 44px 62px 62px 42px",gap:6,padding:"0 8px",marginBottom:6,minWidth:380}}>
                 <span style={{fontSize:9,color:"#64748b"}}>#</span>
                 <span style={{fontSize:9,color:"#64748b"}}>Name</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"center"}}>Alliance</span>
+                <span style={{fontSize:9,color:"#64748b",textAlign:"center"}}>Tag</span>
                 <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colPower}</span>
+                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colMerits}</span>
+                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>M:P</span>
               </div>
               {config.krakens.map((k,i)=>(
-                <div key={i} style={{display:"grid",gridTemplateColumns:"28px 1fr 52px 75px",gap:6,alignItems:"center",padding:"6px 8px",background:i%2===0?"#0f172a":"transparent",borderRadius:4,minWidth:300}}>
+                <div key={i} style={{display:"grid",gridTemplateColumns:"28px 1fr 44px 62px 62px 42px",gap:6,alignItems:"center",padding:"6px 8px",background:i%2===0?"#0f172a":"transparent",borderRadius:4,minWidth:380}}>
                   <div style={{fontSize:11,color:i<3?"#fbbf24":"#94a3b8",fontWeight:i<3?700:400}}>{k.rank}</div>
                   <div style={{fontSize:11,color:"#e2e8f0",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{k.name}</div>
                   <div style={{fontSize:10,color:"#f87171",textAlign:"center",fontWeight:700}}>{k.alliance}</div>
                   <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(k.power)}</div>
+                  <div style={{fontSize:10,color:"#a78bfa",textAlign:"right"}}>{fmt(k.merits)}</div>
+                  <div style={{fontSize:10,color:parseFloat(k.ratio)>=1?"#4ade80":parseFloat(k.ratio)>=0.7?"#fbbf24":"#94a3b8",textAlign:"right",fontWeight:parseFloat(k.ratio)>=1?700:400}}>{k.ratio}</div>
                 </div>
               ))}
             </div>
@@ -972,24 +1013,24 @@ function TMECommandCenter(){
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:8}}>{"\uD83D\uDDFA\uFE0F"} {t.battlefield} {"\u2014"} {isDefense?t.defPositions:t.offPositions}</div>
             <div style={{fontSize:10,color:"#94a3b8",marginBottom:12}}>{t.mapDesc}</div>
             <ZoomableMap>
-              <DiamondMap alliances={config.alliances} isDefense={isDefense} t={t}/>
+              <DiamondMap alliances={computedAlliances} isDefense={isDefense} t={t}/>
             </ZoomableMap>
           </div>
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:8}}>{"\uD83C\uDFD7\uFE0F"} {t.towerAssign}</div>
-            {config.alliances.map((a,i)=>(
+            {computedAlliances.map((a,i)=>(
               <div key={a.tag} style={{display:"flex",justifyContent:"space-between",padding:"6px 0",borderBottom:i<3?"1px solid #1e3a5f":"none"}}>
                 <span style={{color:a.color,fontWeight:700,fontSize:12}}>{a.tag}</span>
                 <span style={{fontSize:11,color:"#cbd5e1"}}>{towerIcon(a.tower)} {a.tower}</span>
               </div>
             ))}
-            <div style={{fontSize:10,color:"#f59e0b",marginTop:8}}>{"\u26A0\uFE0F"} {t.towerWarn}</div>
+            <div style={{fontSize:10,color:"#f59e0b",marginTop:8}}>{"\u26A0\uFE0F"} {isDefense?t.towerWarn:t.towerWarnOff}</div>
           </div>
-          <div style={card}>
+          {isDefense&&(<div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:8}}>{"\uD83D\uDCA3"} {t.warMachines}</div>
             <div style={{display:"grid",gridTemplateColumns:"auto 1fr 1fr 1fr",gap:"6px 16px",fontSize:11}}>
               <div></div><div style={{color:"#94a3b8",textAlign:"center"}}>Trebs (12)</div><div style={{color:"#94a3b8",textAlign:"center"}}>Rams (3)</div><div style={{color:"#94a3b8",textAlign:"center"}}>Esc (3)</div>
-              {config.alliances.map(a=>[
+              {computedAlliances.map(a=>[
                 <div key={`l${a.tag}`} style={{color:a.color,fontWeight:700}}>{a.tag}</div>,
                 <div key={`t${a.tag}`} style={{textAlign:"center",color:"#cbd5e1"}}>12</div>,
                 <div key={`r${a.tag}`} style={{textAlign:"center",color:"#cbd5e1"}}>3</div>,
@@ -999,7 +1040,11 @@ function TMECommandCenter(){
             <div style={{fontSize:10,color:"#94a3b8",marginTop:8,lineHeight:1.6}}>{t.siegeDesc}</div>
             <div style={{fontSize:10,color:"#64748b",marginTop:4}}>{t.siegeStats}</div>
             <div style={{fontSize:10,color:"#f59e0b",marginTop:6}}>{"\u26A0\uFE0F"} {t.siegeWarn}</div>
-          </div>
+          </div>)}
+          {!isDefense&&(<div style={card}>
+            <div style={{fontSize:13,fontWeight:700,color:"#64748b",marginBottom:8}}>{"\uD83D\uDCA3"} {t.warMachines}</div>
+            <div style={{fontSize:12,color:"#f59e0b",textAlign:"center",padding:"16px 0"}}>{"\u26A0\uFE0F"} {t.siegeWarn}</div>
+          </div>)}
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:8}}>{"\uD83C\uDFDB\uFE0F"} {t.icHoldTitle}</div>
             <ul style={{margin:0,paddingLeft:18,fontSize:11,color:"#cbd5e1",lineHeight:1.8}}>
@@ -1049,7 +1094,7 @@ function TMECommandCenter(){
         </>)}
 
         {activeTab==="roles"&&(<>
-          {config.alliances.map(a=>(
+          {computedAlliances.map(a=>(
             <div key={a.tag} style={card}>
               <div style={{fontSize:13,fontWeight:700,color:a.color,marginBottom:10,display:"flex",justifyContent:"space-between"}}>
                 <span>{a.tag} {"\u2014"} {t[a.roleKey]||a.roleKey}</span>
