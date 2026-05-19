@@ -49,6 +49,9 @@ const EN = {
   prepStage5: "Power Boost",
   sitBrief: "SITUATION BRIEF",
   wonPrepWith: "is winning prep with",
+  losingPrepWith: "is losing prep with",
+  wonPrep: "won prep with",
+  lostPrep: "lost prep with",
   vsOur: "vs our",
   atPresent: "At present,",
   theyInvade: "they invade our map.",
@@ -155,6 +158,9 @@ const FR = {
   prepStage5: "Augmentation de Puissance",
   sitBrief: "BRIEFING DE SITUATION",
   wonPrepWith: "est en train de gagner la prep avec",
+  losingPrepWith: "est en train de perdre la prep avec",
+  wonPrep: "a gagne la prep avec",
+  lostPrep: "a perdu la prep avec",
   vsOur: "contre nos",
   atPresent: "Actuellement,",
   theyInvade: "ils envahissent notre carte.",
@@ -261,6 +267,9 @@ const ES = {
   prepStage5: "Aumento de Poder",
   sitBrief: "INFORME DE SITUACION",
   wonPrepWith: "esta ganando la prep con",
+  losingPrepWith: "esta perdiendo la prep con",
+  wonPrep: "gano la prep con",
+  lostPrep: "perdio la prep con",
   vsOur: "contra nuestros",
   atPresent: "Actualmente,",
   theyInvade: "ellos invaden nuestro mapa.",
@@ -367,6 +376,9 @@ const KO = {
   prepStage5: "\uC804\uB825 \uC99D\uAC15",
   sitBrief: "\uC0C1\uD669 \uBE0C\uB9AC\uD551",
   wonPrepWith: "\uC774 \uC900\uBE44\uC5D0\uC11C \uC774\uAE30\uACE0 \uC788\uC74C",
+  losingPrepWith: "\uC774 \uC900\uBE44\uC5D0\uC11C \uC9C0\uACE0 \uC788\uC74C",
+  wonPrep: "\uC774 \uC900\uBE44\uC5D0\uC11C \uC2B9\uB9AC",
+  lostPrep: "\uC774 \uC900\uBE44\uC5D0\uC11C \uD328\uBC30",
   vsOur: "\uC6B0\uB9AC\uC758",
   atPresent: "\uD604\uC7AC,",
   theyInvade: "\uC801\uC774 \uC6B0\uB9AC \uC9C0\uB3C4\uB97C \uCE68\uACF5\uD569\uB2C8\uB2E4.",
@@ -473,6 +485,9 @@ const JA = {
   prepStage5: "パワーブースト",
   sitBrief: "戦況報告",
   wonPrepWith: "が準備段階をリード中：",
+  losingPrepWith: "が準備段階で負けている：",
+  wonPrep: "が準備段階に勝利：",
+  lostPrep: "が準備段階に敗北：",
   vsOur: "対 我々の",
   atPresent: "現時点で、",
   theyInvade: "敵が我々のマップに侵攻します。",
@@ -579,6 +594,9 @@ const ZH_HK = {
   prepStage5: "戰力提升",
   sitBrief: "戰況簡報",
   wonPrepWith: "備戰階段領先：",
+  losingPrepWith: "備戰階段落後：",
+  wonPrep: "贏咗備戰：",
+  lostPrep: "輸咗備戰：",
   vsOur: "對比我哋嘅",
   atPresent: "目前，",
   theyInvade: "佢哋入侵我哋嘅地圖。",
@@ -685,6 +703,9 @@ const ZH_CN = {
   prepStage5: "战力提升",
   sitBrief: "战况简报",
   wonPrepWith: "在备战阶段领先：",
+  losingPrepWith: "在备战阶段落后：",
+  wonPrep: "赢了备战：",
+  lostPrep: "输了备战：",
   vsOur: "对比我们的",
   atPresent: "目前，",
   theyInvade: "他们入侵我们的地图。",
@@ -791,6 +812,9 @@ const PT = {
   prepStage5: "Aumento de Poder",
   sitBrief: "RESUMO DA SITUAÇÃO",
   wonPrepWith: "está vencendo a preparação com",
+  losingPrepWith: "está perdendo a preparação com",
+  wonPrep: "venceu a preparação com",
+  lostPrep: "perdeu a preparação com",
   vsOur: "contra os nossos",
   atPresent: "No momento,",
   theyInvade: "eles invadem nosso mapa.",
@@ -1359,7 +1383,7 @@ function TMECommandCenter(){
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\u26A1"} {t.sitBrief}</div>
             <div style={{fontSize:12,lineHeight:1.8,color:"#cbd5e1"}}>
-              <p style={{margin:"0 0 8px"}}><strong style={{color:"#f87171"}}>{config.oppServer}</strong> {t.wonPrepWith} <strong>{config.totalOpp}B</strong> {t.vsOur} <strong>{config.totalOur}B</strong>. {t.atPresent} {isDefense?t.theyInvade:t.weInvade}</p>
+              <p style={{margin:"0 0 8px"}}><strong style={{color:"#f87171"}}>{config.oppServer}</strong> {(()=>{const done=config.prepStages.every(s=>s.ourPts>0||s.oppPts>0);if(done)return isDefense?t.wonPrep:t.lostPrep;return isDefense?t.wonPrepWith:t.losingPrepWith;})()} <strong>{config.totalOpp}B</strong> {t.vsOur} <strong>{config.totalOur}B</strong>. {t.atPresent} {isDefense?t.theyInvade:t.weInvade}</p>
               <p style={{margin:0}}><strong>{t.strategy}</strong> {isDefense?t.stratDefense:t.stratOffense}</p>
             </div>
           </div>
