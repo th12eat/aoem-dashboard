@@ -2718,6 +2718,12 @@ function TMECommandCenter(){
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\uD83C\uDFC6"} TME ALLIANCE RANKINGS</div>
             <div style={{fontSize:9,color:"#64748b",marginBottom:8}}>Teleport offset: #1 per server = 30min early, #2 = 20min, #3 = 10min, #4 = event start</div>
+            <div style={{display:"flex",alignItems:"center",gap:10,padding:"2px 8px",marginBottom:4}}>
+              <div style={{width:20}}></div>
+              <div style={{fontSize:9,color:"#64748b",width:40}}>Tag</div>
+              <div style={{fontSize:9,color:"#64748b",flex:1}}>Prep Pts</div>
+              <div style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.invTimeLabel}</div>
+            </div>
             {[...computedAlliances.map(a=>({...a,server:"era8"})),...computedOppAlliances.map(a=>({...a,server:"era38"}))].sort((a,b)=>parseNum(b.prepPoints)-parseNum(a.prepPoints)).map((a,i)=>(
               <div key={`${a.tag}-${i}`} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:i%2===0?"#0f172a":"transparent",borderRadius:4,borderLeft:`3px solid ${a.server==="era8"?"#60a5fa":"#f87171"}`,marginBottom:2}}>
                 <div style={{fontSize:14,fontWeight:800,color:"#fbbf24",width:20,textAlign:"center"}}>#{i+1}</div>
