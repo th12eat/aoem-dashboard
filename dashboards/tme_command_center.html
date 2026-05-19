@@ -2311,10 +2311,10 @@ function mpRatio(merits,power){const m=parseInt(String(merits).replace(/,/g,""),
    ═══════════════════════════════════════════════════ */
 function LangPicker({ value, onChange }) {
   return (
-    <div style={{ display: "flex", gap: 4 }}>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 4, maxWidth: "100%" }}>
       {LANGUAGES.map(l => (
         <button key={l.code} onClick={() => onChange(l.code)} style={{
-          padding: "4px 10px", fontSize: 11, fontFamily: "inherit", fontWeight: 600,
+          padding: "4px 8px", fontSize: 11, fontFamily: "inherit", fontWeight: 600,
           letterSpacing: 1, borderRadius: 4, cursor: "pointer",
           background: l.code === value ? "rgba(251,191,36,0.15)" : "#0f172a",
           border: l.code === value ? "1px solid #fbbf24" : "1px solid #334155",
