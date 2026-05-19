@@ -2685,19 +2685,21 @@ function TMECommandCenter(){
         {activeTab==="timeline"&&(
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:12}}>{"\u23F1\uFE0F"} {isDefense?t.defTimeline:t.offTimeline}</div>
-            {tlPhases.map((ph,i)=>(
+            {tlPhases.map((ph,i)=>{
+              const tlColor=i>=1&&i<=4?byRank[i-1]?.color||PHASE_COLORS[i]:PHASE_COLORS[i]||"#94a3b8";
+              return(
               <div key={i} style={{display:"flex",gap:12,marginBottom:16}}>
                 <div style={{display:"flex",flexDirection:"column",alignItems:"center",width:20,flexShrink:0}}>
-                  <div style={{width:10,height:10,borderRadius:"50%",background:PHASE_COLORS[i]||"#94a3b8",border:"2px solid #0f172a",boxShadow:`0 0 6px ${PHASE_COLORS[i]||"#94a3b8"}`}}/>
+                  <div style={{width:10,height:10,borderRadius:"50%",background:tlColor,border:"2px solid #0f172a",boxShadow:`0 0 6px ${tlColor}`}}/>
                   {i<tlPhases.length-1&&<div style={{width:2,flex:1,background:"#1e3a5f",marginTop:2}}/>}
                 </div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:10,color:PHASE_COLORS[i]||"#94a3b8",fontWeight:700,letterSpacing:1}}>{tlTimes[i]}</div>
+                  <div style={{fontSize:10,color:tlColor,fontWeight:700,letterSpacing:1}}>{tlTimes[i]}</div>
                   <div style={{fontSize:12,fontWeight:700,color:"#f8fafc",margin:"2px 0"}}>{ph.phase}</div>
                   <div style={{fontSize:11,color:"#94a3b8",lineHeight:1.5}}>{ph.desc}</div>
                 </div>
-              </div>
-            ))}
+              </div>);
+            })}
           </div>
         )}
 
