@@ -1265,10 +1265,16 @@ function DiamondMap({ alliances, isDefense, t }) {
   );
 }
 
-function PrepChart({stages,t}){
-  const mx=Math.max(...stages.map(s=>Math.max(s.ourPts,s.oppPts)));
-  const icon=s=>{if(s.ourPts===0&&s.oppPts===0)return"\u2014";return s.won?"\u2705":"\u274C";};
-  return(<div style={{display:"flex",flexDirection:"column",gap:10}}>{stages.map((s,i)=>(<div key={i}><div style={{fontSize:12,color:"#cbd5e1",fontFamily:"monospace",marginBottom:3}}>{icon(s)} {t[s.nameKey]||s.nameKey}</div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#60a5fa",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.ourPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.ourPts/mx)*100:0}%`,background:"linear-gradient(90deg,#1e40af,#3b82f6)",borderRadius:3}}/></div></div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#f87171",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.oppPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.oppPts/mx)*100:0}%`,background:"linear-gradient(90deg,#991b1b,#ef4444)",borderRadius:3}}/></div></div></div>))}</div>);
+function PrepChart({stages,t,totalOur,totalOpp}){
+  const mx=Math.max(...stages.map(s=>Math.max(s.ourPts,s.oppPts)),totalOur,totalOpp);
+  const icon=s=>{if(s.ourPts===0&&s.oppPts===0)return"\u2014";return s.ourPts>=s.oppPts?"\u2705":"\u274C";};
+  return(<div style={{display:"flex",flexDirection:"column",gap:10}}>{stages.map((s,i)=>(<div key={i}><div style={{fontSize:12,color:"#cbd5e1",fontFamily:"monospace",marginBottom:3}}>{icon(s)} {t[s.nameKey]||s.nameKey}</div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#60a5fa",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.ourPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.ourPts/mx)*100:0}%`,background:"linear-gradient(90deg,#1e40af,#3b82f6)",borderRadius:3}}/></div></div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#f87171",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.oppPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.oppPts/mx)*100:0}%`,background:"linear-gradient(90deg,#991b1b,#ef4444)",borderRadius:3}}/></div></div></div>))}
+    <div style={{borderTop:"1px solid #334155",marginTop:6,paddingTop:10}}>
+      <div style={{fontSize:12,color:"#e2e8f0",fontFamily:"monospace",marginBottom:3,fontWeight:700}}>{totalOur>=totalOpp?"\u2705":"\u274C"} {t.colTotal}</div>
+      <div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#60a5fa",width:40,textAlign:"right",fontFamily:"monospace"}}>{totalOur}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(totalOur/mx)*100:0}%`,background:"linear-gradient(90deg,#1e40af,#3b82f6)",borderRadius:3}}/></div></div>
+      <div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#f87171",width:40,textAlign:"right",fontFamily:"monospace"}}>{totalOpp}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(totalOpp/mx)*100:0}%`,background:"linear-gradient(90deg,#991b1b,#ef4444)",borderRadius:3}}/></div></div>
+    </div>
+  </div>);
 }
 
 function fmt(str){const n=parseInt(String(str).replace(/,/g,""),10);if(n>=1e9)return(n/1e9).toFixed(2)+"B";if(n>=1e6)return(n/1e6).toFixed(1)+"M";return str;}
@@ -1571,7 +1577,7 @@ function TMECommandCenter(){
               <span><span style={{color:"#60a5fa"}}>{"\u25A0"}</span> Era 8: <strong>{config.totalOur}B</strong></span>
               <span><span style={{color:"#f87171"}}>{"\u25A0"}</span> {config.oppServer}: <strong>{config.totalOpp}B</strong></span>
             </div>
-            <PrepChart stages={config.prepStages} t={t}/>
+            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp}/>
           </div>
         </>)}
 
