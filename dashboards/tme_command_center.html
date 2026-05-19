@@ -2452,20 +2452,37 @@ function TMECommandCenter(){
   },[]);
 
 
-  const tlPhases=Array.from({length:9},(_,i)=>({phase:t[`tl${i}Phase`],desc:(!isDefense&&t[`tl${i}DescOff`])||t[`tl${i}Desc`]}));
+  const byRank=computedAlliances.slice().sort((a,b)=>a.prepRank-b.prepRank);
+  const tlPhases=(()=>{
+    const allianceDescKey=(tag)=>{
+      const idx=config.alliances.findIndex(a=>a.tag===tag);
+      const tlIdx=idx+1;
+      return(!isDefense&&t[`tl${tlIdx}DescOff`])||t[`tl${tlIdx}Desc`];
+    };
+    return[
+      {phase:t.tl0Phase,desc:t.tl0Desc},
+      {phase:`${byRank[0]?.tag} Teleports`,desc:allianceDescKey(byRank[0]?.tag)},
+      {phase:`${byRank[1]?.tag} Teleports`,desc:allianceDescKey(byRank[1]?.tag)},
+      {phase:`${byRank[2]?.tag} Teleports`,desc:allianceDescKey(byRank[2]?.tag)},
+      {phase:`${t.tl4Phase.replace(/\+\s*\w+/,`+ ${byRank[3]?.tag}`)}`,desc:allianceDescKey(byRank[3]?.tag)},
+      {phase:t.tl5Phase,desc:(!isDefense&&t.tl5DescOff)||t.tl5Desc},
+      {phase:t.tl6Phase,desc:t.tl6Desc},
+      {phase:t.tl7Phase,desc:t.tl7Desc},
+      {phase:t.tl8Phase,desc:t.tl8Desc},
+    ];
+  })();
   const tlTimesCalc=()=>{
     const m=config.invasionTime.match(/(\d{1,2}):(\d{2})/);
     const baseMin=(m?parseInt(m[1],10):11)*60+(m?parseInt(m[2],10):0);
     const tz=config.invasionTime.replace(/\d{1,2}:\d{2}\s*/,"").trim()||"UTC";
     const pad=n=>String(n).padStart(2,"0");
     const fmt=mins=>{const h=Math.floor(((mins%1440)+1440)%1440/60);const mn=((mins%60)+60)%60;return`${pad(h)}:${pad(mn)} ${tz}`;};
-    const byRank=computedAlliances.slice().sort((a,b)=>a.prepRank-b.prepRank);
     return[
       fmt(baseMin-120),
-      `${fmt(baseMin-30)} (${byRank[0]?.tag})`,
-      `${fmt(baseMin-20)} (${byRank[1]?.tag})`,
-      `${fmt(baseMin-10)} (${byRank[2]?.tag})`,
-      `${fmt(baseMin)} (${byRank[3]?.tag})`,
+      fmt(baseMin-30),
+      fmt(baseMin-20),
+      fmt(baseMin-10),
+      fmt(baseMin),
       `${fmt(baseMin)}\u2013${fmt(baseMin+30)}`,
       "Gates Fall",
       "+0 to +4hrs",
@@ -2698,13 +2715,13 @@ function TMECommandCenter(){
           </div>
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\uD83C\uDFC6"} TME ALLIANCE RANKINGS</div>
-            <div style={{fontSize:9,color:"#64748b",marginBottom:8}}>Teleport offset: #1 = 30min early, #2 = 20min, #3 = 10min, #4 = event start</div>
-            {[...computedAlliances].sort((a,b)=>a.prepRank-b.prepRank).concat(computedOppAlliances).map((a,i)=>(
-              <div key={`${a.tag}-${i}`} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:i%2===0?"#0f172a":"transparent",borderRadius:4,borderLeft:`3px solid ${a.color||"#f87171"}`,marginBottom:2}}>
-                <div style={{fontSize:14,fontWeight:800,color:"#fbbf24",width:20,textAlign:"center"}}>#{a.prepRank}</div>
-                <div style={{fontSize:12,fontWeight:700,color:a.color||"#f87171",width:40}}>{a.tag}</div>
+            <div style={{fontSize:9,color:"#64748b",marginBottom:8}}>Teleport offset: #1 per server = 30min early, #2 = 20min, #3 = 10min, #4 = event start</div>
+            {[...computedAlliances.map(a=>({...a,server:"era8"})),...computedOppAlliances.map(a=>({...a,server:"era38"}))].sort((a,b)=>parseNum(b.prepPoints)-parseNum(a.prepPoints)).map((a,i)=>(
+              <div key={`${a.tag}-${i}`} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:i%2===0?"#0f172a":"transparent",borderRadius:4,borderLeft:`3px solid ${a.server==="era8"?"#60a5fa":"#f87171"}`,marginBottom:2}}>
+                <div style={{fontSize:14,fontWeight:800,color:"#fbbf24",width:20,textAlign:"center"}}>#{i+1}</div>
+                <div style={{fontSize:12,fontWeight:700,color:a.server==="era8"?"#60a5fa":"#f87171",width:40}}>{a.tag}</div>
                 <div style={{fontSize:10,color:"#cbd5e1",flex:1}}>{fmt(a.prepPoints)}</div>
-                <div style={{fontSize:10,color:"#fbbf24",fontFamily:"monospace"}}>{a.teleportTime}</div>
+                <div style={{fontSize:10,color:a.server==="era8"?"#60a5fa":"#f87171",fontFamily:"monospace"}}>{a.teleportTime} (#{a.prepRank})</div>
               </div>
             ))}
           </div>
