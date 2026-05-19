@@ -1397,33 +1397,30 @@ function TMECommandCenter(){
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\uD83C\uDFF0"} {t.allianceOverview}</div>
             <div style={{overflowX:"auto"}}>
-              <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 52px 65px 65px 45px",gap:6,padding:"0 8px",marginBottom:6,minWidth:480}}>
+              <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,padding:"0 8px",marginBottom:6,minWidth:440}}>
                 <span style={{fontSize:9,color:"#64748b"}}></span>
                 <span style={{fontSize:9,color:"#64748b"}}>{t.colRole}</span>
                 <span style={{fontSize:9,color:"#64748b",textAlign:"center"}}>{t.colAllies}</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"center"}}>{t.colExpected}</span>
                 <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colPower}</span>
                 <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colMerits}</span>
                 <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>M:P</span>
               </div>
               {computedAlliances.map((a,i)=>(
-                <div key={a.tag} style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 52px 65px 65px 45px",gap:6,alignItems:"center",padding:8,background:"#0f172a",borderRadius:6,borderLeft:`3px solid ${a.color}`,marginBottom:i<3?6:0,minWidth:480}}>
+                <div key={a.tag} style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,alignItems:"center",padding:8,background:"#0f172a",borderRadius:6,borderLeft:`3px solid ${a.color}`,marginBottom:i<3?6:0,minWidth:440}}>
                   <div style={{fontSize:13,fontWeight:800,color:a.color}}>{a.tag}</div>
                   <div>
                     <div style={{fontSize:10,color:"#e2e8f0"}}>{t[a.roleKey]||a.roleKey}</div>
                     <div style={{fontSize:9,color:"#fbbf24"}}>{a.teleportTime}</div>
                   </div>
                   <div style={{fontSize:11,color:"#cbd5e1",textAlign:"center"}}>{a.allies}</div>
-                  <div style={{fontSize:11,color:"#cbd5e1",textAlign:"center"}}>{a.expected||"\u2014"}</div>
                   <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.power)}</div>
                   <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.merits)}</div>
                   <div style={{fontSize:10,color:"#4ade80",textAlign:"right"}}>{mpRatio(a.merits,a.power)}</div>
                 </div>
               ))}
-              <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 52px 65px 65px 45px",gap:6,padding:"8px 8px 0",marginTop:6,borderTop:"1px solid #334155",minWidth:480}}>
+              <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,padding:"8px 8px 0",marginTop:6,borderTop:"1px solid #334155",minWidth:440}}>
                 <div style={{fontSize:10,fontWeight:700,color:"#94a3b8"}}>{t.colTotal}</div><div></div>
                 <div style={{fontSize:11,fontWeight:700,color:"#e2e8f0",textAlign:"center"}}>{sumF(config.alliances,"allies")}</div>
-                <div style={{fontSize:11,fontWeight:700,color:"#e2e8f0",textAlign:"center"}}>{config.alliances.reduce((s,a)=>s+(parseInt(a.expected)||0),0)||"\u2014"}</div>
                 <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(sumF(config.alliances,"power"))}</div>
                 <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(sumF(config.alliances,"merits"))}</div>
                 <div style={{fontSize:10,fontWeight:700,color:"#4ade80",textAlign:"right"}}>{mpRatio(sumF(config.alliances,"merits"),sumF(config.alliances,"power"))}</div>
@@ -1433,11 +1430,9 @@ function TMECommandCenter(){
 
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#f87171",marginBottom:10}}>{"\uD83D\uDD34"} {t.oppIntel} {"\u2014"} {config.oppServer}</div>
-            <div style={{fontSize:10,color:"#64748b",marginBottom:8}}>{t.oppAlliancesSub} {config.oppServer}</div>
             <div style={{overflowX:"auto"}}>
-              <div style={{display:"grid",gridTemplateColumns:"28px 52px 1fr 48px 65px 65px 45px",gap:6,padding:"0 8px",marginBottom:6,minWidth:440}}>
-                <span style={{fontSize:9,color:"#64748b"}}>#</span>
-                <span style={{fontSize:9,color:"#64748b"}}>Tag</span>
+              <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,padding:"0 8px",marginBottom:6,minWidth:440}}>
+                <span style={{fontSize:9,color:"#64748b"}}></span>
                 <span style={{fontSize:9,color:"#64748b"}}>Name</span>
                 <span style={{fontSize:9,color:"#64748b",textAlign:"center"}}>{t.colAllies}</span>
                 <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colPower}</span>
@@ -1445,20 +1440,20 @@ function TMECommandCenter(){
                 <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>M:P</span>
               </div>
               {config.oppAlliances.map((a,i)=>(
-                <div key={a.tag} style={{display:"grid",gridTemplateColumns:"28px 52px 1fr 48px 65px 65px 45px",gap:6,alignItems:"center",padding:8,background:"#0f172a",borderRadius:6,borderLeft:"3px solid #f87171",marginBottom:i<3?6:0,minWidth:440}}>
-                  <div style={{fontSize:11,color:"#f87171",fontWeight:700}}>{a.rank}</div>
-                  <div style={{fontSize:12,fontWeight:800,color:"#f87171"}}>{a.tag}</div>
-                  <div style={{fontSize:10,color:"#94a3b8",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{a.name}</div>
+                <div key={a.tag} style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,alignItems:"center",padding:8,background:"#0f172a",borderRadius:6,borderLeft:"3px solid #f87171",marginBottom:i<config.oppAlliances.length-1?6:0,minWidth:440}}>
+                  <div style={{fontSize:13,fontWeight:800,color:"#f87171"}}>{a.tag}</div>
+                  <div>
+                    <div style={{fontSize:10,color:"#e2e8f0"}}>{a.name}</div>
+                    <div style={{fontSize:9,color:"#f87171"}}>#{a.rank}</div>
+                  </div>
                   <div style={{fontSize:11,color:"#cbd5e1",textAlign:"center"}}>{a.allies}</div>
                   <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.power)}</div>
                   <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.merits)}</div>
                   <div style={{fontSize:10,color:"#4ade80",textAlign:"right"}}>{mpRatio(a.merits,a.power)}</div>
                 </div>
               ))}
-              <div style={{display:"grid",gridTemplateColumns:"28px 52px 1fr 48px 65px 65px 45px",gap:6,padding:"8px 8px 0",marginTop:6,borderTop:"1px solid #334155",minWidth:440}}>
-                <div></div>
-                <div style={{fontSize:10,fontWeight:700,color:"#94a3b8"}}>{t.colTotal}</div>
-                <div></div>
+              <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,padding:"8px 8px 0",marginTop:6,borderTop:"1px solid #334155",minWidth:440}}>
+                <div style={{fontSize:10,fontWeight:700,color:"#94a3b8"}}>{t.colTotal}</div><div></div>
                 <div style={{fontSize:11,fontWeight:700,color:"#e2e8f0",textAlign:"center"}}>{config.oppAlliances.reduce((s,a)=>s+a.allies,0)}</div>
                 <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(config.oppAlliances.reduce((s,a)=>s+(parseInt(String(a.power).replace(/,/g,""),10)||0),0))}</div>
                 <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(config.oppAlliances.reduce((s,a)=>s+(parseInt(String(a.merits).replace(/,/g,""),10)||0),0))}</div>
