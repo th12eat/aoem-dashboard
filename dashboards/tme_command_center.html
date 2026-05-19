@@ -111,6 +111,7 @@ const EN = {
   mapRallyLeader: "RALLY LEADER",
   mapSiegeLeader: "SIEGE LEADER",
   mapSiegeDef: "SIEGE DEF",
+  mapReset: "Reset",
   mapGateRing: "Gate Ring",
   mapICZone: "IC Zone",
   mapGates: "Gates",
@@ -221,6 +222,7 @@ const FR = {
   mapRallyLeader: "CHEF DE RALLYE",
   mapSiegeLeader: "CHEF DE SIEGE",
   mapSiegeDef: "SIEGE DEF",
+  mapReset: "Réinitialiser",
   mapGateRing: "Anneau de Portes",
   mapICZone: "Zone IC",
   mapGates: "Portes",
@@ -331,6 +333,7 @@ const ES = {
   mapRallyLeader: "LIDER DE RALLY",
   mapSiegeLeader: "LIDER DE ASEDIO",
   mapSiegeDef: "ASEDIO DEF",
+  mapReset: "Reiniciar",
   mapGateRing: "Anillo de Puertas",
   mapICZone: "Zona IC",
   mapGates: "Puertas",
@@ -441,6 +444,7 @@ const KO = {
   mapRallyLeader: "\uB7A0\uB9AC \uB9AC\uB354",
   mapSiegeLeader: "\uACF5\uC131 \uB9AC\uB354",
   mapSiegeDef: "\uACF5\uC131 \uBC29\uC5B4",
+  mapReset: "\uCD08\uAE30\uD654",
   mapGateRing: "\uBB38 \uB9C1",
   mapICZone: "IC \uAD6C\uC5ED",
   mapGates: "\uBB38",
@@ -551,6 +555,7 @@ const JA = {
   mapRallyLeader: "ラリーリーダー",
   mapSiegeLeader: "攻城リーダー",
   mapSiegeDef: "攻城防衛",
+  mapReset: "リセット",
   mapGateRing: "ゲートリング",
   mapICZone: "IC ゾーン",
   mapGates: "門",
@@ -661,6 +666,7 @@ const ZH_HK = {
   mapRallyLeader: "集結指揮",
   mapSiegeLeader: "攻城指揮",
   mapSiegeDef: "攻城防守",
+  mapReset: "重置",
   mapGateRing: "城門圈",
   mapICZone: "IC 區域",
   mapGates: "城門",
@@ -771,6 +777,7 @@ const ZH_CN = {
   mapRallyLeader: "集结指挥",
   mapSiegeLeader: "攻城指挥",
   mapSiegeDef: "攻城防守",
+  mapReset: "重置",
   mapGateRing: "城门圈",
   mapICZone: "IC 区域",
   mapGates: "城门",
@@ -881,6 +888,7 @@ const PT = {
   mapRallyLeader: "LÍDER DE RALLY",
   mapSiegeLeader: "LÍDER DE CERCO",
   mapSiegeDef: "CERCO DEF",
+  mapReset: "Reiniciar",
   mapGateRing: "Anel de Portões",
   mapICZone: "Zona IC",
   mapGates: "Portões",
@@ -985,7 +993,7 @@ const PHASE_COLORS = ["#94a3b8","#3b82f6","#22c55e","#f59e0b","#ef4444","#c084fc
 /* ═══════════════════════════════════════════════════
    ZOOMABLE MAP WRAPPER
    ═══════════════════════════════════════════════════ */
-function ZoomableMap({ children }) {
+function ZoomableMap({ children, resetLabel }) {
   const [scale, setScale] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
@@ -1013,7 +1021,7 @@ function ZoomableMap({ children }) {
       <div style={{ display: "flex", gap: 6, marginBottom: 8, alignItems: "center" }}>
         <button onClick={() => setScale(s => Math.min(4, s + 0.3))} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 4, color: "#fbbf24", width: 28, height: 28, fontSize: 16, cursor: "pointer", fontFamily: "monospace" }}>+</button>
         <button onClick={() => setScale(s => Math.max(1, s - 0.3))} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 4, color: "#fbbf24", width: 28, height: 28, fontSize: 16, cursor: "pointer", fontFamily: "monospace" }}>{"\u2212"}</button>
-        <button onClick={reset} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 4, color: "#94a3b8", padding: "4px 10px", fontSize: 10, cursor: "pointer", fontFamily: "monospace" }}>Reset</button>
+        <button onClick={reset} style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 4, color: "#94a3b8", padding: "4px 10px", fontSize: 10, cursor: "pointer", fontFamily: "monospace" }}>{resetLabel||"Reset"}</button>
         <span style={{ fontSize: 10, color: "#64748b", marginLeft: 4 }}>{Math.round(scale * 100)}%</span>
       </div>
       <div ref={containerRef} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerLeave={onPointerUp}
@@ -1513,7 +1521,7 @@ function TMECommandCenter(){
               <button onClick={()=>setMapViewOverride(v=>v===null?!isDefense:v===isDefense?!isDefense:null)} style={{padding:"4px 12px",fontSize:10,background:mapViewOverride!==null?"#1e3a5f":"#0f172a",border:"1px solid #334155",borderRadius:4,color:mapViewOverride!==null?"#fbbf24":"#64748b",cursor:"pointer",fontFamily:"monospace"}}>{mapIsDefense?"\uD83D\uDEE1\uFE0F DEF":"\u2694\uFE0F ATK"}</button>
             </div>
             <div style={{fontSize:10,color:"#94a3b8",marginBottom:12}}>{t.mapDesc}</div>
-            <ZoomableMap>
+            <ZoomableMap resetLabel={t.mapReset}>
               <DiamondMap alliances={computedAlliances} isDefense={mapIsDefense} t={t}/>
             </ZoomableMap>
           </div>
