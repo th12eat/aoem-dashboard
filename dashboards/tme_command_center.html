@@ -2033,10 +2033,10 @@ const DEFAULT_CONFIG = {
   invasionTime: "19:00 UTC",
   weWonPrep: true,
   alliances: [
-    { tag: "WC1", roleKey: "rolePrimaryStrike", teleportTime: "10:30 UTC", position: "NE-inner", tower: "Swordsman (N) / Pikeman (W)", color: "#3b82f6", allies: 169, expected: "", power: "17,908,224,376", merits: "1,739,585,234" },
-    { tag: "MyT", roleKey: "roleFlanking", teleportTime: "10:40 UTC", position: "SE-outer", tower: "Cavalry (S)", color: "#22c55e", allies: 150, expected: "", power: "10,101,551,325", merits: "798,173,643" },
-    { tag: "REU", roleKey: "roleSecondaryStrike", teleportTime: "10:50 UTC", position: "SE-inner", tower: "Archer (E)", color: "#f59e0b", allies: 125, expected: "", power: "9,258,414,137", merits: "841,540,304" },
-    { tag: "AGC", roleKey: "roleTowerHold", teleportTime: "11:00 UTC", position: "NE-outer", tower: "Archer (E)", color: "#ef4444", allies: 169, expected: "", power: "11,382,271,011", merits: "178,993,536" },
+    { tag: "WC1", roleKey: "rolePrimaryStrike", position: "NE-inner", tower: "Swordsman (N) / Pikeman (W)", color: "#3b82f6", allies: 169, power: "17,908,224,376", merits: "1,739,585,234", prepPoints: "12,664,209,460" },
+    { tag: "MyT", roleKey: "roleFlanking", position: "SE-outer", tower: "Cavalry (S)", color: "#22c55e", allies: 150, power: "10,101,551,325", merits: "798,173,643", prepPoints: "3,647,665,470" },
+    { tag: "REU", roleKey: "roleSecondaryStrike", position: "SE-inner", tower: "Archer (E)", color: "#f59e0b", allies: 125, power: "9,258,414,137", merits: "841,540,304", prepPoints: "2,753,099,670" },
+    { tag: "AGC", roleKey: "roleTowerHold", position: "NE-outer", tower: "Archer (E)", color: "#ef4444", allies: 169, power: "11,382,271,011", merits: "178,993,536", prepPoints: "3,672,513,790" },
   ],
   prepStages: [
     { nameKey: "prepStage1", ourPts: 4.6, oppPts: 5.2, won: false },
@@ -2049,10 +2049,10 @@ const DEFAULT_CONFIG = {
   totalOpp: 16.4,
   prepLastUpdated: "2026-05-19 10:38 UTC",
   oppAlliances: [
-    { rank: 1, tag: "E38", name: "TheLastWolf", allies: 160, power: "17,825,083,183", merits: "1,701,935,323" },
-    { rank: 2, tag: "K38", name: "Republic\uD55C\uAD6D", allies: 150, power: "11,735,334,303", merits: "710,232,458" },
-    { rank: 3, tag: "S38", name: "ShadowsOfWar", allies: 167, power: "9,901,400,493", merits: "389,679,065" },
-    { rank: 4, tag: "NAS", name: "NewAllieSparta", allies: 149, power: "7,193,506,001", merits: "107,554,795" },
+    { tag: "E38", name: "TheLastWolf", allies: 160, power: "17,825,083,183", merits: "1,701,935,323", prepPoints: "8,773,270,320" },
+    { tag: "K38", name: "Republic\uD55C\uAD6D", allies: 150, power: "11,735,334,303", merits: "710,232,458", prepPoints: "3,211,464,150" },
+    { tag: "S38", name: "ShadowsOfWar", allies: 167, power: "9,901,400,493", merits: "389,679,065", prepPoints: "4,878,084,720" },
+    { tag: "NAS", name: "NewAllieSparta", allies: 149, power: "7,193,506,001", merits: "107,554,795", prepPoints: "1,333,152,780" },
   ],
   krakens: [
     { rank: 1, name: "HungryJoker", alliance: "E38", power: "278,136,398", merits: "441,096,243", ratio: "1.59" },
@@ -2424,14 +2424,26 @@ function TMECommandCenter(){
   const mapIsDefense=mapViewOverride!==null?mapViewOverride:isDefense;
   const oppCode=genOppCode(config.oppServer);
 
-  const tpOffsets=[-30,-20,-10,0];
+  const parseNum=s=>parseInt(String(s).replace(/,/g,""),10)||0;
+  const tpOffsetByRank=[-30,-20,-10,0];
   const computedAlliances=(()=>{
     const m=config.invasionTime.match(/(\d{1,2}):(\d{2})/);
     const baseMin=(m?parseInt(m[1],10):11)*60+(m?parseInt(m[2],10):0);
     const tz=config.invasionTime.replace(/\d{1,2}:\d{2}\s*/,"").trim()||"UTC";
     const pad=n=>String(n).padStart(2,"0");
     const fmt=mins=>{const h=Math.floor(((mins%1440)+1440)%1440/60);const mn=((mins%60)+60)%60;return`${pad(h)}:${pad(mn)} ${tz}`;};
-    return config.alliances.map((a,i)=>({...a,teleportTime:fmt(baseMin+tpOffsets[i])}));
+    const sorted=[...config.alliances].sort((a,b)=>parseNum(b.prepPoints)-parseNum(a.prepPoints));
+    const rankMap={};sorted.forEach((a,i)=>{rankMap[a.tag]=i;});
+    return config.alliances.map(a=>({...a,prepRank:rankMap[a.tag]+1,teleportTime:fmt(baseMin+tpOffsetByRank[rankMap[a.tag]])}));
+  })();
+  const computedOppAlliances=(()=>{
+    const sorted=[...config.oppAlliances].sort((a,b)=>parseNum(b.prepPoints)-parseNum(a.prepPoints));
+    const m=config.invasionTime.match(/(\d{1,2}):(\d{2})/);
+    const baseMin=(m?parseInt(m[1],10):11)*60+(m?parseInt(m[2],10):0);
+    const tz=config.invasionTime.replace(/\d{1,2}:\d{2}\s*/,"").trim()||"UTC";
+    const pad=n=>String(n).padStart(2,"0");
+    const fmt=mins=>{const h=Math.floor(((mins%1440)+1440)%1440/60);const mn=((mins%60)+60)%60;return`${pad(h)}:${pad(mn)} ${tz}`;};
+    return sorted.map((a,i)=>({...a,prepRank:i+1,teleportTime:fmt(baseMin+tpOffsetByRank[i])}));
   })();
 
   const handleLang=useCallback((code)=>{
@@ -2447,12 +2459,13 @@ function TMECommandCenter(){
     const tz=config.invasionTime.replace(/\d{1,2}:\d{2}\s*/,"").trim()||"UTC";
     const pad=n=>String(n).padStart(2,"0");
     const fmt=mins=>{const h=Math.floor(((mins%1440)+1440)%1440/60);const mn=((mins%60)+60)%60;return`${pad(h)}:${pad(mn)} ${tz}`;};
+    const byRank=computedAlliances.slice().sort((a,b)=>a.prepRank-b.prepRank);
     return[
       fmt(baseMin-120),
-      fmt(baseMin-30),
-      fmt(baseMin-20),
-      fmt(baseMin-10),
-      fmt(baseMin),
+      `${fmt(baseMin-30)} (${byRank[0]?.tag})`,
+      `${fmt(baseMin-20)} (${byRank[1]?.tag})`,
+      `${fmt(baseMin-10)} (${byRank[2]?.tag})`,
+      `${fmt(baseMin)} (${byRank[3]?.tag})`,
       `${fmt(baseMin)}\u2013${fmt(baseMin+30)}`,
       "Gates Fall",
       "+0 to +4hrs",
@@ -2548,12 +2561,12 @@ function TMECommandCenter(){
                 <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colMerits}</span>
                 <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>M:P</span>
               </div>
-              {config.oppAlliances.map((a,i)=>(
-                <div key={a.tag} style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,alignItems:"center",padding:8,background:"#0f172a",borderRadius:6,borderLeft:"3px solid #f87171",marginBottom:i<config.oppAlliances.length-1?6:0,minWidth:440}}>
+              {computedOppAlliances.map((a,i)=>(
+                <div key={a.tag} style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,alignItems:"center",padding:8,background:"#0f172a",borderRadius:6,borderLeft:"3px solid #f87171",marginBottom:i<computedOppAlliances.length-1?6:0,minWidth:440}}>
                   <div style={{fontSize:13,fontWeight:800,color:"#f87171"}}>{a.tag}</div>
                   <div>
                     <div style={{fontSize:10,color:"#e2e8f0"}}>{a.name}</div>
-                    <div style={{fontSize:9,color:"#f87171"}}>#{a.rank}</div>
+                    <div style={{fontSize:9,color:"#f87171"}}>{a.teleportTime}</div>
                   </div>
                   <div style={{fontSize:11,color:"#cbd5e1",textAlign:"center"}}>{a.allies}</div>
                   <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.power)}</div>
@@ -2563,10 +2576,10 @@ function TMECommandCenter(){
               ))}
               <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,padding:"8px 8px 0",marginTop:6,borderTop:"1px solid #334155",minWidth:440}}>
                 <div style={{fontSize:10,fontWeight:700,color:"#94a3b8"}}>{t.colTotal}</div><div></div>
-                <div style={{fontSize:11,fontWeight:700,color:"#e2e8f0",textAlign:"center"}}>{config.oppAlliances.reduce((s,a)=>s+a.allies,0)}</div>
-                <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(config.oppAlliances.reduce((s,a)=>s+(parseInt(String(a.power).replace(/,/g,""),10)||0),0))}</div>
-                <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(config.oppAlliances.reduce((s,a)=>s+(parseInt(String(a.merits).replace(/,/g,""),10)||0),0))}</div>
-                <div style={{fontSize:10,fontWeight:700,color:"#4ade80",textAlign:"right"}}>{mpRatio(config.oppAlliances.reduce((s,a)=>s+(parseInt(String(a.merits).replace(/,/g,""),10)||0),0),config.oppAlliances.reduce((s,a)=>s+(parseInt(String(a.power).replace(/,/g,""),10)||0),0))}</div>
+                <div style={{fontSize:11,fontWeight:700,color:"#e2e8f0",textAlign:"center"}}>{computedOppAlliances.reduce((s,a)=>s+a.allies,0)}</div>
+                <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</div>
+                <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0))}</div>
+                <div style={{fontSize:10,fontWeight:700,color:"#4ade80",textAlign:"right"}}>{mpRatio(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0),computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</div>
               </div>
             </div>
           </div>
@@ -2682,6 +2695,18 @@ function TMECommandCenter(){
               <span><span style={{color:"#f87171"}}>{"\u25A0"}</span> {config.oppServer}: <strong>{config.totalOpp}B</strong></span>
             </div>
             <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp}/>
+          </div>
+          <div style={card}>
+            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\uD83C\uDFC6"} TME ALLIANCE RANKINGS</div>
+            <div style={{fontSize:9,color:"#64748b",marginBottom:8}}>Teleport offset: #1 = 30min early, #2 = 20min, #3 = 10min, #4 = event start</div>
+            {[...computedAlliances].sort((a,b)=>a.prepRank-b.prepRank).concat(computedOppAlliances).map((a,i)=>(
+              <div key={`${a.tag}-${i}`} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:i%2===0?"#0f172a":"transparent",borderRadius:4,borderLeft:`3px solid ${a.color||"#f87171"}`,marginBottom:2}}>
+                <div style={{fontSize:14,fontWeight:800,color:"#fbbf24",width:20,textAlign:"center"}}>#{a.prepRank}</div>
+                <div style={{fontSize:12,fontWeight:700,color:a.color||"#f87171",width:40}}>{a.tag}</div>
+                <div style={{fontSize:10,color:"#cbd5e1",flex:1}}>{fmt(a.prepPoints)}</div>
+                <div style={{fontSize:10,color:"#fbbf24",fontFamily:"monospace"}}>{a.teleportTime}</div>
+              </div>
+            ))}
           </div>
         </>)}
 
