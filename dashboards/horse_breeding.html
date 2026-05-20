@@ -131,18 +131,82 @@ const TEMPERAMENT_RESPECT_RATES = {
   protective: 0.8017,
 };
 
-const MARCH_TYPES = [
-  { id: "swordsman_1", label: "Swordsman March 1", type: "combat" },
-  { id: "swordsman_2", label: "Swordsman March 2", type: "combat" },
-  { id: "pikeman", label: "Pikeman March", type: "combat" },
-  { id: "cavalry", label: "Cavalry March", type: "combat" },
-  { id: "archer", label: "Archer March", type: "combat" },
-  { id: "gather_1", label: "Gathering March 1", type: "gathering" },
-  { id: "gather_2", label: "Gathering March 2", type: "gathering" },
-  { id: "gather_3", label: "Gathering March 3", type: "gathering" },
-  { id: "gather_4", label: "Gathering March 4", type: "gathering" },
-  { id: "gather_5", label: "Gathering March 5", type: "gathering" },
+const UNIT_TYPES = ["Swordsmen", "Pikemen", "Cavalry", "Archer"];
+
+const MILITARY_CLASSES = [
+  { id: "warrior", label: "Warrior", color: "#ef4444", desc: "Typically Might Damage" },
+  { id: "marshal", label: "Marshal", color: "#eab308", desc: "Mixed Might/Strategy" },
+  { id: "tactician", label: "Tactician", color: "#3b82f6", desc: "Typically Strategy Damage" },
 ];
+
+const HEROES = [
+  { name: "Ashoka", class: "tactician", units: ["Pikemen", "Cavalry"], quality: "legendary" },
+  { name: "Attila The Hun", class: "warrior", units: ["Cavalry", "Archer"], quality: "legendary" },
+  { name: "Axel", class: "marshal", units: ["Cavalry"], quality: "epic" },
+  { name: "Baldassi", class: "tactician", units: ["Swordsmen"], quality: "epic" },
+  { name: "Bellevue", class: "warrior", units: ["Archer"], quality: "legendary" },
+  { name: "Bushra", class: "marshal", units: ["Pikemen", "Cavalry"], quality: "legendary" },
+  { name: "Cleopatra VII", class: "tactician", units: ["Cavalry", "Swordsmen"], quality: "legendary" },
+  { name: "Clyde", class: "tactician", units: ["Cavalry"], quality: "epic" },
+  { name: "Constantine The Great", class: "warrior", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Cui Ruyi", class: "warrior", units: ["Archer"], quality: "epic" },
+  { name: "Cyrus The Great", class: "warrior", units: ["Cavalry"], quality: "legendary" },
+  { name: "Darius The Great", class: "warrior", units: ["Pikemen", "Cavalry"], quality: "legendary" },
+  { name: "Diao Chan", class: "tactician", units: ["Cavalry", "Archer"], quality: "legendary" },
+  { name: "El Cid", class: "marshal", units: ["Cavalry"], quality: "legendary" },
+  { name: "Frederick Barbarossa", class: "warrior", units: ["Pikemen"], quality: "legendary" },
+  { name: "Gao Meng", class: "warrior", units: ["Swordsmen"], quality: "epic" },
+  { name: "Gatos", class: "tactician", units: ["Pikemen"], quality: "epic" },
+  { name: "Guan Yu", class: "warrior", units: ["Cavalry"], quality: "legendary" },
+  { name: "Hammurabi", class: "warrior", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Hannibal", class: "tactician", units: ["Cavalry"], quality: "legendary" },
+  { name: "Harald III", class: "warrior", units: ["Cavalry", "Swordsmen"], quality: "legendary" },
+  { name: "Hua Mulan", class: "warrior", units: ["Archer"], quality: "legendary" },
+  { name: "Joan Of Arc", class: "warrior", units: ["Pikemen"], quality: "legendary" },
+  { name: "Josephine", class: "warrior", units: ["Archer", "Swordsmen"], quality: "legendary" },
+  { name: "Julius Caesar", class: "marshal", units: ["Pikemen", "Swordsmen"], quality: "legendary" },
+  { name: "Justinian The Great", class: "tactician", units: ["Cavalry"], quality: "legendary" },
+  { name: "Kaso", class: "warrior", units: ["Cavalry"], quality: "epic" },
+  { name: "King Arthur", class: "warrior", units: ["Swordsmen", "Cavalry"], quality: "mythical" },
+  { name: "King Derrick", class: "warrior", units: ["Archer", "Swordsmen"], quality: "legendary" },
+  { name: "Lagertha", class: "warrior", units: ["Pikemen"], quality: "legendary" },
+  { name: "Leon", class: "marshal", units: ["Archer"], quality: "epic" },
+  { name: "Leonidas I", class: "warrior", units: ["Pikemen"], quality: "legendary" },
+  { name: "Li Daoxuan", class: "marshal", units: ["Swordsmen"], quality: "epic" },
+  { name: "Liang Zhuge", class: "tactician", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Lu Bu", class: "warrior", units: ["Cavalry"], quality: "legendary" },
+  { name: "Luki", class: "marshal", units: ["Archer"], quality: "epic" },
+  { name: "Léo", class: "marshal", units: ["Pikemen"], quality: "epic" },
+  { name: "Mansa Musa", class: "tactician", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Mehmed II", class: "warrior", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Miyamoto Musashi", class: "warrior", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Narses", class: "warrior", units: ["Cavalry"], quality: "epic" },
+  { name: "Nino", class: "tactician", units: ["Swordsmen"], quality: "epic" },
+  { name: "Octavian", class: "marshal", units: ["Pikemen"], quality: "legendary" },
+  { name: "Oda Nobunaga", class: "marshal", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Philip IV", class: "tactician", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Queen Seondeok", class: "tactician", units: ["Archer"], quality: "legendary" },
+  { name: "Ramesses II", class: "tactician", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Rani Durgavati", class: "warrior", units: ["Archer", "Cavalry"], quality: "legendary" },
+  { name: "Richard I", class: "warrior", units: ["Pikemen"], quality: "legendary" },
+  { name: "Sejong The Great", class: "marshal", units: ["Cavalry"], quality: "legendary" },
+  { name: "Sun Tzu", class: "tactician", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Tariq", class: "marshal", units: ["Cavalry"], quality: "legendary" },
+  { name: "Thanius", class: "marshal", units: ["Pikemen"], quality: "epic" },
+  { name: "Theodora", class: "tactician", units: ["Swordsmen", "Archer"], quality: "legendary" },
+  { name: "Timur", class: "warrior", units: ["Cavalry"], quality: "legendary" },
+  { name: "Tokugawa Ieyasu", class: "marshal", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Toyotomi Hideyoshi", class: "marshal", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Tribhuwana", class: "warrior", units: ["Swordsmen"], quality: "legendary" },
+  { name: "Vlad III", class: "warrior", units: ["Cavalry"], quality: "legendary" },
+  { name: "Wu Wei", class: "warrior", units: ["Pikemen"], quality: "epic" },
+  { name: "Yi Seong-Gye", class: "marshal", units: ["Cavalry"], quality: "legendary" },
+  { name: "Yi Sun-Shin", class: "tactician", units: ["Archer"], quality: "legendary" },
+  { name: "Yuan Xia", class: "tactician", units: ["Archer"], quality: "epic" },
+];
+
+const MARCH_CATEGORIES = ["combat", "gathering", "siege"];
+const MARCHES_KEY = "aoem_marches";
 
 /* ═══════════════════════════════════════════════════
    BREEDING LOGIC (Kermanni model + Glossary data)
@@ -402,7 +466,7 @@ function HorseCard({ horse, onEdit, onDelete }) {
       )}
       {horse.assignedTo && (
         <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "#22c55e" }}>
-          Assigned to: {MARCH_TYPES.find(m => m.id === horse.assignedTo)?.label}
+          Assigned to: {loadMarches().find(m => m.id === horse.assignedTo)?.name || horse.assignedTo}
         </div>
       )}
     </div>
@@ -468,7 +532,7 @@ function HorseForm({ horse, onSave, onCancel }) {
           <label style={css.label}>Assigned March</label>
           <select style={css.select} value={form.assignedTo || ""} onChange={e => update("assignedTo", e.target.value)}>
             <option value="">Unassigned</option>
-            {MARCH_TYPES.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
+            {loadMarches().map(m => <option key={m.id} value={m.id}>{m.name || getMarchAutoName(m)}</option>)}
           </select>
         </div>
         <div>
@@ -844,82 +908,193 @@ function ProbabilityTab({ horses }) {
   );
 }
 
-function MarchPlannerTab({ horses, setHorses }) {
-  const assignments = useMemo(() => {
-    const map = {};
-    MARCH_TYPES.forEach(m => { map[m.id] = horses.filter(h => h.assignedTo === m.id); });
-    return map;
-  }, [horses]);
+function loadMarches() {
+  try { return JSON.parse(localStorage.getItem(MARCHES_KEY)) || []; }
+  catch { return []; }
+}
+function saveMarches(marches) {
+  localStorage.setItem(MARCHES_KEY, JSON.stringify(marches));
+}
 
+function getMarchAutoName(march) {
+  if (!march.heroes || march.heroes.length === 0) return "Empty March";
+  const commander = HEROES.find(h => h.name === march.heroes[0]);
+  const cls = MILITARY_CLASSES.find(c => c.id === commander?.class);
+  const unit = march.unitType || commander?.units?.[0] || "Mixed";
+  const count = loadMarches().filter(m =>
+    m.category === march.category && m.unitType === march.unitType &&
+    m.heroes?.[0] === march.heroes?.[0] && m.id !== march.id
+  ).length;
+  return `${march.heroes[0]} ${cls?.label || ""} ${unit} ${count > 0 ? count + 1 : 1}`.trim();
+}
+
+function checkTroopBonus(march) {
+  if (!march.heroes || march.heroes.length < 3) return { match: false, reason: "Need 3 heroes" };
+  const heroData = march.heroes.map(h => HEROES.find(x => x.name === h)).filter(Boolean);
+  if (heroData.length < 3) return { match: false, reason: "Unknown heroes" };
+  const allUnitsMatch = march.unitType && heroData.every(h => h.units.includes(march.unitType));
+  const classes = new Set(heroData.map(h => h.class));
+  const allClassesUnique = classes.size === 3;
+  if (allUnitsMatch && allClassesUnique) return { match: true, reason: "+180% Troop Bonus" };
+  const issues = [];
+  if (!allUnitsMatch) issues.push("Unit mismatch");
+  if (!allClassesUnique) issues.push("Need W/M/T mix");
+  return { match: false, reason: issues.join(", ") };
+}
+
+function MarchCard({ march, horses, onUpdate, onDelete, onAssignHorse, onUnassignHorse }) {
+  const heroData = (march.heroes || []).map(h => HEROES.find(x => x.name === h)).filter(Boolean);
+  const bonus = checkTroopBonus(march);
+  const assignedHorses = horses.filter(h => h.assignedTo === march.id);
   const unassigned = horses.filter(h => !h.assignedTo);
 
-  const assign = (horseId, marchId) => {
+  return (
+    <div style={css.card}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+        <div>
+          <div style={{ fontSize: "1rem", fontWeight: 600, color: "#e2e8f0" }}>{march.name || getMarchAutoName(march)}</div>
+          <div style={{ display: "flex", gap: "0.4rem", marginTop: "0.25rem", flexWrap: "wrap" }}>
+            {march.unitType && <span style={css.badge("#94a3b8")}>{march.unitType}</span>}
+            <span style={css.badge(bonus.match ? "#22c55e" : "#64748b")}>{bonus.reason}</span>
+          </div>
+        </div>
+        <button style={css.deleteBtn} onClick={() => onDelete(march.id)}>&times;</button>
+      </div>
+
+      <div style={{ marginBottom: "0.5rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.4rem" }}>
+          <label style={{ fontSize: "0.75rem", color: "#64748b" }}>Unit Type:</label>
+          <select style={{ ...css.select, width: "auto", fontSize: "0.8rem" }} value={march.unitType || ""}
+            onChange={e => onUpdate({ ...march, unitType: e.target.value })}>
+            <option value="">Select...</option>
+            {UNIT_TYPES.map(u => <option key={u} value={u}>{u}</option>)}
+          </select>
+        </div>
+      </div>
+
+      <div style={{ marginBottom: "0.5rem" }}>
+        <div style={{ fontSize: "0.75rem", color: "#64748b", marginBottom: "0.25rem" }}>Heroes (first = Commander)</div>
+        {(march.heroes || []).map((heroName, i) => {
+          const hero = HEROES.find(h => h.name === heroName);
+          const cls = MILITARY_CLASSES.find(c => c.id === hero?.class);
+          return (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.2rem", padding: "0.2rem 0.4rem", background: "#0f172a", borderRadius: 4 }}>
+              {i === 0 && <span style={{ fontSize: "0.65rem", color: "#fbbf24" }}>CMD</span>}
+              <span style={{ fontSize: "0.8rem", color: cls?.color || "#e2e8f0" }}>{heroName}</span>
+              <span style={{ fontSize: "0.65rem", color: "#64748b" }}>{cls?.label} / {hero?.units?.join(", ")}</span>
+              <button style={{ ...css.deleteBtn, fontSize: "0.9rem", marginLeft: "auto" }}
+                onClick={() => { const updated = { ...march, heroes: march.heroes.filter((_, idx) => idx !== i) }; onUpdate(updated); }}>&times;</button>
+            </div>
+          );
+        })}
+        {(march.heroes || []).length < 3 && (
+          <select style={{ ...css.select, marginTop: "0.25rem", fontSize: "0.8rem" }} value=""
+            onChange={e => { if (e.target.value) { const updated = { ...march, heroes: [...(march.heroes || []), e.target.value] }; onUpdate(updated); } }}>
+            <option value="">+ Add hero...</option>
+            {HEROES.filter(h => !(march.heroes || []).includes(h.name)).sort((a, b) => a.name.localeCompare(b.name)).map(h => {
+              const cls = MILITARY_CLASSES.find(c => c.id === h.class);
+              return <option key={h.name} value={h.name}>{h.name} ({cls?.label} / {h.units.join(", ")})</option>;
+            })}
+          </select>
+        )}
+      </div>
+
+      <div>
+        <div style={{ fontSize: "0.75rem", color: "#64748b", marginBottom: "0.25rem" }}>Mounts ({assignedHorses.length}/3)</div>
+        {assignedHorses.map(h => (
+          <div key={h.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.2rem", padding: "0.2rem 0.4rem", background: "#0f172a", borderRadius: 4 }}>
+            <span style={{ fontSize: "0.8rem", color: RARITIES.find(r => r.id === h.rarity)?.color }}>{h.name || "Unnamed"}</span>
+            <button style={{ ...css.deleteBtn, fontSize: "0.9rem" }} onClick={() => onUnassignHorse(h.id)}>&times;</button>
+          </div>
+        ))}
+        {assignedHorses.length < 3 && (
+          <select style={{ ...css.select, marginTop: "0.25rem", fontSize: "0.8rem" }} value=""
+            onChange={e => { if (e.target.value) onAssignHorse(e.target.value, march.id); }}>
+            <option value="">+ Assign mount...</option>
+            {unassigned.map(h => <option key={h.id} value={h.id}>{h.name || "Unnamed"} ({TEMPERAMENTS.find(t => t.id === h.temperament)?.label})</option>)}
+          </select>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function MarchPlannerTab({ horses, setHorses }) {
+  const [marches, setMarches] = useState(loadMarches);
+
+  const addMarch = (category) => {
+    const newMarch = { id: Date.now().toString(), category, unitType: "", heroes: [], name: "" };
+    const updated = [...marches, newMarch];
+    setMarches(updated);
+    saveMarches(updated);
+  };
+
+  const updateMarch = (march) => {
+    const updated = marches.map(m => m.id === march.id ? march : m);
+    setMarches(updated);
+    saveMarches(updated);
+  };
+
+  const deleteMarch = (id) => {
+    const updated = marches.filter(m => m.id !== id);
+    setMarches(updated);
+    saveMarches(updated);
+    const horsesUpdated = horses.map(h => h.assignedTo === id ? { ...h, assignedTo: "" } : h);
+    setHorses(horsesUpdated);
+    saveStable(horsesUpdated);
+  };
+
+  const assignHorse = (horseId, marchId) => {
     const updated = horses.map(h => h.id === horseId ? { ...h, assignedTo: marchId } : h);
     setHorses(updated);
     saveStable(updated);
   };
 
-  const unassign = (horseId) => {
+  const unassignHorse = (horseId) => {
     const updated = horses.map(h => h.id === horseId ? { ...h, assignedTo: "" } : h);
     setHorses(updated);
     saveStable(updated);
   };
 
+  const catConfig = [
+    { id: "combat", label: "Combat", color: "#ef4444" },
+    { id: "gathering", label: "Gathering", color: "#fbbf24" },
+    { id: "siege", label: "Siege", color: "#a855f7" },
+  ];
+
+  const totalMounts = marches.length * 3;
+  const assignedCount = horses.filter(h => h.assignedTo).length;
+
   return (
     <div>
       <div style={{ fontSize: "0.9rem", color: "#94a3b8", marginBottom: "1rem" }}>
-        Assign up to 3 mounts per march (1 per hero). Combat marches: 5 | Gathering marches: 5 | Total mounts needed: 30
+        {marches.length} marches configured | {assignedCount}/{totalMounts} mount slots filled |
+        Each march: 3 heroes + 3 mounts | +180% bonus requires all 3 unit types + all 3 military classes match
       </div>
 
-      <div style={{ marginBottom: "1.5rem" }}>
-        <h3 style={{ color: "#ef4444", fontSize: "1rem", margin: "0 0 0.75rem" }}>Combat Marches</h3>
-        <div style={css.grid}>
-          {MARCH_TYPES.filter(m => m.type === "combat").map(march => (
-            <div key={march.id} style={css.card}>
-              <div style={{ fontWeight: 600, color: "#e2e8f0", marginBottom: "0.5rem" }}>{march.label}</div>
-              {assignments[march.id].map(h => (
-                <div key={h.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.25rem", padding: "0.25rem 0.5rem", background: "#0f172a", borderRadius: 4 }}>
-                  <span style={{ fontSize: "0.85rem", color: RARITIES.find(r => r.id === h.rarity)?.color }}>{h.name || "Unnamed"}</span>
-                  <button style={css.deleteBtn} onClick={() => unassign(h.id)}>&times;</button>
-                </div>
-              ))}
-              {assignments[march.id].length < 3 && (
-                <select style={{ ...css.select, marginTop: "0.25rem", fontSize: "0.8rem" }}
-                  value="" onChange={e => { if (e.target.value) assign(e.target.value, march.id); }}>
-                  <option value="">+ Assign horse...</option>
-                  {unassigned.map(h => <option key={h.id} value={h.id}>{h.name || "Unnamed"} ({TEMPERAMENTS.find(t => t.id === h.temperament)?.label})</option>)}
-                </select>
-              )}
-              <div style={{ fontSize: "0.7rem", color: "#475569", marginTop: "0.25rem" }}>{assignments[march.id].length}/3 slots filled</div>
+      {catConfig.map(cat => {
+        const catMarches = marches.filter(m => m.category === cat.id);
+        return (
+          <div key={cat.id} style={{ marginBottom: "1.5rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+              <h3 style={{ color: cat.color, fontSize: "1rem", margin: 0 }}>{cat.label} Marches ({catMarches.length})</h3>
+              <button style={css.btn(cat.color)} onClick={() => addMarch(cat.id)}>+ Add March</button>
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h3 style={{ color: "#fbbf24", fontSize: "1rem", margin: "0 0 0.75rem" }}>Gathering Marches</h3>
-        <div style={css.grid}>
-          {MARCH_TYPES.filter(m => m.type === "gathering").map(march => (
-            <div key={march.id} style={css.card}>
-              <div style={{ fontWeight: 600, color: "#e2e8f0", marginBottom: "0.5rem" }}>{march.label}</div>
-              {assignments[march.id].map(h => (
-                <div key={h.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.25rem", padding: "0.25rem 0.5rem", background: "#0f172a", borderRadius: 4 }}>
-                  <span style={{ fontSize: "0.85rem", color: RARITIES.find(r => r.id === h.rarity)?.color }}>{h.name || "Unnamed"}</span>
-                  <button style={css.deleteBtn} onClick={() => unassign(h.id)}>&times;</button>
-                </div>
+            {catMarches.length === 0 && (
+              <div style={{ fontSize: "0.85rem", color: "#475569", padding: "1rem", textAlign: "center" }}>
+                No {cat.label.toLowerCase()} marches configured yet.
+              </div>
+            )}
+            <div style={css.grid}>
+              {catMarches.map(march => (
+                <MarchCard key={march.id} march={march} horses={horses}
+                  onUpdate={updateMarch} onDelete={deleteMarch}
+                  onAssignHorse={assignHorse} onUnassignHorse={unassignHorse} />
               ))}
-              {assignments[march.id].length < 3 && (
-                <select style={{ ...css.select, marginTop: "0.25rem", fontSize: "0.8rem" }}
-                  value="" onChange={e => { if (e.target.value) assign(e.target.value, march.id); }}>
-                  <option value="">+ Assign horse...</option>
-                  {unassigned.map(h => <option key={h.id} value={h.id}>{h.name || "Unnamed"} ({TEMPERAMENTS.find(t => t.id === h.temperament)?.label})</option>)}
-                </select>
-              )}
-              <div style={{ fontSize: "0.7rem", color: "#475569", marginTop: "0.25rem" }}>{assignments[march.id].length}/3 slots filled</div>
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
