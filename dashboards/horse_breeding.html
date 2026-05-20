@@ -35,13 +35,13 @@ const ATTRIBUTES = [
 ];
 
 const TEMPERAMENTS = [
-  { id: "spirited", label: "Spirited", color: "#ef4444", effect: "Higher Might Damage trait inheritance & mutation chance" },
-  { id: "docile", label: "Docile", color: "#22c55e", effect: "Higher Healing trait inheritance & mutation chance" },
-  { id: "mischievous", label: "Mischievous", color: "#a855f7", effect: "Higher Strategy Damage trait inheritance & mutation chance" },
-  { id: "alert", label: "Alert", color: "#3b82f6", effect: "Higher Universal trait inheritance & mutation chance" },
-  { id: "warbred", label: "Warbred", color: "#f59e0b", effect: "Higher attribute inheritance, balanced trait chances" },
-  { id: "fearless", label: "Fearless", color: "#ec4899", effect: "Higher chance to upgrade trait quality during breeding" },
-  { id: "protective", label: "Protective", color: "#14b8a6", effect: "Higher chance to retain both traits from parents" },
+  { id: "spirited", label: "Spirited", color: "#ef4444", group: "mode", effect: "+5% mutation chance (favors new traits over parent traits)" },
+  { id: "docile", label: "Docile", color: "#22c55e", group: "mode", effect: "+5% inheritance chance (favors keeping parent traits)" },
+  { id: "mischievous", label: "Mischievous", color: "#a855f7", group: "mode", effect: "Neutral 50/50 inheritance/mutation split" },
+  { id: "alert", label: "Alert", color: "#3b82f6", group: "pool", traitPool: "strategy_damage", effect: "Trait pool: Strategy Damage (4 traits). ~80.18% to draw from pool on mutation" },
+  { id: "warbred", label: "Warbred", color: "#f59e0b", group: "pool", traitPool: "might_damage", effect: "Trait pool: Might Damage (5 traits). ~80.19% to draw from pool on mutation" },
+  { id: "fearless", label: "Fearless", color: "#ec4899", group: "pool", traitPool: "universal", effect: "Trait pool: Universal (14 traits). ~78.95% to draw from pool on mutation" },
+  { id: "protective", label: "Protective", color: "#14b8a6", group: "pool", traitPool: "healing", effect: "Trait pool: Healing (3 traits). ~80.17% to draw from pool on mutation" },
 ];
 
 const TRAIT_CATEGORIES = [
@@ -63,52 +63,72 @@ const TRAIT_QUALITIES = [
 
 const TRAITS = {
   might_damage: [
-    { id: "overpower", label: "Overpower", desc: "Active skill might damage increases" },
-    { id: "gallant", label: "Gallant", desc: "Secondary strike skill might damage increases" },
-    { id: "savage", label: "Savage", desc: "Normal attack might damage increases" },
-    { id: "rampage", label: "Rampage", desc: "Might damage increases when troops > 50%" },
-    { id: "fury", label: "Fury", desc: "Might damage increases when troops < 50%" },
-    { id: "ruthless", label: "Ruthless", desc: "Might damage vs wounded troops increases" },
+    { id: "overpower", label: "Overpower", desc: "Active skill might damage increases by X%", min: 2.0, max: 10.0 },
+    { id: "gallant", label: "Gallant", desc: "Secondary Strike skill might damage increases by X%", min: 2.0, max: 10.0 },
+    { id: "valor", label: "Valor", desc: "Passive skill might damage increases by X%", min: 2.0, max: 10.0 },
+    { id: "phalanx_breaker", label: "Phalanx Breaker", desc: "Turn-based skill might damage increases by X%", min: 2.0, max: 10.0 },
+    { id: "fierce", label: "Fierce", desc: "Normal attack damage increases by X%", min: 4.5, max: 22.5 },
   ],
   strategy_damage: [
-    { id: "arcane", label: "Arcane", desc: "Active skill strategy damage increases" },
-    { id: "cunning", label: "Cunning", desc: "Secondary strike skill strategy damage increases" },
-    { id: "mystic", label: "Mystic", desc: "Normal attack strategy damage increases" },
-    { id: "brilliance", label: "Brilliance", desc: "Strategy damage increases when troops > 50%" },
-    { id: "desperation", label: "Desperation", desc: "Strategy damage increases when troops < 50%" },
-    { id: "calculated", label: "Calculated", desc: "Strategy damage vs wounded troops increases" },
+    { id: "spiritbond", label: "Spiritbond", desc: "Active skill strategy damage increases by X%", min: 2.0, max: 10.0 },
+    { id: "stratagem", label: "Stratagem", desc: "Secondary Strike skill strategy damage increases by X%", min: 2.0, max: 10.0 },
+    { id: "cunning", label: "Cunning", desc: "Passive skill strategy damage increases by X%", min: 2.0, max: 10.0 },
+    { id: "battlemaster", label: "Battlemaster", desc: "Turn-based skill strategy damage increases by X%", min: 2.0, max: 10.0 },
   ],
   universal: [
-    { id: "vigor", label: "Vigor", desc: "All damage dealt increases" },
-    { id: "resilience", label: "Resilience", desc: "All damage taken reduces" },
-    { id: "crit_strike", label: "Critical Strike", desc: "Critical hit chance increases" },
-    { id: "tenacity", label: "Tenacity", desc: "Critical damage resistance increases" },
-    { id: "swiftness", label: "Swiftness", desc: "March speed increases" },
-    { id: "fortitude", label: "Fortitude", desc: "Troop HP increases" },
+    { id: "thunderbolt", label: "Thunderbolt", desc: "Critical strike damage increases by X%", min: 2.7, max: 13.5 },
+    { id: "army_sunder", label: "Army Sunder", desc: "All types of damage increases by X%", min: 1.8, max: 9.0 },
+    { id: "dustbane", label: "Dustbane", desc: "Solo [against troops]: All damage increases by X%", min: 2.0, max: 10.0 },
+    { id: "tidebreaker", label: "Tidebreaker", desc: "Rally [against troops]: All damage increases by X%", min: 2.0, max: 10.0 },
+    { id: "fearless_trait", label: "Fearless", desc: "Solo [against troops]: All damage taken reduces by X%", min: 0.7, max: 3.5 },
+    { id: "bastion", label: "Bastion", desc: "Rally [against troops]: All damage taken reduces by X%", min: 0.7, max: 3.5 },
+    { id: "iron_ridge", label: "Iron Ridge", desc: "Troop's might damage taken reduces by X%", min: 0.6, max: 3.0 },
+    { id: "tactician", label: "Tactician", desc: "Troop's strategy damage taken reduces by X%", min: 0.6, max: 3.0 },
+    { id: "bedrock", label: "Bedrock", desc: "Troop's all damage taken reduces by X%", min: 0.48, max: 2.4 },
+    { id: "peacemaker", label: "Peacemaker", desc: "Troop's active skill damage taken reduces by X%", min: 0.6, max: 3.0 },
+    { id: "blade_sever", label: "Blade Sever", desc: "Troop's secondary strike damage taken reduces by X%", min: 0.6, max: 3.0 },
+    { id: "entrenchment", label: "Entrenchment", desc: "Troop's passive skill damage taken reduces by X%", min: 0.6, max: 3.0 },
+    { id: "stalwart", label: "Stalwart", desc: "Troop's turn-based skill damage taken reduces by X%", min: 0.6, max: 3.0 },
+    { id: "perseverance", label: "Perseverance", desc: "Troop's normal attack damage taken reduces by X%", min: 1.2, max: 6.0 },
   ],
   healing: [
-    { id: "lifesaver", label: "Lifesaver", desc: "After recovery, damage taken reduces for 3s" },
-    { id: "rejuvenate", label: "Rejuvenate", desc: "Healing skill effectiveness increases" },
-    { id: "sanctuary", label: "Sanctuary", desc: "Shield skill effectiveness increases" },
-    { id: "renewal", label: "Renewal", desc: "Healing over time effect increases" },
-    { id: "guardian", label: "Guardian", desc: "Damage reduction after healing increases" },
-    { id: "mercy", label: "Mercy", desc: "Healing when troops < 30% increases" },
+    { id: "lifesaver", label: "Lifesaver", desc: "After causing recovery, reduce damage taken by X% for 3s", min: 0.96, max: 4.8 },
+    { id: "renewal", label: "Renewal", desc: "Healing effect increases by X%", min: 2.3, max: 11.5 },
+    { id: "healing_armor", label: "Healing Armor", desc: "Troop's healing received increases by X%", min: 0.8, max: 4.0 },
   ],
   gathering: [
-    { id: "swift", label: "Swift", desc: "Troop gathering speed increases" },
-    { id: "bountiful", label: "Bountiful", desc: "Gathering yield increases" },
-    { id: "endurance", label: "Endurance", desc: "Troop load capacity increases" },
-    { id: "efficient", label: "Efficient", desc: "Gathering time reduces" },
-    { id: "prospector", label: "Prospector", desc: "Rare resource find chance increases" },
-    { id: "packmaster", label: "Packmaster", desc: "March carrying capacity increases" },
+    { id: "abundance", label: "Abundance", desc: "Extra resources gained increases by X%", min: 2.08, max: 10.0 },
+    { id: "swift", label: "Swift", desc: "Troop's gathering speed increases by X%", min: 2.0, max: 8.0 },
+    { id: "full_stores", label: "Full Stores", desc: "Troop's load increases by X%", min: 2.0, max: 8.0 },
+    { id: "siege", label: "Siege", desc: "Siege value when attacking cities increases by X%", min: 2.0, max: 10.0 },
   ],
 };
 
 const ATTRIBUTE_RANGES = {
-  courser:   { min: 1.0, max: 2.5 },
-  destrier:  { min: 2.0, max: 3.5 },
-  skywing:   { min: 3.0, max: 4.5 },
-  celestial: { min: 4.0, max: 5.0 },
+  courser:   { numAttrs: 2, sumMin: 2.0, sumMax: 4.0 },
+  destrier:  { numAttrs: 2, sumMin: 5.0, sumMax: 9.0 },
+  skywing:   { numAttrs: 2, sumMin: 10.0, sumMax: 16.0 },
+  celestial: { numAttrs: 3, sumMin: 18.0, sumMax: 25.0 },
+};
+
+const RARITY_BREEDING_OUTCOMES = {
+  "courser+courser":     [{ rarity: "destrier", chance: 0.20 }, { rarity: "courser", chance: 0.80 }],
+  "courser+destrier":    [{ rarity: "destrier", chance: 0.50 }, { rarity: "courser", chance: 0.50 }],
+  "courser+skywing":     [{ rarity: "skywing", chance: 0.30 }, { rarity: "destrier", chance: 0.40 }, { rarity: "courser", chance: 0.30 }],
+  "courser+celestial":   [{ rarity: "celestial", chance: 0.25 }, { rarity: "skywing", chance: 0.25 }, { rarity: "destrier", chance: 0.25 }, { rarity: "courser", chance: 0.25 }],
+  "destrier+destrier":   [{ rarity: "skywing", chance: 0.10 }, { rarity: "destrier", chance: 0.90 }],
+  "destrier+skywing":    [{ rarity: "skywing", chance: 0.50 }, { rarity: "destrier", chance: 0.50 }],
+  "destrier+celestial":  [{ rarity: "celestial", chance: 0.25 }, { rarity: "skywing", chance: 0.25 }, { rarity: "destrier", chance: 0.50 }],
+  "skywing+skywing":     [{ rarity: "celestial", chance: 0.01 }, { rarity: "skywing", chance: 0.99 }],
+  "skywing+celestial":   [{ rarity: "celestial", chance: 0.25 }, { rarity: "skywing", chance: 0.75 }],
+  "celestial+celestial": [{ rarity: "celestial", chance: 1.00 }],
+};
+
+const TEMPERAMENT_RESPECT_RATES = {
+  warbred: 0.8019,
+  alert: 0.8019,
+  fearless: 0.7895,
+  protective: 0.8017,
 };
 
 const MARCH_TYPES = [
@@ -125,84 +145,140 @@ const MARCH_TYPES = [
 ];
 
 /* ═══════════════════════════════════════════════════
-   BREEDING LOGIC
+   BREEDING LOGIC (Kermanni model + Glossary data)
+
+   Two-phase trait determination:
+   1. Mode: Inherit parent trait (keep) vs Mutate to new trait (shift)
+      - Base: 50/50 split
+      - Spirited: +5% to shift (mutation)
+      - Docile: +5% to keep (inheritance)
+      - Mischievous: neutral 50/50
+   2. Pool: When mutating, which trait the offspring gets
+      - Warbred/Alert/Fearless/Protective own trait pools
+      - ~80% chance to draw from the offspring's temperament pool
+      - ~20% distributed among other temperament pools
+
+   Temperament inheritance:
+   - Same temperament on both parents: 90% to keep, 10%/6 for others
+   - Different temperaments: 30% each parent's, 40%/5 for others
+
+   Trait inheritance:
+   - Same trait on both parents: 80% to inherit that trait
+   - Different traits: 50% each
    ═══════════════════════════════════════════════════ */
 
-function getTemperamentBonus(temperament, traitCategory) {
-  const map = {
-    spirited: "might_damage",
-    docile: "healing",
-    mischievous: "strategy_damage",
-    alert: "universal",
-  };
-  if (map[temperament] === traitCategory) return 0.25;
-  if (temperament === "warbred") return 0.10;
-  if (temperament === "protective") return 0.05;
-  if (temperament === "fearless") return 0.05;
-  return 0;
-}
-
-function calcInheritanceProbability(parent1, parent2, targetCategory) {
-  let base = 0;
-  const p1Traits = (parent1.traits || []).filter(t => t.category === targetCategory);
-  const p2Traits = (parent2.traits || []).filter(t => t.category === targetCategory);
-  if (p1Traits.length > 0) base += 0.30;
-  if (p2Traits.length > 0) base += 0.30;
-  const tempBonus1 = getTemperamentBonus(parent1.temperament, targetCategory);
-  const tempBonus2 = getTemperamentBonus(parent2.temperament, targetCategory);
-  const tempBonus = Math.max(tempBonus1, tempBonus2);
-  return Math.min(base + tempBonus, 0.95);
-}
-
-function calcQualityUpgradeChance(parent1, parent2) {
-  let base = 0.10;
-  if (parent1.temperament === "fearless" || parent2.temperament === "fearless") base += 0.20;
-  const avgRarity = ((getRarityTier(parent1.rarity) + getRarityTier(parent2.rarity)) / 2);
-  base += avgRarity * 0.05;
-  return Math.min(base, 0.60);
-}
-
-function calcDualTraitRetention(parent1, parent2) {
-  let base = 0.15;
-  if (parent1.temperament === "protective" || parent2.temperament === "protective") base += 0.25;
-  return Math.min(base, 0.60);
-}
+const TRAIT_POOL_SIZES = { warbred: 5, alert: 4, fearless: 14, protective: 3 };
+const TOTAL_TRAITS = 30;
 
 function getRarityTier(rarity) {
   const r = RARITIES.find(x => x.id === rarity);
   return r ? r.tier : 1;
 }
 
-function calcAttributeInheritance(parent1, parent2) {
-  const p1Avg = ((parent1.attr1Val || 0) + (parent1.attr2Val || 0)) / 2;
-  const p2Avg = ((parent2.attr1Val || 0) + (parent2.attr2Val || 0)) / 2;
-  let baseAvg = (p1Avg + p2Avg) / 2;
-  if (parent1.temperament === "warbred" || parent2.temperament === "warbred") {
-    baseAvg += 0.3;
+function calcTemperamentChance(parent1Temp, parent2Temp, targetTemp) {
+  if (parent1Temp === parent2Temp) {
+    return targetTemp === parent1Temp ? 0.90 : (0.10 / 6);
   }
-  return { expectedAvg: baseAvg, range: [baseAvg - 0.5, baseAvg + 0.5] };
+  if (targetTemp === parent1Temp || targetTemp === parent2Temp) return 0.30;
+  return 0.40 / 5;
+}
+
+function calcTraitInheritanceChance(parent1, parent2, targetTraitId) {
+  const p1Traits = (parent1.traits || []).map(t => t.traitId);
+  const p2Traits = (parent2.traits || []).map(t => t.traitId);
+  const p1Has = p1Traits.includes(targetTraitId);
+  const p2Has = p2Traits.includes(targetTraitId);
+  if (p1Has && p2Has) return 0.80;
+  if (p1Has || p2Has) return 0.50;
+  return 0;
+}
+
+function calcModeChances(parent1, parent2) {
+  let shiftChance = 0.50;
+  let keepChance = 0.50;
+  const temps = [parent1.temperament, parent2.temperament];
+  if (temps.includes("spirited")) { shiftChance += 0.05; keepChance -= 0.05; }
+  if (temps.includes("docile")) { keepChance += 0.05; shiftChance -= 0.05; }
+  return { shift: shiftChance, keep: keepChance };
+}
+
+function calcMutationTraitProb(offspringTemp, targetTraitId) {
+  const tempDef = TEMPERAMENTS.find(t => t.id === offspringTemp);
+  if (!tempDef || tempDef.group !== "pool") {
+    return 1 / TOTAL_TRAITS;
+  }
+  const poolCategory = tempDef.traitPool;
+  const poolSize = TRAIT_POOL_SIZES[offspringTemp] || 1;
+  const respectRate = TEMPERAMENT_RESPECT_RATES[offspringTemp] || 0.80;
+  const poolTraits = TRAITS[poolCategory] || [];
+  const isInPool = poolTraits.some(t => t.id === targetTraitId);
+  if (isInPool) {
+    return respectRate / poolSize;
+  } else {
+    return (1 - respectRate) / (TOTAL_TRAITS - poolSize);
+  }
+}
+
+function calcFullTraitProbability(parent1, parent2, offspringTemp, targetTraitId) {
+  const mode = calcModeChances(parent1, parent2);
+  const inheritChance = calcTraitInheritanceChance(parent1, parent2, targetTraitId);
+  const keepProb = mode.keep * inheritChance;
+  const mutationProb = mode.shift * calcMutationTraitProb(offspringTemp, targetTraitId);
+  return keepProb + mutationProb;
+}
+
+function calcRarityOutcomes(parent1, parent2) {
+  const r1 = parent1.rarity;
+  const r2 = parent2.rarity;
+  const key1 = `${r1}+${r2}`;
+  const key2 = `${r2}+${r1}`;
+  return RARITY_BREEDING_OUTCOMES[key1] || RARITY_BREEDING_OUTCOMES[key2] || [{ rarity: r1, chance: 1.0 }];
+}
+
+function calcAttributeInheritance(parent1, parent2) {
+  const p1Sum = (parent1.attr1Val || 0) + (parent1.attr2Val || 0);
+  const p2Sum = (parent2.attr1Val || 0) + (parent2.attr2Val || 0);
+  const avgSum = (p1Sum + p2Sum) / 2;
+  return { expectedSum: avgSum, range: [avgSum * 0.85, avgSum * 1.15] };
 }
 
 function scoreBreedingPair(parent1, parent2, target) {
   let score = 0;
-  if (target.traitCategory) {
-    score += calcInheritanceProbability(parent1, parent2, target.traitCategory) * 40;
+  const bestTemp = target.traitCategory
+    ? TEMPERAMENTS.find(t => t.traitPool === target.traitCategory)?.id || parent1.temperament
+    : parent1.temperament;
+
+  if (target.traitCategory && target.targetTrait) {
+    const prob = calcFullTraitProbability(parent1, parent2, bestTemp, target.targetTrait);
+    score += prob * 100 * 40;
+  } else if (target.traitCategory) {
+    const poolTraits = TRAITS[target.traitCategory] || [];
+    let totalProb = 0;
+    for (const t of poolTraits) {
+      totalProb += calcFullTraitProbability(parent1, parent2, bestTemp, t.id);
+    }
+    score += totalProb * 40;
   }
-  if (target.secondCategory) {
-    score += calcDualTraitRetention(parent1, parent2) * 20;
-    score += calcInheritanceProbability(parent1, parent2, target.secondCategory) * 15;
-  }
-  if (target.preferQualityUpgrade) {
-    score += calcQualityUpgradeChance(parent1, parent2) * 25;
-  }
-  const attrResult = calcAttributeInheritance(parent1, parent2);
+
+  const mode = calcModeChances(parent1, parent2);
+  if (target.preferInheritance) score += mode.keep * 20;
+  if (target.preferMutation) score += mode.shift * 20;
+
+  const rarityOutcomes = calcRarityOutcomes(parent1, parent2);
+  const bestRarityChance = rarityOutcomes[0]?.chance || 0;
+  const bestRarityTier = getRarityTier(rarityOutcomes[0]?.rarity);
+  score += bestRarityTier * bestRarityChance * 5;
+
   if (target.attribute) {
     const p1Has = parent1.attr1 === target.attribute || parent1.attr2 === target.attribute;
     const p2Has = parent2.attr1 === target.attribute || parent2.attr2 === target.attribute;
     if (p1Has && p2Has) score += 15;
     else if (p1Has || p2Has) score += 8;
   }
-  score += attrResult.expectedAvg * 3;
+
+  const attrResult = calcAttributeInheritance(parent1, parent2);
+  score += attrResult.expectedSum * 0.5;
+
   return Math.round(score * 10) / 10;
 }
 
@@ -524,9 +600,10 @@ function StableTab({ horses, setHorses }) {
 function BreedingTab({ horses }) {
   const [target, setTarget] = useState({
     traitCategory: "might_damage",
-    secondCategory: "",
+    targetTrait: "",
     attribute: "might",
-    preferQualityUpgrade: false,
+    preferInheritance: false,
+    preferMutation: false,
   });
 
   const pairs = useMemo(() => {
@@ -548,16 +625,16 @@ function BreedingTab({ horses }) {
         <div style={{ fontSize: "1rem", fontWeight: 600, color: "#fbbf24", marginBottom: "0.75rem" }}>Breeding Target</div>
         <div style={css.formGrid}>
           <div>
-            <label style={css.label}>Primary Trait Category</label>
-            <select style={css.select} value={target.traitCategory} onChange={e => setTarget({ ...target, traitCategory: e.target.value })}>
+            <label style={css.label}>Desired Trait Category</label>
+            <select style={css.select} value={target.traitCategory} onChange={e => setTarget({ ...target, traitCategory: e.target.value, targetTrait: "" })}>
               {TRAIT_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
             </select>
           </div>
           <div>
-            <label style={css.label}>Secondary Trait Category (optional)</label>
-            <select style={css.select} value={target.secondCategory} onChange={e => setTarget({ ...target, secondCategory: e.target.value })}>
-              <option value="">None</option>
-              {TRAIT_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+            <label style={css.label}>Specific Trait (optional)</label>
+            <select style={css.select} value={target.targetTrait} onChange={e => setTarget({ ...target, targetTrait: e.target.value })}>
+              <option value="">Any in category</option>
+              {(TRAITS[target.traitCategory] || []).map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
             </select>
           </div>
           <div>
@@ -566,10 +643,17 @@ function BreedingTab({ horses }) {
               {ATTRIBUTES.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
             </select>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", paddingTop: "1.25rem" }}>
-            <input type="checkbox" checked={target.preferQualityUpgrade}
-              onChange={e => setTarget({ ...target, preferQualityUpgrade: e.target.checked })} />
-            <label style={{ fontSize: "0.85rem", color: "#e2e8f0" }}>Prioritize quality upgrade</label>
+          <div style={{ paddingTop: "1rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.3rem" }}>
+              <input type="checkbox" checked={target.preferInheritance}
+                onChange={e => setTarget({ ...target, preferInheritance: e.target.checked, preferMutation: false })} />
+              <label style={{ fontSize: "0.85rem", color: "#e2e8f0" }}>Prefer inheritance (keep parent trait)</label>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <input type="checkbox" checked={target.preferMutation}
+                onChange={e => setTarget({ ...target, preferMutation: e.target.checked, preferInheritance: false })} />
+              <label style={{ fontSize: "0.85rem", color: "#e2e8f0" }}>Prefer mutation (new trait from pool)</label>
+            </div>
           </div>
         </div>
       </div>
@@ -624,14 +708,28 @@ function ProbabilityTab({ horses }) {
 
   const analysis = useMemo(() => {
     if (!p1 || !p2) return null;
-    const probs = TRAIT_CATEGORIES.map(cat => ({
-      ...cat,
-      inheritance: calcInheritanceProbability(p1, p2, cat.id),
+
+    const mode = calcModeChances(p1, p2);
+
+    const tempProbs = TEMPERAMENTS.map(t => ({
+      ...t,
+      chance: calcTemperamentChance(p1.temperament, p2.temperament, t.id),
     }));
-    const qualityUp = calcQualityUpgradeChance(p1, p2);
-    const dualRetention = calcDualTraitRetention(p1, p2);
+
+    const allTraits = [];
+    for (const [catId, traits] of Object.entries(TRAITS)) {
+      for (const trait of traits) {
+        const bestTemp = TEMPERAMENTS.find(t => t.traitPool === catId)?.id || "warbred";
+        const prob = calcFullTraitProbability(p1, p2, bestTemp, trait.id);
+        allTraits.push({ ...trait, category: catId, prob });
+      }
+    }
+    allTraits.sort((a, b) => b.prob - a.prob);
+
+    const rarityOutcomes = calcRarityOutcomes(p1, p2);
     const attrInherit = calcAttributeInheritance(p1, p2);
-    return { probs, qualityUp, dualRetention, attrInherit };
+
+    return { mode, tempProbs, allTraits, rarityOutcomes, attrInherit };
   }, [p1, p2]);
 
   return (
@@ -662,44 +760,77 @@ function ProbabilityTab({ horses }) {
 
       {analysis && (
         <div>
+          <div style={{ ...css.grid, gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))" }}>
+            <div style={css.card}>
+              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Inheritance (Keep) Chance</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#22c55e" }}>{Math.round(analysis.mode.keep * 100)}%</div>
+              <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>Offspring keeps a parent's trait</div>
+            </div>
+            <div style={css.card}>
+              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Mutation (Shift) Chance</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#ef4444" }}>{Math.round(analysis.mode.shift * 100)}%</div>
+              <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>Offspring gets a new trait</div>
+            </div>
+            <div style={css.card}>
+              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Expected Attribute Sum</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#fbbf24" }}>{analysis.attrInherit.expectedSum.toFixed(1)}</div>
+              <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                Range: {analysis.attrInherit.range[0].toFixed(1)} — {analysis.attrInherit.range[1].toFixed(1)}
+              </div>
+            </div>
+          </div>
+
           <div style={css.card}>
-            <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#94a3b8", marginBottom: "0.75rem" }}>Trait Inheritance Probability</div>
-            {analysis.probs.map(p => (
-              <div key={p.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.5rem" }}>
-                <div style={{ width: 140, fontSize: "0.85rem", color: p.color }}>{p.icon} {p.label}</div>
-                <div style={{ flex: 1, height: 20, background: "#0f172a", borderRadius: 4, overflow: "hidden" }}>
-                  <div style={{ width: `${p.inheritance * 100}%`, height: "100%", background: p.color, borderRadius: 4, transition: "width 0.3s" }} />
+            <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#94a3b8", marginBottom: "0.75rem" }}>Offspring Temperament Probability</div>
+            {analysis.tempProbs.map(t => (
+              <div key={t.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.4rem" }}>
+                <div style={{ width: 100, fontSize: "0.85rem", color: t.color }}>{t.label}</div>
+                <div style={{ flex: 1, height: 18, background: "#0f172a", borderRadius: 4, overflow: "hidden" }}>
+                  <div style={{ width: `${t.chance * 100}%`, height: "100%", background: t.color, borderRadius: 4, transition: "width 0.3s" }} />
                 </div>
                 <div style={{ width: 50, fontSize: "0.85rem", fontWeight: 600, color: "#e2e8f0", textAlign: "right" }}>
-                  {Math.round(p.inheritance * 100)}%
+                  {(t.chance * 100).toFixed(1)}%
                 </div>
               </div>
             ))}
           </div>
 
-          <div style={{ ...css.grid, gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))" }}>
-            <div style={css.card}>
-              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Quality Upgrade Chance</div>
-              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#ec4899" }}>{Math.round(analysis.qualityUp * 100)}%</div>
-              <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
-                {(p1.temperament === "fearless" || p2.temperament === "fearless") ? "Fearless bonus active" : "No Fearless temperament"}
-              </div>
+          <div style={css.card}>
+            <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#94a3b8", marginBottom: "0.75rem" }}>Offspring Rarity Probability</div>
+            {analysis.rarityOutcomes.map((o, i) => {
+              const r = RARITIES.find(x => x.id === o.rarity);
+              return (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.4rem" }}>
+                  <div style={{ width: 100, fontSize: "0.85rem", color: r?.color }}>{r?.label}</div>
+                  <div style={{ flex: 1, height: 18, background: "#0f172a", borderRadius: 4, overflow: "hidden" }}>
+                    <div style={{ width: `${o.chance * 100}%`, height: "100%", background: r?.color, borderRadius: 4 }} />
+                  </div>
+                  <div style={{ width: 50, fontSize: "0.85rem", fontWeight: 600, color: "#e2e8f0", textAlign: "right" }}>
+                    {Math.round(o.chance * 100)}%
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={css.card}>
+            <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#94a3b8", marginBottom: "0.75rem" }}>
+              Top Trait Outcomes (assuming best temperament for each pool)
             </div>
-            <div style={css.card}>
-              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Dual Trait Retention</div>
-              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#14b8a6" }}>{Math.round(analysis.dualRetention * 100)}%</div>
-              <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
-                {(p1.temperament === "protective" || p2.temperament === "protective") ? "Protective bonus active" : "No Protective temperament"}
-              </div>
-            </div>
-            <div style={css.card}>
-              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Expected Attribute Avg</div>
-              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#fbbf24" }}>{analysis.attrInherit.expectedAvg.toFixed(1)}</div>
-              <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
-                Range: {analysis.attrInherit.range[0].toFixed(1)} — {analysis.attrInherit.range[1].toFixed(1)}
-                {(p1.temperament === "warbred" || p2.temperament === "warbred") && " (Warbred +0.3)"}
-              </div>
-            </div>
+            {analysis.allTraits.slice(0, 15).map((t, i) => {
+              const cat = TRAIT_CATEGORIES.find(c => c.id === t.category);
+              return (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.35rem" }}>
+                  <div style={{ width: 140, fontSize: "0.8rem", color: cat?.color }}>{t.label}</div>
+                  <div style={{ flex: 1, height: 16, background: "#0f172a", borderRadius: 4, overflow: "hidden" }}>
+                    <div style={{ width: `${Math.min(t.prob * 100 * 3, 100)}%`, height: "100%", background: cat?.color, borderRadius: 4 }} />
+                  </div>
+                  <div style={{ width: 60, fontSize: "0.8rem", fontWeight: 600, color: "#e2e8f0", textAlign: "right" }}>
+                    {(t.prob * 100).toFixed(2)}%
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -798,25 +929,57 @@ function ReferenceTab() {
     <div>
       <div style={css.card}>
         <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Temperament Guide</h3>
-        <div style={{ display: "grid", gap: "0.75rem" }}>
-          {TEMPERAMENTS.map(t => (
-            <div key={t.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-              <span style={{ ...css.badge(t.color), minWidth: 90, textAlign: "center" }}>{t.label}</span>
-              <span style={{ fontSize: "0.85rem", color: "#cbd5e1" }}>{t.effect}</span>
-            </div>
-          ))}
+        <div style={{ marginBottom: "1rem" }}>
+          <div style={{ fontSize: "0.8rem", color: "#64748b", marginBottom: "0.5rem", fontWeight: 600 }}>TRAIT POOL OWNERS (determine mutation outcome)</div>
+          <div style={{ display: "grid", gap: "0.5rem" }}>
+            {TEMPERAMENTS.filter(t => t.group === "pool").map(t => (
+              <div key={t.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <span style={{ ...css.badge(t.color), minWidth: 90, textAlign: "center" }}>{t.label}</span>
+                <span style={{ fontSize: "0.85rem", color: "#cbd5e1" }}>{t.effect}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div style={{ fontSize: "0.8rem", color: "#64748b", marginBottom: "0.5rem", fontWeight: 600 }}>MODE MODIFIERS (affect inherit vs mutate chance)</div>
+          <div style={{ display: "grid", gap: "0.5rem" }}>
+            {TEMPERAMENTS.filter(t => t.group === "mode").map(t => (
+              <div key={t.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <span style={{ ...css.badge(t.color), minWidth: 90, textAlign: "center" }}>{t.label}</span>
+                <span style={{ fontSize: "0.85rem", color: "#cbd5e1" }}>{t.effect}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       <div style={css.card}>
-        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Attribute Ranges by Rarity</h3>
+        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Attribute Ranges by Rarity (Sum)</h3>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "0.75rem" }}>
-          {RARITIES.map(r => (
-            <div key={r.id} style={{ padding: "0.75rem", background: "#0f172a", borderRadius: 8, border: `1px solid ${r.color}30` }}>
-              <div style={{ fontWeight: 600, color: r.color, marginBottom: "0.25rem" }}>{r.label}</div>
-              <div style={{ fontSize: "0.85rem", color: "#94a3b8" }}>
-                Range: {ATTRIBUTE_RANGES[r.id].min} — {ATTRIBUTE_RANGES[r.id].max}
+          {RARITIES.map(r => {
+            const range = ATTRIBUTE_RANGES[r.id];
+            return (
+              <div key={r.id} style={{ padding: "0.75rem", background: "#0f172a", borderRadius: 8, border: `1px solid ${r.color}30` }}>
+                <div style={{ fontWeight: 600, color: r.color, marginBottom: "0.25rem" }}>{r.label}</div>
+                <div style={{ fontSize: "0.85rem", color: "#94a3b8" }}>
+                  Attributes: {range.numAttrs} | Sum: {range.sumMin} — {range.sumMax}
+                </div>
               </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div style={css.card}>
+        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Rarity Breeding Outcomes</h3>
+        <div style={{ fontSize: "0.85rem", color: "#cbd5e1", lineHeight: 1.8 }}>
+          {Object.entries(RARITY_BREEDING_OUTCOMES).map(([key, outcomes]) => (
+            <div key={key} style={{ marginBottom: "0.25rem" }}>
+              <span style={{ color: "#94a3b8" }}>{key}:</span>{" "}
+              {outcomes.map((o, i) => {
+                const r = RARITIES.find(x => x.id === o.rarity);
+                return <span key={i}>{i > 0 && " | "}<span style={{ color: r?.color }}>{r?.label} {Math.round(o.chance * 100)}%</span></span>;
+              })}
             </div>
           ))}
         </div>
@@ -835,31 +998,27 @@ function ReferenceTab() {
       </div>
 
       <div style={css.card}>
-        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Breeding Rules</h3>
+        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Breeding Mechanics</h3>
         <ul style={{ margin: 0, padding: "0 0 0 1.25rem", color: "#cbd5e1", fontSize: "0.85rem", lineHeight: 1.8 }}>
           <li>Both parents are <strong style={{ color: "#ef4444" }}>consumed</strong> in breeding (lost permanently)</li>
-          <li>Offspring inherits traits based on parent traits + temperament bonuses</li>
-          <li>Temperament influences which trait category is favored</li>
-          <li>Fearless temperament increases chance of trait quality upgrade</li>
-          <li>Protective temperament increases chance of retaining both parent traits</li>
-          <li>Warbred temperament gives higher attribute inheritance values</li>
-          <li>Mass breeding: breed multiple pairs simultaneously (same rules per pair)</li>
-          <li>Offspring rarity is influenced by parent rarities</li>
-          <li>Each horse has exactly 2 attributes (from: Might, Strategy, Armor, Siege)</li>
-          <li>Horses can have 1-2 traits, each with a category and quality tier</li>
+          <li><strong>Temperament inheritance:</strong> Same on both parents = 90% keep, 10%/6 for others. Different = 30% each parent's, 40%/5 for others</li>
+          <li><strong>Trait mode:</strong> 50/50 base split between Inherit (keep parent trait) and Mutate (new trait)</li>
+          <li><strong>Spirited:</strong> shifts +5% toward mutation | <strong>Docile:</strong> shifts +5% toward inheritance</li>
+          <li><strong>Same trait on both parents:</strong> 80% to inherit that exact trait</li>
+          <li><strong>Different traits:</strong> 50% chance for each parent's trait</li>
+          <li><strong>On mutation:</strong> ~80% chance to draw from offspring's temperament pool (if pool owner), ~20% from others</li>
+          <li>Celestial Chargers have 3 attributes; all others have 2</li>
+          <li>Mass breeding: multiple pairs simultaneously, same rules per pair</li>
         </ul>
       </div>
 
       <div style={css.card}>
-        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Optimal March Mount Strategy</h3>
+        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Temperament Inheritance Rates</h3>
         <ul style={{ margin: 0, padding: "0 0 0 1.25rem", color: "#cbd5e1", fontSize: "0.85rem", lineHeight: 1.8 }}>
-          <li><strong>Swordsman marches:</strong> Might Damage traits + Might/Armor attributes</li>
-          <li><strong>Pikeman march:</strong> Universal or Might Damage traits + Armor/Might attributes</li>
-          <li><strong>Cavalry march:</strong> Might Damage or Universal traits + Might/Strategy attributes</li>
-          <li><strong>Archer march:</strong> Strategy Damage traits + Strategy/Siege attributes</li>
-          <li><strong>Gathering marches:</strong> Gathering traits + any attributes (traits matter most)</li>
-          <li>Each march has 3 heroes = 3 mount slots to fill</li>
-          <li>Total needed: 15 combat mounts + 15 gathering mounts = 30</li>
+          <li><strong>Warbred:</strong> 80.19% chance to "respect" (draw from Might pool)</li>
+          <li><strong>Alert:</strong> 80.19% (Strategy pool)</li>
+          <li><strong>Fearless:</strong> 78.95% (Universal pool)</li>
+          <li><strong>Protective:</strong> 80.17% (Healing pool)</li>
         </ul>
       </div>
     </div>
