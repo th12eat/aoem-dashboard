@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AoEM Horse Breeding Optimizer</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { margin: 0; background: #0f172a; font-family: 'Segoe UI', sans-serif; color: #e2e8f0; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+const { useState, useCallback, useMemo, useEffect } = React;
+
+/* ═══════════════════════════════════════════════════
+   GAME DATA CONSTANTS
+   ═══════════════════════════════════════════════════ */
+
+const RARITIES = [
+  { id: "courser", label: "Courser", color: "#60a5fa", tier: 1 },
+  { id: "destrier", label: "Destrier", color: "#a78bfa", tier: 2 },
+  { id: "skywing", label: "Skywing", color: "#fbbf24", tier: 3 },
+  { id: "celestial", label: "Celestial", color: "#fb923c", tier: 4 },
+];
+
+const ATTRIBUTES = [
+  { id: "might", label: "Might", icon: "\u2694" },
+  { id: "strategy", label: "Strategy", icon: "\u{1f9e0}" },
+  { id: "armor", label: "Armor", icon: "\u{1f6e1}" },
+  { id: "siege", label: "Siege", icon: "\u{1f4a3}" },
+];
+
+const TEMPERAMENTS = [
+  { id: "spirited", label: "Spirited", color: "#ef4444", effect: "Higher Might Damage trait inheritance & mutation chance" },
+  { id: "docile", label: "Docile", color: "#22c55e", effect: "Higher Healing trait inheritance & mutation chance" },
+  { id: "mischievous", label: "Mischievous", color: "#a855f7", effect: "Higher Strategy Damage trait inheritance & mutation chance" },
+  { id: "alert", label: "Alert", color: "#3b82f6", effect: "Higher Universal trait inheritance & mutation chance" },
+  { id: "warbred", label: "Warbred", color: "#f59e0b", effect: "Higher attribute inheritance, balanced trait chances" },
+  { id: "fearless", label: "Fearless", color: "#ec4899", effect: "Higher chance to upgrade trait quality during breeding" },
+  { id: "protective", label: "Protective", color: "#14b8a6", effect: "Higher chance to retain both traits from parents" },
+];
+
+const TRAIT_CATEGORIES = [
+  { id: "might_damage", label: "Might Damage", color: "#ef4444", icon: "\u2694" },
+  { id: "strategy_damage", label: "Strategy Damage", color: "#a855f7", icon: "\u{1f9e0}" },
+  { id: "universal", label: "Universal", color: "#3b82f6", icon: "\u2b50" },
+  { id: "healing", label: "Healing", color: "#22c55e", icon: "\u{1f49a}" },
+  { id: "gathering", label: "Gathering", color: "#fbbf24", icon: "\u{1f33e}" },
+];
+
+const TRAIT_QUALITIES = [
+  { id: "grey", label: "Grey", color: "#9ca3af", tier: 1 },
+  { id: "green", label: "Green", color: "#22c55e", tier: 2 },
+  { id: "blue", label: "Blue", color: "#3b82f6", tier: 3 },
+  { id: "purple", label: "Purple", color: "#a855f7", tier: 4 },
+  { id: "gold", label: "Gold", color: "#fbbf24", tier: 5 },
+  { id: "orange", label: "Orange", color: "#fb923c", tier: 6 },
+];
+
+const TRAITS = {
+  might_damage: [
+    { id: "overpower", label: "Overpower", desc: "Active skill might damage increases" },
+    { id: "gallant", label: "Gallant", desc: "Secondary strike skill might damage increases" },
+    { id: "savage", label: "Savage", desc: "Normal attack might damage increases" },
+    { id: "rampage", label: "Rampage", desc: "Might damage increases when troops > 50%" },
+    { id: "fury", label: "Fury", desc: "Might damage increases when troops < 50%" },
+    { id: "ruthless", label: "Ruthless", desc: "Might damage vs wounded troops increases" },
+  ],
+  strategy_damage: [
+    { id: "arcane", label: "Arcane", desc: "Active skill strategy damage increases" },
+    { id: "cunning", label: "Cunning", desc: "Secondary strike skill strategy damage increases" },
+    { id: "mystic", label: "Mystic", desc: "Normal attack strategy damage increases" },
+    { id: "brilliance", label: "Brilliance", desc: "Strategy damage increases when troops > 50%" },
+    { id: "desperation", label: "Desperation", desc: "Strategy damage increases when troops < 50%" },
+    { id: "calculated", label: "Calculated", desc: "Strategy damage vs wounded troops increases" },
+  ],
+  universal: [
+    { id: "vigor", label: "Vigor", desc: "All damage dealt increases" },
+    { id: "resilience", label: "Resilience", desc: "All damage taken reduces" },
+    { id: "crit_strike", label: "Critical Strike", desc: "Critical hit chance increases" },
+    { id: "tenacity", label: "Tenacity", desc: "Critical damage resistance increases" },
+    { id: "swiftness", label: "Swiftness", desc: "March speed increases" },
+    { id: "fortitude", label: "Fortitude", desc: "Troop HP increases" },
+  ],
+  healing: [
+    { id: "lifesaver", label: "Lifesaver", desc: "After recovery, damage taken reduces for 3s" },
+    { id: "rejuvenate", label: "Rejuvenate", desc: "Healing skill effectiveness increases" },
+    { id: "sanctuary", label: "Sanctuary", desc: "Shield skill effectiveness increases" },
+    { id: "renewal", label: "Renewal", desc: "Healing over time effect increases" },
+    { id: "guardian", label: "Guardian", desc: "Damage reduction after healing increases" },
+    { id: "mercy", label: "Mercy", desc: "Healing when troops < 30% increases" },
+  ],
+  gathering: [
+    { id: "swift", label: "Swift", desc: "Troop gathering speed increases" },
+    { id: "bountiful", label: "Bountiful", desc: "Gathering yield increases" },
+    { id: "endurance", label: "Endurance", desc: "Troop load capacity increases" },
+    { id: "efficient", label: "Efficient", desc: "Gathering time reduces" },
+    { id: "prospector", label: "Prospector", desc: "Rare resource find chance increases" },
+    { id: "packmaster", label: "Packmaster", desc: "March carrying capacity increases" },
+  ],
+};
+
+const ATTRIBUTE_RANGES = {
+  courser:   { min: 1.0, max: 2.5 },
+  destrier:  { min: 2.0, max: 3.5 },
+  skywing:   { min: 3.0, max: 4.5 },
+  celestial: { min: 4.0, max: 5.0 },
+};
+
+const MARCH_TYPES = [
+  { id: "swordsman_1", label: "Swordsman March 1", type: "combat" },
+  { id: "swordsman_2", label: "Swordsman March 2", type: "combat" },
+  { id: "pikeman", label: "Pikeman March", type: "combat" },
+  { id: "cavalry", label: "Cavalry March", type: "combat" },
+  { id: "archer", label: "Archer March", type: "combat" },
+  { id: "gather_1", label: "Gathering March 1", type: "gathering" },
+  { id: "gather_2", label: "Gathering March 2", type: "gathering" },
+  { id: "gather_3", label: "Gathering March 3", type: "gathering" },
+  { id: "gather_4", label: "Gathering March 4", type: "gathering" },
+  { id: "gather_5", label: "Gathering March 5", type: "gathering" },
+];
+
+/* ═══════════════════════════════════════════════════
+   BREEDING LOGIC
+   ═══════════════════════════════════════════════════ */
+
+function getTemperamentBonus(temperament, traitCategory) {
+  const map = {
+    spirited: "might_damage",
+    docile: "healing",
+    mischievous: "strategy_damage",
+    alert: "universal",
+  };
+  if (map[temperament] === traitCategory) return 0.25;
+  if (temperament === "warbred") return 0.10;
+  if (temperament === "protective") return 0.05;
+  if (temperament === "fearless") return 0.05;
+  return 0;
+}
+
+function calcInheritanceProbability(parent1, parent2, targetCategory) {
+  let base = 0;
+  const p1Traits = (parent1.traits || []).filter(t => t.category === targetCategory);
+  const p2Traits = (parent2.traits || []).filter(t => t.category === targetCategory);
+  if (p1Traits.length > 0) base += 0.30;
+  if (p2Traits.length > 0) base += 0.30;
+  const tempBonus1 = getTemperamentBonus(parent1.temperament, targetCategory);
+  const tempBonus2 = getTemperamentBonus(parent2.temperament, targetCategory);
+  const tempBonus = Math.max(tempBonus1, tempBonus2);
+  return Math.min(base + tempBonus, 0.95);
+}
+
+function calcQualityUpgradeChance(parent1, parent2) {
+  let base = 0.10;
+  if (parent1.temperament === "fearless" || parent2.temperament === "fearless") base += 0.20;
+  const avgRarity = ((getRarityTier(parent1.rarity) + getRarityTier(parent2.rarity)) / 2);
+  base += avgRarity * 0.05;
+  return Math.min(base, 0.60);
+}
+
+function calcDualTraitRetention(parent1, parent2) {
+  let base = 0.15;
+  if (parent1.temperament === "protective" || parent2.temperament === "protective") base += 0.25;
+  return Math.min(base, 0.60);
+}
+
+function getRarityTier(rarity) {
+  const r = RARITIES.find(x => x.id === rarity);
+  return r ? r.tier : 1;
+}
+
+function calcAttributeInheritance(parent1, parent2) {
+  const p1Avg = ((parent1.attr1Val || 0) + (parent1.attr2Val || 0)) / 2;
+  const p2Avg = ((parent2.attr1Val || 0) + (parent2.attr2Val || 0)) / 2;
+  let baseAvg = (p1Avg + p2Avg) / 2;
+  if (parent1.temperament === "warbred" || parent2.temperament === "warbred") {
+    baseAvg += 0.3;
+  }
+  return { expectedAvg: baseAvg, range: [baseAvg - 0.5, baseAvg + 0.5] };
+}
+
+function scoreBreedingPair(parent1, parent2, target) {
+  let score = 0;
+  if (target.traitCategory) {
+    score += calcInheritanceProbability(parent1, parent2, target.traitCategory) * 40;
+  }
+  if (target.secondCategory) {
+    score += calcDualTraitRetention(parent1, parent2) * 20;
+    score += calcInheritanceProbability(parent1, parent2, target.secondCategory) * 15;
+  }
+  if (target.preferQualityUpgrade) {
+    score += calcQualityUpgradeChance(parent1, parent2) * 25;
+  }
+  const attrResult = calcAttributeInheritance(parent1, parent2);
+  if (target.attribute) {
+    const p1Has = parent1.attr1 === target.attribute || parent1.attr2 === target.attribute;
+    const p2Has = parent2.attr1 === target.attribute || parent2.attr2 === target.attribute;
+    if (p1Has && p2Has) score += 15;
+    else if (p1Has || p2Has) score += 8;
+  }
+  score += attrResult.expectedAvg * 3;
+  return Math.round(score * 10) / 10;
+}
+
+/* ═══════════════════════════════════════════════════
+   LOCAL STORAGE
+   ═══════════════════════════════════════════════════ */
+
+const STORAGE_KEY = "aoem_horse_stable";
+const TARGETS_KEY = "aoem_horse_targets";
+
+function loadStable() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+function saveStable(horses) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(horses));
+}
+function loadTargets() {
+  try { return JSON.parse(localStorage.getItem(TARGETS_KEY)) || []; }
+  catch { return []; }
+}
+function saveTargets(targets) {
+  localStorage.setItem(TARGETS_KEY, JSON.stringify(targets));
+}
+
+/* ═══════════════════════════════════════════════════
+   COMPONENTS
+   ═══════════════════════════════════════════════════ */
+
+const css = {
+  container: { maxWidth: 1200, margin: "0 auto", padding: "1.5rem" },
+  header: { textAlign: "center", marginBottom: "2rem" },
+  title: { fontSize: "2rem", fontWeight: 700, color: "#fbbf24", margin: 0 },
+  subtitle: { color: "#94a3b8", fontSize: "0.9rem", marginTop: "0.25rem" },
+  tabs: { display: "flex", gap: "0.5rem", justifyContent: "center", marginBottom: "1.5rem", flexWrap: "wrap" },
+  tab: (active) => ({
+    padding: "0.5rem 1.25rem",
+    borderRadius: 8,
+    border: "1px solid " + (active ? "#fbbf24" : "#334155"),
+    background: active ? "#fbbf2420" : "#1e293b",
+    color: active ? "#fbbf24" : "#94a3b8",
+    cursor: "pointer",
+    fontWeight: active ? 600 : 400,
+    transition: "all 0.2s",
+  }),
+  card: { background: "#1e293b", borderRadius: 12, padding: "1.25rem", marginBottom: "1rem", border: "1px solid #334155" },
+  grid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "1rem" },
+  btn: (color = "#fbbf24") => ({
+    padding: "0.5rem 1rem",
+    borderRadius: 6,
+    border: "none",
+    background: color,
+    color: "#0f172a",
+    fontWeight: 600,
+    cursor: "pointer",
+    fontSize: "0.85rem",
+  }),
+  btnOutline: (color = "#fbbf24") => ({
+    padding: "0.5rem 1rem",
+    borderRadius: 6,
+    border: `1px solid ${color}`,
+    background: "transparent",
+    color: color,
+    fontWeight: 600,
+    cursor: "pointer",
+    fontSize: "0.85rem",
+  }),
+  input: { padding: "0.5rem", borderRadius: 6, border: "1px solid #475569", background: "#0f172a", color: "#e2e8f0", width: "100%", boxSizing: "border-box" },
+  select: { padding: "0.5rem", borderRadius: 6, border: "1px solid #475569", background: "#0f172a", color: "#e2e8f0", width: "100%", boxSizing: "border-box" },
+  label: { fontSize: "0.8rem", color: "#94a3b8", marginBottom: "0.25rem", display: "block" },
+  badge: (color) => ({ display: "inline-block", padding: "0.15rem 0.5rem", borderRadius: 4, background: color + "20", color: color, fontSize: "0.75rem", fontWeight: 600 }),
+  row: { display: "flex", gap: "0.75rem", alignItems: "center", flexWrap: "wrap" },
+  formGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" },
+  deleteBtn: { background: "transparent", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "1.2rem", padding: "0.25rem" },
+};
+
+function HorseCard({ horse, onEdit, onDelete }) {
+  const rarity = RARITIES.find(r => r.id === horse.rarity);
+  const temp = TEMPERAMENTS.find(t => t.id === horse.temperament);
+  return (
+    <div style={css.card}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div>
+          <div style={{ fontSize: "1.1rem", fontWeight: 600, color: rarity?.color || "#fff" }}>
+            {horse.name || "Unnamed Horse"}
+          </div>
+          <div style={{ ...css.row, marginTop: "0.4rem" }}>
+            <span style={css.badge(rarity?.color || "#666")}>{rarity?.label}</span>
+            <span style={css.badge(temp?.color || "#666")}>{temp?.label}</span>
+          </div>
+        </div>
+        <div style={css.row}>
+          <button style={css.btnOutline("#60a5fa")} onClick={() => onEdit(horse)}>Edit</button>
+          <button style={css.deleteBtn} onClick={() => onDelete(horse.id)}>&times;</button>
+        </div>
+      </div>
+      <div style={{ display: "flex", gap: "1.5rem", marginTop: "0.75rem" }}>
+        <div>
+          <span style={{ fontSize: "0.75rem", color: "#64748b" }}>{ATTRIBUTES.find(a => a.id === horse.attr1)?.icon} {ATTRIBUTES.find(a => a.id === horse.attr1)?.label}</span>
+          <div style={{ fontWeight: 600, color: "#fbbf24" }}>{horse.attr1Val}</div>
+        </div>
+        <div>
+          <span style={{ fontSize: "0.75rem", color: "#64748b" }}>{ATTRIBUTES.find(a => a.id === horse.attr2)?.icon} {ATTRIBUTES.find(a => a.id === horse.attr2)?.label}</span>
+          <div style={{ fontWeight: 600, color: "#fbbf24" }}>{horse.attr2Val}</div>
+        </div>
+      </div>
+      {horse.traits && horse.traits.length > 0 && (
+        <div style={{ marginTop: "0.75rem" }}>
+          {horse.traits.map((t, i) => {
+            const cat = TRAIT_CATEGORIES.find(c => c.id === t.category);
+            const qual = TRAIT_QUALITIES.find(q => q.id === t.quality);
+            return (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.3rem" }}>
+                <span style={css.badge(qual?.color || "#666")}>{qual?.label}</span>
+                <span style={{ fontSize: "0.85rem" }}>{t.label}</span>
+                <span style={{ fontSize: "0.7rem", color: cat?.color }}>{cat?.label}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {horse.assignedTo && (
+        <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "#22c55e" }}>
+          Assigned to: {MARCH_TYPES.find(m => m.id === horse.assignedTo)?.label}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function HorseForm({ horse, onSave, onCancel }) {
+  const [form, setForm] = useState(horse || {
+    id: Date.now().toString(),
+    name: "",
+    rarity: "courser",
+    temperament: "spirited",
+    attr1: "might",
+    attr1Val: 1.0,
+    attr2: "armor",
+    attr2Val: 1.0,
+    traits: [],
+    assignedTo: "",
+  });
+
+  const [newTrait, setNewTrait] = useState({ category: "might_damage", traitId: "", quality: "grey" });
+
+  const update = (field, val) => setForm({ ...form, [field]: val });
+
+  const addTrait = () => {
+    if (!newTrait.traitId) return;
+    const catTraits = TRAITS[newTrait.category] || [];
+    const traitDef = catTraits.find(t => t.id === newTrait.traitId);
+    if (!traitDef) return;
+    const traits = [...(form.traits || []), { category: newTrait.category, traitId: newTrait.traitId, label: traitDef.label, quality: newTrait.quality }];
+    setForm({ ...form, traits });
+    setNewTrait({ category: newTrait.category, traitId: "", quality: "grey" });
+  };
+
+  const removeTrait = (idx) => {
+    const traits = form.traits.filter((_, i) => i !== idx);
+    setForm({ ...form, traits });
+  };
+
+  return (
+    <div style={{ ...css.card, border: "1px solid #fbbf24" }}>
+      <div style={{ fontSize: "1rem", fontWeight: 600, color: "#fbbf24", marginBottom: "1rem" }}>
+        {horse ? "Edit Horse" : "Add Horse"}
+      </div>
+      <div style={css.formGrid}>
+        <div>
+          <label style={css.label}>Name</label>
+          <input style={css.input} value={form.name} onChange={e => update("name", e.target.value)} placeholder="e.g. Highland Horse" />
+        </div>
+        <div>
+          <label style={css.label}>Rarity</label>
+          <select style={css.select} value={form.rarity} onChange={e => update("rarity", e.target.value)}>
+            {RARITIES.map(r => <option key={r.id} value={r.id}>{r.label}</option>)}
+          </select>
+        </div>
+        <div>
+          <label style={css.label}>Temperament</label>
+          <select style={css.select} value={form.temperament} onChange={e => update("temperament", e.target.value)}>
+            {TEMPERAMENTS.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
+          </select>
+        </div>
+        <div>
+          <label style={css.label}>Assigned March</label>
+          <select style={css.select} value={form.assignedTo || ""} onChange={e => update("assignedTo", e.target.value)}>
+            <option value="">Unassigned</option>
+            {MARCH_TYPES.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
+          </select>
+        </div>
+        <div>
+          <label style={css.label}>Attribute 1</label>
+          <select style={css.select} value={form.attr1} onChange={e => update("attr1", e.target.value)}>
+            {ATTRIBUTES.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
+          </select>
+          <input style={{ ...css.input, marginTop: "0.25rem" }} type="number" step="0.1" min="0" max="5"
+            value={form.attr1Val} onChange={e => update("attr1Val", parseFloat(e.target.value) || 0)} />
+        </div>
+        <div>
+          <label style={css.label}>Attribute 2</label>
+          <select style={css.select} value={form.attr2} onChange={e => update("attr2", e.target.value)}>
+            {ATTRIBUTES.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
+          </select>
+          <input style={{ ...css.input, marginTop: "0.25rem" }} type="number" step="0.1" min="0" max="5"
+            value={form.attr2Val} onChange={e => update("attr2Val", parseFloat(e.target.value) || 0)} />
+        </div>
+      </div>
+
+      <div style={{ marginTop: "1rem" }}>
+        <label style={css.label}>Traits</label>
+        {(form.traits || []).map((t, i) => (
+          <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.3rem" }}>
+            <span style={css.badge(TRAIT_QUALITIES.find(q => q.id === t.quality)?.color || "#666")}>{t.quality}</span>
+            <span style={{ fontSize: "0.85rem" }}>{t.label}</span>
+            <button style={css.deleteBtn} onClick={() => removeTrait(i)}>&times;</button>
+          </div>
+        ))}
+        <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem", flexWrap: "wrap" }}>
+          <select style={{ ...css.select, width: "auto" }} value={newTrait.category}
+            onChange={e => setNewTrait({ ...newTrait, category: e.target.value, traitId: "" })}>
+            {TRAIT_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+          </select>
+          <select style={{ ...css.select, width: "auto" }} value={newTrait.traitId}
+            onChange={e => setNewTrait({ ...newTrait, traitId: e.target.value })}>
+            <option value="">Select trait...</option>
+            {(TRAITS[newTrait.category] || []).map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
+          </select>
+          <select style={{ ...css.select, width: "auto" }} value={newTrait.quality}
+            onChange={e => setNewTrait({ ...newTrait, quality: e.target.value })}>
+            {TRAIT_QUALITIES.map(q => <option key={q.id} value={q.id}>{q.label}</option>)}
+          </select>
+          <button style={css.btn("#22c55e")} onClick={addTrait}>+ Add</button>
+        </div>
+      </div>
+
+      <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.25rem" }}>
+        <button style={css.btn()} onClick={() => onSave(form)}>Save</button>
+        <button style={css.btnOutline("#94a3b8")} onClick={onCancel}>Cancel</button>
+      </div>
+    </div>
+  );
+}
+
+function StableTab({ horses, setHorses }) {
+  const [editing, setEditing] = useState(null);
+  const [adding, setAdding] = useState(false);
+  const [filter, setFilter] = useState({ rarity: "", temperament: "", attribute: "" });
+
+  const filtered = useMemo(() => {
+    return horses.filter(h => {
+      if (filter.rarity && h.rarity !== filter.rarity) return false;
+      if (filter.temperament && h.temperament !== filter.temperament) return false;
+      if (filter.attribute && h.attr1 !== filter.attribute && h.attr2 !== filter.attribute) return false;
+      return true;
+    });
+  }, [horses, filter]);
+
+  const handleSave = (horse) => {
+    let updated;
+    if (editing) {
+      updated = horses.map(h => h.id === horse.id ? horse : h);
+    } else {
+      updated = [...horses, { ...horse, id: Date.now().toString() }];
+    }
+    setHorses(updated);
+    saveStable(updated);
+    setEditing(null);
+    setAdding(false);
+  };
+
+  const handleDelete = (id) => {
+    const updated = horses.filter(h => h.id !== id);
+    setHorses(updated);
+    saveStable(updated);
+  };
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", flexWrap: "wrap", gap: "0.5rem" }}>
+        <div style={css.row}>
+          <select style={{ ...css.select, width: "auto" }} value={filter.rarity} onChange={e => setFilter({ ...filter, rarity: e.target.value })}>
+            <option value="">All Rarities</option>
+            {RARITIES.map(r => <option key={r.id} value={r.id}>{r.label}</option>)}
+          </select>
+          <select style={{ ...css.select, width: "auto" }} value={filter.temperament} onChange={e => setFilter({ ...filter, temperament: e.target.value })}>
+            <option value="">All Temperaments</option>
+            {TEMPERAMENTS.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
+          </select>
+          <select style={{ ...css.select, width: "auto" }} value={filter.attribute} onChange={e => setFilter({ ...filter, attribute: e.target.value })}>
+            <option value="">All Attributes</option>
+            {ATTRIBUTES.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
+          </select>
+        </div>
+        <button style={css.btn()} onClick={() => setAdding(true)}>+ Add Horse</button>
+      </div>
+
+      {adding && <HorseForm onSave={handleSave} onCancel={() => setAdding(false)} />}
+      {editing && <HorseForm horse={editing} onSave={handleSave} onCancel={() => setEditing(null)} />}
+
+      <div style={{ fontSize: "0.85rem", color: "#64748b", marginBottom: "0.75rem" }}>
+        {filtered.length} horse{filtered.length !== 1 ? "s" : ""} in stable
+      </div>
+      <div style={css.grid}>
+        {filtered.map(h => (
+          <HorseCard key={h.id} horse={h} onEdit={(h) => { setAdding(false); setEditing(h); }} onDelete={handleDelete} />
+        ))}
+      </div>
+      {filtered.length === 0 && !adding && (
+        <div style={{ textAlign: "center", padding: "3rem", color: "#475569" }}>
+          No horses in stable. Add your first horse to get started.
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BreedingTab({ horses }) {
+  const [target, setTarget] = useState({
+    traitCategory: "might_damage",
+    secondCategory: "",
+    attribute: "might",
+    preferQualityUpgrade: false,
+  });
+
+  const pairs = useMemo(() => {
+    if (horses.length < 2) return [];
+    const results = [];
+    for (let i = 0; i < horses.length; i++) {
+      for (let j = i + 1; j < horses.length; j++) {
+        const score = scoreBreedingPair(horses[i], horses[j], target);
+        results.push({ p1: horses[i], p2: horses[j], score });
+      }
+    }
+    results.sort((a, b) => b.score - a.score);
+    return results.slice(0, 10);
+  }, [horses, target]);
+
+  return (
+    <div>
+      <div style={css.card}>
+        <div style={{ fontSize: "1rem", fontWeight: 600, color: "#fbbf24", marginBottom: "0.75rem" }}>Breeding Target</div>
+        <div style={css.formGrid}>
+          <div>
+            <label style={css.label}>Primary Trait Category</label>
+            <select style={css.select} value={target.traitCategory} onChange={e => setTarget({ ...target, traitCategory: e.target.value })}>
+              {TRAIT_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+            </select>
+          </div>
+          <div>
+            <label style={css.label}>Secondary Trait Category (optional)</label>
+            <select style={css.select} value={target.secondCategory} onChange={e => setTarget({ ...target, secondCategory: e.target.value })}>
+              <option value="">None</option>
+              {TRAIT_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+            </select>
+          </div>
+          <div>
+            <label style={css.label}>Desired Attribute</label>
+            <select style={css.select} value={target.attribute} onChange={e => setTarget({ ...target, attribute: e.target.value })}>
+              {ATTRIBUTES.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
+            </select>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", paddingTop: "1.25rem" }}>
+            <input type="checkbox" checked={target.preferQualityUpgrade}
+              onChange={e => setTarget({ ...target, preferQualityUpgrade: e.target.checked })} />
+            <label style={{ fontSize: "0.85rem", color: "#e2e8f0" }}>Prioritize quality upgrade</label>
+          </div>
+        </div>
+      </div>
+
+      {horses.length < 2 ? (
+        <div style={{ textAlign: "center", padding: "2rem", color: "#475569" }}>
+          Add at least 2 horses to your stable to see breeding recommendations.
+        </div>
+      ) : (
+        <div>
+          <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#94a3b8", marginBottom: "0.75rem" }}>
+            Top Breeding Pairs (by score)
+          </div>
+          {pairs.map((pair, i) => (
+            <div key={i} style={{ ...css.card, display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: i === 0 ? "#fbbf24" : "#64748b", minWidth: 40 }}>#{i + 1}</div>
+              <div style={{ flex: 1, minWidth: 200 }}>
+                <div style={{ fontWeight: 600, color: RARITIES.find(r => r.id === pair.p1.rarity)?.color }}>
+                  {pair.p1.name || "Unnamed"} <span style={{ fontSize: "0.75rem", color: "#64748b" }}>({TEMPERAMENTS.find(t => t.id === pair.p1.temperament)?.label})</span>
+                </div>
+                <div style={{ fontSize: "0.8rem", color: "#64748b" }}>
+                  {ATTRIBUTES.find(a => a.id === pair.p1.attr1)?.label} {pair.p1.attr1Val} / {ATTRIBUTES.find(a => a.id === pair.p1.attr2)?.label} {pair.p1.attr2Val}
+                </div>
+              </div>
+              <div style={{ fontSize: "1.2rem", color: "#475569" }}>&times;</div>
+              <div style={{ flex: 1, minWidth: 200 }}>
+                <div style={{ fontWeight: 600, color: RARITIES.find(r => r.id === pair.p2.rarity)?.color }}>
+                  {pair.p2.name || "Unnamed"} <span style={{ fontSize: "0.75rem", color: "#64748b" }}>({TEMPERAMENTS.find(t => t.id === pair.p2.temperament)?.label})</span>
+                </div>
+                <div style={{ fontSize: "0.8rem", color: "#64748b" }}>
+                  {ATTRIBUTES.find(a => a.id === pair.p2.attr1)?.label} {pair.p2.attr1Val} / {ATTRIBUTES.find(a => a.id === pair.p2.attr2)?.label} {pair.p2.attr2Val}
+                </div>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#22c55e" }}>{pair.score}</div>
+                <div style={{ fontSize: "0.7rem", color: "#64748b" }}>score</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProbabilityTab({ horses }) {
+  const [p1Id, setP1Id] = useState("");
+  const [p2Id, setP2Id] = useState("");
+
+  const p1 = horses.find(h => h.id === p1Id);
+  const p2 = horses.find(h => h.id === p2Id);
+
+  const analysis = useMemo(() => {
+    if (!p1 || !p2) return null;
+    const probs = TRAIT_CATEGORIES.map(cat => ({
+      ...cat,
+      inheritance: calcInheritanceProbability(p1, p2, cat.id),
+    }));
+    const qualityUp = calcQualityUpgradeChance(p1, p2);
+    const dualRetention = calcDualTraitRetention(p1, p2);
+    const attrInherit = calcAttributeInheritance(p1, p2);
+    return { probs, qualityUp, dualRetention, attrInherit };
+  }, [p1, p2]);
+
+  return (
+    <div>
+      <div style={css.card}>
+        <div style={{ fontSize: "1rem", fontWeight: 600, color: "#fbbf24", marginBottom: "0.75rem" }}>Select Parents</div>
+        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+          <div style={{ flex: 1, minWidth: 200 }}>
+            <label style={css.label}>Parent 1</label>
+            <select style={css.select} value={p1Id} onChange={e => setP1Id(e.target.value)}>
+              <option value="">Select horse...</option>
+              {horses.filter(h => h.id !== p2Id).map(h => (
+                <option key={h.id} value={h.id}>{h.name || "Unnamed"} ({TEMPERAMENTS.find(t => t.id === h.temperament)?.label})</option>
+              ))}
+            </select>
+          </div>
+          <div style={{ flex: 1, minWidth: 200 }}>
+            <label style={css.label}>Parent 2</label>
+            <select style={css.select} value={p2Id} onChange={e => setP2Id(e.target.value)}>
+              <option value="">Select horse...</option>
+              {horses.filter(h => h.id !== p1Id).map(h => (
+                <option key={h.id} value={h.id}>{h.name || "Unnamed"} ({TEMPERAMENTS.find(t => t.id === h.temperament)?.label})</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {analysis && (
+        <div>
+          <div style={css.card}>
+            <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#94a3b8", marginBottom: "0.75rem" }}>Trait Inheritance Probability</div>
+            {analysis.probs.map(p => (
+              <div key={p.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.5rem" }}>
+                <div style={{ width: 140, fontSize: "0.85rem", color: p.color }}>{p.icon} {p.label}</div>
+                <div style={{ flex: 1, height: 20, background: "#0f172a", borderRadius: 4, overflow: "hidden" }}>
+                  <div style={{ width: `${p.inheritance * 100}%`, height: "100%", background: p.color, borderRadius: 4, transition: "width 0.3s" }} />
+                </div>
+                <div style={{ width: 50, fontSize: "0.85rem", fontWeight: 600, color: "#e2e8f0", textAlign: "right" }}>
+                  {Math.round(p.inheritance * 100)}%
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ ...css.grid, gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))" }}>
+            <div style={css.card}>
+              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Quality Upgrade Chance</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#ec4899" }}>{Math.round(analysis.qualityUp * 100)}%</div>
+              <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                {(p1.temperament === "fearless" || p2.temperament === "fearless") ? "Fearless bonus active" : "No Fearless temperament"}
+              </div>
+            </div>
+            <div style={css.card}>
+              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Dual Trait Retention</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#14b8a6" }}>{Math.round(analysis.dualRetention * 100)}%</div>
+              <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                {(p1.temperament === "protective" || p2.temperament === "protective") ? "Protective bonus active" : "No Protective temperament"}
+              </div>
+            </div>
+            <div style={css.card}>
+              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Expected Attribute Avg</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#fbbf24" }}>{analysis.attrInherit.expectedAvg.toFixed(1)}</div>
+              <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                Range: {analysis.attrInherit.range[0].toFixed(1)} — {analysis.attrInherit.range[1].toFixed(1)}
+                {(p1.temperament === "warbred" || p2.temperament === "warbred") && " (Warbred +0.3)"}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!analysis && (
+        <div style={{ textAlign: "center", padding: "2rem", color: "#475569" }}>
+          Select two parents to see breeding probability analysis.
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MarchPlannerTab({ horses, setHorses }) {
+  const assignments = useMemo(() => {
+    const map = {};
+    MARCH_TYPES.forEach(m => { map[m.id] = horses.filter(h => h.assignedTo === m.id); });
+    return map;
+  }, [horses]);
+
+  const unassigned = horses.filter(h => !h.assignedTo);
+
+  const assign = (horseId, marchId) => {
+    const updated = horses.map(h => h.id === horseId ? { ...h, assignedTo: marchId } : h);
+    setHorses(updated);
+    saveStable(updated);
+  };
+
+  const unassign = (horseId) => {
+    const updated = horses.map(h => h.id === horseId ? { ...h, assignedTo: "" } : h);
+    setHorses(updated);
+    saveStable(updated);
+  };
+
+  return (
+    <div>
+      <div style={{ fontSize: "0.9rem", color: "#94a3b8", marginBottom: "1rem" }}>
+        Assign up to 3 mounts per march (1 per hero). Combat marches: 5 | Gathering marches: 5 | Total mounts needed: 30
+      </div>
+
+      <div style={{ marginBottom: "1.5rem" }}>
+        <h3 style={{ color: "#ef4444", fontSize: "1rem", margin: "0 0 0.75rem" }}>Combat Marches</h3>
+        <div style={css.grid}>
+          {MARCH_TYPES.filter(m => m.type === "combat").map(march => (
+            <div key={march.id} style={css.card}>
+              <div style={{ fontWeight: 600, color: "#e2e8f0", marginBottom: "0.5rem" }}>{march.label}</div>
+              {assignments[march.id].map(h => (
+                <div key={h.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.25rem", padding: "0.25rem 0.5rem", background: "#0f172a", borderRadius: 4 }}>
+                  <span style={{ fontSize: "0.85rem", color: RARITIES.find(r => r.id === h.rarity)?.color }}>{h.name || "Unnamed"}</span>
+                  <button style={css.deleteBtn} onClick={() => unassign(h.id)}>&times;</button>
+                </div>
+              ))}
+              {assignments[march.id].length < 3 && (
+                <select style={{ ...css.select, marginTop: "0.25rem", fontSize: "0.8rem" }}
+                  value="" onChange={e => { if (e.target.value) assign(e.target.value, march.id); }}>
+                  <option value="">+ Assign horse...</option>
+                  {unassigned.map(h => <option key={h.id} value={h.id}>{h.name || "Unnamed"} ({TEMPERAMENTS.find(t => t.id === h.temperament)?.label})</option>)}
+                </select>
+              )}
+              <div style={{ fontSize: "0.7rem", color: "#475569", marginTop: "0.25rem" }}>{assignments[march.id].length}/3 slots filled</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h3 style={{ color: "#fbbf24", fontSize: "1rem", margin: "0 0 0.75rem" }}>Gathering Marches</h3>
+        <div style={css.grid}>
+          {MARCH_TYPES.filter(m => m.type === "gathering").map(march => (
+            <div key={march.id} style={css.card}>
+              <div style={{ fontWeight: 600, color: "#e2e8f0", marginBottom: "0.5rem" }}>{march.label}</div>
+              {assignments[march.id].map(h => (
+                <div key={h.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.25rem", padding: "0.25rem 0.5rem", background: "#0f172a", borderRadius: 4 }}>
+                  <span style={{ fontSize: "0.85rem", color: RARITIES.find(r => r.id === h.rarity)?.color }}>{h.name || "Unnamed"}</span>
+                  <button style={css.deleteBtn} onClick={() => unassign(h.id)}>&times;</button>
+                </div>
+              ))}
+              {assignments[march.id].length < 3 && (
+                <select style={{ ...css.select, marginTop: "0.25rem", fontSize: "0.8rem" }}
+                  value="" onChange={e => { if (e.target.value) assign(e.target.value, march.id); }}>
+                  <option value="">+ Assign horse...</option>
+                  {unassigned.map(h => <option key={h.id} value={h.id}>{h.name || "Unnamed"} ({TEMPERAMENTS.find(t => t.id === h.temperament)?.label})</option>)}
+                </select>
+              )}
+              <div style={{ fontSize: "0.7rem", color: "#475569", marginTop: "0.25rem" }}>{assignments[march.id].length}/3 slots filled</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ReferenceTab() {
+  return (
+    <div>
+      <div style={css.card}>
+        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Temperament Guide</h3>
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          {TEMPERAMENTS.map(t => (
+            <div key={t.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <span style={{ ...css.badge(t.color), minWidth: 90, textAlign: "center" }}>{t.label}</span>
+              <span style={{ fontSize: "0.85rem", color: "#cbd5e1" }}>{t.effect}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={css.card}>
+        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Attribute Ranges by Rarity</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "0.75rem" }}>
+          {RARITIES.map(r => (
+            <div key={r.id} style={{ padding: "0.75rem", background: "#0f172a", borderRadius: 8, border: `1px solid ${r.color}30` }}>
+              <div style={{ fontWeight: 600, color: r.color, marginBottom: "0.25rem" }}>{r.label}</div>
+              <div style={{ fontSize: "0.85rem", color: "#94a3b8" }}>
+                Range: {ATTRIBUTE_RANGES[r.id].min} — {ATTRIBUTE_RANGES[r.id].max}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={css.card}>
+        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Trait Quality Tiers</h3>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+          {TRAIT_QUALITIES.map(q => (
+            <span key={q.id} style={{ ...css.badge(q.color), fontSize: "0.85rem", padding: "0.35rem 0.75rem" }}>{q.label}</span>
+          ))}
+        </div>
+        <div style={{ fontSize: "0.8rem", color: "#64748b", marginTop: "0.5rem" }}>
+          Grey &rarr; Green &rarr; Blue &rarr; Purple &rarr; Gold &rarr; Orange (highest)
+        </div>
+      </div>
+
+      <div style={css.card}>
+        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Breeding Rules</h3>
+        <ul style={{ margin: 0, padding: "0 0 0 1.25rem", color: "#cbd5e1", fontSize: "0.85rem", lineHeight: 1.8 }}>
+          <li>Both parents are <strong style={{ color: "#ef4444" }}>consumed</strong> in breeding (lost permanently)</li>
+          <li>Offspring inherits traits based on parent traits + temperament bonuses</li>
+          <li>Temperament influences which trait category is favored</li>
+          <li>Fearless temperament increases chance of trait quality upgrade</li>
+          <li>Protective temperament increases chance of retaining both parent traits</li>
+          <li>Warbred temperament gives higher attribute inheritance values</li>
+          <li>Mass breeding: breed multiple pairs simultaneously (same rules per pair)</li>
+          <li>Offspring rarity is influenced by parent rarities</li>
+          <li>Each horse has exactly 2 attributes (from: Might, Strategy, Armor, Siege)</li>
+          <li>Horses can have 1-2 traits, each with a category and quality tier</li>
+        </ul>
+      </div>
+
+      <div style={css.card}>
+        <h3 style={{ color: "#fbbf24", margin: "0 0 1rem", fontSize: "1.1rem" }}>Optimal March Mount Strategy</h3>
+        <ul style={{ margin: 0, padding: "0 0 0 1.25rem", color: "#cbd5e1", fontSize: "0.85rem", lineHeight: 1.8 }}>
+          <li><strong>Swordsman marches:</strong> Might Damage traits + Might/Armor attributes</li>
+          <li><strong>Pikeman march:</strong> Universal or Might Damage traits + Armor/Might attributes</li>
+          <li><strong>Cavalry march:</strong> Might Damage or Universal traits + Might/Strategy attributes</li>
+          <li><strong>Archer march:</strong> Strategy Damage traits + Strategy/Siege attributes</li>
+          <li><strong>Gathering marches:</strong> Gathering traits + any attributes (traits matter most)</li>
+          <li>Each march has 3 heroes = 3 mount slots to fill</li>
+          <li>Total needed: 15 combat mounts + 15 gathering mounts = 30</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [tab, setTab] = useState("stable");
+  const [horses, setHorses] = useState(loadStable);
+
+  const tabs = [
+    { id: "stable", label: "Stable" },
+    { id: "breeding", label: "Breeding Optimizer" },
+    { id: "probability", label: "Probability Calc" },
+    { id: "planner", label: "March Planner" },
+    { id: "reference", label: "Reference" },
+  ];
+
+  return (
+    <div style={css.container}>
+      <div style={css.header}>
+        <h1 style={css.title}>Horse Breeding Optimizer</h1>
+        <div style={css.subtitle}>Age of Empires Mobile — Mount Management & Breeding Strategy</div>
+      </div>
+
+      <div style={css.tabs}>
+        {tabs.map(t => (
+          <div key={t.id} style={css.tab(tab === t.id)} onClick={() => setTab(t.id)}>{t.label}</div>
+        ))}
+      </div>
+
+      {tab === "stable" && <StableTab horses={horses} setHorses={setHorses} />}
+      {tab === "breeding" && <BreedingTab horses={horses} />}
+      {tab === "probability" && <ProbabilityTab horses={horses} />}
+      {tab === "planner" && <MarchPlannerTab horses={horses} setHorses={setHorses} />}
+      {tab === "reference" && <ReferenceTab />}
+
+      <div style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.75rem", color: "#475569" }}>
+        Data persists in browser localStorage. Export your stable regularly.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+</body>
+</html>
