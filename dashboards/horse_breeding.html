@@ -205,6 +205,71 @@ const HEROES = [
   { name: "Yuan Xia", class: "tactician", units: ["Archer"], quality: "epic" },
 ];
 
+const HERO_SKILLS = {
+  "Ashoka": { commander: { name: "Lord Of Darkness", type: "Rage" }, signature: { name: "Mauryan Glory", type: "Passive" }, customizable: [{ name: "Act Of Mercy", type: "Secondary Strike" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Roar Of Victory", type: "Secondary Strike" }, { name: "Sunder", type: "Secondary Strike" }, { name: "Tactical Pursuit", type: "Secondary Strike" }, { name: "Weakspot Attack", type: "Secondary Strike" }] },
+  "Attila The Hun": { commander: { name: "Nomadic Strength", type: "Rage" }, signature: { name: "Annihilator", type: "Passive" }, customizable: [{ name: "Act Of Mercy", type: "Secondary Strike" }, { name: "Armor Piercer", type: "Secondary Strike" }, { name: "Critical Insight", type: "Passive" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Warrior's Hymn", type: "Active" }, { name: "Weakspot Attack", type: "Secondary Strike" }] },
+  "Axel": { commander: { name: "Weaving Strike", type: "Rage" }, signature: { name: "Ferocious Chase", type: "Secondary Strike" }, customizable: [{ name: "Armor Piercer", type: "Secondary Strike" }, { name: "Critical Blade", type: "Passive" }, { name: "Double Strike", type: "Secondary Strike" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Pacifying Strike", type: "Secondary Strike" }, { name: "Sunder", type: "Secondary Strike" }] },
+  "Baldassi": { commander: { name: "Shrewd Stratagem", type: "Rage" }, signature: { name: "Biding Time", type: "Active" }, customizable: [{ name: "Boulder Trap", type: "Active" }, { name: "Focused Mind", type: "Passive" }, { name: "Maneuver", type: "Passive" }, { name: "Prudent Handling", type: "Passive" }, { name: "Rapid Gathering", type: "Passive" }, { name: "Surprise Attack", type: "Active" }] },
+  "Bellevue": { commander: { name: "Imminent Tempest", type: "Rage" }, signature: { name: "Black Tide", type: "Passive" }, customizable: [] },
+  "Bushra": { commander: { name: "Exotic Beauty", type: "Rage" }, signature: { name: "Legacy of Wisdom", type: "Turn-Based" }, customizable: [{ name: "Darkness Strike", type: "Active" }, { name: "Fortification", type: "Passive" }, { name: "King's Blade", type: "Turn-Based" }, { name: "Mettle", type: "Passive" }, { name: "Peaceful Haven", type: "Passive" }, { name: "Tenacity", type: "Turn-Based" }] },
+  "Cleopatra VII": { commander: { name: "Fatal Allure", type: "Rage" }, signature: { name: "Mesmerization", type: "Secondary Strike" }, customizable: [{ name: "Crushing Impact", type: "Secondary Strike" }, { name: "Double Attack", type: "Active" }, { name: "Efficient Harvest", type: "Passive" }, { name: "Sowing Discord", type: "Secondary Strike" }, { name: "War Tactic", type: "Active" }, { name: "Windfall", type: "Passive" }] },
+  "Clyde": { commander: { name: "Shrewdness", type: "Rage" }, signature: { name: "Cunningness", type: "Secondary Strike" }, customizable: [{ name: "Deception", type: "Active" }, { name: "Prayer For Harvest", type: "Active" }, { name: "Rest And Recover", type: "Active" }, { name: "Sowing Discord", type: "Secondary Strike" }, { name: "Suppression", type: "Active" }, { name: "Surprise Attack", type: "Active" }] },
+  "Constantine The Great": { commander: { name: "Mighty Assault", type: "Rage" }, signature: { name: "Ever Vigilant", type: "Active" }, customizable: [{ name: "Bloodthirst", type: "Active" }, { name: "Crashing Boulder", type: "Active" }, { name: "Fortification", type: "Passive" }, { name: "High Spirit", type: "Passive" }, { name: "Peaceful Haven", type: "Passive" }, { name: "Tenacity", type: "Turn-Based" }] },
+  "Cui Ruyi": { commander: { name: "Will To Fight", type: "Rage" }, signature: { name: "Readiness", type: "Passive" }, customizable: [{ name: "Armor Piercer", type: "Secondary Strike" }, { name: "Double Strike", type: "Secondary Strike" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Mighty Strike", type: "Active" }, { name: "Prayer For Harvest", type: "Active" }, { name: "Sunder", type: "Secondary Strike" }] },
+  "Darius The Great": { commander: { name: "Ironclad Blitz", type: "Rage" }, signature: { name: "Conquest", type: "Passive" }, customizable: [{ name: "Efficient Harvest", type: "Passive" }, { name: "Roar Of Victory", type: "Secondary Strike" }, { name: "Spirited Pursuit", type: "Secondary Strike" }, { name: "Sunder", type: "Secondary Strike" }, { name: "Supplies Transportation", type: "Passive" }, { name: "Weakspot Attack", type: "Secondary Strike" }] },
+  "Diao Chan": { commander: { name: "Graceful Steps", type: "Rage" }, signature: { name: "Unit Charge", type: "Passive" }, customizable: [{ name: "Efficient Harvest", type: "Passive" }, { name: "Peaceful Haven", type: "Passive" }, { name: "Rapid Gathering", type: "Passive" }, { name: "Supplies Transportation", type: "Passive" }, { name: "Tenacity", type: "Turn-Based" }, { name: "Windfall", type: "Passive" }] },
+  "El Cid": { commander: { name: "Anthem Of The Knight", type: "Rage" }, signature: { name: "Patriotism", type: "Secondary Strike" }, customizable: [{ name: "Armor Piercer", type: "Secondary Strike" }, { name: "Double Attack", type: "Active" }, { name: "Furious Charge", type: "Passive" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Roar Of Victory", type: "Secondary Strike" }, { name: "Weakspot Attack", type: "Secondary Strike" }] },
+  "Frederick Barbarossa": { commander: { name: "King's Shelter", type: "Rage" }, signature: { name: "Pledge Of Victory", type: "Passive" }, customizable: [{ name: "King's Blade", type: "Turn-Based" }, { name: "Mettle", type: "Passive" }, { name: "Peaceful Haven", type: "Passive" }, { name: "Righteous Judgement", type: "Active" }, { name: "Tenacity", type: "Turn-Based" }, { name: "War Drums", type: "Turn-Based" }] },
+  "Gao Meng": { commander: { name: "Shield Bash", type: "Rage" }, signature: { name: "Bulwark", type: "Active" }, customizable: [{ name: "Crashing Boulder", type: "Active" }, { name: "Double Strike", type: "Secondary Strike" }, { name: "Mettle", type: "Passive" }, { name: "Mighty Strike", type: "Active" }, { name: "Prayer For Harvest", type: "Active" }, { name: "Shield Slam", type: "Active" }] },
+  "Gatos": { commander: { name: "Piercing", type: "Rage" }, signature: { name: "Targeted Blow", type: "Secondary Strike" }, customizable: [{ name: "Deception", type: "Active" }, { name: "Double Strike", type: "Secondary Strike" }, { name: "Mighty Strike", type: "Active" }, { name: "Prayer For Harvest", type: "Active" }, { name: "Sowing Discord", type: "Secondary Strike" }, { name: "Suppression", type: "Active" }] },
+  "Guan Yu": { commander: { name: "Dragon Blade", type: "Rage" }, signature: { name: "Gallantry", type: "Passive" }, customizable: [{ name: "Armor Piercer", type: "Secondary Strike" }, { name: "Berserker", type: "Passive" }, { name: "Critical Insight", type: "Passive" }, { name: "Fatal Blow", type: "Secondary Strike" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Weakspot Attack", type: "Secondary Strike" }] },
+  "Hammurabi": { commander: { name: "Sage King", type: "Rage" }, signature: { name: "Authoritative Code", type: "Active" }, customizable: [{ name: "Bloodthirst", type: "Active" }, { name: "Crashing Boulder", type: "Active" }, { name: "Earth Crush", type: "Active" }, { name: "High Spirit", type: "Passive" }, { name: "Siege And Plunder", type: "Active" }, { name: "Sunder", type: "Secondary Strike" }] },
+  "Hannibal": { commander: { name: "Surprise Victory", type: "Rage" }, signature: { name: "Peerless", type: "Secondary Strike" }, customizable: [{ name: "Crushing Impact", type: "Secondary Strike" }, { name: "Double Attack", type: "Active" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Sowing Discord", type: "Secondary Strike" }, { name: "Tactical Pursuit", type: "Secondary Strike" }, { name: "Weakspot Attack", type: "Secondary Strike" }] },
+  "Harald III": { commander: { name: "Viking Strategy", type: "Rage" }, signature: { name: "Heroic Berserker", type: "Active" }, customizable: [{ name: "Armor Piercer", type: "Secondary Strike" }, { name: "Bloodthirst", type: "Active" }, { name: "Crashing Boulder", type: "Active" }, { name: "Darkness Strike", type: "Active" }, { name: "High Spirit", type: "Passive" }, { name: "Righteous Judgement", type: "Active" }] },
+  "Hua Mulan": { commander: { name: "Flying Swallow", type: "Rage" }, signature: { name: "Starchaser", type: "Secondary Strike" }, customizable: [{ name: "Act Of Mercy", type: "Secondary Strike" }, { name: "Armor Piercer", type: "Secondary Strike" }, { name: "Double Attack", type: "Active" }, { name: "Furious Charge", type: "Passive" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Weakspot Attack", type: "Secondary Strike" }] },
+  "Joan Of Arc": { commander: { name: "Will Of Steel", type: "Rage" }, signature: { name: "Victory Banner", type: "Passive" }, customizable: [{ name: "Fearless Retribution", type: "Passive" }, { name: "King's Blade", type: "Turn-Based" }, { name: "Mettle", type: "Passive" }, { name: "Righteous Judgement", type: "Active" }, { name: "Tenacity", type: "Turn-Based" }, { name: "Vigilance", type: "Passive" }] },
+  "Josephine": { commander: { name: "Steel Rose", type: "Rage" }, signature: { name: "Warcry", type: "Secondary Strike" }, customizable: [{ name: "Double Attack", type: "Active" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Protracted Battle", type: "Passive" }, { name: "Siege Breaker", type: "Secondary Strike" }, { name: "Sunder", type: "Secondary Strike" }, { name: "Weakspot Attack", type: "Secondary Strike" }] },
+  "Julius Caesar": { commander: { name: "Triumphant Return", type: "Rage" }, signature: { name: "Crownless King", type: "Turn-Based" }, customizable: [{ name: "Change Of Formation", type: "Turn-Based" }, { name: "Coordination", type: "Passive" }, { name: "Formation Attack", type: "Turn-Based" }, { name: "King's Blade", type: "Turn-Based" }, { name: "Savage", type: "Turn-Based" }, { name: "Whirlwind Sweep", type: "Turn-Based" }] },
+  "Justinian The Great": { commander: { name: "Envoy Of Peace", type: "Rage" }, signature: { name: "Defensive Assault", type: "Passive" }, customizable: [{ name: "Crushing Impact", type: "Secondary Strike" }, { name: "Peaceful Haven", type: "Passive" }, { name: "Prayer For Harvest", type: "Active" }, { name: "Protracted Battle", type: "Passive" }, { name: "Sowing Discord", type: "Secondary Strike" }, { name: "War Tactic", type: "Active" }] },
+  "Kaso": { commander: { name: "Warcry Of Glory", type: "Rage" }, signature: { name: "Tempered Blade", type: "Passive" }, customizable: [{ name: "Armor Piercer", type: "Secondary Strike" }, { name: "Double Strike", type: "Secondary Strike" }, { name: "Prayer For Harvest", type: "Active" }, { name: "Prudent Handling", type: "Passive" }, { name: "Rapid Gathering", type: "Passive" }, { name: "Sunder", type: "Secondary Strike" }] },
+  "King Arthur": { commander: { name: "Glory Of Knight", type: "Rage" }, signature: { name: "Sword Of Radiance", type: "Active" }, customizable: [{ name: "Crashing Boulder", type: "Active" }, { name: "Furious Charge", type: "Passive" }, { name: "High Spirit", type: "Passive" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Peerless Strike", type: "Active" }, { name: "Spirited Pursuit", type: "Secondary Strike" }] },
+  "King Derrick": { commander: { name: "Defensive Slingshot", type: "Rage" }, signature: { name: "Grace And Blessings", type: "Active" }, customizable: [{ name: "Earth Crush", type: "Active" }, { name: "Efficient Harvest", type: "Passive" }, { name: "Fearless Frontrunner", type: "Passive" }, { name: "Righteous Judgement", type: "Active" }, { name: "Sunder", type: "Secondary Strike" }, { name: "Windfall", type: "Passive" }] },
+  "Leon": { commander: { name: "Concentrated Fire", type: "Rage" }, signature: { name: "Heart Of Victory", type: "Passive" }, customizable: [{ name: "Blaze Impact", type: "Active" }, { name: "Fervor", type: "Passive" }, { name: "Prudent Handling", type: "Passive" }, { name: "Rapid Gathering", type: "Passive" }, { name: "Rest And Recover", type: "Active" }, { name: "Suppression", type: "Active" }] },
+  "Leonidas I": { commander: { name: "Firm Strike", type: "Rage" }, signature: { name: "Unyielding Soul", type: "Passive" }, customizable: [{ name: "Counterattack", type: "Passive" }, { name: "Fearless Retribution", type: "Passive" }, { name: "King's Blade", type: "Turn-Based" }, { name: "Tenacity", type: "Turn-Based" }, { name: "Vigilance", type: "Passive" }, { name: "Whirlwind Sweep", type: "Turn-Based" }] },
+  "Li Daoxuan": { commander: { name: "Blade Strike", type: "Rage" }, signature: { name: "Two-Handed Slash", type: "Turn-Based" }, customizable: [{ name: "Change Of Formation", type: "Turn-Based" }, { name: "Crashing Boulder", type: "Active" }, { name: "Double Strike", type: "Secondary Strike" }, { name: "Formation Attack", type: "Turn-Based" }, { name: "Mighty Strike", type: "Active" }, { name: "War Drums", type: "Turn-Based" }] },
+  "Luki": { commander: { name: "Wilderness Survival", type: "Rage" }, signature: { name: "Long Volley", type: "Active" }, customizable: [{ name: "Armor Piercer", type: "Secondary Strike" }, { name: "Crashing Boulder", type: "Active" }, { name: "Double Strike", type: "Secondary Strike" }, { name: "Mettle", type: "Passive" }, { name: "Mighty Strike", type: "Active" }, { name: "Sunder", type: "Secondary Strike" }] },
+  "Léo": { commander: { name: "Seasoned Warrior", type: "Rage" }, signature: { name: "Perseverance", type: "Active" }, customizable: [{ name: "Fortification", type: "Passive" }, { name: "Mettle", type: "Passive" }, { name: "Prayer For Harvest", type: "Active" }, { name: "Prudent Handling", type: "Passive" }, { name: "Rapid Gathering", type: "Passive" }, { name: "Rest And Recover", type: "Active" }] },
+  "Miyamoto Musashi": { commander: { name: "Flash Of Yang", type: "Rage" }, signature: { name: "Moment Of Yin", type: "Active" }, customizable: [{ name: "Crashing Boulder", type: "Active" }, { name: "Earth Crush", type: "Active" }, { name: "Furious Charge", type: "Passive" }, { name: "High Spirit", type: "Passive" }, { name: "Peerless Strike", type: "Active" }, { name: "Shield Slam", type: "Active" }] },
+  "Narses": { commander: { name: "Rampage", type: "Rage" }, signature: { name: "Relentless Pursuit", type: "Secondary Strike" }, customizable: [{ name: "Armor Piercer", type: "Secondary Strike" }, { name: "Double Strike", type: "Secondary Strike" }, { name: "Fast Retreat", type: "Passive" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Pacifying Strike", type: "Secondary Strike" }, { name: "Rapid Gathering", type: "Passive" }] },
+  "Nino": { commander: { name: "Intrepidity", type: "Rage" }, signature: { name: "Combo Strike", type: "Active" }, customizable: [{ name: "Calm In Peril", type: "Passive" }, { name: "Deception", type: "Active" }, { name: "Maneuver", type: "Passive" }, { name: "Prayer For Harvest", type: "Active" }, { name: "Rapid Gathering", type: "Passive" }, { name: "Surprise Attack", type: "Active" }] },
+  "Octavian": { commander: { name: "Accumulated Power", type: "Rage" }, signature: { name: "Might Of Ruler", type: "Turn-Based" }, customizable: [{ name: "Change Of Formation", type: "Turn-Based" }, { name: "Coordination", type: "Passive" }, { name: "Formation Attack", type: "Turn-Based" }, { name: "King's Blade", type: "Turn-Based" }, { name: "Triple Offensive", type: "Turn-Based" }, { name: "Whirlwind Sweep", type: "Turn-Based" }] },
+  "Oda Nobunaga": { commander: { name: "Scarlet Slash", type: "Rage" }, signature: { name: "Rapid Slash", type: "Turn-Based" }, customizable: [{ name: "Bloodthirst", type: "Active" }, { name: "Change Of Formation", type: "Turn-Based" }, { name: "Formation Attack", type: "Turn-Based" }, { name: "King's Blade", type: "Turn-Based" }, { name: "Savage", type: "Turn-Based" }, { name: "Whirlwind Sweep", type: "Turn-Based" }] },
+  "Philip IV": { commander: { name: "Charisma Of Monarch", type: "Rage" }, signature: { name: "Sovereign Supremacy", type: "Active" }, customizable: [{ name: "Boulder Trap", type: "Active" }, { name: "Conflagration", type: "Active" }, { name: "High Spirit", type: "Passive" }, { name: "Strategy Master's Gift", type: "Passive" }, { name: "Suppression", type: "Active" }, { name: "War Tactic", type: "Active" }] },
+  "Queen Seondeok": { commander: { name: "Fight Fire With Fire", type: "Rage" }, signature: { name: "Halo of Hwangnyong", type: "Active" }, customizable: [{ name: "Blaze Impact", type: "Active" }, { name: "Conflagration", type: "Active" }, { name: "Immortal Army", type: "Active" }, { name: "Maneuver", type: "Passive" }, { name: "Ultimate Strategy", type: "Active" }, { name: "War Tactic", type: "Active" }] },
+  "Rani Durgavati": { commander: { name: "Blade Of Gondwana", type: "Rage" }, signature: { name: "Warrior Queen", type: "Passive" }, customizable: [{ name: "Armor Piercer", type: "Secondary Strike" }, { name: "Bloodthirst", type: "Active" }, { name: "King's Blade", type: "Turn-Based" }, { name: "Spirited Pursuit", type: "Secondary Strike" }, { name: "Sunder", type: "Secondary Strike" }, { name: "Warrior's Hymn", type: "Active" }] },
+  "Richard I": { commander: { name: "Surmount", type: "Rage" }, signature: { name: "Lionheart", type: "Passive" }, customizable: [{ name: "Counterattack", type: "Passive" }, { name: "Fearless Retribution", type: "Passive" }, { name: "Forceful Retaliation", type: "Passive" }, { name: "Tenacity", type: "Turn-Based" }, { name: "Vigilance", type: "Passive" }, { name: "Whirlwind Sweep", type: "Turn-Based" }] },
+  "Sejong The Great": { commander: { name: "True Words", type: "Rage" }, signature: { name: "King's Mercy", type: "Passive" }, customizable: [{ name: "Entrenchment", type: "Active" }, { name: "Fortification", type: "Passive" }, { name: "Peaceful Haven", type: "Passive" }, { name: "Prayer For Harvest", type: "Active" }, { name: "Protracted Battle", type: "Passive" }, { name: "Tenacity", type: "Turn-Based" }] },
+  "Sun Tzu": { commander: { name: "Strategy Cuts Deeper", type: "Rage" }, signature: { name: "The Way Of War", type: "Active" }, customizable: [{ name: "Boulder Trap", type: "Active" }, { name: "Deception", type: "Active" }, { name: "Flash Of Inspiration", type: "Passive" }, { name: "High Spirit", type: "Passive" }, { name: "Strategy Master's Gift", type: "Passive" }, { name: "Ultimate Strategy", type: "Active" }] },
+  "Tariq": { commander: { name: "Sword Of Sage", type: "Rage" }, signature: { name: "Desert Iron Riders", type: "Passive" }, customizable: [{ name: "Act Of Mercy", type: "Secondary Strike" }, { name: "Armor Piercer", type: "Secondary Strike" }, { name: "Infuriation", type: "Secondary Strike" }, { name: "Roar Of Victory", type: "Secondary Strike" }, { name: "Spirited Pursuit", type: "Secondary Strike" }, { name: "Weakspot Attack", type: "Secondary Strike" }] },
+  "Thanius": { commander: { name: "Undefeated Array", type: "Rage" }, signature: { name: "Intimidation", type: "Turn-Based" }, customizable: [{ name: "Change Of Formation", type: "Turn-Based" }, { name: "Formation Attack", type: "Turn-Based" }, { name: "Load Boost", type: "Passive" }, { name: "Mighty Strike", type: "Active" }, { name: "Rapid Gathering", type: "Passive" }, { name: "War Drums", type: "Turn-Based" }] },
+  "Theodora": { commander: { name: "Taking The Purple", type: "Rage" }, signature: { name: "Dynastic Co-Rule", type: "Passive" }, customizable: [{ name: "Conflagration", type: "Active" }, { name: "Immortal Army", type: "Active" }, { name: "Maneuver", type: "Passive" }, { name: "Suppression", type: "Active" }, { name: "Ultimate Strategy", type: "Active" }, { name: "War Tactic", type: "Active" }] },
+  "Tokugawa Ieyasu": { commander: { name: "Subtlety", type: "Rage" }, signature: { name: "Sacred Light", type: "Active" }, customizable: [{ name: "Entrenchment", type: "Active" }, { name: "Fortification", type: "Passive" }, { name: "King's Blade", type: "Turn-Based" }, { name: "Mettle", type: "Passive" }, { name: "Peaceful Haven", type: "Passive" }, { name: "Protracted Battle", type: "Passive" }] },
+  "Toyotomi Hideyoshi": { commander: { name: "Ape Rage", type: "Rage" }, signature: { name: "Gnawing Strike", type: "Active" }, customizable: [{ name: "Bloodthirst", type: "Active" }, { name: "Crashing Boulder", type: "Active" }, { name: "Furious Charge", type: "Passive" }, { name: "High Spirit", type: "Passive" }, { name: "Peerless Strike", type: "Active" }, { name: "Shield Slam", type: "Active" }] },
+  "Tribhuwana": { commander: { name: "Regal Radiance", type: "Rage" }, signature: { name: "Ode To Java", type: "Passive" }, customizable: [{ name: "Bloodthirst", type: "Active" }, { name: "Crashing Boulder", type: "Active" }, { name: "Fortification", type: "Passive" }, { name: "King's Blade", type: "Turn-Based" }, { name: "Peerless Strike", type: "Active" }, { name: "Righteous Judgement", type: "Active" }] },
+  "Wu Wei": { commander: { name: "Wide Arc", type: "Rage" }, signature: { name: "Tit For Tat", type: "Passive" }, customizable: [{ name: "Counterattack", type: "Passive" }, { name: "Double Strike", type: "Secondary Strike" }, { name: "Mettle", type: "Passive" }, { name: "Mighty Strike", type: "Active" }, { name: "Vigilance", type: "Passive" }, { name: "War Drums", type: "Turn-Based" }] },
+  "Yi Seong-Gye": { commander: { name: "Wild Shot", type: "Rage" }, signature: { name: "Unequaled Valor", type: "Passive" }, customizable: [{ name: "Battle Roar", type: "Active" }, { name: "Bloodthirst", type: "Active" }, { name: "Crashing Boulder", type: "Active" }, { name: "Earth Crush", type: "Active" }, { name: "Peerless Strike", type: "Active" }, { name: "Shield Slam", type: "Active" }] },
+  "Yi Sun-Shin": { commander: { name: "Crashing Waves", type: "Rage" }, signature: { name: "Tidal Flood", type: "Active" }, customizable: [{ name: "Blaze Impact", type: "Active" }, { name: "Conflagration", type: "Active" }, { name: "Efficient Harvest", type: "Passive" }, { name: "Organized Retreat", type: "Passive" }, { name: "Strategy Master's Gift", type: "Passive" }, { name: "War Tactic", type: "Active" }] },
+  "Yuan Xia": { commander: { name: "Blaze", type: "Rage" }, signature: { name: "Inferno", type: "Active" }, customizable: [{ name: "Focused Mind", type: "Passive" }, { name: "Load Boost", type: "Passive" }, { name: "Maneuver", type: "Passive" }, { name: "Rapid Gathering", type: "Passive" }, { name: "Suppression", type: "Active" }, { name: "Surprise Attack", type: "Active" }] },
+};
+
+const SKILL_TYPE_COLORS = {
+  "Rage": "#ef4444",
+  "Active": "#3b82f6",
+  "Passive": "#22c55e",
+  "Secondary Strike": "#f59e0b",
+  "Turn-Based": "#a855f7",
+};
+
 const MARCH_CATEGORIES = ["combat", "gathering", "siege"];
 const MARCHES_KEY = "aoem_marches";
 
@@ -977,13 +1042,90 @@ function MarchCard({ march, horses, onUpdate, onDelete, onAssignHorse, onUnassig
         {(march.heroes || []).map((heroName, i) => {
           const hero = HEROES.find(h => h.name === heroName);
           const cls = MILITARY_CLASSES.find(c => c.id === hero?.class);
+          const skills = HERO_SKILLS[heroName];
+          const heroSkillSelections = (march.heroSkills || {})[heroName] || [];
           return (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.2rem", padding: "0.2rem 0.4rem", background: "#0f172a", borderRadius: 4 }}>
-              {i === 0 && <span style={{ fontSize: "0.65rem", color: "#fbbf24" }}>CMD</span>}
-              <span style={{ fontSize: "0.8rem", color: cls?.color || "#e2e8f0" }}>{heroName}</span>
-              <span style={{ fontSize: "0.65rem", color: "#64748b" }}>{cls?.label} / {hero?.units?.join(", ")}</span>
-              <button style={{ ...css.deleteBtn, fontSize: "0.9rem", marginLeft: "auto" }}
-                onClick={() => { const updated = { ...march, heroes: march.heroes.filter((_, idx) => idx !== i) }; onUpdate(updated); }}>&times;</button>
+            <div key={i} style={{ marginBottom: "0.5rem", padding: "0.4rem", background: "#0f172a", borderRadius: 6, border: "1px solid #1e293b" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.3rem" }}>
+                {i === 0 && <span style={{ fontSize: "0.6rem", background: "#fbbf24", color: "#0f172a", padding: "1px 4px", borderRadius: 3, fontWeight: 700 }}>CMD</span>}
+                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: cls?.color || "#e2e8f0" }}>{heroName}</span>
+                <span style={{ fontSize: "0.65rem", color: "#64748b" }}>{cls?.label} / {hero?.units?.join(", ")}</span>
+                <button style={{ ...css.deleteBtn, fontSize: "0.9rem", marginLeft: "auto" }}
+                  onClick={() => {
+                    const updatedHeroes = march.heroes.filter((_, idx) => idx !== i);
+                    const updatedSkills = { ...(march.heroSkills || {}) };
+                    delete updatedSkills[heroName];
+                    onUpdate({ ...march, heroes: updatedHeroes, heroSkills: updatedSkills });
+                  }}>&times;</button>
+              </div>
+              {skills && (
+                <div style={{ paddingLeft: "0.5rem", fontSize: "0.75rem" }}>
+                  <div style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginBottom: "0.2rem" }}>
+                    <span style={{ color: "#64748b", minWidth: 55 }}>Cmd:</span>
+                    <span style={{ color: SKILL_TYPE_COLORS[skills.commander?.type] || "#94a3b8" }}>
+                      {skills.commander?.name}
+                    </span>
+                    <span style={{ ...css.badge(SKILL_TYPE_COLORS[skills.commander?.type] || "#64748b"), fontSize: "0.6rem", padding: "1px 4px" }}>
+                      {skills.commander?.type}
+                    </span>
+                    {i !== 0 && <span style={{ fontSize: "0.6rem", color: "#475569", fontStyle: "italic" }}>(inactive)</span>}
+                  </div>
+                  <div style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginBottom: "0.2rem" }}>
+                    <span style={{ color: "#64748b", minWidth: 55 }}>Sig:</span>
+                    <span style={{ color: SKILL_TYPE_COLORS[skills.signature?.type] || "#94a3b8" }}>
+                      {skills.signature?.name}
+                    </span>
+                    <span style={{ ...css.badge(SKILL_TYPE_COLORS[skills.signature?.type] || "#64748b"), fontSize: "0.6rem", padding: "1px 4px" }}>
+                      {skills.signature?.type}
+                    </span>
+                  </div>
+                  {[0, 1].map(slotIdx => {
+                    const selected = heroSkillSelections[slotIdx] || "";
+                    const otherSelected = heroSkillSelections[slotIdx === 0 ? 1 : 0] || "";
+                    const available = (skills.customizable || []).filter(s => s.name && s.name !== otherSelected);
+                    return (
+                      <div key={slotIdx} style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginBottom: "0.2rem" }}>
+                        <span style={{ color: "#64748b", minWidth: 55 }}>Slot {slotIdx + 1}:</span>
+                        {selected ? (
+                          <React.Fragment>
+                            <span style={{ color: SKILL_TYPE_COLORS[(skills.customizable || []).find(s => s.name === selected)?.type] || "#94a3b8" }}>{selected}</span>
+                            <span style={{ ...css.badge(SKILL_TYPE_COLORS[(skills.customizable || []).find(s => s.name === selected)?.type] || "#64748b"), fontSize: "0.6rem", padding: "1px 4px" }}>
+                              {(skills.customizable || []).find(s => s.name === selected)?.type}
+                            </span>
+                            <button style={{ ...css.deleteBtn, fontSize: "0.75rem" }} onClick={() => {
+                              const newSelections = [...heroSkillSelections];
+                              newSelections[slotIdx] = "";
+                              const updatedSkills = { ...(march.heroSkills || {}), [heroName]: newSelections };
+                              onUpdate({ ...march, heroSkills: updatedSkills });
+                            }}>&times;</button>
+                          </React.Fragment>
+                        ) : (
+                          <select style={{ ...css.select, width: "auto", fontSize: "0.7rem", padding: "2px 4px" }} value=""
+                            onChange={e => {
+                              if (e.target.value) {
+                                const newSelections = [...heroSkillSelections];
+                                while (newSelections.length <= slotIdx) newSelections.push("");
+                                newSelections[slotIdx] = e.target.value;
+                                const updatedSkills = { ...(march.heroSkills || {}), [heroName]: newSelections };
+                                onUpdate({ ...march, heroSkills: updatedSkills });
+                              }
+                            }}>
+                            <option value="">+ Add skill...</option>
+                            {available.map(s => (
+                              <option key={s.name} value={s.name}>{s.name} ({s.type})</option>
+                            ))}
+                          </select>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              {!skills && (
+                <div style={{ paddingLeft: "0.5rem", fontSize: "0.7rem", color: "#475569", fontStyle: "italic" }}>
+                  Skill data not yet available for this hero
+                </div>
+              )}
             </div>
           );
         })}
@@ -998,6 +1140,39 @@ function MarchCard({ march, horses, onUpdate, onDelete, onAssignHorse, onUnassig
           </select>
         )}
       </div>
+
+      {(() => {
+        const allSkillTypes = [];
+        (march.heroes || []).forEach((heroName, i) => {
+          const skills = HERO_SKILLS[heroName];
+          if (!skills) return;
+          if (i === 0 && skills.commander?.type) allSkillTypes.push(skills.commander.type);
+          if (skills.signature?.type) allSkillTypes.push(skills.signature.type);
+          const selections = (march.heroSkills || {})[heroName] || [];
+          selections.forEach(sel => {
+            if (sel) {
+              const s = (skills.customizable || []).find(c => c.name === sel);
+              if (s?.type) allSkillTypes.push(s.type);
+            }
+          });
+        });
+        if (allSkillTypes.length === 0) return null;
+        const counts = {};
+        allSkillTypes.forEach(t => { counts[t] = (counts[t] || 0) + 1; });
+        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+        return (
+          <div style={{ marginBottom: "0.5rem", padding: "0.4rem", background: "#1e1b4b", borderRadius: 4, border: "1px solid #312e81" }}>
+            <div style={{ fontSize: "0.7rem", color: "#818cf8", marginBottom: "0.25rem", fontWeight: 600 }}>SKILL TYPE BREAKDOWN (ideal trait targeting)</div>
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+              {sorted.map(([type, count]) => (
+                <span key={type} style={{ fontSize: "0.75rem", color: SKILL_TYPE_COLORS[type] || "#94a3b8" }}>
+                  {type}: {count}
+                </span>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
 
       <div>
         <div style={{ fontSize: "0.75rem", color: "#64748b", marginBottom: "0.25rem" }}>Mounts ({assignedHorses.length}/3)</div>
@@ -1023,7 +1198,7 @@ function MarchPlannerTab({ horses, setHorses }) {
   const [marches, setMarches] = useState(loadMarches);
 
   const addMarch = (category) => {
-    const newMarch = { id: Date.now().toString(), category, unitType: "", heroes: [], name: "" };
+    const newMarch = { id: Date.now().toString(), category, unitType: "", heroes: [], heroSkills: {}, name: "" };
     const updated = [...marches, newMarch];
     setMarches(updated);
     saveMarches(updated);
