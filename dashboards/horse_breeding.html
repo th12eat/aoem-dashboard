@@ -285,15 +285,15 @@ const ICON_SYMBOLS = {
   shield: "\uD83D\uDEE1\uFE0F",
   heal: "\u2795",
   gather: "\uD83C\uDF3E",
-  buff: "\u2B06\uFE0F",
-  debuff: "\u2B07\uFE0F",
-  other: "\u2728",
+  buff: "\u2B06",
+  debuff: "\u2B07",
+  other: "",
 };
 
 const SKILL_META = {
-  "Accumulated Power": { stat: "neutral", icons: ["other"] },
+  "Accumulated Power": { stat: "neutral", icons: ["buff"] },
   "Act Of Mercy": { stat: "might", icons: ["damage"] },
-  "Annihilator": { stat: "neutral", icons: ["other"] },
+  "Annihilator": { stat: "neutral", icons: ["buff"] },
   "Anthem Of The Knight": { stat: "might", icons: ["debuff"] },
   "Ape Rage": { stat: "mixed", icons: ["damage", "debuff"] },
   "Armor Piercer": { stat: "might", icons: ["damage", "debuff"] },
@@ -329,7 +329,7 @@ const SKILL_META = {
   "Deception": { stat: "strategy", icons: ["damage"] },
   "Defensive Assault": { stat: "strategy", icons: ["shield"] },
   "Defensive Slingshot": { stat: "might", icons: ["damage"] },
-  "Desert Iron Riders": { stat: "neutral", icons: ["other"] },
+  "Desert Iron Riders": { stat: "neutral", icons: ["buff"] },
   "Double Attack": { stat: "all", icons: ["buff"] },
   "Double Strike": { stat: "might", icons: ["damage"] },
   "Dragon Blade": { stat: "might", icons: ["damage"] },
@@ -338,7 +338,7 @@ const SKILL_META = {
   "Efficient Harvest": { stat: "neutral", icons: ["gather"] },
   "Entrenchment": { stat: "armor", icons: ["shield"] },
   "Envoy Of Peace": { stat: "strategy", icons: ["damage"] },
-  "Ever Vigilant": { stat: "neutral", icons: ["other"] },
+  "Ever Vigilant": { stat: "neutral", icons: ["buff"] },
   "Exotic Beauty": { stat: "armor", icons: ["debuff"] },
   "Fast Retreat": { stat: "neutral", icons: ["gather"] },
   "Fatal Allure": { stat: "strategy", icons: ["damage", "debuff"] },
@@ -349,7 +349,7 @@ const SKILL_META = {
   "Fervor": { stat: "all", icons: ["buff"] },
   "Fight Fire With Fire": { stat: "strategy", icons: ["damage"] },
   "Firm Strike": { stat: "might", icons: ["damage"] },
-  "Flash Of Inspiration": { stat: "neutral", icons: ["other"] },
+  "Flash Of Inspiration": { stat: "neutral", icons: ["buff"] },
   "Flash Of Yang": { stat: "might", icons: ["damage", "debuff"] },
   "Flying Swallow": { stat: "might", icons: ["damage"] },
   "Focused Mind": { stat: "neutral", icons: ["other"] },
@@ -365,9 +365,9 @@ const SKILL_META = {
   "Halo of Hwangnyong": { stat: "strategy", icons: ["damage"] },
   "Heart Of Victory": { stat: "mixed", icons: ["buff"] },
   "Heroic Berserker": { stat: "might", icons: ["damage"] },
-  "High Spirit": { stat: "neutral", icons: ["other"] },
+  "High Spirit": { stat: "neutral", icons: ["buff"] },
   "Imminent Tempest": { stat: "might", icons: ["buff", "damage"] },
-  "Immortal Army": { stat: "strategy", icons: ["other"] },
+  "Immortal Army": { stat: "strategy", icons: ["heal"] },
   "Inferno": { stat: "strategy", icons: ["buff", "damage"] },
   "Infuriation": { stat: "might", icons: ["buff", "damage"] },
   "Intimidation": { stat: "might", icons: ["damage", "debuff"] },
@@ -376,40 +376,40 @@ const SKILL_META = {
   "King's Blade": { stat: "might", icons: ["damage"] },
   "King's Mercy": { stat: "armor", icons: ["debuff", "heal", "shield"] },
   "King's Shelter": { stat: "mixed", icons: ["shield"] },
-  "Legacy of Wisdom": { stat: "armor", icons: ["other"] },
+  "Legacy of Wisdom": { stat: "armor", icons: ["buff"] },
   "Lionheart": { stat: "might", icons: ["buff"] },
   "Load Boost": { stat: "neutral", icons: ["gather"] },
   "Long Volley": { stat: "might", icons: ["damage", "shield"] },
   "Lord Of Darkness": { stat: "mixed", icons: ["damage"] },
   "Maneuver": { stat: "neutral", icons: ["other"] },
-  "Mauryan Glory": { stat: "mixed", icons: ["other"] },
+  "Mauryan Glory": { stat: "mixed", icons: ["buff"] },
   "Mesmerization": { stat: "mixed", icons: ["buff", "damage"] },
-  "Mettle": { stat: "mixed", icons: ["other"] },
+  "Mettle": { stat: "mixed", icons: ["buff"] },
   "Might Of Ruler": { stat: "might", icons: ["damage"] },
   "Mighty Assault": { stat: "might", icons: ["damage", "shield"] },
   "Mighty Strike": { stat: "might", icons: ["damage"] },
   "Moment Of Yin": { stat: "might", icons: ["damage"] },
-  "Nomadic Strength": { stat: "neutral", icons: ["other"] },
-  "Ode To Java": { stat: "might", icons: ["other"] },
+  "Nomadic Strength": { stat: "neutral", icons: ["buff"] },
+  "Ode To Java": { stat: "might", icons: ["buff"] },
   "Organized Retreat": { stat: "neutral", icons: ["gather"] },
   "Pacifying Strike": { stat: "might", icons: ["damage", "debuff"] },
   "Patriotism": { stat: "might", icons: ["damage"] },
   "Peaceful Haven": { stat: "neutral", icons: ["shield"] },
   "Peerless": { stat: "all", icons: ["damage", "debuff"] },
   "Peerless Strike": { stat: "might", icons: ["damage"] },
-  "Perseverance": { stat: "armor", icons: ["other"] },
+  "Perseverance": { stat: "armor", icons: ["buff"] },
   "Piercing": { stat: "might", icons: ["damage"] },
   "Pledge Of Victory": { stat: "armor", icons: ["heal", "shield"] },
-  "Prayer For Harvest": { stat: "strategy", icons: ["other"] },
-  "Protracted Battle": { stat: "might", icons: ["other"] },
+  "Prayer For Harvest": { stat: "strategy", icons: ["buff"] },
+  "Protracted Battle": { stat: "might", icons: ["buff"] },
   "Prudent Handling": { stat: "neutral", icons: ["gather"] },
   "Rampage": { stat: "might", icons: ["damage"] },
   "Rapid Gathering": { stat: "neutral", icons: ["gather"] },
   "Rapid Slash": { stat: "might", icons: ["damage"] },
-  "Readiness": { stat: "might", icons: ["other"] },
+  "Readiness": { stat: "might", icons: ["buff"] },
   "Regal Radiance": { stat: "mixed", icons: ["debuff"] },
   "Relentless Pursuit": { stat: "might", icons: ["damage"] },
-  "Rest And Recover": { stat: "strategy", icons: ["other"] },
+  "Rest And Recover": { stat: "strategy", icons: ["heal"] },
   "Righteous Judgement": { stat: "mixed", icons: ["damage", "debuff"] },
   "Roar Of Victory": { stat: "might", icons: ["damage"] },
   "Sacred Light": { stat: "might", icons: ["shield"] },
@@ -443,7 +443,7 @@ const SKILL_META = {
   "Taking The Purple": { stat: "strategy", icons: ["damage"] },
   "Targeted Blow": { stat: "might", icons: ["damage", "debuff"] },
   "Tempered Blade": { stat: "might", icons: ["damage"] },
-  "Tenacity": { stat: "armor", icons: ["other"] },
+  "Tenacity": { stat: "armor", icons: ["buff"] },
   "The Way Of War": { stat: "strategy", icons: ["damage"] },
   "Tidal Flood": { stat: "strategy", icons: ["damage"] },
   "Tit For Tat": { stat: "might", icons: ["damage"] },
@@ -463,7 +463,7 @@ const SKILL_META = {
   "War Tactic": { stat: "strategy", icons: ["damage"] },
   "Warcry": { stat: "might", icons: ["damage"] },
   "Warcry Of Glory": { stat: "might", icons: ["buff", "damage"] },
-  "Warrior Queen": { stat: "might", icons: ["other"] },
+  "Warrior Queen": { stat: "might", icons: ["buff"] },
   "Warrior's Hymn": { stat: "might", icons: ["buff"] },
   "Weakspot Attack": { stat: "might", icons: ["damage"] },
   "Weaving Strike": { stat: "might", icons: ["damage"] },
@@ -1226,6 +1226,8 @@ function checkTroopBonus(march) {
   return { match: false, reason: issues.join(", ") };
 }
 
+const TRAIT_RELEVANT_ICONS = ["damage", "shield", "heal", "gather"];
+
 function HeroTraitHint({ heroName, isCommander, heroSkillSelections }) {
   const skills = HERO_SKILLS[heroName];
   if (!skills) return null;
@@ -1239,14 +1241,14 @@ function HeroTraitHint({ heroName, isCommander, heroSkillSelections }) {
     const meta = SKILL_META[name];
     if (!meta) return;
     if (meta.stat !== "neutral") statCounts[meta.stat] = (statCounts[meta.stat] || 0) + 1;
-    meta.icons.forEach(ic => { iconCounts[ic] = (iconCounts[ic] || 0) + 1; });
+    meta.icons.filter(ic => TRAIT_RELEVANT_ICONS.includes(ic)).forEach(ic => { iconCounts[ic] = (iconCounts[ic] || 0) + 1; });
   });
   if (Object.keys(statCounts).length === 0) return null;
   const topStat = Object.entries(statCounts).sort((a, b) => b[1] - a[1])[0];
-  const topIcons = Object.entries(iconCounts).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const relevantIcons = Object.entries(iconCounts).sort((a, b) => b[1] - a[1]).slice(0, 3);
   return (
     <span style={{ fontSize: "0.6rem", color: "#818cf8", marginLeft: "auto" }}>
-      Want: <span style={{ color: STAT_COLORS[topStat[0]] }}>{topStat[0]}</span> {topIcons.map(([ic]) => ICON_SYMBOLS[ic]).join("")}
+      Trait: <span style={{ color: STAT_COLORS[topStat[0]] }}>{topStat[0]}</span>{relevantIcons.length > 0 && " "}{relevantIcons.map(([ic]) => ICON_SYMBOLS[ic]).join("")}
     </span>
   );
 }
@@ -1462,9 +1464,24 @@ function MarchPlannerTab({ horses, setHorses }) {
 
   return (
     <div>
-      <div style={{ fontSize: "0.9rem", color: "#94a3b8", marginBottom: "1rem" }}>
+      <div style={{ fontSize: "0.9rem", color: "#94a3b8", marginBottom: "0.5rem" }}>
         {marches.length} marches configured | {assignedCount}/{totalHeroSlots} mounts assigned |
         Each hero gets 1 mount | +180% bonus requires all 3 unit types + all 3 military classes match
+      </div>
+      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "1rem", padding: "0.4rem 0.6rem", background: "#1e293b", borderRadius: 6, fontSize: "0.7rem" }}>
+        <span style={{ color: "#64748b", fontWeight: 600 }}>Skill colors:</span>
+        <span style={{ color: STAT_COLORS.might }}>Might</span>
+        <span style={{ color: STAT_COLORS.strategy }}>Strategy</span>
+        <span style={{ color: STAT_COLORS.armor }}>Armor</span>
+        <span style={{ color: STAT_COLORS.siege }}>Siege</span>
+        <span style={{ color: "#64748b" }}>|</span>
+        <span style={{ color: "#64748b", fontWeight: 600 }}>Icons:</span>
+        <span>{ICON_SYMBOLS.damage} Damage</span>
+        <span>{ICON_SYMBOLS.shield} Reduction</span>
+        <span>{ICON_SYMBOLS.heal} Recovery</span>
+        <span>{ICON_SYMBOLS.gather} Gathering</span>
+        <span>{ICON_SYMBOLS.buff} Buff</span>
+        <span>{ICON_SYMBOLS.debuff} Debuff</span>
       </div>
 
       {catConfig.map(cat => {
