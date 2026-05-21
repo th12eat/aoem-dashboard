@@ -743,7 +743,11 @@ function HorseCard({ horse, onEdit, onDelete }) {
       )}
       {horse.assignedTo && (
         <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "#22c55e" }}>
-          Assigned to: {loadMarches().find(m => m.id === horse.assignedTo)?.name || horse.assignedTo}
+          Assigned to: {(() => {
+            const parts = horse.assignedTo.split("|");
+            const march = loadMarches().find(m => m.id === parts[0]);
+            return parts[1] ? `${parts[1]} (${march?.name || "march"})` : (march?.name || horse.assignedTo);
+          })()}
         </div>
       )}
     </div>
@@ -806,10 +810,13 @@ function HorseForm({ horse, onSave, onCancel }) {
           </select>
         </div>
         <div>
-          <label style={css.label}>Assigned March</label>
+          <label style={css.label}>Assigned Hero</label>
           <select style={css.select} value={form.assignedTo || ""} onChange={e => update("assignedTo", e.target.value)}>
             <option value="">Unassigned</option>
-            {loadMarches().map(m => <option key={m.id} value={m.id}>{m.name || getMarchAutoName(m)}</option>)}
+            {loadMarches().flatMap(m => (m.heroes || []).map(heroName => {
+              const key = `${m.id}|${heroName}`;
+              return <option key={key} value={key}>{heroName} ({m.name || getMarchAutoName(m)})</option>;
+            }))}
           </select>
         </div>
         <div>
@@ -1219,10 +1226,34 @@ function checkTroopBonus(march) {
   return { match: false, reason: issues.join(", ") };
 }
 
+function HeroTraitHint({ heroName, isCommander, heroSkillSelections }) {
+  const skills = HERO_SKILLS[heroName];
+  if (!skills) return null;
+  const activeSkills = [];
+  if (isCommander && skills.commander?.name) activeSkills.push(skills.commander.name);
+  if (skills.signature?.name) activeSkills.push(skills.signature.name);
+  (heroSkillSelections || []).forEach(sel => { if (sel) activeSkills.push(sel); });
+  const statCounts = {};
+  const iconCounts = {};
+  activeSkills.forEach(name => {
+    const meta = SKILL_META[name];
+    if (!meta) return;
+    if (meta.stat !== "neutral") statCounts[meta.stat] = (statCounts[meta.stat] || 0) + 1;
+    meta.icons.forEach(ic => { iconCounts[ic] = (iconCounts[ic] || 0) + 1; });
+  });
+  if (Object.keys(statCounts).length === 0) return null;
+  const topStat = Object.entries(statCounts).sort((a, b) => b[1] - a[1])[0];
+  const topIcons = Object.entries(iconCounts).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  return (
+    <span style={{ fontSize: "0.6rem", color: "#818cf8", marginLeft: "auto" }}>
+      Want: <span style={{ color: STAT_COLORS[topStat[0]] }}>{topStat[0]}</span> {topIcons.map(([ic]) => ICON_SYMBOLS[ic]).join("")}
+    </span>
+  );
+}
+
 function MarchCard({ march, horses, onUpdate, onDelete, onAssignHorse, onUnassignHorse }) {
   const heroData = (march.heroes || []).map(h => HEROES.find(x => x.name === h)).filter(Boolean);
   const bonus = checkTroopBonus(march);
-  const assignedHorses = horses.filter(h => h.assignedTo === march.id);
   const unassigned = horses.filter(h => !h.assignedTo);
 
   return (
@@ -1340,6 +1371,30 @@ function MarchCard({ march, horses, onUpdate, onDelete, onAssignHorse, onUnassig
                   Skill data not yet available for this hero
                 </div>
               )}
+              {(() => {
+                const assignKey = `${march.id}|${heroName}`;
+                const assignedHorse = horses.find(h => h.assignedTo === assignKey);
+                return (
+                  <div style={{ paddingLeft: "0.5rem", marginTop: "0.3rem", paddingTop: "0.3rem", borderTop: "1px solid #1e293b" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                      <span style={{ fontSize: "0.65rem", color: "#64748b" }}>Mount:</span>
+                      {assignedHorse ? (
+                        <React.Fragment>
+                          <span style={{ fontSize: "0.75rem", color: RARITIES.find(r => r.id === assignedHorse.rarity)?.color }}>{assignedHorse.name || "Unnamed"}</span>
+                          <button style={{ ...css.deleteBtn, fontSize: "0.7rem" }} onClick={() => onUnassignHorse(assignedHorse.id)}>&times;</button>
+                        </React.Fragment>
+                      ) : (
+                        <select style={{ ...css.select, width: "auto", fontSize: "0.7rem", padding: "2px 4px" }} value=""
+                          onChange={e => { if (e.target.value) onAssignHorse(e.target.value, assignKey); }}>
+                          <option value="">+ Assign...</option>
+                          {unassigned.map(h => <option key={h.id} value={h.id}>{h.name || "Unnamed"} ({RARITIES.find(r => r.id === h.rarity)?.label})</option>)}
+                        </select>
+                      )}
+                      <HeroTraitHint heroName={heroName} isCommander={i === 0} heroSkillSelections={heroSkillSelections} />
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           );
         })}
@@ -1355,64 +1410,6 @@ function MarchCard({ march, horses, onUpdate, onDelete, onAssignHorse, onUnassig
         )}
       </div>
 
-      {(() => {
-        const statCounts = {};
-        const iconCounts = {};
-        (march.heroes || []).forEach((heroName, i) => {
-          const skills = HERO_SKILLS[heroName];
-          if (!skills) return;
-          const activeSkills = [];
-          if (i === 0 && skills.commander?.name) activeSkills.push(skills.commander.name);
-          if (skills.signature?.name) activeSkills.push(skills.signature.name);
-          const selections = (march.heroSkills || {})[heroName] || [];
-          selections.forEach(sel => { if (sel) activeSkills.push(sel); });
-          activeSkills.forEach(name => {
-            const meta = SKILL_META[name];
-            if (!meta) return;
-            if (meta.stat !== "neutral") statCounts[meta.stat] = (statCounts[meta.stat] || 0) + 1;
-            meta.icons.forEach(ic => { iconCounts[ic] = (iconCounts[ic] || 0) + 1; });
-          });
-        });
-        if (Object.keys(statCounts).length === 0 && Object.keys(iconCounts).length === 0) return null;
-        const statSorted = Object.entries(statCounts).sort((a, b) => b[1] - a[1]);
-        const iconSorted = Object.entries(iconCounts).sort((a, b) => b[1] - a[1]);
-        return (
-          <div style={{ marginBottom: "0.5rem", padding: "0.4rem", background: "#1e1b4b", borderRadius: 4, border: "1px solid #312e81" }}>
-            <div style={{ fontSize: "0.7rem", color: "#818cf8", marginBottom: "0.25rem", fontWeight: 600 }}>MARCH PROFILE (for trait targeting)</div>
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "0.2rem" }}>
-              {statSorted.map(([stat, count]) => (
-                <span key={stat} style={{ fontSize: "0.75rem", color: STAT_COLORS[stat] || "#94a3b8", fontWeight: 600 }}>
-                  {stat}: {count}
-                </span>
-              ))}
-            </div>
-            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-              {iconSorted.map(([icon, count]) => (
-                <span key={icon} style={{ fontSize: "0.75rem", color: "#cbd5e1" }}>
-                  {ICON_SYMBOLS[icon]} {icon}: {count}
-                </span>
-              ))}
-            </div>
-          </div>
-        );
-      })()}
-
-      <div>
-        <div style={{ fontSize: "0.75rem", color: "#64748b", marginBottom: "0.25rem" }}>Mounts ({assignedHorses.length}/3)</div>
-        {assignedHorses.map(h => (
-          <div key={h.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.2rem", padding: "0.2rem 0.4rem", background: "#0f172a", borderRadius: 4 }}>
-            <span style={{ fontSize: "0.8rem", color: RARITIES.find(r => r.id === h.rarity)?.color }}>{h.name || "Unnamed"}</span>
-            <button style={{ ...css.deleteBtn, fontSize: "0.9rem" }} onClick={() => onUnassignHorse(h.id)}>&times;</button>
-          </div>
-        ))}
-        {assignedHorses.length < 3 && (
-          <select style={{ ...css.select, marginTop: "0.25rem", fontSize: "0.8rem" }} value=""
-            onChange={e => { if (e.target.value) onAssignHorse(e.target.value, march.id); }}>
-            <option value="">+ Assign mount...</option>
-            {unassigned.map(h => <option key={h.id} value={h.id}>{h.name || "Unnamed"} ({TEMPERAMENTS.find(t => t.id === h.temperament)?.label})</option>)}
-          </select>
-        )}
-      </div>
     </div>
   );
 }
@@ -1437,13 +1434,13 @@ function MarchPlannerTab({ horses, setHorses }) {
     const updated = marches.filter(m => m.id !== id);
     setMarches(updated);
     saveMarches(updated);
-    const horsesUpdated = horses.map(h => h.assignedTo === id ? { ...h, assignedTo: "" } : h);
+    const horsesUpdated = horses.map(h => h.assignedTo?.startsWith(id + "|") ? { ...h, assignedTo: "" } : h);
     setHorses(horsesUpdated);
     saveStable(horsesUpdated);
   };
 
-  const assignHorse = (horseId, marchId) => {
-    const updated = horses.map(h => h.id === horseId ? { ...h, assignedTo: marchId } : h);
+  const assignHorse = (horseId, assignKey) => {
+    const updated = horses.map(h => h.id === horseId ? { ...h, assignedTo: assignKey } : h);
     setHorses(updated);
     saveStable(updated);
   };
@@ -1460,14 +1457,14 @@ function MarchPlannerTab({ horses, setHorses }) {
     { id: "siege", label: "Siege", color: "#a855f7" },
   ];
 
-  const totalMounts = marches.length * 3;
+  const totalHeroSlots = marches.reduce((acc, m) => acc + (m.heroes?.length || 0), 0);
   const assignedCount = horses.filter(h => h.assignedTo).length;
 
   return (
     <div>
       <div style={{ fontSize: "0.9rem", color: "#94a3b8", marginBottom: "1rem" }}>
-        {marches.length} marches configured | {assignedCount}/{totalMounts} mount slots filled |
-        Each march: 3 heroes + 3 mounts | +180% bonus requires all 3 unit types + all 3 military classes match
+        {marches.length} marches configured | {assignedCount}/{totalHeroSlots} mounts assigned |
+        Each hero gets 1 mount | +180% bonus requires all 3 unit types + all 3 military classes match
       </div>
 
       {catConfig.map(cat => {
