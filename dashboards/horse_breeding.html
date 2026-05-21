@@ -270,6 +270,218 @@ const SKILL_TYPE_COLORS = {
   "Turn-Based": "#a855f7",
 };
 
+const STAT_COLORS = {
+  might: "#ef4444",
+  strategy: "#3b82f6",
+  armor: "#eab308",
+  siege: "#a855f7",
+  all: "#e2e8f0",
+  mixed: "#94a3b8",
+  neutral: "#64748b",
+};
+
+const ICON_SYMBOLS = {
+  damage: "\u2694\uFE0F",
+  shield: "\uD83D\uDEE1\uFE0F",
+  heal: "\u2795",
+  gather: "\uD83C\uDF3E",
+  buff: "\u2B06\uFE0F",
+  debuff: "\u2B07\uFE0F",
+  other: "\u2728",
+};
+
+const SKILL_META = {
+  "Accumulated Power": { stat: "neutral", icons: ["other"] },
+  "Act Of Mercy": { stat: "might", icons: ["damage"] },
+  "Annihilator": { stat: "neutral", icons: ["other"] },
+  "Anthem Of The Knight": { stat: "might", icons: ["debuff"] },
+  "Ape Rage": { stat: "mixed", icons: ["damage", "debuff"] },
+  "Armor Piercer": { stat: "might", icons: ["damage", "debuff"] },
+  "Authoritative Code": { stat: "might", icons: ["damage"] },
+  "Battle Roar": { stat: "might", icons: ["damage"] },
+  "Berserker": { stat: "might", icons: ["buff"] },
+  "Biding Time": { stat: "strategy", icons: ["buff", "damage"] },
+  "Black Tide": { stat: "mixed", icons: ["buff", "debuff"] },
+  "Blade Of Gondwana": { stat: "might", icons: ["damage"] },
+  "Blade Strike": { stat: "might", icons: ["damage"] },
+  "Blaze": { stat: "strategy", icons: ["damage"] },
+  "Blaze Impact": { stat: "strategy", icons: ["damage"] },
+  "Bloodthirst": { stat: "might", icons: ["damage"] },
+  "Boulder Trap": { stat: "strategy", icons: ["damage"] },
+  "Bulwark": { stat: "all", icons: ["buff", "shield"] },
+  "Calm In Peril": { stat: "neutral", icons: ["gather", "heal", "shield"] },
+  "Change Of Formation": { stat: "might", icons: ["damage"] },
+  "Charisma Of Monarch": { stat: "strategy", icons: ["damage"] },
+  "Combo Strike": { stat: "strategy", icons: ["damage"] },
+  "Concentrated Fire": { stat: "mixed", icons: ["damage"] },
+  "Conflagration": { stat: "strategy", icons: ["damage"] },
+  "Conquest": { stat: "all", icons: ["buff"] },
+  "Coordination": { stat: "might", icons: ["buff", "debuff"] },
+  "Counterattack": { stat: "might", icons: ["damage"] },
+  "Crashing Boulder": { stat: "might", icons: ["damage"] },
+  "Crashing Waves": { stat: "mixed", icons: ["damage", "shield"] },
+  "Critical Blade": { stat: "neutral", icons: ["buff"] },
+  "Critical Insight": { stat: "armor", icons: ["buff", "debuff"] },
+  "Crownless King": { stat: "might", icons: ["damage"] },
+  "Crushing Impact": { stat: "mixed", icons: ["damage", "debuff"] },
+  "Cunningness": { stat: "strategy", icons: ["buff", "damage", "shield"] },
+  "Darkness Strike": { stat: "might", icons: ["damage", "debuff"] },
+  "Deception": { stat: "strategy", icons: ["damage"] },
+  "Defensive Assault": { stat: "strategy", icons: ["shield"] },
+  "Defensive Slingshot": { stat: "might", icons: ["damage"] },
+  "Desert Iron Riders": { stat: "neutral", icons: ["other"] },
+  "Double Attack": { stat: "all", icons: ["buff"] },
+  "Double Strike": { stat: "might", icons: ["damage"] },
+  "Dragon Blade": { stat: "might", icons: ["damage"] },
+  "Dynastic Co-Rule": { stat: "strategy", icons: ["shield"] },
+  "Earth Crush": { stat: "might", icons: ["damage"] },
+  "Efficient Harvest": { stat: "neutral", icons: ["gather"] },
+  "Entrenchment": { stat: "armor", icons: ["shield"] },
+  "Envoy Of Peace": { stat: "strategy", icons: ["damage"] },
+  "Ever Vigilant": { stat: "neutral", icons: ["other"] },
+  "Exotic Beauty": { stat: "armor", icons: ["debuff"] },
+  "Fast Retreat": { stat: "neutral", icons: ["gather"] },
+  "Fatal Allure": { stat: "strategy", icons: ["damage", "debuff"] },
+  "Fatal Blow": { stat: "might", icons: ["damage"] },
+  "Fearless Frontrunner": { stat: "siege", icons: ["buff"] },
+  "Fearless Retribution": { stat: "might", icons: ["damage"] },
+  "Ferocious Chase": { stat: "might", icons: ["damage"] },
+  "Fervor": { stat: "all", icons: ["buff"] },
+  "Fight Fire With Fire": { stat: "strategy", icons: ["damage"] },
+  "Firm Strike": { stat: "might", icons: ["damage"] },
+  "Flash Of Inspiration": { stat: "neutral", icons: ["other"] },
+  "Flash Of Yang": { stat: "might", icons: ["damage", "debuff"] },
+  "Flying Swallow": { stat: "might", icons: ["damage"] },
+  "Focused Mind": { stat: "neutral", icons: ["other"] },
+  "Forceful Retaliation": { stat: "might", icons: ["buff", "damage"] },
+  "Formation Attack": { stat: "might", icons: ["damage"] },
+  "Fortification": { stat: "armor", icons: ["buff"] },
+  "Furious Charge": { stat: "might", icons: ["buff"] },
+  "Gallantry": { stat: "neutral", icons: ["buff"] },
+  "Glory Of Knight": { stat: "all", icons: ["buff", "damage"] },
+  "Gnawing Strike": { stat: "might", icons: ["damage"] },
+  "Grace And Blessings": { stat: "might", icons: ["buff", "damage", "shield"] },
+  "Graceful Steps": { stat: "neutral", icons: ["shield"] },
+  "Halo of Hwangnyong": { stat: "strategy", icons: ["damage"] },
+  "Heart Of Victory": { stat: "mixed", icons: ["buff"] },
+  "Heroic Berserker": { stat: "might", icons: ["damage"] },
+  "High Spirit": { stat: "neutral", icons: ["other"] },
+  "Imminent Tempest": { stat: "might", icons: ["buff", "damage"] },
+  "Immortal Army": { stat: "strategy", icons: ["other"] },
+  "Inferno": { stat: "strategy", icons: ["buff", "damage"] },
+  "Infuriation": { stat: "might", icons: ["buff", "damage"] },
+  "Intimidation": { stat: "might", icons: ["damage", "debuff"] },
+  "Intrepidity": { stat: "mixed", icons: ["buff"] },
+  "Ironclad Blitz": { stat: "might", icons: ["damage"] },
+  "King's Blade": { stat: "might", icons: ["damage"] },
+  "King's Mercy": { stat: "armor", icons: ["debuff", "heal", "shield"] },
+  "King's Shelter": { stat: "mixed", icons: ["shield"] },
+  "Legacy of Wisdom": { stat: "armor", icons: ["other"] },
+  "Lionheart": { stat: "might", icons: ["buff"] },
+  "Load Boost": { stat: "neutral", icons: ["gather"] },
+  "Long Volley": { stat: "might", icons: ["damage", "shield"] },
+  "Lord Of Darkness": { stat: "mixed", icons: ["damage"] },
+  "Maneuver": { stat: "neutral", icons: ["other"] },
+  "Mauryan Glory": { stat: "mixed", icons: ["other"] },
+  "Mesmerization": { stat: "mixed", icons: ["buff", "damage"] },
+  "Mettle": { stat: "mixed", icons: ["other"] },
+  "Might Of Ruler": { stat: "might", icons: ["damage"] },
+  "Mighty Assault": { stat: "might", icons: ["damage", "shield"] },
+  "Mighty Strike": { stat: "might", icons: ["damage"] },
+  "Moment Of Yin": { stat: "might", icons: ["damage"] },
+  "Nomadic Strength": { stat: "neutral", icons: ["other"] },
+  "Ode To Java": { stat: "might", icons: ["other"] },
+  "Organized Retreat": { stat: "neutral", icons: ["gather"] },
+  "Pacifying Strike": { stat: "might", icons: ["damage", "debuff"] },
+  "Patriotism": { stat: "might", icons: ["damage"] },
+  "Peaceful Haven": { stat: "neutral", icons: ["shield"] },
+  "Peerless": { stat: "all", icons: ["damage", "debuff"] },
+  "Peerless Strike": { stat: "might", icons: ["damage"] },
+  "Perseverance": { stat: "armor", icons: ["other"] },
+  "Piercing": { stat: "might", icons: ["damage"] },
+  "Pledge Of Victory": { stat: "armor", icons: ["heal", "shield"] },
+  "Prayer For Harvest": { stat: "strategy", icons: ["other"] },
+  "Protracted Battle": { stat: "might", icons: ["other"] },
+  "Prudent Handling": { stat: "neutral", icons: ["gather"] },
+  "Rampage": { stat: "might", icons: ["damage"] },
+  "Rapid Gathering": { stat: "neutral", icons: ["gather"] },
+  "Rapid Slash": { stat: "might", icons: ["damage"] },
+  "Readiness": { stat: "might", icons: ["other"] },
+  "Regal Radiance": { stat: "mixed", icons: ["debuff"] },
+  "Relentless Pursuit": { stat: "might", icons: ["damage"] },
+  "Rest And Recover": { stat: "strategy", icons: ["other"] },
+  "Righteous Judgement": { stat: "mixed", icons: ["damage", "debuff"] },
+  "Roar Of Victory": { stat: "might", icons: ["damage"] },
+  "Sacred Light": { stat: "might", icons: ["shield"] },
+  "Sage King": { stat: "might", icons: ["damage"] },
+  "Savage": { stat: "mixed", icons: ["damage", "debuff"] },
+  "Scarlet Slash": { stat: "might", icons: ["damage"] },
+  "Seasoned Warrior": { stat: "mixed", icons: ["damage"] },
+  "Shield Bash": { stat: "mixed", icons: ["damage", "shield"] },
+  "Shield Slam": { stat: "mixed", icons: ["damage"] },
+  "Shrewd Stratagem": { stat: "strategy", icons: ["damage"] },
+  "Shrewdness": { stat: "strategy", icons: ["damage", "debuff"] },
+  "Siege And Plunder": { stat: "neutral", icons: ["damage"] },
+  "Siege Breaker": { stat: "siege", icons: ["damage"] },
+  "Sovereign Supremacy": { stat: "strategy", icons: ["buff", "damage", "shield"] },
+  "Sowing Discord": { stat: "strategy", icons: ["buff", "damage", "debuff"] },
+  "Spirited Pursuit": { stat: "might", icons: ["damage"] },
+  "Starchaser": { stat: "might", icons: ["damage"] },
+  "Steel Rose": { stat: "might", icons: ["damage"] },
+  "Strategy Cuts Deeper": { stat: "strategy", icons: ["damage"] },
+  "Strategy Master's Gift": { stat: "strategy", icons: ["buff"] },
+  "Subtlety": { stat: "might", icons: ["other"] },
+  "Sunder": { stat: "might", icons: ["damage"] },
+  "Supplies Transportation": { stat: "neutral", icons: ["gather"] },
+  "Suppression": { stat: "mixed", icons: ["damage", "debuff"] },
+  "Surmount": { stat: "might", icons: ["damage", "debuff"] },
+  "Surprise Attack": { stat: "mixed", icons: ["damage"] },
+  "Surprise Victory": { stat: "mixed", icons: ["damage"] },
+  "Sword Of Radiance": { stat: "might", icons: ["damage"] },
+  "Sword Of Sage": { stat: "might", icons: ["buff"] },
+  "Tactical Pursuit": { stat: "mixed", icons: ["damage"] },
+  "Taking The Purple": { stat: "strategy", icons: ["damage"] },
+  "Targeted Blow": { stat: "might", icons: ["damage", "debuff"] },
+  "Tempered Blade": { stat: "might", icons: ["damage"] },
+  "Tenacity": { stat: "armor", icons: ["other"] },
+  "The Way Of War": { stat: "strategy", icons: ["damage"] },
+  "Tidal Flood": { stat: "strategy", icons: ["damage"] },
+  "Tit For Tat": { stat: "might", icons: ["damage"] },
+  "Triple Offensive": { stat: "mixed", icons: ["damage", "shield"] },
+  "Triumphant Return": { stat: "might", icons: ["damage"] },
+  "True Words": { stat: "mixed", icons: ["shield"] },
+  "Two-Handed Slash": { stat: "might", icons: ["damage"] },
+  "Ultimate Strategy": { stat: "strategy", icons: ["damage"] },
+  "Undefeated Array": { stat: "might", icons: ["buff"] },
+  "Unequaled Valor": { stat: "neutral", icons: ["other"] },
+  "Unit Charge": { stat: "neutral", icons: ["gather"] },
+  "Unyielding Soul": { stat: "might", icons: ["damage"] },
+  "Victory Banner": { stat: "might", icons: ["damage"] },
+  "Vigilance": { stat: "might", icons: ["damage"] },
+  "Viking Strategy": { stat: "might", icons: ["shield"] },
+  "War Drums": { stat: "mixed", icons: ["buff"] },
+  "War Tactic": { stat: "strategy", icons: ["damage"] },
+  "Warcry": { stat: "might", icons: ["damage"] },
+  "Warcry Of Glory": { stat: "might", icons: ["buff", "damage"] },
+  "Warrior Queen": { stat: "might", icons: ["other"] },
+  "Warrior's Hymn": { stat: "might", icons: ["buff"] },
+  "Weakspot Attack": { stat: "might", icons: ["damage"] },
+  "Weaving Strike": { stat: "might", icons: ["damage"] },
+  "Whirlwind Sweep": { stat: "might", icons: ["buff"] },
+  "Wide Arc": { stat: "might", icons: ["damage"] },
+  "Wild Shot": { stat: "might", icons: ["damage", "debuff"] },
+  "Wilderness Survival": { stat: "might", icons: ["other"] },
+  "Will Of Steel": { stat: "might", icons: ["damage"] },
+  "Will To Fight": { stat: "might", icons: ["other"] },
+  "Windfall": { stat: "neutral", icons: ["gather"] },
+};
+
+function skillDisplay(skillName) {
+  const meta = SKILL_META[skillName];
+  if (!meta) return { color: "#64748b", icons: "" };
+  return { color: STAT_COLORS[meta.stat] || "#64748b", icons: meta.icons.map(i => ICON_SYMBOLS[i] || "").join("") };
+}
+
 const MARCH_CATEGORIES = ["combat", "gathering", "siege"];
 const MARCHES_KEY = "aoem_marches";
 
@@ -1060,37 +1272,38 @@ function MarchCard({ march, horses, onUpdate, onDelete, onAssignHorse, onUnassig
               </div>
               {skills && (
                 <div style={{ paddingLeft: "0.5rem", fontSize: "0.75rem" }}>
-                  <div style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginBottom: "0.2rem" }}>
-                    <span style={{ color: "#64748b", minWidth: 55 }}>Cmd:</span>
-                    <span style={{ color: SKILL_TYPE_COLORS[skills.commander?.type] || "#94a3b8" }}>
-                      {skills.commander?.name}
-                    </span>
-                    <span style={{ ...css.badge(SKILL_TYPE_COLORS[skills.commander?.type] || "#64748b"), fontSize: "0.6rem", padding: "1px 4px" }}>
-                      {skills.commander?.type}
-                    </span>
-                    {i !== 0 && <span style={{ fontSize: "0.6rem", color: "#475569", fontStyle: "italic" }}>(inactive)</span>}
-                  </div>
-                  <div style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginBottom: "0.2rem" }}>
-                    <span style={{ color: "#64748b", minWidth: 55 }}>Sig:</span>
-                    <span style={{ color: SKILL_TYPE_COLORS[skills.signature?.type] || "#94a3b8" }}>
-                      {skills.signature?.name}
-                    </span>
-                    <span style={{ ...css.badge(SKILL_TYPE_COLORS[skills.signature?.type] || "#64748b"), fontSize: "0.6rem", padding: "1px 4px" }}>
-                      {skills.signature?.type}
-                    </span>
-                  </div>
+                  {[
+                    { label: "Cmd", skill: skills.commander, inactive: i !== 0 },
+                    { label: "Sig", skill: skills.signature, inactive: false },
+                  ].map(({ label, skill, inactive }) => {
+                    const sd = skillDisplay(skill?.name);
+                    return (
+                      <div key={label} style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginBottom: "0.2rem" }}>
+                        <span style={{ color: "#64748b", minWidth: 40, fontSize: "0.65rem" }}>{label}:</span>
+                        <span style={{ color: sd.color, opacity: inactive ? 0.5 : 1 }}>{skill?.name}</span>
+                        <span style={{ fontSize: "0.7rem" }}>{sd.icons}</span>
+                        <span style={{ ...css.badge(SKILL_TYPE_COLORS[skill?.type] || "#64748b"), fontSize: "0.55rem", padding: "1px 3px" }}>
+                          {skill?.type}
+                        </span>
+                        {inactive && <span style={{ fontSize: "0.55rem", color: "#475569", fontStyle: "italic" }}>(inactive)</span>}
+                      </div>
+                    );
+                  })}
                   {[0, 1].map(slotIdx => {
                     const selected = heroSkillSelections[slotIdx] || "";
                     const otherSelected = heroSkillSelections[slotIdx === 0 ? 1 : 0] || "";
                     const available = (skills.customizable || []).filter(s => s.name && s.name !== otherSelected);
+                    const selectedSkill = (skills.customizable || []).find(s => s.name === selected);
+                    const sd = selected ? skillDisplay(selected) : null;
                     return (
                       <div key={slotIdx} style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginBottom: "0.2rem" }}>
-                        <span style={{ color: "#64748b", minWidth: 55 }}>Slot {slotIdx + 1}:</span>
+                        <span style={{ color: "#64748b", minWidth: 40, fontSize: "0.65rem" }}>Slot {slotIdx + 1}:</span>
                         {selected ? (
                           <React.Fragment>
-                            <span style={{ color: SKILL_TYPE_COLORS[(skills.customizable || []).find(s => s.name === selected)?.type] || "#94a3b8" }}>{selected}</span>
-                            <span style={{ ...css.badge(SKILL_TYPE_COLORS[(skills.customizable || []).find(s => s.name === selected)?.type] || "#64748b"), fontSize: "0.6rem", padding: "1px 4px" }}>
-                              {(skills.customizable || []).find(s => s.name === selected)?.type}
+                            <span style={{ color: sd.color }}>{selected}</span>
+                            <span style={{ fontSize: "0.7rem" }}>{sd.icons}</span>
+                            <span style={{ ...css.badge(SKILL_TYPE_COLORS[selectedSkill?.type] || "#64748b"), fontSize: "0.55rem", padding: "1px 3px" }}>
+                              {selectedSkill?.type}
                             </span>
                             <button style={{ ...css.deleteBtn, fontSize: "0.75rem" }} onClick={() => {
                               const newSelections = [...heroSkillSelections];
@@ -1111,9 +1324,10 @@ function MarchCard({ march, horses, onUpdate, onDelete, onAssignHorse, onUnassig
                               }
                             }}>
                             <option value="">+ Add skill...</option>
-                            {available.map(s => (
-                              <option key={s.name} value={s.name}>{s.name} ({s.type})</option>
-                            ))}
+                            {available.map(s => {
+                              const asd = skillDisplay(s.name);
+                              return <option key={s.name} value={s.name}>{asd.icons} {s.name} ({s.type})</option>;
+                            })}
                           </select>
                         )}
                       </div>
@@ -1142,31 +1356,40 @@ function MarchCard({ march, horses, onUpdate, onDelete, onAssignHorse, onUnassig
       </div>
 
       {(() => {
-        const allSkillTypes = [];
+        const statCounts = {};
+        const iconCounts = {};
         (march.heroes || []).forEach((heroName, i) => {
           const skills = HERO_SKILLS[heroName];
           if (!skills) return;
-          if (i === 0 && skills.commander?.type) allSkillTypes.push(skills.commander.type);
-          if (skills.signature?.type) allSkillTypes.push(skills.signature.type);
+          const activeSkills = [];
+          if (i === 0 && skills.commander?.name) activeSkills.push(skills.commander.name);
+          if (skills.signature?.name) activeSkills.push(skills.signature.name);
           const selections = (march.heroSkills || {})[heroName] || [];
-          selections.forEach(sel => {
-            if (sel) {
-              const s = (skills.customizable || []).find(c => c.name === sel);
-              if (s?.type) allSkillTypes.push(s.type);
-            }
+          selections.forEach(sel => { if (sel) activeSkills.push(sel); });
+          activeSkills.forEach(name => {
+            const meta = SKILL_META[name];
+            if (!meta) return;
+            if (meta.stat !== "neutral") statCounts[meta.stat] = (statCounts[meta.stat] || 0) + 1;
+            meta.icons.forEach(ic => { iconCounts[ic] = (iconCounts[ic] || 0) + 1; });
           });
         });
-        if (allSkillTypes.length === 0) return null;
-        const counts = {};
-        allSkillTypes.forEach(t => { counts[t] = (counts[t] || 0) + 1; });
-        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+        if (Object.keys(statCounts).length === 0 && Object.keys(iconCounts).length === 0) return null;
+        const statSorted = Object.entries(statCounts).sort((a, b) => b[1] - a[1]);
+        const iconSorted = Object.entries(iconCounts).sort((a, b) => b[1] - a[1]);
         return (
           <div style={{ marginBottom: "0.5rem", padding: "0.4rem", background: "#1e1b4b", borderRadius: 4, border: "1px solid #312e81" }}>
-            <div style={{ fontSize: "0.7rem", color: "#818cf8", marginBottom: "0.25rem", fontWeight: 600 }}>SKILL TYPE BREAKDOWN (ideal trait targeting)</div>
+            <div style={{ fontSize: "0.7rem", color: "#818cf8", marginBottom: "0.25rem", fontWeight: 600 }}>MARCH PROFILE (for trait targeting)</div>
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "0.2rem" }}>
+              {statSorted.map(([stat, count]) => (
+                <span key={stat} style={{ fontSize: "0.75rem", color: STAT_COLORS[stat] || "#94a3b8", fontWeight: 600 }}>
+                  {stat}: {count}
+                </span>
+              ))}
+            </div>
             <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-              {sorted.map(([type, count]) => (
-                <span key={type} style={{ fontSize: "0.75rem", color: SKILL_TYPE_COLORS[type] || "#94a3b8" }}>
-                  {type}: {count}
+              {iconSorted.map(([icon, count]) => (
+                <span key={icon} style={{ fontSize: "0.75rem", color: "#cbd5e1" }}>
+                  {ICON_SYMBOLS[icon]} {icon}: {count}
                 </span>
               ))}
             </div>
