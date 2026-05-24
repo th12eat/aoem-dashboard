@@ -23,7 +23,7 @@ const EVENT_CONFIG = {
   eventStart: "2026-05-25",
   eventEnd: "2026-06-01",
   matchingStart: "2026-05-22",
-  servers: ["Era 8", "Era 51", "TBD", "TBD"],
+  servers: ["Era 8", "Era 51", "Era 82", "Era 002"],
   ourServer: "Era 8",
   ourAlliances: ["WC1", "MyT", "REU", "AGC"],
 };
@@ -286,12 +286,12 @@ function MapTab({ state, setState }) {
             {/* Top/North - Blue server */}
             <div style={{ position: "absolute", top: "12px", left: "50%", transform: "translateX(-50%)", textAlign: "center", zIndex: 2 }}>
               <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#3b82f633", border: "2px solid #3b82f6", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#3b82f6", fontWeight: 700 }}>N</div>
-              <div style={{ fontSize: "9px", color: "#3b82f6", marginTop: "2px" }}>{EVENT_CONFIG.servers[2]}</div>
+              <div style={{ fontSize: "9px", color: "#3b82f6", marginTop: "2px" }}>Era 82 / Era 002</div>
             </div>
             {/* Left/West - Orange server */}
             <div style={{ position: "absolute", top: "50%", left: "12px", transform: "translateY(-50%)", textAlign: "center", zIndex: 2 }}>
               <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#f97316", border: "2px solid #f97316", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#fff", fontWeight: 700 }}>W</div>
-              <div style={{ fontSize: "9px", color: "#f97316", marginTop: "2px" }}>{EVENT_CONFIG.servers[3]}</div>
+              <div style={{ fontSize: "9px", color: "#f97316", marginTop: "2px" }}>Era 82 / Era 002</div>
             </div>
             {/* Right/East - Purple server (Era 51) */}
             <div style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", textAlign: "center", zIndex: 2 }}>
@@ -369,95 +369,67 @@ function MapTab({ state, setState }) {
   );
 }
 
-function PointsTab({ state, setState }) {
-  const points = state.desertPoints || { era8: 0, opponent: 0 };
-  const alliancePoints = state.alliancePoints || {};
+const KINGDOM_POINTS = {
+  era8: "—",
+  era51: "—",
+  era82: "—",
+  era002: "—",
+  lastUpdated: "Awaiting event start",
+};
 
-  const updatePoints = (key, value) => {
-    const next = { ...points, [key]: value };
-    setState(prev => ({ ...prev, desertPoints: next }));
-  };
+const ALLIANCE_POINTS = [
+  { tag: "WC1", points: "—" },
+  { tag: "MyT", points: "—" },
+  { tag: "REU", points: "—" },
+  { tag: "AGC", points: "—" },
+];
 
-  const updateAlliancePoints = (alliance, value) => {
-    const next = { ...alliancePoints, [alliance]: value };
-    setState(prev => ({ ...prev, alliancePoints: next }));
-  };
-
-  const totalOurs = EVENT_CONFIG.ourAlliances.reduce((sum, a) => sum + (Number(alliancePoints[a]) || 0), 0);
-
+function PointsTab() {
   return (
     <div>
       {/* Kingdom Score */}
       <div style={S.card}>
         <div style={S.cardTitle}>Kingdom Desert Points</div>
-        <div style={S.grid2}>
-          <div>
-            <label style={{ fontSize: "12px", color: "#94a3b8" }}>Era 8 (Us)</label>
-            <input
-              style={{ ...S.input, marginTop: "4px" }}
-              type="text"
-              value={points.era8}
-              onChange={e => updatePoints("era8", e.target.value)}
-              placeholder="e.g. 150,000,000"
-            />
-          </div>
-          <div>
-            <label style={{ fontSize: "12px", color: "#94a3b8" }}>Opponent Kingdom</label>
-            <input
-              style={{ ...S.input, marginTop: "4px" }}
-              type="text"
-              value={points.opponent}
-              onChange={e => updatePoints("opponent", e.target.value)}
-              placeholder="e.g. 120,000,000"
-            />
-          </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "10px" }}>
+          {[
+            { label: "Era 8 (Us)", value: KINGDOM_POINTS.era8, color: "#14b8a6" },
+            { label: "Era 51", value: KINGDOM_POINTS.era51, color: "#a855f7" },
+            { label: "Era 82", value: KINGDOM_POINTS.era82, color: "#3b82f6" },
+            { label: "Era 002", value: KINGDOM_POINTS.era002, color: "#f97316" },
+          ].map(k => (
+            <div key={k.label} style={{ padding: "12px", background: "#0f172a", borderRadius: "8px", textAlign: "center" }}>
+              <div style={{ fontSize: "11px", color: "#94a3b8" }}>{k.label}</div>
+              <div style={{ fontSize: "18px", fontWeight: 700, color: k.color, marginTop: "4px" }}>{k.value}</div>
+            </div>
+          ))}
         </div>
-        <div style={{ marginTop: "12px", padding: "10px", background: "#0f172a", borderRadius: "8px", textAlign: "center" }}>
-          <span style={{ fontSize: "12px", color: "#94a3b8" }}>Points lead determines Aaru Palace time selection priority</span>
+        <div style={{ marginTop: "10px", fontSize: "11px", color: "#64748b", textAlign: "center" }}>
+          Last updated: {KINGDOM_POINTS.lastUpdated} — Points lead determines Aaru Palace time selection priority
         </div>
       </div>
 
       {/* Per-Alliance Points */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Alliance Desert Points</div>
+        <div style={S.cardTitle}>Era 8 Alliance Desert Points</div>
         <table style={S.table}>
           <thead>
             <tr>
               <th style={S.th}>Alliance</th>
               <th style={S.th}>Desert Points</th>
-              <th style={S.th}>% of Total</th>
             </tr>
           </thead>
           <tbody>
-            {EVENT_CONFIG.ourAlliances.map(a => {
-              const val = Number(alliancePoints[a]) || 0;
-              const pct = totalOurs > 0 ? ((val / totalOurs) * 100).toFixed(1) : "0.0";
-              return (
-                <tr key={a}>
-                  <td style={S.td}><span style={{ fontWeight: 600 }}>{a}</span></td>
-                  <td style={S.td}>
-                    <input
-                      style={{ ...S.input, width: "160px" }}
-                      type="text"
-                      value={alliancePoints[a] || ""}
-                      onChange={e => updateAlliancePoints(a, e.target.value)}
-                      placeholder="0"
-                    />
-                  </td>
-                  <td style={S.td}>{pct}%</td>
-                </tr>
-              );
-            })}
-            <tr>
-              <td style={{ ...S.td, fontWeight: 700 }}>TOTAL</td>
-              <td style={{ ...S.td, fontWeight: 700 }}>{totalOurs.toLocaleString()}</td>
-              <td style={S.td}>100%</td>
-            </tr>
+            {ALLIANCE_POINTS.map(a => (
+              <tr key={a.tag}>
+                <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
+                <td style={S.td}>{a.points}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
-      {/* Achievement Progress */}
+      {/* Achievements Reference */}
       <div style={S.card}>
         <div style={S.cardTitle}>Conquest Achievements</div>
         <table style={S.table}>
@@ -466,32 +438,16 @@ function PointsTab({ state, setState }) {
               <th style={S.th}>Achievement</th>
               <th style={S.th}>Alliance Requirement</th>
               <th style={S.th}>Personal Requirement</th>
-              <th style={S.th}>Status</th>
             </tr>
           </thead>
           <tbody>
-            {ACHIEVEMENTS.map(a => {
-              const done = (state.achievementsDone || []).includes(a.name);
-              return (
-                <tr key={a.name}>
-                  <td style={S.td}><span style={{ fontWeight: 600 }}>{a.name}</span></td>
-                  <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{a.req}</td>
-                  <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{a.personal}</td>
-                  <td style={S.td}>
-                    <button
-                      style={S.btnSmall(done ? "#22c55e" : "#334155")}
-                      onClick={() => {
-                        const list = state.achievementsDone || [];
-                        const next = done ? list.filter(x => x !== a.name) : [...list, a.name];
-                        setState(prev => ({ ...prev, achievementsDone: next }));
-                      }}
-                    >
-                      {done ? "Done" : "—"}
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+            {ACHIEVEMENTS.map(a => (
+              <tr key={a.name}>
+                <td style={S.td}><span style={{ fontWeight: 600 }}>{a.name}</span></td>
+                <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{a.req}</td>
+                <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{a.personal}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -499,8 +455,19 @@ function PointsTab({ state, setState }) {
   );
 }
 
+const DEFAULT_DIPLOMACY = [
+  { id: 1, server: "Era 51", alliance: "TBD", relation: "ally", notes: "Friends in Era 51. No zeroing citadels, no killing farmers. Help each other reach Aaru, then fight Aaru normally." },
+  { id: 2, server: "Era 82", alliance: "TBD", relation: "neutral", notes: "No contact yet. Don't mess with them unless they mess with us." },
+  { id: 3, server: "Era 002", alliance: "TBD", relation: "neutral", notes: "No contact yet. Don't mess with them unless they mess with us." },
+];
+
+const CONTACTS = [
+  { server: "Era 51", name: "DarthGluttony128", note: "Darth is superscript, 128 is subscript. Need to confirm alliance control + specific terms." },
+  { server: "Era 51", name: "SnipeR", note: "Special characters in name (details TBD). Need to confirm alliance control + specific terms." },
+];
+
 function DiplomacyTab({ state, setState }) {
-  const diplomacy = state.diplomacy || [];
+  const diplomacy = state.diplomacy || DEFAULT_DIPLOMACY;
 
   const addEntry = () => {
     const next = [...diplomacy, { server: "", alliance: "", relation: "neutral", notes: "", id: Date.now() }];
@@ -568,6 +535,33 @@ function DiplomacyTab({ state, setState }) {
             <button style={S.btnSmall("#ef4444")} onClick={() => removeEntry(d.id)}>X</button>
           </div>
         ))}
+      </div>
+
+      {/* Contacts */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Key Contacts</div>
+        {CONTACTS.map(c => (
+          <div key={c.name} style={{ display: "flex", gap: "12px", alignItems: "center", padding: "10px", background: "#0f172a", borderRadius: "8px", marginBottom: "6px" }}>
+            <span style={S.badge("#a855f7")}>{c.server}</span>
+            <span style={{ fontWeight: 700 }}>{c.name}</span>
+            <span style={{ fontSize: "11px", color: "#94a3b8", flex: 1 }}>{c.note}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Diplomacy Rules */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Rules of Engagement</div>
+        <div style={{ display: "grid", gap: "8px" }}>
+          <div style={{ padding: "10px", background: "#22c55e11", border: "1px solid #22c55e44", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (Era 51)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>No zeroing citadels. No killing farmers. Actively help each other reach Aaru Palace. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
+          </div>
+          <div style={{ padding: "10px", background: "#94a3b811", border: "1px solid #94a3b844", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (Era 82, Era 002)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>If they don't mess with us, we don't mess with them. If they do, we respond in kind.</div>
+          </div>
+        </div>
       </div>
 
       {/* Aaru Palace Time Preference */}
@@ -700,26 +694,39 @@ function RoutePlannerTab({ state, setState }) {
   );
 }
 
-function TowerTab({ state, setState }) {
-  const towerLog = state.towerLog || [];
-
-  const addLog = () => {
-    const today = new Date().toISOString().split("T")[0];
-    const next = [...towerLog, { id: Date.now(), date: today, participated: true, points: "", sarcophagus: "", notes: "" }];
-    setState(prev => ({ ...prev, towerLog: next }));
-  };
-
-  const updateLog = (id, field, value) => {
-    const next = towerLog.map(l => l.id === id ? { ...l, [field]: value } : l);
-    setState(prev => ({ ...prev, towerLog: next }));
-  };
-
+function PveTab() {
   return (
     <div>
+      {/* PvE Contribution */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>How PvE Players Help Win</div>
+        <div style={{ fontSize: "13px", color: "#e2e8f0", marginBottom: "12px", lineHeight: "1.6" }}>
+          PvE players are incredibly valuable to the kingdom's success. You don't need to fight other players to make a big impact. As long as you're doing the following, you are being productive for the server:
+        </div>
+        <div style={{ display: "grid", gap: "8px" }}>
+          {[
+            { icon: "🚩", title: "Reinforce Flags & Strongholds", desc: "Reinforcing a flag or stronghold being built reduces construction time significantly. This is critical for rapid expansion." },
+            { icon: "🗺️", title: "Complete Daily Explorations (6/6)", desc: "Do all 6 daily DD exploration quests. Each one grants 100K Desert Points." },
+            { icon: "⚔️", title: "Burn Stamina on DD Tribes", desc: "Kill Lv.31-35 tribes within the Desolate Desert map (not home map). 13.5K Desert Points per tribe." },
+            { icon: "⛏️", title: "Gather Within DD Map", desc: "Every 100 units gathered in DD = 15 Desert Points. Use the Desert Gathering Center for speed boost + attack immunity." },
+            { icon: "🗼", title: "5M Damage in Tower of Rotation", desc: "Hit your daily 5M damage target on Tower guardians. Troops in Tower range earn 200K pts/min. Defeating a guardian = 100K pts." },
+          ].map(item => (
+            <div key={item.title} style={{ display: "flex", gap: "12px", padding: "12px", background: "#0f172a", borderRadius: "8px", alignItems: "flex-start" }}>
+              <span style={{ fontSize: "22px", flexShrink: 0 }}>{item.icon}</span>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: "13px", color: "#22c55e" }}>{item.title}</div>
+                <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "2px" }}>{item.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tower of Rotation */}
       <div style={S.card}>
         <div style={S.cardTitle}>Tower of Rotation</div>
         <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "12px" }}>
-          Awakens Wed-Sat at 05:00, 13:00, and 21:00 UTC (from Day 3). Spawns Silent Guardians and Echoing Phantoms for 2 hours each awakening. Must have alliance land adjacent to the Tower. Defeat mobs for Death Sarcophagus rewards + Desert Points. Occupying alliance receives special buffs.
+          Awakens Wed-Sat at 05:00, 13:00, and 21:00 UTC (from Day 3). Spawns Silent Guardians and Echoing Phantoms for 2 hours each awakening. Must have alliance land adjacent to the Tower. Occupying alliance receives special buffs.
         </div>
         <div style={S.grid2}>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
@@ -731,30 +738,11 @@ function TowerTab({ state, setState }) {
             <div style={{ fontSize: "12px", color: "#94a3b8" }}>Stronger PvE mobs, higher point rewards</div>
           </div>
         </div>
-      </div>
-
-      <div style={S.card}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-          <div style={S.cardTitle}>Daily Tower Log</div>
-          <button style={S.btn("#7c3aed")} onClick={addLog}>+ Log Day</button>
+        <div style={{ marginTop: "12px", padding: "10px", background: "#7c3aed11", border: "1px solid #7c3aed44", borderRadius: "8px" }}>
+          <div style={{ fontWeight: 600, fontSize: "12px", color: "#7c3aed", marginBottom: "4px" }}>Spawn Schedule (UTC)</div>
+          <div style={{ fontSize: "12px", color: "#e2e8f0" }}>05:00 — 07:00 | 13:00 — 15:00 | 21:00 — 23:00</div>
+          <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "2px" }}>Wednesday through Saturday, starting Day 3</div>
         </div>
-        {towerLog.length === 0 && (
-          <div style={{ textAlign: "center", padding: "24px", color: "#64748b", fontSize: "13px" }}>
-            No tower entries logged yet. Log participation starting Day 3.
-          </div>
-        )}
-        {towerLog.map(l => (
-          <div key={l.id} style={{ display: "flex", gap: "8px", alignItems: "center", padding: "10px", background: "#0f172a", borderRadius: "8px", marginBottom: "6px", flexWrap: "wrap" }}>
-            <input style={{ ...S.input, width: "110px" }} type="date" value={l.date} onChange={e => updateLog(l.id, "date", e.target.value)} />
-            <select style={S.select} value={l.participated ? "yes" : "no"} onChange={e => updateLog(l.id, "participated", e.target.value === "yes")}>
-              <option value="yes">Participated</option>
-              <option value="no">Missed</option>
-            </select>
-            <input style={{ ...S.input, width: "100px" }} placeholder="Points earned" value={l.points} onChange={e => updateLog(l.id, "points", e.target.value)} />
-            <input style={{ ...S.input, width: "80px" }} placeholder="Sarco." value={l.sarcophagus} onChange={e => updateLog(l.id, "sarcophagus", e.target.value)} />
-            <input style={{ ...S.input, flex: 1, minWidth: "100px" }} placeholder="Notes" value={l.notes} onChange={e => updateLog(l.id, "notes", e.target.value)} />
-          </div>
-        ))}
       </div>
 
       {/* Peaceful Riverland */}
@@ -763,6 +751,33 @@ function TowerTab({ state, setState }) {
         <div style={{ fontSize: "12px", color: "#94a3b8" }}>
           Separate PvE/gathering event within DD. Earn Desert Points through participation. Tower Master achievement requires 4M points earned through this event while holding the Tower of Rotation.
         </div>
+      </div>
+
+      {/* Points Sources Summary */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Desert Points Sources</div>
+        <table style={S.table}>
+          <thead>
+            <tr>
+              <th style={S.th}>Activity</th>
+              <th style={S.th}>Points Earned</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style={S.td}>Gather 100 resources in DD</td><td style={S.td}>15 pts</td></tr>
+            <tr><td style={S.td}>Defeat Lv.31-35 tribe</td><td style={S.td}>13.5K pts</td></tr>
+            <tr><td style={S.td}>Complete exploration quest</td><td style={S.td}>100K pts</td></tr>
+            <tr><td style={S.td}>Complete Ancient Dunes quest</td><td style={S.td}>200K / 500K / 1M pts</td></tr>
+            <tr><td style={S.td}>Hold Lv.7 city (per ally per min)</td><td style={S.td}>1K pts/min</td></tr>
+            <tr><td style={S.td}>Troops in Tower of Rotation range</td><td style={S.td}>200K pts/min</td></tr>
+            <tr><td style={S.td}>Defeat a Tower Guardian</td><td style={S.td}>100K pts</td></tr>
+            <tr><td style={S.td}>Hold Aaru Palace (per ally per min)</td><td style={S.td}>300K pts/min</td></tr>
+            <tr><td style={S.td}>Damage Aaru Guardian (per 10K dmg)</td><td style={S.td}>8K pts</td></tr>
+            <tr><td style={S.td}>Win Aaru Palace showdown</td><td style={S.td}>20B pts (kingdom)</td></tr>
+            <tr><td style={S.td}>Gravely wound enemy unit</td><td style={S.td}>1-36 pts (by level)</td></tr>
+            <tr><td style={S.td}>Defeat enemy unit</td><td style={S.td}>5x wound pts</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );
@@ -788,7 +803,7 @@ function App() {
     { id: "schedule", label: "Schedule" },
     { id: "map", label: "Map & Nodes" },
     { id: "routes", label: "Route Planner" },
-    { id: "tower", label: "Tower" },
+    { id: "pve", label: "PvE Guide" },
     { id: "points", label: "Points" },
     { id: "diplomacy", label: "Diplomacy" },
   ];
@@ -816,8 +831,8 @@ function App() {
         {tab === "schedule" && <ScheduleTab />}
         {tab === "map" && <MapTab state={state} setState={setState} />}
         {tab === "routes" && <RoutePlannerTab state={state} setState={setState} />}
-        {tab === "tower" && <TowerTab state={state} setState={setState} />}
-        {tab === "points" && <PointsTab state={state} setState={setState} />}
+        {tab === "pve" && <PveTab />}
+        {tab === "points" && <PointsTab />}
         {tab === "diplomacy" && <DiplomacyTab state={state} setState={setState} />}
       </div>
     </div>
