@@ -23,7 +23,7 @@ const EVENT_CONFIG = {
   eventStart: "2026-05-25",
   eventEnd: "2026-06-01",
   matchingStart: "2026-05-22",
-  servers: ["Era 8", "Era 51", "Server C", "Server D"],
+  servers: ["Era 8", "Era 51", "TBD", "TBD"],
   ourServer: "Era 8",
   ourAlliances: ["WC1", "MyT", "REU", "AGC"],
 };
@@ -39,20 +39,20 @@ const SCHEDULE = [
 ];
 
 const ZONES = [
-  { id: "z1", name: "Waste Land", color: "#d4a574", unlockDay: 1, desc: "Starting zone. Build stronghold, expand with flags, secure Mountain Forts." },
+  { id: "z1", name: "Waste Land", color: "#d4a574", unlockDay: 1, desc: "Starting zone. Build stronghold adjacent to Mountain Fort, then push into Z2." },
   { id: "z2", name: "Forbidden Zone", color: "#7c3aed", unlockDay: 2, desc: "Access via Mountain Forts/Docks. Pillar Cities here. Tower of Rotation. Flags cost more but higher durability." },
   { id: "z3", name: "Eternal Realm", color: "#f59e0b", unlockDay: 6, desc: "Final zone. Access via Forbidden Zone Mountain Forts. Aaru Palace located here." },
 ];
 
 const KEY_NODES = [
-  { id: "stronghold", name: "Desert Stronghold", zone: "z1", type: "building", desc: "Alliance HQ — flags must connect to this. One per alliance.", points: 0 },
+  { id: "stronghold", name: "Desert Stronghold", zone: "z1", type: "building", desc: "Foundation of alliance lands. Flags must connect back to this or a Substronghold. Can be built anywhere in Waste Land.", points: 0 },
   { id: "mfort_wl_1", name: "Mountain Fort (WL) #1", zone: "z1", type: "fort", desc: "Gate to Forbidden Zone. Occupy to enter Z2.", points: 0 },
   { id: "mfort_wl_2", name: "Mountain Fort (WL) #2", zone: "z1", type: "fort", desc: "Gate to Forbidden Zone. Occupy to enter Z2.", points: 0 },
   { id: "dock_1", name: "Dock #1", zone: "z1", type: "fort", desc: "Alternative gate to Forbidden Zone via water.", points: 0 },
   { id: "pillar_1", name: "Pillar City #1", zone: "z2", type: "city", desc: "Earns Placer Gold + Desert Points per minute while held.", points: 500 },
   { id: "pillar_2", name: "Pillar City #2", zone: "z2", type: "city", desc: "Earns Placer Gold + Desert Points per minute while held.", points: 500 },
   { id: "pillar_3", name: "Pillar City #3", zone: "z2", type: "city", desc: "Earns Placer Gold + Desert Points per minute while held.", points: 500 },
-  { id: "tower", name: "Tower of Rotation", zone: "z2", type: "tower", desc: "Daily PvE — spawns Silent Guardians & Echoing Phantoms for 2hrs. Death Sarcophagus + Desert Points. Must be adjacent to alliance land.", points: 1000 },
+  { id: "tower", name: "Tower of Rotation", zone: "z2", type: "tower", desc: "Daily PvE — awakens Wed-Sat at 05:00, 13:00, 21:00 UTC spawning Silent Guardians & Echoing Phantoms for 2hrs. Must be adjacent to alliance land.", points: 1000 },
   { id: "mfort_fz_1", name: "Mountain Fort (FZ) #1", zone: "z2", type: "fort", desc: "Gate to Eternal Realm. Opens Day 6.", points: 0 },
   { id: "mfort_fz_2", name: "Mountain Fort (FZ) #2", zone: "z2", type: "fort", desc: "Gate to Eternal Realm. Opens Day 6.", points: 0 },
   { id: "aaru", name: "Aaru Palace", zone: "z3", type: "palace", desc: "Final objective. Massive Desert Points per second. Hold longest or 1hr consecutive to win.", points: 5000 },
@@ -80,8 +80,10 @@ const AARU_TIME_SLOTS = [
 ];
 
 const BUILDINGS = [
-  { name: "Desert Stronghold", desc: "Alliance HQ. All flags must connect back to this.", icon: "🏰" },
-  { name: "Desert Flag", desc: "Expand territory. Must connect to Stronghold or other flags. Max = alliance tech limit. Higher cost in Z2/Z3 but more durable.", icon: "🚩" },
+  { name: "Desert Stronghold", desc: "Foundation of alliance lands. Built in Waste Land. All flags must connect back to a Stronghold or Substronghold to remain active.", icon: "🏰" },
+  { name: "Desert Substronghold", desc: "Built in the Forbidden Zone. Must be connected to main Stronghold to start construction, but once started does not need to remain connected.", icon: "🏯" },
+  { name: "Desert Flag", desc: "Built on tiles adjacent to active connections (a Stronghold, Substronghold, or line of flags connecting back to one). Max = alliance tech limit. Higher cost in Z2/Z3 but more durable.", icon: "🚩" },
+  { name: "Bandage Camp", desc: "Troops replenish here (like Auto Replenish). With Auto-housing on, retreating troops return to Bandage Camp instead of Citadel.", icon: "🏥" },
   { name: "Desert Gathering Center", desc: "One per map. Speed-up gathering, immune to attacks.", icon: "⛏️" },
   { name: "Desert Supply Depot", desc: "Claim Supplies Bounty rewards. Trojan Horses spawn here during Trojan Turmoil.", icon: "📦" },
   { name: "Desert Bait Treasury", desc: "Spawns Marauders during Marauder Hunt — they attack your castles.", icon: "🏚️" },
@@ -105,9 +107,9 @@ const S = {
   grid3: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "12px" },
   badge: (color) => ({ display: "inline-block", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: 700, background: color + "22", color: color, border: `1px solid ${color}44` }),
   zoneBar: (color) => ({ padding: "10px 14px", borderRadius: "8px", border: `1px solid ${color}66`, background: `${color}11`, marginBottom: "8px" }),
-  timeline: { position: "relative", paddingLeft: "24px", borderLeft: "2px solid #334155" },
+  timeline: { position: "relative", paddingLeft: "28px", marginLeft: "8px", borderLeft: "2px solid #334155" },
   timelineItem: { position: "relative", paddingBottom: "20px", paddingLeft: "12px" },
-  timelineDot: (active, color) => ({ position: "absolute", left: "-31px", top: "4px", width: "16px", height: "16px", borderRadius: "50%", background: active ? color : "#334155", border: `2px solid ${active ? color : "#475569"}` }),
+  timelineDot: (active, color) => ({ position: "absolute", left: "-37px", top: "4px", width: "16px", height: "16px", borderRadius: "50%", background: active ? color : "#334155", border: `2px solid ${active ? color : "#475569"}` }),
   input: { background: "#0f172a", border: "1px solid #334155", borderRadius: "6px", padding: "8px 12px", color: "#e2e8f0", fontSize: "13px", width: "100%" },
   select: { background: "#0f172a", border: "1px solid #334155", borderRadius: "6px", padding: "8px 12px", color: "#e2e8f0", fontSize: "13px" },
   btn: (color) => ({ padding: "8px 16px", borderRadius: "6px", border: "none", background: color || "#7c3aed", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer" }),
@@ -181,7 +183,7 @@ function OverviewTab({ state, setState }) {
         <div style={S.grid2}>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
             <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Placer Gold</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Earned from holding Pillar Cities. Spent on building flags and structures in higher zones. Key resource for expansion.</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Earned from holding Pillar Cities + lump sum from first capture of gates and Pillar Cities. Spent on building flags and structures in higher zones. Key resource for expansion.</div>
           </div>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
             <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Desert Points</div>
@@ -189,11 +191,11 @@ function OverviewTab({ state, setState }) {
           </div>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
             <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Territory Control</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Stronghold → Flags → connect to nodes. Flags must chain back to stronghold. Higher zone flags cost more Placer Gold but are more durable.</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Flags must maintain an active connection back to a Stronghold or Substronghold. Disconnected flags become inactive. Higher zone flags cost more Placer Gold but are more durable.</div>
           </div>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
             <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Tower of Rotation</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Daily PvE event from Day 3. Spawns guardians for 2hrs. Must be adjacent to your land. Rewards: Death Sarcophagus + Desert Points.</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Wed-Sat at 05:00, 13:00, 21:00 UTC from Day 3. Spawns guardians for 2hrs. Must be adjacent to your land. Rewards: Death Sarcophagus + Desert Points.</div>
           </div>
         </div>
       </div>
@@ -269,6 +271,52 @@ function MapTab({ state, setState }) {
 
   return (
     <div>
+      {/* Diamond Map Overview */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Map Layout</div>
+        <div style={{ display: "flex", justifyContent: "center", padding: "16px 0" }}>
+          <div style={{ position: "relative", width: "300px", height: "300px" }}>
+            {/* Diamond shape */}
+            <div style={{ position: "absolute", inset: 0, transform: "rotate(45deg)", border: "2px solid #334155", background: "#0f172a", borderRadius: "8px" }} />
+            {/* Center - Eternal Realm */}
+            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center", zIndex: 2 }}>
+              <div style={{ width: "60px", height: "60px", borderRadius: "50%", background: "#f59e0b33", border: "2px solid #f59e0b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>👑</div>
+              <div style={{ fontSize: "10px", color: "#f59e0b", marginTop: "4px", fontWeight: 700 }}>Aaru Palace</div>
+            </div>
+            {/* Top/North - Blue server */}
+            <div style={{ position: "absolute", top: "12px", left: "50%", transform: "translateX(-50%)", textAlign: "center", zIndex: 2 }}>
+              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#3b82f633", border: "2px solid #3b82f6", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#3b82f6", fontWeight: 700 }}>N</div>
+              <div style={{ fontSize: "9px", color: "#3b82f6", marginTop: "2px" }}>{EVENT_CONFIG.servers[2]}</div>
+            </div>
+            {/* Left/West - Orange server */}
+            <div style={{ position: "absolute", top: "50%", left: "12px", transform: "translateY(-50%)", textAlign: "center", zIndex: 2 }}>
+              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#f97316", border: "2px solid #f97316", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#fff", fontWeight: 700 }}>W</div>
+              <div style={{ fontSize: "9px", color: "#f97316", marginTop: "2px" }}>{EVENT_CONFIG.servers[3]}</div>
+            </div>
+            {/* Right/East - Purple server (Era 51) */}
+            <div style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", textAlign: "center", zIndex: 2 }}>
+              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#a855f733", border: "2px solid #a855f7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#a855f7", fontWeight: 700 }}>E</div>
+              <div style={{ fontSize: "9px", color: "#a855f7", marginTop: "2px" }}>Era 51</div>
+            </div>
+            {/* Bottom/South - Teal (Era 8 / us) */}
+            <div style={{ position: "absolute", bottom: "12px", left: "50%", transform: "translateX(-50%)", textAlign: "center", zIndex: 2 }}>
+              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#14b8a633", border: "2px solid #14b8a6", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#14b8a6", fontWeight: 700 }}>S</div>
+              <div style={{ fontSize: "9px", color: "#14b8a6", marginTop: "2px" }}>Era 8</div>
+            </div>
+            {/* Zone rings */}
+            <div style={{ position: "absolute", inset: "30px", transform: "rotate(45deg)", border: "1px dashed #7c3aed55", borderRadius: "6px" }} />
+            <div style={{ position: "absolute", inset: "80px", transform: "rotate(45deg)", border: "1px dashed #f59e0b55", borderRadius: "4px" }} />
+            {/* Zone labels */}
+            <div style={{ position: "absolute", bottom: "60px", right: "30px", fontSize: "9px", color: "#d4a574", zIndex: 2 }}>Z1</div>
+            <div style={{ position: "absolute", top: "95px", right: "60px", fontSize: "9px", color: "#7c3aed", zIndex: 2 }}>Z2</div>
+            <div style={{ position: "absolute", top: "130px", left: "50%", transform: "translateX(-50%)", fontSize: "9px", color: "#f59e0b", zIndex: 2 }}>Z3</div>
+          </div>
+        </div>
+        <div style={{ fontSize: "11px", color: "#94a3b8", textAlign: "center" }}>
+          Diamond-shaped map. Each server spawns at a corner (colored). Center contains Eternal Realm + Aaru Palace. Zones radiate outward: Z3 (center) → Z2 → Z1 (edges).
+        </div>
+      </div>
+
       {ZONES.map(zone => (
         <div key={zone.id} style={{ ...S.card, borderColor: zone.color + "66" }}>
           <div style={{ ...S.cardTitle, color: zone.color }}>{zone.name} — Key Nodes</div>
@@ -671,7 +719,7 @@ function TowerTab({ state, setState }) {
       <div style={S.card}>
         <div style={S.cardTitle}>Tower of Rotation</div>
         <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "12px" }}>
-          Awakens daily from Day 3. Spawns Silent Guardians and Echoing Phantoms for 2 hours. Must have alliance land adjacent to the Tower. Defeat mobs for Death Sarcophagus rewards + Desert Points.
+          Awakens Wed-Sat at 05:00, 13:00, and 21:00 UTC (from Day 3). Spawns Silent Guardians and Echoing Phantoms for 2 hours each awakening. Must have alliance land adjacent to the Tower. Defeat mobs for Death Sarcophagus rewards + Desert Points. Occupying alliance receives special buffs.
         </div>
         <div style={S.grid2}>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
