@@ -23,7 +23,7 @@ const EVENT_CONFIG = {
   eventStart: "2026-05-25",
   eventEnd: "2026-06-01",
   matchingStart: "2026-05-22",
-  servers: ["Era 8", "Era 51", "Era 82", "Era 002"],
+  servers: ["Era 8", "Era 51", "Era 82", "Era 2"],
   ourServer: "Era 8",
   ourAlliances: ["WC1", "MyT", "REU", "AGC"],
 };
@@ -286,12 +286,12 @@ function MapTab({ state, setState }) {
             {/* Top/North - Blue server */}
             <div style={{ position: "absolute", top: "12px", left: "50%", transform: "translateX(-50%)", textAlign: "center", zIndex: 2 }}>
               <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#3b82f633", border: "2px solid #3b82f6", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#3b82f6", fontWeight: 700 }}>N</div>
-              <div style={{ fontSize: "9px", color: "#3b82f6", marginTop: "2px" }}>Era 82 / Era 002</div>
+              <div style={{ fontSize: "9px", color: "#3b82f6", marginTop: "2px" }}>Era 82 / Era 2</div>
             </div>
             {/* Left/West - Orange server */}
             <div style={{ position: "absolute", top: "50%", left: "12px", transform: "translateY(-50%)", textAlign: "center", zIndex: 2 }}>
               <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#f97316", border: "2px solid #f97316", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#fff", fontWeight: 700 }}>W</div>
-              <div style={{ fontSize: "9px", color: "#f97316", marginTop: "2px" }}>Era 82 / Era 002</div>
+              <div style={{ fontSize: "9px", color: "#f97316", marginTop: "2px" }}>Era 82 / Era 2</div>
             </div>
             {/* Right/East - Purple server (Era 51) */}
             <div style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", textAlign: "center", zIndex: 2 }}>
@@ -395,7 +395,7 @@ function PointsTab() {
             { label: "Era 8 (Us)", value: KINGDOM_POINTS.era8, color: "#14b8a6" },
             { label: "Era 51", value: KINGDOM_POINTS.era51, color: "#a855f7" },
             { label: "Era 82", value: KINGDOM_POINTS.era82, color: "#3b82f6" },
-            { label: "Era 002", value: KINGDOM_POINTS.era002, color: "#f97316" },
+            { label: "Era 2", value: KINGDOM_POINTS.era002, color: "#f97316" },
           ].map(k => (
             <div key={k.label} style={{ padding: "12px", background: "#0f172a", borderRadius: "8px", textAlign: "center" }}>
               <div style={{ fontSize: "11px", color: "#94a3b8" }}>{k.label}</div>
@@ -458,7 +458,7 @@ function PointsTab() {
 const DEFAULT_DIPLOMACY = [
   { id: 1, server: "Era 51", alliance: "TBD", relation: "ally", notes: "Friends in Era 51. No zeroing citadels, no killing farmers. Help each other reach Aaru, then fight Aaru normally." },
   { id: 2, server: "Era 82", alliance: "TBD", relation: "neutral", notes: "No contact yet. Don't mess with them unless they mess with us." },
-  { id: 3, server: "Era 002", alliance: "TBD", relation: "neutral", notes: "No contact yet. Don't mess with them unless they mess with us." },
+  { id: 3, server: "Era 2", alliance: "TBD", relation: "neutral", notes: "No contact yet. Don't mess with them unless they mess with us." },
 ];
 
 const CONTACTS = [
@@ -558,7 +558,7 @@ function DiplomacyTab({ state, setState }) {
             <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>No zeroing citadels. No killing farmers. Actively help each other reach Aaru Palace. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
           </div>
           <div style={{ padding: "10px", background: "#94a3b811", border: "1px solid #94a3b844", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (Era 82, Era 002)</div>
+            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (Era 82, Era 2)</div>
             <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>If they don't mess with us, we don't mess with them. If they do, we respond in kind.</div>
           </div>
         </div>
