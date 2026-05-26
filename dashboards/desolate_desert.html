@@ -269,51 +269,91 @@ function MapTab({ state, setState }) {
     }
   };
 
+  const [mapZoom, setMapZoom] = React.useState(1);
+  const [mapPos, setMapPos] = React.useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = React.useState(false);
+  const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
+  const mapRef = React.useRef(null);
+
+  const handleWheel = (e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+    setMapZoom(prev => Math.max(0.5, Math.min(5, prev * delta)));
+  };
+
+  const handleMouseDown = (e) => {
+    setDragging(true);
+    setDragStart({ x: e.clientX - mapPos.x, y: e.clientY - mapPos.y });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!dragging) return;
+    setMapPos({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
+  };
+
+  const handleMouseUp = () => setDragging(false);
+
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 1) {
+      setDragging(true);
+      setDragStart({ x: e.touches[0].clientX - mapPos.x, y: e.touches[0].clientY - mapPos.y });
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (!dragging || e.touches.length !== 1) return;
+    e.preventDefault();
+    setMapPos({ x: e.touches[0].clientX - dragStart.x, y: e.touches[0].clientY - dragStart.y });
+  };
+
+  const handleTouchEnd = () => setDragging(false);
+
   return (
     <div>
-      {/* Diamond Map Overview */}
+      {/* Zoomable Stitched Map */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Map Layout</div>
-        <div style={{ display: "flex", justifyContent: "center", padding: "16px 0" }}>
-          <div style={{ position: "relative", width: "300px", height: "300px" }}>
-            {/* Diamond shape */}
-            <div style={{ position: "absolute", inset: 0, transform: "rotate(45deg)", border: "2px solid #334155", background: "#0f172a", borderRadius: "8px" }} />
-            {/* Center - Eternal Realm */}
-            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", textAlign: "center", zIndex: 2 }}>
-              <div style={{ width: "60px", height: "60px", borderRadius: "50%", background: "#f59e0b33", border: "2px solid #f59e0b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>👑</div>
-              <div style={{ fontSize: "10px", color: "#f59e0b", marginTop: "4px", fontWeight: 700 }}>Aaru Palace</div>
-            </div>
-            {/* Top/North - Blue server */}
-            <div style={{ position: "absolute", top: "12px", left: "50%", transform: "translateX(-50%)", textAlign: "center", zIndex: 2 }}>
-              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#3b82f633", border: "2px solid #3b82f6", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#3b82f6", fontWeight: 700 }}>N</div>
-              <div style={{ fontSize: "9px", color: "#3b82f6", marginTop: "2px" }}>Era 82 / Era 2</div>
-            </div>
-            {/* Left/West - Orange server */}
-            <div style={{ position: "absolute", top: "50%", left: "12px", transform: "translateY(-50%)", textAlign: "center", zIndex: 2 }}>
-              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#f97316", border: "2px solid #f97316", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#fff", fontWeight: 700 }}>W</div>
-              <div style={{ fontSize: "9px", color: "#f97316", marginTop: "2px" }}>Era 82 / Era 2</div>
-            </div>
-            {/* Right/East - Purple server (Era 51) */}
-            <div style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", textAlign: "center", zIndex: 2 }}>
-              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#a855f733", border: "2px solid #a855f7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#a855f7", fontWeight: 700 }}>E</div>
-              <div style={{ fontSize: "9px", color: "#a855f7", marginTop: "2px" }}>Era 51</div>
-            </div>
-            {/* Bottom/South - Teal (Era 8 / us) */}
-            <div style={{ position: "absolute", bottom: "12px", left: "50%", transform: "translateX(-50%)", textAlign: "center", zIndex: 2 }}>
-              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#14b8a633", border: "2px solid #14b8a6", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", color: "#14b8a6", fontWeight: 700 }}>S</div>
-              <div style={{ fontSize: "9px", color: "#14b8a6", marginTop: "2px" }}>Era 8</div>
-            </div>
-            {/* Zone rings */}
-            <div style={{ position: "absolute", inset: "30px", transform: "rotate(45deg)", border: "1px dashed #7c3aed55", borderRadius: "6px" }} />
-            <div style={{ position: "absolute", inset: "80px", transform: "rotate(45deg)", border: "1px dashed #f59e0b55", borderRadius: "4px" }} />
-            {/* Zone labels */}
-            <div style={{ position: "absolute", bottom: "60px", right: "30px", fontSize: "9px", color: "#d4a574", zIndex: 2 }}>Z1</div>
-            <div style={{ position: "absolute", top: "95px", right: "60px", fontSize: "9px", color: "#7c3aed", zIndex: 2 }}>Z2</div>
-            <div style={{ position: "absolute", top: "130px", left: "50%", transform: "translateX(-50%)", fontSize: "9px", color: "#f59e0b", zIndex: 2 }}>Z3</div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+          <div style={S.cardTitle}>Desolate Desert Map</div>
+          <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+            <button onClick={() => setMapZoom(z => Math.max(0.5, z * 0.8))} style={{ ...S.select, cursor: "pointer", padding: "4px 10px" }}>-</button>
+            <span style={{ fontSize: "12px", color: "#94a3b8", minWidth: "45px", textAlign: "center" }}>{Math.round(mapZoom * 100)}%</span>
+            <button onClick={() => setMapZoom(z => Math.min(5, z * 1.25))} style={{ ...S.select, cursor: "pointer", padding: "4px 10px" }}>+</button>
+            <button onClick={() => { setMapZoom(1); setMapPos({ x: 0, y: 0 }); }} style={{ ...S.select, cursor: "pointer", padding: "4px 10px", fontSize: "11px" }}>Reset</button>
           </div>
         </div>
-        <div style={{ fontSize: "11px", color: "#94a3b8", textAlign: "center" }}>
-          Diamond-shaped map. Each server spawns at a corner (colored). Center contains Eternal Realm + Aaru Palace. Zones radiate outward: Z3 (center) → Z2 → Z1 (edges).
+        <div
+          ref={mapRef}
+          onWheel={handleWheel}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          style={{
+            width: "100%", height: "500px", overflow: "hidden",
+            borderRadius: "8px", background: "#000", cursor: dragging ? "grabbing" : "grab",
+            position: "relative", userSelect: "none", touchAction: "none"
+          }}
+        >
+          <img
+            src="dd_map_stitched_v2.jpg"
+            alt="Desolate Desert Map"
+            draggable={false}
+            style={{
+              position: "absolute",
+              left: `calc(50% + ${mapPos.x}px)`,
+              top: `calc(50% + ${mapPos.y}px)`,
+              transform: `translate(-50%, -50%) scale(${mapZoom})`,
+              transformOrigin: "center center",
+              maxWidth: "none",
+              transition: dragging ? "none" : "transform 0.1s ease-out"
+            }}
+          />
+        </div>
+        <div style={{ fontSize: "11px", color: "#94a3b8", textAlign: "center", marginTop: "8px" }}>
+          Scroll to zoom, drag to pan. Server positions: Era 8 (East/Purple) | Era 51 (North/Cyan) | Era 2 (West/Orange) | Era 82 (South/Teal)
         </div>
       </div>
 
@@ -373,7 +413,7 @@ const KINGDOM_POINTS = {
   era8: "—",
   era51: "—",
   era82: "—",
-  era002: "—",
+  era2: "—",
   lastUpdated: "Awaiting event start",
 };
 
@@ -395,7 +435,7 @@ function PointsTab() {
             { label: "Era 8 (Us)", value: KINGDOM_POINTS.era8, color: "#14b8a6" },
             { label: "Era 51", value: KINGDOM_POINTS.era51, color: "#a855f7" },
             { label: "Era 82", value: KINGDOM_POINTS.era82, color: "#3b82f6" },
-            { label: "Era 2", value: KINGDOM_POINTS.era002, color: "#f97316" },
+            { label: "Era 2", value: KINGDOM_POINTS.era2, color: "#f97316" },
           ].map(k => (
             <div key={k.label} style={{ padding: "12px", background: "#0f172a", borderRadius: "8px", textAlign: "center" }}>
               <div style={{ fontSize: "11px", color: "#94a3b8" }}>{k.label}</div>
