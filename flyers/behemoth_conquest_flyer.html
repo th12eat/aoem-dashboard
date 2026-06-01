@@ -592,7 +592,8 @@
       <h3 style="color:var(--accent-red);">&#9876; <span data-i18n="s3_siege_h">Siege (Attack)</span></h3>
       <ul>
         <li data-i18n="s3_siege_1">Our Behemoth deals <strong>8,750 durability damage/sec</strong> to the target citadel.</li>
-        <li data-i18n="s3_siege_2">It earns <strong>2,625,000 kingdom points per attack</strong> &mdash; this is the single biggest point source in the mode.</li>
+        <li data-i18n="s3_siege_2">It earns <strong>2,625,000 kingdom points per attack tick (per second)</strong> &mdash; the single biggest point source in the mode.</li>
+        <li data-i18n="s3_siege_4"><strong>Points scale with durability damage</strong> (the dev vlog: "your kingdom earns points based on the durability damage dealt"). The numbers fit <strong>points = durability &times; 300</strong> (8,750 &times; 300 = 2,625,000). So <strong>Iron Hoof and each growth stage raise the point rate</strong>, not just siege speed &mdash; e.g. Iron Hoof II &rarr; 10,000/sec &rarr; <strong>3,000,000 pts/sec</strong>. <span class="pill">TBC</span> confirm the &times;300.</li>
         <li data-i18n="s3_siege_3">It <strong>cannot attack while stunned.</strong></li>
       </ul>
     </div>
@@ -781,7 +782,8 @@ const TRANSLATIONS = {
     "s3_combat_intro": "<strong>Cómo funciona el combate (según los tooltips del juego):</strong>",
     "s3_siege_h": "Asedio (Ataque)",
     "s3_siege_1": "Nuestro Bégimo inflige <strong>8.750 de daño de durabilidad por segundo</strong> a la ciudadela objetivo.",
-    "s3_siege_2": "Gana <strong>2.625.000 puntos del reino por ataque</strong> &mdash; la mayor fuente de puntos del modo.",
+    "s3_siege_2": "Gana <strong>2.625.000 puntos del reino por tick de ataque (por segundo)</strong> &mdash; la mayor fuente de puntos del modo.",
+    "s3_siege_4": "<strong>Los puntos escalan con el daño de durabilidad</strong> (el vlog de devs: \"tu reino gana puntos según el daño de durabilidad infligido\"). Los números cuadran con <strong>puntos = durabilidad &times; 300</strong> (8.750 &times; 300 = 2.625.000). Así que <strong>Pezuña de Hierro y cada etapa de crecimiento suben la tasa de puntos</strong>, no solo la velocidad de asedio &mdash; p. ej. Pezuña de Hierro II &rarr; 10.000/seg &rarr; <strong>3.000.000 pts/seg</strong>. <span class=\"pill\">TBC</span> confirmar el &times;300.",
     "s3_siege_3": "<strong>No puede atacar mientras está aturdido.</strong>",
     "s3_stun_h": "Salud y el Ciclo de Aturdimiento",
     "s3_stun_1": "La salud inicial es <strong>3.500.000</strong>.",
@@ -870,7 +872,8 @@ const TRANSLATIONS = {
     "s3_combat_intro": "<strong>Comment fonctionne le combat (selon les infobulles du jeu) :</strong>",
     "s3_siege_h": "Siège (Attaque)",
     "s3_siege_1": "Notre Béhimoth inflige <strong>8 750 de dégâts de durabilité/sec</strong> à la citadelle ciblée.",
-    "s3_siege_2": "Il gagne <strong>2 625 000 points de royaume par attaque</strong> &mdash; la plus grande source de points du mode.",
+    "s3_siege_2": "Il gagne <strong>2 625 000 points de royaume par tick d'attaque (par seconde)</strong> &mdash; la plus grande source de points du mode.",
+    "s3_siege_4": "<strong>Les points évoluent avec les dégâts de durabilité</strong> (le vlog des devs : \"votre royaume gagne des points selon les dégâts de durabilité infligés\"). Les chiffres collent à <strong>points = durabilité &times; 300</strong> (8 750 &times; 300 = 2 625 000). Donc <strong>Sabot de Fer et chaque palier de croissance augmentent le taux de points</strong>, pas seulement la vitesse de siège &mdash; ex. Sabot de Fer II &rarr; 10 000/sec &rarr; <strong>3 000 000 pts/sec</strong>. <span class=\"pill\">TBC</span> confirmer le &times;300.",
     "s3_siege_3": "Il <strong>ne peut pas attaquer étant étourdi.</strong>",
     "s3_stun_h": "Santé et le Cycle d'Étourdissement",
     "s3_stun_1": "La santé de départ est de <strong>3 500 000</strong>.",
@@ -959,7 +962,8 @@ const TRANSLATIONS = {
     "s3_combat_intro": "<strong>전투 작동 방식 (게임 툴팁 기준):</strong>",
     "s3_siege_h": "공성(공격)",
     "s3_siege_1": "우리 비헤모스는 목표 성채에 초당 <strong>8,750 내구도 피해</strong>를 입혀요.",
-    "s3_siege_2": "공격당 <strong>2,625,000 왕국 점수</strong>를 획득 &mdash; 이 모드 최대 점수 원천.",
+    "s3_siege_2": "<strong>공격 틱당(초당) 2,625,000 왕국 점수</strong>를 획득 &mdash; 이 모드 최대 점수 원천.",
+    "s3_siege_4": "<strong>점수는 내구도 피해에 비례</strong>합니다(개발 영상: \"왕국은 입힌 내구도 피해에 따라 점수를 획득\"). 수치상 <strong>점수 = 내구도 &times; 300</strong>(8,750 &times; 300 = 2,625,000)에 들어맞아요. 따라서 <strong>강철 발굽과 각 성장 단계가 공성 속도뿐 아니라 점수 획득률도 올립니다</strong> &mdash; 예: 강철 발굽 II &rarr; 초당 10,000 &rarr; <strong>초당 3,000,000점</strong>. <span class=\"pill\">TBC</span> &times;300 확인 필요.",
     "s3_siege_3": "기절 중에는 <strong>공격 불가.</strong>",
     "s3_stun_h": "체력 및 기절 사이클",
     "s3_stun_1": "시작 체력은 <strong>3,500,000</strong>.",
