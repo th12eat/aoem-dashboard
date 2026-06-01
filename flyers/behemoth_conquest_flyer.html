@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Behemoth Conquest — Strategy Brief | Era 8</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0a0c14;
+    --bg-card: #11141f;
+    --border: #1e2435;
+    --text-primary: #e8eaf0;
+    --text-secondary: #8a90a5;
+    --text-muted: #565c72;
+    --accent-gold: #d4a843;
+    --accent-gold-dim: #a17e2f;
+    --accent-red: #c43d3d;
+    --accent-red-dim: #8a2b2b;
+    --accent-blue: #3d7cc4;
+    --accent-blue-dim: #2b5a8a;
+    --accent-green: #3daa6d;
+    --accent-green-dim: #2a7a4c;
+    --accent-purple: #9a6dd4;
+    --accent-purple-dim: #6b4a9a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  .flyer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* -- HEADER -- */
+  .header {
+    text-align: center;
+    padding: 36px 20px 28px;
+    position: relative;
+    border-bottom: 2px solid var(--accent-gold-dim);
+    margin-bottom: 28px;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at center top, rgba(212,168,67,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .event-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 6px;
+  }
+
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 8vw, 66px);
+    letter-spacing: 3px;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  .header h1 span { color: var(--accent-gold); }
+
+  .header .subtitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+
+  .time-row {
+    margin-top: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(212,168,67,0.1);
+    border: 1px solid var(--accent-gold-dim);
+    border-radius: 8px;
+    padding: 8px 22px;
+  }
+
+  .time-row .label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+  }
+
+  .time-row .time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+  }
+
+  .time-row .divider {
+    width: 1px;
+    height: 30px;
+    background: var(--accent-gold-dim);
+  }
+
+  /* -- COUNTDOWN -- */
+  .countdown-bar {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .cd-block { text-align: center; min-width: 56px; }
+
+  .cd-block .val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--accent-gold);
+    line-height: 1;
+  }
+
+  .cd-block .unit {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .cd-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .section { margin-bottom: 26px; }
+
+  .sh {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sh .n {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--accent-gold);
+    color: var(--bg-deep);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .blurb {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .blurb strong { color: var(--text-primary); font-weight: 600; }
+  .blurb .gold { color: var(--accent-gold); font-weight: 600; }
+  .blurb em { color: var(--accent-gold); font-style: normal; }
+
+  /* -- PHASE TRACKER -- */
+  .phase-track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 560px) { .phase-track { grid-template-columns: repeat(2, 1fr); } }
+
+  .phase {
+    border-radius: 8px;
+    padding: 14px 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    text-align: center;
+    position: relative;
+  }
+  .phase .pnum {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .phase .picon { font-size: 26px; line-height: 1; margin: 4px 0; }
+  .phase .pname {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+  }
+  .phase .pdesc {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+  .phase.active { border-color: var(--accent-gold); background: rgba(212,168,67,0.08); }
+  .phase.active .pname { color: var(--accent-gold); }
+  .phase.active::after {
+    content: 'NOW';
+    position: absolute;
+    top: -9px; left: 50%; transform: translateX(-50%);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 10px; letter-spacing: 1px;
+    background: var(--accent-gold); color: var(--bg-deep);
+    padding: 2px 8px; border-radius: 4px;
+  }
+
+  /* -- STAT BOXES -- */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .stat-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .stat-box .val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--accent-gold);
+    line-height: 1.1;
+  }
+  .stat-box .lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* -- STRAT CARDS -- */
+  .strat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .strat h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .strat ul { list-style: none; padding: 0; }
+  .strat li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    padding: 3px 0 3px 16px;
+    position: relative;
+  }
+  .strat li::before {
+    content: '\25B8';
+    position: absolute;
+    left: 0;
+    color: var(--accent-gold-dim);
+  }
+  .strat li strong { color: var(--text-primary); font-weight: 600; }
+
+  /* -- CALLOUTS -- */
+  .co {
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+  .co.warn { background: rgba(196,61,61,0.08); border: 1px solid var(--accent-red-dim); }
+  .co.warn strong { color: var(--accent-red); }
+  .co.info { background: rgba(61,124,196,0.08); border: 1px solid var(--accent-blue-dim); }
+  .co.info strong { color: var(--accent-blue); }
+  .co.gold { background: rgba(212,168,67,0.08); border: 1px solid var(--accent-gold-dim); }
+  .co.gold strong { color: var(--accent-gold); }
+
+  /* -- MISSION TABLE -- */
+  .mtable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+    font-size: 13px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .mtable th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 9px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+  .mtable td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+  .mtable tr:last-child td { border-bottom: none; }
+  .mtable td.name { color: var(--text-primary); font-weight: 600; }
+  .mtable td.tiers { font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; }
+  .mtable td.tiers b { color: var(--accent-gold); font-weight: 700; }
+
+  .pill {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(154,109,212,0.18);
+    color: var(--accent-purple);
+  }
+
+  /* -- ROLE GRID -- */
+  .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 500px) { .role-grid { grid-template-columns: 1fr; } }
+  .role-grid .role:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .role {
+    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .role h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .role p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+  .role.attack h4 { color: var(--accent-red); }
+  .role.attack { border-color: var(--accent-red-dim); }
+  .role.defend h4 { color: var(--accent-blue); }
+  .role.defend { border-color: var(--accent-blue-dim); }
+  .role.cult h4 { color: var(--accent-green); }
+  .role.cult { border-color: var(--accent-green-dim); }
+  .role.relocate h4 { color: var(--accent-gold); }
+  .role.relocate { border-color: var(--accent-gold-dim); }
+
+  /* -- TUG BAR -- */
+  .tug {
+    display: flex;
+    align-items: center;
+    height: 28px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin: 6px 0 4px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .tug .us { background: linear-gradient(90deg, var(--accent-blue-dim), var(--accent-blue)); color: #fff; padding-left: 10px; display:flex; align-items:center; }
+  .tug .them { background: linear-gradient(90deg, var(--accent-red), var(--accent-red-dim)); color: #fff; padding-right: 10px; justify-content: flex-end; display:flex; align-items:center; }
+
+  .lineage-note {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .ltag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+  }
+  .ltag b { color: var(--accent-gold); }
+
+  /* -- FOOTER -- */
+  .footer {
+    text-align: center;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    margin-top: 28px;
+  }
+  .footer .tagline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--accent-gold);
+  }
+  .footer .sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .draft-banner {
+    background: rgba(154,109,212,0.10);
+    border: 1px dashed var(--accent-purple-dim);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+  .draft-banner strong { color: var(--accent-purple); }
+
+  /* -- LANG SWITCHER -- */
+  .lang-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .lang-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 1px;
+    padding: 5px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .lang-btn:hover { color: var(--accent-gold); border-color: var(--accent-gold-dim); }
+  .lang-btn.active { background: rgba(212,168,67,0.12); border-color: var(--accent-gold-dim); color: var(--accent-gold); }
+</style>
+</head>
+<body>
+<div class="flyer">
+
+  <!-- LANG SWITCHER -->
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+    <button class="lang-btn" onclick="switchLang('es')">ES</button>
+    <button class="lang-btn" onclick="switchLang('fr')">FR</button>
+    <button class="lang-btn" onclick="switchLang('ko')">KO</button>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="event-tag" data-i18n="event_tag">New Game Mode &middot; Era 8</div>
+    <h1>BEHEMOTH <span>CONQUEST</span></h1>
+    <div class="subtitle" data-i18n="subtitle">Awaken the bloodline &middot; March into enemy empires &middot; Cross-server war</div>
+    <div class="time-row">
+      <div>
+        <div class="label" data-i18n="lbl_starts">Starts</div>
+        <div class="time">Jun 1</div>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="label" data-i18n="lbl_ends">Ends</div>
+        <div class="time">Jun 9</div>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="label" data-i18n="lbl_tz">Timezone</div>
+        <div class="time">UTC+0</div>
+      </div>
+    </div>
+
+    <!-- COUNTDOWN -->
+    <div class="countdown-bar" id="countdown">
+      <div class="cd-block"><div class="val" id="cd-d">--</div><div class="unit" data-i18n="cd_days">Days</div></div>
+      <div class="cd-block"><div class="val" id="cd-h">--</div><div class="unit" data-i18n="cd_hours">Hours</div></div>
+      <div class="cd-block"><div class="val" id="cd-m">--</div><div class="unit" data-i18n="cd_min">Min</div></div>
+      <div class="cd-block"><div class="val" id="cd-s">--</div><div class="unit" data-i18n="cd_sec">Sec</div></div>
+    </div>
+    <div class="cd-label" id="cd-label">Until Event Ends</div>
+  </div>
+
+  <!-- DRAFT BANNER -->
+  <div class="draft-banner" data-i18n="draft_banner">
+    <strong>DRAFT v2</strong> &mdash; Built from beta in-game screens (incl. combat tooltips &amp; lineage node values) + the official announcement. Items marked <span class="pill">TBC</span> still need confirmation in-game (exact rewards, runestone costs, invasion time/location set by our admin <strong>[314]AOEM314</strong>).
+  </div>
+
+  <!-- 1. THE BIG PICTURE -->
+  <div class="section">
+    <div class="sh"><span class="n">1</span> <span data-i18n="s1_title">The Big Picture</span></div>
+    <p class="blurb" data-i18n="s1_blurb">
+      A brand-new mode where <strong>two empires (servers) clash over their Behemoths</strong>. Across the event we earn <em>Awaken Runestones</em> to grow and buff our empire's Behemoth, then unleash it on the enemy server. Both sides attack and defend behemoths in <strong>cross-server battles</strong>, scoring points. <span class="gold">The empire with the higher total score wins.</span>
+    </p>
+    <div class="co gold" data-i18n="s1_callout">
+      <strong>Three ways to score points:</strong> (1) donate Awaken Runestones to cultivate our Behemoth, (2) defend our own Behemoth, (3) attack the enemy's Behemoth. <em>Behemoth Crystals</em> earned during the event are spent in the <strong>Behemoth Store</strong> for rewards.
+    </div>
+  </div>
+
+  <!-- 2. EVENT PHASES -->
+  <div class="section">
+    <div class="sh"><span class="n">2</span> <span data-i18n="s2_title">The Four Phases</span></div>
+    <p class="blurb" data-i18n="s2_blurb">The event runs <strong>Jun 1 &rarr; Jun 9 (UTC+0)</strong> through four stages. We are currently in <span class="gold">Preparation</span>. Our admin sets the exact <strong>invasion time &amp; location</strong>.</p>
+    <div class="phase-track">
+      <div class="phase active">
+        <div class="pnum" data-i18n="phase1_num">Phase 1</div>
+        <div class="picon">&#9876;</div>
+        <div class="pname" data-i18n="phase1_name">Preparation</div>
+        <div class="pdesc" data-i18n="phase1_desc">Gather runestones, cultivate, plan</div>
+      </div>
+      <div class="phase">
+        <div class="pnum" data-i18n="phase2_num">Phase 2</div>
+        <div class="picon">&#129704;</div>
+        <div class="pname" data-i18n="phase2_name">Cultivation</div>
+        <div class="pdesc" data-i18n="phase2_desc">Awaken &amp; strengthen the bloodline</div>
+      </div>
+      <div class="phase">
+        <div class="pnum" data-i18n="phase3_num">Phase 3</div>
+        <div class="picon">&#128165;</div>
+        <div class="pname" data-i18n="phase3_name">Invasion</div>
+        <div class="pdesc" data-i18n="phase3_desc">Behemoths march on enemy empire</div>
+      </div>
+      <div class="phase">
+        <div class="pnum" data-i18n="phase4_num">Phase 4</div>
+        <div class="picon">&#127942;</div>
+        <div class="pname" data-i18n="phase4_name">Victory</div>
+        <div class="pdesc" data-i18n="phase4_desc">Higher score wins &middot; spend crystals</div>
+      </div>
+    </div>
+    <div class="co info" data-i18n="s2_callout">
+      <strong>Empire vs Empire.</strong> It's <strong>our server vs an enemy server</strong> (Behemoth vs Behemoth). Each side waits for its admin to lock in the time &amp; location of the invasion &mdash; <span class="pill">TBC</span> watch alliance chat for the call.
+    </div>
+  </div>
+
+  <!-- 3. OUR BEHEMOT -->
+  <div class="section">
+    <div class="sh"><span class="n">3</span> <span data-i18n="s3_title">Our Behemoth</span></div>
+    <p class="blurb" data-i18n="s3_blurb">The Behemoth grows through stages as we feed it Awaken Runestones. Starting stage is <strong>Juvenile</strong>. Cultivation fills a bar toward the next awakening.</p>
+    <div class="stat-row">
+      <div class="stat-box"><div class="val" data-i18n="stat_juvenile">Juvenile</div><div class="lbl" data-i18n="stat_stage_lbl">Current Stage</div></div>
+      <div class="stat-box"><div class="val">0 / 500K</div><div class="lbl" data-i18n="stat_cult_lbl">Cultivation Bar</div></div>
+      <div class="stat-box"><div class="val">8,750/s</div><div class="lbl" data-i18n="stat_siege_lbl">Siege (start)</div></div>
+      <div class="stat-box"><div class="val">3.5M</div><div class="lbl" data-i18n="stat_health_lbl">Health (start)</div></div>
+    </div>
+
+    <div class="co warn" data-i18n="s3_combat_intro">
+      <strong>How combat actually works (from in-game tooltips):</strong>
+    </div>
+    <div class="strat">
+      <h3 style="color:var(--accent-red);">&#9876; <span data-i18n="s3_siege_h">Siege (Attack)</span></h3>
+      <ul>
+        <li data-i18n="s3_siege_1">Our Behemoth deals <strong>8,750 durability damage/sec</strong> to the target citadel.</li>
+        <li data-i18n="s3_siege_2">It earns <strong>2,625,000 kingdom points per attack</strong> &mdash; this is the single biggest point source in the mode.</li>
+        <li data-i18n="s3_siege_3">It <strong>cannot attack while stunned.</strong></li>
+      </ul>
+    </div>
+    <div class="strat">
+      <h3 style="color:var(--accent-blue);">&#10084; <span data-i18n="s3_stun_h">Health &amp; The Stun Cycle</span></h3>
+      <ul>
+        <li data-i18n="s3_stun_1">Starting health is <strong>3,500,000</strong>.</li>
+        <li data-i18n="s3_stun_2">When its HP hits 0, the Behemoth consumes <strong>1 stack of Immortal Force</strong>, is <strong>stunned for 30s</strong>, <strong>disbands every rally attacking it</strong>, then <strong>fully regenerates HP</strong>.</li>
+        <li data-i18n="s3_stun_3"><strong>Defenders:</strong> stacking damage to zero it = a 30s window where it can't attack and all attacking rallies scatter. <strong>Attackers:</strong> coordinate so a fresh wave lands the instant the stun ends.</li>
+      </ul>
+    </div>
+
+    <div class="strat">
+      <h3 style="color:var(--accent-gold);" data-i18n="s3_tree_h">Bloodline Lineage Tree</h3>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin-bottom:8px;" data-i18n="s3_tree_blurb">Donate Awaken Runestones to unlock nodes (Rank I &rarr; II). The tree buffs <strong>both the Behemoth itself and every player in the empire</strong>. Toggle <strong>"Enemy Behemoth"</strong> to scout their build.</p>
+      <table class="mtable">
+        <tr><th data-i18n="s3_th_node">Node</th><th data-i18n="s3_th_effect">Effect</th><th>I &rarr; II</th></tr>
+        <tr><td class="name" data-i18n="node_atk">Savage Attack</td><td data-i18n="node_atk_e">+Attack to all empire units</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
+        <tr><td class="name" data-i18n="node_def">Savage Defense</td><td data-i18n="node_def_e">+Defense to all empire units</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
+        <tr><td class="name" data-i18n="node_hp">Savage Health</td><td data-i18n="node_hp_e">+Health to all empire units</td><td class="tiers"><b>2.5%</b> &rarr; <b>5%</b></td></tr>
+        <tr><td class="name" data-i18n="node_fort">Mobile Fortress</td><td data-i18n="node_fort_e">+Behemoth health</td><td class="tiers"><b>250K</b> &rarr; <b>500K</b></td></tr>
+        <tr><td class="name" data-i18n="node_hoof">Iron Hoof</td><td data-i18n="node_hoof_e">+Behemoth durability dmg vs citadels</td><td class="tiers"><b>625</b> &rarr; <b>1,250</b></td></tr>
+        <tr><td class="name" data-i18n="node_bless">Behemoth's Blessing</td><td data-i18n="node_bless_e">Donate runestones for rewards</td><td class="tiers">&mdash;</td></tr>
+      </table>
+      <p style="font-size:12px;color:var(--text-muted);" data-i18n="s3_tree_note">"Sin Despertar" / locked = node not yet awakened. <span class="pill">TBC</span> exact runestone cost per node.</p>
+    </div>
+
+    <div class="strat">
+      <h3 style="color:var(--accent-blue);" data-i18n="s3_purity_h">Bloodline Purity (Tug-of-War)</h3>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin-bottom:4px;" data-i18n="s3_purity_blurb">A live bar between the two empires &mdash; the more we cultivate vs the enemy, the more it tips our way.</p>
+      <div class="tug">
+        <div class="us" style="width:50%;" data-i18n="tug_us">US</div>
+        <div class="them" style="width:50%;" data-i18n="tug_them">ENEMY</div>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);" data-i18n="s3_purity_note">Donate runestones early to push the bar before the invasion stage. <span class="pill">TBC</span> exact effect of winning purity.</p>
+    </div>
+  </div>
+
+  <!-- 4. HOW SCORING WORKS -->
+  <div class="section">
+    <div class="sh"><span class="n">4</span> <span data-i18n="s4_title">How We Win</span></div>
+    <div class="role-grid">
+      <div class="role cult">
+        <h4 data-i18n="role_cult_h">Cultivate</h4>
+        <p data-i18n="role_cult_p">Donate <strong>Awaken Runestones</strong> to grow our Behemoth and push Bloodline Purity. Earns points + strengthens our side for the invasion.</p>
+      </div>
+      <div class="role defend">
+        <h4 data-i18n="role_defend_h">Defend</h4>
+        <p data-i18n="role_defend_p">Rally the <strong>enemy Behemoth to zero HP</strong> to stun it for 30s &mdash; that scatters its rallies and stops it scoring. Protect ours in turn.</p>
+      </div>
+      <div class="role attack">
+        <h4 data-i18n="role_attack_h">Attack</h4>
+        <p data-i18n="role_attack_p">Hit the <strong>enemy Behemoth</strong> during the invasion. Time fresh rallies for the moment a stun ends. Offensive points are the bulk of a strong score.</p>
+      </div>
+      <div class="role relocate">
+        <h4 data-i18n="role_relocate_h">Relocate</h4>
+        <p data-i18n="role_relocate_p">During invasions you can <strong>relocate to the enemy server</strong> to join the offense (1&times; mission, big reward).</p>
+      </div>
+    </div>
+    <div class="co warn" data-i18n="s4_callout">
+      <strong>Win condition:</strong> at the end, the empire with the <strong>higher total score wins</strong>. The Behemoth's own attacks are worth <strong>2.625M kingdom points each</strong>, so keeping ours attacking (and stunning theirs) is the highest-leverage thing we can do. Every donation, defense, and attack adds up &mdash; so does showing up for the invasion window.
+    </div>
+  </div>
+
+  <!-- 5. MISSION CHECKLIST -->
+  <div class="section">
+    <div class="sh"><span class="n">5</span> <span data-i18n="s5_title">Mission Checklist</span></div>
+    <p class="blurb" data-i18n="s5_blurb">Complete these for <strong>Awaken Runestones</strong>, speedups, and Behemoth resources. Higher tiers = bigger rewards. <span class="pill">TBC</span> exact reward amounts.</p>
+
+    <p class="blurb" style="margin-bottom:6px;" data-i18n="s5_milestones_h"><strong style="color:var(--accent-gold);">Personal Point Milestones</strong> &mdash; "Behemoth Friend" rewards for total personal points:</p>
+    <table class="mtable">
+      <tr><th data-i18n="s5_th_milestone">Milestone</th><th data-i18n="s5_th_points">Personal points needed</th></tr>
+      <tr><td class="name" data-i18n="ms_friend1">Behemoth Friend I</td><td class="tiers"><b>1,200,000</b></td></tr>
+      <tr><td class="name" data-i18n="ms_friend2">Behemoth Friend II</td><td class="tiers"><b>3,600,000</b></td></tr>
+      <tr><td class="name" data-i18n="ms_friend3">Behemoth Friend III</td><td class="tiers"><b>7,300,000</b></td></tr>
+    </table>
+
+    <p class="blurb" style="margin-bottom:6px;" data-i18n="s5_repeat_h"><strong style="color:var(--accent-gold);">Repeatable Objectives</strong> &mdash; grind these tiers up:</p>
+    <table class="mtable">
+      <tr><th data-i18n="s5_th_obj">Objective</th><th data-i18n="s5_th_todo">What to do</th><th data-i18n="s5_th_tiers">Tiers</th></tr>
+      <tr>
+        <td class="name" data-i18n="obj_explore">Exploration</td>
+        <td data-i18n="obj_explore_d">Complete Behemoth Cultivation exploration missions</td>
+        <td class="tiers"><b>3</b> / <b>10</b> / <b>15</b> / <b>20</b></td>
+      </tr>
+      <tr>
+        <td class="name" data-i18n="obj_rally">Rally vs Tribes</td>
+        <td data-i18n="obj_rally_d">Successfully join a rally against tribes</td>
+        <td class="tiers"><b>1</b> / <b>4</b> / <b>8</b> / <b>12</b></td>
+      </tr>
+      <tr>
+        <td class="name" data-i18n="obj_trial">Descendant Trial</td>
+        <td data-i18n="obj_trial_d">Deal damage to Descendant Trial tribes</td>
+        <td class="tiers"><b>20K</b> / <b>50K</b> / <b>100K</b> / <b>150K</b></td>
+      </tr>
+      <tr>
+        <td class="name" data-i18n="obj_invasion">Behemoth Invasion</td>
+        <td data-i18n="obj_invasion_d">Relocate to the enemy's server during invasions</td>
+        <td class="tiers"><b>1&times;</b></td>
+      </tr>
+    </table>
+    <div class="co gold" data-i18n="s5_callout">
+      <strong>Priority order while we learn the mode:</strong> 1) push <strong>Exploration</strong> + <strong>Descendant Trial</strong> daily (steady points + runestones), 2) join every <strong>Rally vs Tribes</strong>, 3) when the invasion opens, <strong>relocate &amp; attack</strong> for the big mission reward and offensive points.
+    </div>
+  </div>
+
+  <!-- 6. WHAT TO DO NOW -->
+  <div class="section">
+    <div class="sh"><span class="n">6</span> <span data-i18n="s6_title">What To Do Now</span></div>
+    <div class="strat">
+      <h3 style="color:var(--accent-green);" data-i18n="s6_prep_h">Preparation Stage (we are here)</h3>
+      <ul>
+        <li data-i18n="s6_prep_1"><strong>Run exploration + trial missions daily</strong> &mdash; they fund our runestone supply and personal points.</li>
+        <li data-i18n="s6_prep_2"><strong>Donate runestones to cultivate</strong> &mdash; grow the Behemoth and tip Bloodline Purity our way before invasion.</li>
+        <li data-i18n="s6_prep_3"><strong>Join tribe rallies</strong> whenever they're called &mdash; cheap, repeatable points.</li>
+        <li data-i18n="s6_prep_4"><strong>Watch alliance chat</strong> for the admin's invasion time &amp; location call.</li>
+      </ul>
+    </div>
+    <div class="strat">
+      <h3 style="color:var(--accent-red);" data-i18n="s6_inv_h">Invasion Stage (when it opens)</h3>
+      <ul>
+        <li data-i18n="s6_inv_1"><strong>Be online for the window.</strong> Offensive points during the invasion are where the score is won.</li>
+        <li data-i18n="s6_inv_2"><strong>Relocate to the enemy server</strong> to attack their Behemoth (also clears the 1&times; Invasion mission).</li>
+        <li data-i18n="s6_inv_3"><strong>Defenders stay home</strong> as called to protect our Behemoth from their invasion.</li>
+        <li data-i18n="s6_inv_4">Spend <strong>Behemoth Crystals</strong> in the Behemoth Store before the event closes.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 7. OPEN QUESTIONS -->
+  <div class="section">
+    <div class="sh"><span class="n">7</span> <span data-i18n="s7_title">Still To Confirm</span></div>
+    <ul style="margin:0 0 10px 16px; font-size:14px; line-height:1.7; color:var(--text-secondary);">
+      <li data-i18n="s7_1">Exact <strong>invasion time &amp; location</strong> (set by admin [314]AOEM314).</li>
+      <li data-i18n="s7_2"><strong>Reward contents</strong> for each mission tier and the Behemoth Store catalog.</li>
+      <li data-i18n="s7_3"><strong>Runestone cost per lineage node</strong> &mdash; to plan a donation/awakening priority order.</li>
+      <li data-i18n="s7_4">How <strong>Bloodline Purity</strong> winning translates into a combat advantage.</li>
+      <li data-i18n="s7_5">How many <strong>Immortal Force stacks</strong> a Behemoth has (how many times it can be stunned before it stays down).</li>
+      <li data-i18n="s7_6">Behemoth growth stages after Juvenile and the stat gains per stage.</li>
+    </ul>
+    <div class="co info" data-i18n="s7_next"><strong>Next step:</strong> grab in-game screenshots of the Behemoth Store, the rewards popups, and the invasion map once the admin sets it &mdash; I'll fill those into v3.</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="tagline" data-i18n="footer_tagline">Era 8 &mdash; Awaken &amp; Conquer</div>
+    <div class="sub" data-i18n="footer_sub">Behemoth Conquest &middot; Jun 1&ndash;9 &middot; UTC+0 &middot; Empire vs Empire</div>
+  </div>
+
+</div>
+
+<script>
+const TRANSLATIONS = {
+  "es": {
+    "event_tag": "Nuevo Modo de Juego &middot; Era 8",
+    "subtitle": "Despierta el linaje &middot; Invade imperios enemigos &middot; Guerra entre servidores",
+    "lbl_starts": "Inicia", "lbl_ends": "Termina", "lbl_tz": "Zona horaria",
+    "cd_days": "Días", "cd_hours": "Horas", "cd_min": "Min", "cd_sec": "Seg",
+    "cd_until_start": "Hasta el Inicio", "cd_until_end": "Hasta el Final", "cd_complete": "Evento Finalizado",
+    "draft_banner": "<strong>BORRADOR v2</strong> &mdash; Hecho con capturas de la beta (incl. tooltips de combate y valores del linaje) + el anuncio oficial. Lo marcado con <span class=\"pill\">TBC</span> falta confirmar en el juego (recompensas exactas, costos de runas, hora/lugar de invasión los fija nuestro admin <strong>[314]AOEM314</strong>).",
+    "s1_title": "Visión General",
+    "s1_blurb": "Un modo nuevo donde <strong>dos imperios (servidores) chocan por sus Bégimos</strong>. Durante el evento ganamos <em>Runas del Despertar</em> para hacer crecer y potenciar al Bégimo de nuestro imperio, y luego lo lanzamos contra el servidor enemigo. Ambos bandos atacan y defienden Bégimos en <strong>batallas entre servidores</strong>, sumando puntos. <span class=\"gold\">El imperio con mayor puntaje total gana.</span>",
+    "s1_callout": "<strong>Tres formas de sumar puntos:</strong> (1) donar Runas del Despertar para cultivar a nuestro Bégimo, (2) defender a nuestro propio Bégimo, (3) atacar al Bégimo enemigo. Los <em>Cristales de Bégimo</em> ganados en el evento se gastan en la <strong>Tienda de Bégimo</strong>.",
+    "s2_title": "Las Cuatro Etapas",
+    "s2_blurb": "El evento va del <strong>1 al 9 de junio (UTC+0)</strong> en cuatro etapas. Estamos en <span class=\"gold\">Preparación</span>. Nuestro admin fija la <strong>hora y ubicación de la invasión</strong>.",
+    "phase1_num": "Etapa 1", "phase1_name": "Preparación", "phase1_desc": "Junta runas, cultiva, planea",
+    "phase2_num": "Etapa 2", "phase2_name": "Cultivo", "phase2_desc": "Despierta y refuerza el linaje",
+    "phase3_num": "Etapa 3", "phase3_name": "Invasión", "phase3_desc": "Los Bégimos marchan al imperio enemigo",
+    "phase4_num": "Etapa 4", "phase4_name": "Victoria", "phase4_desc": "Mayor puntaje gana &middot; gasta cristales",
+    "s2_callout": "<strong>Imperio vs Imperio.</strong> Es <strong>nuestro servidor vs un servidor enemigo</strong> (Bégimo vs Bégimo). Cada bando espera a que su admin fije la hora y ubicación de la invasión &mdash; <span class=\"pill\">TBC</span> atento al chat de alianza.",
+    "s3_title": "Nuestro Bégimo",
+    "s3_blurb": "El Bégimo crece por etapas a medida que lo alimentamos con Runas del Despertar. La etapa inicial es <strong>Juvenil</strong>. El cultivo llena una barra hacia el siguiente despertar.",
+    "stat_juvenile": "Juvenil", "stat_stage_lbl": "Etapa Actual", "stat_cult_lbl": "Barra de Cultivo", "stat_siege_lbl": "Asedio (inicio)", "stat_health_lbl": "Salud (inicio)",
+    "s3_combat_intro": "<strong>Cómo funciona el combate (según los tooltips del juego):</strong>",
+    "s3_siege_h": "Asedio (Ataque)",
+    "s3_siege_1": "Nuestro Bégimo inflige <strong>8.750 de daño de durabilidad por segundo</strong> a la ciudadela objetivo.",
+    "s3_siege_2": "Gana <strong>2.625.000 puntos del reino por ataque</strong> &mdash; la mayor fuente de puntos del modo.",
+    "s3_siege_3": "<strong>No puede atacar mientras está aturdido.</strong>",
+    "s3_stun_h": "Salud y el Ciclo de Aturdimiento",
+    "s3_stun_1": "La salud inicial es <strong>3.500.000</strong>.",
+    "s3_stun_2": "Cuando su salud llega a 0, el Bégimo consume <strong>1 acumulación de Fuerza Inmortal</strong>, queda <strong>aturdido 30s</strong>, <strong>disuelve todas las reuniones que lo atacan</strong>, y luego <strong>regenera toda su salud</strong>.",
+    "s3_stun_3": "<strong>Defensores:</strong> bajarlo a cero = 30s en que no puede atacar y todas las reuniones atacantes se dispersan. <strong>Atacantes:</strong> coordinen para que una oleada fresca llegue justo al terminar el aturdimiento.",
+    "s3_tree_h": "Árbol de Linaje",
+    "s3_tree_blurb": "Dona Runas del Despertar para desbloquear nodos (Rango I &rarr; II). El árbol potencia <strong>al Bégimo y a todos los jugadores del imperio</strong>. Activa <strong>\"Bégimo enemigo\"</strong> para espiar su build.",
+    "s3_th_node": "Nodo", "s3_th_effect": "Efecto",
+    "node_atk": "Ataque Salvaje", "node_atk_e": "+Ataque a todas las unidades del imperio",
+    "node_def": "Defensa Salvaje", "node_def_e": "+Defensa a todas las unidades del imperio",
+    "node_hp": "Salud Salvaje", "node_hp_e": "+Salud a todas las unidades del imperio",
+    "node_fort": "Fortaleza Móvil", "node_fort_e": "+Salud del Bégimo",
+    "node_hoof": "Pezuña de Hierro", "node_hoof_e": "+Daño de durabilidad del Bégimo vs ciudadelas",
+    "node_bless": "Bendición de Bégimo", "node_bless_e": "Dona runas para recibir recompensas",
+    "s3_tree_note": "\"Sin Despertar\" / bloqueado = nodo aún no despertado. <span class=\"pill\">TBC</span> costo exacto de runas por nodo.",
+    "s3_purity_h": "Pureza del Linaje (Tira y Afloja)",
+    "s3_purity_blurb": "Una barra en vivo entre los dos imperios &mdash; cuanto más cultivamos frente al enemigo, más se inclina a nuestro favor.",
+    "tug_us": "NOSOTROS", "tug_them": "ENEMIGO",
+    "s3_purity_note": "Dona runas temprano para empujar la barra antes de la invasión. <span class=\"pill\">TBC</span> efecto exacto de ganar la pureza.",
+    "s4_title": "Cómo Ganamos",
+    "role_cult_h": "Cultivar", "role_cult_p": "Dona <strong>Runas del Despertar</strong> para hacer crecer al Bégimo y empujar la Pureza del Linaje. Suma puntos + fortalece nuestro bando para la invasión.",
+    "role_defend_h": "Defender", "role_defend_p": "Baja al <strong>Bégimo enemigo a 0 de salud</strong> para aturdirlo 30s &mdash; dispersa sus reuniones y frena sus puntos. Protege al nuestro a su vez.",
+    "role_attack_h": "Atacar", "role_attack_p": "Golpea al <strong>Bégimo enemigo</strong> durante la invasión. Cronometra reuniones frescas para el instante en que termina el aturdimiento. Los puntos ofensivos son el grueso de un buen puntaje.",
+    "role_relocate_h": "Reubicarse", "role_relocate_p": "Durante las invasiones puedes <strong>reubicarte al servidor enemigo</strong> para unirte a la ofensiva (misión 1&times;, gran recompensa).",
+    "s4_callout": "<strong>Condición de victoria:</strong> al final, el imperio con <strong>mayor puntaje total gana</strong>. Los ataques del propio Bégimo valen <strong>2,625M puntos del reino cada uno</strong>, así que mantener al nuestro atacando (y aturdir al de ellos) es lo de mayor impacto. Cada donación, defensa y ataque suma &mdash; igual que presentarse en la ventana de invasión.",
+    "s5_title": "Lista de Misiones",
+    "s5_blurb": "Completa estas por <strong>Runas del Despertar</strong>, aceleradores y recursos de Bégimo. Niveles más altos = mejores recompensas. <span class=\"pill\">TBC</span> montos exactos.",
+    "s5_milestones_h": "<strong style=\"color:var(--accent-gold);\">Hitos de Puntos Personales</strong> &mdash; recompensas \"Amigo de Bégimo\" por puntos personales totales:",
+    "s5_th_milestone": "Hito", "s5_th_points": "Puntos personales necesarios",
+    "ms_friend1": "Amigo de Bégimo I", "ms_friend2": "Amigo de Bégimo II", "ms_friend3": "Amigo de Bégimo III",
+    "s5_repeat_h": "<strong style=\"color:var(--accent-gold);\">Objetivos Repetibles</strong> &mdash; sube estos niveles:",
+    "s5_th_obj": "Objetivo", "s5_th_todo": "Qué hacer", "s5_th_tiers": "Niveles",
+    "obj_explore": "Exploración", "obj_explore_d": "Completa misiones de exploración de Cultivo de Bégimo",
+    "obj_rally": "Reunión vs Tribus", "obj_rally_d": "Participa con éxito en una reunión contra tribus",
+    "obj_trial": "Prueba del Descendiente", "obj_trial_d": "Inflige daño a las tribus de la Prueba del Descendiente",
+    "obj_invasion": "Invasión de Bégimo", "obj_invasion_d": "Reubícate al servidor enemigo durante las invasiones",
+    "s5_callout": "<strong>Orden de prioridad mientras aprendemos el modo:</strong> 1) empuja <strong>Exploración</strong> + <strong>Prueba del Descendiente</strong> a diario (puntos y runas constantes), 2) únete a cada <strong>Reunión vs Tribus</strong>, 3) cuando abra la invasión, <strong>reubícate y ataca</strong> por la gran recompensa y los puntos ofensivos.",
+    "s6_title": "Qué Hacer Ahora",
+    "s6_prep_h": "Etapa de Preparación (estamos aquí)",
+    "s6_prep_1": "<strong>Haz misiones de exploración + prueba a diario</strong> &mdash; financian nuestras runas y puntos personales.",
+    "s6_prep_2": "<strong>Dona runas para cultivar</strong> &mdash; haz crecer al Bégimo e inclina la Pureza del Linaje a nuestro favor antes de la invasión.",
+    "s6_prep_3": "<strong>Únete a las reuniones contra tribus</strong> cuando se convoquen &mdash; puntos baratos y repetibles.",
+    "s6_prep_4": "<strong>Atento al chat de alianza</strong> para la convocatoria de hora y ubicación de la invasión.",
+    "s6_inv_h": "Etapa de Invasión (cuando abra)",
+    "s6_inv_1": "<strong>Conéctate durante la ventana.</strong> Los puntos ofensivos de la invasión son donde se gana el puntaje.",
+    "s6_inv_2": "<strong>Reubícate al servidor enemigo</strong> para atacar a su Bégimo (también completa la misión de Invasión 1&times;).",
+    "s6_inv_3": "<strong>Los defensores se quedan</strong> según se convoque para proteger a nuestro Bégimo de su invasión.",
+    "s6_inv_4": "Gasta los <strong>Cristales de Bégimo</strong> en la Tienda de Bégimo antes de que cierre el evento.",
+    "s7_title": "Por Confirmar",
+    "s7_1": "Hora y ubicación exactas de la <strong>invasión</strong> (las fija el admin [314]AOEM314).",
+    "s7_2": "<strong>Contenido de recompensas</strong> de cada nivel de misión y el catálogo de la Tienda de Bégimo.",
+    "s7_3": "<strong>Costo de runas por nodo del linaje</strong> &mdash; para planear el orden de donación/despertar.",
+    "s7_4": "Cómo se traduce ganar la <strong>Pureza del Linaje</strong> en ventaja de combate.",
+    "s7_5": "Cuántas <strong>acumulaciones de Fuerza Inmortal</strong> tiene un Bégimo (cuántas veces puede aturdirse antes de caer).",
+    "s7_6": "Etapas de crecimiento del Bégimo tras Juvenil y las mejoras de stats por etapa.",
+    "s7_next": "<strong>Siguiente paso:</strong> conseguir capturas de la Tienda de Bégimo, los popups de recompensas y el mapa de invasión cuando el admin lo fije &mdash; los meto en la v3.",
+    "footer_tagline": "Era 8 &mdash; Despierta y Conquista",
+    "footer_sub": "Conquista de Bégimo &middot; 1&ndash;9 Jun &middot; UTC+0 &middot; Imperio vs Imperio"
+  },
+  "fr": {
+    "event_tag": "Nouveau Mode de Jeu &middot; Ère 8",
+    "subtitle": "Éveille la lignée &middot; Envahis les empires ennemis &middot; Guerre inter-serveurs",
+    "lbl_starts": "Début", "lbl_ends": "Fin", "lbl_tz": "Fuseau horaire",
+    "cd_days": "Jours", "cd_hours": "Heures", "cd_min": "Min", "cd_sec": "Sec",
+    "cd_until_start": "Avant le Début", "cd_until_end": "Avant la Fin", "cd_complete": "Événement Terminé",
+    "draft_banner": "<strong>BROUILLON v2</strong> &mdash; Créé à partir des captures de la bêta (incl. infobulles de combat et valeurs de lignée) + l'annonce officielle. Les éléments marqués <span class=\"pill\">TBC</span> restent à confirmer en jeu (récompenses exactes, coûts de runes, heure/lieu d'invasion fixés par notre admin <strong>[314]AOEM314</strong>).",
+    "s1_title": "Vue d'Ensemble",
+    "s1_blurb": "Un tout nouveau mode où <strong>deux empires (serveurs) s'affrontent pour leurs Béhimoths</strong>. Pendant l'événement, on gagne des <em>Runes d'Éveil</em> pour faire grandir et renforcer le Béhimoth de notre empire, puis on le lâche sur le serveur ennemi. Les deux camps attaquent et défendent les béhimoths dans des <strong>batailles inter-serveurs</strong>, en marquant des points. <span class=\"gold\">L'empire au plus haut score total gagne.</span>",
+    "s1_callout": "<strong>Trois façons de marquer :</strong> (1) donner des Runes d'Éveil pour cultiver notre Béhimoth, (2) défendre notre propre Béhimoth, (3) attaquer le Béhimoth ennemi. Les <em>Cristaux de Béhimoth</em> gagnés servent à la <strong>Boutique Béhimoth</strong>.",
+    "s2_title": "Les Quatre Phases",
+    "s2_blurb": "L'événement va du <strong>1er au 9 juin (UTC+0)</strong> en quatre phases. Nous sommes en <span class=\"gold\">Préparation</span>. Notre admin fixe l'<strong>heure et le lieu de l'invasion</strong>.",
+    "phase1_num": "Phase 1", "phase1_name": "Préparation", "phase1_desc": "Rassembler runes, cultiver, planifier",
+    "phase2_num": "Phase 2", "phase2_name": "Culture", "phase2_desc": "Éveiller et renforcer la lignée",
+    "phase3_num": "Phase 3", "phase3_name": "Invasion", "phase3_desc": "Les béhimoths marchent sur l'empire ennemi",
+    "phase4_num": "Phase 4", "phase4_name": "Victoire", "phase4_desc": "Le plus haut score gagne &middot; dépenser les cristaux",
+    "s2_callout": "<strong>Empire contre Empire.</strong> C'est <strong>notre serveur contre un serveur ennemi</strong> (Béhimoth vs Béhimoth). Chaque camp attend que son admin fixe l'heure et le lieu de l'invasion &mdash; <span class=\"pill\">TBC</span> surveillez le chat d'alliance.",
+    "s3_title": "Notre Béhimoth",
+    "s3_blurb": "Le Béhimoth grandit par paliers à mesure qu'on le nourrit de Runes d'Éveil. Le palier de départ est <strong>Juvénile</strong>. La culture remplit une barre vers le prochain éveil.",
+    "stat_juvenile": "Juvénile", "stat_stage_lbl": "Palier Actuel", "stat_cult_lbl": "Barre de Culture", "stat_siege_lbl": "Siège (début)", "stat_health_lbl": "Santé (début)",
+    "s3_combat_intro": "<strong>Comment fonctionne le combat (selon les infobulles du jeu) :</strong>",
+    "s3_siege_h": "Siège (Attaque)",
+    "s3_siege_1": "Notre Béhimoth inflige <strong>8 750 de dégâts de durabilité/sec</strong> à la citadelle ciblée.",
+    "s3_siege_2": "Il gagne <strong>2 625 000 points de royaume par attaque</strong> &mdash; la plus grande source de points du mode.",
+    "s3_siege_3": "Il <strong>ne peut pas attaquer étant étourdi.</strong>",
+    "s3_stun_h": "Santé et le Cycle d'Étourdissement",
+    "s3_stun_1": "La santé de départ est de <strong>3 500 000</strong>.",
+    "s3_stun_2": "Quand sa santé atteint 0, le Béhimoth consomme <strong>1 cumul de Force Immortelle</strong>, est <strong>étourdi 30s</strong>, <strong>dissout tous les ralliements qui l'attaquent</strong>, puis <strong>régénère toute sa santé</strong>.",
+    "s3_stun_3": "<strong>Défenseurs :</strong> le mettre à zéro = 30s où il ne peut pas attaquer et tous les ralliements attaquants se dispersent. <strong>Attaquants :</strong> coordonnez-vous pour qu'une vague fraîche arrive dès la fin de l'étourdissement.",
+    "s3_tree_h": "Arbre de Lignée",
+    "s3_tree_blurb": "Donnez des Runes d'Éveil pour débloquer des nœuds (Rang I &rarr; II). L'arbre améliore <strong>le Béhimoth et chaque joueur de l'empire</strong>. Activez <strong>\"Béhimoth ennemi\"</strong> pour espionner son build.",
+    "s3_th_node": "Nœud", "s3_th_effect": "Effet",
+    "node_atk": "Attaque Sauvage", "node_atk_e": "+Attaque à toutes les unités de l'empire",
+    "node_def": "Défense Sauvage", "node_def_e": "+Défense à toutes les unités de l'empire",
+    "node_hp": "Santé Sauvage", "node_hp_e": "+Santé à toutes les unités de l'empire",
+    "node_fort": "Forteresse Mobile", "node_fort_e": "+Santé du Béhimoth",
+    "node_hoof": "Sabot de Fer", "node_hoof_e": "+Dégâts de durabilité du Béhimoth vs citadelles",
+    "node_bless": "Bénédiction du Béhimoth", "node_bless_e": "Donnez des runes pour des récompenses",
+    "s3_tree_note": "\"Non éveillé\" / verrouillé = nœud pas encore éveillé. <span class=\"pill\">TBC</span> coût exact en runes par nœud.",
+    "s3_purity_h": "Pureté de la Lignée (Bras de Fer)",
+    "s3_purity_blurb": "Une barre en direct entre les deux empires &mdash; plus on cultive face à l'ennemi, plus elle penche de notre côté.",
+    "tug_us": "NOUS", "tug_them": "ENNEMI",
+    "s3_purity_note": "Donnez des runes tôt pour pousser la barre avant l'invasion. <span class=\"pill\">TBC</span> effet exact de gagner la pureté.",
+    "s4_title": "Comment Gagner",
+    "role_cult_h": "Cultiver", "role_cult_p": "Donnez des <strong>Runes d'Éveil</strong> pour faire grandir notre Béhimoth et pousser la Pureté de la Lignée. Marque des points + renforce notre camp pour l'invasion.",
+    "role_defend_h": "Défendre", "role_defend_p": "Ralliez le <strong>Béhimoth ennemi à 0 de santé</strong> pour l'étourdir 30s &mdash; ça disperse ses ralliements et stoppe ses points. Protégez le nôtre en retour.",
+    "role_attack_h": "Attaquer", "role_attack_p": "Frappez le <strong>Béhimoth ennemi</strong> pendant l'invasion. Chronométrez des ralliements frais pour l'instant où l'étourdissement finit. Les points offensifs font le gros d'un bon score.",
+    "role_relocate_h": "Se Relocaliser", "role_relocate_p": "Pendant les invasions, vous pouvez <strong>vous relocaliser sur le serveur ennemi</strong> pour rejoindre l'offensive (mission 1&times;, grosse récompense).",
+    "s4_callout": "<strong>Condition de victoire :</strong> à la fin, l'empire au <strong>plus haut score total gagne</strong>. Les attaques du Béhimoth valent <strong>2,625M points de royaume chacune</strong>, donc garder le nôtre en attaque (et étourdir le leur) est l'action la plus rentable. Chaque don, défense et attaque compte &mdash; tout comme être présent à la fenêtre d'invasion.",
+    "s5_title": "Liste des Missions",
+    "s5_blurb": "Complétez-les pour des <strong>Runes d'Éveil</strong>, des accélérateurs et des ressources de Béhimoth. Paliers plus hauts = meilleures récompenses. <span class=\"pill\">TBC</span> montants exacts.",
+    "s5_milestones_h": "<strong style=\"color:var(--accent-gold);\">Paliers de Points Personnels</strong> &mdash; récompenses \"Ami du Béhimoth\" pour le total de points personnels :",
+    "s5_th_milestone": "Palier", "s5_th_points": "Points personnels requis",
+    "ms_friend1": "Ami du Béhimoth I", "ms_friend2": "Ami du Béhimoth II", "ms_friend3": "Ami du Béhimoth III",
+    "s5_repeat_h": "<strong style=\"color:var(--accent-gold);\">Objectifs Répétables</strong> &mdash; montez ces paliers :",
+    "s5_th_obj": "Objectif", "s5_th_todo": "Quoi faire", "s5_th_tiers": "Paliers",
+    "obj_explore": "Exploration", "obj_explore_d": "Complétez des missions d'exploration de Culture du Béhimoth",
+    "obj_rally": "Ralliement vs Tribus", "obj_rally_d": "Participez avec succès à un ralliement contre les tribus",
+    "obj_trial": "Épreuve du Descendant", "obj_trial_d": "Infligez des dégâts aux tribus de l'Épreuve du Descendant",
+    "obj_invasion": "Invasion du Béhimoth", "obj_invasion_d": "Relocalisez-vous sur le serveur ennemi pendant les invasions",
+    "s5_callout": "<strong>Ordre de priorité le temps d'apprendre le mode :</strong> 1) poussez <strong>Exploration</strong> + <strong>Épreuve du Descendant</strong> chaque jour (points et runes réguliers), 2) rejoignez chaque <strong>Ralliement vs Tribus</strong>, 3) à l'ouverture de l'invasion, <strong>relocalisez-vous et attaquez</strong> pour la grosse récompense et les points offensifs.",
+    "s6_title": "Que Faire Maintenant",
+    "s6_prep_h": "Phase de Préparation (nous y sommes)",
+    "s6_prep_1": "<strong>Faites les missions d'exploration + épreuve chaque jour</strong> &mdash; elles financent nos runes et points personnels.",
+    "s6_prep_2": "<strong>Donnez des runes pour cultiver</strong> &mdash; faites grandir le Béhimoth et inclinez la Pureté de la Lignée de notre côté avant l'invasion.",
+    "s6_prep_3": "<strong>Rejoignez les ralliements de tribus</strong> dès qu'ils sont lancés &mdash; points peu coûteux et répétables.",
+    "s6_prep_4": "<strong>Surveillez le chat d'alliance</strong> pour l'appel à l'heure et au lieu de l'invasion.",
+    "s6_inv_h": "Phase d'Invasion (à l'ouverture)",
+    "s6_inv_1": "<strong>Soyez en ligne pendant la fenêtre.</strong> Les points offensifs de l'invasion, c'est là que le score se gagne.",
+    "s6_inv_2": "<strong>Relocalisez-vous sur le serveur ennemi</strong> pour attaquer leur Béhimoth (complète aussi la mission Invasion 1&times;).",
+    "s6_inv_3": "<strong>Les défenseurs restent</strong> selon l'appel pour protéger notre Béhimoth de leur invasion.",
+    "s6_inv_4": "Dépensez les <strong>Cristaux de Béhimoth</strong> à la Boutique Béhimoth avant la fin de l'événement.",
+    "s7_title": "À Confirmer",
+    "s7_1": "Heure et lieu exacts de l'<strong>invasion</strong> (fixés par l'admin [314]AOEM314).",
+    "s7_2": "<strong>Contenu des récompenses</strong> de chaque palier de mission et le catalogue de la Boutique Béhimoth.",
+    "s7_3": "<strong>Coût en runes par nœud de lignée</strong> &mdash; pour planifier l'ordre de don/éveil.",
+    "s7_4": "Comment gagner la <strong>Pureté de la Lignée</strong> se traduit en avantage de combat.",
+    "s7_5": "Combien de <strong>cumuls de Force Immortelle</strong> a un Béhimoth (combien de fois il peut être étourdi avant de tomber).",
+    "s7_6": "Les paliers de croissance du Béhimoth après Juvénile et les gains de stats par palier.",
+    "s7_next": "<strong>Prochaine étape :</strong> obtenir des captures de la Boutique Béhimoth, des popups de récompenses et de la carte d'invasion une fois fixée par l'admin &mdash; je les ajoute en v3.",
+    "footer_tagline": "Ère 8 &mdash; Éveille et Conquiers",
+    "footer_sub": "Conquête du Béhimoth &middot; 1&ndash;9 juin &middot; UTC+0 &middot; Empire vs Empire"
+  },
+  "ko": {
+    "event_tag": "신규 게임 모드 &middot; 시대 8",
+    "subtitle": "혈통을 각성하라 &middot; 적 제국 침공 &middot; 교차 서버 전쟁",
+    "lbl_starts": "시작", "lbl_ends": "종료", "lbl_tz": "시간대",
+    "cd_days": "일", "cd_hours": "시", "cd_min": "분", "cd_sec": "초",
+    "cd_until_start": "시작까지", "cd_until_end": "종료까지", "cd_complete": "이벤트 종료",
+    "draft_banner": "<strong>초안 v2</strong> &mdash; 베타 게임 화면(전투 툴팁 및 혈통 노드 수치 포함) + 공식 발표 기반. <span class=\"pill\">TBC</span> 표시 항목은 게임 내 확인 필요(정확한 보상, 룬 비용, 침공 시간/장소는 관리자 <strong>[314]AOEM314</strong>가 설정).",
+    "s1_title": "전체 그림",
+    "s1_blurb": "<strong>두 제국(서버)이 각자의 비헤모스를 두고 충돌</strong>하는 신규 모드. 이벤트 동안 <em>각성 룬스톤</em>을 모아 우리 제국의 비헤모스를 키우고 강화한 뒤 적 서버에 풀어놓습니다. 양 진영은 <strong>교차 서버 전투</strong>에서 비헤모스를 공격·방어하며 점수를 쌓습니다. <span class=\"gold\">총점이 높은 제국이 승리.</span>",
+    "s1_callout": "<strong>점수 획득 3가지 방법:</strong> (1) 각성 룬스톤을 기부해 우리 비헤모스 육성, (2) 우리 비헤모스 방어, (3) 적 비헤모스 공격. 이벤트 중 획득한 <em>비헤모스 크리스탈</em>은 <strong>비헤모스 상점</strong>에서 사용.",
+    "s2_title": "네 단계",
+    "s2_blurb": "이벤트는 <strong>6월 1일~9일 (UTC+0)</strong> 네 단계로 진행. 현재 <span class=\"gold\">준비</span> 단계. 관리자가 정확한 <strong>침공 시간·장소</strong>를 설정.",
+    "phase1_num": "1단계", "phase1_name": "준비", "phase1_desc": "룬스톤 수집, 육성, 계획",
+    "phase2_num": "2단계", "phase2_name": "육성", "phase2_desc": "혈통 각성 및 강화",
+    "phase3_num": "3단계", "phase3_name": "침공", "phase3_desc": "비헤모스가 적 제국으로 진군",
+    "phase4_num": "4단계", "phase4_name": "승리", "phase4_desc": "최고 점수 승리 &middot; 크리스탈 사용",
+    "s2_callout": "<strong>제국 대 제국.</strong> <strong>우리 서버 vs 적 서버</strong>(비헤모스 vs 비헤모스). 각 진영은 관리자가 침공 시간·장소를 정할 때까지 대기 &mdash; <span class=\"pill\">TBC</span> 동맹 채팅 주시.",
+    "s3_title": "우리 비헤모스",
+    "s3_blurb": "각성 룬스톤을 먹이면 비헤모스가 단계별로 성장. 시작 단계는 <strong>유체</strong>. 육성은 다음 각성을 향한 바를 채웁니다.",
+    "stat_juvenile": "유체", "stat_stage_lbl": "현재 단계", "stat_cult_lbl": "육성 바", "stat_siege_lbl": "공성(시작)", "stat_health_lbl": "체력(시작)",
+    "s3_combat_intro": "<strong>전투 작동 방식 (게임 툴팁 기준):</strong>",
+    "s3_siege_h": "공성(공격)",
+    "s3_siege_1": "우리 비헤모스는 목표 성채에 초당 <strong>8,750 내구도 피해</strong>를 입혀요.",
+    "s3_siege_2": "공격당 <strong>2,625,000 왕국 점수</strong>를 획득 &mdash; 이 모드 최대 점수 원천.",
+    "s3_siege_3": "기절 중에는 <strong>공격 불가.</strong>",
+    "s3_stun_h": "체력 및 기절 사이클",
+    "s3_stun_1": "시작 체력은 <strong>3,500,000</strong>.",
+    "s3_stun_2": "체력이 0이 되면 비헤모스는 <strong>불멸의 힘 1중첩</strong>을 소모하고 <strong>30초간 기절</strong>되며 <strong>공격 중인 모든 집결을 해산</strong>한 뒤 <strong>체력을 완전 회복</strong>합니다.",
+    "s3_stun_3": "<strong>방어자:</strong> 0으로 만들면 30초간 공격 불가 + 모든 공격 집결 해산. <strong>공격자:</strong> 기절이 끝나는 순간 새 물결이 도착하도록 조율.",
+    "s3_tree_h": "혈통 계보 트리",
+    "s3_tree_blurb": "각성 룬스톤을 기부해 노드 해금(등급 I &rarr; II). 트리는 <strong>비헤모스 자체와 제국 모든 플레이어</strong>를 강화. <strong>\"적 비헤모스\"</strong>를 켜서 상대 빌드 정찰.",
+    "s3_th_node": "노드", "s3_th_effect": "효과",
+    "node_atk": "야성의 공격", "node_atk_e": "제국 전 병과 공격 +",
+    "node_def": "야성의 방어", "node_def_e": "제국 전 병과 방어 +",
+    "node_hp": "야성의 체력", "node_hp_e": "제국 전 병과 체력 +",
+    "node_fort": "이동 요새", "node_fort_e": "비헤모스 체력 +",
+    "node_hoof": "강철 발굽", "node_hoof_e": "성채 대상 비헤모스 내구도 피해 +",
+    "node_bless": "비헤모스의 축복", "node_bless_e": "룬스톤을 기부해 보상 획득",
+    "s3_tree_note": "\"미각성\"/잠김 = 아직 각성되지 않은 노드. <span class=\"pill\">TBC</span> 노드당 정확한 룬 비용.",
+    "s3_purity_h": "혈통 순도(줄당기기)",
+    "s3_purity_blurb": "두 제국 사이의 실시간 바 &mdash; 적보다 많이 육성할수록 우리 쪽으로 기움.",
+    "tug_us": "우리", "tug_them": "적",
+    "s3_purity_note": "침공 전에 바를 밀어두도록 룬스톤을 일찍 기부. <span class=\"pill\">TBC</span> 순도 승리의 정확한 효과.",
+    "s4_title": "승리 방법",
+    "role_cult_h": "육성", "role_cult_p": "<strong>각성 룬스톤</strong>을 기부해 비헤모스를 키우고 혈통 순도를 밀어요. 점수 + 침공 대비 아군 강화.",
+    "role_defend_h": "방어", "role_defend_p": "<strong>적 비헤모스를 체력 0으로</strong> 집결해 30초 기절 &mdash; 집결을 흔들고 득점을 멈춤. 동시에 우리 부대 보호.",
+    "role_attack_h": "공격", "role_attack_p": "침공 중 <strong>적 비헤모스</strong> 공격. 기절이 끝나는 순간에 새 집결이 도착하도록 타이밍. 공격 점수가 좋은 점수의 대부분.",
+    "role_relocate_h": "이전", "role_relocate_p": "침공 중 <strong>적 서버로 이전</strong>해 공격에 합류 가능(1회 임무, 큰 보상).",
+    "s4_callout": "<strong>승리 조건:</strong> 끝에 <strong>총점이 높은 제국이 승리</strong>. 비헤모스 공격은 회당 <strong>262.5만 왕국 점수</strong> 가치라 우리 비헤모스를 공격 상태로 유지(그리고 적을 기절)하는 게 가장 효율적. 모든 기부·방어·공격이 더해짐 &mdash; 침공 시간대 참석도 마찬가지.",
+    "s5_title": "임무 체크리스트",
+    "s5_blurb": "<strong>각성 룬스톤</strong>, 가속, 비헤모스 자원을 위해 완료. 높은 등급 = 더 큰 보상. <span class=\"pill\">TBC</span> 정확한 보상량.",
+    "s5_milestones_h": "<strong style=\"color:var(--accent-gold);\">개인 점수 마일스톤</strong> &mdash; 총 개인 점수에 따른 \"비헤모스의 벗\" 보상:",
+    "s5_th_milestone": "마일스톤", "s5_th_points": "필요 개인 점수",
+    "ms_friend1": "비헤모스의 벗 I", "ms_friend2": "비헤모스의 벗 II", "ms_friend3": "비헤모스의 벗 III",
+    "s5_repeat_h": "<strong style=\"color:var(--accent-gold);\">반복 목표</strong> &mdash; 등급을 올리세요:",
+    "s5_th_obj": "목표", "s5_th_todo": "할 일", "s5_th_tiers": "등급",
+    "obj_explore": "탐험", "obj_explore_d": "비헤모스 육성 탐험 임무 완료",
+    "obj_rally": "부족 집결", "obj_rally_d": "부족과의 집결에 성공적으로 참여",
+    "obj_trial": "후속자의 시험", "obj_trial_d": "후속자의 시험 부족에게 피해",
+    "obj_invasion": "비헤모스 침공", "obj_invasion_d": "침공 중 적 서버로 이전",
+    "s5_callout": "<strong>모드를 익히는 동안 우선순위:</strong> 1) 매일 <strong>탐험</strong> + <strong>후속자의 시험</strong> 진행(꾸준한 점수·룬스톤), 2) 모든 <strong>부족 집결</strong> 참여, 3) 침공이 열리면 <strong>이전 후 공격</strong>으로 큰 임무 보상과 공격 점수.",
+    "s6_title": "지금 할 일",
+    "s6_prep_h": "준비 단계 (현재)",
+    "s6_prep_1": "<strong>매일 탐험 + 시험 임무 수행</strong> &mdash; 룬스톤 공급과 개인 점수를 충당.",
+    "s6_prep_2": "<strong>룬스톤을 기부해 육성</strong> &mdash; 침공 전 비헤모스를 키우고 혈통 순도를 우리 쪽으로.",
+    "s6_prep_3": "소집될 때마다 <strong>부족 집결 참여</strong> &mdash; 저렴하고 반복 가능한 점수.",
+    "s6_prep_4": "<strong>동맹 채팅 주시</strong> &mdash; 관리자의 침공 시간·장소 공지.",
+    "s6_inv_h": "침공 단계 (열릴 때)",
+    "s6_inv_1": "<strong>시간대에 접속.</strong> 침공 중 공격 점수가 승부처.",
+    "s6_inv_2": "<strong>적 서버로 이전</strong>해 적 비헤모스 공격(침공 1회 임무도 완료).",
+    "s6_inv_3": "<strong>방어자는 잔류</strong>하여 소집에 따라 우리 비헤모스를 적 침공으로부터 보호.",
+    "s6_inv_4": "이벤트 종료 전 <strong>비헤모스 크리스탈</strong>을 비헤모스 상점에서 소비.",
+    "s7_title": "확인 필요",
+    "s7_1": "정확한 <strong>침공 시간·장소</strong>(관리자 [314]AOEM314 설정).",
+    "s7_2": "각 임무 등급의 <strong>보상 내용</strong>과 비헤모스 상점 목록.",
+    "s7_3": "<strong>혈통 노드당 룬 비용</strong> &mdash; 기부/각성 우선순위 계획용.",
+    "s7_4": "<strong>혈통 순도</strong> 승리가 전투 이점으로 어떻게 이어지는지.",
+    "s7_5": "비헤모스가 <strong>불멸의 힘 중첩</strong>을 몇 개 가지는지(쓰러지기 전 몇 번 기절 가능한지).",
+    "s7_6": "유체 이후 비헤모스 성장 단계와 단계별 스탯 증가량.",
+    "s7_next": "<strong>다음 단계:</strong> 관리자가 설정하면 비헤모스 상점·보상 팝업·침공 맵 스크린샷 확보 &mdash; v3에 반영 예정.",
+    "footer_tagline": "시대 8 &mdash; 각성하고 정복하라",
+    "footer_sub": "비헤모스 정복 &middot; 6월 1~9일 &middot; UTC+0 &middot; 제국 대 제국"
+  }
+};
+
+const enSnapshot = {};
+let currentLang = 'en';
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    enSnapshot[el.getAttribute('data-i18n')] = el.innerHTML;
+  });
+  startCountdown();
+});
+
+function switchLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b) {
+    b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase());
+  });
+  if (lang === 'en') {
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (enSnapshot[key] !== undefined) el.innerHTML = enSnapshot[key];
+    });
+  } else {
+    var t = TRANSLATIONS[lang];
+    if (!t) return;
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+  }
+  update(); // refresh the dynamic countdown label in the new language
+}
+
+// Countdown labels per language (the label is set dynamically each tick)
+var CD_LABELS = {
+  en: { start: 'Until Event Starts', end: 'Until Event Ends', done: 'Event Complete' },
+  es: { start: 'Hasta el Inicio', end: 'Hasta el Final', done: 'Evento Finalizado' },
+  fr: { start: 'Avant le Début', end: 'Avant la Fin', done: 'Événement Terminé' },
+  ko: { start: '시작까지', end: '종료까지', done: '이벤트 종료' }
+};
+
+// Event window (UTC+0). Start of day Jun 1 → end of day Jun 9.
+var EVENT_START = new Date('2026-06-01T00:00:00Z').getTime();
+var EVENT_END   = new Date('2026-06-09T23:59:59Z').getTime();
+var _cdStarted = false;
+
+function startCountdown() {
+  if (_cdStarted) return;
+  _cdStarted = true;
+  update();
+  setInterval(update, 1000);
+}
+
+function update() {
+  var now = Date.now();
+  var label = document.getElementById('cd-label');
+  var L = CD_LABELS[currentLang] || CD_LABELS.en;
+  var target;
+
+  if (now < EVENT_START) {
+    target = EVENT_START;
+    label.textContent = L.start;
+  } else if (now < EVENT_END) {
+    target = EVENT_END;
+    label.textContent = L.end;
+  } else {
+    document.getElementById('cd-d').textContent = '0';
+    document.getElementById('cd-h').textContent = '00';
+    document.getElementById('cd-m').textContent = '00';
+    document.getElementById('cd-s').textContent = '00';
+    label.textContent = L.done;
+    return;
+  }
+
+  var diff = target - now;
+  var days = Math.floor(diff / 86400000);
+  var hours = Math.floor((diff % 86400000) / 3600000);
+  var mins = Math.floor((diff % 3600000) / 60000);
+  var secs = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById('cd-d').textContent = String(days);
+  document.getElementById('cd-h').textContent = String(hours).padStart(2, '0');
+  document.getElementById('cd-m').textContent = String(mins).padStart(2, '0');
+  document.getElementById('cd-s').textContent = String(secs).padStart(2, '0');
+}
+</script>
+</body>
+</html>
