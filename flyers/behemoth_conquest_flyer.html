@@ -525,7 +525,7 @@
 
   <!-- DRAFT BANNER -->
   <div class="draft-banner" data-i18n="draft_banner">
-    <strong>DRAFT v2</strong> &mdash; Built from beta in-game screens (incl. combat tooltips &amp; lineage node values) + the official announcement. Items marked <span class="pill">TBC</span> still need confirmation in-game (exact rewards, runestone costs, invasion time/location set by our admin <strong>[314]AOEM314</strong>).
+    <strong>DRAFT v3</strong> &mdash; Built from beta in-game screens (combat tooltips, lineage values, plus a further-along Pioneer server) + the official announcement. Items marked <span class="pill">TBC</span> still need confirmation for our server (exact rewards, runestone costs, Descendant Trial slot times, invasion time/location set by our admin <strong>[314]AOEM314</strong>).
   </div>
 
   <!-- 1. THE BIG PICTURE -->
@@ -553,8 +553,8 @@
       <div class="phase">
         <div class="pnum" data-i18n="phase2_num">Phase 2</div>
         <div class="picon">&#129704;</div>
-        <div class="pname" data-i18n="phase2_name">Cultivation</div>
-        <div class="pdesc" data-i18n="phase2_desc">Awaken &amp; strengthen the bloodline</div>
+        <div class="pname" data-i18n="phase2_name">Beast Taming</div>
+        <div class="pdesc" data-i18n="phase2_desc">Tame &amp; strengthen the Behemoth bloodline</div>
       </div>
       <div class="phase">
         <div class="pnum" data-i18n="phase3_num">Phase 3</div>
@@ -698,7 +698,7 @@
       </tr>
       <tr>
         <td class="name" data-i18n="obj_trial">Descendant Trial</td>
-        <td data-i18n="obj_trial_d">Deal damage to Descendant Trial tribes</td>
+        <td data-i18n="obj_trial_d">Rally the guarded "Behemoth Descendant" map target (an Elite, ~160K Swordsmen) for damage</td>
         <td class="tiers"><b>20K</b> / <b>50K</b> / <b>100K</b> / <b>150K</b></td>
       </tr>
       <tr>
@@ -707,6 +707,9 @@
         <td class="tiers"><b>1&times;</b></td>
       </tr>
     </table>
+    <div class="co info" data-i18n="s5_trial_sched">
+      <strong>Descendant Trial runs in fixed daily windows</strong>, not anytime &mdash; four 30-min slots that alternate between the two servers. On a paired server the slots were <strong>01:00&ndash;01:30</strong> &amp; <strong>11:00&ndash;11:30</strong> for one side, <strong>04:00&ndash;04:30</strong> &amp; <strong>19:00&ndash;19:30</strong> for the other (UTC+0). <span class="pill">TBC</span> our exact slot times &mdash; check the event banner. <strong>Be ready to rally at the start of our windows.</strong>
+    </div>
     <div class="co gold" data-i18n="s5_callout">
       <strong>Priority order while we learn the mode:</strong> 1) push <strong>Exploration</strong> + <strong>Descendant Trial</strong> daily (steady points + runestones), 2) join every <strong>Rally vs Tribes</strong>, 3) when the invasion opens, <strong>relocate &amp; attack</strong> for the big mission reward and offensive points.
     </div>
@@ -765,14 +768,14 @@ const TRANSLATIONS = {
     "lbl_starts": "Inicia", "lbl_ends": "Termina", "lbl_tz": "Zona horaria",
     "cd_days": "Días", "cd_hours": "Horas", "cd_min": "Min", "cd_sec": "Seg",
     "cd_until_start": "Hasta el Inicio", "cd_until_end": "Hasta el Final", "cd_complete": "Evento Finalizado",
-    "draft_banner": "<strong>BORRADOR v2</strong> &mdash; Hecho con capturas de la beta (incl. tooltips de combate y valores del linaje) + el anuncio oficial. Lo marcado con <span class=\"pill\">TBC</span> falta confirmar en el juego (recompensas exactas, costos de runas, hora/lugar de invasión los fija nuestro admin <strong>[314]AOEM314</strong>).",
+    "draft_banner": "<strong>BORRADOR v3</strong> &mdash; Hecho con capturas de la beta (tooltips de combate, valores del linaje, y un servidor Pioneer más avanzado) + el anuncio oficial. Lo marcado con <span class=\"pill\">TBC</span> falta confirmar para nuestro servidor (recompensas exactas, costos de runas, horas de la Prueba del Descendiente, hora/lugar de invasión los fija nuestro admin <strong>[314]AOEM314</strong>).",
     "s1_title": "Visión General",
     "s1_blurb": "Un modo nuevo donde <strong>dos imperios (servidores) chocan por sus Bégimos</strong>. Durante el evento ganamos <em>Runas del Despertar</em> para hacer crecer y potenciar al Bégimo de nuestro imperio, y luego lo lanzamos contra el servidor enemigo. Ambos bandos atacan y defienden Bégimos en <strong>batallas entre servidores</strong>, sumando puntos. <span class=\"gold\">El imperio con mayor puntaje total gana.</span>",
     "s1_callout": "<strong>Tres formas de sumar puntos:</strong> (1) donar Runas del Despertar para cultivar a nuestro Bégimo, (2) defender a nuestro propio Bégimo, (3) atacar al Bégimo enemigo. Los <em>Cristales de Bégimo</em> ganados en el evento se gastan en la <strong>Tienda de Bégimo</strong>.",
     "s2_title": "Las Cuatro Etapas",
     "s2_blurb": "El evento va del <strong>1 al 9 de junio (UTC+0)</strong> en cuatro etapas. Estamos en <span class=\"gold\">Preparación</span>. Nuestro admin fija la <strong>hora y ubicación de la invasión</strong>.",
     "phase1_num": "Etapa 1", "phase1_name": "Preparación", "phase1_desc": "Junta runas, cultiva, planea",
-    "phase2_num": "Etapa 2", "phase2_name": "Cultivo", "phase2_desc": "Despierta y refuerza el linaje",
+    "phase2_num": "Etapa 2", "phase2_name": "Domesticación de Bestias", "phase2_desc": "Doma y refuerza el linaje del Bégimo",
     "phase3_num": "Etapa 3", "phase3_name": "Invasión", "phase3_desc": "Los Bégimos marchan al imperio enemigo",
     "phase4_num": "Etapa 4", "phase4_name": "Victoria", "phase4_desc": "Mayor puntaje gana &middot; gasta cristales",
     "s2_callout": "<strong>Imperio vs Imperio.</strong> Es <strong>nuestro servidor vs un servidor enemigo</strong> (Bégimo vs Bégimo). Cada bando espera a que su admin fije la hora y ubicación de la invasión &mdash; <span class=\"pill\">TBC</span> atento al chat de alianza.",
@@ -824,8 +827,9 @@ const TRANSLATIONS = {
     "s5_th_obj": "Objetivo", "s5_th_todo": "Qué hacer", "s5_th_tiers": "Niveles",
     "obj_explore": "Exploración", "obj_explore_d": "Completa misiones de exploración de Cultivo de Bégimo",
     "obj_rally": "Reunión vs Tribus", "obj_rally_d": "Participa con éxito en una reunión contra tribus",
-    "obj_trial": "Prueba del Descendiente", "obj_trial_d": "Inflige daño a las tribus de la Prueba del Descendiente",
+    "obj_trial": "Prueba del Descendiente", "obj_trial_d": "Reúne contra el objetivo \"Descendiente de Bégimo\" en el mapa (una Élite, ~160K Espadachines) para infligir daño",
     "obj_invasion": "Invasión de Bégimo", "obj_invasion_d": "Reubícate al servidor enemigo durante las invasiones",
+    "s5_trial_sched": "<strong>La Prueba del Descendiente ocurre en ventanas diarias fijas</strong>, no a cualquier hora &mdash; cuatro franjas de 30 min que se alternan entre los dos servidores. En un servidor emparejado las franjas fueron <strong>01:00&ndash;01:30</strong> y <strong>11:00&ndash;11:30</strong> para un lado, <strong>04:00&ndash;04:30</strong> y <strong>19:00&ndash;19:30</strong> para el otro (UTC+0). <span class=\"pill\">TBC</span> nuestras horas exactas &mdash; revisa el banner del evento. <strong>Prepárate para reunir al inicio de nuestras ventanas.</strong>",
     "s5_callout": "<strong>Orden de prioridad mientras aprendemos el modo:</strong> 1) empuja <strong>Exploración</strong> + <strong>Prueba del Descendiente</strong> a diario (puntos y runas constantes), 2) únete a cada <strong>Reunión vs Tribus</strong>, 3) cuando abra la invasión, <strong>reubícate y ataca</strong> por la gran recompensa y los puntos ofensivos.",
     "s6_title": "Qué Hacer Ahora",
     "s6_prep_h": "Etapa de Preparación (estamos aquí)",
@@ -855,14 +859,14 @@ const TRANSLATIONS = {
     "lbl_starts": "Début", "lbl_ends": "Fin", "lbl_tz": "Fuseau horaire",
     "cd_days": "Jours", "cd_hours": "Heures", "cd_min": "Min", "cd_sec": "Sec",
     "cd_until_start": "Avant le Début", "cd_until_end": "Avant la Fin", "cd_complete": "Événement Terminé",
-    "draft_banner": "<strong>BROUILLON v2</strong> &mdash; Créé à partir des captures de la bêta (incl. infobulles de combat et valeurs de lignée) + l'annonce officielle. Les éléments marqués <span class=\"pill\">TBC</span> restent à confirmer en jeu (récompenses exactes, coûts de runes, heure/lieu d'invasion fixés par notre admin <strong>[314]AOEM314</strong>).",
+    "draft_banner": "<strong>BROUILLON v3</strong> &mdash; Créé à partir des captures de la bêta (infobulles de combat, valeurs de lignée, et un serveur Pioneer plus avancé) + l'annonce officielle. Les éléments marqués <span class=\"pill\">TBC</span> restent à confirmer pour notre serveur (récompenses exactes, coûts de runes, horaires de l'Épreuve du Descendant, heure/lieu d'invasion fixés par notre admin <strong>[314]AOEM314</strong>).",
     "s1_title": "Vue d'Ensemble",
     "s1_blurb": "Un tout nouveau mode où <strong>deux empires (serveurs) s'affrontent pour leurs Béhimoths</strong>. Pendant l'événement, on gagne des <em>Runes d'Éveil</em> pour faire grandir et renforcer le Béhimoth de notre empire, puis on le lâche sur le serveur ennemi. Les deux camps attaquent et défendent les béhimoths dans des <strong>batailles inter-serveurs</strong>, en marquant des points. <span class=\"gold\">L'empire au plus haut score total gagne.</span>",
     "s1_callout": "<strong>Trois façons de marquer :</strong> (1) donner des Runes d'Éveil pour cultiver notre Béhimoth, (2) défendre notre propre Béhimoth, (3) attaquer le Béhimoth ennemi. Les <em>Cristaux de Béhimoth</em> gagnés servent à la <strong>Boutique Béhimoth</strong>.",
     "s2_title": "Les Quatre Phases",
     "s2_blurb": "L'événement va du <strong>1er au 9 juin (UTC+0)</strong> en quatre phases. Nous sommes en <span class=\"gold\">Préparation</span>. Notre admin fixe l'<strong>heure et le lieu de l'invasion</strong>.",
     "phase1_num": "Phase 1", "phase1_name": "Préparation", "phase1_desc": "Rassembler runes, cultiver, planifier",
-    "phase2_num": "Phase 2", "phase2_name": "Culture", "phase2_desc": "Éveiller et renforcer la lignée",
+    "phase2_num": "Phase 2", "phase2_name": "Domptage de Bêtes", "phase2_desc": "Dompter et renforcer la lignée du Béhimoth",
     "phase3_num": "Phase 3", "phase3_name": "Invasion", "phase3_desc": "Les béhimoths marchent sur l'empire ennemi",
     "phase4_num": "Phase 4", "phase4_name": "Victoire", "phase4_desc": "Le plus haut score gagne &middot; dépenser les cristaux",
     "s2_callout": "<strong>Empire contre Empire.</strong> C'est <strong>notre serveur contre un serveur ennemi</strong> (Béhimoth vs Béhimoth). Chaque camp attend que son admin fixe l'heure et le lieu de l'invasion &mdash; <span class=\"pill\">TBC</span> surveillez le chat d'alliance.",
@@ -914,8 +918,9 @@ const TRANSLATIONS = {
     "s5_th_obj": "Objectif", "s5_th_todo": "Quoi faire", "s5_th_tiers": "Paliers",
     "obj_explore": "Exploration", "obj_explore_d": "Complétez des missions d'exploration de Culture du Béhimoth",
     "obj_rally": "Ralliement vs Tribus", "obj_rally_d": "Participez avec succès à un ralliement contre les tribus",
-    "obj_trial": "Épreuve du Descendant", "obj_trial_d": "Infligez des dégâts aux tribus de l'Épreuve du Descendant",
+    "obj_trial": "Épreuve du Descendant", "obj_trial_d": "Ralliez la cible \"Descendant du Béhimoth\" sur la carte (une Élite, ~160K Épéistes) pour infliger des dégâts",
     "obj_invasion": "Invasion du Béhimoth", "obj_invasion_d": "Relocalisez-vous sur le serveur ennemi pendant les invasions",
+    "s5_trial_sched": "<strong>L'Épreuve du Descendant a lieu dans des fenêtres quotidiennes fixes</strong>, pas n'importe quand &mdash; quatre créneaux de 30 min qui alternent entre les deux serveurs. Sur un serveur apparié, les créneaux étaient <strong>01:00&ndash;01:30</strong> et <strong>11:00&ndash;11:30</strong> pour un camp, <strong>04:00&ndash;04:30</strong> et <strong>19:00&ndash;19:30</strong> pour l'autre (UTC+0). <span class=\"pill\">TBC</span> nos horaires exacts &mdash; vérifiez la bannière de l'événement. <strong>Soyez prêts à rallier au début de nos fenêtres.</strong>",
     "s5_callout": "<strong>Ordre de priorité le temps d'apprendre le mode :</strong> 1) poussez <strong>Exploration</strong> + <strong>Épreuve du Descendant</strong> chaque jour (points et runes réguliers), 2) rejoignez chaque <strong>Ralliement vs Tribus</strong>, 3) à l'ouverture de l'invasion, <strong>relocalisez-vous et attaquez</strong> pour la grosse récompense et les points offensifs.",
     "s6_title": "Que Faire Maintenant",
     "s6_prep_h": "Phase de Préparation (nous y sommes)",
@@ -945,14 +950,14 @@ const TRANSLATIONS = {
     "lbl_starts": "시작", "lbl_ends": "종료", "lbl_tz": "시간대",
     "cd_days": "일", "cd_hours": "시", "cd_min": "분", "cd_sec": "초",
     "cd_until_start": "시작까지", "cd_until_end": "종료까지", "cd_complete": "이벤트 종료",
-    "draft_banner": "<strong>초안 v2</strong> &mdash; 베타 게임 화면(전투 툴팁 및 혈통 노드 수치 포함) + 공식 발표 기반. <span class=\"pill\">TBC</span> 표시 항목은 게임 내 확인 필요(정확한 보상, 룬 비용, 침공 시간/장소는 관리자 <strong>[314]AOEM314</strong>가 설정).",
+    "draft_banner": "<strong>초안 v3</strong> &mdash; 베타 게임 화면(전투 툴팁, 혈통 수치, 더 진행된 Pioneer 서버 포함) + 공식 발표 기반. <span class=\"pill\">TBC</span> 표시 항목은 우리 서버 기준 확인 필요(정확한 보상, 룬 비용, 후속자의 시험 시간대, 침공 시간/장소는 관리자 <strong>[314]AOEM314</strong>가 설정).",
     "s1_title": "전체 그림",
     "s1_blurb": "<strong>두 제국(서버)이 각자의 비헤모스를 두고 충돌</strong>하는 신규 모드. 이벤트 동안 <em>각성 룬스톤</em>을 모아 우리 제국의 비헤모스를 키우고 강화한 뒤 적 서버에 풀어놓습니다. 양 진영은 <strong>교차 서버 전투</strong>에서 비헤모스를 공격·방어하며 점수를 쌓습니다. <span class=\"gold\">총점이 높은 제국이 승리.</span>",
     "s1_callout": "<strong>점수 획득 3가지 방법:</strong> (1) 각성 룬스톤을 기부해 우리 비헤모스 육성, (2) 우리 비헤모스 방어, (3) 적 비헤모스 공격. 이벤트 중 획득한 <em>비헤모스 크리스탈</em>은 <strong>비헤모스 상점</strong>에서 사용.",
     "s2_title": "네 단계",
     "s2_blurb": "이벤트는 <strong>6월 1일~9일 (UTC+0)</strong> 네 단계로 진행. 현재 <span class=\"gold\">준비</span> 단계. 관리자가 정확한 <strong>침공 시간·장소</strong>를 설정.",
     "phase1_num": "1단계", "phase1_name": "준비", "phase1_desc": "룬스톤 수집, 육성, 계획",
-    "phase2_num": "2단계", "phase2_name": "육성", "phase2_desc": "혈통 각성 및 강화",
+    "phase2_num": "2단계", "phase2_name": "야수 길들이기", "phase2_desc": "비헤모스 혈통 길들이기 및 강화",
     "phase3_num": "3단계", "phase3_name": "침공", "phase3_desc": "비헤모스가 적 제국으로 진군",
     "phase4_num": "4단계", "phase4_name": "승리", "phase4_desc": "최고 점수 승리 &middot; 크리스탈 사용",
     "s2_callout": "<strong>제국 대 제국.</strong> <strong>우리 서버 vs 적 서버</strong>(비헤모스 vs 비헤모스). 각 진영은 관리자가 침공 시간·장소를 정할 때까지 대기 &mdash; <span class=\"pill\">TBC</span> 동맹 채팅 주시.",
@@ -1004,8 +1009,9 @@ const TRANSLATIONS = {
     "s5_th_obj": "목표", "s5_th_todo": "할 일", "s5_th_tiers": "등급",
     "obj_explore": "탐험", "obj_explore_d": "비헤모스 육성 탐험 임무 완료",
     "obj_rally": "부족 집결", "obj_rally_d": "부족과의 집결에 성공적으로 참여",
-    "obj_trial": "후속자의 시험", "obj_trial_d": "후속자의 시험 부족에게 피해",
+    "obj_trial": "후속자의 시험", "obj_trial_d": "맵의 \"비헤모스 후속자\" 목표(엘리트, 검병 약 16만)를 집결로 공격해 피해",
     "obj_invasion": "비헤모스 침공", "obj_invasion_d": "침공 중 적 서버로 이전",
+    "s5_trial_sched": "<strong>후속자의 시험은 아무 때나가 아니라 매일 고정된 시간대</strong>에 진행됩니다 &mdash; 두 서버가 번갈아 갖는 30분 슬롯 4개. 한 매칭 서버에서는 한쪽이 <strong>01:00&ndash;01:30</strong> 및 <strong>11:00&ndash;11:30</strong>, 다른 쪽이 <strong>04:00&ndash;04:30</strong> 및 <strong>19:00&ndash;19:30</strong>(UTC+0)였습니다. <span class=\"pill\">TBC</span> 우리 정확한 시간 &mdash; 이벤트 배너 확인. <strong>우리 시간대 시작에 맞춰 집결 준비.</strong>",
     "s5_callout": "<strong>모드를 익히는 동안 우선순위:</strong> 1) 매일 <strong>탐험</strong> + <strong>후속자의 시험</strong> 진행(꾸준한 점수·룬스톤), 2) 모든 <strong>부족 집결</strong> 참여, 3) 침공이 열리면 <strong>이전 후 공격</strong>으로 큰 임무 보상과 공격 점수.",
     "s6_title": "지금 할 일",
     "s6_prep_h": "준비 단계 (현재)",
