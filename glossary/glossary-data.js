@@ -25,6 +25,23 @@
 const GLOSSARY = {
 
   /* ---------------------------------------------------------------- */
+  /* CLASSIFICATION LOOKUPS                                            */
+  /* specialty: shield color in-game. unitType: weapon symbol(s).      */
+  /* "search" terms (incl. plurals) let "warriors"/"pikemen" filter.   */
+  /* ---------------------------------------------------------------- */
+  specialties: {
+    warrior:   { label: "Warrior",   color: "#c43d3d", search: "warrior warriors" },
+    tactician: { label: "Tactician", color: "#3d7cc4", search: "tactician tacticians" },
+    marshall:  { label: "Marshall",  color: "#d4a843", search: "marshall marshalls marshal marshals" }
+  },
+  unitTypes: {
+    swordsman: { label: "Swordsman", icon: "⚔",      search: "swordsman swordsmen sword" },
+    archer:    { label: "Archer",    icon: "🏹", search: "archer archers bow" },
+    pikeman:   { label: "Pikeman",   icon: "↑",       search: "pikeman pikemen pike" },
+    cavalry:   { label: "Cavalry",   icon: "🐎", search: "cavalry cav horse" }
+  },
+
+  /* ---------------------------------------------------------------- */
   /* HEROES                                                            */
   /* ---------------------------------------------------------------- */
   heroes: [
@@ -32,6 +49,12 @@ const GLOSSARY = {
       id: "king_derrick",
       name: "King Derrick",
       // portrait: "img/king_derrick.png",  // optional, add later
+
+      // specialty: one of "warrior" (red), "tactician" (blue), "marshall" (gold)
+      // unitTypes: any of "swordsman","archer","pikeman","cavalry" (can be multiple)
+      // null / [] = not yet captured (need the hero info screenshot)
+      specialty: "warrior",
+      unitTypes: ["archer", "swordsman"],
 
       commander: {
         name: "Defensive Slungshot",
@@ -98,7 +121,7 @@ const GLOSSARY = {
     // Pool skills not yet captured in detail — names recorded so hero
     // linkage works now; fill in effects/ingame when we screenshot them.
     sunder:               { name: "Sunder",               pending: true },
-    fearless_frontrunner: { name: "Fearless Frontrunner",  pending: true, locked: true },
+    fearless_frontrunner: { name: "Fearless Frontrunner",  pending: true },
     earth_crush:          { name: "Earth Crush",            pending: true },
     righteous_judgement:  { name: "Righteous Judgement",    pending: true }
   },

@@ -102,6 +102,16 @@
   .hero-head h2 {
     font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 2px; color: var(--accent-gold);
   }
+  .class-row { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+  .spec-chip, .unit-chip {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 12px;
+    letter-spacing: .5px; padding: 3px 10px; border-radius: 5px; white-space: nowrap;
+    border: 1px solid var(--border); background: var(--bg-card2);
+  }
+  .spec-chip { color: #fff; }
+  .unit-chip { color: var(--text-secondary); }
+  .unit-chip .ico { margin-right: 3px; }
+  .class-pending { font-size: 11px; color: var(--text-muted); font-style: italic; margin-left: auto; }
 
   .skill {
     background: var(--bg-card); border: 1px solid var(--border);
@@ -174,8 +184,6 @@
     background: var(--bg-card); color: var(--text-secondary);
   }
   .pool-item.equipped { border-color: var(--accent-purple); color: var(--accent-purple); }
-  .pool-item.locked { opacity: .5; }
-  .pool-item .lk { font-size: 10px; }
 
   /* TERMS LIST */
   .term-card {
@@ -370,10 +378,30 @@
       var sk = GLOSSARY.secondarySkills[id] || {name:id};
       var cls = 'pool-item';
       if (equipped.indexOf(id) >= 0) cls += ' equipped';
-      if (sk.locked) cls += ' locked';
-      h += '<span class="'+cls+'">'+esc(sk.name)+(sk.locked?' <span class="lk">&#128274;</span>':'')+'</span>';
+      h += '<span class="'+cls+'">'+esc(sk.name)+'</span>';
     });
     return h + '</div></div>';
+  }
+
+  // specialty + unit-type chips for the hero header; returns {html, search}
+  function classHTML(hero){
+    var html = '', search = '';
+    var spec = hero.specialty && GLOSSARY.specialties[hero.specialty];
+    var units = hero.unitTypes || [];
+    if (spec){
+      html += '<span class="spec-chip" style="border-color:'+spec.color+';background:'+spec.color+'22;color:'+spec.color+'">'+esc(spec.label)+'</span>';
+      search += ' ' + spec.search;
+    }
+    units.forEach(function(u){
+      var ut = GLOSSARY.unitTypes[u];
+      if (!ut) return;
+      html += '<span class="unit-chip"><span class="ico">'+ut.icon+'</span>'+esc(ut.label)+'</span>';
+      search += ' ' + ut.search;
+    });
+    if (!spec && !units.length){
+      return { html: '<span class="class-pending">Specialty &amp; unit type: pending</span>', search: '' };
+    }
+    return { html: '<div class="class-row">'+html+'</div>', search: search };
   }
 
   function renderHeroes(){
@@ -386,8 +414,9 @@
         var sk = GLOSSARY.secondarySkills[id];
         if (sk && !sk.pending) blocks += skillCard('secondary', 'Equipped &middot; Slot '+(i+1), sk);
       });
-      out += '<div class="hero" data-search="'+esc(hero.name.toLowerCase())+'">'
-        + '<div class="hero-head"><h2>'+esc(hero.name)+'</h2></div>'
+      var cls = classHTML(hero);
+      out += '<div class="hero" data-search="'+esc((hero.name + cls.search).toLowerCase())+'">'
+        + '<div class="hero-head"><h2>'+esc(hero.name)+'</h2>'+cls.html+'</div>'
         + blocks + poolHTML(hero) + '</div>';
     });
     document.getElementById('heroes-list').innerHTML = out;
