@@ -652,21 +652,33 @@
     border-bottom: 1px solid var(--border);
   }
 
-  .roster-table th:last-child { text-align: right; }
-
   .roster-table td {
     padding: 4px 8px;
     color: var(--text-secondary);
     border-bottom: 1px solid var(--border)22;
   }
 
-  /* Numeric columns (Power + Merits) right-aligned + mono to match their headers. */
-  .roster-table td:nth-child(4),
-  .roster-table td:last-child {
+  /* Numeric columns (Power / Merits / M:P) right-aligned + mono. */
+  .roster-table th.num { text-align: right; }
+  .roster-table td.num {
     text-align: right;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.78rem;
   }
+
+  /* Sortable headers */
+  .roster-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .roster-table th.sortable:hover { color: var(--text-secondary); }
+  .roster-table th.sortable.active { color: var(--accent-gold); }
+  .roster-table th .caret { font-size: 0.6rem; }
+
+  /* M:P ratio flags: green = over-performs its power, red = low battle activity */
+  .roster-table td.mp-hi { color: var(--accent-green); }
+  .roster-table td.mp-lo { color: var(--accent-red); }
 
   .roster-table td.alliance-tag {
     font-family: 'JetBrains Mono', monospace;
@@ -894,74 +906,9 @@
     <!-- Player Rankings -->
     <div class="section">
       <h2>Top 50 Player Rankings</h2>
-      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 4px;">Combined cross-server standings (Matching stage). Ranked by Power; Merits shown alongside. <strong>Fighters only</strong> — players with power but no merit score are excluded. Server representation: E#008 (19), E#068 (18), E#034 (9), E#056 (4).</p>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 4px;">Combined cross-server standings (Matching stage). <strong>Fighters only</strong> — players with power but no merit score are excluded. <strong>M:P</strong> is the Merit-to-Power ratio (merits ÷ power) — high = battle output above raw size, low = parked power. Click <strong>Power</strong>, <strong>Merits</strong>, or <strong>M:P</strong> to re-sort (default: Power). Server representation: E#008 (19), E#068 (18), E#034 (9), E#056 (4).</p>
 
-      <div class="two-col">
-        <div>
-          <table class="roster-table">
-            <thead><tr><th>#</th><th>Player</th><th>Server</th><th style="text-align:right">Power</th><th style="text-align:right">Merits</th></tr></thead>
-            <tbody>
-              <tr class="highlight"><td>1</td><td>時宗</td><td class="alliance-tag">eRa</td><td>424.6M</td><td>221.6M</td></tr>
-              <tr><td>2</td><td>Corle⁶⁸</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>310.4M</td><td>307.3M</td></tr>
-              <tr class="highlight"><td>3</td><td>민트</td><td class="alliance-tag">REU</td><td>304.1M</td><td>303.5M</td></tr>
-              <tr><td>4</td><td>MyNIK99</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>291.8M</td><td>115.7M</td></tr>
-              <tr class="highlight"><td>5</td><td>Collin6666</td><td class="alliance-tag">eRa</td><td>272.9M</td><td>53.1M</td></tr>
-              <tr><td>6</td><td>Moo°°</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>272.7M</td><td>223.8M</td></tr>
-              <tr class="highlight"><td>7</td><td>XnJinX</td><td class="alliance-tag">eRa</td><td>266.4M</td><td>223.9M</td></tr>
-              <tr class="highlight"><td>8</td><td>Macklemore</td><td class="alliance-tag">eRa</td><td>260.2M</td><td>107.2M</td></tr>
-              <tr><td>9</td><td>l조선l노가리맛사탕</td><td class="alliance-tag" style="color:var(--accent-orange)">S34</td><td>259.9M</td><td>85.6M</td></tr>
-              <tr class="highlight"><td>10</td><td>Lumberjack</td><td class="alliance-tag">eRa</td><td>249.4M</td><td>257.5M</td></tr>
-              <tr><td>11</td><td>사풍흑호</td><td class="alliance-tag" style="color:var(--accent-orange)">S34</td><td>246.6M</td><td>138.6M</td></tr>
-              <tr class="highlight"><td>12</td><td>BloodYoda</td><td class="alliance-tag">eRa</td><td>245.3M</td><td>227.2M</td></tr>
-              <tr class="highlight"><td>13</td><td>ibubu♣JP</td><td class="alliance-tag">eRa</td><td>230.6M</td><td>54.8M</td></tr>
-              <tr class="highlight"><td>14</td><td>TommyTorpedo</td><td class="alliance-tag">eRa</td><td>227.7M</td><td>125.2M</td></tr>
-              <tr class="highlight"><td>15</td><td>MuRage</td><td class="alliance-tag">eRa</td><td>224.8M</td><td>159.3M</td></tr>
-              <tr><td>16</td><td>스재</td><td class="alliance-tag" style="color:var(--accent-orange)">S34</td><td>220.2M</td><td>100.5M</td></tr>
-              <tr><td>17</td><td>LozzerSalty</td><td class="alliance-tag" style="color:var(--accent-green)">—</td><td>219.5M</td><td>204.4M</td></tr>
-              <tr><td>18</td><td>Champa</td><td class="alliance-tag" style="color:var(--accent-purple)">DRS</td><td>208.0M</td><td>135.8M</td></tr>
-              <tr class="highlight"><td>19</td><td>Astrah</td><td class="alliance-tag">eRa</td><td>200.7M</td><td>263.8M</td></tr>
-              <tr class="highlight"><td>20</td><td>Hermes++</td><td class="alliance-tag">REU</td><td>195.4M</td><td>65.8M</td></tr>
-              <tr><td>21</td><td>LozzerSour</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>192.8M</td><td>193.0M</td></tr>
-              <tr class="highlight"><td>22</td><td>SILENTWRAITH</td><td class="alliance-tag">eRa</td><td>190.7M</td><td>94.1M</td></tr>
-              <tr><td>23</td><td>onlyzonks</td><td class="alliance-tag" style="color:var(--accent-orange)">U34</td><td>187.8M</td><td>117.7M</td></tr>
-              <tr><td>24</td><td>AlphaBeta</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>184.8M</td><td>148.8M</td></tr>
-              <tr><td>25</td><td>neddmann</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>184.7M</td><td>40.7M</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <table class="roster-table">
-            <thead><tr><th>#</th><th>Player</th><th>Server</th><th style="text-align:right">Power</th><th style="text-align:right">Merits</th></tr></thead>
-            <tbody>
-              <tr><td>26</td><td>화양연화KOR</td><td class="alliance-tag" style="color:var(--accent-orange)">S34</td><td>182.6M</td><td>197.8M</td></tr>
-              <tr><td>27</td><td>뽀로로k</td><td class="alliance-tag" style="color:var(--accent-orange)">S34</td><td>181.8M</td><td>99.3M</td></tr>
-              <tr><td>28</td><td>MaCeno</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>178.3M</td><td>60.4M</td></tr>
-              <tr><td>29</td><td>PENDRAGON</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>176.1M</td><td>28.3M</td></tr>
-              <tr class="highlight"><td>30</td><td>Ovid</td><td class="alliance-tag">eRa</td><td>175.4M</td><td>58.1M</td></tr>
-              <tr class="highlight"><td>31</td><td>Sarda</td><td class="alliance-tag">eRa</td><td>174.4M</td><td>92.7M</td></tr>
-              <tr class="highlight"><td>32</td><td>Magoya</td><td class="alliance-tag">Myt</td><td>173.8M</td><td>55.3M</td></tr>
-              <tr><td>33</td><td>TRKickAss</td><td class="alliance-tag" style="color:var(--accent-orange)">U34</td><td>172.1M</td><td>87.7M</td></tr>
-              <tr><td>34</td><td>ForrSalee</td><td class="alliance-tag" style="color:var(--accent-green)">E68</td><td>171.0M</td><td>102.1M</td></tr>
-              <tr class="highlight"><td>35</td><td>KATH^astrah</td><td class="alliance-tag">eRa</td><td>170.6M</td><td>113.6M</td></tr>
-              <tr><td>36</td><td>★SNORLAXE⁶⁸★</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>168.4M</td><td>145.9M</td></tr>
-              <tr class="highlight"><td>37</td><td>Dejawuu</td><td class="alliance-tag">eRa</td><td>163.5M</td><td>120.0M</td></tr>
-              <tr class="highlight"><td>38</td><td>Raeinos</td><td class="alliance-tag">eRa</td><td>163.3M</td><td>136.8M</td></tr>
-              <tr><td>39</td><td>DarkVifaro</td><td class="alliance-tag" style="color:var(--accent-orange)">U34</td><td>162.5M</td><td>43.8M</td></tr>
-              <tr><td>40</td><td>Mandau</td><td class="alliance-tag" style="color:var(--accent-purple)">DRS</td><td>162.2M</td><td>200.1M</td></tr>
-              <tr><td>41</td><td>LozzerLucccc</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>159.5M</td><td>75.5M</td></tr>
-              <tr><td>42</td><td>Kirrik^GM</td><td class="alliance-tag" style="color:var(--accent-purple)">DRS</td><td>159.3M</td><td>143.7M</td></tr>
-              <tr><td>43</td><td>Moonwalker●</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>157.8M</td><td>71.0M</td></tr>
-              <tr><td>44</td><td>AVOMENTHOL</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>154.7M</td><td>54.1M</td></tr>
-              <tr><td>45</td><td>Dïablø</td><td class="alliance-tag" style="color:var(--accent-orange)">U34</td><td>154.2M</td><td>95.2M</td></tr>
-              <tr><td>46</td><td>BlackJaw</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>152.7M</td><td>44.0M</td></tr>
-              <tr><td>47</td><td>Gizumu</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>151.9M</td><td>49.4M</td></tr>
-              <tr><td>48</td><td>6Dark6King6</td><td class="alliance-tag" style="color:var(--accent-purple)">DRS</td><td>150.1M</td><td>40.6M</td></tr>
-              <tr><td>49</td><td>Jøseph</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>149.2M</td><td>45.9M</td></tr>
-              <tr><td>50</td><td>MrxSlick</td><td class="alliance-tag" style="color:var(--accent-green)">S68</td><td>148.8M</td><td>50.0M</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <div class="two-col" id="top50-cols"></div>
 
       <div class="callout strategy" style="margin-top: 12px;">
         <strong>Player Insights</strong>
@@ -1506,85 +1453,21 @@
     <div class="two-col">
       <div class="section">
         <h2>E#008 ERAEMPIRE — Top 12 (Fighters)</h2>
-        <table class="roster-table">
-          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th style="text-align:right">Power</th><th style="text-align:right">Merits</th></tr></thead>
-          <tbody>
-            <tr class="highlight"><td>1</td><td>時宗</td><td class="alliance-tag">eRa</td><td>424.6M</td><td>221.6M</td></tr>
-            <tr class="highlight"><td>2</td><td>민트</td><td class="alliance-tag">REU</td><td>304.1M</td><td>303.5M</td></tr>
-            <tr class="highlight"><td>3</td><td>Collin6666</td><td class="alliance-tag">eRa</td><td>272.9M</td><td>53.1M</td></tr>
-            <tr class="highlight"><td>4</td><td>XnJinX</td><td class="alliance-tag">eRa</td><td>266.4M</td><td>223.9M</td></tr>
-            <tr class="highlight"><td>5</td><td>Macklemore</td><td class="alliance-tag">eRa</td><td>260.2M</td><td>107.2M</td></tr>
-            <tr class="highlight"><td>6</td><td>Lumberjack</td><td class="alliance-tag">eRa</td><td>249.4M</td><td>257.5M</td></tr>
-            <tr class="highlight"><td>7</td><td>BloodYoda</td><td class="alliance-tag">eRa</td><td>245.3M</td><td>227.2M</td></tr>
-            <tr class="highlight"><td>8</td><td>ibubu♣JP</td><td class="alliance-tag">eRa</td><td>230.6M</td><td>54.8M</td></tr>
-            <tr class="highlight"><td>9</td><td>TommyTorpedo</td><td class="alliance-tag">eRa</td><td>227.7M</td><td>125.2M</td></tr>
-            <tr class="highlight"><td>10</td><td>MuRage</td><td class="alliance-tag">eRa</td><td>224.8M</td><td>159.3M</td></tr>
-            <tr class="highlight"><td>11</td><td>Astrah</td><td class="alliance-tag">eRa</td><td>200.7M</td><td>263.8M</td></tr>
-            <tr class="highlight"><td>12</td><td>Hermes++</td><td class="alliance-tag">REU</td><td>195.4M</td><td>65.8M</td></tr>
-            </tbody>
-        </table>
+        <div data-server-table="E#008"></div>
       </div>
       <div class="section">
         <h2>E#068 BEFORE69 — Top 12 (Fighters)</h2>
-        <table class="roster-table">
-          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th style="text-align:right">Power</th><th style="text-align:right">Merits</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>Corle⁶⁸</td><td class="alliance-tag">S68</td><td>310.4M</td><td>307.3M</td></tr>
-            <tr><td>2</td><td>MyNIK99</td><td class="alliance-tag">S68</td><td>291.8M</td><td>115.7M</td></tr>
-            <tr><td>3</td><td>Moo°°</td><td class="alliance-tag">S68</td><td>272.7M</td><td>223.8M</td></tr>
-            <tr><td>4</td><td>LozzerSalty</td><td class="alliance-tag">—</td><td>219.5M</td><td>204.4M</td></tr>
-            <tr><td>5</td><td>LozzerSour</td><td class="alliance-tag">S68</td><td>192.8M</td><td>193.0M</td></tr>
-            <tr><td>6</td><td>AlphaBeta</td><td class="alliance-tag">S68</td><td>184.8M</td><td>148.8M</td></tr>
-            <tr><td>7</td><td>neddmann</td><td class="alliance-tag">S68</td><td>184.7M</td><td>40.7M</td></tr>
-            <tr><td>8</td><td>MaCeno</td><td class="alliance-tag">S68</td><td>178.3M</td><td>60.4M</td></tr>
-            <tr><td>9</td><td>PENDRAGON</td><td class="alliance-tag">S68</td><td>176.1M</td><td>28.3M</td></tr>
-            <tr><td>10</td><td>ForrSalee</td><td class="alliance-tag">E68</td><td>171.0M</td><td>102.1M</td></tr>
-            <tr><td>11</td><td>★SNORLAXE⁶⁸★</td><td class="alliance-tag">S68</td><td>168.4M</td><td>145.9M</td></tr>
-            <tr><td>12</td><td>LozzerLucccc</td><td class="alliance-tag">S68</td><td>159.5M</td><td>75.5M</td></tr>
-            </tbody>
-        </table>
+        <div data-server-table="E#068"></div>
       </div>
     </div>
     <div class="two-col">
       <div class="section">
         <h2>E#034 ERA°FAMILYBIG — Top 12 (Fighters)</h2>
-        <table class="roster-table">
-          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th style="text-align:right">Power</th><th style="text-align:right">Merits</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>l조선l노가리맛사탕</td><td class="alliance-tag">S34</td><td>259.9M</td><td>85.6M</td></tr>
-            <tr><td>2</td><td>사풍흑호</td><td class="alliance-tag">S34</td><td>246.6M</td><td>138.6M</td></tr>
-            <tr><td>3</td><td>스재</td><td class="alliance-tag">S34</td><td>220.2M</td><td>100.5M</td></tr>
-            <tr><td>4</td><td>onlyzonks</td><td class="alliance-tag">U34</td><td>187.8M</td><td>117.7M</td></tr>
-            <tr><td>5</td><td>화양연화KOR</td><td class="alliance-tag">S34</td><td>182.6M</td><td>197.8M</td></tr>
-            <tr><td>6</td><td>뽀로로k</td><td class="alliance-tag">S34</td><td>181.8M</td><td>99.3M</td></tr>
-            <tr><td>7</td><td>TRKickAss</td><td class="alliance-tag">U34</td><td>172.1M</td><td>87.7M</td></tr>
-            <tr><td>8</td><td>DarkVifaro</td><td class="alliance-tag">U34</td><td>162.5M</td><td>43.8M</td></tr>
-            <tr><td>9</td><td>Dïablø</td><td class="alliance-tag">U34</td><td>154.2M</td><td>95.2M</td></tr>
-            <tr><td>10</td><td>GoodDay</td><td class="alliance-tag">S34</td><td>148.1M</td><td>96.5M</td></tr>
-            <tr><td>11</td><td>▪MK▪</td><td class="alliance-tag">U34</td><td>132.0M</td><td>81.5M</td></tr>
-            <tr><td>12</td><td>가나다라마바사야</td><td class="alliance-tag">S34</td><td>131.6M</td><td>42.8M</td></tr>
-            </tbody>
-        </table>
+        <div data-server-table="E#034"></div>
       </div>
       <div class="section">
         <h2>E#056 DEATHREAPPERS — Top 12 (Fighters)</h2>
-        <table class="roster-table">
-          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th style="text-align:right">Power</th><th style="text-align:right">Merits</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>Champa</td><td class="alliance-tag">DRS</td><td>208.0M</td><td>135.8M</td></tr>
-            <tr><td>2</td><td>Mandau</td><td class="alliance-tag">DRS</td><td>162.2M</td><td>200.1M</td></tr>
-            <tr><td>3</td><td>Kirrik^GM</td><td class="alliance-tag">DRS</td><td>159.3M</td><td>143.7M</td></tr>
-            <tr><td>4</td><td>6Dark6King6</td><td class="alliance-tag">DRS</td><td>150.1M</td><td>40.6M</td></tr>
-            <tr><td>5</td><td>²²²UKELzY</td><td class="alliance-tag">DRS</td><td>137.2M</td><td>47.0M</td></tr>
-            <tr><td>6</td><td>®Ⓢtoxic</td><td class="alliance-tag">DRS</td><td>134.4M</td><td>45.7M</td></tr>
-            <tr><td>7</td><td>Tsahou</td><td class="alliance-tag">DRS</td><td>132.1M</td><td>30.0M</td></tr>
-            <tr><td>8</td><td>HIDE</td><td class="alliance-tag">DRS</td><td>130.5M</td><td>21.6M</td></tr>
-            <tr><td>9</td><td>xxDRAXxx</td><td class="alliance-tag">DRS</td><td>129.4M</td><td>28.3M</td></tr>
-            <tr><td>10</td><td>®Ⓢ TORIZ</td><td class="alliance-tag">DRS</td><td>123.3M</td><td>52.7M</td></tr>
-            <tr><td>11</td><td>fxkingrabbit</td><td class="alliance-tag">DRS</td><td>118.5M</td><td>91.2M</td></tr>
-            <tr><td>12</td><td>☆Kunimitsu☆</td><td class="alliance-tag">DRS</td><td>116.7M</td><td>46.5M</td></tr>
-            </tbody>
-        </table>
+        <div data-server-table="E#056"></div>
       </div>
     </div>
 
@@ -1699,6 +1582,144 @@ function switchTab(id) {
   document.getElementById('tab-' + id).classList.add('active');
   event.target.classList.add('active');
 }
+
+/* ── Ranking data (Matching-stage scouting; power & merits in millions) ── */
+const SRV_COLOR = {
+  'E#008': null,
+  'E#068': 'var(--accent-green)',
+  'E#034': 'var(--accent-orange)',
+  'E#056': 'var(--accent-purple)'
+};
+
+// Combined cross-server Top 50 — [name, tag, server, power, merits]
+const TOP50 = [
+  ['時宗','eRa','E#008',424.6,221.6],['Corle⁶⁸','S68','E#068',310.4,307.3],
+  ['민트','REU','E#008',304.1,303.5],['MyNIK99','S68','E#068',291.8,115.7],
+  ['Collin6666','eRa','E#008',272.9,53.1],['Moo°°','S68','E#068',272.7,223.8],
+  ['XnJinX','eRa','E#008',266.4,223.9],['Macklemore','eRa','E#008',260.2,107.2],
+  ['l조선l노가리맛사탕','S34','E#034',259.9,85.6],['Lumberjack','eRa','E#008',249.4,257.5],
+  ['사풍흑호','S34','E#034',246.6,138.6],['BloodYoda','eRa','E#008',245.3,227.2],
+  ['ibubu♣JP','eRa','E#008',230.6,54.8],['TommyTorpedo','eRa','E#008',227.7,125.2],
+  ['MuRage','eRa','E#008',224.8,159.3],['스재','S34','E#034',220.2,100.5],
+  ['LozzerSalty','—','E#068',219.5,204.4],['Champa','DRS','E#056',208.0,135.8],
+  ['Astrah','eRa','E#008',200.7,263.8],['Hermes++','REU','E#008',195.4,65.8],
+  ['LozzerSour','S68','E#068',192.8,193.0],['SILENTWRAITH','eRa','E#008',190.7,94.1],
+  ['onlyzonks','U34','E#034',187.8,117.7],['AlphaBeta','S68','E#068',184.8,148.8],
+  ['neddmann','S68','E#068',184.7,40.7],['화양연화KOR','S34','E#034',182.6,197.8],
+  ['뽀로로k','S34','E#034',181.8,99.3],['MaCeno','S68','E#068',178.3,60.4],
+  ['PENDRAGON','S68','E#068',176.1,28.3],['Ovid','eRa','E#008',175.4,58.1],
+  ['Sarda','eRa','E#008',174.4,92.7],['Magoya','Myt','E#008',173.8,55.3],
+  ['TRKickAss','U34','E#034',172.1,87.7],['ForrSalee','E68','E#068',171.0,102.1],
+  ['KATH^astrah','eRa','E#008',170.6,113.6],['★SNORLAXE⁶⁸★','S68','E#068',168.4,145.9],
+  ['Dejawuu','eRa','E#008',163.5,120.0],['Raeinos','eRa','E#008',163.3,136.8],
+  ['DarkVifaro','U34','E#034',162.5,43.8],['Mandau','DRS','E#056',162.2,200.1],
+  ['LozzerLucccc','S68','E#068',159.5,75.5],['Kirrik^GM','DRS','E#056',159.3,143.7],
+  ['Moonwalker●','S68','E#068',157.8,71.0],['AVOMENTHOL','S68','E#068',154.7,54.1],
+  ['Dïablø','U34','E#034',154.2,95.2],['BlackJaw','S68','E#068',152.7,44.0],
+  ['Gizumu','S68','E#068',151.9,49.4],['6Dark6King6','DRS','E#056',150.1,40.6],
+  ['Jøseph','S68','E#068',149.2,45.9],['MrxSlick','S68','E#068',148.8,50.0]
+];
+
+// Per-server Top 12 — [name, tag, power, merits]
+const SERVER12 = {
+  'E#008': [
+    ['時宗','eRa',424.6,221.6],['민트','REU',304.1,303.5],['Collin6666','eRa',272.9,53.1],
+    ['XnJinX','eRa',266.4,223.9],['Macklemore','eRa',260.2,107.2],['Lumberjack','eRa',249.4,257.5],
+    ['BloodYoda','eRa',245.3,227.2],['ibubu♣JP','eRa',230.6,54.8],['TommyTorpedo','eRa',227.7,125.2],
+    ['MuRage','eRa',224.8,159.3],['Astrah','eRa',200.7,263.8],['Hermes++','REU',195.4,65.8]
+  ],
+  'E#068': [
+    ['Corle⁶⁸','S68',310.4,307.3],['MyNIK99','S68',291.8,115.7],['Moo°°','S68',272.7,223.8],
+    ['LozzerSalty','—',219.5,204.4],['LozzerSour','S68',192.8,193.0],['AlphaBeta','S68',184.8,148.8],
+    ['neddmann','S68',184.7,40.7],['MaCeno','S68',178.3,60.4],['PENDRAGON','S68',176.1,28.3],
+    ['ForrSalee','E68',171.0,102.1],['★SNORLAXE⁶⁸★','S68',168.4,145.9],['LozzerLucccc','S68',159.5,75.5]
+  ],
+  'E#034': [
+    ['l조선l노가리맛사탕','S34',259.9,85.6],['사풍흑호','S34',246.6,138.6],['스재','S34',220.2,100.5],
+    ['onlyzonks','U34',187.8,117.7],['화양연화KOR','S34',182.6,197.8],['뽀로로k','S34',181.8,99.3],
+    ['TRKickAss','U34',172.1,87.7],['DarkVifaro','U34',162.5,43.8],['Dïablø','U34',154.2,95.2],
+    ['GoodDay','S34',148.1,96.5],['▪MK▪','U34',132.0,81.5],['가나다라마바사야','S34',131.6,42.8]
+  ],
+  'E#056': [
+    ['Champa','DRS',208.0,135.8],['Mandau','DRS',162.2,200.1],['Kirrik^GM','DRS',159.3,143.7],
+    ['6Dark6King6','DRS',150.1,40.6],['²²²UKELzY','DRS',137.2,47.0],['®Ⓢtoxic','DRS',134.4,45.7],
+    ['Tsahou','DRS',132.1,30.0],['HIDE','DRS',130.5,21.6],['xxDRAXxx','DRS',129.4,28.3],
+    ['®Ⓢ TORIZ','DRS',123.3,52.7],['fxkingrabbit','DRS',118.5,91.2],['☆Kunimitsu☆','DRS',116.7,46.5]
+  ]
+};
+
+const fmtM  = v => v.toFixed(1) + 'M';
+const ratio = r => r.merits / r.power;
+const SORT_VAL = { power: r => r.power, merits: r => r.merits, mp: ratio };
+
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function rowHtml(r, pos, colorByServer){
+  const hl = r.server === 'E#008' ? ' class="highlight"' : '';
+  const col = colorByServer ? SRV_COLOR[r.server] : null;
+  const tagStyle = col ? ` style="color:${col}"` : '';
+  const mp = ratio(r);
+  const mpCls = mp >= 1.0 ? ' mp-hi' : (mp <= 0.35 ? ' mp-lo' : '');
+  return `<tr${hl}><td>${pos}</td><td>${esc(r.name)}</td>`
+       + `<td class="alliance-tag"${tagStyle}>${esc(r.tag)}</td>`
+       + `<td class="num">${fmtM(r.power)}</td><td class="num">${fmtM(r.merits)}</td>`
+       + `<td class="num${mpCls}">${mp.toFixed(2)}</td></tr>`;
+}
+
+function headHtml(col3, state){
+  const th = (key, label) => {
+    const active = state.key === key ? ' active' : '';
+    const caret = state.key === key ? (state.dir === 'desc' ? ' ▼' : ' ▲') : '';
+    return `<th class="num sortable${active}" data-sort="${key}">${label}<span class="caret">${caret}</span></th>`;
+  };
+  return `<thead><tr><th>#</th><th>Player</th><th>${col3}</th>`
+       + th('power','Power') + th('merits','Merits') + th('mp','M:P') + `</tr></thead>`;
+}
+
+function tableHtml(rows, startPos, col3, state, colorByServer){
+  let body = '';
+  rows.forEach((r, i) => body += rowHtml(r, startPos + i, colorByServer));
+  return `<table class="roster-table">${headHtml(col3, state)}<tbody>${body}</tbody></table>`;
+}
+
+function makeSortable(container, data, opts){
+  const state = { key: 'power', dir: 'desc' };
+  function render(){
+    const sorted = data.slice().sort((a, b) => {
+      const d = SORT_VAL[state.key](b) - SORT_VAL[state.key](a);
+      return state.dir === 'desc' ? d : -d;
+    });
+    if (opts.split){
+      const half = Math.ceil(sorted.length / 2);
+      container.innerHTML =
+        '<div>' + tableHtml(sorted.slice(0, half), 1, opts.col3, state, opts.colorByServer) + '</div>' +
+        '<div>' + tableHtml(sorted.slice(half), half + 1, opts.col3, state, opts.colorByServer) + '</div>';
+    } else {
+      container.innerHTML = tableHtml(sorted, 1, opts.col3, state, opts.colorByServer);
+    }
+    container.querySelectorAll('th.sortable').forEach(th => {
+      th.addEventListener('click', () => {
+        const k = th.dataset.sort;
+        if (state.key === k) state.dir = state.dir === 'desc' ? 'asc' : 'desc';
+        else { state.key = k; state.dir = 'desc'; }
+        render();
+      });
+    });
+  }
+  render();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const top50 = TOP50.map(a => ({ name:a[0], tag:a[1], server:a[2], power:a[3], merits:a[4] }));
+  makeSortable(document.getElementById('top50-cols'), top50,
+    { split: true, col3: 'Server', colorByServer: true });
+
+  document.querySelectorAll('[data-server-table]').forEach(el => {
+    const srv = el.getAttribute('data-server-table');
+    const rows = SERVER12[srv].map(a => ({ name:a[0], tag:a[1], server:srv, power:a[2], merits:a[3] }));
+    makeSortable(el, rows, { split: false, col3: 'Alliance', colorByServer: false });
+  });
+});
 </script>
 
 </body>
