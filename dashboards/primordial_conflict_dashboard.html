@@ -404,6 +404,49 @@
     font-weight: 500;
   }
 
+  /* Row-label (first) column reads left-aligned; numeric columns stay centered. */
+  .points-table th:first-child,
+  .points-table td:first-child {
+    text-align: left;
+  }
+
+  /* ─── Matchup Strip (Matching stage) ─── */
+  .matchup-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .ms-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+
+  .ms-row.ms-us {
+    border-color: var(--accent-gold);
+  }
+
+  .ms-server {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .ms-us .ms-server { color: var(--accent-gold); }
+
+  .ms-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
   /* ─── Info Callouts ─── */
   .callout {
     background: var(--bg-deep);
@@ -435,7 +478,8 @@
     color: var(--accent-gold);
   }
 
-  .callout strong {
+  /* Callout TITLE: only the first <strong> is the block-level mono label. */
+  .callout > strong:first-of-type {
     display: block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem;
@@ -443,6 +487,11 @@
     letter-spacing: 0.1em;
     margin-bottom: 4px;
     opacity: 0.8;
+  }
+
+  /* Inline emphasis inside callout body stays inline. */
+  .callout strong {
+    font-weight: 700;
   }
 
   /* ─── Two Column Layout ─── */
@@ -648,6 +697,8 @@
     border-bottom: 1px solid var(--border)22;
   }
 
+  /* Numeric columns (Power + Merits) right-aligned + mono to match their headers. */
+  .roster-table td:nth-child(4),
   .roster-table td:last-child {
     text-align: right;
     font-family: 'JetBrains Mono', monospace;
@@ -750,6 +801,7 @@
       <span class="server-badge opponent">E#068 BEFORE69</span>
       <span class="server-badge opponent">E#034 ERA°FAMILYBIG</span>
       <span class="server-badge opponent">E#056 DEATHREAPPERS</span>
+    </div>
   </div>
 
   <!-- Tabs -->
@@ -815,56 +867,27 @@
     <!-- Live Scoreboard -->
     <div class="section">
       <h2>Battle Stage Scoreboard</h2>
-      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 12px;">New cycle · Matching stage — battle results begin Day 2. <span class="tbd">TBD</span></p>
-      <table class="points-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th style="text-align:left">Server</th>
-            <th>Points</th>
-            <th>Kingdom Dew</th>
-            <th>Next Opponent</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="color:var(--accent-gold); font-weight:700;">★</td>
-            <td style="text-align:left; color:var(--accent-gold); font-weight:700;">E#008 ERAEMPIRE (Us)</td>
-            <td class="tbd">TBD</td>
-            <td class="tbd">TBD</td>
-            <td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td style="color:var(--text-secondary);">—</td>
-            <td style="text-align:left; color:var(--accent-green);">E#068 BEFORE69</td>
-            <td class="tbd">TBD</td>
-            <td class="tbd">TBD</td>
-            <td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td style="color:var(--text-secondary);">—</td>
-            <td style="text-align:left; color:var(--accent-orange);">E#034 ERA°FAMILYBIG</td>
-            <td class="tbd">TBD</td>
-            <td class="tbd">TBD</td>
-            <td class="tbd">TBD</td>
-          </tr>
-          <tr>
-            <td style="color:var(--text-secondary);">—</td>
-            <td style="text-align:left; color:var(--accent-purple);">E#056 DEATHREAPPERS</td>
-            <td class="tbd">TBD</td>
-            <td class="tbd">TBD</td>
-            <td class="tbd">TBD</td>
-          </tr>
-        </tbody>
-      </table>
+      <p>We're in the <strong>Matching stage</strong> — paired against E#068, E#034, and E#056, with no battles fought yet. Points, Kingdom Dew, and daily workshop results populate here once the Battle Stage opens on <strong>Day 2</strong>. Our Order Workshop window this cycle is locked to <strong style="color:var(--accent-purple)">19:00–20:00 UTC</strong>.</p>
 
-      <h3 style="margin-top: 16px;">Workshop Results Tracker</h3>
-      <p style="font-size:0.82rem; color:var(--text-muted); margin: 4px 0 0;">Order Workshop spawn time this cycle: <strong>19:00 UTC</strong> (chosen at Matching). Daily matchups &amp; results fill in from Day 2. <span class="tbd">TBD</span></p>
-
-      <div class="callout strategy" style="margin-top: 12px;">
-        <strong>Matching Stage — Scout &amp; Prep</strong>
-        We're paired against <strong>E#068 (BEFORE69)</strong>, <strong>E#034 (ERA°FAMILYBIG)</strong>, and <strong>E#056 (DEATHREAPPERS)</strong>. No battle results yet. Use this stage to scout opponents, finalize tech, and lock the Order Workshop time (we picked 19:00 UTC). Battle Stage matchups begin Day 2.
+      <div class="matchup-strip">
+        <div class="ms-row ms-us">
+          <span class="ms-server">E#008 ERAEMPIRE</span>
+          <span class="ms-note">Us · favorite</span>
+        </div>
+        <div class="ms-row">
+          <span class="ms-server" style="color:var(--accent-green)">E#068 BEFORE69</span>
+          <span class="ms-note">SD #15 · closest top-end</span>
+        </div>
+        <div class="ms-row">
+          <span class="ms-server" style="color:var(--accent-orange)">E#034 ERA°FAMILYBIG</span>
+          <span class="ms-note">SD #16 · two-family split</span>
+        </div>
+        <div class="ms-row">
+          <span class="ms-server" style="color:var(--accent-purple)">E#056 DEATHREAPPERS</span>
+          <span class="ms-note">SD #17 · weakest</span>
+        </div>
       </div>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin: 12px 0 0;">Use the Matching stage to scout these rosters (see <strong>Server Intel</strong>), finalize Alchemy tech, and confirm gathering assignments. Full scouting numbers are in the Top 50 and per-server rosters below.</p>
     </div>
 
     <!-- Player Rankings -->
@@ -951,11 +974,11 @@
       <p>Primordial Conflict is a 4-server round-robin KvK. Three days of 1v1 battles (Days 2–4) where you face each opponent once, followed by a battlefield selection by the leading kingdom (Day 5), and a massive 4-way showdown (Day 6). Day 7 provides partial troop recovery.</p>
 
       <h3>Core Loop</h3>
-      <p>During battle days, you earn <em>Primordial Dew</em> by gathering at Alchemy Pools and fighting over Order Workshops (which open twice daily). Dew converts to Primordial Points for scoring. On the showdown day, Essence Refineries appear around the chosen Imperial City — holding these generates <em>Primordial Essence</em> (premium currency) and massive Kingdom Points.</p>
+      <p>During battle days, you earn <em>Primordial Dew</em> by gathering at Alchemy Pools and fighting over Order Workshops (which open in one chosen 1-hour window per day — we picked 19:00 UTC). Dew converts to Primordial Points for scoring. On the showdown day, Essence Refineries appear around the chosen Imperial City — holding these generates <em>Primordial Essence</em> (premium currency) and massive Kingdom Points.</p>
 
       <div class="callout info">
         <strong>Key Difference from TME</strong>
-        This is a 4-way event, not 2-way. Round-robin scoring determines who picks the Day 6 battlefield. Workshop fights happen in 1-hour windows twice daily across 3 days. Cross-border tiles also open on the map during the Battle Stage, so enemy players can hunt gatherers — stay alert while farming.
+        This is a 4-way event, not 2-way. Round-robin scoring determines who picks the Day 6 battlefield. Workshop fights happen in one 1-hour window per day across the 3 battle days (time chosen at Matching — we picked 19:00 UTC). Cross-border tiles also open on the map during the Battle Stage, so enemy players can hunt gatherers — stay alert while farming.
       </div>
     </div>
 
@@ -963,7 +986,7 @@
     <div class="two-col">
       <div class="section">
         <h2>Order Workshops (Days 2–4)</h2>
-        <p>3 workshops spawn per contest at <strong style="color:var(--accent-purple)">04:00–05:00</strong> and <strong style="color:var(--accent-purple)">16:00–17:00 UTC</strong> daily (1 hour each). They spawn in Zone 2 regions (1 per region, random placement) and alternate between your map and the opponent's map.</p>
+        <p>3 workshops spawn per contest in one daily 1-hour window — this cycle <strong style="color:var(--accent-purple)">19:00–20:00 UTC</strong> (chosen at Matching). They spawn in Zone 2 regions (1 per region, random placement) and alternate between your map and the opponent's map.</p>
         <ul>
           <li>During contests, you can teleport to enemy cross-border camps</li>
           <li>No cap on how many players fit inside — swarm them</li>
@@ -999,15 +1022,17 @@
       <p>View event rules, participating kingdoms' info, event schedule, and reward details. No combat or gathering available yet. Use this time to scout opponent servers and coordinate alliance strategy.</p>
       <div class="callout strategy">
         <strong>Action Items</strong>
-        Scout enemy server power levels. Coordinate Dew gathering assignments. Brief alliance leads on workshop contest times (04:00–05:00 and 16:00–17:00 UTC, 1hr each).
+        Scout enemy server power levels. Coordinate Dew gathering assignments. Brief alliance leads on the workshop contest time (19:00–20:00 UTC, chosen at Matching).
       </div>
     </div>
 
     <div class="section">
       <h2>Days 2–4 — Battle Stage (Round Robin)</h2>
-      <p>Each day, your kingdom is paired 1v1 against a different opponent. Matchups rotate daily with priority given to kingdoms that haven't faced each other yet. Two activities run simultaneously:</p>
+      <p>Each day, your kingdom is paired 1v1 against a different opponent. Matchups rotate daily with priority given to kingdoms that haven't faced each other yet. Two activities run simultaneously across the three battle days — <strong>Alchemy Pool gathering</strong> (passive Dew income) and <strong>Order Workshop contests</strong> (twice-daily PvP objectives), detailed below.</p>
+    </div>
 
-      <h3>Alchemy Pool Gathering</h3>
+    <div class="section">
+      <h2>Alchemy Pool Gathering</h2>
       <ul>
         <li>Pools of levels 1–4 appear on the world map throughout the stage</li>
         <li>Level 4 pools spawn near the Imperial City only, refresh every 12h, last 12h</li>
@@ -1065,16 +1090,15 @@
         </tbody>
       </table>
       <p style="margin-top:8px; font-size:0.82rem; color:var(--text-muted);">Lv. 4 pools are massively larger than Lv. 1–3 — 1.2M capacity with up to 40 simultaneous gatherers, but only 1 march per account. Only 3 spawn near the Imperial City, guarded by Corrupted Hyenas (1 per pool, killing blow required for buff, refresh every 12h). Optimal gathering: 1 march on Lv.4 + 4 marches on Lv.3 nodes.</p>
+    </div>
 
-      <h3>Order Workshop Contests</h3>
+    <div class="section">
+      <h2>Order Workshop Contests</h2>
+      <p style="margin-bottom: 4px;">NEW this cycle: the spawn time is no longer two fixed windows — a single 1-hour time is chosen once during Matching (options 01:00 / 04:00 / 11:00 / 19:00 UTC). <strong>We picked 19:00–20:00 UTC</strong>, applied each battle day.</p>
       <div class="workshop-times">
         <div class="time-block">
-          <div class="time-val">04:00</div>
-          <div class="time-label">to 05:00 UTC</div>
-        </div>
-        <div class="time-block">
-          <div class="time-val">16:00</div>
-          <div class="time-label">to 17:00 UTC</div>
+          <div class="time-val">19:00</div>
+          <div class="time-label">to 20:00 UTC · our pick</div>
         </div>
       </div>
       <ul>
@@ -1088,7 +1112,10 @@
         <li>After capture, stay inside to soak additional points; PvP to deny enemy points</li>
         <li>All troops auto-returned to home server when the hour ends — no lingering</li>
       </ul>
+    </div>
 
+    <div class="section">
+      <h2>Battle Stage Cautions</h2>
       <div class="callout info">
         <strong>PvP Scope During Battle Stage</strong>
         PvP during Days 2–4 centers on Order Workshops, but cross-border tiles also open around the map during the Battle Stage. Enemy players can roam your server and hunt gatherers. Workshop troops are auto-returned after the 1hr window, but the cross-border access means you should stay alert while farming.
@@ -1096,7 +1123,7 @@
 
       <div class="callout warning">
         <strong>Attrition Warning</strong>
-        That's 6 workshop contests (1hr each) across 3 days BEFORE the showdown. Budget troops and healing accordingly — don't blow everything on Day 2.
+        That's 3 workshop contests (1hr each, one per day) across the Battle Stage BEFORE the showdown. Budget troops and healing accordingly — don't blow everything on Day 2.
       </div>
 
       <div class="callout important">
@@ -1256,7 +1283,7 @@
 
       <h3>Order Workshops (Days 2–4)</h3>
       <ul>
-        <li>3 workshops per contest window (6 per day, 18 across 3 battle days)</li>
+        <li>3 workshops per daily contest window (9 across the 3 battle days)</li>
         <li>Fully capturing a workshop: <strong style="color:var(--points-color)">600M</strong> Kingdom Points per workshop</li>
         <li>Occupying a workshop at contest end: additional <strong style="color:var(--points-color)">200M</strong> Kingdom Points per workshop</li>
         <li>Once captured, workshops cannot be un-captured — stay inside to soak additional points</li>
