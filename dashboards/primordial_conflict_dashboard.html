@@ -410,43 +410,6 @@
     text-align: left;
   }
 
-  /* ─── Matchup Strip (Matching stage) ─── */
-  .matchup-strip {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 12px;
-  }
-
-  .ms-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-    background: var(--bg-deep);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 14px;
-  }
-
-  .ms-row.ms-us {
-    border-color: var(--accent-gold);
-  }
-
-  .ms-server {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-
-  .ms-us .ms-server { color: var(--accent-gold); }
-
-  .ms-note {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-  }
-
   /* ─── Info Callouts ─── */
   .callout {
     background: var(--bg-deep);
@@ -867,27 +830,65 @@
     <!-- Live Scoreboard -->
     <div class="section">
       <h2>Battle Stage Scoreboard</h2>
-      <p>We're in the <strong>Matching stage</strong> — paired against E#068, E#034, and E#056, with no battles fought yet. Points, Kingdom Dew, and daily workshop results populate here once the Battle Stage opens on <strong>Day 2</strong>. Our Order Workshop window this cycle is locked to <strong style="color:var(--accent-purple)">19:00–20:00 UTC</strong>.</p>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 12px;">Matching stage — paired against E#068, E#034, and E#056. Live points, Kingdom Dew, and matchups populate once the Battle Stage opens at the <strong>00:00 UTC reset</strong> (Day 2).</p>
+      <table class="points-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th style="text-align:left">Server</th>
+            <th>Points</th>
+            <th>Kingdom Dew</th>
+            <th>Next Opponent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--accent-gold); font-weight:700;">★</td>
+            <td style="text-align:left; color:var(--accent-gold); font-weight:700;">E#008 ERAEMPIRE (Us)</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-secondary);">—</td>
+            <td style="text-align:left; color:var(--accent-green);">E#068 BEFORE69</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-secondary);">—</td>
+            <td style="text-align:left; color:var(--accent-orange);">E#034 ERA°FAMILYBIG</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text-secondary);">—</td>
+            <td style="text-align:left; color:var(--accent-purple);">E#056 DEATHREAPPERS</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+          </tr>
+        </tbody>
+      </table>
 
-      <div class="matchup-strip">
-        <div class="ms-row ms-us">
-          <span class="ms-server">E#008 ERAEMPIRE</span>
-          <span class="ms-note">Us · favorite</span>
-        </div>
-        <div class="ms-row">
-          <span class="ms-server" style="color:var(--accent-green)">E#068 BEFORE69</span>
-          <span class="ms-note">SD #15 · closest top-end</span>
-        </div>
-        <div class="ms-row">
-          <span class="ms-server" style="color:var(--accent-orange)">E#034 ERA°FAMILYBIG</span>
-          <span class="ms-note">SD #16 · two-family split</span>
-        </div>
-        <div class="ms-row">
-          <span class="ms-server" style="color:var(--accent-purple)">E#056 DEATHREAPPERS</span>
-          <span class="ms-note">SD #17 · weakest</span>
-        </div>
-      </div>
-      <p style="font-size:0.82rem; color:var(--text-muted); margin: 12px 0 0;">Use the Matching stage to scout these rosters (see <strong>Server Intel</strong>), finalize Alchemy tech, and confirm gathering assignments. Full scouting numbers are in the Top 50 and per-server rosters below.</p>
+      <h3 style="margin-top: 16px;">Workshop Results Tracker</h3>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin: 4px 0 0;">Order Workshop window this cycle: <strong style="color:var(--accent-purple)">19:00–20:00 UTC</strong> (chosen at Matching). Daily matchups &amp; results fill in from Day 2.</p>
+      <table class="points-table" style="margin-top: 8px;">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th style="text-align:left">Matchup</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Day 2</td><td style="text-align:left;" class="tbd">TBD</td><td class="tbd">TBD</td></tr>
+          <tr><td>Day 3</td><td style="text-align:left;" class="tbd">TBD</td><td class="tbd">TBD</td></tr>
+          <tr><td>Day 4</td><td style="text-align:left;" class="tbd">TBD</td><td class="tbd">TBD</td></tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Player Rankings -->
