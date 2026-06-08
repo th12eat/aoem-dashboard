@@ -573,9 +573,9 @@
   }
 
   .server-card.s008::before { background: var(--accent-gold); }
-  .server-card.s016::before { background: var(--accent-red); }
-  .server-card.s092::before { background: var(--accent-blue); }
-  .server-card.s022::before { background: var(--accent-purple); }
+  .server-card.s068::before { background: var(--accent-green); }
+  .server-card.s034::before { background: var(--accent-orange); }
+  .server-card.s056::before { background: var(--accent-purple); }
 
   .server-card .sc-header {
     margin-bottom: 12px;
@@ -590,9 +590,9 @@
   }
 
   .server-card.s008 .sc-name { color: var(--accent-gold); }
-  .server-card.s016 .sc-name { color: var(--accent-red); }
-  .server-card.s092 .sc-name { color: var(--accent-blue); }
-  .server-card.s022 .sc-name { color: var(--accent-purple); }
+  .server-card.s068 .sc-name { color: var(--accent-green); }
+  .server-card.s034 .sc-name { color: var(--accent-orange); }
+  .server-card.s056 .sc-name { color: var(--accent-purple); }
 
   .server-card .sc-rank {
     font-family: 'JetBrains Mono', monospace;
@@ -746,10 +746,10 @@
     <h1>Primordial Conflict</h1>
     <div class="subtitle">Era 8 — War Room Dashboard</div>
     <div class="server-badges">
-      <span class="server-badge home">E#008 ★ Home</span>
-      <span class="server-badge opponent">E#016</span>
-      <span class="server-badge opponent">E#022</span>
-      <span class="server-badge opponent">E#092</span>
+      <span class="server-badge home">E#008 ★ ERAEMPIRE (Us)</span>
+      <span class="server-badge opponent">E#068 BEFORE69</span>
+      <span class="server-badge opponent">E#034 ERA°FAMILYBIG</span>
+      <span class="server-badge opponent">E#056 DEATHREAPPERS</span>
   </div>
 
   <!-- Tabs -->
@@ -768,28 +768,28 @@
 
     <!-- Timeline -->
     <div class="timeline">
-      <div class="day-card">
+      <div class="day-card current">
         <div class="day-num">1</div>
-        <div class="day-label">Complete</div>
-        <div class="day-desc">Scouting &amp; matching</div>
-        <span class="phase-tag scout">Scout</span>
+        <div class="day-label">Today</div>
+        <div class="day-desc">Matching &amp; scouting</div>
+        <span class="phase-tag scout">Match</span>
       </div>
       <div class="day-card">
         <div class="day-num">2</div>
-        <div class="day-label">Complete</div>
-        <div class="day-desc">E#008 vs E#016</div>
-        <span class="phase-tag battle">Split</span>
+        <div class="day-label">Upcoming</div>
+        <div class="day-desc">Battle <span class="tbd">TBD</span></div>
+        <span class="phase-tag battle">Battle</span>
       </div>
       <div class="day-card">
         <div class="day-num">3</div>
-        <div class="day-label">Complete</div>
-        <div class="day-desc">E#008 vs E#092</div>
-        <span class="phase-tag battle">Swept ✓</span>
+        <div class="day-label">Upcoming</div>
+        <div class="day-desc">Battle <span class="tbd">TBD</span></div>
+        <span class="phase-tag battle">Battle</span>
       </div>
-      <div class="day-card current">
+      <div class="day-card">
         <div class="day-num">4</div>
-        <div class="day-label">Today</div>
-        <div class="day-desc">E#008 vs E#022</div>
+        <div class="day-label">Upcoming</div>
+        <div class="day-desc">Battle <span class="tbd">TBD</span></div>
         <span class="phase-tag battle">Battle</span>
       </div>
       <div class="day-card">
@@ -815,7 +815,7 @@
     <!-- Live Scoreboard -->
     <div class="section">
       <h2>Battle Stage Scoreboard</h2>
-      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 12px;">Updated: Day 4 (near complete) · E#008 vs E#092 · E#016 vs E#022</p>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 12px;">New cycle · Matching stage — battle results begin Day 2. <span class="tbd">TBD</span></p>
       <table class="points-table">
         <thead>
           <tr>
@@ -823,177 +823,58 @@
             <th style="text-align:left">Server</th>
             <th>Points</th>
             <th>Kingdom Dew</th>
-            <th>Day 4 Opponent</th>
+            <th>Next Opponent</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="background: var(--accent-red)08;">
-            <td style="color:var(--accent-red); font-weight:700;">🥇 1st</td>
-            <td style="text-align:left; color:var(--accent-red); font-weight:700;">E#016 👑</td>
-            <td style="color:var(--accent-red);">19.8B</td>
-            <td>19M</td>
-            <td>vs E#022</td>
+          <tr>
+            <td style="color:var(--accent-gold); font-weight:700;">★</td>
+            <td style="text-align:left; color:var(--accent-gold); font-weight:700;">E#008 ERAEMPIRE (Us)</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
           </tr>
           <tr>
-            <td style="color:var(--accent-gold); font-weight:700;">🥈 2nd</td>
-            <td style="text-align:left; color:var(--accent-gold); font-weight:700;">E#008 ★</td>
-            <td style="color:var(--accent-gold);">15.3B</td>
-            <td>20.3M</td>
-            <td>vs E#092</td>
+            <td style="color:var(--text-secondary);">—</td>
+            <td style="text-align:left; color:var(--accent-green);">E#068 BEFORE69</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
           </tr>
           <tr>
-            <td style="color:var(--text-secondary);">🥉 3rd</td>
-            <td style="text-align:left; color:var(--accent-blue);">E#092</td>
-            <td>8.27B</td>
-            <td>17M</td>
-            <td>vs E#008</td>
+            <td style="color:var(--text-secondary);">—</td>
+            <td style="text-align:left; color:var(--accent-orange);">E#034 ERA°FAMILYBIG</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
           </tr>
           <tr>
-            <td style="color:var(--text-muted);">4th</td>
-            <td style="text-align:left; color:var(--accent-purple);">E#022</td>
-            <td style="color:var(--text-muted);">5.38B</td>
-            <td>11.9M</td>
-            <td>vs E#016</td>
+            <td style="color:var(--text-secondary);">—</td>
+            <td style="text-align:left; color:var(--accent-purple);">E#056 DEATHREAPPERS</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
+            <td class="tbd">TBD</td>
           </tr>
         </tbody>
       </table>
 
       <h3 style="margin-top: 16px;">Workshop Results Tracker</h3>
-      <table class="points-table" style="margin-top: 8px;">
-        <thead>
-          <tr>
-            <th>Day</th>
-            <th style="text-align:left">Matchup</th>
-            <th>04:00 Result</th>
-            <th>16:00 Result</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Day 2</td>
-            <td style="text-align:left;">E#008 vs E#016</td>
-            <td style="color:var(--accent-gold);">E#008 2/3</td>
-            <td style="color:var(--accent-red);">E#016 2/3</td>
-          </tr>
-          <tr>
-            <td>Day 2</td>
-            <td style="text-align:left;">E#092 vs E#022</td>
-            <td style="color:var(--accent-blue);">E#092 ~3/3</td>
-            <td style="color:var(--accent-blue);">E#092 ~3/3</td>
-          </tr>
-          <tr>
-            <td>Day 3</td>
-            <td style="text-align:left;">E#008 vs E#092</td>
-            <td style="color:var(--accent-gold);">E#008 3/3 ✓</td>
-            <td style="color:var(--accent-gold);">E#008 3/3 ✓</td>
-          </tr>
-          <tr>
-            <td>Day 3</td>
-            <td style="text-align:left;">E#016 vs E#022</td>
-            <td style="color:var(--accent-red);">E#016 ~3/3</td>
-            <td style="color:var(--accent-red);">E#016 ~3/3</td>
-          </tr>
-          <tr>
-            <td>Day 4</td>
-            <td style="text-align:left;">E#008 vs E#022</td>
-            <td style="color:var(--text-muted);">Expected 3/3</td>
-            <td style="color:var(--text-muted);">Expected 3/3</td>
-          </tr>
-          <tr>
-            <td>Day 4</td>
-            <td style="text-align:left;">E#016 vs E#092</td>
-            <td style="color:var(--text-muted);">Expected E#016</td>
-            <td style="color:var(--text-muted);">Expected E#016</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="callout important" style="margin-top: 12px;">
-        <strong>E#016 Has Likely Won the Battle Stage</strong>
-        E#016 leads with 19.8B vs our 15.3B — a 4.5B gap with only Day 4 left. They aced E#022 today while we aced E#092. Tomorrow (Day 4) both servers face easy opponents (E#008 vs E#022, E#016 vs E#092) and are expected to sweep. The gap is likely insurmountable. E#016 will pick the Day 6 showdown location, time, and gain the Stage Winner Extra Buffs (+7.5% Attack, +7.5% Defense).
-      </div>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin: 4px 0 0;">Order Workshop spawn time this cycle: <strong>19:00 UTC</strong> (chosen at Matching). Daily matchups &amp; results fill in from Day 2. <span class="tbd">TBD</span></p>
 
       <div class="callout strategy" style="margin-top: 12px;">
-        <strong>Silver Lining</strong>
-        Era 8 leads Kingdom Dew gathered (20.3M vs E#016's 19M) — meaning our tech tree progress is ahead. We also have 4 alliances in the top 10 (eRa #2, Myt #7, REU #8, eRà #9). The showdown is what matters most for final standings, and being well-buffed from farming could offset the Stage Winner advantage.
+        <strong>Matching Stage — Scout &amp; Prep</strong>
+        We're paired against <strong>E#068 (BEFORE69)</strong>, <strong>E#034 (ERA°FAMILYBIG)</strong>, and <strong>E#056 (DEATHREAPPERS)</strong>. No battle results yet. Use this stage to scout opponents, finalize tech, and lock the Order Workshop time (we picked 19:00 UTC). Battle Stage matchups begin Day 2.
       </div>
     </div>
 
     <!-- Player Rankings -->
     <div class="section">
       <h2>Top 50 Player Rankings</h2>
-      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 4px;">Battle Stage standings by individual points. Server representation: E#016 (20), E#008 (16), E#092 (8), E#022 (6).</p>
-
-      <div class="two-col">
-        <div>
-          <table class="roster-table">
-            <thead><tr><th>#</th><th>Player</th><th>Server</th><th style="text-align:right">Points</th><th style="text-align:right">Dew</th></tr></thead>
-            <tbody>
-              <tr><td>1</td><td>Ysendy</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>896M</td><td>302K</td></tr>
-              <tr><td>2</td><td>Delaynômore</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>881M</td><td>156K</td></tr>
-              <tr class="highlight"><td>3</td><td>Lumberjack</td><td class="alliance-tag">eRa</td><td>860M</td><td>238K</td></tr>
-              <tr class="highlight"><td>4</td><td>時宗</td><td class="alliance-tag">eRa</td><td>844M</td><td>244K</td></tr>
-              <tr><td>5</td><td>Metal76</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>797M</td><td>289K</td></tr>
-              <tr><td>6</td><td>SyMteX</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>681M</td><td>434K</td></tr>
-              <tr><td>7</td><td>suwonsamsung</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>617M</td><td>335K</td></tr>
-              <tr><td>8</td><td>TeamTW</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>604M</td><td>327K</td></tr>
-              <tr><td>9</td><td>CaptFlint</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>599M</td><td>129K</td></tr>
-              <tr><td>10</td><td>AbuGala</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>587M</td><td>222K</td></tr>
-              <tr><td>11</td><td>MisterMuffin</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>574M</td><td>301K</td></tr>
-              <tr><td>12</td><td>Chris1909</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>549M</td><td>326K</td></tr>
-              <tr><td>13</td><td>Ticklepink</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>478M</td><td>113K</td></tr>
-              <tr class="highlight"><td>14</td><td>민트</td><td class="alliance-tag">REU</td><td>452M</td><td>217K</td></tr>
-              <tr><td>15</td><td>UnChartered</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>441M</td><td>130K</td></tr>
-              <tr class="highlight"><td>16</td><td>Raeinos</td><td class="alliance-tag">eRa</td><td>403M</td><td>294K</td></tr>
-              <tr><td>17</td><td>ArNyB</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>393M</td><td>270K</td></tr>
-              <tr><td>18</td><td>Elessar</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>392M</td><td>345K</td></tr>
-              <tr><td>19</td><td>FleoDeDurin</td><td class="alliance-tag" style="color:var(--accent-red)">TWH</td><td>387M</td><td>161K</td></tr>
-              <tr><td>20</td><td>DmscTheThird</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>384M</td><td>212K</td></tr>
-              <tr><td>21</td><td>NemmΩ</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>372M</td><td>225K</td></tr>
-              <tr><td>22</td><td>ZINY</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>363M</td><td>342K</td></tr>
-              <tr class="highlight"><td>23</td><td>Sebasxit22</td><td class="alliance-tag">Myt</td><td>332M</td><td>137K</td></tr>
-              <tr><td>24</td><td>牛奶xingxing</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>328M</td><td>327K</td></tr>
-              <tr><td>25</td><td>Booleon</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>317M</td><td>141K</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <table class="roster-table">
-            <thead><tr><th>#</th><th>Player</th><th>Server</th><th style="text-align:right">Points</th><th style="text-align:right">Dew</th></tr></thead>
-            <tbody>
-              <tr class="highlight"><td>26</td><td>Tonci</td><td class="alliance-tag">eRa</td><td>315M</td><td>227K</td></tr>
-              <tr><td>27</td><td>WinterBane</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>309M</td><td>280K</td></tr>
-              <tr class="highlight"><td>28</td><td>NoSoyUnGnomo</td><td class="alliance-tag">eRa</td><td>308M</td><td>502K</td></tr>
-              <tr><td>29</td><td>SneakySneaky</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>301M</td><td>110K</td></tr>
-              <tr><td>30</td><td>NAGAN</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>292M</td><td>144K</td></tr>
-              <tr><td>31</td><td>Sawadeekub</td><td class="alliance-tag" style="color:var(--accent-purple)">REC</td><td>288M</td><td>323K</td></tr>
-              <tr class="highlight"><td>32</td><td>TommyTorpedo</td><td class="alliance-tag">eRa</td><td>282M</td><td>412K</td></tr>
-              <tr><td>33</td><td>Dwarf✿34</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>277M</td><td>349K</td></tr>
-              <tr class="highlight"><td>34</td><td>Collin6666</td><td class="alliance-tag">eRa</td><td>258M</td><td>160K</td></tr>
-              <tr class="highlight"><td>35</td><td>MuRage</td><td class="alliance-tag">eRa</td><td>249M</td><td>136K</td></tr>
-              <tr class="highlight"><td>36</td><td>SILENTWRAITH</td><td class="alliance-tag">eRa</td><td>239M</td><td>264K</td></tr>
-              <tr><td>37</td><td>Drfamous</td><td class="alliance-tag" style="color:var(--accent-purple)">REC</td><td>222M</td><td>240K</td></tr>
-              <tr class="highlight"><td>38</td><td>조온마난색기</td><td class="alliance-tag">REU</td><td>217M</td><td>133K</td></tr>
-              <tr class="highlight"><td>39</td><td>Sarda</td><td class="alliance-tag">eRa</td><td>214M</td><td>345K</td></tr>
-              <tr><td>40</td><td>JINAN</td><td class="alliance-tag" style="color:var(--accent-blue)">OPS</td><td>214M</td><td>188K</td></tr>
-              <tr><td>41</td><td>GoWipeUrAss</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>208M</td><td>138K</td></tr>
-              <tr class="highlight"><td>42</td><td>Kira</td><td class="alliance-tag">eRa</td><td>198M</td><td>270K</td></tr>
-              <tr><td>43</td><td>HORRIBLE</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>196M</td><td>236K</td></tr>
-              <tr><td>44</td><td>FONGhong</td><td class="alliance-tag" style="color:var(--accent-purple)">REC</td><td>193M</td><td>285K</td></tr>
-              <tr class="highlight"><td>45</td><td>ibubu☘JP</td><td class="alliance-tag">eRa</td><td>185M</td><td>208K</td></tr>
-              <tr class="highlight"><td>46</td><td>Stefanve</td><td class="alliance-tag">eRa</td><td>178M</td><td>227K</td></tr>
-              <tr><td>47</td><td>Jaxonjaxoff</td><td class="alliance-tag" style="color:var(--accent-purple)">REC</td><td>171M</td><td>301K</td></tr>
-              <tr><td>48</td><td>RagingTuna</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>164M</td><td>241K</td></tr>
-              <tr><td>49</td><td>Ŀìċħŧ</td><td class="alliance-tag" style="color:var(--accent-red)">TKH</td><td>157M</td><td>90.8K</td></tr>
-              <tr class="highlight"><td>50</td><td>Ephe</td><td class="alliance-tag">Myt</td><td>148M</td><td>186K</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 4px;">Battle Stage standings by individual points. <span class="tbd">TBD</span> — populates once the Battle Stage begins (Day 2).</p>
 
       <div class="callout strategy" style="margin-top: 12px;">
-        <strong>Player Insights</strong>
-        E#016 dominates with 20 of the top 50, but Era 8 has 16 — competitive depth. Lumberjack (#3) and 時宗 (#4) are within striking distance of the top. E#092's top players (SyMteX, suwonsamsung, TeamTW) are heavy Dew farmers — note SyMteX at 434K resources. NoSoyUnGnomo leads all Dew farming at 502K. TommyTorpedo at #32 with 412K Dew is one of the top farmers overall.
+        <strong>Rankings reset for the new cycle</strong>
+        Last cycle's standings have been cleared. The Top 50 will be rebuilt from this cycle's Battle Stage data against E#068, E#034, and E#056. Send screenshots once battles start and we'll repopulate.
       </div>
     </div>
 
@@ -1442,280 +1323,98 @@
     <div class="server-compare">
       <div class="server-card s008">
         <div class="sc-header">
-          <span class="sc-name">E#008 — Era 8 ★</span>
-          <span class="sc-rank">Stellar Dynasty #27</span>
+          <span class="sc-name">E#008 — ERAEMPIRE ★ (Us)</span>
+          <span class="sc-rank">Owl · Blue</span>
         </div>
-        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val">時宗 · 407M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val">156M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val">eRa · 17.6B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val">~47.3B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Top Merits (Player)</span><span class="sc-stat-val">민트 · 290M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Total Alliance Merits</span><span class="sc-stat-val">~3.35B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val">4 alliances</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val">4 alliances (eRa, Myt, REU, eRà)</span></div>
         <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val">Mixed EN/KR/JP</span></div>
       </div>
 
-      <div class="server-card s016">
+      <div class="server-card s068">
         <div class="sc-header">
-          <span class="sc-name">E#016 — Era 16 👑</span>
-          <span class="sc-rank">Stellar Dynasty #7</span>
+          <span class="sc-name">E#068 — BEFORE69</span>
+          <span class="sc-rank">Lion · Green</span>
         </div>
-        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val">AVATON · 271M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val">163M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val">TKH · 20.1B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val">~48.0B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Top Merits (Player)</span><span class="sc-stat-val">ImSoDzy · 427M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Total Alliance Merits</span><span class="sc-stat-val">~3.0B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val">1 mega-family</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val">EN-dominant</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val tbd">TBD</span></div>
       </div>
 
-      <div class="server-card s092">
+      <div class="server-card s034">
         <div class="sc-header">
-          <span class="sc-name">E#092 — Era 92</span>
-          <span class="sc-rank">Stellar Dynasty #40</span>
+          <span class="sc-name">E#034 — ERA°FAMILYBIG</span>
+          <span class="sc-rank">Phoenix · Orange</span>
         </div>
-        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val">TeamTW · 331M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val">123M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val">OPS · 14.1B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val">~28.4B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Top Merits (Player)</span><span class="sc-stat-val">수원 · 294M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Total Alliance Merits</span><span class="sc-stat-val">~1.19B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val">3 large alliances</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val">KR/TW dominant</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val tbd">TBD</span></div>
       </div>
 
-      <div class="server-card s022">
+      <div class="server-card s056">
         <div class="sc-header">
-          <span class="sc-name">E#022 — Era 22</span>
-          <span class="sc-rank">Stellar Dynasty #66</span>
+          <span class="sc-name">E#056 — DEATHREAPPERS</span>
+          <span class="sc-rank">Dragon · Purple</span>
         </div>
-        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val">OwL^ · 306M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val">150M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val">REC · 19.9B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val">~42.4B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Top Merits (Player)</span><span class="sc-stat-val">IamSplender · 241M</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Total Alliance Merits</span><span class="sc-stat-val">~1.96B</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val">3 Realm alliances</span></div>
-        <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val">EN/JP mixed</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top Player</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">#24 Floor</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Lead Alliance</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Top 4 Alliances</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Structure</span><span class="sc-stat-val tbd">TBD</span></div>
+        <div class="sc-stat"><span class="sc-stat-label">Player Base</span><span class="sc-stat-val tbd">TBD</span></div>
       </div>
     </div>
 
     <!-- Threat Assessment -->
     <div class="section">
       <h2>Threat Assessment</h2>
-
-      <div class="callout important">
-        <strong>1. E#016 (Stellar Dynasty #7) — Primary Threat 👑</strong>
-        Highest Stellar Dynasty rank by far. All top 24 players are [TKH] — single command structure means fast, coordinated responses. Highest individual merits (ImSoDzy at 427M) and flattest power curve (deep roster all above 163M). Their weakness: single timezone/command vulnerability. Total alliance power across TKH/TWH/TSH/DRA is ~48B.
-      </div>
-
-      <div class="callout warning">
-        <strong>2. E#092 (Stellar Dynasty #40) — Dangerous Top-End</strong>
-        Highest individual power player (TeamTW 331M), strong top 5, but merits drop off a cliff after rank 8. Korean/Taiwanese player base means 04:00 UTC (1PM KST) is their strong window; 16:00 UTC (1AM KST) is their weak window. Multi-alliance structure (OPS/TAK/MKM) may cause coordination friction.
-      </div>
-
-      <div class="callout info">
-        <strong>3. E#022 (Stellar Dynasty #66) — Power Without Merits</strong>
-        Massive raw alliance power (~42B across top 4) but lowest SD rank in the group. The Realm family (REC/REV/ReD) has huge rosters but the fighting culture is thinner — only REC has significant merits (1.56B). Western/Japanese mixed base. Least experienced in competitive KvK based on rankings.
-      </div>
-
       <div class="callout strategy">
-        <strong>E#008 (Stellar Dynasty #27) — Our Position</strong>
-        Highest top player (時宗 407M), highest total alliance power (~47B), and strong merits spread across eRa/REU/Myt. Multi-alliance coordination is the biggest challenge. REU's Korean players give timezone coverage that pure-English servers lack. 민트 leading merits at 290M from REU shows cross-alliance fighting strength.
+        <strong>Scouting in progress — new matchup</strong>
+        This cycle we face <strong style="color:var(--accent-green)">E#068 (BEFORE69)</strong>, <strong style="color:var(--accent-orange)">E#034 (ERA°FAMILYBIG)</strong>, and <strong style="color:var(--accent-purple)">E#056 (DEATHREAPPERS)</strong>. Per-server power rosters, alliance breakdowns, and merit standings will be filled in as we scout during the Matching stage. <span class="tbd">TBD</span>
       </div>
     </div>
 
-    <!-- Top 10 Power Rosters Side by Side -->
+    <!-- Top 12 Power Rosters (per server) -->
     <div class="two-col">
       <div class="section">
-        <h2>E#008 — Top 12 Power</h2>
-        <table class="roster-table">
-          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th>Power</th></tr></thead>
-          <tbody>
-            <tr class="highlight"><td>1</td><td>時宗</td><td class="alliance-tag">eRa</td><td>407M</td></tr>
-            <tr><td>2</td><td>민트</td><td class="alliance-tag">REU</td><td>286M</td></tr>
-            <tr><td>3</td><td>XnJinX</td><td class="alliance-tag">eRa</td><td>255M</td></tr>
-            <tr><td>4</td><td>Collin6666</td><td class="alliance-tag">eRa</td><td>250M</td></tr>
-            <tr><td>5</td><td>Macklemore</td><td class="alliance-tag">eRa</td><td>246M</td></tr>
-            <tr><td>6</td><td>BloodYoda</td><td class="alliance-tag">eRa</td><td>239M</td></tr>
-            <tr><td>7</td><td>Lumberjack</td><td class="alliance-tag">eRa</td><td>228M</td></tr>
-            <tr><td>8</td><td>ibubu☘JP</td><td class="alliance-tag">eRa</td><td>220M</td></tr>
-            <tr><td>9</td><td>MuRage</td><td class="alliance-tag">eRa</td><td>217M</td></tr>
-            <tr><td>10</td><td>TommyTorpedo</td><td class="alliance-tag">eRa</td><td>217M</td></tr>
-            <tr><td>11</td><td>또라에몽</td><td class="alliance-tag">REU</td><td>207M</td></tr>
-            <tr><td>12</td><td>Astrah</td><td class="alliance-tag">eRa</td><td>189M</td></tr>
-          </tbody>
-        </table>
+        <h2>E#008 ERAEMPIRE — Top Power</h2>
+        <p style="font-size:0.82rem;color:var(--text-muted)">Roster carries over from our own server — repopulate from current standings. <span class="tbd">TBD</span></p>
       </div>
-
       <div class="section">
-        <h2>E#016 — Top 12 Power</h2>
-        <table class="roster-table">
-          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th>Power</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>AVATON</td><td class="alliance-tag">TKH</td><td>271M</td></tr>
-            <tr><td>2</td><td>ImSoDzy</td><td class="alliance-tag">TKH</td><td>250M</td></tr>
-            <tr><td>3</td><td>DmscTheThird</td><td class="alliance-tag">TKH</td><td>246M</td></tr>
-            <tr><td>4</td><td>CaptFlint</td><td class="alliance-tag">TKH</td><td>246M</td></tr>
-            <tr><td>5</td><td>Ysendy</td><td class="alliance-tag">TKH</td><td>242M</td></tr>
-            <tr><td>6</td><td>MisterMuffin</td><td class="alliance-tag">TKH</td><td>237M</td></tr>
-            <tr><td>7</td><td>Metal76</td><td class="alliance-tag">TKH</td><td>208M</td></tr>
-            <tr><td>8</td><td>WØØDŸ</td><td class="alliance-tag">TKH</td><td>208M</td></tr>
-            <tr><td>9</td><td>heråclius虎</td><td class="alliance-tag">TKH</td><td>201M</td></tr>
-            <tr><td>10</td><td>mochitaro</td><td class="alliance-tag">TKH</td><td>197M</td></tr>
-            <tr><td>11</td><td>Elessar</td><td class="alliance-tag">TKH</td><td>196M</td></tr>
-            <tr><td>12</td><td>Ticklepink</td><td class="alliance-tag">TKH</td><td>191M</td></tr>
-          </tbody>
-        </table>
+        <h2>E#068 BEFORE69 — Top Power</h2>
+        <p style="font-size:0.82rem;color:var(--text-muted)"><span class="tbd">TBD</span> — scout during Matching stage.</p>
       </div>
     </div>
-
     <div class="two-col">
       <div class="section">
-        <h2>E#092 — Top 12 Power</h2>
-        <table class="roster-table">
-          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th>Power</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>TeamTW</td><td class="alliance-tag">OPS</td><td>331M</td></tr>
-            <tr><td>2</td><td>JINAN</td><td class="alliance-tag">OPS</td><td>319M</td></tr>
-            <tr><td>3</td><td>SyMteX</td><td class="alliance-tag">OPS</td><td>293M</td></tr>
-            <tr><td>4</td><td>수원</td><td class="alliance-tag">OPS</td><td>252M</td></tr>
-            <tr><td>5</td><td>ILUM</td><td class="alliance-tag">OPS</td><td>223M</td></tr>
-            <tr><td>6</td><td>aAMEN</td><td class="alliance-tag">OPS</td><td>217M</td></tr>
-            <tr><td>7</td><td>CCC溫度計</td><td class="alliance-tag">OPS</td><td>207M</td></tr>
-            <tr><td>8</td><td>smartman</td><td class="alliance-tag">OPS</td><td>189M</td></tr>
-            <tr><td>9</td><td>ZINY</td><td class="alliance-tag">OPS</td><td>189M</td></tr>
-            <tr><td>10</td><td>牛奶xingxing</td><td class="alliance-tag">OPS</td><td>182M</td></tr>
-            <tr><td>11</td><td>WinterBane</td><td class="alliance-tag">OPS</td><td>175M</td></tr>
-            <tr><td>12</td><td>춘돌</td><td class="alliance-tag">OPS</td><td>161M</td></tr>
-          </tbody>
-        </table>
+        <h2>E#034 ERA°FAMILYBIG — Top Power</h2>
+        <p style="font-size:0.82rem;color:var(--text-muted)"><span class="tbd">TBD</span> — scout during Matching stage.</p>
       </div>
-
       <div class="section">
-        <h2>E#022 — Top 12 Power</h2>
-        <table class="roster-table">
-          <thead><tr><th>#</th><th>Player</th><th>Alliance</th><th>Power</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>OwL^</td><td class="alliance-tag">REC</td><td>306M</td></tr>
-            <tr><td>2</td><td>actaNverba</td><td class="alliance-tag">REC</td><td>254M</td></tr>
-            <tr><td>3</td><td>bZoVV</td><td class="alliance-tag">REC</td><td>237M</td></tr>
-            <tr><td>4</td><td>Drfamous</td><td class="alliance-tag">REC</td><td>234M</td></tr>
-            <tr><td>5</td><td>IamSplender</td><td class="alliance-tag">REC</td><td>219M</td></tr>
-            <tr><td>6</td><td>Journe</td><td class="alliance-tag">REC</td><td>212M</td></tr>
-            <tr><td>7</td><td>FONGhong</td><td class="alliance-tag">REC</td><td>204M</td></tr>
-            <tr><td>8</td><td>PATRONx</td><td class="alliance-tag">REC</td><td>200M</td></tr>
-            <tr><td>9</td><td>のら猫</td><td class="alliance-tag">REC</td><td>196M</td></tr>
-            <tr><td>10</td><td>RicoRoady</td><td class="alliance-tag">REC</td><td>195M</td></tr>
-            <tr><td>11</td><td>Telltell</td><td class="alliance-tag">--</td><td>193M</td></tr>
-            <tr><td>12</td><td>りんご同盟のようたん</td><td class="alliance-tag">REC</td><td>188M</td></tr>
-          </tbody>
-        </table>
+        <h2>E#056 DEATHREAPPERS — Top Power</h2>
+        <p style="font-size:0.82rem;color:var(--text-muted)"><span class="tbd">TBD</span> — scout during Matching stage.</p>
       </div>
     </div>
 
     <!-- Alliance Power Comparison -->
     <div class="section">
       <h2>Alliance Comparison</h2>
-
-      <table class="roster-table">
-        <thead>
-          <tr><th>Server</th><th>Alliance #1</th><th>Power</th><th>Merits</th><th>Alliance #2</th><th>Power</th><th>Merits</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="color:var(--accent-gold)">E#008</td>
-            <td>eRa WorldClass</td><td>17.6B</td><td>1.57B</td>
-            <td>eRà AuroraGodCourt</td><td>11.2B</td><td>170M</td>
-          </tr>
-          <tr>
-            <td style="color:var(--accent-gold)">E#008</td>
-            <td>Myt Mythic</td><td>10.0B</td><td>762M</td>
-            <td>REU Reunions</td><td>8.5B</td><td>842M</td>
-          </tr>
-          <tr><td colspan="7" style="border-bottom: 1px solid var(--border);"></td></tr>
-          <tr>
-            <td style="color:var(--accent-red)">E#016</td>
-            <td>TKH KrakenHunters</td><td>20.1B</td><td>2.48B</td>
-            <td>TWH WhaleHunters</td><td>14.0B</td><td>324M</td>
-          </tr>
-          <tr>
-            <td style="color:var(--accent-red)">E#016</td>
-            <td>TSH SharkHunters</td><td>11.6B</td><td>207M</td>
-            <td>DRA DragonDen</td><td>2.3B</td><td>20M</td>
-          </tr>
-          <tr><td colspan="7" style="border-bottom: 1px solid var(--border);"></td></tr>
-          <tr>
-            <td style="color:var(--accent-blue)">E#092</td>
-            <td>OPS ☠OnePiece☠</td><td>14.1B</td><td>888M</td>
-            <td>TAK LEGENDARY</td><td>7.2B</td><td>239M</td>
-          </tr>
-          <tr>
-            <td style="color:var(--accent-blue)">E#092</td>
-            <td>MKM 虛度光陰</td><td>6.6B</td><td>58M</td>
-            <td>RZN 2ndBattalion</td><td>644M</td><td>5.9M</td>
-          </tr>
-          <tr><td colspan="7" style="border-bottom: 1px solid var(--border);"></td></tr>
-          <tr>
-            <td style="color:var(--accent-purple)">E#022</td>
-            <td>REC RealmOfCrown</td><td>19.9B</td><td>1.56B</td>
-            <td>REV RealmOfValor</td><td>12.5B</td><td>198M</td>
-          </tr>
-          <tr>
-            <td style="color:var(--accent-purple)">E#022</td>
-            <td>ReD RealmOfDawn</td><td>7.7B</td><td>127M</td>
-            <td>BDR BlueDRAGON</td><td>2.3B</td><td>33M</td>
-          </tr>
-        </tbody>
-      </table>
+      <p style="font-size:0.82rem;color:var(--text-muted)">Per-server alliance power &amp; merits for the new matchup. <span class="tbd">TBD</span></p>
     </div>
 
     <!-- Timezone Analysis -->
     <div class="section">
-      <h2>Timezone & Workshop Vulnerability</h2>
-      <p>Order Workshops contest at <strong style="color:var(--accent-purple)">04:00–05:00 UTC</strong> and <strong style="color:var(--accent-purple)">16:00–17:00 UTC</strong> (1hr each). Here's how that maps:</p>
-
-      <table class="roster-table" style="margin-top: 12px;">
-        <thead>
-          <tr><th>Server</th><th>Primary TZ</th><th>04:00 UTC</th><th>16:00 UTC</th><th>Weak Window</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="color:var(--accent-gold)">E#008</td>
-            <td>Mixed US/KR/JP</td>
-            <td>11PM CDT / 1PM KST</td>
-            <td>11AM CDT / 1AM KST</td>
-            <td style="color:var(--accent-orange)">04:00 for US, 16:00 for KR</td>
-          </tr>
-          <tr>
-            <td style="color:var(--accent-red)">E#016</td>
-            <td>EN-dominant (US/EU?)</td>
-            <td>Late night US / Early EU</td>
-            <td>Midday US / Evening EU</td>
-            <td style="color:var(--accent-green)">04:00 UTC</td>
-          </tr>
-          <tr>
-            <td style="color:var(--accent-blue)">E#092</td>
-            <td>KR/TW dominant</td>
-            <td>1PM KST ✓</td>
-            <td>1AM KST ✗</td>
-            <td style="color:var(--accent-green)">16:00 UTC</td>
-          </tr>
-          <tr>
-            <td style="color:var(--accent-purple)">E#022</td>
-            <td>EN/JP mixed</td>
-            <td>1PM JST / Late night EU</td>
-            <td>1AM JST / Afternoon EU</td>
-            <td style="color:var(--accent-orange)">Split</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="callout strategy" style="margin-top: 12px;">
-        <strong>Exploitable Windows</strong>
-        E#016 is weakest at 04:00 UTC (night for US/EU). E#092 is weakest at 16:00 UTC (1AM KST). Era 8's mixed timezone base (REU's Korean players cover 04:00, eRa's Western players cover 16:00) is actually an advantage — you have decent coverage for both windows.
-      </div>
+      <h2>Timezone &amp; Workshop Vulnerability</h2>
+      <p>Order Workshops contest in a single <strong style="color:var(--accent-purple)">1-hour window chosen at Matching</strong> — we picked <strong style="color:var(--accent-purple)">19:00–20:00 UTC</strong> (options were 01:00 / 04:00 / 11:00 / 19:00). Opponent windows and timezone bases will be mapped as we scout. <span class="tbd">TBD</span></p>
     </div>
 
   </div>
@@ -1728,17 +1427,17 @@
 
       <div class="callout strategy">
         <strong>Workshop Contest Timing</strong>
-        04:00–05:00 UTC and 16:00–17:00 UTC are the critical 1-hour windows. For Kansas City (CDT, UTC-5), that's 11:00 PM–midnight and 11:00 AM–noon. The morning contest is prime time; the overnight one will need coordination with international alliance members.
+        NEW this cycle: the contest time is chosen <em>once</em> during the Matching stage (options 01:00 / 04:00 / 11:00 / 19:00 UTC) — no longer two fixed windows. We picked <strong>19:00–20:00 UTC</strong>. For Kansas City (CDT, UTC-5) that's 2:00–3:00 PM — solid US coverage; coordinate with KR/JP members who'll be late-night.
       </div>
 
       <div class="callout strategy">
         <strong>Troop Conservation</strong>
-        6 workshop contests (1hr each) across Days 2–4 before the Day 6 showdown even starts. Don't treat each workshop like a TME invasion — you need to pace your losses. The good news: you're auto-returned after each hour, so losses are contained to the contest window. Save your best for Day 6.
+        Workshop contests (1hr each) run across the Battle Stage before the Day 6 showdown even starts. Don't treat each workshop like a TME invasion — pace your losses. The good news: you're auto-returned after each hour, so losses are contained to the contest window. Save your best for Day 6.
       </div>
 
       <div class="callout strategy">
         <strong>Alliance Roles</strong>
-        With 4 alliances (WC1, MyT, REU, AGC), consider splitting responsibilities: two alliances contest workshops while two focus on Alchemy Pool farming to push tech tree and points. Rotate daily.
+        With 4 alliances (eRa, Myt, REU, eRà), consider splitting responsibilities: two alliances contest workshops while two focus on Alchemy Pool farming to push tech tree and points. Rotate daily.
       </div>
 
       <div class="callout strategy">
@@ -1759,7 +1458,7 @@
   </div>
 
   <div class="footer">
-    Primordial Conflict Dashboard · Era 8 · Last updated: Day 4 Battle Stage · Unconfirmed items marked <span class="tbd">TBD</span>
+    Primordial Conflict Dashboard · Era 8 (E#008 ERAEMPIRE) · New cycle — Matching stage · vs E#068 / E#034 / E#056 · Unconfirmed items marked <span class="tbd">TBD</span>
   </div>
 
 </div>
