@@ -748,11 +748,22 @@
     color: var(--text-muted);
     margin: 16px 0 8px;
   }
+  /* Tables that may exceed a narrow card scroll horizontally inside a wrapper
+     (keeps the table's natural column alignment instead of spilling out). */
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   @media (max-width: 900px) {
     .timeline { grid-template-columns: repeat(4, 1fr); }
     .two-col { grid-template-columns: 1fr; }
     .teleport-grid { grid-template-columns: repeat(3, 1fr); }
     .header h1 { font-size: 1.8rem; }
+    /* On narrow screens keep cells on one line so the table can scroll cleanly. */
+    .table-scroll .roster-table,
+    .table-scroll .points-table { min-width: 460px; }
+    .table-scroll td, .table-scroll th { white-space: nowrap; }
   }
 
   @media (max-width: 600px) {
@@ -843,6 +854,7 @@
     <div class="section">
       <h2>Battle Stage Scoreboard</h2>
       <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 12px;">Matching stage — paired against E#068, E#034, and E#056. Live points, Kingdom Dew, and matchups populate once the Battle Stage opens at the <strong>00:00 UTC reset</strong> (Day 2).</p>
+      <div class="table-scroll">
       <table class="points-table">
         <thead>
           <tr>
@@ -884,9 +896,11 @@
           </tr>
         </tbody>
       </table>
+      </div>
 
       <h3 style="margin-top: 16px;">Workshop Results Tracker</h3>
-      <p style="font-size:0.82rem; color:var(--text-muted); margin: 4px 0 0;">Order Workshop window this cycle: <strong style="color:var(--accent-purple)">19:00–20:00 UTC</strong> (chosen at Matching). Daily matchups &amp; results fill in from Day 2.</p>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin: 4px 0 0;">Order Workshop window this cycle: <strong style="color:var(--accent-purple)">01:00–02:00 UTC</strong> (set by vote at Matching). Daily matchups &amp; results fill in from Day 2.</p>
+      <div class="table-scroll">
       <table class="points-table" style="margin-top: 8px;">
         <thead>
           <tr>
@@ -901,6 +915,7 @@
           <tr><td>Day 4</td><td style="text-align:left;" class="tbd">TBD</td><td class="tbd">TBD</td></tr>
         </tbody>
       </table>
+      </div>
     </div>
 
     <!-- Player Rankings -->
@@ -922,11 +937,11 @@
       <p>Primordial Conflict is a 4-server round-robin KvK. Three days of 1v1 battles (Days 2–4) where you face each opponent once, followed by a battlefield selection by the leading kingdom (Day 5), and a massive 4-way showdown (Day 6). Day 7 provides partial troop recovery.</p>
 
       <h3>Core Loop</h3>
-      <p>During battle days, you earn <em>Primordial Dew</em> by gathering at Alchemy Pools and fighting over Order Workshops (which open in one chosen 1-hour window per day — we picked 19:00 UTC). Dew converts to Primordial Points for scoring. On the showdown day, Essence Refineries appear around the chosen Imperial City — holding these generates <em>Primordial Essence</em> (premium currency) and massive Kingdom Points.</p>
+      <p>During battle days, you earn <em>Primordial Dew</em> by gathering at Alchemy Pools and fighting over Order Workshops (which open in one chosen 1-hour window per day — this cycle's vote set ours to 01:00 UTC). Dew converts to Primordial Points for scoring. On the showdown day, Essence Refineries appear around the chosen Imperial City — holding these generates <em>Primordial Essence</em> (premium currency) and massive Kingdom Points.</p>
 
       <div class="callout info">
         <strong>Key Difference from TME</strong>
-        This is a 4-way event, not 2-way. Round-robin scoring determines who picks the Day 6 battlefield. Workshop fights happen in one 1-hour window per day across the 3 battle days (time chosen at Matching — we picked 19:00 UTC). Cross-border tiles also open on the map during the Battle Stage, so enemy players can hunt gatherers — stay alert while farming.
+        This is a 4-way event, not 2-way. Round-robin scoring determines who picks the Day 6 battlefield. Workshop fights happen in one 1-hour window per day across the 3 battle days (time set by vote at Matching — ours landed on 01:00 UTC). Cross-border tiles also open on the map during the Battle Stage, so enemy players can hunt gatherers — stay alert while farming.
       </div>
     </div>
 
@@ -934,7 +949,7 @@
     <div class="two-col">
       <div class="section">
         <h2>Order Workshops (Days 2–4)</h2>
-        <p>3 workshops spawn per contest in one daily 1-hour window — this cycle <strong style="color:var(--accent-purple)">19:00–20:00 UTC</strong> (chosen at Matching). They spawn in Zone 2 regions (1 per region, random placement) and alternate between your map and the opponent's map.</p>
+        <p>3 workshops spawn per contest in one daily 1-hour window — this cycle <strong style="color:var(--accent-purple)">01:00–02:00 UTC</strong> (set by vote at Matching). They spawn in Zone 2 regions (1 per region, random placement) and alternate between your map and the opponent's map.</p>
         <ul>
           <li>During contests, you can teleport to enemy cross-border camps</li>
           <li>No cap on how many players fit inside — swarm them</li>
@@ -970,7 +985,7 @@
       <p>View event rules, participating kingdoms' info, event schedule, and reward details. No combat or gathering available yet. Use this time to scout opponent servers and coordinate alliance strategy.</p>
       <div class="callout strategy">
         <strong>Action Items</strong>
-        Scout enemy server power levels. Coordinate Dew gathering assignments. Brief alliance leads on the workshop contest time (19:00–20:00 UTC, chosen at Matching).
+        Scout enemy server power levels. Coordinate Dew gathering assignments. Brief alliance leads on the workshop contest time (01:00–02:00 UTC, set by vote at Matching — flag that EU members are asleep at this hour).
       </div>
     </div>
 
@@ -991,6 +1006,7 @@
         <li>Minimum 50,000 units required per march to gather</li>
       </ul>
 
+      <div class="table-scroll">
       <table class="points-table" style="margin-top: 12px;">
         <thead>
           <tr>
@@ -1037,16 +1053,29 @@
           </tr>
         </tbody>
       </table>
+      </div>
       <p style="margin-top:8px; font-size:0.82rem; color:var(--text-muted);">Lv. 4 pools are massively larger than Lv. 1–3 — 1.2M capacity with up to 40 simultaneous gatherers, but only 1 march per account. Only 3 spawn near the Imperial City, guarded by Corrupted Hyenas (1 per pool, killing blow required for buff, refresh every 12h). Optimal gathering: 1 march on Lv.4 + 4 marches on Lv.3 nodes.</p>
     </div>
 
     <div class="section">
       <h2>Order Workshop Contests</h2>
-      <p style="margin-bottom: 4px;">NEW this cycle: the spawn time is no longer two fixed windows — a single 1-hour time is chosen once during Matching (options 01:00 / 04:00 / 11:00 / 19:00 UTC). <strong>We picked 19:00–20:00 UTC</strong>, applied each battle day.</p>
+      <p style="margin-bottom: 4px;">NEW this cycle: the spawn time is no longer two fixed windows — a single 1-hour time is set once during Matching by vote (options 01:00 / 04:00 / 11:00 / 19:00 UTC). Each server picks its own. <strong>Our vote landed on 01:00–02:00 UTC</strong> (we normally run 19:00, but 01:00 won the vote this time — note EU is asleep at this hour).</p>
       <div class="workshop-times">
         <div class="time-block">
+          <div class="time-val">01:00</div>
+          <div class="time-label">E#008 (Us) · our vote</div>
+        </div>
+        <div class="time-block">
+          <div class="time-val">11:00</div>
+          <div class="time-label">E#068</div>
+        </div>
+        <div class="time-block">
           <div class="time-val">19:00</div>
-          <div class="time-label">to 20:00 UTC · our pick</div>
+          <div class="time-label">E#056</div>
+        </div>
+        <div class="time-block">
+          <div class="time-val">01:00</div>
+          <div class="time-label">E#034</div>
         </div>
       </div>
       <ul>
@@ -1197,6 +1226,7 @@
       <h2>Points from Combat</h2>
       <p>Combat is valid only when the tier difference between units doesn't exceed 2 tiers. Points scale by enemy unit tier:</p>
 
+      <div class="table-scroll">
       <table class="points-table">
         <thead>
           <tr>
@@ -1219,6 +1249,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
 
       <div class="callout warning" style="margin-top: 16px;">
         <strong>Tier Gap Rule</strong>
@@ -1267,6 +1298,7 @@
       </div>
 
       <h3>Tech Tree Nodes</h3>
+      <div class="table-scroll">
       <table class="points-table">
         <thead>
           <tr>
@@ -1327,12 +1359,14 @@
           </tr>
         </tbody>
       </table>
+      </div>
 
       <h3>Cumulative Totals (Full Tree)</h3>
       <p>If you unlock all 8 nodes, total buffs are: +15% Attack, +15% Defense, +8% Health, +15% Gathering Speed, +5% Rally Attack, +5% Rally Defense, +4,000 Troop Capacity, +20% Rally March Speed. Kingdom Dew required: 9M total. Personal Dew required: 180K total (cumulative or just the final gate — <span class="tbd">UNCONFIRMED</span>).</p>
 
       <h3>Stage Winner Extra Buffs</h3>
       <p>The kingdom that wins the Battle Stage (Days 2–4 points) and earns battlefield selection also unlocks bonus buffs on the final two tech nodes:</p>
+      <div class="table-scroll">
       <table class="points-table">
         <thead>
           <tr>
@@ -1351,6 +1385,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
       <div class="callout strategy" style="margin-top: 12px;">
         <strong>Winning the Battle Stage matters even more than we thought</strong>
         The Stage Winner doesn't just pick the battlefield — they also get an extra +7.5% Attack and +7.5% Defense on top of the standard tech buffs. That's a significant stat edge going into the Day 6 showdown.
@@ -1474,6 +1509,7 @@
     <!-- Alliance Power Comparison -->
     <div class="section">
       <h2>Alliance Comparison (Lead Alliances)</h2>
+      <div class="table-scroll">
       <table class="roster-table">
         <thead>
           <tr><th>Server</th><th>Lead Alliance</th><th>Power</th><th>Notes</th></tr>
@@ -1485,47 +1521,54 @@
           <tr><td style="color:var(--accent-purple)">E#056</td><td>DEATHREAPPERS (DRS)</td><td>11.93B</td><td>One mega-alliance; nearly whole server</td></tr>
         </tbody>
       </table>
+      </div>
       <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">Era 8's lead alliance alone (19.33B) exceeds every opponent's lead alliance. Names with non-Latin characters transcribed from screenshots — verify spelling before calling out individuals.</p>
     </div>
 
     <!-- Timezone Analysis -->
     <div class="section">
       <h2>Timezone &amp; Workshop Vulnerability</h2>
-      <p>Order Workshops contest in a single <strong style="color:var(--accent-purple)">1-hour window chosen at Matching</strong> (options 01:00 / 04:00 / 11:00 / 19:00 UTC). <strong>We picked 19:00–20:00 UTC</strong> — that's mid-afternoon in the Americas (2 PM CDT), evening in Europe, and late-night/early-morning in KR/JP. It favors our Western players and pressures Asian-heavy rosters.</p>
+      <p>Each server sets its own Order Workshop window by vote at Matching (options 01:00 / 04:00 / 11:00 / 19:00 UTC). This cycle the windows landed on: <strong style="color:var(--accent-gold)">us 01:00</strong>, <strong style="color:var(--accent-green)">E#068 11:00</strong>, <strong style="color:var(--accent-purple)">E#056 19:00</strong>, <strong style="color:var(--accent-orange)">E#034 01:00</strong>. Workshops alternate between your map and the opponent's, so the time you actually fight at depends on whose map the contest is on.</p>
+      <div class="table-scroll">
       <table class="roster-table" style="margin-top: 12px;">
         <thead>
-          <tr><th>Server</th><th>Base (from rosters)</th><th>19:00 UTC for them</th><th>Read</th></tr>
+          <tr><th>Server</th><th>Window (UTC)</th><th>Their local time</th><th>Read</th></tr>
         </thead>
         <tbody>
           <tr>
             <td style="color:var(--accent-gold)">E#008 ★</td>
-            <td>Mixed EN / KR / JP</td>
-            <td>Afternoon US, evening EU, late-night KR/JP</td>
-            <td style="color:var(--accent-green)">Good Western coverage; lean on eRà/Myt EN players</td>
+            <td>01:00</td>
+            <td>8 PM US (prev day), 2–3 AM EU, ~10 AM KR/JP</td>
+            <td style="color:var(--accent-orange)">Won by vote, not our usual 19:00 — our EU players (REU, eRà) are asleep. Lean on US night-owls + any KR/JP. Rally the vote back to 19:00 next cycle.</td>
           </tr>
           <tr>
             <td style="color:var(--accent-green)">E#068</td>
-            <td>EN/EU + some TR names</td>
-            <td>Evening EU, afternoon US</td>
-            <td style="color:var(--accent-orange)">Also comfortable at 19:00 — no timezone edge here</td>
+            <td>11:00</td>
+            <td>6 AM US, noon EU, 8 PM KR/JP</td>
+            <td style="color:var(--accent-green)">Their window is brutal for our US base (6 AM) — but it's midday for their EN/EU core. On their map, expect them at full strength; on ours, they hit us at our weakest US hour.</td>
           </tr>
           <tr>
             <td style="color:var(--accent-orange)">E#034</td>
-            <td>KR + TR + LATAM mix</td>
-            <td>Late-night KR, evening TR, afternoon LATAM</td>
-            <td style="color:var(--accent-green)">KR core is weak at 19:00 — exploitable window</td>
+            <td>01:00</td>
+            <td>10 AM KR, ~3 AM TR, 7–8 PM LATAM</td>
+            <td style="color:var(--accent-orange)">Same window as us — KR core is up (morning), TR is dead, LATAM is evening. No timezone edge for either side; it's a straight power fight (we out-power them).</td>
           </tr>
           <tr>
             <td style="color:var(--accent-purple)">E#056</td>
-            <td>Very mixed (intl, some TH/CN)</td>
-            <td>Varies — no single strong block</td>
-            <td style="color:var(--accent-orange)">Spread base; hard to time but also their weakest server overall</td>
+            <td>19:00</td>
+            <td>2 PM US, 8 PM EU, ~4 AM KR/JP</td>
+            <td style="color:var(--accent-green)">Their window is the friendliest for us — afternoon US + evening EU. If we can field on their map, this is our best-attended contest. Also our weakest opponent overall.</td>
           </tr>
         </tbody>
       </table>
+      </div>
+      <div class="callout warning" style="margin-top: 12px;">
+        <strong>Our 01:00 Window Hurts Us</strong>
+        We normally run 19:00 so EU can play; this cycle the vote landed on 01:00, which sidelines our REU/eRà European players. Brief leads now: assign US late-night and KR/JP-friendly members to cover our own 01:00 contests, and don't count on EU turnout. The strongest contest for our full roster is E#056's 19:00 window.
+      </div>
       <div class="callout strategy" style="margin-top: 12px;">
         <strong>Takeaway</strong>
-        19:00 UTC is a clean hit against E#034's Korean core and neutral-to-favorable against the rest. The risk is E#068, who are EN/EU like us and fully active at that hour — treat their workshop contests as the real fights and save coordination for those. Timezone base is inferred from player-name language patterns; confirm if you get better intel.
+        The dangerous matchup is E#068 at 11:00 — midday for their EN/EU core but 6 AM for our US base; treat those as the real fights and pre-arrange US-morning + EU coverage. E#034 at 01:00 is a neutral power fight we should win, and E#056 at 19:00 is where our full roster shows up. Timezone base is inferred from player-name language patterns; confirm if you get better intel.
       </div>
     </div>
 
@@ -1539,7 +1582,7 @@
 
       <div class="callout strategy">
         <strong>Workshop Contest Timing</strong>
-        NEW this cycle: the contest time is chosen <em>once</em> during the Matching stage (options 01:00 / 04:00 / 11:00 / 19:00 UTC) — no longer two fixed windows. We picked <strong>19:00–20:00 UTC</strong>. For Kansas City (CDT, UTC-5) that's 2:00–3:00 PM — solid US coverage; coordinate with KR/JP members who'll be late-night.
+        NEW this cycle: the contest time is set <em>once</em> during the Matching stage by vote (options 01:00 / 04:00 / 11:00 / 19:00 UTC) — no longer two fixed windows, and each server picks its own. Our vote landed on <strong>01:00–02:00 UTC</strong> (we normally run 19:00). For Kansas City (CDT, UTC-5) that's <strong>8:00 PM the previous evening</strong> — workable for US, but our EU players (REU/eRà) are asleep at 2–3 AM. Opponents this cycle: E#068 at 11:00, E#056 at 19:00, E#034 at 01:00.
       </div>
 
       <div class="callout strategy">
@@ -1679,7 +1722,7 @@ function headHtml(col3, state){
 function tableHtml(rows, startPos, col3, state, colorByServer){
   let body = '';
   rows.forEach((r, i) => body += rowHtml(r, startPos + i, colorByServer));
-  return `<table class="roster-table">${headHtml(col3, state)}<tbody>${body}</tbody></table>`;
+  return `<div class="table-scroll"><table class="roster-table">${headHtml(col3, state)}<tbody>${body}</tbody></table></div>`;
 }
 
 function makeSortable(container, data, opts){
