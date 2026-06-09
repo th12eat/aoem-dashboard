@@ -176,9 +176,32 @@ const GLOSSARY = {
       pending: true
     },
     crit: {
-      name: "Crit",
-      def: "Definition not yet captured — will be added when we have the in-game screenshot.",
-      pending: true
+      name: "Critical Strike Rate",
+      def: "Heroes' base critical strike rate is 0%. With no skill effects, critical strikes can only occur through normal attacks and skills that explicitly indicate the ability to deal critical strikes. Damage is significantly increased when a critical strike triggers. Max critical strike rate: 75%."
+    },
+    burn: {
+      name: "Burn",
+      def: "Troops in the Burn state take Strategy damage once every second. The damage rate is determined by the skill that inflicted the Burn state."
+    },
+    charging_state: {
+      name: "Charging State",
+      def: "Some active skills require 3s of charging to be activated. If a hero in the charging state is interrupted by a skill or inflicted with Silence, the skill will not be activated."
+    },
+    counterattack: {
+      name: "Counterattack",
+      def: "Heroes in the counterattack state have a chance to attack back against enemies who deal normal attack damage to them."
+    },
+    double_attack: {
+      name: "Double Attack",
+      def: "Heroes in the double attack state attack twice when using normal attacks, and both attacks have a chance to trigger secondary strike skills."
+    },
+    marks: {
+      name: "Marks",
+      def: "Marks can be placed on heroes or troops. Skills will trigger effects based on the number of marks."
+    },
+    silence: {
+      name: "Silence",
+      def: "Silenced heroes cannot use active skills. After the effect ends, they cannot be silenced again for 3s."
     }
   }
 };
