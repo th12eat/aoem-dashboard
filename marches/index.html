@@ -178,6 +178,15 @@
     font-size: 11px; color: var(--accent-purple); font-style: italic;
   }
   .gems .slot { display:inline-block; width:11px; height:11px; border-radius:3px; border:1px dashed var(--accent-purple); margin-right:3px; margin-bottom:-1px; opacity:.6; }
+  /* filled gem list */
+  .gems.filled { color: var(--text-secondary); font-style: normal; }
+  .gems .glabel { color: var(--text-muted); font-style: normal; margin-right: 4px; }
+  .gem-row { display: flex; align-items: center; gap: 6px; padding: 1px 0; }
+  .gem-dot { width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
+  .gem-eff { color: var(--text-secondary); }
+  .gem-val { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--accent-green); }
+  .gem-val.tbd { color: var(--accent-gold-dim); font-style: italic; }
+  .gem-x { color: var(--text-muted); margin-left: 4px; font-size: 10px; }
 
   /* generic attribute rows (ring/mount/adornment) */
   .kv { list-style: none; display: grid; gap: 2px; margin: 4px 0; }
@@ -286,7 +295,7 @@
     <span class="rdot" style="background:var(--r-purple)"></span>purple
     <span class="rdot" style="background:var(--r-gold)"></span>gold
     <span class="rdot" style="background:var(--r-red)"></span>red.
-    <br><span class="gem-note">Gems are placeholders for now</span> — the gem slots (3 per gear piece) will be filled once those screenshots are added.
+    <br><span class="gem-note">Gems</span> — 3 per gear piece, shown with effect + value and a rarity dot (red = highest tier). Helm/Gauntlets/Chest run a matched set of 3; Boots mix one of each. A few sockets read from the ascend screen are marked TBD where the exact value wasn't legible.
   </div>
 
   <div id="marches-root"></div>
@@ -359,12 +368,29 @@
       (g.bonuses||[]).forEach(function(b){ bl += '<li><span>'+esc(b.stat)+'</span><span class="v">'+esc(b.value)+'</span></li>'; });
       bl += '</ul>';
       h += bl;
-      // gems placeholder
+      // gems
       if (g.gems == null){
         h += '<div class="gems"><span class="slot"></span><span class="slot"></span><span class="slot"></span> Gems: pending screenshot</div>';
       } else if (g.gems.length){
-        var gm = g.gems.map(function(x){ return esc(x.name)+(x.tier?' '+esc(x.tier):''); }).join(' &middot; ');
-        h += '<div class="gems" style="font-style:normal;color:var(--text-secondary)">Gems: '+gm+'</div>';
+        // group consecutive-identical gems (effect+value+rarity) into "×N" rows
+        var groups = [];
+        g.gems.forEach(function(x){
+          var key = (x.effect||'')+'|'+(x.value||'')+'|'+(x.rarity||'');
+          var last = groups[groups.length-1];
+          if (last && last.key === key){ last.n++; }
+          else { groups.push({key:key, n:1, g:x}); }
+        });
+        var rows = groups.map(function(gr){
+          var x = gr.g;
+          var dot = '<span class="gem-dot" style="background:'+rarColor(x.rarity)+'"></span>';
+          var isTBD = (x.value === 'TBD' || x.effect === 'TBD');
+          var eff = isTBD ? 'Gem (details pending)' : esc(x.effect);
+          var val = isTBD ? '<span class="gem-val tbd">TBD</span>'
+                          : '<span class="gem-val">'+esc(x.value)+'</span>';
+          var mult = gr.n > 1 ? '<span class="gem-x">&times;'+gr.n+'</span>' : '';
+          return '<div class="gem-row">'+dot+'<span class="gem-eff">'+eff+'</span>'+mult+val+'</div>';
+        }).join('');
+        h += '<div class="gems filled"><span class="glabel">Gems</span>'+rows+'</div>';
       }
       h += '</div>';
     });
@@ -468,8 +494,8 @@
 
     var body = '<div class="hero-body">'
       + '<details class="sect" open><summary>Gear <span class="count">4 pieces &middot; Lv.80</span></summary><div class="sect-body">'+gearHTML(hero.gear)+'</div></details>'
-      + '<details class="sect"><summary>Ring &amp; Mount</summary><div class="sect-body">'+ringHTML(hero.ring)+mountHTML(hero.mount)+'</div></details>'
-      + '<details class="sect"><summary>Adornment</summary><div class="sect-body">'+adornHTML(hero.adornment)+'</div></details>'
+      + '<details class="sect"><summary>Ring</summary><div class="sect-body">'+ringHTML(hero.ring)+'</div></details>'
+      + '<details class="sect"><summary>Mount &amp; Adornment</summary><div class="sect-body">'+mountHTML(hero.mount)+adornHTML(hero.adornment)+'</div></details>'
       + '<details class="sect" open><summary>Skills <span class="count">'+skillsCount+' equipped</span></summary><div class="sect-body">';
     if(sk.commander) body += skillCard('commander','', sk.commander);
     if(sk.signature) body += skillCard('signature','', sk.signature);

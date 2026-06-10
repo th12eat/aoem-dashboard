@@ -44,16 +44,16 @@ const MARCHES = [
       role: "Attack", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["swordsman"], damageType: "Might", active: true, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Blazing Heart", level: 80, starRank: 4, gems: null, bonuses: [
+        helm:      { name: "Blazing Heart", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:2, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:3, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+1.2%"} ] },
-        gauntlets: { name: "Flowing Force", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Flowing Force", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.5%"} ] },
-        chest:     { name: "Infinite Land", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Infinite Land", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+1.2%"} ] },
-        boots:     { name: "Shadowless Wind", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Shadowless Wind", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+760", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.5%"} ] }
       },
@@ -86,16 +86,16 @@ const MARCHES = [
       role: "Support", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["swordsman"], damageType: "Might", active: false, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Blazing Heart", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Blazing Heart", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:2, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:3, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+1.2%"} ] },
-        gauntlets: { name: "Flowing Force", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Flowing Force", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.5%"} ] },
-        chest:     { name: "Infinite Land", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Infinite Land", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+1.2%"} ] },
-        boots:     { name: "Shadowless Wind", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Shadowless Wind", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.5%"} ] }
       },
@@ -129,16 +129,16 @@ const MARCHES = [
       role: "Piercing", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["swordsman"], damageType: "Might", active: true, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Blazing Heart", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Blazing Heart", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:2, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:3, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+1.2%"} ] },
-        gauntlets: { name: "Flowing Force", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Flowing Force", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.5%"} ] },
-        chest:     { name: "Infinite Land", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Infinite Land", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+1.2%"} ] },
-        boots:     { name: "Shadowless Wind", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Shadowless Wind", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.5%"} ] }
       },
@@ -185,16 +185,16 @@ const MARCHES = [
       role: "Attack", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "tactician", unitTypes: ["swordsman"], damageType: "Strategy", active: true, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Blazing Heart", level: 80, starRank: 4, gems: null, bonuses: [
+        helm:      { name: "Blazing Heart", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:2, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:3, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's defense bonus", value:"+19.58%"}, {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+2.4%"} ] },
-        gauntlets: { name: "Flowing Force", level: 80, starRank: 4, gems: null, bonuses: [
+        gauntlets: { name: "Flowing Force", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's strategy", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's strategy", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's strategy", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's attack bonus", value:"+19.58%"}, {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+3.0%"} ] },
-        chest:     { name: "Infinite Land", level: 80, starRank: 4, gems: null, bonuses: [
+        chest:     { name: "Infinite Land", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's defense bonus", value:"+19.58%"}, {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+2.4%"} ] },
-        boots:     { name: "Shadowless Wind", level: 80, starRank: 4, gems: null, bonuses: [
+        boots:     { name: "Shadowless Wind", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+760", rarity:"red"}, {slot:2, effect:"Hero's strategy", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's attack bonus", value:"+19.58%"}, {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+3.0%"} ] }
       },
@@ -228,16 +228,16 @@ const MARCHES = [
       role: "Support", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "tactician", unitTypes: ["swordsman"], damageType: "Strategy", active: false, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Blazing Heart", level: 80, starRank: 4, gems: null, bonuses: [
+        helm:      { name: "Blazing Heart", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:2, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:3, effect:"Hero's unit capacity", value:"+760", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's defense bonus", value:"+19.58%"}, {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+2.4%"} ] },
-        gauntlets: { name: "Flowing Force", level: 80, starRank: 4, gems: null, bonuses: [
+        gauntlets: { name: "Flowing Force", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's strategy", value:"+6.85", rarity:"red"}, {slot:2, effect:"Hero's strategy", value:"+6.85", rarity:"red"}, {slot:3, effect:"Hero's strategy", value:"+6.85", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's attack bonus", value:"+19.58%"}, {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+3.0%"} ] },
-        chest:     { name: "Infinite Land", level: 80, starRank: 4, gems: null, bonuses: [
+        chest:     { name: "Infinite Land", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's recovery effect", value:"+2.3%", rarity:"red"}, {slot:2, effect:"Hero's recovery effect", value:"+2.3%", rarity:"red"}, {slot:3, effect:"Hero's recovery effect", value:"+2.3%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's defense bonus", value:"+19.58%"}, {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+2.4%"} ] },
-        boots:     { name: "Shadowless Wind", level: 80, starRank: 4, gems: null, bonuses: [
+        boots:     { name: "Shadowless Wind", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+760", rarity:"red"}, {slot:2, effect:"Hero's strategy", value:"+6.85", rarity:"red"}, {slot:3, effect:"Hero's recovery effect", value:"+2.3%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's attack bonus", value:"+19.58%"}, {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+3.0%"} ] }
       },
@@ -270,16 +270,16 @@ const MARCHES = [
       role: "Support", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "tactician", unitTypes: ["swordsman"], damageType: "Strategy", active: false, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Blazing Heart", level: 80, starRank: 4, gems: null, bonuses: [
+        helm:      { name: "Blazing Heart", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+760", rarity:"red"}, {slot:2, effect:"Hero's unit capacity", value:"+760", rarity:"red"}, {slot:3, effect:"Hero's unit capacity", value:"+760", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's defense bonus", value:"+19.58%"}, {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+2.4%"} ] },
-        gauntlets: { name: "Flowing Force", level: 80, starRank: 4, gems: null, bonuses: [
+        gauntlets: { name: "Flowing Force", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's strategy", value:"+6.85", rarity:"red"}, {slot:2, effect:"Hero's strategy", value:"+6.85", rarity:"red"}, {slot:3, effect:"Hero's strategy", value:"+6.85", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's attack bonus", value:"+19.58%"}, {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+3.0%"} ] },
-        chest:     { name: "Infinite Land", level: 80, starRank: 4, gems: null, bonuses: [
+        chest:     { name: "Infinite Land", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's recovery effect", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's recovery effect", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's recovery effect", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's defense bonus", value:"+19.58%"}, {stat:"Swordsmen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Swordsmen's damage taken reduction", value:"+2.4%"} ] },
-        boots:     { name: "Shadowless Wind", level: 80, starRank: 4, gems: null, bonuses: [
+        boots:     { name: "Shadowless Wind", level: 80, starRank: 4, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+760", rarity:"red"}, {slot:2, effect:"Hero's strategy", value:"+6.85", rarity:"red"}, {slot:3, effect:"Hero's recovery effect", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Swordsmen's attack bonus", value:"+19.58%"}, {stat:"Swordsmen's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+3.0%"} ] }
       },
@@ -325,16 +325,16 @@ const MARCHES = [
       role: "Attack", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["archer"], damageType: "Might", active: true, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Fiery Sun", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Fiery Sun", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:2, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:3, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"} ], bonuses: [
           {stat:"Archers' health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Archers' damage taken reduction", value:"+1.2%"} ] },
-        gauntlets: { name: "Embrace of Effulgence", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Embrace of Effulgence", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Archers' damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.5%"} ] },
-        chest:     { name: "Eternal Flare", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Eternal Flare", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Archers' health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Archers' damage taken reduction", value:"+1.2%"} ] },
-        boots:     { name: "Dawnbreak Boots", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Dawnbreak Boots", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's unit capacity", value:"+1,150", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Archers' damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.5%"} ] }
       },
@@ -368,16 +368,16 @@ const MARCHES = [
       role: "Support", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["archer"], damageType: "Might", active: false, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Fiery Sun", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Fiery Sun", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' defense", value:"+7.0%", rarity:"red"}, {slot:2, effect:"All unit types' defense", value:"+4.6%", rarity:"red"}, {slot:3, effect:"All unit types' defense", value:"+4.6%", rarity:"red"} ], bonuses: [
           {stat:"Archers' health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Archers' damage taken reduction", value:"+0.8%"} ] },
-        gauntlets: { name: "Embrace of Effulgence", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Embrace of Effulgence", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+6.85", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+6.85", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+6.85", rarity:"red"} ], bonuses: [
           {stat:"Archers' damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] },
-        chest:     { name: "Eternal Flare", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Eternal Flare", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's recovery effect", value:"+2.3%", rarity:"red"}, {slot:2, effect:"Hero's recovery effect", value:"+2.3%", rarity:"red"}, {slot:3, effect:"Hero's recovery effect", value:"+2.3%", rarity:"red"} ], bonuses: [
           {stat:"Archers' health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Archers' damage taken reduction", value:"+0.8%"} ] },
-        boots:     { name: "Dawnbreak Boots", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Dawnbreak Boots", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' defense", value:"+4.6%", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+6.85", rarity:"red"}, {slot:3, effect:"Hero's recovery effect", value:"+2.3%", rarity:"red"} ], bonuses: [
           {stat:"Archers' damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] }
       },
@@ -410,16 +410,16 @@ const MARCHES = [
       role: "Attack", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["archer"], damageType: "Might", active: true, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Fiery Sun", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Fiery Sun", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' health", value:"+2.3%", rarity:"red"}, {slot:2, effect:"All unit types' health", value:"+2.3%", rarity:"red"}, {slot:3, effect:"All unit types' health", value:"+2.3%", rarity:"red"} ], bonuses: [
           {stat:"Archers' health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Archers' damage taken reduction", value:"+0.8%"} ] },
-        gauntlets: { name: "Embrace of Effulgence", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Embrace of Effulgence", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+6.85", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+6.85", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+6.85", rarity:"red"} ], bonuses: [
           {stat:"Archers' damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] },
-        chest:     { name: "Eternal Flare", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Eternal Flare", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's secondary strike skill damage", value:"+1.5%", rarity:"gold"}, {slot:2, effect:"Hero's secondary strike skill damage", value:"+1.5%", rarity:"gold"}, {slot:3, effect:"Hero's secondary strike skill damage", value:"+0.45%", rarity:"green"} ], bonuses: [
           {stat:"Archers' health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Archers' damage taken reduction", value:"+0.8%"} ] },
-        boots:     { name: "Dawnbreak Boots", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Dawnbreak Boots", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' health", value:"+2.3%", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+6.85", rarity:"red"}, {slot:3, effect:"Hero's secondary strike skill damage", value:"+2.3%", rarity:"gold"} ], bonuses: [
           {stat:"Archers' damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] }
       },
@@ -466,16 +466,16 @@ const MARCHES = [
       role: "Attack", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["cavalry"], damageType: "Might", active: true, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Divine Crown", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Divine Crown", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' attack", value:"+4.6%", rarity:"red"}, {slot:2, effect:"All unit types' attack", value:"+4.6%", rarity:"red"}, {slot:3, effect:"All unit types' attack", value:"+4.6%", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Cavalry's damage taken reduction", value:"+0.8%"} ] },
-        gauntlets: { name: "Contract of Light", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Contract of Light", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+6.85", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+6.85", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+6.85", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] },
-        chest:     { name: "Omniscience", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Omniscience", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Cavalry's damage taken reduction", value:"+0.8%"} ] },
-        boots:     { name: "Dust-Free Boots", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Dust-Free Boots", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' attack", value:"+4.6%", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+6.85", rarity:"red"}, {slot:3, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] }
       },
@@ -509,16 +509,16 @@ const MARCHES = [
       role: "Support", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["cavalry"], damageType: "Might", active: false, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Divine Crown", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Divine Crown", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Cavalry's damage taken reduction", value:"+0.8%"} ] },
-        gauntlets: { name: "Contract of Light", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Contract of Light", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] },
-        chest:     { name: "Omniscience", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Omniscience", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Cavalry's damage taken reduction", value:"+0.8%"} ] },
-        boots:     { name: "Dust-Free Boots", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Dust-Free Boots", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] }
       },
@@ -551,16 +551,16 @@ const MARCHES = [
       role: "Attack", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["cavalry"], damageType: "Might", active: true, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Divine Crown", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Divine Crown", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Cavalry's damage taken reduction", value:"+0.8%"} ] },
-        gauntlets: { name: "Contract of Light", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Contract of Light", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] },
-        chest:     { name: "Omniscience", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Omniscience", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Cavalry's damage taken reduction", value:"+0.8%"} ] },
-        boots:     { name: "Dust-Free Boots", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Dust-Free Boots", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"TBD", value:"TBD", rarity:"red"}, {slot:3, effect:"Hero's secondary strike skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Cavalry's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] }
       },
@@ -607,16 +607,16 @@ const MARCHES = [
       role: "Attack", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["pikeman"], damageType: "Might", active: true, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Power of Abyss", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Power of Abyss", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' defense", value:"+4.6%", rarity:"red"}, {slot:2, effect:"All unit types' defense", value:"+4.6%", rarity:"red"}, {slot:3, effect:"All unit types' defense", value:"+4.6%", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Pikemen's damage taken reduction", value:"+0.8%"} ] },
-        gauntlets: { name: "Ring of Chaos", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Ring of Chaos", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] },
-        chest:     { name: "Master of Death", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Master of Death", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Pikemen's damage taken reduction", value:"+0.8%"} ] },
-        boots:     { name: "Nightmare Boots", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Nightmare Boots", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' defense", value:"+4.6%", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] }
       },
@@ -649,16 +649,16 @@ const MARCHES = [
       role: "Attack", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["pikeman"], damageType: "Might", active: true, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Power of Abyss", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Power of Abyss", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' defense", value:"+4.6%", rarity:"red"}, {slot:2, effect:"All unit types' defense", value:"+4.6%", rarity:"red"}, {slot:3, effect:"All unit types' defense", value:"+4.6%", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Pikemen's damage taken reduction", value:"+0.8%"} ] },
-        gauntlets: { name: "Ring of Chaos", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Ring of Chaos", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] },
-        chest:     { name: "Master of Death", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Master of Death", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Pikemen's damage taken reduction", value:"+0.8%"} ] },
-        boots:     { name: "Nightmare Boots", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Nightmare Boots", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' defense", value:"+4.6%", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's active skill damage", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] }
       },
@@ -691,16 +691,16 @@ const MARCHES = [
       role: "Support", heroLevel: 155, heroLevelMax: 155, stars: 5,
       specialty: "warrior", unitTypes: ["pikeman"], damageType: "Might", active: false, unitCapacity: 31200,
       gear: {
-        helm:      { name: "Power of Abyss", level: 80, starRank: 3, gems: null, bonuses: [
+        helm:      { name: "Power of Abyss", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' health", value:"+2.3%", rarity:"red"}, {slot:2, effect:"All unit types' health", value:"+2.3%", rarity:"red"}, {slot:3, effect:"All unit types' health", value:"+2.3%", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Pikemen's damage taken reduction", value:"+0.8%"} ] },
-        gauntlets: { name: "Ring of Chaos", level: 80, starRank: 3, gems: null, bonuses: [
+        gauntlets: { name: "Ring of Chaos", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's might", value:"+10.35", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's damage", value:"+2.4%"}, {stat:"Base elimination rate during sieges", value:"+0.6%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] },
-        chest:     { name: "Master of Death", level: 80, starRank: 3, gems: null, bonuses: [
+        chest:     { name: "Master of Death", level: 80, starRank: 3, gems: [ {slot:1, effect:"Hero's recovery effect", value:"+3.45%", rarity:"red"}, {slot:2, effect:"Hero's recovery effect", value:"+3.45%", rarity:"red"}, {slot:3, effect:"Hero's recovery effect", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's health bonus", value:"+3.0%"}, {stat:"Unit capacity", value:"+1,800"},
           {stat:"Damage taken reduction from countering unit types", value:"+4.5%"}, {stat:"Pikemen's damage taken reduction", value:"+0.8%"} ] },
-        boots:     { name: "Nightmare Boots", level: 80, starRank: 3, gems: null, bonuses: [
+        boots:     { name: "Nightmare Boots", level: 80, starRank: 3, gems: [ {slot:1, effect:"All unit types' defense", value:"+4.6%", rarity:"red"}, {slot:2, effect:"Hero's might", value:"+10.35", rarity:"red"}, {slot:3, effect:"Hero's recovery effect", value:"+3.45%", rarity:"red"} ], bonuses: [
           {stat:"Pikemen's damage", value:"+2.4%"}, {stat:"Elimination rate", value:"+6.0%"},
           {stat:"Damage dealt to countered unit types", value:"+4.5%"}, {stat:"All your heroes' skill damage", value:"+1.0%"} ] }
       },
