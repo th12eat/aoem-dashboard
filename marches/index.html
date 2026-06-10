@@ -101,6 +101,62 @@
     padding: 3px 9px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg-card2); white-space: nowrap;
   }
 
+  /* ===== OVERVIEW LANDING GRID ===== */
+  .overview-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 18px; align-items: start;
+  }
+  @media (max-width: 560px){ .overview-grid { grid-template-columns: 1fr; } }
+
+  .ov-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    cursor: pointer; transition: border-color .15s, transform .15s, box-shadow .15s;
+  }
+  .ov-card:hover { border-color: var(--accent-gold-dim); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+  .ov-card-head {
+    display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+    border-bottom: 1px solid var(--border); background: linear-gradient(180deg, var(--bg-card2), var(--bg-card));
+  }
+  .ov-card-head h2 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1.5px; color: var(--accent-gold); }
+  .ov-card-head .ov-meta { margin-left: auto; display: flex; gap: 5px; align-items: center; }
+  .ov-open { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-muted); }
+  .ov-card:hover .ov-open { color: var(--accent-gold); }
+
+  .ov-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+  .ov-col { background: var(--bg-card); padding: 10px 10px 12px; display: flex; flex-direction: column; gap: 7px; }
+
+  .ov-portrait { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 220/224; background: var(--bg-card3); }
+  .ov-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ov-portrait .ov-cmd { position:absolute; top:5px; left:5px; font-family:'Barlow Condensed',sans-serif; font-weight:700;
+    font-size:9px; letter-spacing:.5px; text-transform:uppercase; color:#1a1206; background:var(--accent-gold);
+    padding:1px 6px; border-radius:4px; }
+  .ov-name { font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:.6px; color:var(--text-primary); line-height:1.05; }
+  .ov-stars { font-size: 10px; letter-spacing:1px; margin-top:-3px; }
+  .ov-stars .on { color: var(--accent-gold); } .ov-stars .off { color: var(--border); }
+
+  .ov-line { display: flex; align-items: baseline; gap: 5px; font-size: 11px; line-height: 1.25; }
+  .ov-line .ico { font-size: 11px; width: 13px; flex: 0 0 auto; text-align: center; opacity:.85; }
+  .ov-line .lab { color: var(--text-primary); font-weight: 500; }
+  .ov-line .sub { color: var(--text-muted); }
+  .ov-trait { color: var(--text-secondary); }
+  .ov-rar { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:9px; text-transform:uppercase; letter-spacing:.4px; padding:0 4px; border-radius:3px; }
+  .ov-divider { height:1px; background:var(--border); margin:2px 0; }
+
+  .ov-gems { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
+  .ov-gem { width: 26px; height: 26px; border-radius: 6px; overflow: hidden; border: 1.5px solid var(--gem-rar, var(--accent-red));
+    background: var(--bg-card3); position: relative; }
+  .ov-gem img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ov-gem.tbd { display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:11px; border-style:dashed; }
+  .ov-gem-label { font-size: 9px; color: var(--text-muted); font-family:'Barlow Condensed',sans-serif; letter-spacing:.5px; text-transform:uppercase; }
+
+  /* detail view back bar */
+  .detail-bar { display: none; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .detail-bar.show { display: flex; }
+  .back-btn {
+    font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; letter-spacing:1px; text-transform:uppercase;
+    padding:8px 14px; border-radius:6px; border:1px solid var(--border); background:var(--bg-card2); color:var(--text-secondary); cursor:pointer;
+  }
+  .back-btn:hover { color: var(--accent-gold); border-color: var(--accent-gold-dim); }
+
   /* HERO GRID */
   .hero-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); gap: 16px; align-items: start;
@@ -275,7 +331,7 @@
   <div class="header">
     <div class="eyebrow">AoEM Era 8 &middot; TommyTorpedo</div>
     <h1>MY <span>MARCHES</span></h1>
-    <div class="sub">Full hero builds &middot; gear &middot; rings &middot; mounts &middot; adornments &middot; skills</div>
+    <div class="sub">Tap a march to see the full build &middot; heroes &middot; gear &middot; rings &middot; mounts &middot; adornments &middot; gems &middot; skills</div>
   </div>
 
   <div class="controls">
@@ -298,6 +354,12 @@
     <br><span class="gem-note">Gems</span> — 3 per gear piece, shown with effect + value and a rarity dot (red = highest tier). Helm/Gauntlets/Chest run a matched set of 3; Boots mix one of each. A few sockets read from the ascend screen are marked TBD where the exact value wasn't legible.
   </div>
 
+  <div class="detail-bar" id="detail-bar">
+    <button class="back-btn" id="back-btn">&larr; All marches</button>
+    <span id="detail-title" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--accent-gold);"></span>
+  </div>
+
+  <div id="overview-root"></div>
   <div id="marches-root"></div>
 
   <div class="footer">
@@ -480,6 +542,99 @@
     return bits.filter(Boolean).join(' ').toLowerCase();
   }
 
+  // ---- overview card builders ----
+  // map a gem effect string to its icon file (cropped from the gem video)
+  var GEM_ICON = {
+    "Hero's unit capacity": "unit_capacity",
+    "Hero's might": "might",
+    "Hero's strategy": "strategy",
+    "Hero's active skill damage": "active",
+    "Hero's secondary strike skill damage": "secondary_strike",
+    "Hero's recovery effect": "recovery",
+    "All unit types' attack": "unit_attack",
+    "All unit types' defense": "unit_defense",
+    "All unit types' health": "unit_health"
+  };
+  function gemIcon(g){
+    if(!g || g.effect === 'TBD' || g.value === 'TBD') return '<span class="ov-gem tbd" title="Details pending">?</span>';
+    var file = GEM_ICON[g.effect];
+    var col = rarColor(g.rarity);
+    var inner = file
+      ? '<img src="assets/gems/'+file+'.jpg" alt="'+esc(g.effect)+'" loading="lazy">'
+      : '';
+    return '<span class="ov-gem" style="--gem-rar:'+col+'" title="'+esc(g.effect)+(g.value?' '+esc(g.value):'')+'">'+inner+'</span>';
+  }
+  // one representative gem per gear piece (helm/gauntlets/chest are uniform; boots is a mix → show all 3)
+  function pieceGems(g){
+    if(!g || !g.gems || !g.gems.length) return [];
+    var uniq = []; var seen = {};
+    g.gems.forEach(function(x){
+      var k = (x.effect||'')+'|'+(x.rarity||'');
+      if(!seen[k]){ seen[k]=1; uniq.push(x); }
+    });
+    return uniq;
+  }
+  function ov5stars(n){
+    var h=''; for(var i=0;i<5;i++) h += '<span class="'+(i<n?'on':'off')+'">★</span>';
+    return '<span class="ov-stars">'+h+'</span>';
+  }
+  function ovHeroCol(hero){
+    var portrait = 'assets/heroes/'+hero.id+'.jpg';
+    var h = '<div class="ov-col">';
+    h += '<div class="ov-portrait">'
+       + '<img src="'+portrait+'" alt="'+esc(hero.name)+'" loading="lazy">'
+       + (hero.isCommander ? '<span class="ov-cmd">Cmd</span>' : '')
+       + '</div>';
+    h += '<div class="ov-name">'+esc(hero.name)+'</div>'+ov5stars(hero.stars||0);
+    h += '<div class="ov-divider"></div>';
+    // ring
+    if(hero.ring && hero.ring.name){
+      h += '<div class="ov-line"><span class="ico">&#128141;</span><span class="lab">'+esc(hero.ring.name)+'</span>'
+        + '<span class="sub">Lv'+esc(hero.ring.level)+'</span></div>';
+    }
+    // mount + traits
+    if(hero.mount && hero.mount.name){
+      var mt = (hero.mount.traits||[]).map(function(t){
+        return '<span class="ov-trait" style="color:'+rarColor(t.rarity)+'">'+esc(t.name)+'</span>';
+      }).join(', ');
+      h += '<div class="ov-line"><span class="ico">&#128014;</span><span class="lab">'+esc(hero.mount.name)+'</span></div>';
+      if(mt) h += '<div class="ov-line"><span class="ico"></span><span class="sub">'+mt+'</span></div>';
+    }
+    // adornment
+    if(hero.adornment && hero.adornment.name){
+      var a = hero.adornment;
+      var rar = a.trait && a.trait.rarity;
+      h += '<div class="ov-line"><span class="ico">&#127872;</span><span class="lab">'+esc(a.name)+'</span>'
+        + '<span class="sub">Lv'+esc(a.level)+'</span></div>';
+      if(a.trait && a.trait.name){
+        h += '<div class="ov-line"><span class="ico"></span><span class="ov-trait" style="color:'+rarColor(rar)+'">'+esc(a.trait.name)+'</span>'
+          + (rar?'<span class="ov-rar" style="color:'+rarColor(rar)+';border:1px solid '+rarColor(rar)+'">'+esc(rar)+'</span>':'')+'</div>';
+      }
+    }
+    h += '<div class="ov-divider"></div>';
+    // gems: one chip per gear piece's representative gem(s)
+    h += '<span class="ov-gem-label">Gems</span><div class="ov-gems">';
+    SLOT_ORDER.forEach(function(slot){
+      pieceGems(hero.gear[slot]).forEach(function(g){ h += gemIcon(g); });
+    });
+    h += '</div>';
+    h += '</div>';
+    return h;
+  }
+  function overviewCard(m){
+    var spec = SPEC_COLOR[m.specialty] || 'var(--text-secondary)';
+    var ut = UNIT_ICON[m.unitType] || '';
+    var heroes = m.heroes.slice().sort(function(a,b){ return (b.isCommander?1:0)-(a.isCommander?1:0); });
+    var head = '<div class="ov-card-head"><h2>'+esc(m.name)+'</h2>'
+      + '<div class="ov-meta">'
+      +   '<span class="badge" style="border-color:'+spec+';color:'+spec+'">'+esc(m.specialty)+'</span>'
+      +   '<span class="badge"><span class="ut">'+ut+'</span>'+esc(m.unitType)+'</span>'
+      +   '<span class="ov-open">View &rarr;</span>'
+      + '</div></div>';
+    var cols = '<div class="ov-cols">'+heroes.map(ovHeroCol).join('')+'</div>';
+    return '<div class="ov-card" data-open="'+esc(m.id)+'">'+head+cols+'</div>';
+  }
+
   function heroCard(hero){
     var sk = hero.skills||{};
     var equipCount = (sk.secondaryEquipped||[]).length;
@@ -522,48 +677,76 @@
   }
 
   // ---- render ----
+  var overviewRoot = document.getElementById('overview-root');
+  overviewRoot.innerHTML = MARCHES.map(overviewCard).join('');
+
   var root = document.getElementById('marches-root');
   root.innerHTML = MARCHES.map(marchSection).join('');
 
-  // ---- march tabs ----
+  var controlsEl = document.querySelector('.controls');
+  var detailBar = document.getElementById('detail-bar');
+  var detailTitle = document.getElementById('detail-title');
+  var MARCH_BY_ID = {}; MARCHES.forEach(function(m){ MARCH_BY_ID[m.id]=m; });
+
+  function showOverview(){
+    overviewRoot.style.display = '';
+    root.style.display = 'none';
+    detailBar.classList.remove('show');
+    controlsEl.style.display = 'none';
+    document.getElementById('search').value = '';
+    window.scrollTo(0,0);
+  }
+  function showDetail(id){
+    overviewRoot.style.display = 'none';
+    root.style.display = '';
+    detailBar.classList.add('show');
+    controlsEl.style.display = '';
+    var m = MARCH_BY_ID[id];
+    detailTitle.textContent = m ? m.name : '';
+    // show only the selected march section
+    document.querySelectorAll('.march').forEach(function(sec){
+      sec.style.display = (sec.getAttribute('data-march')===id) ? '' : 'none';
+    });
+    document.querySelectorAll('.hero').forEach(function(h){ h.style.display=''; });
+    // sync tabs
+    document.querySelectorAll('.mtab').forEach(function(x){
+      x.classList.toggle('active', x.getAttribute('data-m')===id);
+    });
+    window.scrollTo(0,0);
+  }
+
+  // open a detail view from an overview card
+  overviewRoot.addEventListener('click', function(e){
+    var card = e.target.closest('.ov-card'); if(!card) return;
+    showDetail(card.getAttribute('data-open'));
+  });
+  document.getElementById('back-btn').addEventListener('click', showOverview);
+
+  // ---- march tabs (within detail view) ----
   var tabsEl = document.getElementById('march-tabs');
-  var tabs = '<button class="mtab active" data-m="all">All</button>';
+  var tabs = '';
   MARCHES.forEach(function(m){
     tabs += '<button class="mtab" data-m="'+esc(m.id)+'"><span class="ut">'+(UNIT_ICON[m.unitType]||'')+'</span>'+esc(m.name)+'</button>';
   });
   tabsEl.innerHTML = tabs;
   tabsEl.addEventListener('click', function(e){
     var b = e.target.closest('.mtab'); if(!b) return;
-    document.querySelectorAll('.mtab').forEach(function(x){ x.classList.remove('active'); });
-    b.classList.add('active');
-    var sel = b.getAttribute('data-m');
-    document.querySelectorAll('.march').forEach(function(sec){
-      sec.style.display = (sel==='all' || sec.getAttribute('data-march')===sel) ? '' : 'none';
-    });
+    showDetail(b.getAttribute('data-m'));
   });
 
-  // ---- search ----
+  // start on the overview landing
+  showOverview();
+
+  // ---- search (filters heroes within the open march detail) ----
   document.getElementById('search').addEventListener('input', function(){
     var q = this.value.trim().toLowerCase();
     document.querySelectorAll('.march').forEach(function(sec){
-      var anyVisible = false;
+      if(sec.style.display === 'none') return; // only the open march
       sec.querySelectorAll('.hero').forEach(function(h){
         var show = !q || h.getAttribute('data-hay').indexOf(q) >= 0;
         h.style.display = show ? '' : 'none';
-        if(show) anyVisible = true;
       });
-      // when searching, only show sections (that aren't tab-hidden) with matches
-      if(q){ sec.style.display = anyVisible ? '' : 'none'; }
     });
-    if(!q){
-      // restore active tab filter
-      var active = document.querySelector('.mtab.active');
-      var sel = active ? active.getAttribute('data-m') : 'all';
-      document.querySelectorAll('.march').forEach(function(sec){
-        sec.style.display = (sel==='all' || sec.getAttribute('data-march')===sel) ? '' : 'none';
-      });
-      document.querySelectorAll('.hero').forEach(function(h){ h.style.display=''; });
-    }
   });
 
   // ---- pool skill modal ----
