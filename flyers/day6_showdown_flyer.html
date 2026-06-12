@@ -845,10 +845,11 @@
 
         <!-- Siege pressure on our South corner: it's E#068's home map, so expect their
              war machines to come from BEHIND / the sides of our corner (SW and SE),
-             not head-on. Two arrows curve inward toward the corner, each flagged DEFEND. -->
-        <text x="260" y="648" text-anchor="middle" fill="rgba(77,184,120,0.9)" font-family="Barlow Condensed,sans-serif" font-size="18" font-weight="600" letter-spacing="1">E#068 SIEGE</text>
+             not head-on. Two arrows curve inward toward the corner, each flagged DEFEND.
+             An "E#068 SIEGE" label sits at each arrow's origin point. -->
 
         <!-- SE flank — arrow from lower-right toward South corner -->
+        <text x="470" y="624" text-anchor="middle" fill="rgba(77,184,120,0.9)" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="600" letter-spacing="0.5">E#068 SIEGE</text>
         <circle cx="470" cy="600" r="4" fill="rgba(77,184,120,0.75)"/>
         <path d="M 462,597 C 420,575 360,555 318,548" stroke="rgba(77,184,120,0.6)" stroke-width="2.5" fill="none" stroke-dasharray="5,4" stroke-linecap="round"/>
         <polygon points="306,546 320,542 316,554" fill="rgba(77,184,120,0.75)"/>
@@ -857,6 +858,7 @@
         <text x="394" y="558" text-anchor="middle" fill="rgba(255,200,50,0.85)" font-family="Barlow Condensed,sans-serif" font-size="14" font-weight="600">DEFEND</text>
 
         <!-- SW flank — arrow from lower-left toward South corner -->
+        <text x="50" y="624" text-anchor="middle" fill="rgba(77,184,120,0.9)" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="600" letter-spacing="0.5">E#068 SIEGE</text>
         <circle cx="50" cy="600" r="4" fill="rgba(77,184,120,0.75)"/>
         <path d="M 58,597 C 100,575 160,555 202,548" stroke="rgba(77,184,120,0.6)" stroke-width="2.5" fill="none" stroke-dasharray="5,4" stroke-linecap="round"/>
         <polygon points="214,546 200,542 204,554" fill="rgba(77,184,120,0.75)"/>
@@ -884,7 +886,7 @@
 
     <!-- Era 8 Zone Zoom (East position) -->
     <div class="map-wrap" style="margin-top:16px;">
-      <svg id="era8zoom" viewBox="60 175 400 410" xmlns="http://www.w3.org/2000/svg" style="width:100%;">
+      <svg id="era8zoom" viewBox="60 215 400 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;">
         <rect x="-280" y="-240" width="1080" height="1000" fill="#0d0f18" rx="12"/>
 
         <!-- Geometry: rotate East→South then mirror left↔right (net = reflection about
@@ -1288,6 +1290,9 @@
         <!-- ===== end rotated+mirrored strategy overlay ===== -->
 
         <!-- Upright labels (drawn outside the mirrored group) -->
+        <!-- Anti-siege labels under each red X (X markers land at screen ~(85,530) and (435,530)) -->
+        <text x="85" y="558" text-anchor="middle" fill="#c43d3d" font-family="Barlow Condensed,sans-serif" font-size="12" font-weight="600" letter-spacing="0.5">ANTI-SIEGE</text>
+        <text x="435" y="558" text-anchor="middle" fill="#c43d3d" font-family="Barlow Condensed,sans-serif" font-size="12" font-weight="600" letter-spacing="0.5">ANTI-SIEGE</text>
         <!-- TAXI RALLY (rally points up toward the IC) -->
         <text x="285" y="300" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="600" letter-spacing="1">TAXI RALLY</text>
         <!-- North = E#034 -->
