@@ -2098,7 +2098,8 @@ const DEFAULT_CONFIG = {
    prepStages chart labels; "methods" = the ways to earn points that day. */
 const STAGE_SCHEDULE = [
   { nameKey:"prepStage1", date:"Mon, Jun 15", color:"#3b82f6", methods:[
-    "Defeat tribes for points that scale by level: Lv.1-4 +4,000 → Lv.25-28 +20,800 (per kill)",
+    "Craft gear — rare +10,000 · epic +30,000 · legendary +200,000 (per piece)",
+    "Defeat tribes, scaling by level: Lv.1-4 +4,000 → Lv.25-28 +20,800 → Lv.29-30 +24,000 (per kill)",
   ]},
   { nameKey:"prepStage2", date:"Tue, Jun 16", color:"#22c55e", methods:[
     "Consume 1h of building speed-ups → +18,000",
@@ -2115,8 +2116,13 @@ const STAGE_SCHEDULE = [
     "Train units — points scale by tier: Lv.1 +30, Lv.2 +50, Lv.3 +70, Lv.4 +100, Lv.5 +160, Lv.6 +280",
   ]},
   { nameKey:"prepStage5", date:"Fri, Jun 19", color:"#c084fc", methods:[
+    "Catch-all day — most of the prior stages' methods score again:",
     "Initiate 1 legendary merchant ship trade → +1,000,000",
-    "Defeat tribes (scales by level, same as Stage 1) + gather 100 resources → +10",
+    "Craft gear — rare +10,000 · epic +30,000 · legendary +200,000",
+    "Defeat tribes: Lv.1-4 +4,000 → Lv.29-30 +24,000 (per kill)",
+    "Gather 100 resources (except armories) → +10",
+    "Increase building power +1 → +30 · technology power +1 → +60",
+    "Train or promote units to increase power +1 → +30",
   ]},
 ];
 
