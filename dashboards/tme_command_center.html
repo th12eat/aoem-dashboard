@@ -56,6 +56,10 @@ const EN = {
   prepStage3: "Enhancing Technologies",
   prepStage4: "Unit Training",
   prepStage5: "Power Boost",
+  stageSchedule: "PREP STAGE SCHEDULE",
+  stageWord: "Stage",
+  stageScored: "scored",
+  stageScheduleNote: "One stage per day during the Preparation phase. Point methods are the same for both servers — out-earn them each day.",
   sitBrief: "SITUATION BRIEF",
   wonPrepWith: "is winning prep with",
   losingPrepWith: "is losing prep with",
@@ -2090,6 +2094,32 @@ const DEFAULT_CONFIG = {
   },
 };
 
+/* Prep-stage calendar: one stage per day. nameKey ties each entry to the
+   prepStages chart labels; "methods" = the ways to earn points that day. */
+const STAGE_SCHEDULE = [
+  { nameKey:"prepStage1", date:"Mon, Jun 15", color:"#3b82f6", methods:[
+    "Defeat tribes for points that scale by level: Lv.1-4 +4,000 → Lv.25-28 +20,800 (per kill)",
+  ]},
+  { nameKey:"prepStage2", date:"Tue, Jun 16", color:"#22c55e", methods:[
+    "Consume 1h of building speed-ups → +18,000",
+    "Increase building power by 1 → +30",
+    "Gather 100 resources (except armories) → +10",
+  ]},
+  { nameKey:"prepStage3", date:"Wed, Jun 17", color:"#f59e0b", methods:[
+    "Participate in Starfall Vein 1 time → +3,000,000",
+    "Consume 1h of research speed-ups → +18,000",
+    "Increase technology power by 1 → +60",
+  ]},
+  { nameKey:"prepStage4", date:"Thu, Jun 18", color:"#ef4444", methods:[
+    "Initiate 1 legendary merchant ship trade → +1,000,000",
+    "Train units — points scale by tier: Lv.1 +30, Lv.2 +50, Lv.3 +70, Lv.4 +100, Lv.5 +160, Lv.6 +280",
+  ]},
+  { nameKey:"prepStage5", date:"Fri, Jun 19", color:"#c084fc", methods:[
+    "Initiate 1 legendary merchant ship trade → +1,000,000",
+    "Defeat tribes (scales by level, same as Stage 1) + gather 100 resources → +10",
+  ]},
+];
+
 const PHASE_COLORS = ["#94a3b8","#3b82f6","#22c55e","#f59e0b","#ef4444","#c084fc","#f472b6","#fbbf24","#64748b"];
 
 /* ═══════════════════════════════════════════════════
@@ -2525,7 +2555,7 @@ function TMECommandCenter(){
       </div>
 
       {/* Tabs */}
-      <div style={{display:"flex",overflowX:"auto",background:"#0f172a",borderBottom:"1px solid #1e3a5f",padding:"0 8px"}}>
+      <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",background:"#0f172a",borderBottom:"1px solid #1e3a5f",padding:"0 8px"}}>
         {tabs.map(tb=>(
           <button key={tb.id} onClick={()=>setActiveTab(tb.id)} style={{flex:"none",padding:"10px 14px",fontSize:11,fontFamily:"inherit",background:activeTab===tb.id?"#1e293b":"transparent",color:activeTab===tb.id?"#fbbf24":"#64748b",border:"none",borderBottom:activeTab===tb.id?"2px solid #fbbf24":"2px solid transparent",cursor:"pointer",whiteSpace:"nowrap"}}>{tb.label}</button>
         ))}
@@ -2723,6 +2753,26 @@ function TMECommandCenter(){
               <span><span style={{color:"#f87171"}}>{"\u25A0"}</span> {config.oppServer}: <strong>{config.totalOpp}B</strong></span>
             </div>
             <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp}/>
+          </div>
+          <div style={card}>
+            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\uD83D\uDCC5"} {t.stageSchedule||"PREP STAGE SCHEDULE"}</div>
+            {STAGE_SCHEDULE.map((s,i)=>{
+              const stg=config.prepStages[i];
+              const active=stg&&(stg.ourPts>0||stg.oppPts>0);
+              return(
+                <div key={s.nameKey} style={{padding:"8px 10px",background:active?"#0f172a":"transparent",borderRadius:6,borderLeft:`3px solid ${active?s.color:"#1e3a5f"}`,marginBottom:8,opacity:active?1:0.62}}>
+                  <div style={{display:"flex",alignItems:"baseline",gap:8,flexWrap:"wrap",marginBottom:4}}>
+                    <span style={{fontSize:11,color:"#64748b",fontFamily:"monospace"}}>{s.date}</span>
+                    <span style={{fontSize:13,fontWeight:700,color:s.color}}>{t.stageWord||"Stage"} {i+1}: {t[s.nameKey]}</span>
+                    {active&&<span style={{fontSize:9,color:"#fbbf24",border:"1px solid #fbbf24",borderRadius:3,padding:"0 5px"}}>{t.stageScored||"scored"}</span>}
+                  </div>
+                  <ul style={{margin:0,paddingLeft:18}}>
+                    {s.methods.map((mth,j)=>(<li key={j} style={{fontSize:11,lineHeight:1.6,color:"#cbd5e1"}}>{mth}</li>))}
+                  </ul>
+                </div>
+              );
+            })}
+            <div style={{fontSize:9,color:"#64748b",marginTop:2}}>{t.stageScheduleNote||"One stage per day during the Preparation phase. Point methods are the same for both servers \u2014 out-earn them each day."}</div>
           </div>
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\uD83C\uDFC6"} TME ALLIANCE RANKINGS</div>
