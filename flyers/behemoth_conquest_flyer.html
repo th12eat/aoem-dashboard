@@ -592,8 +592,8 @@
       <h3 style="color:var(--accent-red);">&#9876; <span data-i18n="s3_siege_h">Siege (Attack)</span></h3>
       <ul>
         <li data-i18n="s3_siege_1">Our Behemoth deals <strong>8,750 durability damage/sec</strong> to the target citadel.</li>
-        <li data-i18n="s3_siege_2">It earns <strong>2,625,000 kingdom points per attack tick (per second)</strong> &mdash; the single biggest point source in the mode.</li>
-        <li data-i18n="s3_siege_4"><strong>Points scale with durability damage</strong> &mdash; <em>official: "your kingdom earns points based on durability damage dealt."</em> The numbers fit <strong>points = durability &times; 300</strong> (8,750 &times; 300 = 2,625,000), so <strong>Iron Hoof and each growth stage raise the point rate</strong>, not just siege speed (e.g. Iron Hoof II &rarr; 10,000/sec &rarr; <strong>3,000,000 pts/sec</strong>). <span class="pill">TBC</span> the exact &times;300.</li>
+        <li data-i18n="s3_siege_2">It earns <strong>~2,625 kingdom points per attack tick (per second)</strong> at the Juvenile siege rate &mdash; a steady stream that compounds over a 90-min invasion.</li>
+        <li data-i18n="s3_siege_4"><strong>Points scale with durability damage</strong> &mdash; the guide gives <strong>300 kingdom points per 1,000 durability damage</strong> (i.e. <strong>&times;0.3</strong> per point of durability). So at 8,750/sec that's <strong>~2,625 pts/sec</strong>, and <strong>Iron Hoof &amp; each growth stage raise the rate</strong> (e.g. Iron Hoof II &rarr; 10,000/sec &rarr; <strong>~3,000 pts/sec</strong>). <span class="pill">TBC</span> confirm on the in-game Point Rules screen.</li>
         <li data-i18n="s3_siege_5"><strong>Invasions last 90 minutes.</strong> The Behemoth also <strong>knocks away player citadels and destroys alliance buildings</strong> on the tiles it crosses &mdash; clear the path / don't keep buildings in its lane.</li>
         <li data-i18n="s3_siege_3">It <strong>cannot attack while dazed.</strong></li>
       </ul>
@@ -668,7 +668,7 @@
       </div>
     </div>
     <div class="co warn" data-i18n="s4_callout">
-      <strong>Win condition:</strong> at the end, the empire with the <strong>higher total score wins</strong>. The Behemoth's own attacks are worth <strong>2.625M kingdom points each</strong>, so keeping ours attacking (and stunning theirs) is the highest-leverage thing we can do. Every donation, defense, and attack adds up &mdash; so does showing up for the invasion window.
+      <strong>Win condition:</strong> at the end, the empire with the <strong>higher total score wins</strong>. The biggest swings are the <strong>enemy-Behemoth milestones</strong> &mdash; 1B per Undying Force stack depleted, 5B for a full defeat &mdash; plus the <strong>2M per 1K of our own Behemoth's remaining health</strong> at invasion's end. So keeping ours alive and attacking (and stunning theirs) is the highest-leverage thing we can do. Every donation, defense, and attack adds up &mdash; so does showing up for the invasion window.
     </div>
 
     <p class="blurb" style="margin:14px 0 6px;" data-i18n="s4_points_h"><strong style="color:var(--accent-gold);">Point Values</strong> &mdash; how each action scores (from the guide; transcript-derived, confirm on the in-game Point Rules screen):</p>
@@ -817,8 +817,8 @@ const TRANSLATIONS = {
     "s3_combat_intro": "<strong>Cómo funciona el combate (según los tooltips del juego):</strong>",
     "s3_siege_h": "Asedio (Ataque)",
     "s3_siege_1": "Nuestro Bégimo inflige <strong>8.750 de daño de durabilidad por segundo</strong> a la ciudadela objetivo.",
-    "s3_siege_2": "Gana <strong>2.625.000 puntos del reino por tick de ataque (por segundo)</strong> &mdash; la mayor fuente de puntos del modo.",
-    "s3_siege_4": "<strong>Los puntos escalan con el daño de durabilidad</strong> &mdash; <em>oficial: \"tu reino gana puntos según el daño de durabilidad infligido.\"</em> Los números cuadran con <strong>puntos = durabilidad &times; 300</strong> (8.750 &times; 300 = 2.625.000), así que <strong>Pezuña de Hierro y cada etapa de crecimiento suben la tasa de puntos</strong>, no solo la velocidad de asedio (p. ej. Pezuña de Hierro II &rarr; 10.000/seg &rarr; <strong>3.000.000 pts/seg</strong>). <span class=\"pill\">TBC</span> el &times;300 exacto.",
+    "s3_siege_2": "Gana <strong>~2.625 puntos del reino por tick de ataque (por segundo)</strong> al ritmo de asedio Juvenil &mdash; un flujo constante que se acumula en una invasión de 90 min.",
+    "s3_siege_4": "<strong>Los puntos escalan con el daño de durabilidad</strong> &mdash; la guía indica <strong>300 puntos del reino por cada 1.000 de daño de durabilidad</strong> (es decir, <strong>&times;0,3</strong> por punto de durabilidad). Así, a 8.750/seg son <strong>~2.625 pts/seg</strong>, y <strong>Casco de Hierro y cada etapa de crecimiento suben el ritmo</strong> (p. ej. Casco de Hierro II &rarr; 10.000/seg &rarr; <strong>~3.000 pts/seg</strong>). <span class=\"pill\">TBC</span> confirma en la pantalla de Reglas de Puntos del juego.",
     "s3_siege_5": "<strong>Las invasiones duran 90 minutos.</strong> El Bégimo además <strong>aparta las ciudadelas de jugadores y destruye edificios de alianza</strong> en las casillas que cruza &mdash; despeja el camino / no dejes edificios en su trayecto.",
     "s3_siege_3": "<strong>No puede atacar mientras está aturdido.</strong>",
     "s3_stun_h": "Salud y el Ciclo de Aturdimiento",
@@ -851,7 +851,7 @@ const TRANSLATIONS = {
     "role_defend_h": "Defender", "role_defend_p": "Baja al <strong>Bégimo enemigo a 0 de salud</strong> para aturdirlo 30s &mdash; dispersa sus reuniones y frena sus puntos. Protege al nuestro a su vez.",
     "role_attack_h": "Atacar", "role_attack_p": "Golpea al <strong>Bégimo enemigo</strong> durante la invasión. Cronometra reuniones frescas para el instante en que termina el aturdimiento. Los puntos ofensivos son el grueso de un buen puntaje.",
     "role_relocate_h": "Reubicarse", "role_relocate_p": "Durante las invasiones puedes <strong>reubicarte al servidor enemigo</strong> para unirte a la ofensiva (misión 1&times;, gran recompensa).",
-    "s4_callout": "<strong>Condición de victoria:</strong> al final, el imperio con <strong>mayor puntaje total gana</strong>. Los ataques del propio Bégimo valen <strong>2,625M puntos del reino cada uno</strong>, así que mantener al nuestro atacando (y aturdir al de ellos) es lo de mayor impacto. Cada donación, defensa y ataque suma &mdash; igual que presentarse en la ventana de invasión.",
+    "s4_callout": "<strong>Condición de victoria:</strong> al final, el imperio con <strong>mayor puntaje total gana</strong>. Los mayores cambios son los <strong>hitos del Bégimo enemigo</strong> &mdash; 1B por agotar una pila de Fuerza Imperecedera, 5B por derrota total &mdash; más los <strong>2M por cada 1K de salud restante de nuestro propio Bégimo</strong> al final de la invasión. Así que mantener al nuestro vivo y atacando (y aturdir al de ellos) es lo de mayor impacto. Cada donación, defensa y ataque suma &mdash; igual que presentarse en la ventana de invasión.",
     "s5_title": "Lista de Misiones",
     "s5_blurb": "Completa estas por <strong>Runas del Despertar</strong>, aceleradores y recursos de Bégimo. Niveles más altos = mejores recompensas. <span class=\"pill\">TBC</span> montos exactos.",
     "s5_milestones_h": "<strong style=\"color:var(--accent-gold);\">Hitos de Puntos Personales</strong> &mdash; recompensas \"Amigo de Bégimo\" por puntos personales totales:",
@@ -929,8 +929,8 @@ const TRANSLATIONS = {
     "s3_combat_intro": "<strong>Comment fonctionne le combat (selon les infobulles du jeu) :</strong>",
     "s3_siege_h": "Siège (Attaque)",
     "s3_siege_1": "Notre Béhimoth inflige <strong>8 750 de dégâts de durabilité/sec</strong> à la citadelle ciblée.",
-    "s3_siege_2": "Il gagne <strong>2 625 000 points de royaume par tick d'attaque (par seconde)</strong> &mdash; la plus grande source de points du mode.",
-    "s3_siege_4": "<strong>Les points évoluent avec les dégâts de durabilité</strong> &mdash; <em>officiel : \"votre royaume gagne des points selon les dégâts de durabilité infligés.\"</em> Les chiffres collent à <strong>points = durabilité &times; 300</strong>, donc <strong>Sabot de Fer et chaque palier de croissance augmentent le taux de points</strong>, pas seulement la vitesse de siège (ex. Sabot de Fer II &rarr; 10 000/sec &rarr; <strong>3 000 000 pts/sec</strong>). <span class=\"pill\">TBC</span> le &times;300 exact.",
+    "s3_siege_2": "Il gagne <strong>~2 625 points de royaume par tick d'attaque (par seconde)</strong> au rythme de siège Juvénile &mdash; un flux régulier qui s'accumule sur une invasion de 90 min.",
+    "s3_siege_4": "<strong>Les points évoluent avec les dégâts de durabilité</strong> &mdash; le guide indique <strong>300 points de royaume par 1 000 de dégâts de durabilité</strong> (soit <strong>&times;0,3</strong> par point de durabilité). Donc à 8 750/sec cela fait <strong>~2 625 pts/sec</strong>, et <strong>le Sabot de Fer et chaque palier de croissance augmentent le rythme</strong> (ex. Sabot de Fer II &rarr; 10 000/sec &rarr; <strong>~3 000 pts/sec</strong>). <span class=\"pill\">TBC</span> à confirmer sur l'écran des Règles de Points en jeu.",
     "s3_siege_5": "<strong>Les invasions durent 90 minutes.</strong> Le Béhimoth <strong>écarte aussi les citadelles des joueurs et détruit les bâtiments d'alliance</strong> sur les cases qu'il traverse &mdash; dégagez le chemin / ne laissez pas de bâtiments sur son passage.",
     "s3_siege_3": "Il <strong>ne peut pas attaquer étant hébété.</strong>",
     "s3_stun_h": "Santé et le Cycle d'Étourdissement",
@@ -963,7 +963,7 @@ const TRANSLATIONS = {
     "role_defend_h": "Défendre", "role_defend_p": "Ralliez le <strong>Béhimoth ennemi à 0 de santé</strong> pour l'étourdir 30s &mdash; ça disperse ses ralliements et stoppe ses points. Protégez le nôtre en retour.",
     "role_attack_h": "Attaquer", "role_attack_p": "Frappez le <strong>Béhimoth ennemi</strong> pendant l'invasion. Chronométrez des ralliements frais pour l'instant où l'étourdissement finit. Les points offensifs font le gros d'un bon score.",
     "role_relocate_h": "Se Relocaliser", "role_relocate_p": "Pendant les invasions, vous pouvez <strong>vous relocaliser sur le serveur ennemi</strong> pour rejoindre l'offensive (mission 1&times;, grosse récompense).",
-    "s4_callout": "<strong>Condition de victoire :</strong> à la fin, l'empire au <strong>plus haut score total gagne</strong>. Les attaques du Béhimoth valent <strong>2,625M points de royaume chacune</strong>, donc garder le nôtre en attaque (et étourdir le leur) est l'action la plus rentable. Chaque don, défense et attaque compte &mdash; tout comme être présent à la fenêtre d'invasion.",
+    "s4_callout": "<strong>Condition de victoire :</strong> à la fin, l'empire au <strong>plus haut score total gagne</strong>. Les plus gros gains sont les <strong>jalons du Béhimoth ennemi</strong> &mdash; 1B par charge de Force Immortelle épuisée, 5B pour une défaite totale &mdash; plus les <strong>2M par 1K de santé restante de notre propre Béhimoth</strong> à la fin de l'invasion. Donc garder le nôtre en vie et en attaque (et étourdir le leur) est l'action la plus rentable. Chaque don, défense et attaque compte &mdash; tout comme être présent à la fenêtre d'invasion.",
     "s5_title": "Liste des Missions",
     "s5_blurb": "Complétez-les pour des <strong>Runes d'Éveil</strong>, des accélérateurs et des ressources de Béhimoth. Paliers plus hauts = meilleures récompenses. <span class=\"pill\">TBC</span> montants exacts.",
     "s5_milestones_h": "<strong style=\"color:var(--accent-gold);\">Paliers de Points Personnels</strong> &mdash; récompenses \"Ami du Béhimoth\" pour le total de points personnels :",
@@ -1041,8 +1041,8 @@ const TRANSLATIONS = {
     "s3_combat_intro": "<strong>전투 작동 방식 (게임 툴팁 기준):</strong>",
     "s3_siege_h": "공성(공격)",
     "s3_siege_1": "우리 비헤모스는 목표 성채에 초당 <strong>8,750 내구도 피해</strong>를 입혀요.",
-    "s3_siege_2": "<strong>공격 틱당(초당) 2,625,000 왕국 점수</strong>를 획득 &mdash; 이 모드 최대 점수 원천.",
-    "s3_siege_4": "<strong>점수는 내구도 피해에 비례</strong>합니다 &mdash; <em>공식: \"왕국은 입힌 내구도 피해에 따라 점수를 획득.\"</em> 수치상 <strong>점수 = 내구도 &times; 300</strong>(8,750 &times; 300 = 2,625,000)에 들어맞아, <strong>강철 발굽과 각 성장 단계가 공성 속도뿐 아니라 점수 획득률도 올립니다</strong>(예: 강철 발굽 II &rarr; 초당 10,000 &rarr; <strong>초당 3,000,000점</strong>). <span class=\"pill\">TBC</span> 정확한 &times;300.",
+    "s3_siege_2": "유년기 공성 속도에서 <strong>공격 틱당(초당) 약 2,625 왕국 점수</strong>를 획득 &mdash; 90분 침공 동안 쌓이는 꾸준한 흐름.",
+    "s3_siege_4": "<strong>점수는 내구도 피해에 비례</strong>합니다 &mdash; 가이드에 따르면 <strong>내구도 피해 1,000당 왕국 점수 300</strong>(즉 내구도 1당 <strong>&times;0.3</strong>). 따라서 초당 8,750이면 <strong>초당 약 2,625점</strong>이고, <strong>강철 발굽과 각 성장 단계가 비율을 올립니다</strong>(예: 강철 발굽 II &rarr; 초당 10,000 &rarr; <strong>초당 약 3,000점</strong>). <span class=\"pill\">TBC</span> 게임 내 점수 규칙 화면에서 확인.",
     "s3_siege_5": "<strong>침공은 90분간 지속</strong>됩니다. 비헤모스는 지나가는 칸의 <strong>플레이어 성채를 밀어내고 동맹 건물을 파괴</strong>해요 &mdash; 경로를 비우고 그 길목에 건물을 두지 마세요.",
     "s3_siege_3": "<strong>혼미 상태에서는 공격 불가.</strong>",
     "s3_stun_h": "체력 및 기절 사이클",
@@ -1075,7 +1075,7 @@ const TRANSLATIONS = {
     "role_defend_h": "방어", "role_defend_p": "<strong>적 비헤모스를 체력 0으로</strong> 집결해 30초 기절 &mdash; 집결을 흔들고 득점을 멈춤. 동시에 우리 부대 보호.",
     "role_attack_h": "공격", "role_attack_p": "침공 중 <strong>적 비헤모스</strong> 공격. 기절이 끝나는 순간에 새 집결이 도착하도록 타이밍. 공격 점수가 좋은 점수의 대부분.",
     "role_relocate_h": "이전", "role_relocate_p": "침공 중 <strong>적 서버로 이전</strong>해 공격에 합류 가능(1회 임무, 큰 보상).",
-    "s4_callout": "<strong>승리 조건:</strong> 끝에 <strong>총점이 높은 제국이 승리</strong>. 비헤모스 공격은 회당 <strong>262.5만 왕국 점수</strong> 가치라 우리 비헤모스를 공격 상태로 유지(그리고 적을 기절)하는 게 가장 효율적. 모든 기부·방어·공격이 더해짐 &mdash; 침공 시간대 참석도 마찬가지.",
+    "s4_callout": "<strong>승리 조건:</strong> 종료 시 <strong>총점이 높은 제국이 승리</strong>. 가장 큰 변수는 <strong>적 비헤모스 이정표</strong> &mdash; 불멸의 힘 1스택 소진당 10억, 완전 처치 시 50억 &mdash; 그리고 침공 종료 시 <strong>우리 비헤모스의 남은 체력 1K당 200만</strong>. 따라서 우리 것을 살려두고 공격하게 하며(그리고 적을 기절시키는 것)이 최대 효율. 모든 기부·방어·공격이 쌓이고 &mdash; 침공 시간대에 참여하는 것도 마찬가지.",
     "s5_title": "임무 체크리스트",
     "s5_blurb": "<strong>각성 룬스톤</strong>, 가속, 비헤모스 자원을 위해 완료. 높은 등급 = 더 큰 보상. <span class=\"pill\">TBC</span> 정확한 보상량.",
     "s5_milestones_h": "<strong style=\"color:var(--accent-gold);\">개인 점수 마일스톤</strong> &mdash; 총 개인 점수에 따른 \"비헤모스의 벗\" 보상:",
