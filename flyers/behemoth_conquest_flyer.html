@@ -564,6 +564,7 @@
   .cmp-tbl .c-mp.na  { color: var(--text-muted); }
   .cmp .cmp-more { display: none; }
   .cmp.expanded .cmp-more { display: table-row; }
+  .sub-h { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1.5px; color: var(--text-secondary); margin: 0 0 8px; text-transform: uppercase; }
   #cmpToggle {
     display: block; width: 100%; margin-top: 10px; padding: 7px;
     background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
@@ -573,6 +574,9 @@
   #cmpToggle:hover { background: rgba(212,168,67,0.07); color: var(--text-primary); }
   #cmpToggle .chev { display: inline-block; transition: transform .2s; }
   #cmpToggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  #cmpToggle .cmp-lbl-less { display: none; }
+  #cmpToggle[aria-expanded="true"] .cmp-lbl-more { display: none; }
+  #cmpToggle[aria-expanded="true"] .cmp-lbl-less { display: inline; }
 
   /* -- Battlefield map toggle (#008 vs #087) -- */
   .map-toggle { display: flex; gap: 6px; margin: 2px 0 8px; }
@@ -592,9 +596,8 @@
 <body>
 <div class="flyer">
 
-  <!-- LANG SWITCHER (paused — translations are being rebuilt for the new layout.
-       Hidden for now; re-enable this block + the TRANSLATIONS data when ready.) -->
-  <div class="lang-bar" style="display:none;">
+  <!-- LANG SWITCHER -->
+  <div class="lang-bar">
     <button class="lang-btn active" onclick="switchLang('en')">EN</button>
     <button class="lang-btn" onclick="switchLang('es')">ES</button>
     <button class="lang-btn" onclick="switchLang('fr')">FR</button>
@@ -635,74 +638,105 @@
 
   <!-- THE BIG PICTURE -->
   <div class="section">
-    <div class="sh"><span class="n">!</span> <span>The Big Picture</span></div>
-    <p class="blurb">
+    <div class="sh"><span class="n">!</span> <span data-i18n="bp_h">The Big Picture</span></div>
+    <p class="blurb" data-i18n="bp_blurb">
       <strong>Two empires (servers) clash over their Behemoths.</strong> Across the event we earn <em>Awaken Runestones</em> to grow and buff our Behemoth, then unleash it on the enemy server while defending our own. Both sides attack and defend in cross-server battles. <span class="gold">The empire with the higher total score wins</span> &mdash; but both kingdoms earn Behemoth Crystals, so it pays to play even from behind.
     </p>
-    <div class="co gold">
+    <div class="co gold" data-i18n="bp_callout">
       <strong>Three ways to score:</strong> (1) <strong>cultivate</strong> &mdash; donate runestones to grow our Behemoth, (2) <strong>defend</strong> our Behemoth, (3) <strong>attack</strong> the enemy's. Rewards split across <strong>Personal, Alliance &amp; Kingdom</strong> rankings. Spend <strong>Behemoth Crystals</strong> in the Behemoth Store before the event ends &mdash; during <strong>Stellar Dynasty</strong> you instead trade Crystals for <strong>Conquest Points</strong> in the Conquest Store (40-level track).
     </div>
   </div>
 
   <!-- STAGE TIMELINE STRIP -->
   <div class="section">
-    <div class="sh"><span class="n">&#128197;</span> <span>The Four Stages (Jun 22&ndash;30)</span></div>
+    <div class="sh"><span class="n">&#128197;</span> <span data-i18n="stages_h">The Four Stages (Jun 22&ndash;30)</span></div>
     <div class="phase-track">
       <div class="phase">
-        <div class="pnum">Day 1</div><div class="picon">&#9876;</div>
-        <div class="pname">Matching</div><div class="pdesc">Servers paired, scout &amp; plan</div>
+        <div class="pnum" data-i18n="ph1_day">Day 1</div><div class="picon">&#9876;</div>
+        <div class="pname" data-i18n="ph1_name">Matching</div><div class="pdesc" data-i18n="ph1_desc">Servers paired, scout &amp; plan</div>
       </div>
       <div class="phase">
-        <div class="pnum">Days 2&ndash;4</div><div class="picon">&#129704;</div>
-        <div class="pname">Beast Taming</div><div class="pdesc">Cultivate the Behemoth via daily grind</div>
+        <div class="pnum" data-i18n="ph2_day">Days 2&ndash;4</div><div class="picon">&#129704;</div>
+        <div class="pname" data-i18n="ph2_name">Beast Taming</div><div class="pdesc" data-i18n="ph2_desc">Cultivate the Behemoth via daily grind</div>
       </div>
       <div class="phase">
-        <div class="pnum">Days 5&ndash;6</div><div class="picon">&#128165;</div>
-        <div class="pname">Attack-Defense</div><div class="pdesc">90-min cross-server Behemoth invasions</div>
+        <div class="pnum" data-i18n="ph3_day">Days 5&ndash;6</div><div class="picon">&#128165;</div>
+        <div class="pname" data-i18n="ph3_name">Attack-Defense</div><div class="pdesc" data-i18n="ph3_desc">90-min cross-server Behemoth invasions</div>
       </div>
       <div class="phase">
-        <div class="pnum">Day 7+</div><div class="picon">&#10010;</div>
-        <div class="pname">Recovery</div><div class="pdesc">Claim back lost units</div>
+        <div class="pnum" data-i18n="ph4_day">Day 7+</div><div class="picon">&#10010;</div>
+        <div class="pname" data-i18n="ph4_name">Recovery</div><div class="pdesc" data-i18n="ph4_desc">Claim back lost units</div>
       </div>
     </div>
-    <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Exact day&rarr;date mapping and slot/invasion times for our server are set by <strong>our server admin</strong> &mdash; watch alliance chat. The breakdown below follows the event mail.</p>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:4px;" data-i18n="stages_note">Exact day&rarr;date mapping and slot/invasion times for our server are set by <strong>our server admin</strong> &mdash; watch alliance chat. The breakdown below follows the event mail.</p>
   </div>
 
   <!-- STAGE 1 — MATCHING -->
   <div class="stage">
-    <div class="stage-head"><span class="sicon">&#9876;</span><span class="stitle">Stage 1 &mdash; Matching</span><span class="sdays">Day 1</span></div>
+    <div class="stage-head"><span class="sicon">&#9876;</span><span class="stitle" data-i18n="st1_title">Stage 1 &mdash; Matching</span><span class="sdays" data-i18n="st1_days">Day 1</span></div>
     <div class="stage-body">
-      <h4>What happens</h4>
+      <h4 data-i18n="happens_h">What happens</h4>
       <ul>
-        <li>Our server is <strong>paired against an enemy server</strong> &mdash; Behemoth vs Behemoth for the whole event.</li>
-        <li>No invasions yet. This is the day to <strong>scout the enemy Behemoth</strong> (toggle "Enemy Behemoth" on the lineage screen) and plan donations.</li>
+        <li data-i18n="st1_h1">Our server is <strong>paired against an enemy server</strong> &mdash; Behemoth vs Behemoth for the whole event.</li>
+        <li data-i18n="st1_h2">No invasions yet. This is the day to <strong>scout the enemy Behemoth</strong> (toggle "Enemy Behemoth" on the lineage screen) and plan donations.</li>
       </ul>
-      <h4>Do today</h4>
+      <h4 data-i18n="st1_today_h">Do today</h4>
       <ul>
-        <li><strong>Start the daily grind immediately</strong> (see Stage 2) &mdash; runestones earned now go straight into cultivation.</li>
-        <li><strong>Note the King's plan:</strong> the invasion time &amp; location must be locked before the end of Day 3.</li>
+        <li data-i18n="st1_t1"><strong>Start the daily grind immediately</strong> (see Stage 2) &mdash; runestones earned now go straight into cultivation.</li>
+        <li data-i18n="st1_t2"><strong>Note the King's plan:</strong> the invasion time &amp; location must be locked before the end of Day 3.</li>
       </ul>
     </div>
   </div>
 
   <!-- SCOUTING — POWER COMPARISON -->
   <div class="section" style="margin-top:26px;">
-    <div class="sh"><span class="n">&#128270;</span> <span>Scouting the Match &mdash; Us vs #087</span></div>
-    <div class="co info" style="margin-bottom:14px;">
+    <div class="sh"><span class="n">&#128270;</span> <span data-i18n="sc_h">Scouting the Match &mdash; Us vs #087</span></div>
+    <div class="co info" style="margin-bottom:14px;" data-i18n="sc_intro">
       We're paired against server <strong>#087</strong>. In <strong>Stellar Dynasty</strong> they rank <strong>27th</strong> &mdash; we're <strong>15th</strong>. Our heavy hitters out-power theirs across the board, but read the <strong>M:P</strong> column (merit&divide;power): a high ratio means a player punches <em>well above</em> their size in combat. Theirs is a lighter, JAN/ACA-led roster &mdash; we should win the power race if we keep cultivation ahead and rally on time.
     </div>
 
     <!-- standings stat row -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
       <div style="background:var(--bg-card);border:1px solid var(--accent-blue-dim);border-radius:9px;padding:10px 12px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:var(--accent-blue);">OUR SERVER &middot; #008</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--text-primary);line-height:1.1;">15<span style="font-size:15px;color:var(--text-muted);">th</span></div>
-        <div style="font-size:10.5px;color:var(--text-muted);">Stellar Dynasty &middot; top-10 power 2.83B</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:var(--accent-blue);" data-i18n="sc_us_lbl">OUR SERVER &middot; #008</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--text-primary);line-height:1.1;">15<span style="font-size:15px;color:var(--text-muted);" data-i18n="rank_suf">th</span></div>
+        <div style="font-size:10.5px;color:var(--text-muted);" data-i18n="sc_us_sub">Stellar Dynasty &middot; top-10 power 2.83B</div>
       </div>
       <div style="background:var(--bg-card);border:1px solid var(--accent-red-dim);border-radius:9px;padding:10px 12px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:var(--accent-red);">ENEMY SERVER &middot; #087</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--text-primary);line-height:1.1;">27<span style="font-size:15px;color:var(--text-muted);">th</span></div>
-        <div style="font-size:10.5px;color:var(--text-muted);">Stellar Dynasty &middot; top-10 power 2.36B</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:var(--accent-red);" data-i18n="sc_them_lbl">ENEMY SERVER &middot; #087</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--text-primary);line-height:1.1;">27<span style="font-size:15px;color:var(--text-muted);" data-i18n="rank_suf">th</span></div>
+        <div style="font-size:10.5px;color:var(--text-muted);" data-i18n="sc_them_sub">Stellar Dynasty &middot; top-10 power 2.36B</div>
+      </div>
+    </div>
+
+    <!-- top-4 alliances, side by side -->
+    <div class="sub-h" data-i18n="sc_ally_h">Top 4 Alliances</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+      <!-- OURS -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
+        <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);" data-i18n="sc_us_acol">OUR ALLIANCES</div>
+        <table class="cmp-tbl">
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
+          <tbody>
+            <tr><td class="c-rk">1</td><td class="c-nm">WorldClass <span class="tg">[eRa]</span></td><td class="c-p">20.1B</td><td class="c-mp hi">11%</td></tr>
+            <tr><td class="c-rk">2</td><td class="c-nm">Reunions <span class="tg">[REU]</span></td><td class="c-p">12.3B</td><td class="c-mp lo">7%</td></tr>
+            <tr><td class="c-rk">3</td><td class="c-nm">AuroraGodCourt <span class="tg">[eR&agrave;]</span></td><td class="c-p">11.6B</td><td class="c-mp lo">2%</td></tr>
+            <tr><td class="c-rk">4</td><td class="c-nm">Mythic <span class="tg">[Myt]</span></td><td class="c-p">10.3B</td><td class="c-mp lo">8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- THEIRS -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
+        <div style="background:rgba(196,61,61,0.12);border-bottom:1px solid var(--accent-red-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-red);" data-i18n="sc_them_acol">#087 ALLIANCES</div>
+        <table class="cmp-tbl">
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
+          <tbody>
+            <tr><td class="c-rk">1</td><td class="c-nm">&#25136;&#65372;&#28010;&#36321;&#22825;&#28079; <span class="tg">[JAN]</span></td><td class="c-p">15.5B</td><td class="c-mp hi">11%</td></tr>
+            <tr><td class="c-rk">2</td><td class="c-nm">&#37628;&#37941;&#24040;&#23344; <span class="tg">[ACA]</span></td><td class="c-p">14.1B</td><td class="c-mp mid">9%</td></tr>
+            <tr><td class="c-rk">3</td><td class="c-nm">&#24180;&#32317;&#35492;&#27515;&#38538; <span class="tg">[WJD]</span></td><td class="c-p">9.3B</td><td class="c-mp lo">1%</td></tr>
+            <tr><td class="c-rk">4</td><td class="c-nm">&#27494;&#35013;&#25136;&#32218; <span class="tg">[GOX]</span></td><td class="c-p">8.1B</td><td class="c-mp lo">1%</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -710,9 +744,9 @@
     <div id="cmpWrap" class="cmp" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <!-- OURS -->
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
-        <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);">OUR TOP POWER</div>
+        <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);" data-i18n="sc_us_col">OUR TOP POWER</div>
         <table class="cmp-tbl">
-          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p">Power</th><th class="c-mp">M:P</th></tr></thead>
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
           <tbody>
             <tr><td class="c-rk">1</td><td class="c-nm">&#26178;&#23447; <span class="tg">[eRa]</span></td><td class="c-p">428.7M</td><td class="c-mp hi">63%</td></tr>
             <tr><td class="c-rk">2</td><td class="c-nm">&#48124;&#53944; <span class="tg">[REU]</span></td><td class="c-p">313.8M</td><td class="c-mp hi">98%</td></tr>
@@ -729,9 +763,9 @@
       </div>
       <!-- THEIRS -->
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
-        <div style="background:rgba(196,61,61,0.12);border-bottom:1px solid var(--accent-red-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-red);">#087 TOP POWER</div>
+        <div style="background:rgba(196,61,61,0.12);border-bottom:1px solid var(--accent-red-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-red);" data-i18n="sc_them_col">#087 TOP POWER</div>
         <table class="cmp-tbl">
-          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p">Power</th><th class="c-mp">M:P</th></tr></thead>
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
           <tbody>
             <tr><td class="c-rk">1</td><td class="c-nm">&#36139;&#20567;87 <span class="tg">[ACA]</span></td><td class="c-p">272.0M</td><td class="c-mp lo">33%</td></tr>
             <tr><td class="c-rk">2</td><td class="c-nm">&#50313;&#50313; <span class="tg">[JAN]</span></td><td class="c-p">261.2M</td><td class="c-mp lo">32%</td></tr>
@@ -747,22 +781,22 @@
         </table>
       </div>
     </div>
-    <button id="cmpToggle" type="button" aria-expanded="false">Show top 10 <span class="chev">&#9662;</span></button>
-    <p style="font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5;"><b style="color:var(--accent-green);">M:P</b> = merit&divide;power, a proxy for how aggressively a player has fought this season. Their #4 and #7 (<span style="color:var(--accent-green);">102&ndash;103%</span>) are their real threats &mdash; small but battle-hardened. Their power leaders (#1&ndash;2) carry size but thin merit, so they fold under sustained pressure. Power figures are individual; alliance totals favour us too (our top alliance ~20B vs their ~15.5B).</p>
+    <button id="cmpToggle" type="button" aria-expanded="false"><span class="cmp-lbl-more" data-i18n="sc_show10">Show top 10</span><span class="cmp-lbl-less" data-i18n="sc_show5">Show top 5</span> <span class="chev">&#9662;</span></button>
+    <p style="font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5;" data-i18n="sc_note"><b style="color:var(--accent-green);">M:P</b> = merit&divide;power, a proxy for how aggressively a player has fought this season. Their #4 and #7 (<span style="color:var(--accent-green);">102&ndash;103%</span>) are their real threats &mdash; small but battle-hardened. Their power leaders (#1&ndash;2) carry size but thin merit, so they fold under sustained pressure. Power figures are individual; alliance totals favour us too (our top alliance ~20B vs their ~15.5B).</p>
   </div>
 
   <!-- STAGE 2 — BEAST TAMING -->
   <div class="stage">
-    <div class="stage-head"><span class="sicon">&#129704;</span><span class="stitle">Stage 2 &mdash; Beast Taming</span><span class="sdays">Days 2&ndash;4</span></div>
+    <div class="stage-head"><span class="sicon">&#129704;</span><span class="stitle" data-i18n="st2_title">Stage 2 &mdash; Beast Taming</span><span class="sdays" data-i18n="st2_days">Days 2&ndash;4</span></div>
     <div class="stage-body">
-      <h4>Goal</h4>
+      <h4 data-i18n="st2_goal_h">Goal</h4>
       <ul>
-        <li>Earn <strong>Awaken Runestones</strong> from daily activities and <strong>donate them</strong> to grow our Behemoth's siege, health, and the lineage tree before the invasion.</li>
-        <li>Donating also tips <strong>Bloodline Purity</strong> (a live tug-of-war bar vs the enemy) our way and earns <strong>10 personal points per runestone</strong>.</li>
+        <li data-i18n="st2_g1">Earn <strong>Awaken Runestones</strong> from daily activities and <strong>donate them</strong> to grow our Behemoth's siege, health, and the lineage tree before the invasion.</li>
+        <li data-i18n="st2_g2">Donating also tips <strong>Bloodline Purity</strong> (a live tug-of-war bar vs the enemy) our way and earns <strong>10 personal points per runestone</strong>.</li>
       </ul>
 
-      <h4>&#128197; Daily schedule &mdash; Trial of Scion</h4>
-      <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:4px;">Four fixed 30-min windows/day that alternate between the two servers (paired-server example shown). <strong>Be ready to rally at the start of our windows.</strong></p>
+      <h4 data-i18n="st2_sched_h">&#128197; Daily schedule &mdash; Trial of Scion</h4>
+      <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:4px;" data-i18n="st2_sched_p">Four fixed 30-min windows/day that alternate between the two servers (paired-server example shown). <strong>Be ready to rally at the start of our windows.</strong></p>
       <div class="sched">
         <span class="slot"><b>01:00</b>&ndash;01:30</span>
         <span class="slot"><b>04:00</b>&ndash;04:30</span>
@@ -770,61 +804,61 @@
         <span class="slot"><b>19:00</b>&ndash;19:30</span>
       </div>
 
-      <h4>Do each day (Days 2&ndash;4)</h4>
+      <h4 data-i18n="st2_do_h">Do each day (Days 2&ndash;4)</h4>
       <ul>
-        <li><strong>Trial of Scion</strong> &mdash; rally the guarded "Scion" map target (Elite, ~160K Swordsmen). F2P-friendly: Lü Bu + low-tier (T4/T5) troops clears it cheaply. Mission tiers: 20K / 50K / 100K / 150K damage.</li>
-        <li><strong>Behemoth Cultivation exploration</strong> &mdash; pet / groom / entertain the Behemoth on the map. Mission tiers: 3 / 10 / 15 / 20.</li>
-        <li><strong>Rally vs Tribes</strong> &mdash; join every called rally; cheap repeatable runestones. Tiers: 1 / 4 / 8 / 12.</li>
-        <li><strong>Donate runestones</strong> as you bank them &mdash; don't hoard; cultivation compounds.</li>
+        <li data-i18n="st2_d1"><strong>Trial of Scion</strong> &mdash; rally the guarded "Scion" map target (Elite, ~160K Swordsmen). F2P-friendly: Lü Bu + low-tier (T4/T5) troops clears it cheaply. Mission tiers: 20K / 50K / 100K / 150K damage.</li>
+        <li data-i18n="st2_d2"><strong>Behemoth Cultivation exploration</strong> &mdash; pet / groom / entertain the Behemoth on the map. Mission tiers: 3 / 10 / 15 / 20.</li>
+        <li data-i18n="st2_d3"><strong>Rally vs Tribes</strong> &mdash; join every called rally; cheap repeatable runestones. Tiers: 1 / 4 / 8 / 12.</li>
+        <li data-i18n="st2_d4"><strong>Donate runestones</strong> as you bank them &mdash; don't hoard; cultivation compounds.</li>
       </ul>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 8px;">
         <figure style="margin:0;">
           <img class="zoomable" data-cap="Trial of Scion — tap the &quot;Behemoth Scion&quot; Elite, then Attack/Teleport" src="assets/behemoth/trial_of_scion.jpg" alt="Trial of Scion / Behemoth Scion target" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
-          <figcaption style="font-size:11px;color:var(--text-muted);margin-top:3px;text-align:center;">Trial of Scion &mdash; tap the "Behemoth Scion" Elite, then Attack/Teleport</figcaption>
+          <figcaption style="font-size:11px;color:var(--text-muted);margin-top:3px;text-align:center;" data-i18n="st2_cap1">Trial of Scion &mdash; tap the "Behemoth Scion" Elite, then Attack/Teleport</figcaption>
         </figure>
         <figure style="margin:0;">
           <img class="zoomable" data-cap="Behemoth Cultivation — pet / groom / entertain for runestones" src="assets/behemoth/behemoth_cultivation_exploration.jpg" alt="Behemoth Cultivation exploration (pet / groom / entertain)" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
-          <figcaption style="font-size:11px;color:var(--text-muted);margin-top:3px;text-align:center;">Behemoth Cultivation &mdash; pet / groom / entertain for runestones</figcaption>
+          <figcaption style="font-size:11px;color:var(--text-muted);margin-top:3px;text-align:center;" data-i18n="st2_cap2">Behemoth Cultivation &mdash; pet / groom / entertain for runestones</figcaption>
         </figure>
       </div>
 
-      <h4>&#128176; Runestone income (per day)</h4>
+      <h4 data-i18n="st2_income_h">&#128176; Runestone income (per day)</h4>
       <ul>
-        <li><strong>Trial of Scion damage:</strong> 1 runestone per 100K Behemoth points, <strong>up to 250/day</strong>.</li>
-        <li><strong>Scion final blow:</strong> a <strong>separate +400/day</strong> on top &mdash; so the Trial alone can give up to <strong>~650/day</strong>.</li>
-        <li>Plus Exploration and Rally vs Tribes both drop more. Do all of them daily.</li>
+        <li data-i18n="st2_i1"><strong>Trial of Scion damage:</strong> 1 runestone per 100K Behemoth points, <strong>up to 250/day</strong>.</li>
+        <li data-i18n="st2_i2"><strong>Scion final blow:</strong> a <strong>separate +400/day</strong> on top &mdash; so the Trial alone can give up to <strong>~650/day</strong>.</li>
+        <li data-i18n="st2_i3">Plus Exploration and Rally vs Tribes both drop more. Do all of them daily.</li>
       </ul>
 
-      <h4>&#127807; Bloodline Lineage Tree</h4>
-      <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:8px;">Donate runestones to unlock nodes (Rank I&rarr;II). The tree buffs <strong>both the Behemoth and every player in the empire</strong>. First node costs <strong>50,000 runestones</strong>; later nodes cost at least that.</p>
+      <h4 data-i18n="st2_tree_h">&#127807; Bloodline Lineage Tree</h4>
+      <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:8px;" data-i18n="st2_tree_p">Donate runestones to unlock nodes (Rank I&rarr;II). The tree buffs <strong>both the Behemoth and every player in the empire</strong>. First node costs <strong>50,000 runestones</strong>; later nodes cost at least that.</p>
       <table class="mtable">
-        <tr><th>Node</th><th>Effect</th><th>I &rarr; II</th></tr>
-        <tr><td class="name">Savage Attack</td><td>+Attack to all empire units</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
-        <tr><td class="name">Savage Defense</td><td>+Defense to all empire units</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
-        <tr><td class="name">Savage Health</td><td>+Health to all empire units</td><td class="tiers"><b>2.5%</b> &rarr; <b>5%</b></td></tr>
-        <tr><td class="name">Mobile Fortress</td><td>+Behemoth health</td><td class="tiers"><b>250K</b> &rarr; <b>500K</b></td></tr>
-        <tr><td class="name">Iron Hoof</td><td>+Behemoth durability dmg vs citadels</td><td class="tiers"><b>625</b> &rarr; <b>1,250</b></td></tr>
-        <tr><td class="name">Behemoth's Blessing</td><td>Donate runestones for rewards</td><td class="tiers">&mdash;</td></tr>
+        <tr><th data-i18n="th_node">Node</th><th data-i18n="th_effect">Effect</th><th data-i18n="th_i_ii">I &rarr; II</th></tr>
+        <tr><td class="name" data-i18n="node_atk">Savage Attack</td><td data-i18n="node_atk_e">+Attack to all empire units</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
+        <tr><td class="name" data-i18n="node_def">Savage Defense</td><td data-i18n="node_def_e">+Defense to all empire units</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
+        <tr><td class="name" data-i18n="node_hp">Savage Health</td><td data-i18n="node_hp_e">+Health to all empire units</td><td class="tiers"><b>2.5%</b> &rarr; <b>5%</b></td></tr>
+        <tr><td class="name" data-i18n="node_fort">Mobile Fortress</td><td data-i18n="node_fort_e">+Behemoth health</td><td class="tiers"><b>250K</b> &rarr; <b>500K</b></td></tr>
+        <tr><td class="name" data-i18n="node_hoof">Iron Hoof</td><td data-i18n="node_hoof_e">+Behemoth durability dmg vs citadels</td><td class="tiers"><b>625</b> &rarr; <b>1,250</b></td></tr>
+        <tr><td class="name" data-i18n="node_bless">Behemoth's Blessing</td><td data-i18n="node_bless_e">Donate runestones for rewards</td><td class="tiers">&mdash;</td></tr>
       </table>
-      <p style="font-size:12px;color:var(--text-muted);">Juvenile-stage baseline values; they scale up as the Behemoth grows. Iron Hoof <em>adds to</em> the per-second siege rate.</p>
+      <p style="font-size:12px;color:var(--text-muted);" data-i18n="st2_tree_note">Juvenile-stage baseline values; they scale up as the Behemoth grows. Iron Hoof <em>adds to</em> the per-second siege rate.</p>
     </div>
   </div>
 
   <!-- STAGE 3 — ATTACK-DEFENSE -->
   <div class="stage">
-    <div class="stage-head"><span class="sicon">&#128165;</span><span class="stitle">Stage 3 &mdash; Attack-Defense</span><span class="sdays">Days 5&ndash;6</span></div>
+    <div class="stage-head"><span class="sicon">&#128165;</span><span class="stitle" data-i18n="st3_title">Stage 3 &mdash; Attack-Defense</span><span class="sdays" data-i18n="st3_days">Days 5&ndash;6</span></div>
     <div class="stage-body">
-      <h4>What happens</h4>
+      <h4 data-i18n="happens_h">What happens</h4>
       <ul>
-        <li>Each Behemoth <strong>invades the other server</strong> at the locked time &amp; location. <strong>Each invasion lasts 90 minutes.</strong></li>
-        <li>Our Behemoth marches on their Imperial City; theirs marches on ours. The invading Behemoth <strong>knocks away player citadels and destroys alliance buildings</strong> in its lane.</li>
-        <li><strong>Be online for the window</strong> &mdash; this is where the bulk of the score (and personal points) is won.</li>
+        <li data-i18n="st3_h1">Each Behemoth <strong>invades the other server</strong> at the locked time &amp; location. <strong>Each invasion lasts 90 minutes.</strong></li>
+        <li data-i18n="st3_h2">Our Behemoth marches on their Imperial City; theirs marches on ours. The invading Behemoth <strong>knocks away player citadels and destroys alliance buildings</strong> in its lane.</li>
+        <li data-i18n="st3_h3"><strong>Be online for the window</strong> &mdash; this is where the bulk of the score (and personal points) is won.</li>
       </ul>
 
-      <h4>&#128506; Battlefield Map</h4>
+      <h4 data-i18n="st3_map_h">&#128506; Battlefield Map</h4>
       <div class="map-toggle" role="tablist" aria-label="Choose battlefield">
-        <button type="button" class="mt-btn active" data-map="008" role="tab" aria-selected="true">Behemoth on #008 <span class="mt-sub">our server</span></button>
-        <button type="button" class="mt-btn" data-map="087" role="tab" aria-selected="false">Behemoth on #087 <span class="mt-sub">enemy server</span></button>
+        <button type="button" class="mt-btn active" data-map="008" role="tab" aria-selected="true"><span data-i18n="map_btn008">Behemoth on #008</span> <span class="mt-sub" data-i18n="map_btn008_sub">our server</span></button>
+        <button type="button" class="mt-btn" data-map="087" role="tab" aria-selected="false"><span data-i18n="map_btn087">Behemoth on #087</span> <span class="mt-sub" data-i18n="map_btn087_sub">enemy server</span></button>
       </div>
       <div id="mapWrap" data-view="008">
       <div class="map-box" data-map="008" style="background:#0d0f18;border:1px solid var(--border);border-radius:10px;padding:10px;margin:2px 0 8px;">
@@ -1010,51 +1044,51 @@
 </svg>
       </div>
       <div class="sched" style="margin-bottom:8px;">
-        <span class="slot" style="border-color:var(--accent-blue-dim);"><b style="color:#5b8def;">&#9632;</b> Our citadels &middot; allied portals &#9670;</span>
-        <span class="slot" style="border-color:var(--accent-red-dim);"><b style="color:#c43d3d;">&#9632;</b> Enemy citadels &middot; enemy portals &#9670;</span>
-        <span class="slot"><b style="color:#e8944a;">&#9632;</b> Taking Behemoth damage</span>
+        <span class="slot" style="border-color:var(--accent-blue-dim);" data-i18n="leg_ours"><b style="color:#5b8def;">&#9632;</b> Our citadels &middot; allied portals &#9670;</span>
+        <span class="slot" style="border-color:var(--accent-red-dim);" data-i18n="leg_enemy"><b style="color:#c43d3d;">&#9632;</b> Enemy citadels &middot; enemy portals &#9670;</span>
+        <span class="slot" data-i18n="leg_dmg"><b style="color:#e8944a;">&#9632;</b> Taking Behemoth damage</span>
       </div>
-      <p style="font-size:12px;color:var(--text-muted);margin:0 0 10px;">Each map shows one server as home, with the <strong>invading Behemoth</strong> dropped in the centre &mdash; it hammers the <strong>nearest citadels</strong>, so the cities closest to it bleed durability. The <strong>home side rallies it down</strong>; the <strong>visiting side counter-rallies</strong> to keep it alive and scoring. Citadels can’t sit inside the teleport zone. Toggle above to flip between <strong>our server (#008)</strong> and <strong>the enemy (#087)</strong>.</p>
+      <p style="font-size:12px;color:var(--text-muted);margin:0 0 10px;" data-i18n="map_desc">Each map shows one server as home, with the <strong>invading Behemoth</strong> dropped in the centre &mdash; it hammers the <strong>nearest citadels</strong>, so the cities closest to it bleed durability. The <strong>home side rallies it down</strong>; the <strong>visiting side counter-rallies</strong> to keep it alive and scoring. Citadels can’t sit inside the teleport zone. Toggle above to flip between <strong>our server (#008)</strong> and <strong>the enemy (#087)</strong>.</p>
       <div class="spawn-box" data-map="008">
-        <h4 style="margin-top:0;">&#128205; Where the Behemoth spawns on #008</h4>
+        <h4 style="margin-top:0;" data-i18n="spawn008_h">&#128205; Where the Behemoth spawns on #008</h4>
         <figure style="margin:0;">
           <img class="zoomable" data-cap="Behemoth spawn on #008 — locked location at coordinates (1212,1182)" src="assets/behemoth/behemoth_spawn_era8.jpg" alt="Behemoth spawn location on server #008 (1212,1182)" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
-          <figcaption style="font-size:11px;color:var(--text-muted);margin-top:3px;text-align:center;">#087 chose this spot for their Behemoth on our server &mdash; coordinates <strong>(1212,1182)</strong>. Tap to enlarge.</figcaption>
+          <figcaption style="font-size:11px;color:var(--text-muted);margin-top:3px;text-align:center;" data-i18n="spawn008_cap">#087 chose this spot for their Behemoth on our server &mdash; coordinates <strong>(1212,1182)</strong>. Tap to enlarge.</figcaption>
         </figure>
       </div>
       <div class="spawn-box" data-map="087" hidden>
-        <h4 style="margin-top:0;">&#128205; Where our Behemoth spawns on #087</h4>
-        <div style="background:var(--bg-card);border:1px dashed var(--accent-gold-dim);border-radius:8px;padding:18px 14px;text-align:center;color:var(--text-secondary);font-size:13px;">
+        <h4 style="margin-top:0;" data-i18n="spawn087_h">&#128205; Where our Behemoth spawns on #087</h4>
+        <div style="background:var(--bg-card);border:1px dashed var(--accent-gold-dim);border-radius:8px;padding:18px 14px;text-align:center;color:var(--text-secondary);font-size:13px;" data-i18n="spawn087_body">
           <span style="font-size:22px;display:block;margin-bottom:4px;">&#129300;</span>Our server admin is <strong>still deciding</strong> where to place our Behemoth on #087. Location will be posted in alliance chat once locked.
         </div>
       </div>
       </div>
 
-      <h4>&#9876; Attacking the enemy Behemoth</h4>
+      <h4 data-i18n="st3_atk_h">&#9876; Attacking the enemy Behemoth</h4>
       <ul>
-        <li><strong>Only rallies damage it</strong> &mdash; solo marches and war machines do nothing. Each rallied troop adds <strong>1,000 dmg/sec</strong>; a full 40-troop rally = <strong>~40,000/sec</strong> (unit stack size doesn't matter &mdash; bodies do).</li>
-        <li><strong>Hold rallies long.</strong> After <strong>5 minutes</strong> continuous, damage ramps <strong>+500 every 15s</strong> &mdash; don't let them disband.</li>
-        <li><strong>Relocate to the enemy server</strong> to join the offense (also clears the 1&times; Invasion mission).</li>
+        <li data-i18n="st3_a1"><strong>Only rallies damage it</strong> &mdash; solo marches and war machines do nothing. Each rallied troop adds <strong>1,000 dmg/sec</strong>; a full 40-troop rally = <strong>~40,000/sec</strong> (unit stack size doesn't matter &mdash; bodies do).</li>
+        <li data-i18n="st3_a2"><strong>Hold rallies long.</strong> After <strong>5 minutes</strong> continuous, damage ramps <strong>+500 every 15s</strong> &mdash; don't let them disband.</li>
+        <li data-i18n="st3_a3"><strong>Relocate to the enemy server</strong> to join the offense (also clears the 1&times; Invasion mission).</li>
       </ul>
 
-      <h4>&#10084; The stun / Undying Force cycle</h4>
+      <h4 data-i18n="st3_stun_h">&#10084; The stun / Undying Force cycle</h4>
       <ul>
-        <li>At <strong>0 HP</strong> the Behemoth burns <strong>1 Undying Force stack</strong>, disbands every rally on it, dazes briefly, then <strong>revives to full</strong>. It dies only when <strong>all stacks are depleted</strong>.</li>
-        <li>A scouted Behemoth had <strong>4 stacks</strong> &rarr; roughly <strong>5 full zeroes to kill it</strong>. Coordinate fresh waves to re-zero the instant it revives.</li>
-        <li><strong>Defenders:</strong> zeroing theirs scatters their rallies and stops it scoring &mdash; protect ours in turn.</li>
+        <li data-i18n="st3_s1">At <strong>0 HP</strong> the Behemoth burns <strong>1 Undying Force stack</strong>, disbands every rally on it, dazes briefly, then <strong>revives to full</strong>. It dies only when <strong>all stacks are depleted</strong>.</li>
+        <li data-i18n="st3_s2">A scouted Behemoth had <strong>4 stacks</strong> &rarr; roughly <strong>5 full zeroes to kill it</strong>. Coordinate fresh waves to re-zero the instant it revives.</li>
+        <li data-i18n="st3_s3"><strong>Defenders:</strong> zeroing theirs scatters their rallies and stops it scoring &mdash; protect ours in turn.</li>
       </ul>
 
-      <h4>&#127919; How points are scored</h4>
+      <h4 data-i18n="st3_pts_h">&#127919; How points are scored</h4>
       <table class="mtable">
-        <tr><th>Action</th><th>Points</th></tr>
-        <tr><td class="name">Our Behemoth: per 1K durability dmg to a citadel</td><td class="tiers"><b>300</b> kingdom</td></tr>
-        <tr><td class="name">Per 100 dmg to the enemy Behemoth</td><td class="tiers"><b>80</b> kingdom</td></tr>
-        <tr><td class="name">Deplete one enemy Undying Force stack</td><td class="tiers"><b>1,000,000,000</b></td></tr>
-        <tr><td class="name">Completely defeat an enemy Behemoth</td><td class="tiers"><b>5,000,000,000</b></td></tr>
-        <tr><td class="name">Invasion end: per 1K of <em>our</em> Behemoth's remaining HP</td><td class="tiers"><b>2,000,000</b></td></tr>
-        <tr><td class="name">Gravely wound an enemy-kingdom player</td><td class="tiers">battle pts</td></tr>
+        <tr><th data-i18n="th_action">Action</th><th data-i18n="th_points">Points</th></tr>
+        <tr><td class="name" data-i18n="pt1_a">Our Behemoth: per 1K durability dmg to a citadel</td><td class="tiers" data-i18n="pt1_v"><b>300</b> kingdom</td></tr>
+        <tr><td class="name" data-i18n="pt2_a">Per 100 dmg to the enemy Behemoth</td><td class="tiers" data-i18n="pt2_v"><b>80</b> kingdom</td></tr>
+        <tr><td class="name" data-i18n="pt3_a">Deplete one enemy Undying Force stack</td><td class="tiers"><b>1,000,000,000</b></td></tr>
+        <tr><td class="name" data-i18n="pt4_a">Completely defeat an enemy Behemoth</td><td class="tiers"><b>5,000,000,000</b></td></tr>
+        <tr><td class="name" data-i18n="pt5_a">Invasion end: per 1K of <em>our</em> Behemoth's remaining HP</td><td class="tiers"><b>2,000,000</b></td></tr>
+        <tr><td class="name" data-i18n="pt6_a">Gravely wound an enemy-kingdom player</td><td class="tiers" data-i18n="pt6_v">battle pts</td></tr>
       </table>
-      <div class="co gold">
+      <div class="co gold" data-i18n="st3_pts_note">
         <strong>Where the score is won:</strong> the enemy-Behemoth <strong>milestones dwarf chip damage</strong> &mdash; depleting a stack (1B) and the kill (5B) are the big swings. And keeping <strong>ours</strong> alive is worth 2M per 1K of leftover HP &mdash; so defense matters as much as offense.
       </div>
     </div>
@@ -1062,39 +1096,39 @@
 
   <!-- STAGE 4 — RECOVERY -->
   <div class="stage">
-    <div class="stage-head"><span class="sicon">&#10010;</span><span class="stitle">Stage 4 &mdash; Recovery</span><span class="sdays">Day 7+</span></div>
+    <div class="stage-head"><span class="sicon">&#10010;</span><span class="stitle" data-i18n="st4_title">Stage 4 &mdash; Recovery</span><span class="sdays" data-i18n="st4_days">Day 7+</span></div>
     <div class="stage-body">
-      <h4>Do this before the window closes</h4>
+      <h4 data-i18n="st4_h">Do this before the window closes</h4>
       <ul>
-        <li><strong>CLICK THE CLAIM BUTTON</strong> &mdash; you get a base <strong>35%</strong> of lost units back, but only if you claim. People forget and lose all of it.</li>
-        <li>Push toward the <strong>65% cap</strong> two ways: <strong>Recovery Tickets</strong> (earned in-event or bought with Empire Coins, max 20) and <strong>allies spending recovery tokens on you</strong> (you can't self-use them &mdash; ask in alliance chat).</li>
-        <li><strong>No manual recovery after this stage ends.</strong> Also spend any leftover Behemoth Crystals first.</li>
+        <li data-i18n="st4_1"><strong>CLICK THE CLAIM BUTTON</strong> &mdash; you get a base <strong>35%</strong> of lost units back, but only if you claim. People forget and lose all of it.</li>
+        <li data-i18n="st4_2">Push toward the <strong>65% cap</strong> two ways: <strong>Recovery Tickets</strong> (earned in-event or bought with Empire Coins, max 20) and <strong>allies spending recovery tokens on you</strong> (you can't self-use them &mdash; ask in alliance chat).</li>
+        <li data-i18n="st4_3"><strong>No manual recovery after this stage ends.</strong> Also spend any leftover Behemoth Crystals first.</li>
       </ul>
     </div>
   </div>
 
   <!-- REFERENCE: BEHEMOTH STATS -->
   <div class="section">
-    <div class="sh"><span class="n">&#129704;</span> <span>Behemoth Reference (Juvenile start)</span></div>
+    <div class="sh"><span class="n">&#129704;</span> <span data-i18n="ref_h">Behemoth Reference (Juvenile start)</span></div>
     <div class="stat-row">
-      <div class="stat-box"><div class="val">Juvenile</div><div class="lbl">Start Stage</div></div>
-      <div class="stat-box"><div class="val">8,750/s</div><div class="lbl">Siege (start)</div></div>
-      <div class="stat-box"><div class="val">3.5M</div><div class="lbl">Health (start)</div></div>
-      <div class="stat-box"><div class="val">4&times;</div><div class="lbl">Undying Stacks (scouted)</div></div>
+      <div class="stat-box"><div class="val" data-i18n="ref_s1_v">Juvenile</div><div class="lbl" data-i18n="ref_s1_l">Start Stage</div></div>
+      <div class="stat-box"><div class="val">8,750/s</div><div class="lbl" data-i18n="ref_s2_l">Siege (start)</div></div>
+      <div class="stat-box"><div class="val">3.5M</div><div class="lbl" data-i18n="ref_s3_l">Health (start)</div></div>
+      <div class="stat-box"><div class="val">4&times;</div><div class="lbl" data-i18n="ref_s4_l">Undying Stacks (scouted)</div></div>
     </div>
-    <p style="font-size:12px;color:var(--text-muted);">Siege scores <strong>~0.3 kingdom points per durability</strong> (300 per 1,000), so at 8,750/sec ≈ <strong>~2,625 pts/sec</strong>; Iron Hoof and each growth stage raise it. These are Day-1 baselines &mdash; expect them to climb as the Behemoth is cultivated.</p>
+    <p style="font-size:12px;color:var(--text-muted);" data-i18n="ref_note">Siege scores <strong>~0.3 kingdom points per durability</strong> (300 per 1,000), so at 8,750/sec ≈ <strong>~2,625 pts/sec</strong>; Iron Hoof and each growth stage raise it. These are Day-1 baselines &mdash; expect them to climb as the Behemoth is cultivated.</p>
   </div>
 
   <!-- STILL CONFIRMING -->
   <div class="section">
-    <div class="sh"><span class="n">?</span> <span>Still Confirming</span></div>
+    <div class="sh"><span class="n">?</span> <span data-i18n="conf_h">Still Confirming</span></div>
     <ul style="margin:0; font-size:13.5px; line-height:1.7; color:var(--text-secondary); padding-left:18px;">
-      <li>Our server's exact <strong>Trial of Scion slot times</strong> and the <strong>invasion time &amp; location</strong> (admin sets these).</li>
-      <li><strong>Lineage node costs</strong> beyond the first (50K), and the <strong>per-stage growth</strong> stat gains.</li>
-      <li><strong>Undying Force</strong> &mdash; whether 4 stacks is standard or cultivation-earned, and whether the last stack revives (4 vs 5 zeroes).</li>
-      <li>Whether <strong>Bloodline Purity</strong> winning gives a real combat bonus or is just a progress indicator.</li>
-      <li>Whether an invading Behemoth can <strong>hit shielded citadels</strong> (does bubbling protect your city?).</li>
-      <li>Several point values are from the guide video &mdash; worth a glance at the in-game <strong>Point Rules</strong> screen to confirm.</li>
+      <li data-i18n="conf_1">Our server's exact <strong>Trial of Scion slot times</strong> and the <strong>invasion time &amp; location</strong> (admin sets these).</li>
+      <li data-i18n="conf_2"><strong>Lineage node costs</strong> beyond the first (50K), and the <strong>per-stage growth</strong> stat gains.</li>
+      <li data-i18n="conf_3"><strong>Undying Force</strong> &mdash; whether 4 stacks is standard or cultivation-earned, and whether the last stack revives (4 vs 5 zeroes).</li>
+      <li data-i18n="conf_4">Whether <strong>Bloodline Purity</strong> winning gives a real combat bonus or is just a progress indicator.</li>
+      <li data-i18n="conf_5">Whether an invading Behemoth can <strong>hit shielded citadels</strong> (does bubbling protect your city?).</li>
+      <li data-i18n="conf_6">Several point values are from the guide video &mdash; worth a glance at the in-game <strong>Point Rules</strong> screen to confirm.</li>
     </ul>
   </div>
 
@@ -1111,335 +1145,452 @@ const TRANSLATIONS = {
   "es": {
     "event_tag": "Nuevo Modo de Juego &middot; Era 8",
     "subtitle": "Despierta el linaje &middot; Invade imperios enemigos &middot; Guerra entre servidores",
-    "lbl_starts": "Inicia", "lbl_ends": "Termina", "lbl_tz": "Zona horaria",
-    "cd_days": "Días", "cd_hours": "Horas", "cd_min": "Min", "cd_sec": "Seg",
-    "cd_until_start": "Hasta el Inicio", "cd_until_end": "Hasta el Final", "cd_complete": "Evento Finalizado",
-    "draft_banner": "<strong>BORRADOR v5</strong> &mdash; De la <strong>Vista Previa Oficial de Eventos de Junio (v1.12)</strong>, el correo del evento y capturas de la beta. Lo marcado con <span class=\"pill\">TBC</span> falta confirmar para nuestro servidor (recompensas exactas, costos de runas, horas de la Prueba del Descendiente, mapeo día&rarr;fecha; hora/lugar de invasión los fija el administrador de nuestro servidor).",
-    "s1_title": "Visión General",
-    "s1_blurb": "Un modo nuevo donde <strong>dos imperios (servidores) chocan por sus Bégimos</strong>. Durante el evento ganamos <em>Runas del Despertar</em> para hacer crecer y potenciar al Bégimo de nuestro imperio, y luego lo lanzamos contra el servidor enemigo. Ambos bandos atacan y defienden Bégimos en <strong>batallas entre servidores</strong>, sumando puntos. <span class=\"gold\">El imperio con mayor puntaje total gana.</span>",
-    "s1_callout": "<strong>Tres formas de sumar puntos:</strong> (1) donar Runas del Despertar para cultivar a nuestro Bégimo, (2) defender a nuestro propio Bégimo, (3) atacar al Bégimo enemigo. Las recompensas se reparten entre <strong>rankings Personal, de Alianza y de Reino</strong> &mdash; y <strong>tanto el reino ganador como el perdedor reciben una parte de Cristales de Bégimo</strong>, que se gastan en la <strong>Tienda de Bégimo</strong>. (Así que vale la pena participar aunque vayamos detrás.)",
-    "s2_title": "Las Cuatro Etapas",
-    "s2_blurb": "El evento va del <strong>22 al 30 de junio (UTC+0)</strong> en cuatro etapas. Estamos en <span class=\"gold\">Preparación</span>. Nuestro admin fija la <strong>hora y ubicación de la invasión</strong>.",
-    "phase1_num": "Etapa 1", "phase1_name": "Emparejamiento", "phase1_desc": "Servidores emparejados, prepara y planea",
-    "phase2_num": "Etapa 2", "phase2_name": "Domesticación de Bestias", "phase2_desc": "Doma y refuerza el linaje del Bégimo",
-    "phase3_num": "Etapa 3", "phase3_name": "Ataque-Defensa", "phase3_desc": "Invasiones de Bégimo de 90 min, ataca y defiende",
-    "phase4_num": "Etapa 4", "phase4_name": "Recuperación", "phase4_desc": "Recupera parcialmente unidades perdidas",
-    "s2_callout": "<strong>Imperio vs Imperio.</strong> Es <strong>nuestro servidor vs un servidor enemigo</strong> (Bégimo vs Bégimo). Según el correo del evento: nuestro <strong>Rey fija la hora y ubicación de la invasión antes de que termine el Día 3</strong>; las <strong>invasiones ocurren los Días 5&ndash;6</strong> (ambos Bégimos marchan al otro servidor). <span class=\"pill\">TBC</span> el mapeo exacto día&rarr;fecha para nuestro servidor &mdash; atento al chat de alianza para la convocatoria.",
-    "s3_title": "Nuestro Bégimo",
-    "s3_blurb": "El Bégimo crece por etapas a medida que lo alimentamos con Runas del Despertar. La etapa inicial es <strong>Juvenil</strong>. El cultivo llena una barra hacia el siguiente despertar.",
-    "stat_juvenile": "Juvenil", "stat_stage_lbl": "Etapa Actual", "stat_cult_lbl": "Barra de Cultivo", "stat_siege_lbl": "Asedio (inicio)", "stat_health_lbl": "Salud (inicio)",
-    "s3_combat_intro": "<strong>Cómo funciona el combate (según los tooltips del juego):</strong>",
-    "s3_siege_h": "Asedio (Ataque)",
-    "s3_siege_1": "Nuestro Bégimo inflige <strong>8.750 de daño de durabilidad por segundo</strong> a la ciudadela objetivo.",
-    "s3_siege_2": "Gana <strong>~2.625 puntos del reino por tick de ataque (por segundo)</strong> al ritmo de asedio Juvenil &mdash; un flujo constante que se acumula en una invasión de 90 min.",
-    "s3_siege_4": "<strong>Los puntos escalan con el daño de durabilidad</strong> &mdash; la guía indica <strong>300 puntos del reino por cada 1.000 de daño de durabilidad</strong> (es decir, <strong>&times;0,3</strong> por punto de durabilidad). Así, a 8.750/seg son <strong>~2.625 pts/seg</strong>, y <strong>Casco de Hierro y cada etapa de crecimiento suben el ritmo</strong> (p. ej. Casco de Hierro II &rarr; 10.000/seg &rarr; <strong>~3.000 pts/seg</strong>). <span class=\"pill\">TBC</span> confirma en la pantalla de Reglas de Puntos del juego.",
-    "s3_siege_5": "<strong>Las invasiones duran 90 minutos.</strong> El Bégimo además <strong>aparta las ciudadelas de jugadores y destruye edificios de alianza</strong> en las casillas que cruza &mdash; despeja el camino / no dejes edificios en su trayecto.",
-    "s3_siege_3": "<strong>No puede atacar mientras está aturdido.</strong>",
-    "s3_stun_h": "Salud y el Ciclo de Aturdimiento",
-    "s3_stun_1": "La salud inicial es <strong>3.500.000</strong>.",
-    "s3_stun_2": "Cuando su vida llega a 0, el Bégimo consume <strong>1 pila de Fuerza Imperecedera</strong>, <strong>disuelve toda reunión que lo ataque</strong>, entra en un <strong>breve aturdimiento</strong> y luego <strong>vuelve a fuerza completa</strong>. <strong>Derrota total = agotar todas sus pilas de Fuerza Imperecedera.</strong> Un Bégimo explorado mostró <strong>4 pilas</strong>, lo que significaría unos <strong>5 ceros completos para matarlo</strong> (4 revividas y luego la muerte final sin pila restante). <span class=\"pill\">TBC</span> si 4 es estándar o se gana con el cultivo previo, y si la última pila aún revive (4 vs 5 ceros).",
-    "s3_stun_3": "<strong>Defensores:</strong> bajarlo a cero dispersa todas las reuniones atacantes y gana tiempo. <strong>Atacantes:</strong> el objetivo es quemar cada acumulación de Fuerza Imperecedera &mdash; coordinen oleadas frescas para volver a bajarlo a cero apenas se recupere.",
-    "s3_rally_rule": "<strong>Solo las reuniones dañan al Bégimo.</strong> Las marchas individuales y las máquinas de guerra no le hacen nada &mdash; cada golpe debe venir de una reunión que lideres o a la que te unas.",
-    "s3_rally_h": "Pegar Fuerte &mdash; Composición de Reunión",
-    "s3_rally_1": "<strong>Oficial:</strong> cada <strong>tropa rallada adicional suma 1.000 de daño por segundo</strong> al Bégimo.",
-    "s3_rally_2": "Una reunión tiene un tope de <strong>40 tropas</strong>, así que una reunión llena = <strong>~40.000 de daño por segundo</strong> &mdash; sin importar cuántas unidades lleven esas tropas (el tope de unidades no cuenta aquí).",
-    "s3_rally_5": "<strong>Cuanto más se sostiene una reunión, más fuerte pega:</strong> tras <strong>5 minutos</strong> de ataque continuo, el daño sube <strong>+500 cada 15 segundos</strong>. Las reuniones largas e ininterrumpidas son muchísimo mejores que las cortas &mdash; no dejes que se disuelvan.",
-    "s3_rally_3": "<strong>El daño escala con participantes, no con el tamaño del grupo:</strong> llena las 40 ranuras. 40 personas uniéndose le ganan a 5 personas mandando grupos enormes.",
-    "s3_rally_4": "Lleva suficientes unidades por marcha para <strong>sobrevivir el contraataque</strong> y que tu daño siga conectando y la reunión llegue viva a la rampa de daño.",
-    "s3_tree_h": "Árbol de Linaje",
-    "s3_tree_blurb": "Dona Runas del Despertar para desbloquear nodos (Rango I &rarr; II). El árbol potencia <strong>al Bégimo y a todos los jugadores del imperio</strong>. Activa <strong>\"Bégimo enemigo\"</strong> para espiar su build.",
-    "s3_th_node": "Nodo", "s3_th_effect": "Efecto",
-    "node_atk": "Ataque Salvaje", "node_atk_e": "+Ataque a todas las unidades del imperio",
-    "node_def": "Defensa Salvaje", "node_def_e": "+Defensa a todas las unidades del imperio",
-    "node_hp": "Salud Salvaje", "node_hp_e": "+Salud a todas las unidades del imperio",
-    "node_fort": "Fortaleza Móvil", "node_fort_e": "+Salud del Bégimo",
-    "node_hoof": "Pezuña de Hierro", "node_hoof_e": "+Daño de durabilidad del Bégimo vs ciudadelas",
-    "node_bless": "Bendición de Bégimo", "node_bless_e": "Dona runas para recibir recompensas",
-    "s3_tree_note": "Estos son <strong>valores base de la etapa Juvenil (Día 1)</strong> &mdash; probablemente escalan mucho al crecer el Bégimo. El Casco de Hierro <em>suma a la tasa de asedio por segundo</em> (no destruye ciudadelas de un golpe). \"Sin Despertar\" / bloqueado = nodo aún no despertado. <strong>El primer nodo (Aumento de Daño Salvaje) cuesta 50.000 piedras rúnicas</strong>; los siguientes cuestan al menos eso y probablemente más. <span class=\"pill\">TBC</span> coste exacto de cada nodo posterior y escalado por etapa.",
-    "s3_purity_h": "Pureza del Linaje (Tira y Afloja)",
-    "s3_purity_blurb": "Una barra en vivo entre los dos imperios &mdash; cuanto más cultivamos frente al enemigo, más se inclina a nuestro favor.",
-    "tug_us": "NOSOTROS", "tug_them": "ENEMIGO",
-    "s3_purity_note": "Dona runas temprano para empujar la barra antes de la invasión. <span class=\"pill\">TBC</span> efecto exacto de ganar la pureza.",
-    "s4_title": "Cómo Ganamos",
-    "role_cult_h": "Cultivar", "role_cult_p": "Dona <strong>Runas del Despertar</strong> para hacer crecer al Bégimo y empujar la Pureza del Linaje. Suma puntos + fortalece nuestro bando para la invasión.",
-    "role_defend_h": "Defender", "role_defend_p": "Baja al <strong>Bégimo enemigo a 0 de salud</strong> para aturdirlo 30s &mdash; dispersa sus reuniones y frena sus puntos. Protege al nuestro a su vez.",
-    "role_attack_h": "Atacar", "role_attack_p": "Golpea al <strong>Bégimo enemigo</strong> durante la invasión. Cronometra reuniones frescas para el instante en que termina el aturdimiento. Los puntos ofensivos son el grueso de un buen puntaje.",
-    "role_relocate_h": "Reubicarse", "role_relocate_p": "Durante las invasiones puedes <strong>reubicarte al servidor enemigo</strong> para unirte a la ofensiva (misión 1&times;, gran recompensa).",
-    "s4_callout": "<strong>Condición de victoria:</strong> al final, el imperio con <strong>mayor puntaje total gana</strong>. Los mayores cambios son los <strong>hitos del Bégimo enemigo</strong> &mdash; 1B por agotar una pila de Fuerza Imperecedera, 5B por derrota total &mdash; más los <strong>2M por cada 1K de salud restante de nuestro propio Bégimo</strong> al final de la invasión. Así que mantener al nuestro vivo y atacando (y aturdir al de ellos) es lo de mayor impacto. Cada donación, defensa y ataque suma &mdash; igual que presentarse en la ventana de invasión.",
-    "s5_title": "Lista de Misiones",
-    "s5_blurb": "Completa estas por <strong>Runas del Despertar</strong>, aceleradores y recursos de Bégimo. Niveles más altos = mejores recompensas. <span class=\"pill\">TBC</span> montos exactos.",
-    "s5_milestones_h": "<strong style=\"color:var(--accent-gold);\">Hitos de Puntos Personales</strong> &mdash; recompensas \"Amigo de Bégimo\" por puntos personales totales:",
-    "s5_th_milestone": "Hito", "s5_th_points": "Puntos personales necesarios",
-    "ms_friend1": "Amigo de Bégimo I", "ms_friend2": "Amigo de Bégimo II", "ms_friend3": "Amigo de Bégimo III",
-    "s5_repeat_h": "<strong style=\"color:var(--accent-gold);\">Objetivos Repetibles</strong> &mdash; sube estos niveles:",
-    "s5_th_obj": "Objetivo", "s5_th_todo": "Qué hacer", "s5_th_tiers": "Niveles",
-    "obj_explore": "Exploración", "obj_explore_d": "Completa misiones de exploración de Cultivo de Bégimo",
-    "obj_rally": "Reunión vs Tribus", "obj_rally_d": "Participa con éxito en una reunión contra tribus",
-    "obj_trial": "Prueba del Scion", "obj_trial_d": "Reúne contra el objetivo \"Scion\" en el mapa (una Élite, ~160K Espadachines) para infligir daño. Ocurre del Día 2 al 4. Un héroe gratuito como Lü Bu con tropas de bajo nivel (T4/T5) puede limpiarlo barato.",
-    "obj_invasion": "Invasión de Bégimo", "obj_invasion_d": "Reubícate al servidor enemigo durante las invasiones",
-    "s5_trial_sched": "<strong>La Prueba del Scion ocurre en ventanas diarias fijas</strong> (Día 2&ndash;4), no a cualquier hora &mdash; cuatro franjas de 30 min que se alternan entre los dos servidores. En un servidor emparejado las franjas fueron <strong>01:00&ndash;01:30</strong> y <strong>11:00&ndash;11:30</strong> para un lado, <strong>04:00&ndash;04:30</strong> y <strong>19:00&ndash;19:30</strong> para el otro (UTC+0). <span class=\"pill\">TBC</span> nuestras horas exactas &mdash; revisa el banner del evento. <strong>Prepárate para reunir al inicio de nuestras ventanas.</strong>",
-    "s4_points_h": "<strong style=\"color:var(--accent-gold);\">Valores de Puntos</strong> &mdash; cómo puntúa cada acción (de la guía; derivado de la transcripción, confirma en la pantalla de Reglas de Puntos del juego):",
-    "s4_th_action": "Acción",
-    "s4_th_pts": "Puntos",
-    "pt_donate": "Donar 1 Piedra Rúnica de Despertar",
-    "pt_wound": "Herir gravemente a un jugador de otro reino (combate válido)",
-    "pt_wound_v": "puntos de batalla estándar",
-    "pt_citadel": "Nuestro Bégimo: por cada 1K de daño de durabilidad a una ciudadela enemiga",
-    "pt_remain": "Fin de la invasión: por cada 1K de salud restante de <em>nuestro</em> Bégimo",
-    "pt_dmg": "Por cada 100 de daño al Bégimo enemigo",
-    "pt_undying": "Agotar una pila de Fuerza Imperecedera enemiga",
-    "pt_defeat": "Derrotar por completo a un Bégimo enemigo",
-    "s4_points_note": "<strong>Dos conclusiones:</strong> (1) mantener vivo a <strong>nuestro</strong> Bégimo vale una fortuna &mdash; 2M de puntos de reino por cada 1K de salud con que termina, así que la defensa importa tanto como el ataque. (2) En el Bégimo enemigo, los <strong>hitos eclipsan el daño menor</strong>: agotar una pila de Fuerza Imperecedera (1B) y la derrota final (5B) es donde realmente se gana el puntaje del reino &mdash; coordina oleadas frescas para atravesarlo pila a pila.",
-    "s5_runestone_caps": "<strong>Límites diarios de Piedras Rúnicas de Despertar (Prueba del Scion):</strong> solo por hacer <strong>daño</strong> ganas <strong>1 piedra por cada 100K de puntos de Bégimo, hasta 250/día</strong> &mdash; y dar el <strong>golpe final</strong> a un Scion da un <strong>+400/día aparte</strong>, así que la Prueba puede rendir hasta <strong>~650/día</strong> en total. Además, la exploración de Cultivo del Bégimo (acariciar/asear/entretener) y las Reuniones contra Tribus sueltan más &mdash; hazlas todas a diario para acumular más.",
-    "s5_engine": "<strong>Estas actividades diarias son el motor de cultivo.</strong> Los Descendientes y la Exploración sueltan las <strong>monedas/runas que gastas para mejorar a nuestro Bégimo</strong> (atributos + árbol de linaje) &mdash; así que el grind diario es literalmente <em>cómo</em> hacemos fuerte a nuestro elefante para la invasión, no solo una recompensa extra. <span class=\"pill\">TBC</span> La mayoría de los <strong>millones de puntos personales</strong> de los niveles Amigo de Bégimo probablemente vienen del <strong>daño en la invasión</strong> de los Días 5&ndash;6; el grind diario es un refuerzo constante más tu moneda de mejora.",
-    "s5_callout": "<strong>Orden de prioridad mientras aprendemos el modo:</strong> 1) empuja <strong>Exploración</strong> + <strong>Prueba del Descendiente</strong> a diario (monedas de mejora + runas para cultivar a nuestro Bégimo), 2) únete a cada <strong>Reunión vs Tribus</strong>, 3) cuando abra la invasión los Días 5&ndash;6, <strong>reubícate y ataca</strong> por la gran recompensa y el grueso de los puntos personales.",
-    "s6_title": "Qué Hacer Ahora",
-    "s6_prep_h": "Etapa de Domesticación de Bestias (estamos aquí)",
-    "s6_prep_1": "<strong>Haz misiones de exploración + prueba a diario</strong> &mdash; financian nuestras runas y puntos personales.",
-    "s6_prep_2": "<strong>Dona runas para cultivar</strong> &mdash; haz crecer al Bégimo e inclina la Pureza del Linaje a nuestro favor antes de la invasión.",
-    "s6_prep_3": "<strong>Únete a las reuniones contra tribus</strong> cuando se convoquen &mdash; puntos baratos y repetibles.",
-    "s6_prep_4": "<strong>Atento al chat de alianza</strong> para la convocatoria de hora y ubicación de la invasión.",
-    "s6_inv_h": "Etapa de Ataque-Defensa (cuando abra)",
-    "s6_inv_1": "<strong>Conéctate durante la ventana de 90 min.</strong> Los puntos ofensivos de la invasión son donde se gana el puntaje.",
-    "s6_inv_2": "<strong>Reubícate al servidor enemigo</strong> para atacar a su Bégimo (también completa la misión de Invasión 1&times;).",
-    "s6_inv_3": "<strong>Los defensores se quedan</strong> según se convoque para proteger a nuestro Bégimo de su invasión.",
-    "s6_inv_5": "<strong>Mantén las reuniones lo más posible</strong> &mdash; la rampa de daño tras los 5 min premia los ataques sostenidos; no dejes que se disuelvan.",
-    "s6_inv_4": "Gasta los <strong>Cristales de Bégimo</strong> en la Tienda de Bégimo antes de que cierre el evento.",
-    "s6_rec_h": "Etapa de Recuperación (día estándar de recuperación de KvK)",
-    "s6_rec_1": "<strong>HAZ CLIC EN RECLAMAR</strong> &mdash; recuperas un <strong>35%</strong> base de las unidades perdidas, pero solo si lo reclamas. La gente se olvida y pierde todo.",
-    "s6_rec_2": "Sube hacia el <strong>tope del 65%</strong> de dos formas: <strong>Fichas de Recuperación</strong> (ganadas en el evento o compradas con Monedas del Imperio, máx 20) y <strong>aliados gastando sus fichas de recuperación en ti</strong> (no puedes usarlas tú mismo &mdash; pide en el chat de alianza).",
-    "s6_rec_3": "<strong>No hay recuperación manual tras esta etapa</strong> &mdash; reclama antes de que cierre la ventana.",
-    "s7_title": "Por Confirmar",
-    "s7_3": "<strong>Coste en piedras rúnicas de cada nodo posterior</strong> &mdash; el primero (Aumento de Daño Salvaje) es 50.000; los siguientes son al menos eso y probablemente suben. Conocer la curva completa permite planear un orden de despertar.",
-    "s7_4": "<strong>Pureza del Linaje</strong> &mdash; parece solo un indicador de cuánto ha cultivado cada servidor su Bégimo; <strong>sin confirmar si ganarla otorga algún bono de combate real.</strong>",
-    "s7_5": "<strong>Pilas de Fuerza Imperecedera</strong> &mdash; cuántas tiene un Bégimo (cuántos reinicios completos para derrotarlo) y <strong>cómo se obtienen las pilas / si el cultivo o la etapa de crecimiento las aumenta.</strong>",
-    "s7_6": "Etapas de crecimiento del Bégimo tras Juvenil y las ganancias de estadísticas por etapa.",
-    "s7_7": "Si un Bégimo invasor puede <strong>atacar ciudadelas con escudo</strong> &mdash; es decir, ¿el escudo realmente protege tu ciudad durante la invasión?",
-    "s7_next": "<strong>Siguiente paso:</strong> cuando el evento abra, captura en el juego los costes de los nodos del linaje, el número de pilas de Fuerza Imperecedera y los valores de crecimiento por etapa &mdash; los completaré.",
+    "lbl_starts": "Inicia",
+    "lbl_ends": "Termina",
+    "lbl_tz": "Zona horaria",
+    "cd_days": "Días",
+    "cd_hours": "Horas",
+    "cd_min": "Min",
+    "cd_sec": "Seg",
+    "bp_h": "Visión General",
+    "bp_blurb": "<strong>Dos imperios (servidores) chocan por sus Bégimos.</strong> Durante el evento ganamos <em>Runas del Despertar</em> para hacer crecer y potenciar a nuestro Bégimo, y luego lo lanzamos contra el servidor enemigo mientras defendemos el nuestro. Ambos bandos atacan y defienden en batallas entre servidores. <span class=\"gold\">El imperio con mayor puntaje total gana</span> &mdash; pero ambos reinos ganan Cristales de Bégimo, así que vale la pena jugar aunque vayamos detrás.",
+    "bp_callout": "<strong>Tres formas de sumar:</strong> (1) <strong>cultivar</strong> &mdash; dona runas para hacer crecer a nuestro Bégimo, (2) <strong>defender</strong> a nuestro Bégimo, (3) <strong>atacar</strong> al del enemigo. Las recompensas se reparten en los rankings <strong>Personal, de Alianza y de Reino</strong>. Gasta los <strong>Cristales de Bégimo</strong> en la Tienda de Bégimo antes de que termine el evento &mdash; durante <strong>Stellar Dynasty</strong> cambias los Cristales por <strong>Puntos de Conquista</strong> en la Tienda de Conquista (vía de 40 niveles).",
+    "stages_h": "Las Cuatro Etapas (22&ndash;30 jun)",
+    "ph1_day": "Día 1",
+    "ph1_name": "Emparejamiento",
+    "ph1_desc": "Servidores emparejados, explora y planea",
+    "ph2_day": "Días 2&ndash;4",
+    "ph2_name": "Domesticación",
+    "ph2_desc": "Cultiva al Bégimo con el grind diario",
+    "ph3_day": "Días 5&ndash;6",
+    "ph3_name": "Ataque-Defensa",
+    "ph3_desc": "Invasiones de Bégimo de 90 min entre servidores",
+    "ph4_day": "Día 7+",
+    "ph4_name": "Recuperación",
+    "ph4_desc": "Recupera las unidades perdidas",
+    "stages_note": "El mapeo exacto día&rarr;fecha y las horas de franja/invasión de nuestro servidor los fija <strong>el administrador de nuestro servidor</strong> &mdash; atento al chat de alianza. El desglose de abajo sigue el correo del evento.",
+    "st1_title": "Etapa 1 &mdash; Emparejamiento",
+    "st1_days": "Día 1",
+    "happens_h": "Qué ocurre",
+    "st1_h1": "Nuestro servidor queda <strong>emparejado contra un servidor enemigo</strong> &mdash; Bégimo contra Bégimo durante todo el evento.",
+    "st1_h2": "Aún no hay invasiones. Es el día para <strong>explorar al Bégimo enemigo</strong> (activa \"Bégimo enemigo\" en la pantalla de linaje) y planear donaciones.",
+    "st1_today_h": "Haz hoy",
+    "st1_t1": "<strong>Empieza el grind diario de inmediato</strong> (ver Etapa 2) &mdash; las runas que ganes ahora van directo al cultivo.",
+    "st1_t2": "<strong>Atento al plan del liderazgo:</strong> la hora y ubicación de la invasión deben fijarse antes de que termine el Día 3.",
+    "sc_h": "Explorando el Duelo &mdash; Nosotros vs #087",
+    "sc_intro": "Estamos emparejados contra el servidor <strong>#087</strong>. En <strong>Stellar Dynasty</strong> ellos están <strong>27º</strong> &mdash; nosotros <strong>15º</strong>. Nuestros pesos pesados superan en poder a los suyos en general, pero mira la columna <strong>M:P</strong> (mérito&divide;poder): un ratio alto significa que un jugador pega <em>muy por encima</em> de su tamaño en combate. El suyo es un roster más ligero liderado por JAN/ACA &mdash; deberíamos ganar la carrera de poder si mantenemos el cultivo adelante y reunimos a tiempo.",
+    "sc_us_lbl": "NUESTRO SERVIDOR &middot; #008",
+    "rank_suf": "º",
+    "sc_us_sub": "Stellar Dynasty &middot; poder top-10 2.83B",
+    "sc_them_lbl": "SERVIDOR ENEMIGO &middot; #087",
+    "sc_them_sub": "Stellar Dynasty &middot; poder top-10 2.36B",
+    "sc_ally_h": "Top 4 Alianzas",
+    "sc_us_acol": "NUESTRAS ALIANZAS",
+    "th_power": "Poder",
+    "th_mp": "M:P",
+    "sc_them_acol": "ALIANZAS DE #087",
+    "sc_us_col": "NUESTRO TOP PODER",
+    "sc_them_col": "TOP PODER DE #087",
+    "sc_show10": "Ver top 10",
+    "sc_show5": "Ver top 5",
+    "sc_note": "<b style=\"color:var(--accent-green);\">M:P</b> = mérito&divide;poder, un indicador de cuán agresivamente ha peleado un jugador esta temporada. Su #4 y #7 (<span style=\"color:var(--accent-green);\">102&ndash;103%</span>) son sus verdaderas amenazas &mdash; pequeños pero curtidos en batalla. Sus líderes de poder (#1&ndash;2) tienen tamaño pero poco mérito, así que ceden bajo presión sostenida. Las cifras de poder son individuales; los totales de alianza también nos favorecen (nuestra mejor alianza ~20B vs ~15.5B la suya).",
+    "st2_title": "Etapa 2 &mdash; Domesticación de Bestias",
+    "st2_days": "Días 2&ndash;4",
+    "st2_goal_h": "Objetivo",
+    "st2_g1": "Gana <strong>Runas del Despertar</strong> con las actividades diarias y <strong>dónalas</strong> para potenciar el asedio, la salud y el árbol de linaje de nuestro Bégimo antes de la invasión.",
+    "st2_g2": "Donar también inclina la <strong>Pureza del Linaje</strong> (una barra en vivo de tira y afloja vs el enemigo) a nuestro favor y otorga <strong>10 puntos personales por runa</strong>.",
+    "st2_sched_h": "&#128197; Horario diario &mdash; Prueba del Scion",
+    "st2_sched_p": "Cuatro franjas fijas de 30 min al día que se alternan entre los dos servidores (se muestra un ejemplo de servidor emparejado). <strong>Prepárate para reunir al inicio de nuestras franjas.</strong>",
+    "st2_do_h": "Haz cada día (Días 2&ndash;4)",
+    "st2_d1": "<strong>Prueba del Scion</strong> &mdash; reúne contra el objetivo \"Scion\" del mapa (Élite, ~160K Espadachines). Apto para F2P: Lü Bu + tropas de bajo nivel (T4/T5) lo limpian barato. Niveles de misión: 20K / 50K / 100K / 150K de daño.",
+    "st2_d2": "<strong>Exploración de Cultivo de Bégimo</strong> &mdash; acaricia / asea / entretén al Bégimo en el mapa. Niveles de misión: 3 / 10 / 15 / 20.",
+    "st2_d3": "<strong>Reunión vs Tribus</strong> &mdash; únete a cada reunión convocada; runas baratas y repetibles. Niveles: 1 / 4 / 8 / 12.",
+    "st2_d4": "<strong>Dona runas</strong> a medida que las acumulas &mdash; no las guardes; el cultivo se acumula.",
+    "st2_cap1": "Prueba del Scion &mdash; toca la Élite \"Scion de Bégimo\", luego Atacar/Teletransportar",
+    "st2_cap2": "Cultivo de Bégimo &mdash; acaricia / asea / entretén para ganar runas",
+    "st2_income_h": "&#128176; Ingreso de runas (por día)",
+    "st2_i1": "<strong>Daño en la Prueba del Scion:</strong> 1 runa por cada 100K de puntos de Bégimo, <strong>hasta 250/día</strong>.",
+    "st2_i2": "<strong>Golpe final al Scion:</strong> un <strong>+400/día aparte</strong> encima &mdash; así la Prueba sola puede dar hasta <strong>~650/día</strong>.",
+    "st2_i3": "Además, la Exploración y la Reunión vs Tribus sueltan más. Hazlas todas a diario.",
+    "st2_tree_h": "&#127807; Árbol de Linaje",
+    "st2_tree_p": "Dona runas para desbloquear nodos (Rango I&rarr;II). El árbol potencia <strong>tanto al Bégimo como a todos los jugadores del imperio</strong>. El primer nodo cuesta <strong>50.000 runas</strong>; los siguientes cuestan al menos eso.",
+    "th_node": "Nodo",
+    "th_effect": "Efecto",
+    "th_i_ii": "I &rarr; II",
+    "node_atk": "Ataque Salvaje",
+    "node_atk_e": "+Ataque a todas las unidades del imperio",
+    "node_def": "Defensa Salvaje",
+    "node_def_e": "+Defensa a todas las unidades del imperio",
+    "node_hp": "Salud Salvaje",
+    "node_hp_e": "+Salud a todas las unidades del imperio",
+    "node_fort": "Fortaleza Móvil",
+    "node_fort_e": "+Salud del Bégimo",
+    "node_hoof": "Pezuña de Hierro",
+    "node_hoof_e": "+Daño de durabilidad del Bégimo vs ciudadelas",
+    "node_bless": "Bendición de Bégimo",
+    "node_bless_e": "Dona runas para recibir recompensas",
+    "st2_tree_note": "Valores base de la etapa Juvenil; suben a medida que el Bégimo crece. La Pezuña de Hierro <em>se suma a</em> la tasa de asedio por segundo.",
+    "st3_title": "Etapa 3 &mdash; Ataque-Defensa",
+    "st3_days": "Días 5&ndash;6",
+    "st3_h1": "Cada Bégimo <strong>invade el otro servidor</strong> a la hora y ubicación fijadas. <strong>Cada invasión dura 90 minutos.</strong>",
+    "st3_h2": "Nuestro Bégimo marcha sobre su Ciudad Imperial; el suyo sobre la nuestra. El Bégimo invasor <strong>aparta las ciudadelas de jugadores y destruye edificios de alianza</strong> en su carril.",
+    "st3_h3": "<strong>Conéctate durante la ventana</strong> &mdash; aquí se gana el grueso del puntaje (y de los puntos personales).",
+    "st3_map_h": "&#128506; Mapa del Campo de Batalla",
+    "map_btn008": "Bégimo en #008",
+    "map_btn008_sub": "nuestro servidor",
+    "map_btn087": "Bégimo en #087",
+    "map_btn087_sub": "servidor enemigo",
+    "leg_ours": "<b style=\"color:#5b8def;\">&#9632;</b> Nuestras ciudadelas &middot; portales aliados &#9670;",
+    "leg_enemy": "<b style=\"color:#c43d3d;\">&#9632;</b> Ciudadelas enemigas &middot; portales enemigos &#9670;",
+    "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> Recibiendo daño de Bégimo",
+    "map_desc": "Cada mapa muestra un servidor como local, con el <strong>Bégimo invasor</strong> en el centro &mdash; golpea las <strong>ciudadelas más cercanas</strong>, así que las ciudades junto a él pierden durabilidad. El <strong>bando local lo reúne para bajarlo</strong>; el <strong>bando visitante contra-reúne</strong> para mantenerlo vivo y sumando. Las ciudadelas no pueden estar dentro de la zona de teletransporte. Usa el botón de arriba para alternar entre <strong>nuestro servidor (#008)</strong> y <strong>el enemigo (#087)</strong>.",
+    "spawn008_h": "&#128205; Dónde aparece el Bégimo en #008",
+    "spawn008_cap": "#087 eligió este punto para su Bégimo en nuestro servidor &mdash; coordenadas <strong>(1212,1182)</strong>. Toca para ampliar.",
+    "spawn087_h": "&#128205; Dónde aparece nuestro Bégimo en #087",
+    "spawn087_body": "<span style=\"font-size:22px;display:block;margin-bottom:4px;\">&#129300;</span>El administrador de nuestro servidor <strong>aún está decidiendo</strong> dónde colocar nuestro Bégimo en #087. La ubicación se publicará en el chat de alianza cuando se fije.",
+    "st3_atk_h": "&#9876; Atacar al Bégimo enemigo",
+    "st3_a1": "<strong>Solo las reuniones lo dañan</strong> &mdash; las marchas individuales y las máquinas de guerra no hacen nada. Cada tropa rallada suma <strong>1.000 daño/seg</strong>; una reunión llena de 40 tropas = <strong>~40.000/seg</strong> (el tamaño del grupo no importa &mdash; importan los cuerpos).",
+    "st3_a2": "<strong>Mantén las reuniones mucho tiempo.</strong> Tras <strong>5 minutos</strong> continuos, el daño sube <strong>+500 cada 15s</strong> &mdash; no dejes que se disuelvan.",
+    "st3_a3": "<strong>Reubícate al servidor enemigo</strong> para unirte a la ofensiva (también completa la misión de Invasión 1&times;).",
+    "st3_stun_h": "&#10084; El ciclo de aturdimiento / Fuerza Imperecedera",
+    "st3_s1": "A <strong>0 de salud</strong> el Bégimo consume <strong>1 pila de Fuerza Imperecedera</strong>, disuelve toda reunión sobre él, se aturde brevemente y luego <strong>revive a tope</strong>. Solo muere cuando <strong>se agotan todas las pilas</strong>.",
+    "st3_s2": "Un Bégimo explorado tenía <strong>4 pilas</strong> &rarr; unos <strong>5 ceros completos para matarlo</strong>. Coordina oleadas frescas para volver a bajarlo a cero apenas reviva.",
+    "st3_s3": "<strong>Defensores:</strong> bajar el suyo a cero dispersa sus reuniones y le impide sumar &mdash; protege el nuestro a su vez.",
+    "st3_pts_h": "&#127919; Cómo se puntúa",
+    "th_action": "Acción",
+    "th_points": "Puntos",
+    "pt1_a": "Nuestro Bégimo: por cada 1K de daño de durabilidad a una ciudadela",
+    "pt1_v": "<b>300</b> reino",
+    "pt2_a": "Por cada 100 de daño al Bégimo enemigo",
+    "pt2_v": "<b>80</b> reino",
+    "pt3_a": "Agotar una pila de Fuerza Imperecedera enemiga",
+    "pt4_a": "Derrotar por completo a un Bégimo enemigo",
+    "pt5_a": "Fin de la invasión: por cada 1K de salud restante de <em>nuestro</em> Bégimo",
+    "pt6_a": "Herir gravemente a un jugador de reino enemigo",
+    "pt6_v": "ptos de batalla",
+    "st3_pts_note": "<strong>Dónde se gana el puntaje:</strong> los <strong>hitos del Bégimo enemigo eclipsan el daño menor</strong> &mdash; agotar una pila (1B) y la derrota (5B) son los grandes cambios. Y mantener vivo <strong>el nuestro</strong> vale 2M por cada 1K de salud restante &mdash; así que la defensa importa tanto como el ataque.",
+    "st4_title": "Etapa 4 &mdash; Recuperación",
+    "st4_days": "Día 7+",
+    "st4_h": "Haz esto antes de que cierre la ventana",
+    "st4_1": "<strong>HAZ CLIC EN RECLAMAR</strong> &mdash; recuperas un <strong>35%</strong> base de las unidades perdidas, pero solo si reclamas. La gente se olvida y lo pierde todo.",
+    "st4_2": "Sube hacia el <strong>tope del 65%</strong> de dos formas: <strong>Fichas de Recuperación</strong> (ganadas en el evento o compradas con Monedas del Imperio, máx 20) y <strong>aliados gastando fichas de recuperación en ti</strong> (no puedes usarlas tú mismo &mdash; pídelo en el chat de alianza).",
+    "st4_3": "<strong>No hay recuperación manual tras esta etapa.</strong> Gasta también primero los Cristales de Bégimo que te queden.",
+    "ref_h": "Referencia del Bégimo (inicio Juvenil)",
+    "ref_s1_v": "Juvenil",
+    "ref_s1_l": "Etapa inicial",
+    "ref_s2_l": "Asedio (inicio)",
+    "ref_s3_l": "Salud (inicio)",
+    "ref_s4_l": "Pilas Imperecederas (explorado)",
+    "ref_note": "El asedio puntúa <strong>~0,3 puntos de reino por durabilidad</strong> (300 por 1.000), así que a 8.750/seg ≈ <strong>~2.625 pts/seg</strong>; la Pezuña de Hierro y cada etapa de crecimiento lo suben. Son valores base del Día 1 &mdash; espera que suban a medida que se cultiva al Bégimo.",
+    "conf_h": "Por Confirmar",
+    "conf_1": "Las <strong>horas exactas de franja de la Prueba del Scion</strong> y la <strong>hora y ubicación de la invasión</strong> de nuestro servidor (las fija el admin).",
+    "conf_2": "<strong>Costes de nodos de linaje</strong> más allá del primero (50K), y las ganancias de estadísticas de <strong>crecimiento por etapa</strong>.",
+    "conf_3": "<strong>Fuerza Imperecedera</strong> &mdash; si 4 pilas es lo estándar o se gana cultivando, y si la última pila revive (4 vs 5 ceros).",
+    "conf_4": "Si ganar la <strong>Pureza del Linaje</strong> da un bono de combate real o es solo un indicador de progreso.",
+    "conf_5": "Si un Bégimo invasor puede <strong>golpear ciudadelas con escudo</strong> (¿el burbuja protege tu ciudad?).",
+    "conf_6": "Varios valores de puntos vienen del video guía &mdash; conviene mirar la pantalla de <strong>Reglas de Puntos</strong> del juego para confirmar.",
     "footer_tagline": "Era 8 &mdash; Despierta y Conquista",
-    "footer_sub": "Conquista de Bégimo &middot; 22&ndash;30 Jun &middot; UTC+0 &middot; Imperio vs Imperio"
+    "footer_sub": "Behemoth Conquest &middot; 22&ndash;30 jun &middot; UTC+0 &middot; Imperio vs Imperio"
   },
   "fr": {
-    "event_tag": "Nouveau Mode de Jeu &middot; Ère 8",
-    "subtitle": "Éveille la lignée &middot; Envahis les empires ennemis &middot; Guerre inter-serveurs",
-    "lbl_starts": "Début", "lbl_ends": "Fin", "lbl_tz": "Fuseau horaire",
-    "cd_days": "Jours", "cd_hours": "Heures", "cd_min": "Min", "cd_sec": "Sec",
-    "cd_until_start": "Avant le Début", "cd_until_end": "Avant la Fin", "cd_complete": "Événement Terminé",
-    "draft_banner": "<strong>BROUILLON v5</strong> &mdash; D'après l'<strong>Aperçu Officiel des Événements de Juin (v1.12)</strong>, le courrier de l'événement et les captures de la bêta. Les éléments marqués <span class=\"pill\">TBC</span> restent à confirmer pour notre serveur (récompenses exactes, coûts de runes, horaires de l'Épreuve du Descendant, correspondance jour&rarr;date ; heure/lieu d'invasion fixés par l'administrateur de notre serveur).",
-    "s1_title": "Vue d'Ensemble",
-    "s1_blurb": "Un tout nouveau mode où <strong>deux empires (serveurs) s'affrontent pour leurs Béhimoths</strong>. Pendant l'événement, on gagne des <em>Runes d'Éveil</em> pour faire grandir et renforcer le Béhimoth de notre empire, puis on le lâche sur le serveur ennemi. Les deux camps attaquent et défendent les béhimoths dans des <strong>batailles inter-serveurs</strong>, en marquant des points. <span class=\"gold\">L'empire au plus haut score total gagne.</span>",
-    "s1_callout": "<strong>Trois façons de marquer :</strong> (1) donner des Runes d'Éveil pour cultiver notre Béhimoth, (2) défendre notre propre Béhimoth, (3) attaquer le Béhimoth ennemi. Les récompenses se répartissent entre <strong>classements Personnel, d'Alliance et de Royaume</strong> &mdash; et <strong>le royaume gagnant comme le perdant reçoivent une part de Cristaux de Béhimoth</strong>, dépensés à la <strong>Boutique Béhimoth</strong>. (Donc participer vaut le coup même si on est derrière.)",
-    "s2_title": "Les Quatre Phases",
-    "s2_blurb": "L'événement va du <strong>22 au 30 juin (UTC+0)</strong> en quatre phases. Nous sommes en <span class=\"gold\">Préparation</span>. Notre admin fixe l'<strong>heure et le lieu de l'invasion</strong>.",
-    "phase1_num": "Phase 1", "phase1_name": "Appariement", "phase1_desc": "Serveurs appariés, préparer et planifier",
-    "phase2_num": "Phase 2", "phase2_name": "Domptage de Bêtes", "phase2_desc": "Dompter et renforcer la lignée du Béhimoth",
-    "phase3_num": "Phase 3", "phase3_name": "Attaque-Défense", "phase3_desc": "Invasions du Béhimoth de 90 min, attaquer et défendre",
-    "phase4_num": "Phase 4", "phase4_name": "Récupération", "phase4_desc": "Récupérer partiellement les unités perdues",
-    "s2_callout": "<strong>Empire contre Empire.</strong> C'est <strong>notre serveur contre un serveur ennemi</strong> (Béhimoth vs Béhimoth). D'après le courrier de l'événement : notre <strong>Roi fixe l'heure et le lieu de l'invasion avant la fin du Jour 3</strong> ; les <strong>invasions ont lieu les Jours 5&ndash;6</strong> (les deux Béhimoths marchent sur l'autre serveur). <span class=\"pill\">TBC</span> la correspondance exacte jour&rarr;date pour notre serveur &mdash; surveillez le chat d'alliance pour l'appel.",
-    "s3_title": "Notre Béhimoth",
-    "s3_blurb": "Le Béhimoth grandit par paliers à mesure qu'on le nourrit de Runes d'Éveil. Le palier de départ est <strong>Juvénile</strong>. La culture remplit une barre vers le prochain éveil.",
-    "stat_juvenile": "Juvénile", "stat_stage_lbl": "Palier Actuel", "stat_cult_lbl": "Barre de Culture", "stat_siege_lbl": "Siège (début)", "stat_health_lbl": "Santé (début)",
-    "s3_combat_intro": "<strong>Comment fonctionne le combat (selon les infobulles du jeu) :</strong>",
-    "s3_siege_h": "Siège (Attaque)",
-    "s3_siege_1": "Notre Béhimoth inflige <strong>8 750 de dégâts de durabilité/sec</strong> à la citadelle ciblée.",
-    "s3_siege_2": "Il gagne <strong>~2 625 points de royaume par tick d'attaque (par seconde)</strong> au rythme de siège Juvénile &mdash; un flux régulier qui s'accumule sur une invasion de 90 min.",
-    "s3_siege_4": "<strong>Les points évoluent avec les dégâts de durabilité</strong> &mdash; le guide indique <strong>300 points de royaume par 1 000 de dégâts de durabilité</strong> (soit <strong>&times;0,3</strong> par point de durabilité). Donc à 8 750/sec cela fait <strong>~2 625 pts/sec</strong>, et <strong>le Sabot de Fer et chaque palier de croissance augmentent le rythme</strong> (ex. Sabot de Fer II &rarr; 10 000/sec &rarr; <strong>~3 000 pts/sec</strong>). <span class=\"pill\">TBC</span> à confirmer sur l'écran des Règles de Points en jeu.",
-    "s3_siege_5": "<strong>Les invasions durent 90 minutes.</strong> Le Béhimoth <strong>écarte aussi les citadelles des joueurs et détruit les bâtiments d'alliance</strong> sur les cases qu'il traverse &mdash; dégagez le chemin / ne laissez pas de bâtiments sur son passage.",
-    "s3_siege_3": "Il <strong>ne peut pas attaquer étant hébété.</strong>",
-    "s3_stun_h": "Santé et le Cycle d'Étourdissement",
-    "s3_stun_1": "La santé de départ est de <strong>3 500 000</strong>.",
-    "s3_stun_2": "Quand ses PV atteignent 0, le Béhimoth consomme <strong>1 charge de Force Immortelle</strong>, <strong>dissout tout ralliement qui l'attaque</strong>, entre dans un <strong>bref étourdissement</strong>, puis <strong>revient à pleine puissance</strong>. <strong>Défaite totale = épuiser toutes ses charges de Force Immortelle.</strong> Un Béhimoth observé affichait <strong>4 charges</strong>, ce qui signifierait environ <strong>5 mises à zéro complètes pour le tuer</strong> (4 résurrections puis la mort finale sans charge restante). <span class=\"pill\">TBC</span> si 4 est standard ou gagné via la culture préparatoire, et si la dernière charge ressuscite encore (4 ou 5 zéros).",
-    "s3_stun_3": "<strong>Défenseurs :</strong> le mettre à zéro disperse tous les ralliements attaquants et gagne du temps. <strong>Attaquants :</strong> le but est d'épuiser chaque cumul de Force Impérissable &mdash; coordonnez des vagues fraîches pour le remettre à zéro dès qu'il récupère.",
-    "s3_rally_rule": "<strong>Seuls les ralliements blessent le Béhimoth.</strong> Les marches solo et les machines de guerre ne lui font rien &mdash; chaque coup doit venir d'un ralliement que vous menez ou rejoignez.",
-    "s3_rally_h": "Frapper Fort &mdash; Composition du Ralliement",
-    "s3_rally_1": "<strong>Officiel :</strong> chaque <strong>troupe ralliée supplémentaire ajoute 1 000 de dégâts par seconde</strong> au Béhimoth.",
-    "s3_rally_2": "Un ralliement est plafonné à <strong>40 troupes</strong>, donc un ralliement plein = <strong>~40 000 de dégâts par seconde</strong> &mdash; peu importe le nombre d'unités dans ces troupes (le plafond d'unités n'entre pas en jeu).",
-    "s3_rally_5": "<strong>Plus un ralliement dure, plus il frappe fort :</strong> après <strong>5 minutes</strong> d'attaque continue, les dégâts augmentent de <strong>+500 toutes les 15 secondes</strong>. Les ralliements longs et ininterrompus valent bien mieux que les courts &mdash; ne les laissez pas se dissoudre.",
-    "s3_rally_3": "<strong>Les dégâts évoluent avec les participants, pas la taille des piles :</strong> remplissez les 40 emplacements. 40 personnes qui rejoignent battent 5 personnes envoyant d'énormes piles.",
-    "s3_rally_4": "Amenez assez d'unités par marche pour <strong>survivre à la contre-attaque</strong> afin que vos dégâts continuent et que le ralliement atteigne vivant la montée de dégâts.",
-    "s3_tree_h": "Arbre de Lignée",
-    "s3_tree_blurb": "Donnez des Runes d'Éveil pour débloquer des nœuds (Rang I &rarr; II). L'arbre améliore <strong>le Béhimoth et chaque joueur de l'empire</strong>. Activez <strong>\"Béhimoth ennemi\"</strong> pour espionner son build.",
-    "s3_th_node": "Nœud", "s3_th_effect": "Effet",
-    "node_atk": "Attaque Sauvage", "node_atk_e": "+Attaque à toutes les unités de l'empire",
-    "node_def": "Défense Sauvage", "node_def_e": "+Défense à toutes les unités de l'empire",
-    "node_hp": "Santé Sauvage", "node_hp_e": "+Santé à toutes les unités de l'empire",
-    "node_fort": "Forteresse Mobile", "node_fort_e": "+Santé du Béhimoth",
-    "node_hoof": "Sabot de Fer", "node_hoof_e": "+Dégâts de durabilité du Béhimoth vs citadelles",
-    "node_bless": "Bénédiction du Béhimoth", "node_bless_e": "Donnez des runes pour des récompenses",
-    "s3_tree_note": "Ce sont des <strong>valeurs de base de l'étape Juvénile (Jour 1)</strong> &mdash; elles montent probablement fortement à mesure que le Béhimoth grandit. Le Sabot de Fer <em>s'ajoute au taux de siège par seconde</em> (il ne détruit pas une citadelle d'un coup). \"Sin Despertar\" / verrouillé = nœud pas encore éveillé. <strong>Le premier nœud (Augmentation des Dégâts Sauvages) coûte 50 000 pierres runiques</strong> ; les suivants coûtent au moins autant et probablement plus. <span class=\"pill\">TBC</span> coût exact de chaque nœud ultérieur et mise à l'échelle par étape.",
-    "s3_purity_h": "Pureté de la Lignée (Bras de Fer)",
-    "s3_purity_blurb": "Une barre en direct entre les deux empires &mdash; plus on cultive face à l'ennemi, plus elle penche de notre côté.",
-    "tug_us": "NOUS", "tug_them": "ENNEMI",
-    "s3_purity_note": "Donnez des runes tôt pour pousser la barre avant l'invasion. <span class=\"pill\">TBC</span> effet exact de gagner la pureté.",
-    "s4_title": "Comment Gagner",
-    "role_cult_h": "Cultiver", "role_cult_p": "Donnez des <strong>Runes d'Éveil</strong> pour faire grandir notre Béhimoth et pousser la Pureté de la Lignée. Marque des points + renforce notre camp pour l'invasion.",
-    "role_defend_h": "Défendre", "role_defend_p": "Ralliez le <strong>Béhimoth ennemi à 0 de santé</strong> pour l'étourdir 30s &mdash; ça disperse ses ralliements et stoppe ses points. Protégez le nôtre en retour.",
-    "role_attack_h": "Attaquer", "role_attack_p": "Frappez le <strong>Béhimoth ennemi</strong> pendant l'invasion. Chronométrez des ralliements frais pour l'instant où l'étourdissement finit. Les points offensifs font le gros d'un bon score.",
-    "role_relocate_h": "Se Relocaliser", "role_relocate_p": "Pendant les invasions, vous pouvez <strong>vous relocaliser sur le serveur ennemi</strong> pour rejoindre l'offensive (mission 1&times;, grosse récompense).",
-    "s4_callout": "<strong>Condition de victoire :</strong> à la fin, l'empire au <strong>plus haut score total gagne</strong>. Les plus gros gains sont les <strong>jalons du Béhimoth ennemi</strong> &mdash; 1B par charge de Force Immortelle épuisée, 5B pour une défaite totale &mdash; plus les <strong>2M par 1K de santé restante de notre propre Béhimoth</strong> à la fin de l'invasion. Donc garder le nôtre en vie et en attaque (et étourdir le leur) est l'action la plus rentable. Chaque don, défense et attaque compte &mdash; tout comme être présent à la fenêtre d'invasion.",
-    "s5_title": "Liste des Missions",
-    "s5_blurb": "Complétez-les pour des <strong>Runes d'Éveil</strong>, des accélérateurs et des ressources de Béhimoth. Paliers plus hauts = meilleures récompenses. <span class=\"pill\">TBC</span> montants exacts.",
-    "s5_milestones_h": "<strong style=\"color:var(--accent-gold);\">Paliers de Points Personnels</strong> &mdash; récompenses \"Ami du Béhimoth\" pour le total de points personnels :",
-    "s5_th_milestone": "Palier", "s5_th_points": "Points personnels requis",
-    "ms_friend1": "Ami du Béhimoth I", "ms_friend2": "Ami du Béhimoth II", "ms_friend3": "Ami du Béhimoth III",
-    "s5_repeat_h": "<strong style=\"color:var(--accent-gold);\">Objectifs Répétables</strong> &mdash; montez ces paliers :",
-    "s5_th_obj": "Objectif", "s5_th_todo": "Quoi faire", "s5_th_tiers": "Paliers",
-    "obj_explore": "Exploration", "obj_explore_d": "Complétez des missions d'exploration de Culture du Béhimoth",
-    "obj_rally": "Ralliement vs Tribus", "obj_rally_d": "Participez avec succès à un ralliement contre les tribus",
-    "obj_trial": "Épreuve du Scion", "obj_trial_d": "Ralliez la cible \"Scion\" sur la carte (une Élite, ~160K Épéistes) pour infliger des dégâts. A lieu du Jour 2 au 4. Un héros gratuit comme Lü Bu avec des troupes de bas niveau (T4/T5) peut la nettoyer à moindre coût.",
-    "obj_invasion": "Invasion du Béhimoth", "obj_invasion_d": "Relocalisez-vous sur le serveur ennemi pendant les invasions",
-    "s5_trial_sched": "<strong>L'Épreuve du Scion a lieu dans des fenêtres quotidiennes fixes</strong> (Jour 2&ndash;4), pas n'importe quand &mdash; quatre créneaux de 30 min qui alternent entre les deux serveurs. Sur un serveur apparié, les créneaux étaient <strong>01:00&ndash;01:30</strong> et <strong>11:00&ndash;11:30</strong> pour un camp, <strong>04:00&ndash;04:30</strong> et <strong>19:00&ndash;19:30</strong> pour l'autre (UTC+0). <span class=\"pill\">TBC</span> nos horaires exacts &mdash; vérifiez la bannière de l'événement. <strong>Soyez prêts à rallier au début de nos fenêtres.</strong>",
-    "s4_points_h": "<strong style=\"color:var(--accent-gold);\">Valeurs de Points</strong> &mdash; comment chaque action marque (d'après le guide ; dérivé de la transcription, à confirmer sur l'écran des Règles de Points en jeu) :",
-    "s4_th_action": "Action",
-    "s4_th_pts": "Points",
-    "pt_donate": "Donner 1 Pierre Runique d'Éveil",
-    "pt_wound": "Blesser gravement un joueur d'un autre royaume (combat valide)",
-    "pt_wound_v": "points de bataille standard",
-    "pt_citadel": "Notre Béhimoth : par 1K de dégâts de durabilité à une citadelle ennemie",
-    "pt_remain": "Fin de l'invasion : par 1K de santé restante de <em>notre</em> Béhimoth",
-    "pt_dmg": "Par 100 dégâts infligés au Béhimoth ennemi",
-    "pt_undying": "Épuiser une charge de Force Immortelle ennemie",
-    "pt_defeat": "Vaincre complètement un Béhimoth ennemi",
-    "s4_points_note": "<strong>Deux points clés :</strong> (1) garder <strong>notre</strong> Béhimoth en vie vaut une fortune &mdash; 2M de points de royaume par 1K de santé restante, donc la défense compte autant que l'attaque. (2) Sur le Béhimoth ennemi, les <strong>jalons écrasent les dégâts mineurs</strong> : épuiser une charge de Force Immortelle (1B) et la défaite finale (5B) sont là où le score du royaume se gagne vraiment &mdash; coordonnez des vagues fraîches pour le percer charge par charge.",
-    "s5_runestone_caps": "<strong>Plafonds quotidiens de Pierres Runiques d'Éveil (Épreuve du Scion) :</strong> rien qu'en infligeant des <strong>dégâts</strong> vous gagnez <strong>1 pierre par 100K de points de Béhimoth, jusqu'à 250/jour</strong> &mdash; et porter le <strong>coup final</strong> à un Scion donne <strong>+400/jour à part</strong>, donc l'Épreuve peut rapporter jusqu'à <strong>~650/jour</strong> au total. De plus, l'exploration de Culture du Béhimoth (caresser/toiletter/divertir) et les Ralliements contre les Tribus en lâchent davantage &mdash; faites-les toutes chaque jour pour en accumuler le plus.",
-    "s5_engine": "<strong>Ces activités quotidiennes sont le moteur de culture.</strong> Les Descendants et l'Exploration donnent les <strong>pièces/runes que vous dépensez pour améliorer notre Béhimoth</strong> (attributs + arbre de lignée) &mdash; le grind quotidien est donc littéralement <em>comment</em> on rend notre éléphant fort pour l'invasion, pas juste une récompense annexe. <span class=\"pill\">TBC</span> La majorité des <strong>millions de points personnels</strong> des paliers Ami du Béhimoth viennent probablement des <strong>dégâts d'invasion</strong> des Jours 5&ndash;6 ; le grind quotidien est un complément régulier plus votre monnaie d'amélioration.",
-    "s5_callout": "<strong>Ordre de priorité le temps d'apprendre le mode :</strong> 1) poussez <strong>Exploration</strong> + <strong>Épreuve du Descendant</strong> chaque jour (pièces d'amélioration + runes pour cultiver notre Béhimoth), 2) rejoignez chaque <strong>Ralliement vs Tribus</strong>, 3) à l'ouverture de l'invasion les Jours 5&ndash;6, <strong>relocalisez-vous et attaquez</strong> pour la grosse récompense et l'essentiel des points personnels.",
-    "s6_title": "Que Faire Maintenant",
-    "s6_prep_h": "Phase de Domptage de Bêtes (nous y sommes)",
-    "s6_prep_1": "<strong>Faites les missions d'exploration + épreuve chaque jour</strong> &mdash; elles financent nos runes et points personnels.",
-    "s6_prep_2": "<strong>Donnez des runes pour cultiver</strong> &mdash; faites grandir le Béhimoth et inclinez la Pureté de la Lignée de notre côté avant l'invasion.",
-    "s6_prep_3": "<strong>Rejoignez les ralliements de tribus</strong> dès qu'ils sont lancés &mdash; points peu coûteux et répétables.",
-    "s6_prep_4": "<strong>Surveillez le chat d'alliance</strong> pour l'appel à l'heure et au lieu de l'invasion.",
-    "s6_inv_h": "Phase Attaque-Défense (à l'ouverture)",
-    "s6_inv_1": "<strong>Soyez en ligne pendant la fenêtre de 90 min.</strong> Les points offensifs de l'invasion, c'est là que le score se gagne.",
-    "s6_inv_2": "<strong>Relocalisez-vous sur le serveur ennemi</strong> pour attaquer leur Béhimoth (complète aussi la mission Invasion 1&times;).",
-    "s6_inv_3": "<strong>Les défenseurs restent</strong> selon l'appel pour protéger notre Béhimoth de leur invasion.",
-    "s6_inv_5": "<strong>Maintenez les ralliements le plus longtemps possible</strong> &mdash; la montée de dégâts après 5 min récompense les attaques soutenues ; ne les laissez pas se dissoudre.",
-    "s6_inv_4": "Dépensez les <strong>Cristaux de Béhimoth</strong> à la Boutique Béhimoth avant la fin de l'événement.",
-    "s6_rec_h": "Phase de Récupération (jour de récupération KvK standard)",
-    "s6_rec_1": "<strong>CLIQUEZ SUR RÉCLAMER</strong> &mdash; vous récupérez <strong>35%</strong> de base des unités perdues, mais seulement si vous le réclamez. Les gens oublient et perdent tout.",
-    "s6_rec_2": "Montez vers le <strong>plafond de 65%</strong> de deux façons : <strong>Jetons de Récupération</strong> (gagnés dans l'événement ou achetés avec des Pièces d'Empire, max 20) et <strong>des alliés dépensant leurs jetons de récupération sur vous</strong> (vous ne pouvez pas les utiliser vous-même &mdash; demandez dans le chat d'alliance).",
-    "s6_rec_3": "<strong>Aucune récupération manuelle après cette phase</strong> &mdash; réclamez avant la fermeture de la fenêtre.",
-    "s7_title": "À Confirmer",
-    "s7_3": "<strong>Coût en pierres runiques de chaque nœud ultérieur</strong> &mdash; le premier (Augmentation des Dégâts Sauvages) est 50 000 ; les suivants coûtent au moins autant et grimpent probablement. Connaître la courbe complète permet de planifier un ordre d'éveil.",
-    "s7_4": "<strong>Pureté du Lignage</strong> &mdash; cela semble n'être qu'un indicateur de l'avancement de chaque serveur sur son Béhimoth ; <strong>non confirmé si la gagner accorde un réel bonus de combat.</strong>",
-    "s7_5": "<strong>Charges de Force Immortelle</strong> &mdash; combien un Béhimoth en a (combien de remises à zéro complètes pour le vaincre) et <strong>comment les charges s'obtiennent / si la culture ou l'étape de croissance les augmente.</strong>",
-    "s7_6": "Étapes de croissance du Béhimoth après Juvénile et les gains de stats par étape.",
-    "s7_7": "Si un Béhimoth envahisseur peut <strong>attaquer des citadelles sous bouclier</strong> &mdash; c.-à-d. le bouclier protège-t-il vraiment votre ville pendant l'invasion ?",
-    "s7_next": "<strong>Étape suivante :</strong> à l'ouverture de l'événement, prenez en jeu les coûts des nœuds du lignage, le nombre de charges de Force Immortelle et les valeurs de croissance par étape &mdash; je les remplirai.",
-    "footer_tagline": "Ère 8 &mdash; Éveille et Conquiers",
-    "footer_sub": "Conquête du Béhimoth &middot; 22&ndash;30 juin &middot; UTC+0 &middot; Empire vs Empire"
+    "event_tag": "Nouveau Mode de Jeu &middot; Era 8",
+    "subtitle": "Éveille la lignée &middot; Marche sur les empires ennemis &middot; Guerre inter-serveurs",
+    "lbl_starts": "Début",
+    "lbl_ends": "Fin",
+    "lbl_tz": "Fuseau horaire",
+    "cd_days": "Jours",
+    "cd_hours": "Heures",
+    "cd_min": "Min",
+    "cd_sec": "Sec",
+    "bp_h": "Vue d'ensemble",
+    "bp_blurb": "<strong>Deux empires (serveurs) s'affrontent pour leurs Béhémoths.</strong> Pendant l'événement, on gagne des <em>Runes d'Éveil</em> pour faire grandir et renforcer notre Béhémoth, puis on le lâche sur le serveur ennemi tout en défendant le nôtre. Les deux camps attaquent et défendent dans des batailles inter-serveurs. <span class=\"gold\">L'empire au score total le plus élevé gagne</span> &mdash; mais les deux royaumes gagnent des Cristaux de Béhémoth, donc ça vaut le coup de jouer même mené.",
+    "bp_callout": "<strong>Trois façons de marquer :</strong> (1) <strong>cultiver</strong> &mdash; donne des runes pour faire grandir notre Béhémoth, (2) <strong>défendre</strong> notre Béhémoth, (3) <strong>attaquer</strong> celui de l'ennemi. Les récompenses se répartissent sur les classements <strong>Personnel, d'Alliance et de Royaume</strong>. Dépense les <strong>Cristaux de Béhémoth</strong> à la Boutique Béhémoth avant la fin de l'événement &mdash; pendant <strong>Stellar Dynasty</strong> tu échanges plutôt les Cristaux contre des <strong>Points de Conquête</strong> à la Boutique de Conquête (piste de 40 niveaux).",
+    "stages_h": "Les Quatre Étapes (22&ndash;30 juin)",
+    "ph1_day": "Jour 1",
+    "ph1_name": "Appariement",
+    "ph1_desc": "Serveurs appariés, repère et planifie",
+    "ph2_day": "Jours 2&ndash;4",
+    "ph2_name": "Dressage",
+    "ph2_desc": "Cultive le Béhémoth via le grind quotidien",
+    "ph3_day": "Jours 5&ndash;6",
+    "ph3_name": "Attaque-Défense",
+    "ph3_desc": "Invasions de Béhémoth de 90 min inter-serveurs",
+    "ph4_day": "Jour 7+",
+    "ph4_name": "Récupération",
+    "ph4_desc": "Récupère les unités perdues",
+    "stages_note": "La correspondance exacte jour&rarr;date et les horaires de créneau/invasion de notre serveur sont fixés par <strong>l'administrateur de notre serveur</strong> &mdash; surveille le chat d'alliance. Le détail ci-dessous suit le courrier de l'événement.",
+    "st1_title": "Étape 1 &mdash; Appariement",
+    "st1_days": "Jour 1",
+    "happens_h": "Ce qui se passe",
+    "st1_h1": "Notre serveur est <strong>apparié à un serveur ennemi</strong> &mdash; Béhémoth contre Béhémoth pendant tout l'événement.",
+    "st1_h2": "Pas encore d'invasions. C'est le jour pour <strong>repérer le Béhémoth ennemi</strong> (active \"Béhémoth ennemi\" sur l'écran de lignée) et planifier les dons.",
+    "st1_today_h": "À faire aujourd'hui",
+    "st1_t1": "<strong>Commence le grind quotidien tout de suite</strong> (voir Étape 2) &mdash; les runes gagnées maintenant vont droit à la culture.",
+    "st1_t2": "<strong>Note le plan du commandement :</strong> l'heure et le lieu de l'invasion doivent être verrouillés avant la fin du Jour 3.",
+    "sc_h": "Repérage du duel &mdash; Nous vs #087",
+    "sc_intro": "On est apparié au serveur <strong>#087</strong>. En <strong>Stellar Dynasty</strong> ils sont <strong>27e</strong> &mdash; nous <strong>15e</strong>. Nos poids lourds dépassent les leurs en puissance partout, mais lis la colonne <strong>M:P</strong> (mérite&divide;puissance) : un ratio élevé signifie qu'un joueur frappe <em>bien au-dessus</em> de sa taille au combat. Le leur est un roster plus léger mené par JAN/ACA &mdash; on devrait gagner la course à la puissance si on garde la culture en avance et qu'on rallie à temps.",
+    "sc_us_lbl": "NOTRE SERVEUR &middot; #008",
+    "rank_suf": "e",
+    "sc_us_sub": "Stellar Dynasty &middot; puissance top-10 2.83B",
+    "sc_them_lbl": "SERVEUR ENNEMI &middot; #087",
+    "sc_them_sub": "Stellar Dynasty &middot; puissance top-10 2.36B",
+    "sc_ally_h": "Top 4 Alliances",
+    "sc_us_acol": "NOS ALLIANCES",
+    "th_power": "Puissance",
+    "th_mp": "M:P",
+    "sc_them_acol": "ALLIANCES DE #087",
+    "sc_us_col": "NOTRE TOP PUISSANCE",
+    "sc_them_col": "TOP PUISSANCE DE #087",
+    "sc_show10": "Voir top 10",
+    "sc_show5": "Voir top 5",
+    "sc_note": "<b style=\"color:var(--accent-green);\">M:P</b> = mérite&divide;puissance, un indicateur de l'agressivité d'un joueur cette saison. Leurs #4 et #7 (<span style=\"color:var(--accent-green);\">102&ndash;103%</span>) sont leurs vraies menaces &mdash; petits mais aguerris. Leurs leaders de puissance (#1&ndash;2) ont la taille mais peu de mérite, donc ils craquent sous une pression soutenue. Les chiffres de puissance sont individuels ; les totaux d'alliance nous favorisent aussi (notre meilleure alliance ~20B vs ~15.5B la leur).",
+    "st2_title": "Étape 2 &mdash; Dressage",
+    "st2_days": "Jours 2&ndash;4",
+    "st2_goal_h": "Objectif",
+    "st2_g1": "Gagne des <strong>Runes d'Éveil</strong> via les activités quotidiennes et <strong>donne-les</strong> pour renforcer le siège, la santé et l'arbre de lignée de notre Béhémoth avant l'invasion.",
+    "st2_g2": "Donner penche aussi la <strong>Pureté de la Lignée</strong> (une barre de bras de fer en direct vs l'ennemi) de notre côté et rapporte <strong>10 points personnels par rune</strong>.",
+    "st2_sched_h": "&#128197; Horaire quotidien &mdash; Épreuve du Scion",
+    "st2_sched_p": "Quatre créneaux fixes de 30 min par jour qui alternent entre les deux serveurs (exemple de serveur apparié montré). <strong>Sois prêt à rallier au début de nos créneaux.</strong>",
+    "st2_do_h": "À faire chaque jour (Jours 2&ndash;4)",
+    "st2_d1": "<strong>Épreuve du Scion</strong> &mdash; rallie la cible \"Scion\" gardée sur la carte (Élite, ~160K Épéistes). Accessible F2P : Lü Bu + troupes bas niveau (T4/T5) la nettoient à bas coût. Paliers de mission : 20K / 50K / 100K / 150K de dégâts.",
+    "st2_d2": "<strong>Exploration de Culture du Béhémoth</strong> &mdash; caresse / toilette / divertis le Béhémoth sur la carte. Paliers de mission : 3 / 10 / 15 / 20.",
+    "st2_d3": "<strong>Ralliement vs Tribus</strong> &mdash; rejoins chaque ralliement annoncé ; runes répétables et bon marché. Paliers : 1 / 4 / 8 / 12.",
+    "st2_d4": "<strong>Donne les runes</strong> au fur et à mesure &mdash; ne les accumule pas ; la culture se cumule.",
+    "st2_cap1": "Épreuve du Scion &mdash; touche l'Élite \"Scion du Béhémoth\", puis Attaquer/Téléporter",
+    "st2_cap2": "Culture du Béhémoth &mdash; caresse / toilette / divertis pour des runes",
+    "st2_income_h": "&#128176; Revenu de runes (par jour)",
+    "st2_i1": "<strong>Dégâts à l'Épreuve du Scion :</strong> 1 rune par 100K de points de Béhémoth, <strong>jusqu'à 250/jour</strong>.",
+    "st2_i2": "<strong>Coup de grâce au Scion :</strong> un <strong>+400/jour à part</strong> en plus &mdash; donc l'Épreuve seule peut rapporter jusqu'à <strong>~650/jour</strong>.",
+    "st2_i3": "En plus, l'Exploration et le Ralliement vs Tribus en lâchent davantage. Fais-les toutes chaque jour.",
+    "st2_tree_h": "&#127807; Arbre de Lignée",
+    "st2_tree_p": "Donne des runes pour débloquer des nœuds (Rang I&rarr;II). L'arbre renforce <strong>à la fois le Béhémoth et tous les joueurs de l'empire</strong>. Le premier nœud coûte <strong>50 000 runes</strong> ; les suivants coûtent au moins autant.",
+    "th_node": "Nœud",
+    "th_effect": "Effet",
+    "th_i_ii": "I &rarr; II",
+    "node_atk": "Attaque Sauvage",
+    "node_atk_e": "+Attaque à toutes les unités de l'empire",
+    "node_def": "Défense Sauvage",
+    "node_def_e": "+Défense à toutes les unités de l'empire",
+    "node_hp": "Santé Sauvage",
+    "node_hp_e": "+Santé à toutes les unités de l'empire",
+    "node_fort": "Forteresse Mobile",
+    "node_fort_e": "+Santé du Béhémoth",
+    "node_hoof": "Sabot de Fer",
+    "node_hoof_e": "+Dégâts de durabilité du Béhémoth vs citadelles",
+    "node_bless": "Bénédiction du Béhémoth",
+    "node_bless_e": "Donne des runes pour des récompenses",
+    "st2_tree_note": "Valeurs de base de l'étape Juvénile ; elles montent à mesure que le Béhémoth grandit. Le Sabot de Fer <em>s'ajoute</em> au taux de siège par seconde.",
+    "st3_title": "Étape 3 &mdash; Attaque-Défense",
+    "st3_days": "Jours 5&ndash;6",
+    "st3_h1": "Chaque Béhémoth <strong>envahit l'autre serveur</strong> à l'heure et au lieu verrouillés. <strong>Chaque invasion dure 90 minutes.</strong>",
+    "st3_h2": "Notre Béhémoth marche sur leur Cité Impériale ; le leur sur la nôtre. Le Béhémoth envahisseur <strong>écarte les citadelles des joueurs et détruit les bâtiments d'alliance</strong> sur son passage.",
+    "st3_h3": "<strong>Sois en ligne pour la fenêtre</strong> &mdash; c'est là que se gagne l'essentiel du score (et des points personnels).",
+    "st3_map_h": "&#128506; Carte du Champ de Bataille",
+    "map_btn008": "Béhémoth sur #008",
+    "map_btn008_sub": "notre serveur",
+    "map_btn087": "Béhémoth sur #087",
+    "map_btn087_sub": "serveur ennemi",
+    "leg_ours": "<b style=\"color:#5b8def;\">&#9632;</b> Nos citadelles &middot; portails alliés &#9670;",
+    "leg_enemy": "<b style=\"color:#c43d3d;\">&#9632;</b> Citadelles ennemies &middot; portails ennemis &#9670;",
+    "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> Subit les dégâts du Béhémoth",
+    "map_desc": "Chaque carte montre un serveur comme hôte, avec le <strong>Béhémoth envahisseur</strong> posé au centre &mdash; il martèle les <strong>citadelles les plus proches</strong>, donc les villes près de lui perdent de la durabilité. Le <strong>camp hôte le rallie pour l'abattre</strong> ; le <strong>camp visiteur contre-rallie</strong> pour le garder en vie et marquer. Les citadelles ne peuvent pas être dans la zone de téléportation. Utilise le bouton ci-dessus pour basculer entre <strong>notre serveur (#008)</strong> et <strong>l'ennemi (#087)</strong>.",
+    "spawn008_h": "&#128205; Où le Béhémoth apparaît sur #008",
+    "spawn008_cap": "#087 a choisi cet endroit pour leur Béhémoth sur notre serveur &mdash; coordonnées <strong>(1212,1182)</strong>. Touche pour agrandir.",
+    "spawn087_h": "&#128205; Où notre Béhémoth apparaît sur #087",
+    "spawn087_body": "<span style=\"font-size:22px;display:block;margin-bottom:4px;\">&#129300;</span>L'administrateur de notre serveur <strong>décide encore</strong> où placer notre Béhémoth sur #087. Le lieu sera publié dans le chat d'alliance une fois verrouillé.",
+    "st3_atk_h": "&#9876; Attaquer le Béhémoth ennemi",
+    "st3_a1": "<strong>Seuls les ralliements le blessent</strong> &mdash; les marches solo et les machines de guerre ne font rien. Chaque troupe ralliée ajoute <strong>1 000 dég/sec</strong> ; un ralliement plein de 40 troupes = <strong>~40 000/sec</strong> (la taille du groupe ne compte pas &mdash; les corps comptent).",
+    "st3_a2": "<strong>Tiens les ralliements longtemps.</strong> Après <strong>5 minutes</strong> en continu, les dégâts montent de <strong>+500 toutes les 15s</strong> &mdash; ne les laisse pas se dissoudre.",
+    "st3_a3": "<strong>Relocalise-toi sur le serveur ennemi</strong> pour rejoindre l'offensive (valide aussi la mission Invasion 1&times;).",
+    "st3_stun_h": "&#10084; Le cycle d'étourdissement / Force Immortelle",
+    "st3_s1": "À <strong>0 PV</strong>, le Béhémoth consomme <strong>1 pile de Force Immortelle</strong>, dissout tout ralliement sur lui, s'étourdit brièvement, puis <strong>ressuscite à pleine vie</strong>. Il ne meurt que quand <strong>toutes les piles sont épuisées</strong>.",
+    "st3_s2": "Un Béhémoth repéré avait <strong>4 piles</strong> &rarr; environ <strong>5 mises à zéro complètes pour le tuer</strong>. Coordonne des vagues fraîches pour le remettre à zéro dès qu'il ressuscite.",
+    "st3_s3": "<strong>Défenseurs :</strong> mettre le leur à zéro disperse leurs ralliements et l'empêche de marquer &mdash; protège le nôtre à ton tour.",
+    "st3_pts_h": "&#127919; Comment on marque les points",
+    "th_action": "Action",
+    "th_points": "Points",
+    "pt1_a": "Notre Béhémoth : par 1K de dégâts de durabilité à une citadelle",
+    "pt1_v": "<b>300</b> royaume",
+    "pt2_a": "Par 100 de dégâts au Béhémoth ennemi",
+    "pt2_v": "<b>80</b> royaume",
+    "pt3_a": "Épuiser une pile de Force Immortelle ennemie",
+    "pt4_a": "Vaincre complètement un Béhémoth ennemi",
+    "pt5_a": "Fin d'invasion : par 1K de PV restants de <em>notre</em> Béhémoth",
+    "pt6_a": "Blesser gravement un joueur de royaume ennemi",
+    "pt6_v": "pts de bataille",
+    "st3_pts_note": "<strong>Où le score se gagne :</strong> les <strong>jalons du Béhémoth ennemi éclipsent les dégâts mineurs</strong> &mdash; épuiser une pile (1B) et l'achever (5B) sont les gros écarts. Et garder <strong>le nôtre</strong> en vie vaut 2M par 1K de PV restants &mdash; donc la défense compte autant que l'attaque.",
+    "st4_title": "Étape 4 &mdash; Récupération",
+    "st4_days": "Jour 7+",
+    "st4_h": "Fais ceci avant la fermeture de la fenêtre",
+    "st4_1": "<strong>CLIQUE SUR RÉCLAMER</strong> &mdash; tu récupères une base de <strong>35%</strong> des unités perdues, mais seulement si tu réclames. Les gens oublient et perdent tout.",
+    "st4_2": "Pousse vers le <strong>plafond de 65%</strong> de deux façons : <strong>Tickets de Récupération</strong> (gagnés en événement ou achetés avec des Pièces d'Empire, max 20) et <strong>alliés dépensant des jetons de récupération sur toi</strong> (tu ne peux pas les utiliser sur toi-même &mdash; demande dans le chat d'alliance).",
+    "st4_3": "<strong>Pas de récupération manuelle après cette étape.</strong> Dépense aussi d'abord les Cristaux de Béhémoth restants.",
+    "ref_h": "Référence du Béhémoth (début Juvénile)",
+    "ref_s1_v": "Juvénile",
+    "ref_s1_l": "Étape de départ",
+    "ref_s2_l": "Siège (début)",
+    "ref_s3_l": "Santé (début)",
+    "ref_s4_l": "Piles Immortelles (repéré)",
+    "ref_note": "Le siège marque <strong>~0,3 point de royaume par durabilité</strong> (300 par 1 000), donc à 8 750/sec ≈ <strong>~2 625 pts/sec</strong> ; le Sabot de Fer et chaque étape de croissance l'augmentent. Ce sont des bases du Jour 1 &mdash; attends-toi à ce qu'elles montent à mesure que le Béhémoth est cultivé.",
+    "conf_h": "À Confirmer",
+    "conf_1": "Les <strong>horaires exacts de créneau de l'Épreuve du Scion</strong> et l'<strong>heure et le lieu de l'invasion</strong> de notre serveur (fixés par l'admin).",
+    "conf_2": "<strong>Coûts des nœuds de lignée</strong> au-delà du premier (50K), et les gains de stats de <strong>croissance par étape</strong>.",
+    "conf_3": "<strong>Force Immortelle</strong> &mdash; si 4 piles est la norme ou se gagne par la culture, et si la dernière pile ressuscite (4 vs 5 zéros).",
+    "conf_4": "Si gagner la <strong>Pureté de la Lignée</strong> donne un vrai bonus de combat ou n'est qu'un indicateur de progression.",
+    "conf_5": "Si un Béhémoth envahisseur peut <strong>frapper des citadelles bouclées</strong> (le bouclier protège-t-il vraiment ta ville ?).",
+    "conf_6": "Plusieurs valeurs de points viennent de la vidéo guide &mdash; un coup d'œil à l'écran <strong>Règles de Points</strong> en jeu pour confirmer.",
+    "footer_tagline": "Era 8 &mdash; Éveille et Conquiers",
+    "footer_sub": "Behemoth Conquest &middot; 22&ndash;30 juin &middot; UTC+0 &middot; Empire vs Empire"
   },
   "ko": {
     "event_tag": "신규 게임 모드 &middot; 시대 8",
-    "subtitle": "혈통을 각성하라 &middot; 적 제국 침공 &middot; 교차 서버 전쟁",
-    "lbl_starts": "시작", "lbl_ends": "종료", "lbl_tz": "시간대",
-    "cd_days": "일", "cd_hours": "시", "cd_min": "분", "cd_sec": "초",
-    "cd_until_start": "시작까지", "cd_until_end": "종료까지", "cd_complete": "이벤트 종료",
-    "draft_banner": "<strong>초안 v5</strong> &mdash; <strong>공식 6월 이벤트 미리보기(v1.12)</strong>, 게임 내 이벤트 메일, 베타 화면 기반. <span class=\"pill\">TBC</span> 표시 항목은 우리 서버 기준 확인 필요(정확한 보상, 룬 비용, 후속자의 시험 시간대, 일자&rarr;날짜 매핑; 침공 시간/장소는 우리 서버 관리자가 설정).",
-    "s1_title": "전체 그림",
-    "s1_blurb": "<strong>두 제국(서버)이 각자의 비헤모스를 두고 충돌</strong>하는 신규 모드. 이벤트 동안 <em>각성 룬스톤</em>을 모아 우리 제국의 비헤모스를 키우고 강화한 뒤 적 서버에 풀어놓습니다. 양 진영은 <strong>교차 서버 전투</strong>에서 비헤모스를 공격·방어하며 점수를 쌓습니다. <span class=\"gold\">총점이 높은 제국이 승리.</span>",
-    "s1_callout": "<strong>점수 획득 3가지 방법:</strong> (1) 각성 룬스톤을 기부해 우리 비헤모스 육성, (2) 우리 비헤모스 방어, (3) 적 비헤모스 공격. 보상은 <strong>개인·동맹·왕국 랭킹</strong>으로 나뉘며 &mdash; <strong>승리한 왕국과 패배한 왕국 모두 비헤모스 크리스탈을 일부 획득</strong>하여 <strong>비헤모스 상점</strong>에서 사용. (뒤처져도 참여할 가치가 있어요.)",
-    "s2_title": "네 단계",
-    "s2_blurb": "이벤트는 <strong>6월 22일~30일 (UTC+0)</strong> 네 단계로 진행. 현재 <span class=\"gold\">준비</span> 단계. 관리자가 정확한 <strong>침공 시간·장소</strong>를 설정.",
-    "phase1_num": "1단계", "phase1_name": "매칭", "phase1_desc": "서버 매칭, 준비 및 계획",
-    "phase2_num": "2단계", "phase2_name": "야수 길들이기", "phase2_desc": "비헤모스 혈통 길들이기 및 강화",
-    "phase3_num": "3단계", "phase3_name": "공방전", "phase3_desc": "90분 비헤모스 침공, 공격 및 방어",
-    "phase4_num": "4단계", "phase4_name": "회복", "phase4_desc": "잃은 병력 일부 회복",
-    "s2_callout": "<strong>제국 대 제국.</strong> <strong>우리 서버 vs 적 서버</strong>(비헤모스 vs 비헤모스). 이벤트 메일에 따르면: 우리 <strong>왕이 3일 차 종료 전에 침공 시간·장소를 확정</strong>하고, <strong>침공은 5~6일 차에 발생</strong>(양쪽 비헤모스가 상대 서버로 진군). <span class=\"pill\">TBC</span> 우리 서버의 정확한 일자&rarr;날짜 매핑 &mdash; 관리자 공지를 위해 동맹 채팅 주시.",
-    "s3_title": "우리 비헤모스",
-    "s3_blurb": "각성 룬스톤을 먹이면 비헤모스가 단계별로 성장. 시작 단계는 <strong>유체</strong>. 육성은 다음 각성을 향한 바를 채웁니다.",
-    "stat_juvenile": "유체", "stat_stage_lbl": "현재 단계", "stat_cult_lbl": "육성 바", "stat_siege_lbl": "공성(시작)", "stat_health_lbl": "체력(시작)",
-    "s3_combat_intro": "<strong>전투 작동 방식 (게임 툴팁 기준):</strong>",
-    "s3_siege_h": "공성(공격)",
-    "s3_siege_1": "우리 비헤모스는 목표 성채에 초당 <strong>8,750 내구도 피해</strong>를 입혀요.",
-    "s3_siege_2": "유년기 공성 속도에서 <strong>공격 틱당(초당) 약 2,625 왕국 점수</strong>를 획득 &mdash; 90분 침공 동안 쌓이는 꾸준한 흐름.",
-    "s3_siege_4": "<strong>점수는 내구도 피해에 비례</strong>합니다 &mdash; 가이드에 따르면 <strong>내구도 피해 1,000당 왕국 점수 300</strong>(즉 내구도 1당 <strong>&times;0.3</strong>). 따라서 초당 8,750이면 <strong>초당 약 2,625점</strong>이고, <strong>강철 발굽과 각 성장 단계가 비율을 올립니다</strong>(예: 강철 발굽 II &rarr; 초당 10,000 &rarr; <strong>초당 약 3,000점</strong>). <span class=\"pill\">TBC</span> 게임 내 점수 규칙 화면에서 확인.",
-    "s3_siege_5": "<strong>침공은 90분간 지속</strong>됩니다. 비헤모스는 지나가는 칸의 <strong>플레이어 성채를 밀어내고 동맹 건물을 파괴</strong>해요 &mdash; 경로를 비우고 그 길목에 건물을 두지 마세요.",
-    "s3_siege_3": "<strong>혼미 상태에서는 공격 불가.</strong>",
-    "s3_stun_h": "체력 및 기절 사이클",
-    "s3_stun_1": "시작 체력은 <strong>3,500,000</strong>.",
-    "s3_stun_2": "체력이 0이 되면 비헤모스는 <strong>불멸의 힘 1스택</strong>을 소비하고, <strong>공격 중인 모든 집결을 해산</strong>시키며, <strong>잠시 기절</strong>한 뒤 <strong>완전 회복</strong>합니다. <strong>완전 처치 = 모든 불멸의 힘 스택 소진.</strong> 정찰된 비헤모스는 <strong>4스택</strong>을 보유했는데, 이는 처치까지 대략 <strong>5번의 완전 제로</strong>를 의미합니다(4번 부활 후 남은 스택 없이 최종 사망). <span class=\"pill\">TBC</span> 4가 기본인지 준비 양육으로 얻는지, 그리고 마지막 스택도 부활하는지(4 vs 5 제로).",
-    "s3_stun_3": "<strong>방어자:</strong> 0으로 만들면 모든 공격 집결이 흩어지고 시간을 법니다. <strong>공격자:</strong> 목표는 불멸의 힘 중첩을 모두 태우는 것 &mdash; 회복하는 즉시 다시 0으로 만들도록 새 물결을 조율하세요.",
-    "s3_rally_rule": "<strong>집결만이 비헤모스에게 피해를 줍니다.</strong> 단독 행군과 공성 무기는 효과가 없어요 &mdash; 모든 타격은 직접 이끌거나 참여한 집결에서 나와야 합니다.",
-    "s3_rally_h": "강하게 때리기 &mdash; 집결 구성",
-    "s3_rally_1": "<strong>공식:</strong> 집결에 추가되는 <strong>부대마다 비헤모스에게 초당 1,000 피해</strong>를 더합니다.",
-    "s3_rally_2": "집결은 <strong>부대 40개</strong>가 상한이라 가득 찬 집결 = <strong>초당 약 40,000 피해</strong> &mdash; 부대가 병력을 얼마나 담든 무관(병력 상한은 여기 적용 안 됨).",
-    "s3_rally_5": "<strong>집결이 오래 지속될수록 더 강해집니다:</strong> 연속 공격 <strong>5분</strong> 후 피해가 <strong>15초마다 +500</strong> 증가. 길고 끊기지 않는 집결이 짧은 것보다 훨씬 낫습니다 &mdash; 해산되지 않게 하세요.",
-    "s3_rally_3": "<strong>피해는 병력 규모가 아니라 참여 인원에 비례:</strong> 40칸을 모두 채우세요. 40명이 참여하는 것이 5명이 대규모 병력을 보내는 것보다 낫습니다.",
-    "s3_rally_4": "행군당 충분한 병력을 데려와 <strong>반격에서 살아남아</strong> 피해가 계속 들어가고 집결이 피해 증가 구간까지 살아남게 하세요.",
-    "s3_tree_h": "혈통 계보 트리",
-    "s3_tree_blurb": "각성 룬스톤을 기부해 노드 해금(등급 I &rarr; II). 트리는 <strong>비헤모스 자체와 제국 모든 플레이어</strong>를 강화. <strong>\"적 비헤모스\"</strong>를 켜서 상대 빌드 정찰.",
-    "s3_th_node": "노드", "s3_th_effect": "효과",
-    "node_atk": "야성의 공격", "node_atk_e": "제국 전 병과 공격 +",
-    "node_def": "야성의 방어", "node_def_e": "제국 전 병과 방어 +",
-    "node_hp": "야성의 체력", "node_hp_e": "제국 전 병과 체력 +",
-    "node_fort": "이동 요새", "node_fort_e": "비헤모스 체력 +",
-    "node_hoof": "강철 발굽", "node_hoof_e": "성채 대상 비헤모스 내구도 피해 +",
-    "node_bless": "비헤모스의 축복", "node_bless_e": "룬스톤을 기부해 보상 획득",
-    "s3_tree_note": "이는 <strong>유년기(1일차) 기본 수치</strong>로, 비헤모스가 성장하면 크게 오를 가능성이 큽니다. 강철 발굽은 <em>초당 공성 비율에 더해집니다</em>(성채를 한 방에 부수지 않음). \"Sin Despertar\"/잠금 = 아직 각성하지 않은 노드. <strong>첫 노드(야생 피해 증가)는 룬스톤 50,000</strong>이며, 이후 노드는 최소 그만큼이고 더 비쌀 가능성이 큽니다. <span class=\"pill\">TBC</span> 이후 각 노드의 정확한 비용과 단계별 증가.",
-    "s3_purity_h": "혈통 순도(줄당기기)",
-    "s3_purity_blurb": "두 제국 사이의 실시간 바 &mdash; 적보다 많이 육성할수록 우리 쪽으로 기움.",
-    "tug_us": "우리", "tug_them": "적",
-    "s3_purity_note": "침공 전에 바를 밀어두도록 룬스톤을 일찍 기부. <span class=\"pill\">TBC</span> 순도 승리의 정확한 효과.",
-    "s4_title": "승리 방법",
-    "role_cult_h": "육성", "role_cult_p": "<strong>각성 룬스톤</strong>을 기부해 비헤모스를 키우고 혈통 순도를 밀어요. 점수 + 침공 대비 아군 강화.",
-    "role_defend_h": "방어", "role_defend_p": "<strong>적 비헤모스를 체력 0으로</strong> 집결해 30초 기절 &mdash; 집결을 흔들고 득점을 멈춤. 동시에 우리 부대 보호.",
-    "role_attack_h": "공격", "role_attack_p": "침공 중 <strong>적 비헤모스</strong> 공격. 기절이 끝나는 순간에 새 집결이 도착하도록 타이밍. 공격 점수가 좋은 점수의 대부분.",
-    "role_relocate_h": "이전", "role_relocate_p": "침공 중 <strong>적 서버로 이전</strong>해 공격에 합류 가능(1회 임무, 큰 보상).",
-    "s4_callout": "<strong>승리 조건:</strong> 종료 시 <strong>총점이 높은 제국이 승리</strong>. 가장 큰 변수는 <strong>적 비헤모스 이정표</strong> &mdash; 불멸의 힘 1스택 소진당 10억, 완전 처치 시 50억 &mdash; 그리고 침공 종료 시 <strong>우리 비헤모스의 남은 체력 1K당 200만</strong>. 따라서 우리 것을 살려두고 공격하게 하며(그리고 적을 기절시키는 것)이 최대 효율. 모든 기부·방어·공격이 쌓이고 &mdash; 침공 시간대에 참여하는 것도 마찬가지.",
-    "s5_title": "임무 체크리스트",
-    "s5_blurb": "<strong>각성 룬스톤</strong>, 가속, 비헤모스 자원을 위해 완료. 높은 등급 = 더 큰 보상. <span class=\"pill\">TBC</span> 정확한 보상량.",
-    "s5_milestones_h": "<strong style=\"color:var(--accent-gold);\">개인 점수 마일스톤</strong> &mdash; 총 개인 점수에 따른 \"비헤모스의 벗\" 보상:",
-    "s5_th_milestone": "마일스톤", "s5_th_points": "필요 개인 점수",
-    "ms_friend1": "비헤모스의 벗 I", "ms_friend2": "비헤모스의 벗 II", "ms_friend3": "비헤모스의 벗 III",
-    "s5_repeat_h": "<strong style=\"color:var(--accent-gold);\">반복 목표</strong> &mdash; 등급을 올리세요:",
-    "s5_th_obj": "목표", "s5_th_todo": "할 일", "s5_th_tiers": "등급",
-    "obj_explore": "탐험", "obj_explore_d": "비헤모스 육성 탐험 임무 완료",
-    "obj_rally": "부족 집결", "obj_rally_d": "부족과의 집결에 성공적으로 참여",
-    "obj_trial": "사이언의 시험", "obj_trial_d": "맵의 \"사이언\" 목표(엘리트, 검병 약 16만)를 집결로 공격해 피해. 2~4일차에 진행. 류부 같은 무과금 영웅에 저티어(T4/T5) 병력으로 저렴하게 처치 가능.",
-    "obj_invasion": "비헤모스 침공", "obj_invasion_d": "침공 중 적 서버로 이전",
-    "s5_trial_sched": "<strong>사이언의 시험은 아무 때나가 아니라 매일 고정된 시간대</strong>(2~4일차)에 진행됩니다 &mdash; 두 서버가 번갈아 갖는 30분 슬롯 4개. 한 매칭 서버에서는 한쪽이 <strong>01:00&ndash;01:30</strong> 및 <strong>11:00&ndash;11:30</strong>, 다른 쪽이 <strong>04:00&ndash;04:30</strong> 및 <strong>19:00&ndash;19:30</strong>(UTC+0)였습니다. <span class=\"pill\">TBC</span> 우리 정확한 시간 &mdash; 이벤트 배너 확인. <strong>우리 시간대 시작에 맞춰 집결 준비.</strong>",
-    "s4_points_h": "<strong style=\"color:var(--accent-gold);\">점수 값</strong> &mdash; 각 행동의 점수 (가이드 기준; 자막에서 추출, 게임 내 점수 규칙 화면에서 확인):",
-    "s4_th_action": "행동",
-    "s4_th_pts": "점수",
-    "pt_donate": "각성 룬스톤 1개 기부",
-    "pt_wound": "타 왕국 플레이어 중상 (유효 전투)",
-    "pt_wound_v": "기본 전투 점수",
-    "pt_citadel": "우리 비헤모스: 적 성채에 내구도 피해 1K당",
-    "pt_remain": "침공 종료 시: <em>우리</em> 비헤모스의 남은 체력 1K당",
-    "pt_dmg": "적 비헤모스에 입힌 피해 100당",
-    "pt_undying": "적 불멸의 힘 1스택 소진",
-    "pt_defeat": "적 비헤모스 완전 처치",
-    "s4_points_note": "<strong>두 가지 핵심:</strong> (1) <strong>우리</strong> 비헤모스를 살려두는 것이 엄청난 가치 &mdash; 종료 시 남은 체력 1K당 200만 왕국 점수라 방어가 공격만큼 중요. (2) 적 비헤모스에서는 <strong>이정표가 잔챙이 피해를 압도</strong>: 불멸의 힘 스택 소진(10억)과 최종 처치(50억)에서 왕국 점수가 진짜로 갈립니다 &mdash; 신선한 물결을 조율해 스택마다 돌파하세요.",
-    "s5_runestone_caps": "<strong>일일 각성 룬스톤 상한(사이언의 시험):</strong> <strong>피해</strong>만으로 <strong>비헤모스 점수 10만당 룬스톤 1개, 최대 250개/일</strong> &mdash; 그리고 사이언에 <strong>최후의 일격</strong>을 가하면 <strong>별도로 +400개/일</strong>이 추가돼, 시험에서 합쳐 최대 <strong>약 650개/일</strong>까지 가능. 또한 비헤모스 양육 탐험(쓰다듬기/단장/놀아주기)과 부족 토벌 집결도 룬스톤을 더 줍니다 &mdash; 매일 모두 수행해 최대한 모으세요.",
-    "s5_engine": "<strong>이 일일 활동이 육성 엔진입니다.</strong> 후속자와 탐험은 <strong>우리 비헤모스를 강화하는 데 쓰는 코인/룬스톤</strong>(속성 + 계보 트리)을 줍니다 &mdash; 즉 일일 반복이 곧 침공을 위해 코끼리를 강하게 만드는 <em>방법</em>이지 단순 부가 보상이 아닙니다. <span class=\"pill\">TBC</span> 비헤모스의 벗 등급의 <strong>수백만 개인 점수</strong> 대부분은 5~6일 차 <strong>침공 피해</strong>에서 나올 가능성이 높고, 일일 반복은 꾸준한 보탬 + 강화 재화입니다.",
-    "s5_callout": "<strong>모드를 익히는 동안 우선순위:</strong> 1) 매일 <strong>탐험</strong> + <strong>후속자의 시험</strong> 진행(우리 비헤모스 육성용 강화 코인 + 룬스톤), 2) 모든 <strong>부족 집결</strong> 참여, 3) 5~6일 차 침공이 열리면 <strong>이전 후 공격</strong>으로 큰 임무 보상과 개인 점수의 대부분 획득.",
-    "s6_title": "지금 할 일",
-    "s6_prep_h": "야수 길들이기 단계 (현재)",
-    "s6_prep_1": "<strong>매일 탐험 + 시험 임무 수행</strong> &mdash; 룬스톤 공급과 개인 점수를 충당.",
-    "s6_prep_2": "<strong>룬스톤을 기부해 육성</strong> &mdash; 침공 전 비헤모스를 키우고 혈통 순도를 우리 쪽으로.",
-    "s6_prep_3": "소집될 때마다 <strong>부족 집결 참여</strong> &mdash; 저렴하고 반복 가능한 점수.",
-    "s6_prep_4": "<strong>동맹 채팅 주시</strong> &mdash; 관리자의 침공 시간·장소 공지.",
-    "s6_inv_h": "공방전 단계 (열릴 때)",
-    "s6_inv_1": "<strong>90분 시간대에 접속.</strong> 침공 중 공격 점수가 승부처.",
-    "s6_inv_2": "<strong>적 서버로 이전</strong>해 적 비헤모스 공격(침공 1회 임무도 완료).",
-    "s6_inv_3": "<strong>방어자는 잔류</strong>하여 소집에 따라 우리 비헤모스를 적 침공으로부터 보호.",
-    "s6_inv_5": "<strong>집결을 최대한 오래 유지</strong> &mdash; 5분 이후 피해 증가가 지속 공격을 보상하니 해산되지 않게 하세요.",
-    "s6_inv_4": "이벤트 종료 전 <strong>비헤모스 크리스탈</strong>을 비헤모스 상점에서 소비.",
-    "s6_rec_h": "회복 단계 (일반적인 KvK 회복일)",
-    "s6_rec_1": "<strong>반드시 수령 버튼을 누르세요</strong> &mdash; 잃은 병력의 기본 <strong>35%</strong>를 돌려받지만 수령해야만 됩니다. 잊고 전부 잃는 사람도 있어요.",
-    "s6_rec_2": "<strong>65% 상한</strong>까지 올리는 두 가지 방법: <strong>회복 토큰</strong>(이벤트에서 획득하거나 제국 코인으로 구매, 최대 20개)과 <strong>동맹원이 당신에게 회복 토큰을 사용</strong>(본인은 사용 불가 &mdash; 동맹 채팅에 요청).",
-    "s6_rec_3": "<strong>이 단계 이후에는 수동 회복 불가</strong> &mdash; 창이 닫히기 전에 수령하세요.",
-    "s7_title": "확인 필요",
-    "s7_3": "<strong>이후 각 혈통 노드의 룬스톤 비용</strong> &mdash; 첫 노드(야생 피해 증가)는 50,000이며, 이후는 최소 그만큼이고 오를 가능성이 큽니다. 전체 곡선을 알면 각성 우선순위를 계획할 수 있습니다.",
-    "s7_4": "<strong>혈통 순도</strong> &mdash; 각 서버가 비헤모스를 얼마나 양육했는지 보여주는 지표로 보이며, <strong>이기는 것이 실제 전투 보너스를 주는지는 미확인.</strong>",
-    "s7_5": "<strong>불멸의 힘 스택</strong> &mdash; 비헤모스가 몇 개를 가지는지(완전히 처치하려면 몇 번의 전체 리젠), 그리고 <strong>스택을 어떻게 얻는지 / 양육이나 성장 단계가 늘리는지.</strong>",
-    "s7_6": "유년기 이후 비헤모스 성장 단계와 단계별 능력치 증가.",
-    "s7_7": "침공하는 비헤모스가 <strong>보호막을 친 성채를 공격</strong>할 수 있는지 &mdash; 즉 침공 중 버블이 실제로 도시를 보호하는가?",
-    "s7_next": "<strong>다음 단계:</strong> 이벤트가 열리면 혈통 노드 비용, 불멸의 힘 스택 수, 단계별 성장 수치를 게임 내에서 캡처 &mdash; 채워 넣겠습니다.",
+    "subtitle": "혈통을 각성하라 &middot; 적 제국으로 진군 &middot; 서버 간 전쟁",
+    "lbl_starts": "시작",
+    "lbl_ends": "종료",
+    "lbl_tz": "시간대",
+    "cd_days": "일",
+    "cd_hours": "시간",
+    "cd_min": "분",
+    "cd_sec": "초",
+    "bp_h": "큰 그림",
+    "bp_blurb": "<strong>두 제국(서버)이 각자의 비헤모스를 두고 충돌합니다.</strong> 이벤트 내내 <em>각성 룬석</em>을 모아 우리 비헤모스를 키우고 강화한 뒤, 우리 서버를 지키면서 적 서버로 풀어놓습니다. 양측 모두 서버 간 전투에서 공격과 방어를 합니다. <span class=\"gold\">총점이 높은 제국이 승리</span> &mdash; 하지만 양 왕국 모두 비헤모스 크리스탈을 얻으니 뒤져 있어도 플레이할 가치가 있습니다.",
+    "bp_callout": "<strong>점수를 얻는 세 가지 방법:</strong> (1) <strong>육성</strong> &mdash; 룬석을 기부해 우리 비헤모스를 키우기, (2) 우리 비헤모스 <strong>방어</strong>, (3) 적의 비헤모스 <strong>공격</strong>. 보상은 <strong>개인, 연맹, 왕국</strong> 랭킹으로 나뉩니다. 이벤트가 끝나기 전에 <strong>비헤모스 크리스탈</strong>을 비헤모스 상점에서 사용하세요 &mdash; <strong>Stellar Dynasty</strong> 중에는 크리스탈을 정복 상점에서 <strong>정복 포인트</strong>로 교환합니다(40레벨 트랙).",
+    "stages_h": "네 단계 (6월 22&ndash;30일)",
+    "ph1_day": "1일차",
+    "ph1_name": "매칭",
+    "ph1_desc": "서버 매칭, 정찰 및 계획",
+    "ph2_day": "2&ndash;4일차",
+    "ph2_name": "야수 길들이기",
+    "ph2_desc": "매일 반복으로 비헤모스 육성",
+    "ph3_day": "5&ndash;6일차",
+    "ph3_name": "공격-방어",
+    "ph3_desc": "90분 서버 간 비헤모스 침공",
+    "ph4_day": "7일차+",
+    "ph4_name": "회복",
+    "ph4_desc": "잃은 병력 회수",
+    "stages_note": "정확한 일자&rarr;날짜 매핑과 우리 서버의 슬롯/침공 시간은 <strong>우리 서버 관리자</strong>가 설정합니다 &mdash; 연맹 채팅을 확인하세요. 아래 내용은 이벤트 메일을 따릅니다.",
+    "st1_title": "1단계 &mdash; 매칭",
+    "st1_days": "1일차",
+    "happens_h": "무슨 일이 일어나나",
+    "st1_h1": "우리 서버가 <strong>적 서버와 매칭</strong>됩니다 &mdash; 이벤트 내내 비헤모스 대 비헤모스.",
+    "st1_h2": "아직 침공은 없습니다. 오늘은 <strong>적 비헤모스를 정찰</strong>하고(혈통 화면에서 \"적 비헤모스\" 토글) 기부를 계획하는 날입니다.",
+    "st1_today_h": "오늘 할 일",
+    "st1_t1": "<strong>매일 반복을 즉시 시작</strong>(2단계 참고) &mdash; 지금 얻은 룬석은 곧바로 육성에 들어갑니다.",
+    "st1_t2": "<strong>지도부의 계획을 확인:</strong> 침공 시간과 장소는 3일차가 끝나기 전에 확정되어야 합니다.",
+    "sc_h": "대진 정찰 &mdash; 우리 vs #087",
+    "sc_intro": "우리는 <strong>#087</strong> 서버와 매칭되었습니다. <strong>Stellar Dynasty</strong>에서 그들은 <strong>27위</strong> &mdash; 우리는 <strong>15위</strong>입니다. 우리 주력은 전반적으로 그들보다 전력이 높지만, <strong>M:P</strong> 열(공훈&divide;전력)을 보세요: 비율이 높을수록 전투에서 <em>덩치보다 훨씬</em> 강하게 칩니다. 그들은 JAN/ACA가 이끄는 가벼운 진영입니다 &mdash; 육성을 앞서 두고 제때 집결하면 전력 싸움에서 이길 수 있습니다.",
+    "sc_us_lbl": "우리 서버 &middot; #008",
+    "rank_suf": "위",
+    "sc_us_sub": "Stellar Dynasty &middot; 상위10 전력 2.83B",
+    "sc_them_lbl": "적 서버 &middot; #087",
+    "sc_them_sub": "Stellar Dynasty &middot; 상위10 전력 2.36B",
+    "sc_ally_h": "상위 4개 연맹",
+    "sc_us_acol": "우리 연맹",
+    "th_power": "전력",
+    "th_mp": "M:P",
+    "sc_them_acol": "#087 연맹",
+    "sc_us_col": "우리 상위 전력",
+    "sc_them_col": "#087 상위 전력",
+    "sc_show10": "상위 10 보기",
+    "sc_show5": "상위 5 보기",
+    "sc_note": "<b style=\"color:var(--accent-green);\">M:P</b> = 공훈&divide;전력, 이번 시즌 얼마나 공격적으로 싸웠는지를 나타내는 지표입니다. 그들의 #4와 #7(<span style=\"color:var(--accent-green);\">102&ndash;103%</span>)이 진짜 위협 &mdash; 작지만 전투로 단련된 자들입니다. 전력 선두(#1&ndash;2)는 덩치는 있지만 공훈이 얇아 지속적인 압박에 무너집니다. 전력 수치는 개인 기준이며, 연맹 합계도 우리에게 유리합니다(우리 최고 연맹 ~20B 대 그들 ~15.5B).",
+    "st2_title": "2단계 &mdash; 야수 길들이기",
+    "st2_days": "2&ndash;4일차",
+    "st2_goal_h": "목표",
+    "st2_g1": "매일 활동으로 <strong>각성 룬석</strong>을 얻고 <strong>기부</strong>하여 침공 전에 우리 비헤모스의 공성, 체력, 혈통 트리를 키우세요.",
+    "st2_g2": "기부는 <strong>혈통 순도</strong>(적과의 실시간 줄다리기 바)도 우리 쪽으로 기울이고 <strong>룬석당 개인 포인트 10점</strong>을 줍니다.",
+    "st2_sched_h": "&#128197; 일일 일정 &mdash; 후손의 시험",
+    "st2_sched_p": "하루 4개의 고정 30분 창이 두 서버 사이를 번갈아 가며 열립니다(매칭 서버 예시). <strong>우리 창이 시작될 때 집결할 준비를 하세요.</strong>",
+    "st2_do_h": "매일 할 일 (2&ndash;4일차)",
+    "st2_d1": "<strong>후손의 시험</strong> &mdash; 지도의 경비된 \"후손\" 목표를 집결 공격(정예, 검병 ~16만). 무과금 친화: 여포 + 저티어(T4/T5) 병력으로 저렴하게 클리어. 미션 단계: 20K / 50K / 100K / 150K 피해.",
+    "st2_d2": "<strong>비헤모스 육성 탐험</strong> &mdash; 지도에서 비헤모스를 쓰다듬기/단장/놀아주기. 미션 단계: 3 / 10 / 15 / 20.",
+    "st2_d3": "<strong>부족전 집결</strong> &mdash; 소집되는 모든 집결에 참여; 저렴하고 반복 가능한 룬석. 단계: 1 / 4 / 8 / 12.",
+    "st2_d4": "<strong>룬석을 모이는 대로 기부</strong>하세요 &mdash; 쌓아두지 말 것; 육성은 복리로 쌓입니다.",
+    "st2_cap1": "후손의 시험 &mdash; \"비헤모스 후손\" 정예를 탭한 뒤 공격/순간이동",
+    "st2_cap2": "비헤모스 육성 &mdash; 쓰다듬기/단장/놀아주기로 룬석 획득",
+    "st2_income_h": "&#128176; 룬석 수입 (하루당)",
+    "st2_i1": "<strong>후손의 시험 피해:</strong> 비헤모스 포인트 10만당 룬석 1개, <strong>하루 250개까지</strong>.",
+    "st2_i2": "<strong>후손 막타:</strong> 별도로 <strong>하루 +400개</strong> 추가 &mdash; 그래서 시험만으로 하루 <strong>~650개</strong>까지 가능.",
+    "st2_i3": "여기에 탐험과 부족전 집결도 추가로 드롭합니다. 매일 모두 하세요.",
+    "st2_tree_h": "&#127807; 혈통 계보 트리",
+    "st2_tree_p": "룬석을 기부해 노드를 해금(등급 I&rarr;II). 트리는 <strong>비헤모스와 제국의 모든 플레이어</strong> 둘 다를 강화합니다. 첫 노드는 <strong>룬석 50,000개</strong>; 이후 노드는 최소 그 이상입니다.",
+    "th_node": "노드",
+    "th_effect": "효과",
+    "th_i_ii": "I &rarr; II",
+    "node_atk": "야만 공격",
+    "node_atk_e": "제국 전 병력 +공격",
+    "node_def": "야만 방어",
+    "node_def_e": "제국 전 병력 +방어",
+    "node_hp": "야만 체력",
+    "node_hp_e": "제국 전 병력 +체력",
+    "node_fort": "이동 요새",
+    "node_fort_e": "+비헤모스 체력",
+    "node_hoof": "강철 발굽",
+    "node_hoof_e": "+성채 대상 비헤모스 내구 피해",
+    "node_bless": "비헤모스의 축복",
+    "node_bless_e": "룬석을 기부해 보상 획득",
+    "st2_tree_note": "유년기 단계 기본값; 비헤모스가 성장하면 올라갑니다. 강철 발굽은 초당 공성 속도에 <em>더해집니다</em>.",
+    "st3_title": "3단계 &mdash; 공격-방어",
+    "st3_days": "5&ndash;6일차",
+    "st3_h1": "각 비헤모스가 확정된 시간과 장소에 <strong>상대 서버를 침공</strong>합니다. <strong>각 침공은 90분간 지속</strong>됩니다.",
+    "st3_h2": "우리 비헤모스는 그들의 제국 도시로, 그들의 것은 우리 도시로 진군합니다. 침공하는 비헤모스는 진로의 <strong>플레이어 성채를 밀어내고 연맹 건물을 파괴</strong>합니다.",
+    "st3_h3": "<strong>창 동안 접속해 있으세요</strong> &mdash; 점수(및 개인 포인트)의 대부분이 여기서 결정됩니다.",
+    "st3_map_h": "&#128506; 전장 지도",
+    "map_btn008": "#008의 비헤모스",
+    "map_btn008_sub": "우리 서버",
+    "map_btn087": "#087의 비헤모스",
+    "map_btn087_sub": "적 서버",
+    "leg_ours": "<b style=\"color:#5b8def;\">&#9632;</b> 우리 성채 &middot; 아군 포털 &#9670;",
+    "leg_enemy": "<b style=\"color:#c43d3d;\">&#9632;</b> 적 성채 &middot; 적 포털 &#9670;",
+    "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> 비헤모스 피해를 받는 중",
+    "map_desc": "각 지도는 한 서버를 홈으로 보여주며, <strong>침공하는 비헤모스</strong>가 중앙에 배치됩니다 &mdash; <strong>가장 가까운 성채</strong>를 두들기므로 그 옆 도시들이 내구도를 잃습니다. <strong>홈 측이 집결로 깎아내리고</strong>; <strong>원정 측은 역집결</strong>해 살려서 점수를 냅니다. 성채는 순간이동 구역 안에 둘 수 없습니다. 위 버튼으로 <strong>우리 서버(#008)</strong>와 <strong>적(#087)</strong>을 전환하세요.",
+    "spawn008_h": "&#128205; #008에서 비헤모스 등장 위치",
+    "spawn008_cap": "#087이 우리 서버에 자기 비헤모스를 둘 자리로 이곳을 골랐습니다 &mdash; 좌표 <strong>(1212,1182)</strong>. 탭하면 확대됩니다.",
+    "spawn087_h": "&#128205; #087에서 우리 비헤모스 등장 위치",
+    "spawn087_body": "<span style=\"font-size:22px;display:block;margin-bottom:4px;\">&#129300;</span>우리 서버 관리자가 #087에 우리 비헤모스를 어디에 둘지 <strong>아직 결정 중</strong>입니다. 확정되면 연맹 채팅에 공지됩니다.",
+    "st3_atk_h": "&#9876; 적 비헤모스 공격",
+    "st3_a1": "<strong>집결만이 피해를 줍니다</strong> &mdash; 단독 행군과 공성 병기는 아무 효과 없음. 집결한 병력 1부대당 <strong>초당 1,000 피해</strong> 추가; 40부대 만석 집결 = <strong>초당 ~40,000</strong>(부대 내 병력 수는 무관 &mdash; 머릿수가 중요).",
+    "st3_a2": "<strong>집결을 오래 유지하세요.</strong> <strong>5분</strong> 연속 후 피해가 <strong>15초마다 +500</strong> 상승 &mdash; 해산되지 않게 하세요.",
+    "st3_a3": "<strong>적 서버로 이전</strong>해 공세에 합류(침공 1&times; 미션도 완료).",
+    "st3_stun_h": "&#10084; 기절 / 불멸의 힘 주기",
+    "st3_s1": "<strong>체력 0</strong>에서 비헤모스는 <strong>불멸의 힘 1스택</strong>을 소모하고, 자신을 향한 모든 집결을 해산시키며, 잠시 기절한 뒤 <strong>완전 부활</strong>합니다. <strong>모든 스택이 소진되어야만</strong> 죽습니다.",
+    "st3_s2": "정찰된 비헤모스는 <strong>4스택</strong> &rarr; 죽이려면 대략 <strong>완전 0회 5번</strong>. 부활하는 즉시 다시 0으로 만들도록 새 물결을 조율하세요.",
+    "st3_s3": "<strong>방어자:</strong> 그들 것을 0으로 만들면 그들의 집결이 흩어지고 점수를 막습니다 &mdash; 우리 것도 번갈아 보호하세요.",
+    "st3_pts_h": "&#127919; 점수 산정 방식",
+    "th_action": "행동",
+    "th_points": "포인트",
+    "pt1_a": "우리 비헤모스: 성채에 내구 피해 1K당",
+    "pt1_v": "왕국 <b>300</b>",
+    "pt2_a": "적 비헤모스에 피해 100당",
+    "pt2_v": "왕국 <b>80</b>",
+    "pt3_a": "적 불멸의 힘 1스택 소진",
+    "pt4_a": "적 비헤모스 완전 격파",
+    "pt5_a": "침공 종료 시: <em>우리</em> 비헤모스 잔여 체력 1K당",
+    "pt6_a": "적 왕국 플레이어에게 중상 입히기",
+    "pt6_v": "전투 포인트",
+    "st3_pts_note": "<strong>점수가 갈리는 곳:</strong> <strong>적 비헤모스 마일스톤이 소량 피해를 압도</strong>합니다 &mdash; 스택 소진(1B)과 격파(5B)가 큰 변동입니다. 그리고 <strong>우리 것</strong>을 살려두면 잔여 체력 1K당 2M의 가치가 있어 &mdash; 방어가 공격만큼 중요합니다.",
+    "st4_title": "4단계 &mdash; 회복",
+    "st4_days": "7일차+",
+    "st4_h": "창이 닫히기 전에 이것을 하세요",
+    "st4_1": "<strong>수령 버튼을 클릭하세요</strong> &mdash; 잃은 병력의 기본 <strong>35%</strong>를 돌려받지만 수령해야만 받습니다. 사람들이 잊고 전부 잃습니다.",
+    "st4_2": "<strong>65% 상한</strong>까지 두 가지 방법으로: <strong>회복 티켓</strong>(이벤트에서 획득하거나 제국 코인으로 구매, 최대 20개)과 <strong>아군이 당신에게 회복 토큰 사용</strong>(본인에게는 쓸 수 없음 &mdash; 연맹 채팅에 요청).",
+    "st4_3": "<strong>이 단계가 끝나면 수동 회복이 없습니다.</strong> 남은 비헤모스 크리스탈도 먼저 사용하세요.",
+    "ref_h": "비헤모스 참고 (유년기 시작)",
+    "ref_s1_v": "유년기",
+    "ref_s1_l": "시작 단계",
+    "ref_s2_l": "공성 (시작)",
+    "ref_s3_l": "체력 (시작)",
+    "ref_s4_l": "불멸 스택 (정찰됨)",
+    "ref_note": "공성은 <strong>내구당 왕국 포인트 ~0.3</strong>(1,000당 300)을 주므로, 초당 8,750이면 ≈ <strong>초당 ~2,625점</strong>; 강철 발굽과 각 성장 단계가 이를 올립니다. 1일차 기준값이며 &mdash; 비헤모스를 육성하면서 오를 것으로 예상하세요.",
+    "conf_h": "확인 중",
+    "conf_1": "우리 서버의 정확한 <strong>후손의 시험 슬롯 시간</strong>과 <strong>침공 시간 및 장소</strong>(관리자가 설정).",
+    "conf_2": "첫 노드(50K) 이후의 <strong>혈통 노드 비용</strong>과 <strong>단계별 성장</strong> 능력치 증가량.",
+    "conf_3": "<strong>불멸의 힘</strong> &mdash; 4스택이 표준인지 육성으로 얻는지, 그리고 마지막 스택이 부활하는지(0회 4번 vs 5번).",
+    "conf_4": "<strong>혈통 순도</strong> 승리가 실제 전투 보너스를 주는지 단순 진행 표시인지.",
+    "conf_5": "침공하는 비헤모스가 <strong>보호막 친 성채를 칠 수 있는지</strong>(버블이 도시를 실제로 보호하는가?).",
+    "conf_6": "일부 포인트 수치는 가이드 영상 출처입니다 &mdash; 게임 내 <strong>포인트 규칙</strong> 화면에서 확인할 가치가 있습니다.",
     "footer_tagline": "시대 8 &mdash; 각성하고 정복하라",
-    "footer_sub": "비헤모스 정복 &middot; 6월 22~30일 &middot; UTC+0 &middot; 제국 대 제국"
+    "footer_sub": "Behemoth Conquest &middot; 6월 22&ndash;30일 &middot; UTC+0 &middot; 제국 대 제국"
   }
 };
 
@@ -1564,7 +1715,6 @@ window.addEventListener('DOMContentLoaded', function () {
     cmpToggle.addEventListener('click', function () {
       var open = cmpWrap.classList.toggle('expanded');
       cmpToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      cmpToggle.innerHTML = (open ? 'Show top 5' : 'Show top 10') + ' <span class="chev">&#9662;</span>';
     });
   }
 
