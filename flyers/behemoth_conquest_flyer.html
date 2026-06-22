@@ -541,6 +541,38 @@
     color: #fff; opacity: .7; cursor: pointer; font-family: sans-serif;
   }
   #lightbox .lb-close:hover { opacity: 1; }
+
+  /* -- US vs ENEMY comparison tables -- */
+  .cmp-tbl { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cmp-tbl thead th {
+    font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 9px; letter-spacing: .5px;
+    text-transform: uppercase; color: var(--text-muted); padding: 5px 8px 3px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cmp-tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  .cmp-tbl tr:last-child td { border-bottom: none; }
+  .cmp-tbl .c-rk { width: 22px; color: var(--text-muted); text-align: center; }
+  .cmp-tbl th.c-rk { text-align: center; }
+  .cmp-tbl .c-nm { color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cmp-tbl .c-nm .tg { color: var(--text-muted); }
+  /* numeric columns: fixed width + tabular figures so digits line up vertically and a missing value never shifts the row */
+  .cmp-tbl .c-p  { width: 54px; text-align: right; color: var(--accent-gold); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
+  .cmp-tbl .c-mp { width: 42px; text-align: right; font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
+  .cmp-tbl .c-mp.hi  { color: var(--accent-green); }
+  .cmp-tbl .c-mp.mid { color: var(--text-secondary); }
+  .cmp-tbl .c-mp.lo  { color: var(--text-muted); }
+  .cmp-tbl .c-mp.na  { color: var(--text-muted); }
+  .cmp .cmp-more { display: none; }
+  .cmp.expanded .cmp-more { display: table-row; }
+  #cmpToggle {
+    display: block; width: 100%; margin-top: 10px; padding: 7px;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text-secondary); font-family: 'Barlow', sans-serif; font-size: 12px;
+    font-weight: 600; letter-spacing: .5px; cursor: pointer; transition: background .15s, color .15s;
+  }
+  #cmpToggle:hover { background: rgba(212,168,67,0.07); color: var(--text-primary); }
+  #cmpToggle .chev { display: inline-block; transition: transform .2s; }
+  #cmpToggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
 </style>
 </head>
 <body>
@@ -660,40 +692,49 @@
       </div>
     </div>
 
-    <!-- top-5 power players, side by side -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <!-- top-10 power players, side by side (rows 6-10 collapsed behind toggle) -->
+    <div id="cmpWrap" class="cmp" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <!-- OURS -->
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
-        <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);display:flex;justify-content:space-between;">
-          <span>OUR TOP POWER</span><span style="color:var(--text-muted);font-size:11px;">P &middot; M:P</span>
-        </div>
-        <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+        <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);">OUR TOP POWER</div>
+        <table class="cmp-tbl">
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p">Power</th><th class="c-mp">M:P</th></tr></thead>
           <tbody>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;color:var(--text-muted);width:18px;">1</td><td style="padding:6px 4px;color:var(--text-primary);">Tokimune <span style="color:var(--text-muted);">[eRa]</span></td><td style="padding:6px 8px;text-align:right;color:var(--accent-gold);white-space:nowrap;">428.7M<span style="color:var(--accent-green);"> &middot; 63%</span></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;color:var(--text-muted);">2</td><td style="padding:6px 4px;color:var(--text-primary);">&#48124;&#53944; <span style="color:var(--text-muted);">[REU]</span></td><td style="padding:6px 8px;text-align:right;color:var(--accent-gold);white-space:nowrap;">313.8M<span style="color:var(--accent-green);"> &middot; 98%</span></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;color:var(--text-muted);">3</td><td style="padding:6px 4px;color:var(--text-primary);">Collin6666 <span style="color:var(--text-muted);">[eRa]</span></td><td style="padding:6px 8px;text-align:right;color:var(--accent-gold);white-space:nowrap;">301.5M<span style="color:var(--text-secondary);"> &middot; 21%</span></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;color:var(--text-muted);">4</td><td style="padding:6px 4px;color:var(--text-primary);">XnJinX <span style="color:var(--text-muted);">[eRa]</span></td><td style="padding:6px 8px;text-align:right;color:var(--accent-gold);white-space:nowrap;">293.6M<span style="color:var(--accent-green);"> &middot; 77%</span></td></tr>
-            <tr><td style="padding:6px 8px;color:var(--text-muted);">5</td><td style="padding:6px 4px;color:var(--text-primary);">Lumberjack <span style="color:var(--text-muted);">[eRa]</span></td><td style="padding:6px 8px;text-align:right;color:var(--accent-gold);white-space:nowrap;">267.0M<span style="color:var(--accent-green);"> &middot; 99%</span></td></tr>
+            <tr><td class="c-rk">1</td><td class="c-nm">Tokimune <span class="tg">[eRa]</span></td><td class="c-p">428.7M</td><td class="c-mp hi">63%</td></tr>
+            <tr><td class="c-rk">2</td><td class="c-nm">&#48124;&#53944; <span class="tg">[REU]</span></td><td class="c-p">313.8M</td><td class="c-mp hi">98%</td></tr>
+            <tr><td class="c-rk">3</td><td class="c-nm">Collin6666 <span class="tg">[eRa]</span></td><td class="c-p">301.5M</td><td class="c-mp lo">21%</td></tr>
+            <tr><td class="c-rk">4</td><td class="c-nm">XnJinX <span class="tg">[eRa]</span></td><td class="c-p">293.6M</td><td class="c-mp hi">77%</td></tr>
+            <tr><td class="c-rk">5</td><td class="c-nm">Lumberjack <span class="tg">[eRa]</span></td><td class="c-p">267.0M</td><td class="c-mp hi">99%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">6</td><td class="c-nm">Macklemore <span class="tg">[eRa]</span></td><td class="c-p">266.9M</td><td class="c-mp mid">42%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">7</td><td class="c-nm">BloodYoda <span class="tg">[eRa]</span></td><td class="c-p">251.2M</td><td class="c-mp hi">91%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">8</td><td class="c-nm">ibubu&#9827;JP <span class="tg">[eRa]</span></td><td class="c-p">244.5M</td><td class="c-mp lo">28%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">9</td><td class="c-nm">&#46384;&#46972;&#50640;&#47805; <span class="tg">[REU]</span></td><td class="c-p">236.4M</td><td class="c-mp na">&ndash;</td></tr>
+            <tr class="cmp-more"><td class="c-rk">10</td><td class="c-nm">TommyTorpedo <span class="tg">[eRa]</span></td><td class="c-p">228.7M</td><td class="c-mp mid">56%</td></tr>
           </tbody>
         </table>
       </div>
       <!-- THEIRS -->
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
-        <div style="background:rgba(196,61,61,0.12);border-bottom:1px solid var(--accent-red-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-red);display:flex;justify-content:space-between;">
-          <span>#087 TOP POWER</span><span style="color:var(--text-muted);font-size:11px;">P &middot; M:P</span>
-        </div>
-        <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+        <div style="background:rgba(196,61,61,0.12);border-bottom:1px solid var(--accent-red-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-red);">#087 TOP POWER</div>
+        <table class="cmp-tbl">
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p">Power</th><th class="c-mp">M:P</th></tr></thead>
           <tbody>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;color:var(--text-muted);width:18px;">1</td><td style="padding:6px 4px;color:var(--text-primary);">&#36139;&#20567;87 <span style="color:var(--text-muted);">[ACA]</span></td><td style="padding:6px 8px;text-align:right;color:var(--accent-gold);white-space:nowrap;">272.0M<span style="color:var(--text-secondary);"> &middot; 33%</span></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;color:var(--text-muted);">2</td><td style="padding:6px 4px;color:var(--text-primary);">&#50313;&#50313; <span style="color:var(--text-muted);">[JAN]</span></td><td style="padding:6px 8px;text-align:right;color:var(--accent-gold);white-space:nowrap;">261.2M<span style="color:var(--text-muted);"> &middot; &ndash;</span></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;color:var(--text-muted);">3</td><td style="padding:6px 4px;color:var(--text-primary);">&#24040;&#23344;&#23542;&#23542; <span style="color:var(--text-muted);">[ACA]</span></td><td style="padding:6px 8px;text-align:right;color:var(--accent-gold);white-space:nowrap;">256.7M<span style="color:var(--accent-green);"> &middot; 56%</span></td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;color:var(--text-muted);">4</td><td style="padding:6px 4px;color:var(--text-primary);">&#24187;&#21050;&#169;&#21313;&#22235;&#20195; <span style="color:var(--text-muted);">[ACA]</span></td><td style="padding:6px 8px;text-align:right;color:var(--accent-gold);white-space:nowrap;">249.1M<span style="color:var(--accent-green);"> &middot; 102%</span></td></tr>
-            <tr><td style="padding:6px 8px;color:var(--text-muted);">5</td><td style="padding:6px 4px;color:var(--text-primary);">NTM&#178;&#8312;&#178;&#20851;&#20113;&#38271; <span style="color:var(--text-muted);">[JAN]</span></td><td style="padding:6px 8px;text-align:right;color:var(--accent-gold);white-space:nowrap;">237.9M<span style="color:var(--text-muted);"> &middot; &ndash;</span></td></tr>
+            <tr><td class="c-rk">1</td><td class="c-nm">&#36139;&#20567;87 <span class="tg">[ACA]</span></td><td class="c-p">272.0M</td><td class="c-mp lo">33%</td></tr>
+            <tr><td class="c-rk">2</td><td class="c-nm">&#50313;&#50313; <span class="tg">[JAN]</span></td><td class="c-p">261.2M</td><td class="c-mp lo">32%</td></tr>
+            <tr><td class="c-rk">3</td><td class="c-nm">&#24040;&#23344;&#23542;&#23542; <span class="tg">[ACA]</span></td><td class="c-p">256.7M</td><td class="c-mp mid">56%</td></tr>
+            <tr><td class="c-rk">4</td><td class="c-nm">&#24187;&#21050;&#169;&#21313;&#22235;&#20195; <span class="tg">[ACA]</span></td><td class="c-p">249.1M</td><td class="c-mp hi">102%</td></tr>
+            <tr><td class="c-rk">5</td><td class="c-nm">NTM&#178;&#8312;&#178;&#20851;&#20113;&#38271; <span class="tg">[JAN]</span></td><td class="c-p">237.9M</td><td class="c-mp lo">34%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">6</td><td class="c-nm">&#24339;&#26412;&#20116;&#33247; <span class="tg">[ACA]</span></td><td class="c-p">223.4M</td><td class="c-mp na">&ndash;</td></tr>
+            <tr class="cmp-more"><td class="c-rk">7</td><td class="c-nm">NTM&#178;&#8312;&#178;&#21674;&#21674;&#37089; <span class="tg">[JAN]</span></td><td class="c-p">222.0M</td><td class="c-mp hi">103%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">8</td><td class="c-nm">&#25105;&#38463;&#20844;&#35201;&#29983;&#20102; <span class="tg">[JAN]</span></td><td class="c-p">217.6M</td><td class="c-mp hi">72%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">9</td><td class="c-nm">&#37202;&#20808; <span class="tg">[JAN]</span></td><td class="c-p">215.0M</td><td class="c-mp mid">48%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">10</td><td class="c-nm">&#29066;&#12398;&#27431;&#32048;&#35930; <span class="tg">[JAN]</span></td><td class="c-p">208.5M</td><td class="c-mp lo">22%</td></tr>
           </tbody>
         </table>
       </div>
     </div>
-    <p style="font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5;"><b style="color:var(--accent-green);">M:P</b> = merit&divide;power, a proxy for how aggressively a player has fought this season. Their #4 (<span style="color:var(--text-secondary);">102%</span>) is their one true threat &mdash; small but battle-hardened. Their #1&ndash;2 carry power but thin merit, so they fold under sustained pressure. Power figures are individual; alliance totals favour us too (our top alliance ~20B vs their ~15.5B).</p>
+    <button id="cmpToggle" type="button" aria-expanded="false">Show top 10 <span class="chev">&#9662;</span></button>
+    <p style="font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5;"><b style="color:var(--accent-green);">M:P</b> = merit&divide;power, a proxy for how aggressively a player has fought this season. Their #4 and #7 (<span style="color:var(--accent-green);">102&ndash;103%</span>) are their real threats &mdash; small but battle-hardened. Their power leaders (#1&ndash;2) carry size but thin merit, so they fold under sustained pressure. Power figures are individual; alliance totals favour us too (our top alliance ~20B vs their ~15.5B). <span class="na" style="color:var(--text-muted);">&ndash;</span> = outside that server's merit top-28.</p>
   </div>
 
   <!-- STAGE 2 — BEAST TAMING -->
@@ -1391,6 +1432,17 @@ window.addEventListener('DOMContentLoaded', function () {
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && lb.classList.contains('open')) close();
   });
+
+  // --- Scouting comparison: expand/collapse rows 6-10 ---
+  var cmpWrap = document.getElementById('cmpWrap');
+  var cmpToggle = document.getElementById('cmpToggle');
+  if (cmpWrap && cmpToggle) {
+    cmpToggle.addEventListener('click', function () {
+      var open = cmpWrap.classList.toggle('expanded');
+      cmpToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      cmpToggle.innerHTML = (open ? 'Show top 5' : 'Show top 10') + ' <span class="chev">&#9662;</span>';
+    });
+  }
 });
 </script>
 
