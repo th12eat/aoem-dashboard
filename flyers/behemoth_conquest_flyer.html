@@ -495,10 +495,13 @@
 
   /* -- LANG SWITCHER -- */
   .lang-bar {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    z-index: 2;
     display: flex;
     justify-content: flex-end;
     gap: 6px;
-    margin-bottom: 14px;
   }
   .lang-btn {
     font-family: 'Barlow Condensed', sans-serif;
@@ -596,16 +599,15 @@
 <body>
 <div class="flyer">
 
-  <!-- LANG SWITCHER -->
-  <div class="lang-bar">
-    <button class="lang-btn active" onclick="switchLang('en')">EN</button>
-    <button class="lang-btn" onclick="switchLang('es')">ES</button>
-    <button class="lang-btn" onclick="switchLang('fr')">FR</button>
-    <button class="lang-btn" onclick="switchLang('ko')">KO</button>
-  </div>
-
   <!-- HEADER -->
   <div class="header">
+    <!-- LANG SWITCHER -->
+    <div class="lang-bar">
+      <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+      <button class="lang-btn" onclick="switchLang('es')">ES</button>
+      <button class="lang-btn" onclick="switchLang('fr')">FR</button>
+      <button class="lang-btn" onclick="switchLang('ko')">KO</button>
+    </div>
     <div class="event-tag" data-i18n="event_tag">New Game Mode &middot; Era 8</div>
     <h1>BEHEMOTH <span>CONQUEST</span></h1>
     <div class="subtitle" data-i18n="subtitle">Awaken the bloodline &middot; March into enemy empires &middot; Cross-server war</div>
