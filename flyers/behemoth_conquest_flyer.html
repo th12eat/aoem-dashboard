@@ -429,6 +429,43 @@
   }
   .ltag b { color: var(--accent-gold); }
 
+  /* -- STAGE BLOCKS (stage-by-stage layout) -- */
+  .stage { margin-bottom: 22px; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--bg-card); }
+  .stage-head {
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    padding:13px 16px; border-bottom:1px solid var(--border);
+    background:linear-gradient(90deg, rgba(255,255,255,0.03), transparent);
+  }
+  .stage-head .sicon { font-size:24px; line-height:1; }
+  .stage-head .stitle { font-family:'Bebas Neue',sans-serif; font-size:23px; letter-spacing:1.5px; color:var(--text-primary); }
+  .stage-head .sdays {
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:1px;
+    text-transform:uppercase; padding:3px 10px; border-radius:5px; margin-left:auto;
+    background:rgba(212,168,67,0.12); color:var(--accent-gold); border:1px solid var(--accent-gold-dim);
+  }
+  .stage.now .stage-head { background:rgba(212,168,67,0.07); }
+  .stage.now .stage-head::after {
+    content:'NOW'; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:10px; letter-spacing:1px;
+    background:var(--accent-gold); color:var(--bg-deep); padding:2px 8px; border-radius:4px;
+  }
+  .stage-body { padding:14px 16px; }
+  .stage-body > h4 {
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; letter-spacing:1px;
+    text-transform:uppercase; color:var(--accent-gold); margin:14px 0 6px; display:flex; align-items:center; gap:7px;
+  }
+  .stage-body > h4:first-child { margin-top:0; }
+  .stage-body ul { list-style:none; padding:0; margin:0 0 4px; }
+  .stage-body li { font-size:13px; color:var(--text-secondary); line-height:1.55; padding:3px 0 3px 16px; position:relative; }
+  .stage-body li::before { content:'\25B8'; position:absolute; left:0; color:var(--accent-gold-dim); }
+  .stage-body li strong { color:var(--text-primary); font-weight:600; }
+  /* schedule chips */
+  .sched { display:flex; flex-wrap:wrap; gap:6px; margin:2px 0 8px; }
+  .sched .slot {
+    font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.5px;
+    padding:4px 10px; border-radius:6px; border:1px solid var(--border); background:var(--bg-deep); color:var(--text-secondary);
+  }
+  .sched .slot b { color:var(--accent-gold); }
+
   /* -- FOOTER -- */
   .footer {
     text-align: center;
@@ -483,8 +520,9 @@
 <body>
 <div class="flyer">
 
-  <!-- LANG SWITCHER -->
-  <div class="lang-bar">
+  <!-- LANG SWITCHER (paused — translations are being rebuilt for the new layout.
+       Hidden for now; re-enable this block + the TRANSLATIONS data when ready.) -->
+  <div class="lang-bar" style="display:none;">
     <button class="lang-btn active" onclick="switchLang('en')">EN</button>
     <button class="lang-btn" onclick="switchLang('es')">ES</button>
     <button class="lang-btn" onclick="switchLang('fr')">FR</button>
@@ -523,264 +561,184 @@
     <div class="cd-label" id="cd-label">Until Event Ends</div>
   </div>
 
-  <!-- DRAFT BANNER -->
-  <div class="draft-banner" data-i18n="draft_banner">
-    <strong>DRAFT v5</strong> &mdash; From the <strong>official June Events Preview (v1.12)</strong>, the in-game event mail, and beta screens. Items marked <span class="pill">TBC</span> still need confirmation for our server (exact rewards, runestone costs, Descendant Trial slot times, day&rarr;date mapping; invasion time/location set by our admin <strong>[314]AOEM314</strong>).
-  </div>
-
-  <!-- 1. THE BIG PICTURE -->
+  <!-- THE BIG PICTURE -->
   <div class="section">
-    <div class="sh"><span class="n">1</span> <span data-i18n="s1_title">The Big Picture</span></div>
-    <p class="blurb" data-i18n="s1_blurb">
-      A brand-new mode where <strong>two empires (servers) clash over their Behemoths</strong>. Across the event we earn <em>Awaken Runestones</em> to grow and buff our empire's Behemoth, then unleash it on the enemy server. Both sides attack and defend behemoths in <strong>cross-server battles</strong>, scoring points. <span class="gold">The empire with the higher total score wins.</span>
+    <div class="sh"><span class="n">!</span> <span>The Big Picture</span></div>
+    <p class="blurb">
+      <strong>Two empires (servers) clash over their Behemoths.</strong> Across the event we earn <em>Awaken Runestones</em> to grow and buff our Behemoth, then unleash it on the enemy server while defending our own. Both sides attack and defend in cross-server battles. <span class="gold">The empire with the higher total score wins</span> &mdash; but both kingdoms earn Behemoth Crystals, so it pays to play even from behind.
     </p>
-    <div class="co gold" data-i18n="s1_callout">
-      <strong>Three ways to score points:</strong> (1) donate Awaken Runestones to cultivate our Behemoth, (2) defend our own Behemoth, (3) attack the enemy's Behemoth. Rewards split across <strong>Personal, Alliance &amp; Kingdom rankings</strong> &mdash; and <strong>both the winning and losing kingdoms get a share of Behemoth Crystals</strong>, spent in the <strong>Behemoth Store</strong>. (So it pays to participate even if we're behind.) <strong>During Stellar Dynasty</strong>, the Behemoth Store is folded into the Dynasty: trade your <strong>Behemoth Crystals for Conquest Points</strong> and spend them in the <strong>Conquest Store</strong> (a 40-level track).
+    <div class="co gold">
+      <strong>Three ways to score:</strong> (1) <strong>cultivate</strong> &mdash; donate runestones to grow our Behemoth, (2) <strong>defend</strong> our Behemoth, (3) <strong>attack</strong> the enemy's. Rewards split across <strong>Personal, Alliance &amp; Kingdom</strong> rankings. Spend <strong>Behemoth Crystals</strong> in the Behemoth Store before the event ends &mdash; during <strong>Stellar Dynasty</strong> you instead trade Crystals for <strong>Conquest Points</strong> in the Conquest Store (40-level track).
     </div>
   </div>
 
-  <!-- 2. EVENT PHASES -->
+  <!-- STAGE TIMELINE STRIP -->
   <div class="section">
-    <div class="sh"><span class="n">2</span> <span data-i18n="s2_title">The Four Phases</span></div>
-    <p class="blurb" data-i18n="s2_blurb">The event runs <strong>Jun 22 &rarr; Jun 30 (UTC+0)</strong> through four stages. We are currently in <span class="gold">Preparation</span>. Our admin sets the exact <strong>invasion time &amp; location</strong>.</p>
+    <div class="sh"><span class="n">&#128197;</span> <span>The Four Stages (Jun 22&ndash;30)</span></div>
     <div class="phase-track">
-      <div class="phase active">
-        <div class="pnum" data-i18n="phase1_num">Stage 1</div>
-        <div class="picon">&#9876;</div>
-        <div class="pname" data-i18n="phase1_name">Matching</div>
-        <div class="pdesc" data-i18n="phase1_desc">Servers paired, prep &amp; plan</div>
+      <div class="phase">
+        <div class="pnum">Day 1</div><div class="picon">&#9876;</div>
+        <div class="pname">Matching</div><div class="pdesc">Servers paired, scout &amp; plan</div>
       </div>
       <div class="phase">
-        <div class="pnum" data-i18n="phase2_num">Stage 2</div>
-        <div class="picon">&#129704;</div>
-        <div class="pname" data-i18n="phase2_name">Beast Taming</div>
-        <div class="pdesc" data-i18n="phase2_desc">Tame &amp; strengthen the Behemoth bloodline</div>
+        <div class="pnum">Days 2&ndash;4</div><div class="picon">&#129704;</div>
+        <div class="pname">Beast Taming</div><div class="pdesc">Cultivate the Behemoth via daily grind</div>
       </div>
       <div class="phase">
-        <div class="pnum" data-i18n="phase3_num">Stage 3</div>
-        <div class="picon">&#128165;</div>
-        <div class="pname" data-i18n="phase3_name">Attack-Defense</div>
-        <div class="pdesc" data-i18n="phase3_desc">90-min Behemoth invasions, attack &amp; defend</div>
+        <div class="pnum">Days 5&ndash;6</div><div class="picon">&#128165;</div>
+        <div class="pname">Attack-Defense</div><div class="pdesc">90-min cross-server Behemoth invasions</div>
       </div>
       <div class="phase">
-        <div class="pnum" data-i18n="phase4_num">Stage 4</div>
-        <div class="picon">&#10010;</div>
-        <div class="pname" data-i18n="phase4_name">Recovery</div>
-        <div class="pdesc" data-i18n="phase4_desc">Partially recover lost units</div>
+        <div class="pnum">Day 7+</div><div class="picon">&#10010;</div>
+        <div class="pname">Recovery</div><div class="pdesc">Claim back lost units</div>
       </div>
     </div>
-    <div class="co info" data-i18n="s2_callout">
-      <strong>Empire vs Empire.</strong> It's <strong>our server vs an enemy server</strong> (Behemoth vs Behemoth). Per the event mail: our <strong>King locks the invasion time &amp; location before the end of Day 3</strong>; the <strong>invasions then happen on Days 5&ndash;6</strong> (both Behemoths march on the other server). <span class="pill">TBC</span> exact day&rarr;date mapping for our server &mdash; watch alliance chat for the admin's call.
+    <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Exact day&rarr;date mapping and slot/invasion times for our server are set by admin <strong>[314]AOEM314</strong> &mdash; watch alliance chat. The breakdown below follows the event mail.</p>
+  </div>
+
+  <!-- STAGE 1 — MATCHING -->
+  <div class="stage">
+    <div class="stage-head"><span class="sicon">&#9876;</span><span class="stitle">Stage 1 &mdash; Matching</span><span class="sdays">Day 1</span></div>
+    <div class="stage-body">
+      <h4>What happens</h4>
+      <ul>
+        <li>Our server is <strong>paired against an enemy server</strong> &mdash; Behemoth vs Behemoth for the whole event.</li>
+        <li>No invasions yet. This is the day to <strong>scout the enemy Behemoth</strong> (toggle "Enemy Behemoth" on the lineage screen) and plan donations.</li>
+      </ul>
+      <h4>Do today</h4>
+      <ul>
+        <li><strong>Start the daily grind immediately</strong> (see Stage 2) &mdash; runestones earned now go straight into cultivation.</li>
+        <li><strong>Note the King's plan:</strong> the invasion time &amp; location must be locked before the end of Day 3.</li>
+      </ul>
     </div>
   </div>
 
-  <!-- 3. OUR BEHEMOT -->
-  <div class="section">
-    <div class="sh"><span class="n">3</span> <span data-i18n="s3_title">Our Behemoth</span></div>
-    <p class="blurb" data-i18n="s3_blurb">The Behemoth grows through stages as we feed it Awaken Runestones. Starting stage is <strong>Juvenile</strong>. Cultivation fills a bar toward the next awakening.</p>
-    <div class="stat-row">
-      <div class="stat-box"><div class="val" data-i18n="stat_juvenile">Juvenile</div><div class="lbl" data-i18n="stat_stage_lbl">Current Stage</div></div>
-      <div class="stat-box"><div class="val">0 / 500K</div><div class="lbl" data-i18n="stat_cult_lbl">Cultivation Bar</div></div>
-      <div class="stat-box"><div class="val">8,750/s</div><div class="lbl" data-i18n="stat_siege_lbl">Siege (start)</div></div>
-      <div class="stat-box"><div class="val">3.5M</div><div class="lbl" data-i18n="stat_health_lbl">Health (start)</div></div>
-    </div>
+  <!-- STAGE 2 — BEAST TAMING -->
+  <div class="stage">
+    <div class="stage-head"><span class="sicon">&#129704;</span><span class="stitle">Stage 2 &mdash; Beast Taming</span><span class="sdays">Days 2&ndash;4</span></div>
+    <div class="stage-body">
+      <h4>Goal</h4>
+      <ul>
+        <li>Earn <strong>Awaken Runestones</strong> from daily activities and <strong>donate them</strong> to grow our Behemoth's siege, health, and the lineage tree before the invasion.</li>
+        <li>Donating also tips <strong>Bloodline Purity</strong> (a live tug-of-war bar vs the enemy) our way and earns <strong>10 personal points per runestone</strong>.</li>
+      </ul>
 
-    <div class="co warn" data-i18n="s3_combat_intro">
-      <strong>How combat actually works (from in-game tooltips):</strong>
-    </div>
-    <div class="strat">
-      <h3 style="color:var(--accent-red);">&#9876; <span data-i18n="s3_siege_h">Siege (Attack)</span></h3>
-      <ul>
-        <li data-i18n="s3_siege_1">Our Behemoth deals <strong>8,750 durability damage/sec</strong> to the target citadel.</li>
-        <li data-i18n="s3_siege_2">It earns <strong>~2,625 kingdom points per attack tick (per second)</strong> at the Juvenile siege rate &mdash; a steady stream that compounds over a 90-min invasion.</li>
-        <li data-i18n="s3_siege_4"><strong>Points scale with durability damage</strong> &mdash; the guide gives <strong>300 kingdom points per 1,000 durability damage</strong> (i.e. <strong>&times;0.3</strong> per point of durability). So at 8,750/sec that's <strong>~2,625 pts/sec</strong>, and <strong>Iron Hoof &amp; each growth stage raise the rate</strong> (e.g. Iron Hoof II &rarr; 10,000/sec &rarr; <strong>~3,000 pts/sec</strong>). <span class="pill">TBC</span> confirm on the in-game Point Rules screen.</li>
-        <li data-i18n="s3_siege_5"><strong>Invasions last 90 minutes.</strong> The Behemoth also <strong>knocks away player citadels and destroys alliance buildings</strong> on the tiles it crosses &mdash; clear the path / don't keep buildings in its lane.</li>
-        <li data-i18n="s3_siege_3">It <strong>cannot attack while dazed.</strong></li>
-      </ul>
-    </div>
-    <div class="strat">
-      <h3 style="color:var(--accent-blue);">&#10084; <span data-i18n="s3_stun_h">Health &amp; The Stun Cycle</span></h3>
-      <ul>
-        <li data-i18n="s3_stun_1">Starting health is <strong>3,500,000</strong>.</li>
-        <li data-i18n="s3_stun_2">When its HP hits 0, the Behemoth consumes <strong>1 stack of Undying Force</strong>, <strong>disbands every rally attacking it</strong>, enters a <strong>brief daze</strong>, then <strong>returns to full strength</strong>. <strong>Complete defeat = deplete all its Undying Force stacks.</strong> A scouted Behemoth showed <strong>4 stacks</strong>, which would mean roughly <strong>5 full zeroes to kill it</strong> (4 revives, then the final death with no stack left). <span class="pill">TBC</span> whether 4 is standard or earned via prep cultivation, and whether the last stack still revives (4 vs 5 zeroes).</li>
-        <li data-i18n="s3_stun_3"><strong>Defenders:</strong> zeroing it scatters all attacking rallies and buys time. <strong>Attackers:</strong> the goal is to burn through every Undying Force stack &mdash; coordinate fresh waves to re-zero it the moment it recovers.</li>
-      </ul>
-    </div>
+      <h4>&#128197; Daily schedule &mdash; Trial of Scion</h4>
+      <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:4px;">Four fixed 30-min windows/day that alternate between the two servers (paired-server example shown). <strong>Be ready to rally at the start of our windows.</strong></p>
+      <div class="sched">
+        <span class="slot"><b>01:00</b>&ndash;01:30</span>
+        <span class="slot"><b>04:00</b>&ndash;04:30</span>
+        <span class="slot"><b>11:00</b>&ndash;11:30</span>
+        <span class="slot"><b>19:00</b>&ndash;19:30</span>
+      </div>
 
-    <div class="co warn" data-i18n="s3_rally_rule">
-      <strong>Only rallies can damage the Behemoth.</strong> Solo marches and war machines do nothing to it &mdash; every hit must come from a rally you lead or join.
-    </div>
-    <div class="strat">
-      <h3 style="color:var(--accent-red);" data-i18n="s3_rally_h">Hitting Hard &mdash; Rally Composition</h3>
+      <h4>Do each day (Days 2&ndash;4)</h4>
       <ul>
-        <li data-i18n="s3_rally_1"><strong>Official:</strong> each additional <strong>rallied troop adds 1,000 damage per second</strong> to the Behemoth.</li>
-        <li data-i18n="s3_rally_2">A rally caps at <strong>40 troops</strong>, so a full rally = <strong>~40,000 damage per second</strong> &mdash; regardless of how many units those troops hold (the unit cap doesn't enter this).</li>
-        <li data-i18n="s3_rally_5"><strong>The longer a rally sustains, the harder it hits:</strong> after <strong>5 minutes</strong> of continuous attack, damage ramps up <strong>+500 every 15 seconds</strong>. Long, unbroken rallies are far better than short ones &mdash; don't let them disband.</li>
-        <li data-i18n="s3_rally_3"><strong>Damage scales with participants, not stack size:</strong> fill all 40 slots. 40 people each joining beats 5 people sending huge stacks.</li>
-        <li data-i18n="s3_rally_4">Bring enough units per march to <strong>survive the counterattack</strong> so your damage keeps landing and the rally stays alive into the ramp.</li>
+        <li><strong>Trial of Scion</strong> &mdash; rally the guarded "Scion" map target (Elite, ~160K Swordsmen). F2P-friendly: Lü Bu + low-tier (T4/T5) troops clears it cheaply. Mission tiers: 20K / 50K / 100K / 150K damage.</li>
+        <li><strong>Behemoth Cultivation exploration</strong> &mdash; pet / groom / entertain the Behemoth on the map. Mission tiers: 3 / 10 / 15 / 20.</li>
+        <li><strong>Rally vs Tribes</strong> &mdash; join every called rally; cheap repeatable runestones. Tiers: 1 / 4 / 8 / 12.</li>
+        <li><strong>Donate runestones</strong> as you bank them &mdash; don't hoard; cultivation compounds.</li>
       </ul>
-    </div>
-    <div class="strat">
-      <h3 style="color:var(--accent-gold);" data-i18n="s3_tree_h">Bloodline Lineage Tree</h3>
-      <p style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin-bottom:8px;" data-i18n="s3_tree_blurb">Donate Awaken Runestones to unlock nodes (Rank I &rarr; II). The tree buffs <strong>both the Behemoth itself and every player in the empire</strong>. Toggle <strong>"Enemy Behemoth"</strong> to scout their build.</p>
+
+      <h4>&#128176; Runestone income (per day)</h4>
+      <ul>
+        <li><strong>Trial of Scion damage:</strong> 1 runestone per 100K Behemoth points, <strong>up to 250/day</strong>.</li>
+        <li><strong>Scion final blow:</strong> a <strong>separate +400/day</strong> on top &mdash; so the Trial alone can give up to <strong>~650/day</strong>.</li>
+        <li>Plus Exploration and Rally vs Tribes both drop more. Do all of them daily.</li>
+      </ul>
+
+      <h4>&#127807; Bloodline Lineage Tree</h4>
+      <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:8px;">Donate runestones to unlock nodes (Rank I&rarr;II). The tree buffs <strong>both the Behemoth and every player in the empire</strong>. First node costs <strong>50,000 runestones</strong>; later nodes cost at least that.</p>
       <table class="mtable">
-        <tr><th data-i18n="s3_th_node">Node</th><th data-i18n="s3_th_effect">Effect</th><th>I &rarr; II</th></tr>
-        <tr><td class="name" data-i18n="node_atk">Savage Attack</td><td data-i18n="node_atk_e">+Attack to all empire units</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
-        <tr><td class="name" data-i18n="node_def">Savage Defense</td><td data-i18n="node_def_e">+Defense to all empire units</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
-        <tr><td class="name" data-i18n="node_hp">Savage Health</td><td data-i18n="node_hp_e">+Health to all empire units</td><td class="tiers"><b>2.5%</b> &rarr; <b>5%</b></td></tr>
-        <tr><td class="name" data-i18n="node_fort">Mobile Fortress</td><td data-i18n="node_fort_e">+Behemoth health</td><td class="tiers"><b>250K</b> &rarr; <b>500K</b></td></tr>
-        <tr><td class="name" data-i18n="node_hoof">Iron Hoof</td><td data-i18n="node_hoof_e">+Behemoth durability dmg vs citadels</td><td class="tiers"><b>625</b> &rarr; <b>1,250</b></td></tr>
-        <tr><td class="name" data-i18n="node_bless">Behemoth's Blessing</td><td data-i18n="node_bless_e">Donate runestones for rewards</td><td class="tiers">&mdash;</td></tr>
+        <tr><th>Node</th><th>Effect</th><th>I &rarr; II</th></tr>
+        <tr><td class="name">Savage Attack</td><td>+Attack to all empire units</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
+        <tr><td class="name">Savage Defense</td><td>+Defense to all empire units</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
+        <tr><td class="name">Savage Health</td><td>+Health to all empire units</td><td class="tiers"><b>2.5%</b> &rarr; <b>5%</b></td></tr>
+        <tr><td class="name">Mobile Fortress</td><td>+Behemoth health</td><td class="tiers"><b>250K</b> &rarr; <b>500K</b></td></tr>
+        <tr><td class="name">Iron Hoof</td><td>+Behemoth durability dmg vs citadels</td><td class="tiers"><b>625</b> &rarr; <b>1,250</b></td></tr>
+        <tr><td class="name">Behemoth's Blessing</td><td>Donate runestones for rewards</td><td class="tiers">&mdash;</td></tr>
       </table>
-      <p style="font-size:12px;color:var(--text-muted);" data-i18n="s3_tree_note">These are <strong>Juvenile-stage (Day 1) baseline values</strong> &mdash; they likely scale up sharply as the Behemoth grows, so a more-cultivated Behemoth will show much larger numbers. Iron Hoof <em>adds to the per-second siege rate</em> (it doesn't one-shot citadels). "Sin Despertar" / locked = node not yet awakened. <strong>The first node (Wild Damage Increase) costs 50,000 runestones</strong>; later nodes cost at least that and likely more. <span class="pill">TBC</span> exact cost of each later node and per-stage scaling.</p>
-    </div>
-
-    <div class="strat">
-      <h3 style="color:var(--accent-blue);" data-i18n="s3_purity_h">Bloodline Purity (Tug-of-War)</h3>
-      <p style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin-bottom:4px;" data-i18n="s3_purity_blurb">A live bar between the two empires &mdash; the more we cultivate vs the enemy, the more it tips our way.</p>
-      <div class="tug">
-        <div class="us" style="width:50%;" data-i18n="tug_us">US</div>
-        <div class="them" style="width:50%;" data-i18n="tug_them">ENEMY</div>
-      </div>
-      <p style="font-size:12px;color:var(--text-muted);" data-i18n="s3_purity_note">Donate runestones early to push the bar before the invasion stage. <span class="pill">TBC</span> exact effect of winning purity.</p>
+      <p style="font-size:12px;color:var(--text-muted);">Juvenile-stage baseline values; they scale up as the Behemoth grows. Iron Hoof <em>adds to</em> the per-second siege rate.</p>
     </div>
   </div>
 
-  <!-- 4. HOW SCORING WORKS -->
-  <div class="section">
-    <div class="sh"><span class="n">4</span> <span data-i18n="s4_title">How We Win</span></div>
-    <div class="role-grid">
-      <div class="role cult">
-        <h4 data-i18n="role_cult_h">Cultivate</h4>
-        <p data-i18n="role_cult_p">Donate <strong>Awaken Runestones</strong> to grow our Behemoth and push Bloodline Purity. Earns points + strengthens our side for the invasion.</p>
-      </div>
-      <div class="role defend">
-        <h4 data-i18n="role_defend_h">Defend</h4>
-        <p data-i18n="role_defend_p">Rally the <strong>enemy Behemoth to zero HP</strong> to stun it for 30s &mdash; that scatters its rallies and stops it scoring. Protect ours in turn.</p>
-      </div>
-      <div class="role attack">
-        <h4 data-i18n="role_attack_h">Attack</h4>
-        <p data-i18n="role_attack_p">Hit the <strong>enemy Behemoth</strong> during the invasion. Time fresh rallies for the moment a stun ends. Offensive points are the bulk of a strong score.</p>
-      </div>
-      <div class="role relocate">
-        <h4 data-i18n="role_relocate_h">Relocate</h4>
-        <p data-i18n="role_relocate_p">During invasions you can <strong>relocate to the enemy server</strong> to join the offense (1&times; mission, big reward).</p>
-      </div>
-    </div>
-    <div class="co warn" data-i18n="s4_callout">
-      <strong>Win condition:</strong> at the end, the empire with the <strong>higher total score wins</strong>. The biggest swings are the <strong>enemy-Behemoth milestones</strong> &mdash; 1B per Undying Force stack depleted, 5B for a full defeat &mdash; plus the <strong>2M per 1K of our own Behemoth's remaining health</strong> at invasion's end. So keeping ours alive and attacking (and stunning theirs) is the highest-leverage thing we can do. Every donation, defense, and attack adds up &mdash; so does showing up for the invasion window.
-    </div>
-
-    <p class="blurb" style="margin:14px 0 6px;" data-i18n="s4_points_h"><strong style="color:var(--accent-gold);">Point Values</strong> &mdash; how each action scores (from the guide; transcript-derived, confirm on the in-game Point Rules screen):</p>
-    <table class="mtable">
-      <tr><th data-i18n="s4_th_action">Action</th><th data-i18n="s4_th_pts">Points</th></tr>
-      <tr><td class="name" data-i18n="pt_donate">Donate 1 Awaken Runestone</td><td class="tiers"><b>10</b> personal</td></tr>
-      <tr><td class="name" data-i18n="pt_wound">Gravely wound an enemy-kingdom player (valid combat)</td><td class="tiers" data-i18n="pt_wound_v">standard battle points</td></tr>
-      <tr><td class="name" data-i18n="pt_citadel">Our Behemoth: per 1K durability damage to an enemy citadel</td><td class="tiers"><b>300</b> kingdom</td></tr>
-      <tr><td class="name" data-i18n="pt_remain">Invasion end: per 1K of <em>our</em> Behemoth's remaining health</td><td class="tiers"><b>2,000,000</b> kingdom</td></tr>
-      <tr><td class="name" data-i18n="pt_dmg">Per 100 damage dealt to the enemy Behemoth</td><td class="tiers"><b>80</b> kingdom</td></tr>
-      <tr><td class="name" data-i18n="pt_undying">Deplete one enemy Undying Force stack</td><td class="tiers"><b>1,000,000,000</b> kingdom</td></tr>
-      <tr><td class="name" data-i18n="pt_defeat">Completely defeat an enemy Behemoth</td><td class="tiers"><b>5,000,000,000</b> kingdom</td></tr>
-    </table>
-    <div class="co info" data-i18n="s4_points_note">
-      <strong>Two takeaways:</strong> (1) keeping <strong>our</strong> Behemoth alive is worth a fortune &mdash; 2M kingdom points per 1K of health it ends with, so defense matters as much as offense. (2) On the enemy Behemoth, the <strong>milestones dwarf the chip damage</strong>: depleting an Undying Force stack (1B) and the final defeat (5B) are where the kingdom score is really won &mdash; coordinate fresh waves to push it through each stack.
-    </div>
-  </div>
-
-  <!-- 5. MISSION CHECKLIST -->
-  <div class="section">
-    <div class="sh"><span class="n">5</span> <span data-i18n="s5_title">Mission Checklist</span></div>
-    <p class="blurb" data-i18n="s5_blurb">Complete these for <strong>Awaken Runestones</strong>, speedups, and Behemoth resources. Higher tiers = bigger rewards. <span class="pill">TBC</span> exact reward amounts.</p>
-
-    <p class="blurb" style="margin-bottom:6px;" data-i18n="s5_milestones_h"><strong style="color:var(--accent-gold);">Personal Point Milestones</strong> &mdash; "Behemoth Friend" rewards for total personal points:</p>
-    <table class="mtable">
-      <tr><th data-i18n="s5_th_milestone">Milestone</th><th data-i18n="s5_th_points">Personal points needed</th></tr>
-      <tr><td class="name" data-i18n="ms_friend1">Behemoth Friend I</td><td class="tiers"><b>1,200,000</b></td></tr>
-      <tr><td class="name" data-i18n="ms_friend2">Behemoth Friend II</td><td class="tiers"><b>3,600,000</b></td></tr>
-      <tr><td class="name" data-i18n="ms_friend3">Behemoth Friend III</td><td class="tiers"><b>7,300,000</b></td></tr>
-    </table>
-
-    <p class="blurb" style="margin-bottom:6px;" data-i18n="s5_repeat_h"><strong style="color:var(--accent-gold);">Repeatable Objectives</strong> &mdash; grind these tiers up:</p>
-    <table class="mtable">
-      <tr><th data-i18n="s5_th_obj">Objective</th><th data-i18n="s5_th_todo">What to do</th><th data-i18n="s5_th_tiers">Tiers</th></tr>
-      <tr>
-        <td class="name" data-i18n="obj_explore">Exploration</td>
-        <td data-i18n="obj_explore_d">Complete Behemoth Cultivation exploration missions</td>
-        <td class="tiers"><b>3</b> / <b>10</b> / <b>15</b> / <b>20</b></td>
-      </tr>
-      <tr>
-        <td class="name" data-i18n="obj_rally">Rally vs Tribes</td>
-        <td data-i18n="obj_rally_d">Successfully join a rally against tribes</td>
-        <td class="tiers"><b>1</b> / <b>4</b> / <b>8</b> / <b>12</b></td>
-      </tr>
-      <tr>
-        <td class="name" data-i18n="obj_trial">Trial of Scion</td>
-        <td data-i18n="obj_trial_d">Rally the guarded "Scion" map target (an Elite, ~160K Swordsmen) for damage. Runs Day 2&ndash;4. A free-to-play hero like Lü Bu with low-tier (T4/T5) troops can clear it cheaply.</td>
-        <td class="tiers"><b>20K</b> / <b>50K</b> / <b>100K</b> / <b>150K</b></td>
-      </tr>
-      <tr>
-        <td class="name" data-i18n="obj_invasion">Behemoth Invasion</td>
-        <td data-i18n="obj_invasion_d">Relocate to the enemy's server during invasions</td>
-        <td class="tiers"><b>1&times;</b></td>
-      </tr>
-    </table>
-    <div class="co info" data-i18n="s5_trial_sched">
-      <strong>Trial of Scion runs in fixed daily windows</strong> (Day 2&ndash;4), not anytime &mdash; four 30-min slots that alternate between the two servers. On a paired server the slots were <strong>01:00&ndash;01:30</strong> &amp; <strong>11:00&ndash;11:30</strong> for one side, <strong>04:00&ndash;04:30</strong> &amp; <strong>19:00&ndash;19:30</strong> for the other (UTC+0). <span class="pill">TBC</span> our exact slot times &mdash; check the event banner. <strong>Be ready to rally at the start of our windows.</strong>
-    </div>
-    <div class="co info" data-i18n="s5_runestone_caps">
-      <strong>Daily Awaken Runestone caps (Trial of Scion):</strong> just doing <strong>damage</strong> earns <strong>1 runestone per 100K Behemoth points, up to 250/day</strong> &mdash; and landing the <strong>final blow</strong> on a Scion gives a <strong>separate +400/day</strong> on top, so the Trial can yield up to <strong>~650/day</strong> combined. Plus the Behemoth Cultivation exploration (pet/groom/entertain) and Rally vs Tribes both drop more runestones &mdash; do all of them daily to bank the most.
-    </div>
-    <div class="co info" data-i18n="s5_engine">
-      <strong>These daily activities are the cultivation engine.</strong> Descendants and Exploration drop the <strong>coins/runestones you spend to upgrade our Behemoth</strong> (Behemoth attributes + the lineage tree) &mdash; so the daily grind is literally <em>how</em> we make our elephant strong for the invasion, not just a side reward. <span class="pill">TBC</span> Most of the <strong>millions of personal points</strong> for the Behemoth Friend tiers likely come from <strong>invasion damage</strong> on Days 5&ndash;6; the daily grind is a steady top-up plus your upgrade currency.
-    </div>
-    <div class="co gold" data-i18n="s5_callout">
-      <strong>Priority order while we learn the mode:</strong> 1) push <strong>Exploration</strong> + <strong>Descendant Trial</strong> daily (upgrade coins + runestones to cultivate our Behemoth), 2) join every <strong>Rally vs Tribes</strong>, 3) when the invasion opens on Days 5&ndash;6, <strong>relocate &amp; attack</strong> for the big mission reward and the bulk of personal points.
-    </div>
-  </div>
-
-  <!-- 6. WHAT TO DO NOW -->
-  <div class="section">
-    <div class="sh"><span class="n">6</span> <span data-i18n="s6_title">What To Do Now</span></div>
-    <div class="strat">
-      <h3 style="color:var(--accent-green);" data-i18n="s6_prep_h">Beast Taming Stage (we are here)</h3>
+  <!-- STAGE 3 — ATTACK-DEFENSE -->
+  <div class="stage">
+    <div class="stage-head"><span class="sicon">&#128165;</span><span class="stitle">Stage 3 &mdash; Attack-Defense</span><span class="sdays">Days 5&ndash;6</span></div>
+    <div class="stage-body">
+      <h4>What happens</h4>
       <ul>
-        <li data-i18n="s6_prep_1"><strong>Run exploration + trial missions daily</strong> &mdash; they fund our runestone supply and personal points.</li>
-        <li data-i18n="s6_prep_2"><strong>Donate runestones to cultivate</strong> &mdash; grow the Behemoth and tip Bloodline Purity our way before invasion.</li>
-        <li data-i18n="s6_prep_3"><strong>Join tribe rallies</strong> whenever they're called &mdash; cheap, repeatable points.</li>
-        <li data-i18n="s6_prep_4"><strong>Watch alliance chat</strong> for the admin's invasion time &amp; location call.</li>
+        <li>Each Behemoth <strong>invades the other server</strong> at the locked time &amp; location. <strong>Each invasion lasts 90 minutes.</strong></li>
+        <li>Our Behemoth marches on their Imperial City; theirs marches on ours. The invading Behemoth <strong>knocks away player citadels and destroys alliance buildings</strong> in its lane.</li>
+        <li><strong>Be online for the window</strong> &mdash; this is where the bulk of the score (and personal points) is won.</li>
       </ul>
-    </div>
-    <div class="strat">
-      <h3 style="color:var(--accent-red);" data-i18n="s6_inv_h">Attack-Defense Stage (when it opens)</h3>
+
+      <h4>&#9876; Attacking the enemy Behemoth</h4>
       <ul>
-        <li data-i18n="s6_inv_1"><strong>Be online for the 90-min window.</strong> Offensive points during the invasion are where the score is won.</li>
-        <li data-i18n="s6_inv_2"><strong>Relocate to the enemy server</strong> to attack their Behemoth (also clears the 1&times; Invasion mission).</li>
-        <li data-i18n="s6_inv_3"><strong>Defenders stay home</strong> as called to protect our Behemoth from their invasion.</li>
-        <li data-i18n="s6_inv_5"><strong>Hold rallies as long as possible</strong> &mdash; the post-5-min damage ramp rewards sustained attacks; don't let them disband.</li>
-        <li data-i18n="s6_inv_4">Spend <strong>Behemoth Crystals</strong> in the Behemoth Store before the event closes.</li>
+        <li><strong>Only rallies damage it</strong> &mdash; solo marches and war machines do nothing. Each rallied troop adds <strong>1,000 dmg/sec</strong>; a full 40-troop rally = <strong>~40,000/sec</strong> (unit stack size doesn't matter &mdash; bodies do).</li>
+        <li><strong>Hold rallies long.</strong> After <strong>5 minutes</strong> continuous, damage ramps <strong>+500 every 15s</strong> &mdash; don't let them disband.</li>
+        <li><strong>Relocate to the enemy server</strong> to join the offense (also clears the 1&times; Invasion mission).</li>
       </ul>
-    </div>
-    <div class="strat">
-      <h3 style="color:var(--accent-blue);" data-i18n="s6_rec_h">Recovery Stage (standard end-of-KvK recovery day)</h3>
+
+      <h4>&#10084; The stun / Undying Force cycle</h4>
       <ul>
-        <li data-i18n="s6_rec_1"><strong>CLICK THE CLAIM BUTTON</strong> &mdash; you get a base <strong>35%</strong> of lost units back, but only if you claim it. People forget and lose the whole thing.</li>
-        <li data-i18n="s6_rec_2">Push toward the <strong>65% cap</strong> two ways: <strong>Recovery Tickets</strong> (earned in-event or bought with Empire Coins, max 20) and <strong>allies spending recovery tokens on you</strong> (you can't self-use them &mdash; ask in alliance chat).</li>
-        <li data-i18n="s6_rec_3"><strong>No manual recovery after this stage ends</strong> &mdash; claim before the window closes.</li>
+        <li>At <strong>0 HP</strong> the Behemoth burns <strong>1 Undying Force stack</strong>, disbands every rally on it, dazes briefly, then <strong>revives to full</strong>. It dies only when <strong>all stacks are depleted</strong>.</li>
+        <li>A scouted Behemoth had <strong>4 stacks</strong> &rarr; roughly <strong>5 full zeroes to kill it</strong>. Coordinate fresh waves to re-zero the instant it revives.</li>
+        <li><strong>Defenders:</strong> zeroing theirs scatters their rallies and stops it scoring &mdash; protect ours in turn.</li>
+      </ul>
+
+      <h4>&#127919; How points are scored</h4>
+      <table class="mtable">
+        <tr><th>Action</th><th>Points</th></tr>
+        <tr><td class="name">Our Behemoth: per 1K durability dmg to a citadel</td><td class="tiers"><b>300</b> kingdom</td></tr>
+        <tr><td class="name">Per 100 dmg to the enemy Behemoth</td><td class="tiers"><b>80</b> kingdom</td></tr>
+        <tr><td class="name">Deplete one enemy Undying Force stack</td><td class="tiers"><b>1,000,000,000</b></td></tr>
+        <tr><td class="name">Completely defeat an enemy Behemoth</td><td class="tiers"><b>5,000,000,000</b></td></tr>
+        <tr><td class="name">Invasion end: per 1K of <em>our</em> Behemoth's remaining HP</td><td class="tiers"><b>2,000,000</b></td></tr>
+        <tr><td class="name">Gravely wound an enemy-kingdom player</td><td class="tiers">battle pts</td></tr>
+      </table>
+      <div class="co gold">
+        <strong>Where the score is won:</strong> the enemy-Behemoth <strong>milestones dwarf chip damage</strong> &mdash; depleting a stack (1B) and the kill (5B) are the big swings. And keeping <strong>ours</strong> alive is worth 2M per 1K of leftover HP &mdash; so defense matters as much as offense.
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 4 — RECOVERY -->
+  <div class="stage">
+    <div class="stage-head"><span class="sicon">&#10010;</span><span class="stitle">Stage 4 &mdash; Recovery</span><span class="sdays">Day 7+</span></div>
+    <div class="stage-body">
+      <h4>Do this before the window closes</h4>
+      <ul>
+        <li><strong>CLICK THE CLAIM BUTTON</strong> &mdash; you get a base <strong>35%</strong> of lost units back, but only if you claim. People forget and lose all of it.</li>
+        <li>Push toward the <strong>65% cap</strong> two ways: <strong>Recovery Tickets</strong> (earned in-event or bought with Empire Coins, max 20) and <strong>allies spending recovery tokens on you</strong> (you can't self-use them &mdash; ask in alliance chat).</li>
+        <li><strong>No manual recovery after this stage ends.</strong> Also spend any leftover Behemoth Crystals first.</li>
       </ul>
     </div>
   </div>
 
-  <!-- 7. OPEN QUESTIONS -->
+  <!-- REFERENCE: BEHEMOTH STATS -->
   <div class="section">
-    <div class="sh"><span class="n">7</span> <span data-i18n="s7_title">Still To Confirm</span></div>
-    <ul style="margin:0 0 10px 16px; font-size:14px; line-height:1.7; color:var(--text-secondary);">
-      <li data-i18n="s7_3"><strong>Runestone cost of each later lineage node</strong> &mdash; the first (Wild Damage Increase) is 50,000; later nodes are at least that and likely climb. Knowing the full curve lets us plan an awakening priority order.</li>
-      <li data-i18n="s7_4"><strong>Bloodline Purity</strong> &mdash; it reads as just an indicator of how far each server has cultivated its Behemoth; <strong>unconfirmed whether winning it grants any actual combat bonus.</strong></li>
-      <li data-i18n="s7_5"><strong>Undying Force stacks</strong> &mdash; how many a Behemoth has (how many full re-zeros to defeat it), and <strong>how stacks are obtained / whether cultivation or growth stage increases them.</strong></li>
-      <li data-i18n="s7_6">Behemoth growth stages after Juvenile and the stat gains per stage.</li>
-      <li data-i18n="s7_7">Whether an invading Behemoth can <strong>attack shielded citadels</strong> &mdash; i.e. does bubbling actually protect your city during the invasion?</li>
+    <div class="sh"><span class="n">&#129704;</span> <span>Behemoth Reference (Juvenile start)</span></div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="val">Juvenile</div><div class="lbl">Start Stage</div></div>
+      <div class="stat-box"><div class="val">8,750/s</div><div class="lbl">Siege (start)</div></div>
+      <div class="stat-box"><div class="val">3.5M</div><div class="lbl">Health (start)</div></div>
+      <div class="stat-box"><div class="val">4&times;</div><div class="lbl">Undying Stacks (scouted)</div></div>
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);">Siege scores <strong>~0.3 kingdom points per durability</strong> (300 per 1,000), so at 8,750/sec ≈ <strong>~2,625 pts/sec</strong>; Iron Hoof and each growth stage raise it. These are Day-1 baselines &mdash; expect them to climb as the Behemoth is cultivated.</p>
+  </div>
+
+  <!-- STILL CONFIRMING -->
+  <div class="section">
+    <div class="sh"><span class="n">?</span> <span>Still Confirming</span></div>
+    <ul style="margin:0; font-size:13.5px; line-height:1.7; color:var(--text-secondary); padding-left:18px;">
+      <li>Our server's exact <strong>Trial of Scion slot times</strong> and the <strong>invasion time &amp; location</strong> (admin sets these).</li>
+      <li><strong>Lineage node costs</strong> beyond the first (50K), and the <strong>per-stage growth</strong> stat gains.</li>
+      <li><strong>Undying Force</strong> &mdash; whether 4 stacks is standard or cultivation-earned, and whether the last stack revives (4 vs 5 zeroes).</li>
+      <li>Whether <strong>Bloodline Purity</strong> winning gives a real combat bonus or is just a progress indicator.</li>
+      <li>Whether an invading Behemoth can <strong>hit shielded citadels</strong> (does bubbling protect your city?).</li>
+      <li>Several point values are from the guide video &mdash; worth a glance at the in-game <strong>Point Rules</strong> screen to confirm.</li>
     </ul>
-    <div class="co info" data-i18n="s7_next"><strong>Next step:</strong> once the event opens, grab in-game shots of the lineage-node costs, the Undying Force stack count, and the per-stage growth values &mdash; I'll fill those in.</div>
   </div>
 
   <!-- FOOTER -->
