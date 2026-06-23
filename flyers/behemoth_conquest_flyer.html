@@ -504,6 +504,22 @@
   .tug-bar .tug-fill-them { background:linear-gradient(90deg, rgba(196,61,61,0.85), rgba(196,61,61,0.55)); }
   .tug-cap { font-size:11px; color:var(--text-muted); margin-top:4px; }
 
+  /* -- Bloodline Blessings strip -- */
+  .bless-box { margin:10px 0 4px; }
+  .bless-head { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.5px; color:var(--text-secondary); margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+  .bless-head .bless-prov { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:var(--accent-gold-dim); border:1px solid var(--accent-gold-dim); border-radius:4px; padding:1px 6px; }
+  .bless-labels { max-width:420px; margin:5px auto 0; display:grid; grid-template-columns:repeat(4,1fr); gap:4px; }
+  .bless-labels span { font-size:10px; line-height:1.2; text-align:center; color:var(--text-secondary); }
+
+  /* -- Add-to-calendar button -- */
+  .ical-btn {
+    display:inline-flex; align-items:center; gap:6px; margin:2px 0 4px; padding:7px 14px;
+    background:var(--bg-card); border:1px solid var(--accent-gold-dim); border-radius:8px;
+    color:var(--accent-gold); font-family:'Barlow Condensed',sans-serif; font-size:13px;
+    font-weight:700; letter-spacing:0.5px; cursor:pointer; transition:background .15s;
+  }
+  .ical-btn:hover { background:rgba(212,168,67,0.12); }
+
   /* -- Trial of Scion active-window modal -- */
   .scion-modal {
     position:fixed; inset:0; z-index:10000; display:none;
@@ -874,6 +890,7 @@
         <span class="slot scion-slot" data-start="660" data-end="690" data-server="008"><b>11:00</b>&ndash;11:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
         <span class="slot scion-slot" data-start="1140" data-end="1170" data-server="087"><b>19:00</b>&ndash;19:30 <span class="srv" data-i18n="srv087">#087</span><span class="slot-state"></span></span>
       </div>
+      <button type="button" id="icalBtn" class="ical-btn">&#128197; <span data-i18n="ical_btn">Add to calendar (.ics)</span></button>
 
       <h4 data-i18n="st2_live_h">&#9878; Live standings (Day 2)</h4>
       <div class="tug-wrap">
@@ -892,7 +909,21 @@
           <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#087</span> 232,505</span>
         </div>
         <div class="tug-bar"><div class="tug-fill-us" style="width:39%;"></div><div class="tug-fill-them" style="width:61%;"></div></div>
-        <div class="tug-cap" data-i18n="tug_purity_cap"><strong>We're behind on donations</strong> &mdash; they've fed their Behemoth ~83K more runestones. Each Bloodline Purity upgrade costs 50,000, so keep donating to close the gap. We've unlocked <strong>4 Bloodline Blessings</strong> so far.</div>
+        <div class="tug-cap" data-i18n="tug_purity_cap"><strong>We're behind on donations</strong> &mdash; they've fed their Behemoth ~83K more runestones. Each Bloodline Purity upgrade costs 50,000, so keep donating to close the gap.</div>
+      </div>
+
+      <div class="bless-box">
+        <div class="bless-head"><span data-i18n="bless_h">Bloodline Blessings unlocked</span> <span class="bless-prov" data-i18n="bless_prov">labels provisional</span></div>
+        <figure style="margin:0;">
+          <img class="zoomable" data-cap="Bloodline Blessings unlocked so far (labels provisional)" src="assets/behemoth/bloodline_blessings.jpg" alt="Four Bloodline Blessing icons unlocked" loading="lazy" style="width:100%;max-width:420px;border-radius:8px;border:1px solid var(--border);display:block;margin:0 auto;">
+        </figure>
+        <div class="bless-labels">
+          <span data-i18n="bless_1">Behemoth's Blessing</span>
+          <span data-i18n="bless_2">Savage Health</span>
+          <span data-i18n="bless_3">Savage Attack&nbsp;I</span>
+          <span data-i18n="bless_4">Savage Defense&nbsp;I</span>
+        </div>
+        <div class="tug-cap" data-i18n="bless_note">Icons are pulled straight from our Behemoth screen, so they're accurate; the text labels are my best read of each and will be confirmed. #087 has roughly the same set (maybe one extra trait at this stage).</div>
       </div>
 
       <h4 data-i18n="st2_do_h">Do each day (Days 2&ndash;4)</h4>
@@ -1405,6 +1436,14 @@ const TRANSLATIONS = {
     "scion_modal_title": "La Prueba del Scion está EN CURSO",
     "scion_modal_body": "Una ventana de 30 minutos de la Prueba del Scion está abierta ahora. Es <strong>matanza en campo abierto</strong> &mdash; los Scions aparecen en grupos cada ~10s con poca vida. Envía marchas y farmea runas y eliminaciones. <strong>Baja los gráficos</strong> por el lag, y cuidado con las casillas transfronterizas (riesgo de quedar a cero cuando es en nuestro servidor).",
     "scion_modal_btn": "Entendido",
+    "ical_btn": "Añadir al calendario (.ics)",
+    "bless_h": "Bendiciones de Linaje desbloqueadas",
+    "bless_prov": "etiquetas provisionales",
+    "bless_1": "Bendición de Bégimo",
+    "bless_2": "Salud Salvaje",
+    "bless_3": "Ataque Salvaje&nbsp;I",
+    "bless_4": "Defensa Salvaje&nbsp;I",
+    "bless_note": "Los iconos vienen directos de la pantalla de nuestro Bégimo, así que son exactos; las etiquetas de texto son mi mejor lectura de cada uno y se confirmarán. #087 tiene más o menos el mismo conjunto (quizá un rasgo extra en esta etapa).",
     "footer_tagline": "Era 8 &mdash; Despierta y Conquista",
     "footer_sub": "Behemoth Conquest &middot; 22&ndash;30 jun &middot; UTC+0 &middot; Imperio vs Imperio"
   },
@@ -1576,6 +1615,14 @@ const TRANSLATIONS = {
     "scion_modal_title": "L'Épreuve du Scion est EN COURS",
     "scion_modal_body": "Une fenêtre de 30 minutes de l'Épreuve du Scion est ouverte maintenant. C'est du <strong>combat en champ libre</strong> &mdash; les Scions apparaissent en paquets toutes les ~10s avec peu de PV. Envoie des marches et farme runes et éliminations. <strong>Baisse les graphismes</strong> pour le lag, et attention aux cases transfrontalières (risque de mise à zéro quand c'est sur notre serveur).",
     "scion_modal_btn": "Compris",
+    "ical_btn": "Ajouter au calendrier (.ics)",
+    "bless_h": "Bénédictions de Lignée débloquées",
+    "bless_prov": "libellés provisoires",
+    "bless_1": "Bénédiction du Béhémoth",
+    "bless_2": "Santé Sauvage",
+    "bless_3": "Attaque Sauvage&nbsp;I",
+    "bless_4": "Défense Sauvage&nbsp;I",
+    "bless_note": "Les icônes viennent directement de l'écran de notre Béhémoth, donc elles sont exactes ; les libellés sont ma meilleure lecture de chacun et seront confirmés. #087 a à peu près le même ensemble (peut-être un trait de plus à ce stade).",
     "footer_tagline": "Era 8 &mdash; Éveille et Conquiers",
     "footer_sub": "Behemoth Conquest &middot; 22&ndash;30 juin &middot; UTC+0 &middot; Empire vs Empire"
   },
@@ -1747,6 +1794,14 @@ const TRANSLATIONS = {
     "scion_modal_title": "후손의 시험 진행 중",
     "scion_modal_body": "지금 30분짜리 후손의 시험 창이 열려 있습니다. <strong>야전 사냥</strong>입니다 &mdash; 후손은 ~10초마다 무리지어 나오며 체력이 낮습니다. 행군을 보내 룬석과 처치를 파밍하세요. 렉 때문에 <strong>그래픽을 낮추고</strong>, 국경 너머 타일을 주의하세요(우리 서버에서 열릴 때 제로 위험).",
     "scion_modal_btn": "확인",
+    "ical_btn": "캘린더에 추가 (.ics)",
+    "bless_h": "해금한 혈통 축복",
+    "bless_prov": "라벨 잠정",
+    "bless_1": "비헤모스의 축복",
+    "bless_2": "야만 체력",
+    "bless_3": "야만 공격&nbsp;I",
+    "bless_4": "야만 방어&nbsp;I",
+    "bless_note": "아이콘은 우리 비헤모스 화면에서 직접 가져와 정확합니다; 텍스트 라벨은 각 항목에 대한 제 추정이며 확인 예정입니다. #087도 거의 같은 구성입니다(이 단계에서 특성 1개 정도 더 많을 수 있음).",
     "footer_tagline": "시대 8 &mdash; 각성하고 정복하라",
     "footer_sub": "Behemoth Conquest &middot; 6월 22&ndash;30일 &middot; UTC+0 &middot; 제국 대 제국"
   }
@@ -1895,6 +1950,112 @@ function openScionModal() {
   if (m) m.classList.add('open');
 }
 
+// --- Calendar export (.ics) -------------------------------------------------
+// Localized titles/descriptions for calendar events (the .ics itself is single-language,
+// generated in whatever language is currently selected).
+var ICAL_TEXT = {
+  en: {
+    calname: 'Behemoth Conquest', tz: 'all times UTC+0',
+    scion008: 'Trial of Scion (on #008 — ours)',
+    scion087: 'Trial of Scion (on #087 — theirs)',
+    scionDesc: 'Open-field killing, 30-min window. Farm Scion damage + eliminations. Turn graphics down; watch for cross-border tiles.',
+    invThem: 'Behemoth invasion — #087 attacks us',
+    invThemDesc: 'Enemy Behemoth invades #008 at (1219,1185). Be online to defend; rally it down to deny their score.',
+    invUs: 'Behemoth invasion — we attack #087',
+    invUsDesc: 'Our Behemoth invades #087 (location TBD). Relocate and rally; keep ours alive for the remaining-HP score.'
+  },
+  es: {
+    calname: 'Behemoth Conquest', tz: 'horas en UTC+0',
+    scion008: 'Prueba del Scion (en #008 — nuestro)',
+    scion087: 'Prueba del Scion (en #087 — suyo)',
+    scionDesc: 'Matanza en campo abierto, ventana de 30 min. Farmea daño y eliminaciones de Scions. Baja los gráficos; cuidado con casillas transfronterizas.',
+    invThem: 'Invasión de Bégimo — #087 nos ataca',
+    invThemDesc: 'El Bégimo enemigo invade #008 en (1219,1185). Conéctate para defender; bájalo a cero para negar su puntaje.',
+    invUs: 'Invasión de Bégimo — atacamos a #087',
+    invUsDesc: 'Nuestro Bégimo invade #087 (ubicación por confirmar). Reubícate y reúne; mantén vivo el nuestro por el puntaje de vida restante.'
+  },
+  fr: {
+    calname: 'Behemoth Conquest', tz: 'heures en UTC+0',
+    scion008: 'Épreuve du Scion (sur #008 — le nôtre)',
+    scion087: 'Épreuve du Scion (sur #087 — le leur)',
+    scionDesc: 'Combat en champ libre, fenêtre de 30 min. Farme dégâts et éliminations de Scions. Baisse les graphismes ; attention aux cases transfrontalières.',
+    invThem: 'Invasion de Béhémoth — #087 nous attaque',
+    invThemDesc: 'Le Béhémoth ennemi envahit #008 en (1219,1185). Sois en ligne pour défendre ; mets-le à zéro pour annuler son score.',
+    invUs: 'Invasion de Béhémoth — on attaque #087',
+    invUsDesc: 'Notre Béhémoth envahit #087 (lieu à confirmer). Relocalise et rallie ; garde le nôtre en vie pour le score de PV restants.'
+  },
+  ko: {
+    calname: 'Behemoth Conquest', tz: '모든 시간 UTC+0',
+    scion008: '후손의 시험 (#008 — 우리)',
+    scion087: '후손의 시험 (#087 — 상대)',
+    scionDesc: '야전 사냥, 30분 창. 후손 피해와 처치를 파밍. 그래픽을 낮추고 국경 너머 타일 주의.',
+    invThem: '비헤모스 침공 — #087이 우리를 공격',
+    invThemDesc: '적 비헤모스가 (1219,1185)에서 #008을 침공. 접속해 방어하고, 0으로 만들어 점수를 막으세요.',
+    invUs: '비헤모스 침공 — 우리가 #087을 공격',
+    invUsDesc: '우리 비헤모스가 #087을 침공(위치 미정). 이전해 집결하고, 잔여 체력 점수를 위해 우리 것을 살려두세요.'
+  }
+};
+
+function pad2(n) { return String(n).padStart(2, '0'); }
+// Format a UTC datetime as iCal stamp YYYYMMDDTHHMMSSZ.
+function icsStamp(y, mo, d, h, mi) {
+  return '' + y + pad2(mo) + pad2(d) + 'T' + pad2(h) + pad2(mi) + '00Z';
+}
+function icsEscape(t) { return String(t).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n'); }
+
+function buildICS(lang) {
+  var T = ICAL_TEXT[lang] || ICAL_TEXT.en;
+  var lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Era8//Behemoth Conquest//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+               'X-WR-CALNAME:' + icsEscape(T.calname)];
+  var DTSTAMP = '20260623T000000Z'; // fixed creation stamp (avoids Date.now nondeterminism)
+  var seq = 0;
+  function ev(uid, startStamp, endStamp, title, desc, rrule) {
+    lines.push('BEGIN:VEVENT');
+    lines.push('UID:' + uid + '@aoem-era8');
+    lines.push('DTSTAMP:' + DTSTAMP);
+    lines.push('DTSTART:' + startStamp);
+    lines.push('DTEND:' + endStamp);
+    if (rrule) lines.push('RRULE:' + rrule);
+    lines.push('SUMMARY:' + icsEscape(title));
+    lines.push('DESCRIPTION:' + icsEscape(desc + ' (' + T.tz + ')'));
+    lines.push('END:VEVENT');
+    seq++;
+  }
+  // Trial of Scion: 4 windows, daily Jun 23->25 (3 occurrences, ends end of Thursday Jun 25 UTC).
+  var trials = [
+    { h: 1,  srv: '008' }, { h: 4,  srv: '087' },
+    { h: 11, srv: '008' }, { h: 19, srv: '087' }
+  ];
+  var RRULE = 'FREQ=DAILY;COUNT=3';
+  trials.forEach(function (w, i) {
+    var endH = w.h, endMi = 30;
+    ev('scion-' + w.h + '-' + i,
+       icsStamp(2026, 6, 23, w.h, 0),
+       icsStamp(2026, 6, 23, endH, endMi),
+       (w.srv === '008' ? T.scion008 : T.scion087),
+       T.scionDesc, RRULE);
+  });
+  // Invasions, Saturday Jun 27. Theirs 11:00, ours 19:00. 90-minute windows.
+  ev('inv-them', icsStamp(2026, 6, 27, 11, 0), icsStamp(2026, 6, 27, 12, 30), T.invThem, T.invThemDesc, null);
+  ev('inv-us',   icsStamp(2026, 6, 27, 19, 0), icsStamp(2026, 6, 27, 20, 30), T.invUs,   T.invUsDesc,   null);
+  lines.push('END:VCALENDAR');
+  // Fold per RFC isn't strictly required for these short lines; join with CRLF.
+  return lines.join('\r\n');
+}
+
+function downloadICS() {
+  var ics = buildICS(currentLang);
+  var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'behemoth-conquest.ics';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+}
+
 // --- Lightbox: click any .zoomable (image or SVG map) to expand ---
 window.addEventListener('DOMContentLoaded', function () {
   var lb = document.getElementById('lightbox');
@@ -1955,6 +2116,10 @@ window.addEventListener('DOMContentLoaded', function () {
       btn.addEventListener('click', function () { showMap(btn.getAttribute('data-map')); });
     });
   }
+
+  // --- Add-to-calendar button ---
+  var icalBtn = document.getElementById('icalBtn');
+  if (icalBtn) icalBtn.addEventListener('click', downloadICS);
 
   // --- Trial of Scion active-window modal ---
   var scionModal = document.getElementById('scionModal');
