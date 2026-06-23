@@ -516,14 +516,18 @@
   .bless-tbl .bl-grp-us { color:#9dc0f0; border-bottom:2px solid var(--accent-blue-dim); }
   .bless-tbl .bl-grp-them { color:#e89a9a; border-bottom:2px solid var(--accent-red-dim); }
   .bless-tbl .bl-t { font-size:9px; }
-  /* value cells: tabular, narrow */
-  .bless-tbl .bl-v { font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; white-space:nowrap; width:54px; font-weight:700; }
-  .bless-tbl .bl-v.us-have   { color:#5b8def; background:rgba(61,124,196,0.12); }
-  .bless-tbl .bl-v.them-have { color:#c43d3d; background:rgba(196,61,61,0.12); }
-  .bless-tbl .bl-v.miss, .bless-tbl .bl-v.none { color:var(--text-muted); }
-  .bless-tbl .bl-v.none { opacity:0.45; }
+  /* value cells: tabular, narrow. Default state = locked (greyed). JS adds has-*/open. */
+  .bless-tbl .bl-v { font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; white-space:nowrap; width:52px; font-weight:700; color:var(--text-muted); opacity:0.4; }
+  .bless-tbl .bl-v.none { color:var(--text-muted); opacity:0.4; }
+  .bless-tbl .bl-v.has-us   { color:#5b8def; background:rgba(61,124,196,0.16); opacity:1; }
+  .bless-tbl .bl-v.has-them { color:#c43d3d; background:rgba(196,61,61,0.16); opacity:1; }
+  /* "open to donate next" — gold, gentle pulse */
+  .bless-tbl .bl-v.open { color:var(--accent-gold); background:rgba(212,168,67,0.16); opacity:1; box-shadow:inset 0 0 0 1px var(--accent-gold-dim); animation:blessPulse 1.6s ease-in-out infinite; }
+  @keyframes blessPulse { 0%,100%{ box-shadow:inset 0 0 0 1px rgba(212,168,67,0.35);} 50%{ box-shadow:inset 0 0 0 2px rgba(212,168,67,0.9);} }
+  @media (prefers-reduced-motion: reduce){ .bless-tbl .bl-v.open{ animation:none; } }
   .bless-legend { display:flex; flex-wrap:wrap; gap:14px; margin:7px 0 3px; font-size:10.5px; color:var(--text-secondary); }
-  .bless-legend .lg-us { color:#5b8def; } .bless-legend .lg-them { color:#c43d3d; } .bless-legend .lg-none { color:var(--text-muted); opacity:0.5; }
+  .bless-legend .lg-us { color:#5b8def; } .bless-legend .lg-them { color:#c43d3d; }
+  .bless-legend .lg-open { color:var(--accent-gold); } .bless-legend .lg-none { color:var(--text-muted); opacity:0.5; }
 
   /* -- Add-to-calendar button -- */
   .ical-btn {
@@ -928,7 +932,7 @@
 
       <div class="bless-box">
         <div class="bless-head"><span data-i18n="bless_h">Bloodline Blessings &mdash; buffs unlocked (all unit types)</span></div>
-        <table class="bless-tbl">
+        <table class="bless-tbl" id="blessTbl">
           <thead>
             <tr>
               <th class="bl-nm" rowspan="2" data-i18n="bless_th_name">Blessing</th>
@@ -944,42 +948,73 @@
           <tbody>
             <tr>
               <td class="name" data-i18n="bless_undying">Undying Force</td><td data-i18n="bless_undying_e">Revive at 0 HP</td>
-              <td class="bl-v us-have" data-i18n="bless_v_undying">3 stk</td><td class="bl-v none">&ndash;</td>
-              <td class="bl-v them-have" data-i18n="bless_v_undying">3 stk</td><td class="bl-v none">&ndash;</td>
+              <td class="bl-v" data-srv="us" data-step="0" data-i18n="bless_v_undying">3 stk</td><td class="bl-v none">&ndash;</td>
+              <td class="bl-v" data-srv="them" data-step="0" data-i18n="bless_v_undying">3 stk</td><td class="bl-v none">&ndash;</td>
             </tr>
             <tr>
               <td class="name" data-i18n="bless_healing">Wild Healing</td><td data-i18n="bless_healing_e">Hospital cap &amp; heal speed</td>
-              <td class="bl-v us-have" data-i18n="bless_v_heal">+700K/50%</td><td class="bl-v none">&ndash;</td>
-              <td class="bl-v them-have" data-i18n="bless_v_heal">+700K/50%</td><td class="bl-v none">&ndash;</td>
+              <td class="bl-v" data-srv="us" data-step="0" data-i18n="bless_v_heal">+700K/50%</td><td class="bl-v none">&ndash;</td>
+              <td class="bl-v" data-srv="them" data-step="0" data-i18n="bless_v_heal">+700K/50%</td><td class="bl-v none">&ndash;</td>
             </tr>
             <tr>
               <td class="name" data-i18n="bless_dmg">Wild Damage Increase</td><td data-i18n="bless_dmg_e">Damage dealt</td>
-              <td class="bl-v us-have">+2.0%</td><td class="bl-v miss">?</td>
-              <td class="bl-v them-have">+2.0%</td><td class="bl-v miss">?</td>
+              <td class="bl-v" data-srv="us" data-step="1">+2.5%</td><td class="bl-v" data-srv="us" data-step="10">+5%</td>
+              <td class="bl-v" data-srv="them" data-step="1">+2.5%</td><td class="bl-v" data-srv="them" data-step="10">+5%</td>
             </tr>
             <tr>
               <td class="name" data-i18n="bless_atk">Wild Attack</td><td data-i18n="bless_atk_e">Attack</td>
-              <td class="bl-v us-have">+5.0%</td><td class="bl-v miss">+10%</td>
-              <td class="bl-v them-have">+5.0%</td><td class="bl-v miss">+10%</td>
+              <td class="bl-v" data-srv="us" data-step="2">+5%</td><td class="bl-v" data-srv="us" data-step="7">+10%</td>
+              <td class="bl-v" data-srv="them" data-step="2">+5%</td><td class="bl-v" data-srv="them" data-step="7">+10%</td>
             </tr>
             <tr>
               <td class="name" data-i18n="bless_def">Wild Defense</td><td data-i18n="bless_def_e">Defense</td>
-              <td class="bl-v us-have">+5.0%</td><td class="bl-v miss">+10%</td>
-              <td class="bl-v them-have">+5.0%</td><td class="bl-v miss">+10%</td>
+              <td class="bl-v" data-srv="us" data-step="2">+5%</td><td class="bl-v" data-srv="us" data-step="7">+10%</td>
+              <td class="bl-v" data-srv="them" data-step="2">+5%</td><td class="bl-v" data-srv="them" data-step="7">+10%</td>
             </tr>
             <tr>
               <td class="name" data-i18n="bless_health">Wild Health</td><td data-i18n="bless_health_e">Health</td>
-              <td class="bl-v miss">+2.5%</td><td class="bl-v miss">+5%</td>
-              <td class="bl-v them-have">+2.5%</td><td class="bl-v miss">+5%</td>
+              <td class="bl-v" data-srv="us" data-step="3">+2.5%</td><td class="bl-v" data-srv="us" data-step="8">+5%</td>
+              <td class="bl-v" data-srv="them" data-step="3">+2.5%</td><td class="bl-v" data-srv="them" data-step="8">+5%</td>
+            </tr>
+            <tr>
+              <td class="name" data-i18n="bless_rally_atk">Rally Attack</td><td data-i18n="bless_rally_atk_e">Rally attack</td>
+              <td class="bl-v" data-srv="us" data-step="4">+5%</td><td class="bl-v none">&ndash;</td>
+              <td class="bl-v" data-srv="them" data-step="4">+5%</td><td class="bl-v none">&ndash;</td>
+            </tr>
+            <tr>
+              <td class="name" data-i18n="bless_rally_def">Rally Defense</td><td data-i18n="bless_rally_def_e">Rally defense</td>
+              <td class="bl-v" data-srv="us" data-step="4">+5%</td><td class="bl-v none">&ndash;</td>
+              <td class="bl-v" data-srv="them" data-step="4">+5%</td><td class="bl-v none">&ndash;</td>
+            </tr>
+            <tr>
+              <td class="name" data-i18n="bless_wild_rally">Wild Rally</td><td data-i18n="bless_wild_rally_e">Dmg reduction vs rallied</td>
+              <td class="bl-v" data-srv="us" data-step="5">+5%</td><td class="bl-v none">&ndash;</td>
+              <td class="bl-v" data-srv="them" data-step="5">+5%</td><td class="bl-v none">&ndash;</td>
+            </tr>
+            <tr>
+              <td class="name" data-i18n="bless_hoof">Iron Hoof</td><td data-i18n="bless_hoof_e">Behemoth durability dmg</td>
+              <td class="bl-v" data-srv="us" data-step="6">+625</td><td class="bl-v" data-srv="us" data-step="9">+1,250</td>
+              <td class="bl-v" data-srv="them" data-step="6">+625</td><td class="bl-v" data-srv="them" data-step="9">+1,250</td>
+            </tr>
+            <tr>
+              <td class="name" data-i18n="bless_fort">Mobile Fortress</td><td data-i18n="bless_fort_e">Behemoth health</td>
+              <td class="bl-v" data-srv="us" data-step="6">+250K</td><td class="bl-v" data-srv="us" data-step="9">+500K</td>
+              <td class="bl-v" data-srv="them" data-step="6">+250K</td><td class="bl-v" data-srv="them" data-step="9">+500K</td>
+            </tr>
+            <tr>
+              <td class="name" data-i18n="bless_final">Behemoth's Blessing</td><td data-i18n="bless_final_e">Voluntary: 4,000 pts + 20 contrib / runestone</td>
+              <td class="bl-v none">&#8734;</td><td class="bl-v none">&ndash;</td>
+              <td class="bl-v none">&#8734;</td><td class="bl-v none">&ndash;</td>
             </tr>
           </tbody>
         </table>
         <div class="bless-legend">
           <span><b class="lg-us">&#9632;</b> <span data-i18n="bless_lg_us">We have it</span></span>
           <span><b class="lg-them">&#9632;</b> <span data-i18n="bless_lg_them">#087 has it</span></span>
-          <span><b class="lg-none">&#9632;</b> <span data-i18n="bless_lg_none">Not yet</span></span>
+          <span><b class="lg-open">&#9632;</b> <span data-i18n="bless_lg_open">Open to donate now</span></span>
+          <span><b class="lg-none">&#9632;</b> <span data-i18n="bless_lg_none">Locked</span></span>
         </div>
-        <div class="tug-cap" data-i18n="bless_note">The only gap: <strong>#087 has Wild Health I</strong> and we don't &mdash; their donation lead bought them one extra trait. No tier-II buffs exist on either side yet. (Damage Increase II value unconfirmed.)</div>
+        <div class="tug-cap" data-i18n="bless_note">Tiers unlock in a <strong>fixed order</strong> &mdash; you can't push a buff to II early. The <strong>glowing gold cells</strong> are what each server can donate into <em>next</em> (50,000 runestones each); everything past them is locked until prerequisites are met. II values are cumulative totals. Right now we're one node behind: <strong>#087 already has Wild Health I</strong> and is donating into the Rally tier, while we're still on Wild Health I.</div>
       </div>
 
       <h4 data-i18n="st2_do_h">Do each day (Days 2&ndash;4)</h4>
@@ -1011,18 +1046,6 @@
       </table>
       <p style="font-size:12px;color:var(--text-muted);" data-i18n="st2_income_note">Scion <strong>damage</strong> and <strong>eliminations</strong> are capped and mailed separately. Exploration is 3 runs at each of <strong>04:00 / 12:00 / 20:00</strong> (9&times;18 = 162). Both Rally missions run <strong>only on Days 2 &amp; 4</strong>. Maxing everything across the 3 days totals <strong>3,036 runestones</strong>.</p>
 
-      <h4 data-i18n="st2_tree_h">&#127807; Bloodline Lineage Tree</h4>
-      <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:8px;" data-i18n="st2_tree_p">Donate runestones to unlock nodes (Rank I&rarr;II). The tree buffs <strong>both the Behemoth and every player in the empire</strong>. Each Bloodline Purity upgrade costs <strong>50,000 runestones</strong>.</p>
-      <table class="mtable">
-        <tr><th data-i18n="th_node">Node</th><th data-i18n="th_effect">Effect</th><th data-i18n="th_i_ii">I &rarr; II</th></tr>
-        <tr><td class="name" data-i18n="node_atk">Wild Attack</td><td data-i18n="node_atk_e">+Attack to all unit types</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
-        <tr><td class="name" data-i18n="node_def">Wild Defense</td><td data-i18n="node_def_e">+Defense to all unit types</td><td class="tiers"><b>5%</b> &rarr; <b>10%</b></td></tr>
-        <tr><td class="name" data-i18n="node_hp">Wild Health</td><td data-i18n="node_hp_e">+Health to all unit types</td><td class="tiers"><b>2.5%</b> &rarr; <b>5%</b></td></tr>
-        <tr><td class="name" data-i18n="node_fort">Mobile Fortress</td><td data-i18n="node_fort_e">+Behemoth health</td><td class="tiers"><b>250K</b> &rarr; <b>500K</b></td></tr>
-        <tr><td class="name" data-i18n="node_hoof">Iron Hoof</td><td data-i18n="node_hoof_e">+Behemoth durability dmg vs citadels</td><td class="tiers"><b>625</b> &rarr; <b>1,250</b></td></tr>
-        <tr><td class="name" data-i18n="node_bless">Behemoth's Blessing</td><td data-i18n="node_bless_e">Donate runestones for rewards</td><td class="tiers">&mdash;</td></tr>
-      </table>
-      <p style="font-size:12px;color:var(--text-muted);" data-i18n="st2_tree_note">Juvenile-stage baseline values; they scale up as the Behemoth grows. Iron Hoof <em>adds to</em> the per-second siege rate.</p>
     </div>
   </div>
 
@@ -1376,24 +1399,6 @@ const TRANSLATIONS = {
     "st2_cap1": "Prueba del Scion &mdash; toca la Élite \"Scion de Bégimo\", luego Atacar/Teletransportar",
     "st2_cap2": "Cultivo de Bégimo &mdash; acaricia / asea / entretén para ganar runas",
     "st2_income_h": "&#128176; Ingreso de runas &mdash; topes diarios",
-    "st2_tree_h": "&#127807; Árbol de Linaje",
-    "st2_tree_p": "Dona runas para desbloquear nodos (Rango I&rarr;II). El árbol potencia <strong>tanto al Bégimo como a todos los jugadores del imperio</strong>. Cada mejora de Pureza del Linaje cuesta <strong>50.000 runas</strong>.",
-    "th_node": "Nodo",
-    "th_effect": "Efecto",
-    "th_i_ii": "I &rarr; II",
-    "node_atk": "Ataque Salvaje",
-    "node_atk_e": "+Ataque a todos los tipos de unidad",
-    "node_def": "Defensa Salvaje",
-    "node_def_e": "+Defensa a todos los tipos de unidad",
-    "node_hp": "Salud Salvaje",
-    "node_hp_e": "+Salud a todos los tipos de unidad",
-    "node_fort": "Fortaleza Móvil",
-    "node_fort_e": "+Salud del Bégimo",
-    "node_hoof": "Pezuña de Hierro",
-    "node_hoof_e": "+Daño de durabilidad del Bégimo vs ciudadelas",
-    "node_bless": "Bendición de Bégimo",
-    "node_bless_e": "Dona runas para recibir recompensas",
-    "st2_tree_note": "Valores base de la etapa Juvenil; suben a medida que el Bégimo crece. La Pezuña de Hierro <em>se suma a</em> la tasa de asedio por segundo.",
     "st3_title": "Etapa 3 &mdash; Ataque-Defensa",
     "st3_days": "Días 5&ndash;6",
     "st3_h1": "Cada Bégimo <strong>invade el otro servidor</strong> a la hora y ubicación fijadas. <strong>Cada invasión dura 90 minutos.</strong>",
@@ -1472,7 +1477,7 @@ const TRANSLATIONS = {
     "scion_modal_btn": "Entendido",
     "ical_btn": "Añadir al calendario (.ics)",
     "bless_h": "Bendiciones de Linaje &mdash; buffs desbloqueados (todos los tipos de unidad)",
-    "bless_note": "La única diferencia: <strong>#087 tiene Salud Salvaje I</strong> y nosotros no &mdash; su ventaja en donaciones les compró un rasgo extra. Ninguno tiene buffs de nivel II todavía. (Valor de Aumento de Daño II sin confirmar.)",
+    "bless_note": "Los niveles se desbloquean en un <strong>orden fijo</strong> &mdash; no puedes subir un buff a II antes de tiempo. Las <strong>celdas doradas brillantes</strong> son a las que cada servidor puede donar <em>ahora</em> (50.000 runas cada una); todo lo posterior está bloqueado hasta cumplir los requisitos. Los valores de II son totales acumulados. Ahora mismo vamos un nodo por detrás: <strong>#087 ya tiene Salud Salvaje I</strong> y está donando al nivel de Reunión, mientras nosotros seguimos en Salud Salvaje I.",
     "bless_th_name": "Bendición",
     "bless_undying": "Fuerza Imperecedera",
     "bless_undying_e": "Revive a 0 de vida",
@@ -1493,7 +1498,20 @@ const TRANSLATIONS = {
     "bless_health_e": "Salud",
     "bless_lg_us": "La tenemos",
     "bless_lg_them": "#087 la tiene",
-    "bless_lg_none": "Aún no",
+    "bless_lg_none": "Bloqueado",
+    "bless_rally_atk": "Ataque de Reunión",
+    "bless_rally_atk_e": "Ataque de reunión",
+    "bless_rally_def": "Defensa de Reunión",
+    "bless_rally_def_e": "Defensa de reunión",
+    "bless_wild_rally": "Reunión Salvaje",
+    "bless_wild_rally_e": "Reducción de daño vs reunidos",
+    "bless_hoof": "Pezuña de Hierro",
+    "bless_hoof_e": "Daño de durabilidad del Bégimo",
+    "bless_fort": "Fortaleza Móvil",
+    "bless_fort_e": "Salud del Bégimo",
+    "bless_final": "Bendición de Bégimo",
+    "bless_final_e": "Voluntario: 4.000 pts + 20 contrib / runa",
+    "bless_lg_open": "Disponible para donar ahora",
     "footer_tagline": "Era 8 &mdash; Despierta y Conquista",
     "footer_sub": "Behemoth Conquest &middot; 22&ndash;30 jun &middot; UTC+0 &middot; Imperio vs Imperio"
   },
@@ -1564,24 +1582,6 @@ const TRANSLATIONS = {
     "st2_cap1": "Épreuve du Scion &mdash; touche l'Élite \"Scion du Béhémoth\", puis Attaquer/Téléporter",
     "st2_cap2": "Culture du Béhémoth &mdash; caresse / toilette / divertis pour des runes",
     "st2_income_h": "&#128176; Revenu de runes &mdash; plafonds quotidiens",
-    "st2_tree_h": "&#127807; Arbre de Lignée",
-    "st2_tree_p": "Donne des runes pour débloquer des nœuds (Rang I&rarr;II). L'arbre renforce <strong>à la fois le Béhémoth et tous les joueurs de l'empire</strong>. Chaque amélioration de Pureté de la Lignée coûte <strong>50 000 runes</strong>.",
-    "th_node": "Nœud",
-    "th_effect": "Effet",
-    "th_i_ii": "I &rarr; II",
-    "node_atk": "Attaque Sauvage",
-    "node_atk_e": "+Attaque à tous les types d'unité",
-    "node_def": "Défense Sauvage",
-    "node_def_e": "+Défense à tous les types d'unité",
-    "node_hp": "Santé Sauvage",
-    "node_hp_e": "+Santé à tous les types d'unité",
-    "node_fort": "Forteresse Mobile",
-    "node_fort_e": "+Santé du Béhémoth",
-    "node_hoof": "Sabot de Fer",
-    "node_hoof_e": "+Dégâts de durabilité du Béhémoth vs citadelles",
-    "node_bless": "Bénédiction du Béhémoth",
-    "node_bless_e": "Donne des runes pour des récompenses",
-    "st2_tree_note": "Valeurs de base de l'étape Juvénile ; elles montent à mesure que le Béhémoth grandit. Le Sabot de Fer <em>s'ajoute</em> au taux de siège par seconde.",
     "st3_title": "Étape 3 &mdash; Attaque-Défense",
     "st3_days": "Jours 5&ndash;6",
     "st3_h1": "Chaque Béhémoth <strong>envahit l'autre serveur</strong> à l'heure et au lieu verrouillés. <strong>Chaque invasion dure 90 minutes.</strong>",
@@ -1660,7 +1660,7 @@ const TRANSLATIONS = {
     "scion_modal_btn": "Compris",
     "ical_btn": "Ajouter au calendrier (.ics)",
     "bless_h": "Bénédictions de Lignée &mdash; buffs débloqués (tous types d'unité)",
-    "bless_note": "Le seul écart : <strong>#087 a Santé Sauvage I</strong> et pas nous &mdash; leur avance aux dons leur a acheté un trait de plus. Aucun buff de niveau II des deux côtés pour l'instant. (Valeur d'Augmentation de Dégâts II non confirmée.)",
+    "bless_note": "Les niveaux se débloquent dans un <strong>ordre fixe</strong> &mdash; impossible de monter un buff en II en avance. Les <strong>cases dorées qui brillent</strong> sont celles où chaque serveur peut donner <em>maintenant</em> (50 000 runes chacune) ; tout le reste est verrouillé jusqu'à ce que les prérequis soient remplis. Les valeurs de II sont des totaux cumulés. Pour l'instant on a un nœud de retard : <strong>#087 a déjà Santé Sauvage I</strong> et donne au niveau Ralliement, alors qu'on en est encore à Santé Sauvage I.",
     "bless_th_name": "Bénédiction",
     "bless_undying": "Force Immortelle",
     "bless_undying_e": "Ressuscite à 0 PV",
@@ -1681,7 +1681,20 @@ const TRANSLATIONS = {
     "bless_health_e": "Santé",
     "bless_lg_us": "On l'a",
     "bless_lg_them": "#087 l'a",
-    "bless_lg_none": "Pas encore",
+    "bless_lg_none": "Verrouillé",
+    "bless_rally_atk": "Attaque de Ralliement",
+    "bless_rally_atk_e": "Attaque de ralliement",
+    "bless_rally_def": "Défense de Ralliement",
+    "bless_rally_def_e": "Défense de ralliement",
+    "bless_wild_rally": "Ralliement Sauvage",
+    "bless_wild_rally_e": "Réduction de dégâts vs ralliés",
+    "bless_hoof": "Sabot de Fer",
+    "bless_hoof_e": "Dégâts de durabilité du Béhémoth",
+    "bless_fort": "Forteresse Mobile",
+    "bless_fort_e": "Santé du Béhémoth",
+    "bless_final": "Bénédiction du Béhémoth",
+    "bless_final_e": "Volontaire : 4 000 pts + 20 contrib / rune",
+    "bless_lg_open": "Disponible au don maintenant",
     "footer_tagline": "Era 8 &mdash; Éveille et Conquiers",
     "footer_sub": "Behemoth Conquest &middot; 22&ndash;30 juin &middot; UTC+0 &middot; Empire vs Empire"
   },
@@ -1752,24 +1765,6 @@ const TRANSLATIONS = {
     "st2_cap1": "후손의 시험 &mdash; \"비헤모스 후손\" 정예를 탭한 뒤 공격/순간이동",
     "st2_cap2": "비헤모스 육성 &mdash; 쓰다듬기/단장/놀아주기로 룬석 획득",
     "st2_income_h": "&#128176; 룬석 수입 &mdash; 일일 상한",
-    "st2_tree_h": "&#127807; 혈통 계보 트리",
-    "st2_tree_p": "룬석을 기부해 노드를 해금(등급 I&rarr;II). 트리는 <strong>비헤모스와 제국의 모든 플레이어</strong> 둘 다를 강화합니다. 혈통 순도 업그레이드마다 <strong>룬석 50,000개</strong>가 듭니다.",
-    "th_node": "노드",
-    "th_effect": "효과",
-    "th_i_ii": "I &rarr; II",
-    "node_atk": "야만 공격",
-    "node_atk_e": "모든 병종 +공격",
-    "node_def": "야만 방어",
-    "node_def_e": "모든 병종 +방어",
-    "node_hp": "야만 체력",
-    "node_hp_e": "모든 병종 +체력",
-    "node_fort": "이동 요새",
-    "node_fort_e": "+비헤모스 체력",
-    "node_hoof": "강철 발굽",
-    "node_hoof_e": "+성채 대상 비헤모스 내구 피해",
-    "node_bless": "비헤모스의 축복",
-    "node_bless_e": "룬석을 기부해 보상 획득",
-    "st2_tree_note": "유년기 단계 기본값; 비헤모스가 성장하면 올라갑니다. 강철 발굽은 초당 공성 속도에 <em>더해집니다</em>.",
     "st3_title": "3단계 &mdash; 공격-방어",
     "st3_days": "5&ndash;6일차",
     "st3_h1": "각 비헤모스가 확정된 시간과 장소에 <strong>상대 서버를 침공</strong>합니다. <strong>각 침공은 90분간 지속</strong>됩니다.",
@@ -1848,7 +1843,7 @@ const TRANSLATIONS = {
     "scion_modal_btn": "확인",
     "ical_btn": "캘린더에 추가 (.ics)",
     "bless_h": "혈통 축복 &mdash; 해금한 버프 (모든 병종)",
-    "bless_note": "유일한 차이: <strong>#087은 야만 체력 I</strong>을 가졌고 우리는 없습니다 &mdash; 기부 우위로 특성 1개를 더 챙겼습니다. 양측 모두 아직 II단계 버프는 없습니다. (야만 피해 증가 II 수치는 미확인.)",
+    "bless_note": "단계는 <strong>고정된 순서</strong>로 해금됩니다 &mdash; 버프를 미리 II로 올릴 수 없습니다. <strong>금색으로 빛나는 칸</strong>은 각 서버가 <em>지금</em> 기부할 수 있는 곳입니다(각 50,000 룬석); 그 이후는 선행 조건을 채울 때까지 잠겨 있습니다. II 수치는 누적 합계입니다. 현재 우리는 한 노드 뒤처져 있습니다: <strong>#087은 이미 야만 체력 I</strong>을 갖고 집결 단계에 기부 중이며, 우리는 아직 야만 체력 I 단계입니다.",
     "bless_th_name": "축복",
     "bless_undying": "불멸의 힘",
     "bless_undying_e": "체력 0에서 부활",
@@ -1869,7 +1864,20 @@ const TRANSLATIONS = {
     "bless_health_e": "체력",
     "bless_lg_us": "보유",
     "bless_lg_them": "#087 보유",
-    "bless_lg_none": "미보유",
+    "bless_lg_none": "잠김",
+    "bless_rally_atk": "집결 공격",
+    "bless_rally_atk_e": "집결 공격",
+    "bless_rally_def": "집결 방어",
+    "bless_rally_def_e": "집결 방어",
+    "bless_wild_rally": "야만 집결",
+    "bless_wild_rally_e": "집결 적 대상 피해 감소",
+    "bless_hoof": "강철 발굽",
+    "bless_hoof_e": "비헤모스 내구 피해",
+    "bless_fort": "이동 요새",
+    "bless_fort_e": "비헤모스 체력",
+    "bless_final": "비헤모스의 축복",
+    "bless_final_e": "선택: 룬석당 4,000 pt + 기여 20",
+    "bless_lg_open": "지금 기부 가능",
     "footer_tagline": "시대 8 &mdash; 각성하고 정복하라",
     "footer_sub": "Behemoth Conquest &middot; 6월 22&ndash;30일 &middot; UTC+0 &middot; 제국 대 제국"
   }
@@ -1883,6 +1891,7 @@ document.addEventListener('DOMContentLoaded', function() {
     enSnapshot[el.getAttribute('data-i18n')] = el.innerHTML;
   });
   startCountdown();
+  updateBlessings();
 });
 
 function switchLang(lang) {
@@ -1976,6 +1985,27 @@ function updatePhase(now) {
     var on = from && to && today >= from && today <= to;
     el.classList.toggle('active', on);
     if (on) el.setAttribute('data-nowlabel', label);
+  });
+}
+
+// --- Bloodline Blessings: highlight each server's owned / next-to-donate nodes ---
+// Update these two numbers as donations progress = highest donation STEP each server has completed.
+// (Step 0 = the two defaults, always owned. Current: we're through step 2; #087 through step 3.)
+var BLESS_PROGRESS = { us: 2, them: 3 };
+function updateBlessings() {
+  var tbl = document.getElementById('blessTbl');
+  if (!tbl) return;
+  tbl.querySelectorAll('.bl-v[data-srv]').forEach(function (cell) {
+    var srv = cell.getAttribute('data-srv');
+    var step = parseInt(cell.getAttribute('data-step'), 10);
+    var prog = BLESS_PROGRESS[srv];
+    cell.classList.remove('has-us', 'has-them', 'open');
+    if (step <= prog) {
+      cell.classList.add(srv === 'us' ? 'has-us' : 'has-them');   // owned
+    } else if (step === prog + 1) {
+      cell.classList.add('open');                                  // next available
+    }
+    // else: leave default (locked / greyed)
   });
 }
 
