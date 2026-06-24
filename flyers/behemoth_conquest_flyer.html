@@ -459,16 +459,19 @@
   .stage-body li::before { content:'\25B8'; position:absolute; left:0; color:var(--accent-gold-dim); }
   .stage-body li strong { color:var(--text-primary); font-weight:600; }
   /* schedule chips */
-  .sched { display:flex; flex-wrap:wrap; gap:6px; margin:2px 0 8px; }
+  .sched { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:2px 0 8px; }
   .sched .slot {
     font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.5px;
     padding:4px 10px; border-radius:6px; border:1px solid var(--border); background:var(--bg-deep); color:var(--text-secondary);
   }
   .sched .slot b { color:var(--accent-gold); }
 
+  /* Trial schedule: even grid so the 4 windows align (4-up desktop, 2x2 mobile) */
+  .scion-sched { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+
   /* -- Dynamic Trial of Scion schedule -- */
   .scion-sched .scion-slot {
-    position:relative; display:inline-flex; align-items:center; gap:6px;
+    position:relative; display:flex; align-items:center; justify-content:center; gap:6px;
     border-width:1px; border-style:solid; transition:opacity .3s, border-color .3s, background .3s;
   }
   .scion-slot .srv { font-size:10px; font-weight:700; padding:1px 5px; border-radius:4px; letter-spacing:0.5px; }
@@ -529,22 +532,19 @@
   .bless-legend .lg-us { color:#5b8def; } .bless-legend .lg-them { color:#c43d3d; }
   .bless-legend .lg-open { color:var(--accent-gold); } .bless-legend .lg-none { color:var(--text-muted); opacity:0.5; }
 
-  /* -- Add-to-calendar row (label + emoji button) -- */
-  .ical-row {
-    display:flex; align-items:center; justify-content:center; gap:9px; margin:14px auto 0;
-    flex-wrap:wrap;
-  }
-  .ical-label {
-    font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.5px;
-    color:var(--accent-gold); max-width:300px; text-align:right; line-height:1.25;
-  }
+  /* -- Add-to-calendar pill (icon + label, single button) -- */
   .ical-btn {
-    flex-shrink:0; display:inline-flex; align-items:center; justify-content:center;
-    width:38px; height:38px; padding:0; font-size:18px; line-height:1;
-    background:var(--bg-card); border:1px solid var(--accent-gold-dim); border-radius:8px;
-    cursor:pointer; transition:background .15s;
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    margin:14px auto 0; padding:8px 16px;
+    background:var(--bg-card); border:1px solid var(--accent-gold-dim); border-radius:999px;
+    cursor:pointer; transition:background .15s; max-width:90%;
   }
   .ical-btn:hover { background:rgba(212,168,67,0.12); }
+  .ical-btn .ical-ico { font-size:16px; line-height:1; flex-shrink:0; }
+  .ical-btn .ical-label {
+    font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.5px;
+    color:var(--accent-gold); line-height:1.2; text-align:left;
+  }
 
   /* -- Trial of Scion active-window modal -- */
   .scion-modal {
@@ -611,24 +611,32 @@
     right: 16px;
     z-index: 2;
     display: flex;
-    justify-content: flex-end;
-    gap: 6px;
+    align-items: center;
+    gap: 5px;
   }
-  .lang-btn {
+  .lang-bar .lang-globe { font-size: 13px; opacity: 0.7; }
+  .lang-select {
     font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 1px;
-    padding: 5px 12px;
-    border-radius: 4px;
+    font-weight: 600; font-size: 12px; letter-spacing: 0.5px;
+    padding: 5px 26px 5px 10px;
+    border-radius: 6px;
     border: 1px solid var(--border);
     background: var(--bg-card);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     cursor: pointer;
-    transition: all .15s;
+    -webkit-appearance: none; appearance: none;
+    /* custom chevron */
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%238a90a5' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+    transition: color .15s, border-color .15s;
   }
-  .lang-btn:hover { color: var(--accent-gold); border-color: var(--accent-gold-dim); }
-  .lang-btn.active { background: rgba(212,168,67,0.12); border-color: var(--accent-gold-dim); color: var(--accent-gold); }
+  .lang-select:hover { color: var(--accent-gold); border-color: var(--accent-gold-dim); }
+  .lang-select:focus { outline: none; border-color: var(--accent-gold-dim); }
+  .lang-select option { background: var(--bg-card); color: var(--text-primary); }
+  /* RTL: anchor the bar on the left and flip chevron padding */
+  html[dir="rtl"] .lang-bar { right: auto; left: 16px; }
+  html[dir="rtl"] .lang-select { padding: 5px 10px 5px 26px; background-position: left 9px center; }
 
   /* clickable images -> lightbox */
   .zoomable { cursor: zoom-in; transition: filter .15s; }
@@ -714,6 +722,12 @@
     .cmp-tbl .c-p  { width: 50px; }
     .cmp-tbl .c-mp { width: 38px; }
 
+    /* Trial schedule: 2x2 grid on phones (4-up is too tight at 390px) */
+    .scion-sched { grid-template-columns: 1fr 1fr; }
+    .scion-sched .scion-slot { padding: 4px 6px; gap: 4px; font-size: 11px; flex-wrap: wrap; }
+    .scion-slot .srv { font-size: 9px; padding: 1px 4px; }
+    .scion-slot .slot-state { font-size: 8.5px; }
+
     /* Bloodline Blessings: drop the Buff column (name carries the meaning), tighten cells */
     .bless-tbl .bl-bf { display: none; }
     .bless-tbl td.name { white-space: normal; }
@@ -730,14 +744,17 @@
   <div class="header">
     <!-- LANG SWITCHER -->
     <div class="lang-bar">
-      <button class="lang-btn active" onclick="switchLang('en')">EN</button>
-      <button class="lang-btn" onclick="switchLang('es')">ES</button>
-      <button class="lang-btn" onclick="switchLang('fr')">FR</button>
-      <button class="lang-btn" onclick="switchLang('ko')">KO</button>
-      <button class="lang-btn" onclick="switchLang('ja')">JA</button>
-      <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
-      <button class="lang-btn" onclick="switchLang('ar')">AR</button>
-      <button class="lang-btn" onclick="switchLang('da')">DA</button>
+      <span class="lang-globe" aria-hidden="true">&#127760;</span>
+      <select id="langSelect" class="lang-select" aria-label="Language" onchange="switchLang(this.value)">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="ko">한국어</option>
+        <option value="ja">日本語</option>
+        <option value="zh">中文</option>
+        <option value="ar">العربية</option>
+        <option value="da">Dansk</option>
+      </select>
     </div>
     <div class="event-tag" data-i18n="event_tag">New Game Mode &middot; Era 8</div>
     <h1>BEHEMOTH <span>CONQUEST</span></h1>
@@ -767,10 +784,10 @@
       <div class="cd-block"><div class="val" id="cd-s">--</div><div class="unit" data-i18n="cd_sec">Sec</div></div>
     </div>
     <div class="cd-label" id="cd-label">Until Event Ends</div>
-    <div class="ical-row">
+    <button type="button" id="icalBtn" class="ical-btn">
+      <span class="ical-ico" aria-hidden="true">&#128197;</span>
       <span class="ical-label" data-i18n="ical_btn">Add the Trials of Scion and Behemoth Invasions to your Calendar!</span>
-      <button type="button" id="icalBtn" class="ical-btn" aria-label="Add to calendar (.ics)" title="Add to calendar (.ics)">&#128197;</button>
-    </div>
+    </button>
   </div>
 
   <!-- THE BIG PICTURE -->
@@ -1315,7 +1332,6 @@
         <tr><td class="name" data-i18n="pt3_a">Deplete one enemy Undying Force stack</td><td class="tiers"><b>1,000,000,000</b></td></tr>
         <tr><td class="name" data-i18n="pt4_a">Completely defeat an enemy Behemoth</td><td class="tiers"><b>5,000,000,000</b></td></tr>
         <tr><td class="name" data-i18n="pt5_a">Invasion end: per 1K of <em>our</em> Behemoth's remaining HP</td><td class="tiers"><b>2,000,000</b></td></tr>
-        <tr><td class="name" data-i18n="pt6_a">Gravely wound an enemy-kingdom player</td><td class="tiers" data-i18n="pt6_v">battle pts</td></tr>
       </table>
       <div class="co gold" data-i18n="st3_pts_note"><strong>Milestones dwarf chip damage:</strong> a stack (1B) and the kill (5B) are the big swings. Keeping ours alive pays 2M per 1K HP left &mdash; defense matters as much as offense.</div>
     </div>
@@ -1458,8 +1474,6 @@ const TRANSLATIONS = {
     "pt3_a": "Agotar una pila de Fuerza Imperecedera enemiga",
     "pt4_a": "Derrotar por completo a un Bégimo enemigo",
     "pt5_a": "Fin de la invasión: por cada 1K de salud restante de <em>nuestro</em> Bégimo",
-    "pt6_a": "Herir gravemente a un jugador de reino enemigo",
-    "pt6_v": "ptos de batalla",
     "st3_pts_note": "<strong>Los hitos eclipsan el daño menor:</strong> una pila (1B) y la derrota (5B) son los grandes cambios. Mantener vivo el nuestro da 2M por cada 1K de vida restante &mdash; la defensa importa tanto como el ataque.",
     "st4_title": "Etapa 4 &mdash; Recuperación",
     "st4_days": "Día 7+",
@@ -1641,8 +1655,6 @@ const TRANSLATIONS = {
     "pt3_a": "Épuiser une pile de Force Immortelle ennemie",
     "pt4_a": "Vaincre complètement un Béhémoth ennemi",
     "pt5_a": "Fin d'invasion : par 1K de PV restants de <em>notre</em> Béhémoth",
-    "pt6_a": "Blesser gravement un joueur de royaume ennemi",
-    "pt6_v": "pts de bataille",
     "st3_pts_note": "<strong>Les jalons éclipsent les petits dégâts :</strong> une pile (1B) et l'achèvement (5B) sont les gros écarts. Garder le nôtre en vie rapporte 2M par 1K PV restant &mdash; la défense compte autant que l'attaque.",
     "st4_title": "Étape 4 &mdash; Récupération",
     "st4_days": "Jour 7+",
@@ -1824,8 +1836,6 @@ const TRANSLATIONS = {
     "pt3_a": "적 불멸의 힘 1스택 소진",
     "pt4_a": "적 비헤모스 완전 격파",
     "pt5_a": "침공 종료 시: <em>우리</em> 비헤모스 잔여 체력 1K당",
-    "pt6_a": "적 왕국 플레이어에게 중상 입히기",
-    "pt6_v": "전투 포인트",
     "st3_pts_note": "<strong>마일스톤이 소량 피해를 압도:</strong> 스택(1B)과 격파(5B)가 큰 변동. 우리 것을 살려두면 잔여 1K HP당 2M &mdash; 방어가 공격만큼 중요.",
     "st4_title": "4단계 &mdash; 회복",
     "st4_days": "7일차+",
@@ -2066,8 +2076,6 @@ const TRANSLATIONS = {
     "pt3_a": "敵の不死の力を1スタック枯渇",
     "pt4_a": "敵ベヒモスを完全撃破",
     "pt5_a": "侵攻終了時: <em>自軍</em>ベヒモスの残HP 1Kごと",
-    "pt6_a": "敵王国プレイヤーを重傷",
-    "pt6_v": "戦闘pt",
     "st3_pts_note": "<strong>マイルストーンが小ダメージを圧倒:</strong> 1スタック(1B)と撃破(5B)が大きな差。自軍を生存させると残HP1Kごとに2M — 防御は攻撃と同じく重要。",
     "st4_title": "段階4 — 回復",
     "st4_days": "7日目以降",
@@ -2249,8 +2257,6 @@ const TRANSLATIONS = {
     "pt3_a": "耗尽敌方1层不死之力",
     "pt4_a": "完全击败敌方巨兽",
     "pt5_a": "入侵结束时: <em>我方</em>巨兽每1K剩余血量",
-    "pt6_a": "重伤敌国玩家",
-    "pt6_v": "战斗分",
     "st3_pts_note": "<strong>里程碑远超零散伤害:</strong> 一层(1B)与击杀(5B)是大头。保住我方每1K剩余血量得2M — 防守与进攻同等重要。",
     "st4_title": "阶段4 — 恢复",
     "st4_days": "第7天+",
@@ -2432,8 +2438,6 @@ const TRANSLATIONS = {
     "pt3_a": "استنزاف طبقة قوة خالدة للعدو",
     "pt4_a": "هزيمة بهيموث العدو بالكامل",
     "pt5_a": "نهاية الغزو: لكل 1K صحة متبقية لبهيموث<em>نا</em>",
-    "pt6_a": "إصابة لاعب من مملكة العدو بجروح بالغة",
-    "pt6_v": "نقاط قتال",
     "st3_pts_note": "<strong>المعالم تتضاءل أمامها الأضرار الصغيرة:</strong> طبقة (1B) والقتل (5B) هما التحولان الكبيران. إبقاء بهيموثنا حياً يمنح 2M لكل 1K صحة متبقية — الدفاع بأهمية الهجوم.",
     "st4_title": "المرحلة 4 — الاستعادة",
     "st4_days": "اليوم 7+",
@@ -2615,8 +2619,6 @@ const TRANSLATIONS = {
     "pt3_a": "Tøm én af fjendens Udødelig Kraft-stakke",
     "pt4_a": "Besejr en fjende-Behemoth helt",
     "pt5_a": "Invasionsslut: pr. 1K af <em>vores</em> Behemoths resterende HP",
-    "pt6_a": "Sår en spiller fra fjendekongeriget alvorligt",
-    "pt6_v": "kamppoint",
     "st3_pts_note": "<strong>Milepæle overskygger småskade:</strong> en stak (1B) og drabet (5B) er de store udsving. At holde vores i live giver 2M pr. 1K resterende HP — forsvar betyder lige så meget som angreb.",
     "st4_title": "Fase 4 — Genrejsning",
     "st4_days": "Dag 7+",
@@ -2655,9 +2657,8 @@ function switchLang(lang) {
   currentLang = lang;
   document.documentElement.setAttribute('lang', lang);
   document.documentElement.setAttribute('dir', RTL_LANGS[lang] ? 'rtl' : 'ltr');
-  document.querySelectorAll('.lang-btn').forEach(function(b) {
-    b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase());
-  });
+  var sel = document.getElementById('langSelect');
+  if (sel && sel.value !== lang) sel.value = lang;
   if (lang === 'en') {
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
       var key = el.getAttribute('data-i18n');
