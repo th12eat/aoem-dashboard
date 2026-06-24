@@ -705,6 +705,22 @@
   .map-toggle .mt-btn.active { border-color: var(--accent-gold-dim); background: rgba(212,168,67,0.10); color: var(--accent-gold); }
   .map-toggle .mt-btn.active .mt-sub { color: var(--accent-gold-dim); }
   .map-box[hidden], .spawn-box[hidden] { display: none; }
+
+  /* ===== Mobile (<=560px): fix cramped tables ===== */
+  @media (max-width: 560px) {
+    /* Power & Alliance comparisons: stack the two sides so names get full width */
+    .cmp-grid { grid-template-columns: 1fr !important; }
+    .cmp-tbl .c-nm { white-space: normal; }           /* let long CJK names wrap instead of clip */
+    .cmp-tbl .c-p  { width: 50px; }
+    .cmp-tbl .c-mp { width: 38px; }
+
+    /* Bloodline Blessings: drop the Buff column (name carries the meaning), tighten cells */
+    .bless-tbl .bl-bf { display: none; }
+    .bless-tbl td.name { white-space: normal; }
+    .bless-tbl th, .bless-tbl td { padding: 5px 3px; }
+    .bless-tbl .bl-v { width: auto; font-size: 10.5px; }
+    .bless-head { font-size: 12px; }
+  }
 </style>
 </head>
 <body>
@@ -826,7 +842,7 @@
 
     <!-- top-4 alliances, side by side -->
     <div class="sub-h" data-i18n="sc_ally_h">Top 4 Alliances</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+    <div class="cmp-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
       <!-- OURS -->
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
         <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);" data-i18n="sc_us_acol">OUR ALLIANCES</div>
@@ -856,7 +872,7 @@
     </div>
 
     <!-- top-10 power players, side by side (rows 6-10 collapsed behind toggle) -->
-    <div id="cmpWrap" class="cmp" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div id="cmpWrap" class="cmp cmp-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <!-- OURS -->
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
         <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);" data-i18n="sc_us_col">OUR TOP POWER</div>
@@ -956,62 +972,62 @@
           </thead>
           <tbody>
             <tr>
-              <td class="name" data-i18n="bless_undying">Undying Force</td><td data-i18n="bless_undying_e">Revive at 0 HP</td>
+              <td class="name" data-i18n="bless_undying">Undying Force</td><td class="bl-bf" data-i18n="bless_undying_e">Revive at 0 HP</td>
               <td class="bl-v" data-srv="us" data-step="0" data-i18n="bless_v_undying">3 stk</td><td class="bl-v none">&ndash;</td>
               <td class="bl-v" data-srv="them" data-step="0" data-i18n="bless_v_undying">3 stk</td><td class="bl-v none">&ndash;</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_healing">Wild Healing</td><td data-i18n="bless_healing_e">Hospital cap &amp; heal speed</td>
+              <td class="name" data-i18n="bless_healing">Wild Healing</td><td class="bl-bf" data-i18n="bless_healing_e">Hospital cap &amp; heal speed</td>
               <td class="bl-v" data-srv="us" data-step="0" data-i18n="bless_v_heal">+700K/50%</td><td class="bl-v none">&ndash;</td>
               <td class="bl-v" data-srv="them" data-step="0" data-i18n="bless_v_heal">+700K/50%</td><td class="bl-v none">&ndash;</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_dmg">Wild Damage Increase</td><td data-i18n="bless_dmg_e">Damage dealt</td>
+              <td class="name" data-i18n="bless_dmg">Wild Damage Increase</td><td class="bl-bf" data-i18n="bless_dmg_e">Damage dealt</td>
               <td class="bl-v" data-srv="us" data-step="1" data-node="dmg1">+2.5%</td><td class="bl-v" data-srv="us" data-step="10" data-node="dmg2">+5%</td>
               <td class="bl-v" data-srv="them" data-step="1" data-node="dmg1">+2.5%</td><td class="bl-v" data-srv="them" data-step="10" data-node="dmg2">+5%</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_atk">Wild Attack</td><td data-i18n="bless_atk_e">Attack</td>
+              <td class="name" data-i18n="bless_atk">Wild Attack</td><td class="bl-bf" data-i18n="bless_atk_e">Attack</td>
               <td class="bl-v" data-srv="us" data-step="2" data-node="atk1">+5%</td><td class="bl-v" data-srv="us" data-step="7" data-node="atk2">+10%</td>
               <td class="bl-v" data-srv="them" data-step="2" data-node="atk1">+5%</td><td class="bl-v" data-srv="them" data-step="7" data-node="atk2">+10%</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_def">Wild Defense</td><td data-i18n="bless_def_e">Defense</td>
+              <td class="name" data-i18n="bless_def">Wild Defense</td><td class="bl-bf" data-i18n="bless_def_e">Defense</td>
               <td class="bl-v" data-srv="us" data-step="2" data-node="def1">+5%</td><td class="bl-v" data-srv="us" data-step="7" data-node="def2">+10%</td>
               <td class="bl-v" data-srv="them" data-step="2" data-node="def1">+5%</td><td class="bl-v" data-srv="them" data-step="7" data-node="def2">+10%</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_health">Wild Health</td><td data-i18n="bless_health_e">Health</td>
+              <td class="name" data-i18n="bless_health">Wild Health</td><td class="bl-bf" data-i18n="bless_health_e">Health</td>
               <td class="bl-v" data-srv="us" data-step="3" data-node="hp1">+2.5%</td><td class="bl-v" data-srv="us" data-step="8" data-node="hp2">+5%</td>
               <td class="bl-v" data-srv="them" data-step="3" data-node="hp1">+2.5%</td><td class="bl-v" data-srv="them" data-step="8" data-node="hp2">+5%</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_rally_atk">Rally Attack</td><td data-i18n="bless_rally_atk_e">Rally attack</td>
+              <td class="name" data-i18n="bless_rally_atk">Rally Attack</td><td class="bl-bf" data-i18n="bless_rally_atk_e">Rally attack</td>
               <td class="bl-v" data-srv="us" data-step="4" data-node="ratk">+5%</td><td class="bl-v none">&ndash;</td>
               <td class="bl-v" data-srv="them" data-step="4" data-node="ratk">+5%</td><td class="bl-v none">&ndash;</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_rally_def">Rally Defense</td><td data-i18n="bless_rally_def_e">Rally defense</td>
+              <td class="name" data-i18n="bless_rally_def">Rally Defense</td><td class="bl-bf" data-i18n="bless_rally_def_e">Rally defense</td>
               <td class="bl-v" data-srv="us" data-step="4" data-node="rdef">+5%</td><td class="bl-v none">&ndash;</td>
               <td class="bl-v" data-srv="them" data-step="4" data-node="rdef">+5%</td><td class="bl-v none">&ndash;</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_wild_rally">Wild Rally</td><td data-i18n="bless_wild_rally_e">Dmg reduction vs rallied</td>
+              <td class="name" data-i18n="bless_wild_rally">Wild Rally</td><td class="bl-bf" data-i18n="bless_wild_rally_e">Dmg reduction vs rallied</td>
               <td class="bl-v" data-srv="us" data-step="5" data-node="wrally">+5%</td><td class="bl-v none">&ndash;</td>
               <td class="bl-v" data-srv="them" data-step="5" data-node="wrally">+5%</td><td class="bl-v none">&ndash;</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_hoof">Iron Hoof</td><td data-i18n="bless_hoof_e">Behemoth durability dmg</td>
+              <td class="name" data-i18n="bless_hoof">Iron Hoof</td><td class="bl-bf" data-i18n="bless_hoof_e">Behemoth durability dmg</td>
               <td class="bl-v" data-srv="us" data-step="6" data-node="hoof1">+625</td><td class="bl-v" data-srv="us" data-step="9" data-node="hoof2">+1,250</td>
               <td class="bl-v" data-srv="them" data-step="6" data-node="hoof1">+625</td><td class="bl-v" data-srv="them" data-step="9" data-node="hoof2">+1,250</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_fort">Mobile Fortress</td><td data-i18n="bless_fort_e">Behemoth health</td>
+              <td class="name" data-i18n="bless_fort">Mobile Fortress</td><td class="bl-bf" data-i18n="bless_fort_e">Behemoth health</td>
               <td class="bl-v" data-srv="us" data-step="6" data-node="fort1">+250K</td><td class="bl-v" data-srv="us" data-step="9" data-node="fort2">+500K</td>
               <td class="bl-v" data-srv="them" data-step="6" data-node="fort1">+250K</td><td class="bl-v" data-srv="them" data-step="9" data-node="fort2">+500K</td>
             </tr>
             <tr>
-              <td class="name" data-i18n="bless_final">Behemoth's Blessing</td><td data-i18n="bless_final_e">Voluntary: 4,000 pts + 20 contrib / runestone</td>
+              <td class="name" data-i18n="bless_final">Behemoth's Blessing</td><td class="bl-bf" data-i18n="bless_final_e">Voluntary: 4,000 pts + 20 contrib / runestone</td>
               <td class="bl-v none">&#8734;</td><td class="bl-v none">&ndash;</td>
               <td class="bl-v none">&#8734;</td><td class="bl-v none">&ndash;</td>
             </tr>
