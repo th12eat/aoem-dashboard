@@ -1319,7 +1319,7 @@
 
       <h4 data-i18n="st3_stun_h">&#10084; The stun / Undying Force cycle</h4>
       <ul>
-        <li data-i18n="st3_s1">At <strong>0 HP</strong> it burns 1 Undying Force stack, disbands all rallies, then revives full. Dies only when all stacks are gone.</li>
+        <li data-i18n="st3_s1">At <strong>0 HP</strong> it burns 1 Undying Force stack, disbands all rallies, <strong>dazes for 30s</strong> (can't attack), then revives full. Dies only when all stacks are gone.</li>
         <li data-i18n="st3_s2"><strong>3 stacks</strong> &rarr; ~4 zeroes to kill. Coordinate fresh waves to re-zero the moment it revives.</li>
         <li data-i18n="st3_s3"><strong>Defenders:</strong> zeroing theirs scatters their rallies and stops their scoring.</li>
       </ul>
@@ -1461,7 +1461,7 @@ const TRANSLATIONS = {
     "st3_a2": "<strong>Mantén las reuniones</strong> &mdash; tras 5 min, el daño sube +500 cada 15s. No las dejes disolverse.",
     "st3_a3": "<strong>Reubícate al servidor enemigo</strong> para unirte a la ofensiva.",
     "st3_stun_h": "&#10084; El ciclo de aturdimiento / Fuerza Imperecedera",
-    "st3_s1": "A <strong>0 de vida</strong> consume 1 pila de Fuerza Imperecedera, disuelve todas las reuniones y revive a tope. Solo muere al agotar todas las pilas.",
+    "st3_s1": "A <strong>0 de vida</strong> consume 1 pila de Fuerza Imperecedera, disuelve todas las reuniones, <strong>queda aturdido 30s</strong> (no puede atacar) y revive a tope. Solo muere al agotar todas las pilas.",
     "st3_s2": "<strong>3 pilas</strong> &rarr; ~4 ceros para matarlo. Coordina oleadas frescas para volver a cero apenas reviva.",
     "st3_s3": "<strong>Defensores:</strong> bajar el suyo a cero dispersa sus reuniones y frena sus puntos.",
     "st3_pts_h": "&#127919; Cómo se puntúa",
@@ -1642,7 +1642,7 @@ const TRANSLATIONS = {
     "st3_a2": "<strong>Tiens les ralliements</strong> &mdash; après 5 min, les dégâts montent de +500 toutes les 15s. Ne les laisse pas se dissoudre.",
     "st3_a3": "<strong>Relocalise-toi sur le serveur ennemi</strong> pour rejoindre l'offensive.",
     "st3_stun_h": "&#10084; Le cycle d'étourdissement / Force Immortelle",
-    "st3_s1": "À <strong>0 PV</strong> il consomme 1 pile de Force Immortelle, dissout tous les ralliements, puis ressuscite. Meurt seulement quand toutes les piles sont épuisées.",
+    "st3_s1": "À <strong>0 PV</strong> il consomme 1 pile de Force Immortelle, dissout tous les ralliements, <strong>est étourdi 30s</strong> (ne peut pas attaquer), puis ressuscite. Meurt seulement quand toutes les piles sont épuisées.",
     "st3_s2": "<strong>3 piles</strong> &rarr; ~4 zéros pour le tuer. Coordonne des vagues fraîches pour le remettre à zéro dès qu'il ressuscite.",
     "st3_s3": "<strong>Défenseurs :</strong> mettre le leur à zéro disperse leurs ralliements et stoppe leur score.",
     "st3_pts_h": "&#127919; Comment on marque les points",
@@ -1823,7 +1823,7 @@ const TRANSLATIONS = {
     "st3_a2": "<strong>집결을 오래 유지</strong> &mdash; 5분 후 피해가 15초마다 +500 상승. 해산되지 않게 하세요.",
     "st3_a3": "<strong>적 서버로 이전</strong>해 공세에 합류.",
     "st3_stun_h": "&#10084; 기절 / 불멸의 힘 주기",
-    "st3_s1": "<strong>체력 0</strong>에서 불멸의 힘 1스택 소모, 모든 집결 해산 후 완전 부활. 모든 스택이 소진돼야 사망.",
+    "st3_s1": "<strong>체력 0</strong>에서 불멸의 힘 1스택 소모, 모든 집결 해산, <strong>30초간 기절</strong>(공격 불가) 후 완전 부활. 모든 스택이 소진돼야 사망.",
     "st3_s2": "<strong>3스택</strong> &rarr; 처치까지 약 0회 4번. 부활 즉시 다시 0으로 만들 새 물결을 조율.",
     "st3_s3": "<strong>방어자:</strong> 그들 것을 0으로 만들면 집결이 흩어지고 점수를 막음.",
     "st3_pts_h": "&#127919; 점수 산정 방식",
@@ -2063,7 +2063,7 @@ const TRANSLATIONS = {
     "st3_a2": "<strong>集結を長く維持</strong> — 5分後、ダメージが15秒ごとに+500。解散させるな。",
     "st3_a3": "<strong>敵サーバーへ転移</strong>して攻勢に加わる。",
     "st3_stun_h": "❤ スタン / 不死の力サイクル",
-    "st3_s1": "<strong>HP0</strong>で不死の力を1スタック消費し、全集結を解散後に全回復。全スタック消滅でのみ死亡。",
+    "st3_s1": "<strong>HP0</strong>で不死の力を1スタック消費し、全集結を解散、<strong>30秒スタン</strong>（攻撃不可）後に全回復。全スタック消滅でのみ死亡。",
     "st3_s2": "<strong>3スタック</strong> → 撃破に約4回のゼロ。復活直後に再ゼロする新たな波を調整。",
     "st3_s3": "<strong>防衛側:</strong> 敵をゼロにすると集結が散り得点を止める。",
     "st3_pts_h": "🎯 得点の仕組み",
@@ -2244,7 +2244,7 @@ const TRANSLATIONS = {
     "st3_a2": "<strong>长时间维持集结</strong> — 5分钟后，伤害每15秒+500。别让它们解散。",
     "st3_a3": "<strong>转移到敌方服务器</strong>加入攻势。",
     "st3_stun_h": "❤ 眩晕 / 不死之力循环",
-    "st3_s1": "<strong>0血</strong>时消耗1层不死之力，解散所有集结，随后满血复活。所有层数耗尽才会死亡。",
+    "st3_s1": "<strong>0血</strong>时消耗1层不死之力，解散所有集结，<strong>眩晕30秒</strong>（无法攻击），随后满血复活。所有层数耗尽才会死亡。",
     "st3_s2": "<strong>3层</strong> → 约需归零4次击杀。协调新一波在其复活瞬间再次归零。",
     "st3_s3": "<strong>防守方:</strong> 将敌方归零会冲散其集结并阻止得分。",
     "st3_pts_h": "🎯 计分方式",
@@ -2425,7 +2425,7 @@ const TRANSLATIONS = {
     "st3_a2": "<strong>أبقِ الحشود طويلاً</strong> — بعد 5 دقائق، يتصاعد الضرر +500 كل 15 ث. لا تدعها تتفكك.",
     "st3_a3": "<strong>انتقل إلى خادم العدو</strong> للانضمام للهجوم.",
     "st3_stun_h": "❤ دورة الصعق / القوة الخالدة",
-    "st3_s1": "عند <strong>0 صحة</strong> يستهلك طبقة قوة خالدة، يفكك كل الحشود، ثم يُحيا بالكامل. لا يموت إلا بنفاد كل الطبقات.",
+    "st3_s1": "عند <strong>0 صحة</strong> يستهلك طبقة قوة خالدة، يفكك كل الحشود، <strong>يُصعق 30 ثانية</strong> (لا يستطيع الهجوم)، ثم يُحيا بالكامل. لا يموت إلا بنفاد كل الطبقات.",
     "st3_s2": "<strong>3 طبقات</strong> → نحو 4 تصفيرات للقتل. نسّق موجات جديدة لإعادة التصفير لحظة إحيائه.",
     "st3_s3": "<strong>المدافعون:</strong> تصفير بهيموثهم يبعثر حشودهم ويوقف تسجيلهم.",
     "st3_pts_h": "🎯 كيفية حساب النقاط",
@@ -2606,7 +2606,7 @@ const TRANSLATIONS = {
     "st3_a2": "<strong>Hold samlinger længe</strong> — efter 5 min stiger skaden +500 hver 15. sek. Lad dem ikke opløses.",
     "st3_a3": "<strong>Flyt til fjendeserveren</strong> for at deltage i offensiven.",
     "st3_stun_h": "❤ Bedøvelse / Udødelig Kraft-cyklus",
-    "st3_s1": "Ved <strong>0 HP</strong> brænder den 1 Udødelig Kraft-stak, opløser alle samlinger og genoplives fuldt. Dør kun, når alle stakke er væk.",
+    "st3_s1": "Ved <strong>0 HP</strong> brænder den 1 Udødelig Kraft-stak, opløser alle samlinger, <strong>bedøves i 30s</strong> (kan ikke angribe) og genoplives fuldt. Dør kun, når alle stakke er væk.",
     "st3_s2": "<strong>3 stakke</strong> → ~4 nulstillinger for at dræbe. Koordinér friske bølger for at nulstille igen i det øjeblik den genoplives.",
     "st3_s3": "<strong>Forsvarere:</strong> at nulstille deres spreder deres samlinger og stopper deres scoring.",
     "st3_pts_h": "🎯 Sådan scores point",
