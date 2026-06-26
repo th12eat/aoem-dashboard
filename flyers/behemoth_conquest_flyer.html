@@ -868,13 +868,12 @@
       </div>
     </div>
     <div class="stat-row">
-      <div class="stat-box"><div class="val" data-i18n="ref_s1_v">Adult</div><div class="lbl" data-i18n="ref_s1_l">Stage</div></div>
-      <div class="stat-box"><div class="val">9,375/s</div><div class="lbl" data-i18n="ref_s2_l">Siege</div></div>
-      <div class="stat-box"><div class="val">3.75M</div><div class="lbl" data-i18n="ref_s3_l">Health</div></div>
-      <div class="stat-box"><div class="val">3&times;</div><div class="lbl" data-i18n="ref_s4_l">Undying Stacks</div></div>
+      <div class="stat-box"><div class="val behe-val" data-uskey="ref_stage_us" data-themkey="ref_stage_them" data-us-en="Adult" data-them-en="Adult">Adult</div><div class="lbl" data-i18n="ref_s1_l">Stage</div></div>
+      <div class="stat-box"><div class="val behe-val" data-us="9,375/s" data-them="9,375/s">9,375/s</div><div class="lbl" data-i18n="ref_s2_l">Siege</div></div>
+      <div class="stat-box"><div class="val behe-val" data-us="3.75M" data-them="3.75M">3.75M</div><div class="lbl" data-i18n="ref_s3_l">Health</div></div>
+      <div class="stat-box"><div class="val behe-val" data-us="3&times;" data-them="3&times;">3&times;</div><div class="lbl" data-i18n="ref_s4_l">Undying Stacks</div></div>
     </div>
     <p style="font-size:12px;color:var(--text-muted);" data-i18n="ref_note">Siege scores <strong>~0.3 kingdom pts per durability</strong> &mdash; <strong>2,812,500 pts per attack</strong> at the Adult rate. Grew Juvenile &rarr; Adolescent &rarr; Adult as the Behemoth was cultivated.</p>
-    <p style="font-size:11.5px;margin-top:6px;" class="behe-note" data-i18n="behe_same">Both Behemoths are currently <strong>identical</strong> &mdash; same stats on each server. Toggle above to confirm; this isn't a display bug.</p>
   </div>
 
   <!-- TAB BAR -->
@@ -1558,7 +1557,6 @@ const TRANSLATIONS = {
     "st4_2": "Llega al <strong>tope del 65%</strong> con Fichas de Recuperación (máx 20) y aliados gastando fichas en ti (pide en el chat de alianza).",
     "st4_3": "No hay recuperación tras esta etapa. Gasta primero los Cristales de Bégimo restantes.",
     "ref_h": "Bégimo actual",
-    "ref_s1_v": "Adulto",
     "ref_s1_l": "Etapa",
     "ref_s2_l": "Asedio",
     "ref_s3_l": "Salud",
@@ -1633,7 +1631,8 @@ const TRANSLATIONS = {
     "st2_purity_h": "&#9878; Carrera de Pureza del Linaje",
     "behe_ours": "Nuestro Bégimo",
     "behe_enemy": "Bégimo enemigo",
-    "behe_same": "Ambos Bégimos son ahora <strong>idénticos</strong> &mdash; mismas estadísticas en cada servidor. Alterna arriba para confirmarlo; no es un error de visualización.",
+    "ref_stage_us": "Adulto",
+    "ref_stage_them": "Adulto",
     "footer_tagline": "Era 8 &mdash; Despierta y Conquista",
     "footer_sub": "Behemoth Conquest &middot; 22&ndash;30 jun &middot; UTC+0 &middot; Imperio vs Imperio"
   },
@@ -1743,7 +1742,6 @@ const TRANSLATIONS = {
     "st4_2": "Atteins le <strong>plafond de 65%</strong> avec des Tickets de Récupération (max 20) et des alliés dépensant des jetons sur toi (demande dans le chat d'alliance).",
     "st4_3": "Pas de récupération après cette étape. Dépense d'abord les Cristaux de Béhémoth restants.",
     "ref_h": "Béhémoth actuel",
-    "ref_s1_v": "Adulte",
     "ref_s1_l": "Étape",
     "ref_s2_l": "Siège",
     "ref_s3_l": "Santé",
@@ -1818,7 +1816,8 @@ const TRANSLATIONS = {
     "st2_purity_h": "&#9878; Course à la Pureté de la Lignée",
     "behe_ours": "Notre Béhémoth",
     "behe_enemy": "Béhémoth ennemi",
-    "behe_same": "Les deux Béhémoths sont actuellement <strong>identiques</strong> &mdash; mêmes stats sur chaque serveur. Bascule au-dessus pour confirmer ; ce n'est pas un bug d'affichage.",
+    "ref_stage_us": "Adulte",
+    "ref_stage_them": "Adulte",
     "footer_tagline": "Era 8 &mdash; Éveille et Conquiers",
     "footer_sub": "Behemoth Conquest &middot; 22&ndash;30 juin &middot; UTC+0 &middot; Empire vs Empire"
   },
@@ -1928,7 +1927,6 @@ const TRANSLATIONS = {
     "st4_2": "<strong>65% 상한</strong>까지: 회복 티켓(최대 20개)과 아군이 회복 토큰을 당신에게 사용(연맹 채팅에 요청).",
     "st4_3": "이 단계 이후 회복 없음. 남은 비헤모스 크리스탈을 먼저 사용.",
     "ref_h": "현재 비헤모스",
-    "ref_s1_v": "성체",
     "ref_s1_l": "단계",
     "ref_s2_l": "공성",
     "ref_s3_l": "체력",
@@ -2003,7 +2001,8 @@ const TRANSLATIONS = {
     "st2_purity_h": "&#9878; 혈통 순도 경쟁",
     "behe_ours": "우리 비헤모스",
     "behe_enemy": "적 비헤모스",
-    "behe_same": "현재 두 비헤모스는 <strong>동일</strong>합니다 &mdash; 각 서버에서 같은 능력치. 위에서 전환해 확인하세요; 표시 오류가 아닙니다.",
+    "ref_stage_us": "성체",
+    "ref_stage_them": "성체",
     "footer_tagline": "시대 8 &mdash; 각성하고 정복하라",
     "footer_sub": "Behemoth Conquest &middot; 6월 22&ndash;30일 &middot; UTC+0 &middot; 제국 대 제국"
   },
@@ -2171,7 +2170,6 @@ const TRANSLATIONS = {
     "st4_2": "<strong>65%上限</strong>へ: 回復チケット（最大20）と味方が回復トークンを使ってくれる（同盟チャットで依頼）。",
     "st4_3": "この段階後は回復なし。残ったベヒモスクリスタルを先に使う。",
     "ref_h": "現在のベヒモス",
-    "ref_s1_v": "成体",
     "ref_s1_l": "段階",
     "ref_s2_l": "攻城",
     "ref_s3_l": "体力",
@@ -2185,7 +2183,8 @@ const TRANSLATIONS = {
     "st2_purity_h": "&#9878; 血統純度レース",
     "behe_ours": "自軍ベヒモス",
     "behe_enemy": "敵ベヒモス",
-    "behe_same": "現在、両ベヒモスは<strong>同一</strong>です &mdash; 各サーバーで同じステータス。上で切り替えて確認を; 表示バグではありません。",
+    "ref_stage_us": "成体",
+    "ref_stage_them": "成体",
     "footer_tagline": "Era 8 — 覚醒し征服せよ",
     "footer_sub": "Behemoth Conquest · 6月22〜30日 · UTC+0 · 帝国対帝国",
     "scion_modal_title": "末裔の試練が進行中",
@@ -2356,7 +2355,6 @@ const TRANSLATIONS = {
     "st4_2": "通过两种方式达到<strong>65%上限</strong>: 恢复券（最多20）与盟友对你使用恢复令牌（在联盟聊天请求）。",
     "st4_3": "本阶段后无法手动恢复。先花掉剩余巨兽水晶。",
     "ref_h": "当前巨兽",
-    "ref_s1_v": "成年",
     "ref_s1_l": "阶段",
     "ref_s2_l": "攻城",
     "ref_s3_l": "生命",
@@ -2370,7 +2368,8 @@ const TRANSLATIONS = {
     "st2_purity_h": "&#9878; 血脉纯度竞赛",
     "behe_ours": "我方巨兽",
     "behe_enemy": "敌方巨兽",
-    "behe_same": "目前两只巨兽<strong>完全相同</strong> &mdash; 各服务器数值一致。在上方切换以确认；这不是显示故障。",
+    "ref_stage_us": "成年",
+    "ref_stage_them": "成年",
     "footer_tagline": "Era 8 — 觉醒与征服",
     "footer_sub": "Behemoth Conquest · 6月22–30日 · UTC+0 · 帝国对帝国",
     "scion_modal_title": "后裔试炼进行中",
@@ -2541,7 +2540,6 @@ const TRANSLATIONS = {
     "st4_2": "بلوغ <strong>سقف 65%</strong> عبر تذاكر الاستعادة (حد أقصى 20) وحلفاء ينفقون رموز استعادة عليك (اطلب في دردشة التحالف).",
     "st4_3": "لا استعادة يدوية بعد هذه المرحلة. أنفق بلورات البهيموث المتبقية أولاً.",
     "ref_h": "البهيموث الحالي",
-    "ref_s1_v": "بالغ",
     "ref_s1_l": "المرحلة",
     "ref_s2_l": "حصار",
     "ref_s3_l": "صحة",
@@ -2555,7 +2553,8 @@ const TRANSLATIONS = {
     "st2_purity_h": "&#9878; سباق نقاء السلالة",
     "behe_ours": "بهيموثنا",
     "behe_enemy": "بهيموث العدو",
-    "behe_same": "كلا البهيموثين <strong>متطابقان</strong> حالياً &mdash; نفس الإحصاءات على كل خادم. بدّل بالأعلى للتأكد؛ هذا ليس خطأ في العرض.",
+    "ref_stage_us": "بالغ",
+    "ref_stage_them": "بالغ",
     "footer_tagline": "Era 8 — أيقظ واغزُ",
     "footer_sub": "Behemoth Conquest · 22–30 يونيو · UTC+0 · إمبراطورية ضد إمبراطورية",
     "scion_modal_title": "محنة السليل جارية الآن",
@@ -2726,7 +2725,6 @@ const TRANSLATIONS = {
     "st4_2": "Nå <strong>65%-loftet</strong> med Genrejsningsbilletter (maks 20) og allierede der bruger genrejsnings-tokens på dig (spørg i alliancechatten).",
     "st4_3": "Ingen genrejsning efter denne fase. Brug resterende Behemoth-krystaller først.",
     "ref_h": "Nuværende Behemoth",
-    "ref_s1_v": "Voksen",
     "ref_s1_l": "Fase",
     "ref_s2_l": "Belejring",
     "ref_s3_l": "Helbred",
@@ -2740,7 +2738,8 @@ const TRANSLATIONS = {
     "st2_purity_h": "&#9878; Blodlinjerenheds-ræs",
     "behe_ours": "Vores Behemoth",
     "behe_enemy": "Fjendens Behemoth",
-    "behe_same": "Begge Behemoths er nu <strong>identiske</strong> &mdash; samme stats på hver server. Skift ovenfor for at bekræfte; det er ikke en visningsfejl.",
+    "ref_stage_us": "Voksen",
+    "ref_stage_them": "Voksen",
     "footer_tagline": "Era 8 — Vågn & Erobr",
     "footer_sub": "Behemoth Conquest · 22.–30. juni · UTC+0 · Imperium mod Imperium",
     "scion_modal_title": "Scion-prøven er LIVE",
@@ -2781,6 +2780,8 @@ function switchLang(lang) {
     });
   }
   update(); // refresh the dynamic countdown label in the new language
+  var bc = document.getElementById('behemothCard');
+  if (bc) renderBehemoth(bc.getAttribute('data-side') || 'us'); // re-resolve translated Stage label
 }
 
 // Countdown labels per language (the label is set dynamically each tick)
@@ -2897,6 +2898,33 @@ function blessOpenNodes(owned) {
   }
   return open;
 }
+// Current Behemoth card: render the chosen side's stats.
+// Numeric stats are language-neutral literals in data-us/data-them.
+// The translated Stage value uses data-us-en/data-them-en for English and TRANSLATIONS keys
+// (data-uskey/data-themkey) for other languages.
+function renderBehemoth(side) {
+  var card = document.getElementById('behemothCard');
+  if (!card) return;
+  card.setAttribute('data-side', side);
+  card.querySelectorAll('.behe-btn').forEach(function (b) {
+    var on = b.getAttribute('data-side') === side;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  var keyAttr = side === 'them' ? 'data-themkey' : 'data-uskey';
+  var enAttr  = side === 'them' ? 'data-them-en' : 'data-us-en';
+  var valAttr = side === 'them' ? 'data-them' : 'data-us';
+  card.querySelectorAll('.behe-val').forEach(function (el) {
+    if (el.hasAttribute(keyAttr)) {
+      var t = TRANSLATIONS[currentLang];
+      var k = el.getAttribute(keyAttr);
+      el.innerHTML = (currentLang !== 'en' && t && t[k] !== undefined) ? t[k] : el.getAttribute(enAttr);
+    } else if (el.hasAttribute(valAttr)) {
+      el.innerHTML = el.getAttribute(valAttr);
+    }
+  });
+}
+
 function updateBlessings() {
   var tbl = document.getElementById('blessTbl');
   if (!tbl) return;
@@ -3221,21 +3249,13 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // --- Current Behemoth: Our/Enemy toggle (recolors via [data-side]; stats currently identical) ---
+  // --- Current Behemoth: Our/Enemy toggle (renders real per-side stats; identical for now) ---
   var beheCard = document.getElementById('behemothCard');
   if (beheCard) {
-    var beheBtns = beheCard.querySelectorAll('.behe-btn');
-    beheBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var side = btn.getAttribute('data-side');
-        beheCard.setAttribute('data-side', side);
-        beheBtns.forEach(function (b) {
-          var on = b.getAttribute('data-side') === side;
-          b.classList.toggle('active', on);
-          b.setAttribute('aria-selected', on ? 'true' : 'false');
-        });
-      });
+    beheCard.querySelectorAll('.behe-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () { renderBehemoth(btn.getAttribute('data-side')); });
     });
+    renderBehemoth(beheCard.getAttribute('data-side') || 'us');
   }
 
   // --- Add-to-calendar button ---
