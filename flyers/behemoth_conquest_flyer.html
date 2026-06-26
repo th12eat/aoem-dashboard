@@ -716,7 +716,7 @@
 
   /* -- Tabs -- */
   .tab-bar {
-    display: flex; gap: 4px; margin: 0 0 20px;
+    display: flex; justify-content: center; gap: 4px; margin: 0 0 20px;
     border-bottom: 1px solid var(--border);
     overflow-x: auto; -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -745,6 +745,29 @@
   .tab-panel > .section:first-child, .tab-panel > .stage:first-child { margin-top: 0; }
   /* RTL: tab bar scrolls/anchors from the right */
   html[dir="rtl"] .tab-bar { flex-direction: row-reverse; }
+
+  /* -- Always-on top band (Score Race + Current Behemoth, sit above the tabs) -- */
+  .topband { margin-bottom: 16px; }
+  .behe-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .sh-inline { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: var(--text-primary); display: inline-flex; align-items: center; gap: 8px; }
+  .sh-inline .n {
+    display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px;
+    border-radius: 6px; background: var(--accent-gold); color: var(--bg-deep);
+    font-family: 'Bebas Neue', sans-serif; font-size: 14px; flex-shrink: 0;
+  }
+  .behe-toggle { display: inline-flex; gap: 4px; }
+  .behe-btn {
+    padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-card);
+    font-family: 'Barlow Condensed', sans-serif; font-size: 12.5px; font-weight: 700; letter-spacing: 0.3px;
+    color: var(--text-muted); cursor: pointer; transition: all .15s;
+  }
+  .behe-btn.active[data-side="us"]   { color: #9dc0f0; border-color: var(--accent-blue-dim); background: rgba(61,124,196,0.14); }
+  .behe-btn.active[data-side="them"] { color: #e89a9a; border-color: var(--accent-red-dim); background: rgba(196,61,61,0.14); }
+  /* recolor the stat values to match the side being viewed (reinforces it isn't bugged) */
+  #behemothCard[data-side="us"]   .stat-box .val { color: #5b8def; }
+  #behemothCard[data-side="them"] .stat-box .val { color: #c43d3d; }
+  #behemothCard[data-side="us"]   .behe-note strong { color: #9dc0f0; }
+  #behemothCard[data-side="them"] .behe-note strong { color: #e89a9a; }
 
   /* ===== Mobile (<=560px): fix cramped tables ===== */
   @media (max-width: 560px) {
@@ -822,10 +845,41 @@
     </button>
   </div>
 
+  <!-- ALWAYS-ON: SCORE RACE -->
+  <div class="section topband">
+    <div class="tug-wrap">
+      <div class="tug-row">
+        <span class="tug-us">15.1B <span class="tug-name" data-i18n="tug_us">US &middot; #008</span></span>
+        <span class="tug-name" data-i18n="tug_points_lbl">Behemoth Points</span>
+        <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#087</span> 11.9B</span>
+      </div>
+      <div class="tug-bar"><div class="tug-fill-us" style="width:55.9%;"></div><div class="tug-fill-them" style="width:44.1%;"></div></div>
+      <div class="tug-cap" data-i18n="tug_points_cap">The headline score race. We're <strong>clearly ahead</strong>, 15.1B vs 11.9B.</div>
+    </div>
+  </div>
+
+  <!-- ALWAYS-ON: CURRENT BEHEMOTH (with Our/Enemy toggle) -->
+  <div class="section topband" id="behemothCard" data-side="us">
+    <div class="behe-head">
+      <span class="sh-inline"><span class="n">&#129704;</span> <span data-i18n="ref_h">Current Behemoth</span></span>
+      <div class="behe-toggle" role="tablist" aria-label="Behemoth side">
+        <button type="button" class="behe-btn active" data-side="us" role="tab" data-i18n="behe_ours">Our Behemoth</button>
+        <button type="button" class="behe-btn" data-side="them" role="tab" data-i18n="behe_enemy">Enemy Behemoth</button>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="val" data-i18n="ref_s1_v">Adult</div><div class="lbl" data-i18n="ref_s1_l">Stage</div></div>
+      <div class="stat-box"><div class="val">9,375/s</div><div class="lbl" data-i18n="ref_s2_l">Siege</div></div>
+      <div class="stat-box"><div class="val">3.75M</div><div class="lbl" data-i18n="ref_s3_l">Health</div></div>
+      <div class="stat-box"><div class="val">3&times;</div><div class="lbl" data-i18n="ref_s4_l">Undying Stacks</div></div>
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);" data-i18n="ref_note">Siege scores <strong>~0.3 kingdom pts per durability</strong> &mdash; <strong>2,812,500 pts per attack</strong> at the Adult rate. Grew Juvenile &rarr; Adolescent &rarr; Adult as the Behemoth was cultivated.</p>
+    <p style="font-size:11.5px;margin-top:6px;" class="behe-note" data-i18n="behe_same">Both Behemoths are currently <strong>identical</strong> &mdash; same stats on each server. Toggle above to confirm; this isn't a display bug.</p>
+  </div>
+
   <!-- TAB BAR -->
   <div class="tab-bar" id="tabBar" role="tablist">
     <button class="tab-btn active" data-tab="overview" role="tab" data-i18n="tab_overview">Overview</button>
-    <button class="tab-btn" data-tab="scouting" role="tab" data-i18n="tab_scouting">Scouting</button>
     <button class="tab-btn" data-tab="s1" role="tab" data-i18n="tab_s1">Stage 1</button>
     <button class="tab-btn" data-tab="s2" role="tab" data-i18n="tab_s2">Stage 2</button>
     <button class="tab-btn" data-tab="s3" role="tab" data-i18n="tab_s3">Stage 3</button>
@@ -864,35 +918,14 @@
     <p style="font-size:12px;color:var(--text-muted);margin-top:4px;" data-i18n="stages_note">Trial windows are fixed daily; only the <strong>invasion time &amp; location</strong> are admin-set &mdash; watch alliance chat.</p>
   </div>
 
-  <!-- BEHEMOTH POINTS (Overview) -->
-  <div class="section">
-    <div class="sh"><span class="n">&#9878;</span> <span data-i18n="ov_score_h">Score Race</span></div>
-      <div class="tug-wrap">
-        <div class="tug-row">
-          <span class="tug-us">15.1B <span class="tug-name" data-i18n="tug_us">US &middot; #008</span></span>
-          <span class="tug-name" data-i18n="tug_points_lbl">Behemoth Points</span>
-          <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#087</span> 11.9B</span>
-        </div>
-        <div class="tug-bar"><div class="tug-fill-us" style="width:55.9%;"></div><div class="tug-fill-them" style="width:44.1%;"></div></div>
-        <div class="tug-cap" data-i18n="tug_points_cap">The headline score race. We're <strong>clearly ahead</strong>, 15.1B vs 11.9B.</div>
-      </div>
-  </div>
-  <!-- CURRENT BEHEMOTH (Overview) -->
-  <div class="section">
-    <div class="sh"><span class="n">&#129704;</span> <span data-i18n="ref_h">Current Behemoth</span></div>
-    <div class="stat-row">
-      <div class="stat-box"><div class="val" data-i18n="ref_s1_v">Adult</div><div class="lbl" data-i18n="ref_s1_l">Stage</div></div>
-      <div class="stat-box"><div class="val">9,375/s</div><div class="lbl" data-i18n="ref_s2_l">Siege</div></div>
-      <div class="stat-box"><div class="val">3.75M</div><div class="lbl" data-i18n="ref_s3_l">Health</div></div>
-      <div class="stat-box"><div class="val">3&times;</div><div class="lbl" data-i18n="ref_s4_l">Undying Stacks</div></div>
-    </div>
-    <p style="font-size:12px;color:var(--text-muted);" data-i18n="ref_note">Siege scores <strong>~0.3 kingdom pts per durability</strong> &mdash; <strong>2,812,500 pts per attack</strong> at the Adult rate. Grew Juvenile &rarr; Adolescent &rarr; Adult as the Behemoth was cultivated.</p>
-  </div>
   </section>
 
-  <section class="tab-panel" data-tab="scouting" role="tabpanel">
-  <!-- SCOUTING — POWER COMPARISON -->
-  <div class="section" style="margin-top:26px;">
+  <section class="tab-panel" data-tab="s1" role="tabpanel">
+  <!-- STAGE 1 — SCOUTING / MATCHING -->
+  <div class="stage">
+    <div class="stage-head"><span class="sicon">&#128270;</span><span class="stitle" data-i18n="st1_title">Stage 1 &mdash; Matching</span><span class="sdays" data-i18n="st1_days">Day 1</span></div>
+    <div class="stage-body">
+  <div class="section">
     <div class="sh"><span class="n">&#128270;</span> <span data-i18n="sc_h">Scouting the Match &mdash; Us vs #087</span></div>
     <div class="co info" style="margin-bottom:14px;" data-i18n="sc_intro">We face <strong>#087</strong> &mdash; ranked <strong>27th</strong> in Stellar Dynasty to our <strong>15th</strong>. We out-power them across the board. Watch the <strong>M:P</strong> column (merit&divide;power): high = punches above their size. We win if we keep cultivation ahead and rally on time.</div>
 
@@ -985,24 +1018,6 @@
     <button id="cmpToggle" type="button" aria-expanded="false"><span class="cmp-lbl-more" data-i18n="sc_show10">Show top 10</span><span class="cmp-lbl-less" data-i18n="sc_show5">Show top 5</span> <span class="chev">&#9662;</span></button>
     <p style="font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5;" data-i18n="sc_note"><b style="color:var(--accent-green);">M:P</b> = merit&divide;power (combat activity). Their #4 and #7 (<span style="color:var(--accent-green);">102&ndash;103%</span>) are the real threats &mdash; small but battle-hardened; their power leaders (#1&ndash;2) have thin merit and fold under pressure. Alliance totals favour us too (~20B vs ~15.5B).</p>
   </div>
-
-  </section>
-
-  <section class="tab-panel" data-tab="s1" role="tabpanel">
-  <!-- STAGE 1 — MATCHING -->
-  <div class="stage">
-    <div class="stage-head"><span class="sicon">&#9876;</span><span class="stitle" data-i18n="st1_title">Stage 1 &mdash; Matching</span><span class="sdays" data-i18n="st1_days">Day 1</span></div>
-    <div class="stage-body">
-      <h4 data-i18n="happens_h">What happens</h4>
-      <ul>
-        <li data-i18n="st1_h1">Our server is <strong>paired against an enemy server</strong> &mdash; Behemoth vs Behemoth for the whole event.</li>
-        <li data-i18n="st1_h2">No invasions yet &mdash; <strong>scout the enemy Behemoth</strong> (toggle it on the lineage screen) and plan donations.</li>
-      </ul>
-      <h4 data-i18n="st1_today_h">Do today</h4>
-      <ul>
-        <li data-i18n="st1_t1"><strong>Nothing to farm yet</strong> &mdash; runestones unlock in Stage 2 (Day 2).</li>
-        <li data-i18n="st1_t2">Invasion time &amp; location lock before the end of Day 3.</li>
-      </ul>
     </div>
   </div>
 
@@ -1168,6 +1183,7 @@
     <div class="stage-body">
       <h4 data-i18n="happens_h">What happens</h4>
       <ul>
+        <li data-i18n="st3_h0">Our server admin locks the <strong>invasion time &amp; location by Day 3, 12:00 UTC</strong>.</li>
         <li data-i18n="st3_h1">Each Behemoth <strong>invades the other server</strong> at the locked time &amp; location. <strong>Each invasion lasts 90 minutes.</strong></li>
         <li data-i18n="st3_h2">The invading Behemoth wrecks citadels and alliance buildings. <strong>Unlimited range, ignores shields</strong> &mdash; bubbling won't protect your city.</li>
         <li data-i18n="st3_h3"><strong>Be online for the window</strong> &mdash; this is where the bulk of the score (and personal points) is won.</li>
@@ -1466,11 +1482,6 @@ const TRANSLATIONS = {
     "st1_title": "Etapa 1 &mdash; Emparejamiento",
     "st1_days": "Día 1",
     "happens_h": "Qué ocurre",
-    "st1_h1": "Nuestro servidor queda <strong>emparejado contra un servidor enemigo</strong> &mdash; Bégimo contra Bégimo durante todo el evento.",
-    "st1_h2": "Aún no hay invasiones &mdash; <strong>explora al Bégimo enemigo</strong> (actívalo en la pantalla de linaje) y planea donaciones.",
-    "st1_today_h": "Haz hoy",
-    "st1_t1": "<strong>Nada que farmear todavía</strong> &mdash; las runas se desbloquean en la Etapa 2 (Día 2).",
-    "st1_t2": "La hora y ubicación de la invasión se fijan antes de que termine el Día 3.",
     "sc_h": "Explorando el Duelo &mdash; Nosotros vs #087",
     "sc_intro": "Enfrentamos a <strong>#087</strong> &mdash; <strong>27º</strong> en Stellar Dynasty frente a nuestro <strong>15º</strong>. Los superamos en poder en general. Mira la columna <strong>M:P</strong> (mérito&divide;poder): alto = pega por encima de su tamaño. Ganamos si mantenemos el cultivo adelante y reunimos a tiempo.",
     "sc_us_lbl": "NUESTRO SERVIDOR &middot; #008",
@@ -1505,6 +1516,7 @@ const TRANSLATIONS = {
     "st2_income_h": "&#128176; Ingreso de runas &mdash; topes diarios",
     "st3_title": "Etapa 3 &mdash; Ataque-Defensa",
     "st3_days": "Días 5&ndash;6",
+    "st3_h0": "El administrador de nuestro servidor fija la <strong>hora y ubicación de la invasión antes del Día 3, 12:00 UTC</strong>.",
     "st3_h1": "Cada Bégimo <strong>invade el otro servidor</strong> a la hora y ubicación fijadas. <strong>Cada invasión dura 90 minutos.</strong>",
     "st3_h2": "El Bégimo invasor destroza ciudadelas y edificios de alianza. <strong>Alcance ilimitado, ignora escudos</strong> &mdash; la burbuja no protege tu ciudad.",
     "st3_h3": "<strong>Conéctate durante la ventana</strong> &mdash; aquí se gana el grueso del puntaje (y de los puntos personales).",
@@ -1614,13 +1626,14 @@ const TRANSLATIONS = {
     "bless_lg_open": "Disponible para donar ahora",
     "spawn087_cap": "Nuestro punto de aparición en #087 (en territorio [JAN]) &mdash; coordenadas <strong>(1351,1281)</strong>. Reubícate cerca para la ventana de las 19:00. Toca para ampliar.",
     "tab_overview": "Resumen",
-    "tab_scouting": "Exploración",
     "tab_s1": "Etapa 1",
     "tab_s2": "Etapa 2",
     "tab_s3": "Etapa 3",
     "tab_s4": "Etapa 4",
-    "ov_score_h": "&#9878; Carrera de puntaje",
     "st2_purity_h": "&#9878; Carrera de Pureza del Linaje",
+    "behe_ours": "Nuestro Bégimo",
+    "behe_enemy": "Bégimo enemigo",
+    "behe_same": "Ambos Bégimos son ahora <strong>idénticos</strong> &mdash; mismas estadísticas en cada servidor. Alterna arriba para confirmarlo; no es un error de visualización.",
     "footer_tagline": "Era 8 &mdash; Despierta y Conquista",
     "footer_sub": "Behemoth Conquest &middot; 22&ndash;30 jun &middot; UTC+0 &middot; Imperio vs Imperio"
   },
@@ -1654,11 +1667,6 @@ const TRANSLATIONS = {
     "st1_title": "Étape 1 &mdash; Appariement",
     "st1_days": "Jour 1",
     "happens_h": "Ce qui se passe",
-    "st1_h1": "Notre serveur est <strong>apparié à un serveur ennemi</strong> &mdash; Béhémoth contre Béhémoth pendant tout l'événement.",
-    "st1_h2": "Pas encore d'invasions &mdash; <strong>repère le Béhémoth ennemi</strong> (active-le sur l'écran de lignée) et planifie les dons.",
-    "st1_today_h": "À faire aujourd'hui",
-    "st1_t1": "<strong>Rien à farmer pour l'instant</strong> &mdash; les runes se débloquent à l'Étape 2 (Jour 2).",
-    "st1_t2": "L'heure et le lieu de l'invasion sont verrouillés avant la fin du Jour 3.",
     "sc_h": "Repérage du duel &mdash; Nous vs #087",
     "sc_intro": "On affronte <strong>#087</strong> &mdash; <strong>27e</strong> en Stellar Dynasty contre notre <strong>15e</strong>. On les surpasse en puissance partout. Regarde la colonne <strong>M:P</strong> (mérite&divide;puissance) : élevé = frappe au-dessus de sa taille. On gagne si on garde la culture en avance et qu'on rallie à temps.",
     "sc_us_lbl": "NOTRE SERVEUR &middot; #008",
@@ -1693,6 +1701,7 @@ const TRANSLATIONS = {
     "st2_income_h": "&#128176; Revenu de runes &mdash; plafonds quotidiens",
     "st3_title": "Étape 3 &mdash; Attaque-Défense",
     "st3_days": "Jours 5&ndash;6",
+    "st3_h0": "L'administrateur de notre serveur verrouille l'<strong>heure et le lieu de l'invasion avant le Jour 3, 12:00 UTC</strong>.",
     "st3_h1": "Chaque Béhémoth <strong>envahit l'autre serveur</strong> à l'heure et au lieu verrouillés. <strong>Chaque invasion dure 90 minutes.</strong>",
     "st3_h2": "Le Béhémoth envahisseur détruit citadelles et bâtiments d'alliance. <strong>Portée illimitée, ignore les boucliers</strong> &mdash; le bouclier ne protège pas ta ville.",
     "st3_h3": "<strong>Sois en ligne pour la fenêtre</strong> &mdash; c'est là que se gagne l'essentiel du score (et des points personnels).",
@@ -1802,13 +1811,14 @@ const TRANSLATIONS = {
     "bless_lg_open": "Disponible au don maintenant",
     "spawn087_cap": "Notre point d'apparition sur #087 (en territoire [JAN]) &mdash; coordonnées <strong>(1351,1281)</strong>. Relocalise-toi à proximité pour la fenêtre de 19h00. Touche pour agrandir.",
     "tab_overview": "Aperçu",
-    "tab_scouting": "Reconnaissance",
     "tab_s1": "Étape 1",
     "tab_s2": "Étape 2",
     "tab_s3": "Étape 3",
     "tab_s4": "Étape 4",
-    "ov_score_h": "&#9878; Course au score",
     "st2_purity_h": "&#9878; Course à la Pureté de la Lignée",
+    "behe_ours": "Notre Béhémoth",
+    "behe_enemy": "Béhémoth ennemi",
+    "behe_same": "Les deux Béhémoths sont actuellement <strong>identiques</strong> &mdash; mêmes stats sur chaque serveur. Bascule au-dessus pour confirmer ; ce n'est pas un bug d'affichage.",
     "footer_tagline": "Era 8 &mdash; Éveille et Conquiers",
     "footer_sub": "Behemoth Conquest &middot; 22&ndash;30 juin &middot; UTC+0 &middot; Empire vs Empire"
   },
@@ -1842,11 +1852,6 @@ const TRANSLATIONS = {
     "st1_title": "1단계 &mdash; 매칭",
     "st1_days": "1일차",
     "happens_h": "무슨 일이 일어나나",
-    "st1_h1": "우리 서버가 <strong>적 서버와 매칭</strong>됩니다 &mdash; 이벤트 내내 비헤모스 대 비헤모스.",
-    "st1_h2": "아직 침공 없음 &mdash; <strong>적 비헤모스 정찰</strong>(혈통 화면에서 토글)하고 기부를 계획하세요.",
-    "st1_today_h": "오늘 할 일",
-    "st1_t1": "<strong>아직 파밍할 것 없음</strong> &mdash; 룬석은 2단계(2일차)에 해금됩니다.",
-    "st1_t2": "침공 시간과 장소는 3일차가 끝나기 전에 확정됩니다.",
     "sc_h": "대진 정찰 &mdash; 우리 vs #087",
     "sc_intro": "우리는 <strong>#087</strong>을 상대합니다 &mdash; Stellar Dynasty에서 그들 <strong>27위</strong>, 우리 <strong>15위</strong>. 전반적으로 우리가 전력 우위. <strong>M:P</strong> 열(공훈&divide;전력)을 보세요: 높을수록 덩치보다 강하게 침. 육성을 앞서 두고 제때 집결하면 이깁니다.",
     "sc_us_lbl": "우리 서버 &middot; #008",
@@ -1881,6 +1886,7 @@ const TRANSLATIONS = {
     "st2_income_h": "&#128176; 룬석 수입 &mdash; 일일 상한",
     "st3_title": "3단계 &mdash; 공격-방어",
     "st3_days": "5&ndash;6일차",
+    "st3_h0": "우리 서버 관리자가 <strong>3일차 12:00 UTC까지 침공 시간과 장소를 확정</strong>합니다.",
     "st3_h1": "각 비헤모스가 확정된 시간과 장소에 <strong>상대 서버를 침공</strong>합니다. <strong>각 침공은 90분간 지속</strong>됩니다.",
     "st3_h2": "침공 비헤모스는 성채와 연맹 건물을 파괴. <strong>무제한 사거리, 보호막 무시</strong> &mdash; 버블로도 도시를 못 지킴.",
     "st3_h3": "<strong>창 동안 접속해 있으세요</strong> &mdash; 점수(및 개인 포인트)의 대부분이 여기서 결정됩니다.",
@@ -1990,13 +1996,14 @@ const TRANSLATIONS = {
     "bless_lg_open": "지금 기부 가능",
     "spawn087_cap": "#087에서 우리 등장 지점([JAN] 영역 안) &mdash; 좌표 <strong>(1351,1281)</strong>. 19:00 창에 대비해 근처로 이전하세요. 탭하면 확대됩니다.",
     "tab_overview": "개요",
-    "tab_scouting": "정찰",
     "tab_s1": "1단계",
     "tab_s2": "2단계",
     "tab_s3": "3단계",
     "tab_s4": "4단계",
-    "ov_score_h": "&#9878; 점수 경쟁",
     "st2_purity_h": "&#9878; 혈통 순도 경쟁",
+    "behe_ours": "우리 비헤모스",
+    "behe_enemy": "적 비헤모스",
+    "behe_same": "현재 두 비헤모스는 <strong>동일</strong>합니다 &mdash; 각 서버에서 같은 능력치. 위에서 전환해 확인하세요; 표시 오류가 아닙니다.",
     "footer_tagline": "시대 8 &mdash; 각성하고 정복하라",
     "footer_sub": "Behemoth Conquest &middot; 6월 22&ndash;30일 &middot; UTC+0 &middot; 제국 대 제국"
   },
@@ -2031,11 +2038,6 @@ const TRANSLATIONS = {
     "st1_title": "段階1 — マッチング",
     "st1_days": "1日目",
     "happens_h": "何が起こるか",
-    "st1_h1": "自軍サーバーが<strong>敵サーバーと組まれる</strong> — イベント全体を通してベヒモス対ベヒモス。",
-    "st1_h2": "まだ侵攻なし — <strong>敵ベヒモスを偵察</strong>（血統画面で切替）し、寄付を計画。",
-    "st1_today_h": "今日やること",
-    "st1_t1": "<strong>まだ集める物はない</strong> — ルーン石は段階2（2日目）で解放。",
-    "st1_t2": "侵攻の時間と場所は3日目終了までに確定。",
     "sc_h": "対戦偵察 — 我々 vs #087",
     "sc_intro": "相手は<strong>#087</strong> — Stellar Dynastyで彼らは<strong>27位</strong>、我々は<strong>15位</strong>。全体的に戦力で上回る。<strong>M:P</strong>列（戦功÷戦力）に注目: 高い=体格以上に戦う。育成を先行させ時間通り集結すれば勝てる。",
     "sc_us_lbl": "自軍サーバー · #008",
@@ -2126,6 +2128,7 @@ const TRANSLATIONS = {
     "st2_income_note": "ダメージと撃破は上限ありで別々に郵送。3日間で全て最大化 = <strong>3,036ルーン石</strong>。",
     "st3_title": "段階3 — 攻防戦",
     "st3_days": "5〜6日目",
+    "st3_h0": "自軍サーバー管理者が<strong>3日目12:00 UTCまでに侵攻の時間と場所を確定</strong>。",
     "st3_h1": "各ベヒモスが確定した時間と場所で<strong>相手サーバーに侵攻</strong>。<strong>各侵攻は90分間。</strong>",
     "st3_h2": "侵攻ベヒモスは城塞と同盟建物を破壊。<strong>射程無制限、シールド無視</strong> — バブルでは都市を守れない。",
     "st3_h3": "<strong>枠の間はオンラインで</strong> — 得点（と個人ポイント）の大半はここで決まる。",
@@ -2175,13 +2178,14 @@ const TRANSLATIONS = {
     "ref_s4_l": "不死スタック",
     "ref_note": "攻城は<strong>耐久ごとに王国pt約0.3</strong> &mdash; 成体時で<strong>攻撃ごとに2,812,500pt</strong>。育成により幼年期 &rarr; 青年期 &rarr; 成体へ成長。",
     "tab_overview": "概要",
-    "tab_scouting": "偵察",
     "tab_s1": "段階1",
     "tab_s2": "段階2",
     "tab_s3": "段階3",
     "tab_s4": "段階4",
-    "ov_score_h": "&#9878; 得点レース",
     "st2_purity_h": "&#9878; 血統純度レース",
+    "behe_ours": "自軍ベヒモス",
+    "behe_enemy": "敵ベヒモス",
+    "behe_same": "現在、両ベヒモスは<strong>同一</strong>です &mdash; 各サーバーで同じステータス。上で切り替えて確認を; 表示バグではありません。",
     "footer_tagline": "Era 8 — 覚醒し征服せよ",
     "footer_sub": "Behemoth Conquest · 6月22〜30日 · UTC+0 · 帝国対帝国",
     "scion_modal_title": "末裔の試練が進行中",
@@ -2219,11 +2223,6 @@ const TRANSLATIONS = {
     "st1_title": "阶段1 — 匹配",
     "st1_days": "第1天",
     "happens_h": "会发生什么",
-    "st1_h1": "我方服务器<strong>与敌服配对</strong> — 整个活动巨兽对巨兽。",
-    "st1_h2": "尚无入侵 — <strong>侦察敌方巨兽</strong>（在血脉界面切换）并规划捐献。",
-    "st1_today_h": "今日要做",
-    "st1_t1": "<strong>暂无可刷取内容</strong> — 符文石在阶段2（第2天）解锁。",
-    "st1_t2": "入侵时间与地点在第3天结束前锁定。",
     "sc_h": "对战侦察 — 我们 vs #087",
     "sc_intro": "对手是<strong>#087</strong> — 在Stellar Dynasty他们排<strong>第27</strong>，我们<strong>第15</strong>。整体战力压制。注意<strong>M:P</strong>列（战功÷战力）: 高=以小博大。保持培养领先并准时集结即可获胜。",
     "sc_us_lbl": "我方服务器 · #008",
@@ -2314,6 +2313,7 @@ const TRANSLATIONS = {
     "st2_income_note": "伤害与击杀有上限并分别邮寄。3天全部最大化 = <strong>3,036符文石</strong>。",
     "st3_title": "阶段3 — 攻防战",
     "st3_days": "第5–6天",
+    "st3_h0": "我方服务器管理员在<strong>第3天12:00 UTC前锁定入侵时间与地点</strong>。",
     "st3_h1": "各巨兽在锁定的时间与地点<strong>入侵对方服务器</strong>。<strong>每次入侵持续90分钟。</strong>",
     "st3_h2": "入侵的巨兽摧毁城塞与联盟建筑。<strong>射程无限、无视护盾</strong> — 护盾保护不了你的城市。",
     "st3_h3": "<strong>时段内保持在线</strong> — 大部分得分（与个人积分）在此决出。",
@@ -2363,13 +2363,14 @@ const TRANSLATIONS = {
     "ref_s4_l": "不死层数",
     "ref_note": "攻城<strong>每点耐久约0.3王国分</strong> &mdash; 成年阶段<strong>每次攻击2,812,500分</strong>。随培养从幼年期 &rarr; 青年期 &rarr; 成年成长。",
     "tab_overview": "概览",
-    "tab_scouting": "侦察",
     "tab_s1": "阶段1",
     "tab_s2": "阶段2",
     "tab_s3": "阶段3",
     "tab_s4": "阶段4",
-    "ov_score_h": "&#9878; 得分竞赛",
     "st2_purity_h": "&#9878; 血脉纯度竞赛",
+    "behe_ours": "我方巨兽",
+    "behe_enemy": "敌方巨兽",
+    "behe_same": "目前两只巨兽<strong>完全相同</strong> &mdash; 各服务器数值一致。在上方切换以确认；这不是显示故障。",
     "footer_tagline": "Era 8 — 觉醒与征服",
     "footer_sub": "Behemoth Conquest · 6月22–30日 · UTC+0 · 帝国对帝国",
     "scion_modal_title": "后裔试炼进行中",
@@ -2407,11 +2408,6 @@ const TRANSLATIONS = {
     "st1_title": "المرحلة 1 — المطابقة",
     "st1_days": "اليوم 1",
     "happens_h": "ما يحدث",
-    "st1_h1": "خادمنا <strong>يُقرن بخادم عدو</strong> — بهيموث ضد بهيموث طوال الحدث.",
-    "st1_h2": "لا غزوات بعد — <strong>استطلع بهيموث العدو</strong> (بدّله في شاشة السلالة) وخطط للتبرعات.",
-    "st1_today_h": "افعل اليوم",
-    "st1_t1": "<strong>لا شيء للجمع بعد</strong> — تُفتح الأحجار الرونية في المرحلة 2 (اليوم 2).",
-    "st1_t2": "يُقفل وقت ومكان الغزو قبل نهاية اليوم 3.",
     "sc_h": "استطلاع المواجهة — نحن ضد #087",
     "sc_intro": "نواجه <strong>#087</strong> — مرتبتهم <strong>27</strong> في Stellar Dynasty مقابل <strong>15</strong> لنا. نتفوق عليهم في القوة عموماً. راقب عمود <strong>M:P</strong> (الجدارة÷القوة): مرتفع = يضرب فوق حجمه. نفوز إذا أبقينا التنمية متقدمة وحشدنا في الوقت.",
     "sc_us_lbl": "خادمنا · #008",
@@ -2502,6 +2498,7 @@ const TRANSLATIONS = {
     "st2_income_note": "الضرر والقضاء محدودان ويُرسلان بالبريد منفصلين. تعظيم كل شيء عبر الأيام الثلاثة = <strong>3,036 حجراً</strong>.",
     "st3_title": "المرحلة 3 — هجوم-دفاع",
     "st3_days": "الأيام 5–6",
+    "st3_h0": "يحدد مشرف خادمنا <strong>وقت ومكان الغزو قبل اليوم 3، 12:00 UTC</strong>.",
     "st3_h1": "كل بهيموث <strong>يغزو الخادم الآخر</strong> في الوقت والمكان المقفلين. <strong>كل غزو يستمر 90 دقيقة.</strong>",
     "st3_h2": "البهيموث الغازي يحطم القلاع ومباني التحالف. <strong>مدى لا محدود، يتجاهل الدروع</strong> — الفقاعة لن تحمي مدينتك.",
     "st3_h3": "<strong>كن متصلاً خلال النافذة</strong> — هنا يُحسم معظم النقاط (والنقاط الشخصية).",
@@ -2551,13 +2548,14 @@ const TRANSLATIONS = {
     "ref_s4_l": "طبقات الخلود",
     "ref_note": "الحصار يسجل <strong>~0.3 نقطة مملكة لكل متانة</strong> &mdash; <strong>2,812,500 نقطة لكل هجوم</strong> بمعدل البالغ. نما من يافع &rarr; مراهق &rarr; بالغ مع التنمية.",
     "tab_overview": "نظرة عامة",
-    "tab_scouting": "استطلاع",
     "tab_s1": "المرحلة 1",
     "tab_s2": "المرحلة 2",
     "tab_s3": "المرحلة 3",
     "tab_s4": "المرحلة 4",
-    "ov_score_h": "&#9878; سباق النقاط",
     "st2_purity_h": "&#9878; سباق نقاء السلالة",
+    "behe_ours": "بهيموثنا",
+    "behe_enemy": "بهيموث العدو",
+    "behe_same": "كلا البهيموثين <strong>متطابقان</strong> حالياً &mdash; نفس الإحصاءات على كل خادم. بدّل بالأعلى للتأكد؛ هذا ليس خطأ في العرض.",
     "footer_tagline": "Era 8 — أيقظ واغزُ",
     "footer_sub": "Behemoth Conquest · 22–30 يونيو · UTC+0 · إمبراطورية ضد إمبراطورية",
     "scion_modal_title": "محنة السليل جارية الآن",
@@ -2595,11 +2593,6 @@ const TRANSLATIONS = {
     "st1_title": "Fase 1 — Matchning",
     "st1_days": "Dag 1",
     "happens_h": "Hvad der sker",
-    "st1_h1": "Vores server <strong>parres mod en fjendeserver</strong> — Behemoth mod Behemoth hele eventet.",
-    "st1_h2": "Ingen invasioner endnu — <strong>spejd fjendens Behemoth</strong> (skift på blodlinje-skærmen) og planlæg donationer.",
-    "st1_today_h": "Gør i dag",
-    "st1_t1": "<strong>Intet at farme endnu</strong> — runesten låses op i Fase 2 (Dag 2).",
-    "st1_t2": "Invasionstid & -sted låses før udgangen af Dag 3.",
     "sc_h": "Spejdning af kampen — Os vs #087",
     "sc_intro": "Vi møder <strong>#087</strong> — placeret <strong>27.</strong> i Stellar Dynasty mod vores <strong>15.</strong> Vi overgår dem i magt over hele linjen. Hold øje med <strong>M:P</strong>-kolonnen (fortjeneste÷magt): høj = slår over sin størrelse. Vi vinder, hvis vi holder dyrkningen foran og samler til tiden.",
     "sc_us_lbl": "VORES SERVER · #008",
@@ -2690,6 +2683,7 @@ const TRANSLATIONS = {
     "st2_income_note": "Skade og elimineringer har loft og sendes separat med post. Maks alt over de 3 dage = <strong>3.036 runesten</strong>.",
     "st3_title": "Fase 3 — Angreb-forsvar",
     "st3_days": "Dag 5–6",
+    "st3_h0": "Vores serveradmin låser <strong>invasionstid & -sted inden Dag 3, 12:00 UTC</strong>.",
     "st3_h1": "Hver Behemoth <strong>invaderer den anden server</strong> på det låste tidspunkt & sted. <strong>Hver invasion varer 90 minutter.</strong>",
     "st3_h2": "Den invaderende Behemoth knuser citadeller og alliancebygninger. <strong>Ubegrænset rækkevidde, ignorerer skjolde</strong> — boble beskytter ikke din by.",
     "st3_h3": "<strong>Vær online i vinduet</strong> — her vindes hovedparten af scoren (og personlige point).",
@@ -2739,13 +2733,14 @@ const TRANSLATIONS = {
     "ref_s4_l": "Udødelig-stakke",
     "ref_note": "Belejring scorer <strong>~0,3 kongerige-point pr. holdbarhed</strong> &mdash; <strong>2.812.500 point pr. angreb</strong> ved Voksen-takten. Voksede Ungdyr &rarr; Halvvoksen &rarr; Voksen mens den blev dyrket.",
     "tab_overview": "Oversigt",
-    "tab_scouting": "Spejdning",
     "tab_s1": "Fase 1",
     "tab_s2": "Fase 2",
     "tab_s3": "Fase 3",
     "tab_s4": "Fase 4",
-    "ov_score_h": "&#9878; Scoreræs",
     "st2_purity_h": "&#9878; Blodlinjerenheds-ræs",
+    "behe_ours": "Vores Behemoth",
+    "behe_enemy": "Fjendens Behemoth",
+    "behe_same": "Begge Behemoths er nu <strong>identiske</strong> &mdash; samme stats på hver server. Skift ovenfor for at bekræfte; det er ikke en visningsfejl.",
     "footer_tagline": "Era 8 — Vågn & Erobr",
     "footer_sub": "Behemoth Conquest · 22.–30. juni · UTC+0 · Imperium mod Imperium",
     "scion_modal_title": "Scion-prøven er LIVE",
@@ -3223,6 +3218,23 @@ window.addEventListener('DOMContentLoaded', function () {
     }
     tabBtns.forEach(function (btn) {
       btn.addEventListener('click', function () { showTab(btn.getAttribute('data-tab')); });
+    });
+  }
+
+  // --- Current Behemoth: Our/Enemy toggle (recolors via [data-side]; stats currently identical) ---
+  var beheCard = document.getElementById('behemothCard');
+  if (beheCard) {
+    var beheBtns = beheCard.querySelectorAll('.behe-btn');
+    beheBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var side = btn.getAttribute('data-side');
+        beheCard.setAttribute('data-side', side);
+        beheBtns.forEach(function (b) {
+          var on = b.getAttribute('data-side') === side;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+      });
     });
   }
 
