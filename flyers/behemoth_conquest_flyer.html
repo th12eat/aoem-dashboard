@@ -2834,12 +2834,27 @@ function classifyScionSlots(nowMin, slots) {
   });
 }
 
+// Trial of Scion only runs Days 2-4 (through Jun 25 UTC). After that, all windows are done.
+var SCION_LAST_DATE = '2026-06-25';
 function updateScionSchedule(now) {
   var sched = document.getElementById('scionSched');
   if (!sched) return;
   var d = new Date(now);
-  var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
+  var todayStr = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
   var els = sched.querySelectorAll('.scion-slot');
+  // Past the Trial window entirely: grey everything as "done", no live/next, no modal.
+  if (todayStr > SCION_LAST_DATE) {
+    var Ldone = SCION_LABELS[currentLang] || SCION_LABELS.en;
+    els.forEach(function (el) {
+      el.classList.remove('is-live', 'is-next');
+      el.classList.add('is-passed');
+      var tag = el.querySelector('.slot-state');
+      if (tag) tag.textContent = Ldone.passed;
+    });
+    _scionWasLive = false;
+    return;
+  }
+  var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
   var slots = [];
   els.forEach(function (el) {
     slots.push({ start: +el.getAttribute('data-start'), end: +el.getAttribute('data-end') });
@@ -3090,10 +3105,11 @@ window.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && scionModal.classList.contains('open')) closeScionModal();
     });
-    // On load: if a Trial window is live right now, open it. update() also sets _scionWasLive.
+    // On load: if a Trial window is live right now, open it (only during the Trial days).
     var d = new Date(Date.now());
+    var todayStr = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
     var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
-    var live = [[60,90],[240,270],[660,690],[1140,1170]].some(function (s) {
+    var live = todayStr <= SCION_LAST_DATE && [[60,90],[240,270],[660,690],[1140,1170]].some(function (s) {
       return nowMin >= s[0] && nowMin < s[1];
     });
     if (live) { scionModal.classList.add('open'); _scionWasLive = true; }
