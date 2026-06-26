@@ -731,6 +731,15 @@
   }
   .tab-btn:hover { color: var(--text-primary); }
   .tab-btn.active { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
+  /* current live stage: a pulsing gold dot before the label (shows even when not the active/viewed tab) */
+  .tab-btn.is-now { color: var(--accent-gold); }
+  .tab-btn.is-now::before {
+    content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-gold); margin-right: 6px; vertical-align: middle;
+    animation: tabNowPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes tabNowPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,168,67,0.6); } 50% { box-shadow: 0 0 0 4px rgba(212,168,67,0); } }
+  @media (prefers-reduced-motion: reduce) { .tab-btn.is-now::before { animation: none; } }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
   .tab-panel > .section:first-child, .tab-panel > .stage:first-child { margin-top: 0; }
@@ -835,19 +844,19 @@
   <div class="section">
     <div class="sh"><span class="n">&#128197;</span> <span data-i18n="stages_h">The Four Stages (Jun 22&ndash;30)</span></div>
     <div class="phase-track" id="phaseTrack">
-      <div class="phase" data-from="2026-06-22" data-to="2026-06-22">
+      <div class="phase" data-from="2026-06-22" data-to="2026-06-22" data-stagetab="s1">
         <div class="pnum" data-i18n="ph1_day">Day 1</div><div class="picon">&#9876;</div>
         <div class="pname" data-i18n="ph1_name">Matching</div><div class="pdesc" data-i18n="ph1_desc">Servers paired, scout &amp; plan</div>
       </div>
-      <div class="phase" data-from="2026-06-23" data-to="2026-06-25">
+      <div class="phase" data-from="2026-06-23" data-to="2026-06-25" data-stagetab="s2">
         <div class="pnum" data-i18n="ph2_day">Days 2&ndash;4</div><div class="picon">&#129704;</div>
         <div class="pname" data-i18n="ph2_name">Beast Taming</div><div class="pdesc" data-i18n="ph2_desc">Cultivate the Behemoth via daily grind</div>
       </div>
-      <div class="phase" data-from="2026-06-26" data-to="2026-06-27">
+      <div class="phase" data-from="2026-06-26" data-to="2026-06-27" data-stagetab="s3">
         <div class="pnum" data-i18n="ph3_day">Days 5&ndash;6</div><div class="picon">&#128165;</div>
         <div class="pname" data-i18n="ph3_name">Attack-Defense</div><div class="pdesc" data-i18n="ph3_desc">90-min cross-server Behemoth invasions</div>
       </div>
-      <div class="phase" data-from="2026-06-28" data-to="2026-06-30">
+      <div class="phase" data-from="2026-06-28" data-to="2026-06-30" data-stagetab="s4">
         <div class="pnum" data-i18n="ph4_day">Day 7+</div><div class="picon">&#10010;</div>
         <div class="pname" data-i18n="ph4_name">Recovery</div><div class="pdesc" data-i18n="ph4_desc">Claim back lost units</div>
       </div>
@@ -2848,11 +2857,16 @@ function updatePhase(now) {
   // today's UTC date as YYYY-MM-DD for plain string compare (ISO dates sort lexically)
   var today = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
   var label = NOW_LABELS[currentLang] || NOW_LABELS.en;
+  var nowTab = null;
   track.querySelectorAll('.phase').forEach(function (el) {
     var from = el.getAttribute('data-from'), to = el.getAttribute('data-to');
     var on = from && to && today >= from && today <= to;
     el.classList.toggle('active', on);
-    if (on) el.setAttribute('data-nowlabel', label);
+    if (on) { el.setAttribute('data-nowlabel', label); nowTab = el.getAttribute('data-stagetab'); }
+  });
+  // Mark the matching stage tab as the current stage (distinct from the .active "viewing" state).
+  document.querySelectorAll('.tab-btn').forEach(function (btn) {
+    btn.classList.toggle('is-now', btn.getAttribute('data-tab') === nowTab);
   });
 }
 
