@@ -3113,7 +3113,7 @@ function TMECommandCenter(){
     return config.alliances.map(a=>({...a,prepRank:rankMap[a.tag]+1,teleportTime:fmt(baseMin+tpOffsetByRank[rankMap[a.tag]])}));
   })();
   const computedOppAlliances=(()=>{
-    const sorted=[...config.oppAlliances].sort((a,b)=>parseNum(b.prepPoints)-parseNum(a.prepPoints));
+    const sorted=[...config.oppAlliances].sort((a,b)=>parseNum(b.power)-parseNum(a.power));
     const m=config.invasionTime.match(/(\d{1,2}):(\d{2})/);
     const baseMin=(m?parseInt(m[1],10):11)*60+(m?parseInt(m[2],10):0);
     const tz=config.invasionTime.replace(/\d{1,2}:\d{2}\s*/,"").trim()||"UTC";
