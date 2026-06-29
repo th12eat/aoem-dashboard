@@ -91,27 +91,29 @@
       <div><div id="chartMP"></div><div class="legend" id="legMP"></div></div>
       <div><div id="chartPM"></div><div class="legend" id="legPM"></div></div>
     </div>
-    <div class="note">M:P (merit ÷ power) is a proxy for combat activity — rising M:P means we're fighting more per unit of power, not just getting bigger. Multi-server brackets (Primordial, Desolate Desert) lack clean top-4 alliance figures, so they appear in the ledger as win/loss only and are excluded from the alliance charts.</div>
+    <div class="note">M:P (merit ÷ power) is a proxy for combat activity — rising M:P means we're fighting more per unit of power, not just getting bigger. Any event with captured top-4 alliance data feeds these charts (multi-server brackets included). Past events without alliance figures show as win/loss only until data is added.</div>
   </div>
 </div>
 
 <script>
 // ============ DATA ============
-// Each event: per-alliance [tag, power, merits]. Multi-server = win/loss only (no alliance data).
+// Each event holds our & opponent top-4 alliances as [tag, power, merits] — M:P is derived.
+// Opponent servers use the padded "Era #0XX" style. Multi-server brackets list each server,
+// and can carry alliance data (ours / oppA) once captured — until then they're win/loss rows.
 const EVENTS = [
-  { event:"TME", date:"2026-05-18", opp:"Era 38", result:"Loss",
+  { event:"TME", date:"2026-05-18", opp:"Era #038", result:"Loss",
     ours:[["WC1",17236872426,1493190936],["AGC",11113145620,154684345],["MyT",10077180519,744926645],["REU",8634995031,825232103]],
     oppA:[["E38",17825083183,1701935323],["K38",11735334303,710232458],["S38",9901400493,389679065],["NAS",7193506001,107554795]] },
-  { event:"TME", date:"2026-06-15", opp:"Era 23", result:"Win",
+  { event:"TME", date:"2026-06-15", opp:"Era #023", result:"Win",
     ours:[["WC1",19612039793,2087503559],["REU",12075304942,887427033],["AGC",11296408344,177822588],["MyT",10266594886,848149532]],
     oppA:[["LOD",17173032779,2132765554],["boi",14806866449,1082278581],["R65",13881483676,1766240250],["ILF",4866546542,92039230]] },
-  { event:"TME", date:"2026-06-28", opp:"Era 90", result:"TBD",
+  { event:"TME", date:"2026-06-28", opp:"Era #090", result:"TBD",
     ours:[["WC1",20238517730,2272826034],["REU",12699637836,912404888],["AGC",11739696945,186806496],["MyT",10430075595,898618923]],
     oppA:[["RIP",20212765060,2541548484],["INT",14829324819,1022902133],["YFQ",10405496654,190589970],["OvO",6265770680,95788191]] },
-  // Multi-server brackets / non-alliance-comparable events:
-  { event:"Behemoth", date:"2026-06-30", opp:"Era 87", result:"Loss", note:"Final 37.4B vs 57.8B" },
-  { event:"Primordial", date:"2026-05", opp:"E#016 / E#022 / E#092", result:"—", multi:true },
-  { event:"Desolate Desert", date:"2026-05", opp:"Era 51 / 82 / 2", result:"—", multi:true },
+  // Multi-server brackets — add ours/oppA arrays here as alliance data is captured going forward.
+  { event:"Behemoth", date:"2026-06-30", opp:"Era #087", result:"Loss", note:"Final 37.4B vs 57.8B", multi:true },
+  { event:"Primordial", date:"2026-05", opp:"Era #016 / #022 / #092", result:"Win", multi:true },
+  { event:"Desolate Desert", date:"2026-05", opp:"Era #051 / #082 / #002", result:"Win", multi:true },
 ];
 
 const fmtB = n => (n/1e9).toFixed(2)+"B";
@@ -137,18 +139,19 @@ const mpClass = v => v>=8?"mp-hi":v>=4?"mp-mid":"mp-lo";
   const tb=document.querySelector("#ledger tbody");
   EVENTS.forEach(e=>{
     const rc = e.result==="Win"?"res-win":e.result==="Loss"?"res-loss":e.result==="TBD"?"res-tbd":"";
-    if(e.multi || !e.ours){
-      const extra = e.note?` <span class="multi-note">(${e.note})</span>`:` <span class="multi-note">(multi-server)</span>`;
+    const tag = e.multi?` <span class="multi-note">(multi-server)</span>`:"";
+    if(!e.ours){
+      const extra = e.note?` <span class="multi-note">(${e.note})</span>`:tag;
       tb.insertAdjacentHTML("beforeend",
         `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${extra}</td>`+
-        `<td colspan="6" class="multi-note" style="text-align:center">no top-4 alliance comparison</td>`+
+        `<td colspan="6" class="multi-note" style="text-align:center">alliance data not captured</td>`+
         `<td class="${rc}">${e.result}</td></tr>`);
       return;
     }
     const oP=sum(e.ours,1),oM=sum(e.ours,2),pP=sum(e.oppA,1),pM=sum(e.oppA,2);
     const oMP=oM/oP*100, pMP=pM/pP*100;
     tb.insertAdjacentHTML("beforeend",
-      `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}</td>`+
+      `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${tag}</td>`+
       `<td class="num">${fmtB(oP)}</td><td class="num">${fmtB(oM)}</td><td class="num ${mpClass(oMP)}">${oMP.toFixed(1)}%</td>`+
       `<td class="num">${fmtB(pP)}</td><td class="num">${fmtB(pM)}</td><td class="num ${mpClass(pMP)}">${pMP.toFixed(1)}%</td>`+
       `<td class="${rc}">${e.result}</td></tr>`);
