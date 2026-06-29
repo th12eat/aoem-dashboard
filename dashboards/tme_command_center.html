@@ -7,8 +7,9 @@
     <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone@7.26.0/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; background: #0f172a; }
+        body { margin: 0; background: #0a0c14; }
     </style>
 </head>
 <body>
@@ -3177,12 +3178,12 @@ function TMECommandCenter(){
   return(
     <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'JetBrains Mono','Fira Code',monospace"}}>
       {/* Header */}
-      <div style={{background:"linear-gradient(90deg,#0f172a,#1e3a5f,#0f172a)",borderBottom:"2px solid #fbbf24",padding:16,textAlign:"center",position:"sticky",top:0,zIndex:10}}>
+      <div style={{background:"radial-gradient(ellipse at center top, rgba(61,124,196,0.18) 0%, #0a0c14 70%)",borderBottom:"2px solid #2b5a8a",padding:16,textAlign:"center",position:"sticky",top:0,zIndex:10}}>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:6}}>
           <LangPicker value={uiLang} onChange={handleLang}/>
         </div>
-        <div style={{fontSize:11,color:"#fbbf24",letterSpacing:3,textTransform:"uppercase",marginBottom:4}}>{t.headerSub}</div>
-        <div style={{fontSize:22,fontWeight:800,color:"#f8fafc",letterSpacing:1}}>{t.headerTitle}</div>
+        <div style={{fontSize:11,color:"#5b9bd8",letterSpacing:3,textTransform:"uppercase",marginBottom:2,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:600}}>{t.headerSub}</div>
+        <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:34,letterSpacing:2,color:"#f8fafc",lineHeight:1}}>{t.headerTitle}</div>
         <div style={{fontSize:13,color:"#94a3b8",marginTop:4}}>
           <span style={{color:"#60a5fa",fontWeight:700}}>Era 8 (E#008)</span> {"\u2694\uFE0F"}{" "}
           <span style={{color:"#f87171",fontWeight:700}}>{config.oppServer} ({oppCode})</span> {"\u00B7"}{" "}
