@@ -104,7 +104,9 @@
 // Opponent servers use the padded "Era #0XX" style. Multi-server brackets list each server,
 // and can carry alliance data (ours / oppA) once captured — until then they're win/loss rows.
 // Listed chronologically. Add ours/oppA arrays (["TAG", power, merits]) to any event as data is captured.
-const EVENTS = [
+// Fallback dataset (used if ../data/history.json fails to load). The loader at the
+// bottom of this script replaces EVENTS with the published file when available.
+let EVENTS = [
   { event:"TME", date:"2026-05-18", opp:"Era #038", result:"Loss",
     ours:[["WC1",17236872426,1493190936],["AGC",11113145620,154684345],["MyT",10077180519,744926645],["REU",8634995031,825232103]],
     oppA:[["E38",17825083183,1701935323],["K38",11735334303,710232458],["S38",9901400493,389679065],["NAS",7193506001,107554795]] },
@@ -125,7 +127,7 @@ const sum = (rows,i) => rows.reduce((a,r)=>a+r[i],0);
 const mpClass = v => v>=8?"mp-hi":v>=4?"mp-mid":"mp-lo";
 
 // ---- W/L summary ----
-(function(){
+function renderSummary(){
   let w=0,l=0,t=0;
   EVENTS.forEach(e=>{ if(e.result==="Win")w++; else if(e.result==="Loss")l++; else if(e.result==="TBD")t++; });
   const html=[
@@ -135,11 +137,12 @@ const mpClass = v => v>=8?"mp-hi":v>=4?"mp-mid":"mp-lo";
     `<div class="chip"><div class="big">${EVENTS.length}</div><div class="lbl">Events tracked</div></div>`,
   ].join("");
   document.getElementById("summary").innerHTML=html;
-})();
+}
 
 // ---- ledger ----
-(function(){
+function renderLedger(){
   const tb=document.querySelector("#ledger tbody");
+  tb.innerHTML="";
   EVENTS.forEach(e=>{
     const rc = e.result==="Win"?"res-win":e.result==="Loss"?"res-loss":e.result==="TBD"?"res-tbd":"";
     const tag = e.multi?` <span class="multi-note">(multi-server)</span>`:"";
@@ -161,7 +164,7 @@ const mpClass = v => v>=8?"mp-hi":v>=4?"mp-mid":"mp-lo";
   });
   document.getElementById("ledgerNote").textContent =
     "M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).";
-})();
+}
 
 // ---- charts (SVG line) ----
 function lineChart(series, opts){
@@ -193,7 +196,7 @@ function lineChart(series, opts){
   return s;
 }
 
-(function(){
+function renderCharts(){
   const tme=EVENTS.filter(e=>e.ours);
   const xlabels=tme.map(e=>e.date.slice(5)); // MM-DD
   // M:P chart: us combined vs opp combined
@@ -212,7 +215,20 @@ function lineChart(series, opts){
     {ymin:0,ymax:60,yfmt:v=>v.toFixed(0)+"B",xlabels});
   document.getElementById("legPM").innerHTML=
     `<span style="color:#fbbf24"><b>■ Power</b></span> <span style="color:#4ade80"><b>■ Merits</b></span> — our combined top-4 (B)`;
+}
+
+function renderAll(){ renderSummary(); renderLedger(); renderCharts(); }
+
+// Load published history (../data/history.json) if present; else use in-code fallback.
+(async function(){
+  try{
+    const res=await fetch("../data/history.json");
+    if(res.ok){ const j=await res.json(); if(j&&Array.isArray(j.events)) EVENTS=j.events; }
+  }catch(e){ console.error("history load failed; using fallback",e); }
+  renderAll();
 })();
 </script>
+<script src="../assets/auth.js"></script>
+<script src="../assets/site-header.js"></script>
 </body>
 </html>

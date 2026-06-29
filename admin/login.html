@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in — Era 8 Command</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/kvk-theme.css">
+  <style>
+    body { background: var(--bg-deep); color: var(--text-primary); font-family: 'Barlow', sans-serif;
+           margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .card { width: 100%; max-width: 380px; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 30px 26px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    .brand { text-align: center; margin-bottom: 18px; }
+    .brand .mark { color: var(--kvk-accent); font-size: 26px; }
+    .brand h1 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; margin: 4px 0 0; }
+    .brand .sub { color: var(--text-secondary); font-size: 13px; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; }
+    .banner { background: rgba(212,168,67,0.08); border: 1px dashed var(--kvk-accent-dim); border-radius: 8px;
+              padding: 9px 12px; font-size: 12px; color: var(--kvk-accent); text-align: center; margin-bottom: 18px;
+              font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; }
+    label { display: block; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 12px;
+            letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin: 12px 0 5px; }
+    input { width: 100%; box-sizing: border-box; background: var(--bg-deep); border: 1px solid var(--border);
+            border-radius: 8px; padding: 10px 12px; color: var(--text-primary); font-size: 14px; font-family: 'Barlow', sans-serif; }
+    input:focus { outline: none; border-color: var(--kvk-accent-dim); }
+    .btn { width: 100%; margin-top: 18px; padding: 11px; border: none; border-radius: 8px; cursor: pointer;
+           background: var(--kvk-accent); color: var(--bg-deep); font-family: 'Barlow Condensed', sans-serif;
+           font-weight: 700; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; }
+    .btn:hover { filter: brightness(1.08); }
+    .msg { margin-top: 12px; font-size: 12.5px; text-align: center; min-height: 1.2em; color: var(--accent-gold); }
+    .back { display: block; text-align: center; margin-top: 16px; color: var(--text-muted); font-size: 12px; text-decoration: none;
+            font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; }
+    .back:hover { color: var(--kvk-accent); }
+  </style>
+</head>
+<body data-kvk="generic">
+  <div class="card">
+    <div class="brand">
+      <div class="mark">◆</div>
+      <h1>Era 8 Command</h1>
+      <div class="sub">Maintainer Sign-In</div>
+    </div>
+
+    <div class="banner">⚙ Preview build — sign-in activates when hosted.</div>
+
+    <form id="loginForm" autocomplete="off">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="commander" autocomplete="username">
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password">
+
+      <button type="submit" class="btn">Sign In</button>
+      <div class="msg" id="msg"></div>
+    </form>
+
+    <a class="back" href="../index.html">← Back to Era 8 Command</a>
+  </div>
+
+  <script src="../assets/auth.js"></script>
+  <script>
+    // PREVIEW BUILD: the submit handler is intentionally NOT wired to Auth.login().
+    // The real logic lives in Auth.login() (assets/auth.js) and is ready to attach
+    // at hosting time — at which point this listener simply calls it and redirects.
+    (function () {
+      var form = document.getElementById('loginForm');
+      var msg = document.getElementById('msg');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        // --- WIRE LATER (go-live): ---
+        // var u = document.getElementById('username').value;
+        // var p = document.getElementById('password').value;
+        // var r = Auth.login(u, p);
+        // if (r.ok) { location.href = 'index.html'; } else { msg.textContent = r.reason; }
+        msg.textContent = 'Sign-in is disabled in this preview build.';
+      });
+    })();
+  </script>
+</body>
+</html>

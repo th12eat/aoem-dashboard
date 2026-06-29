@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AoEM Era 8 — Dashboards & Flyers</title>
+    <title>Era 8 Command — AoEM Dashboards &amp; Flyers</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/kvk-theme.css">
     <style>
@@ -12,58 +12,166 @@
             color: var(--text-primary);
             font-family: 'Barlow', system-ui, sans-serif;
             margin: 0;
-            padding: 0 1rem 3rem;
+            padding: 0 1rem 3.5rem;
         }
-        .kvk-header { margin-bottom: 24px; }
-        .wrap { max-width: 640px; margin: 0 auto; }
+        .kvk-header { margin-bottom: 26px; }
+        .wrap { max-width: 860px; margin: 0 auto; }
+
         h2 {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 22px; letter-spacing: 1.5px;
-            color: var(--kvk-accent);
+            color: var(--text-primary);
             border-bottom: 1px solid var(--border);
-            padding-bottom: 0.4rem; margin: 1.8rem 0 0.4rem;
+            padding-bottom: 0.4rem; margin: 2rem 0 0.9rem;
+            display: flex; align-items: center; gap: 10px;
         }
-        a {
-            display: block;
-            color: var(--text-secondary);
-            text-decoration: none;
-            padding: 0.5rem 0.6rem;
-            font-size: 1.05rem;
-            border-radius: 8px;
-            transition: background .15s, color .15s;
+        h2 .h2dot { color: var(--kvk-accent); font-size: 15px; }
+
+        /* featured active-KvK banner */
+        .featured {
+            display: block; text-decoration: none;
+            border: 1px solid var(--accent-blue-dim);
+            border-radius: 14px; overflow: hidden;
+            background:
+              radial-gradient(ellipse at 80% 0%, rgba(61,124,196,0.22), transparent 60%),
+              linear-gradient(180deg, rgba(61,124,196,0.10), var(--bg-card));
+            padding: 20px 22px; margin-bottom: 6px;
+            transition: border-color .15s, transform .12s;
         }
-        a:hover { color: var(--kvk-accent); background: rgba(var(--kvk-accent-rgb),0.08); }
-        a .meta { color: var(--text-muted); font-size: 0.85rem; }
+        .featured:hover { border-color: var(--accent-blue); transform: translateY(-1px); }
+        .featured .tag {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+            font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+            color: var(--accent-blue);
+        }
+        .featured .ttl {
+            font-family: 'Bebas Neue', sans-serif; font-size: 34px; letter-spacing: 1.5px;
+            color: var(--text-primary); line-height: 1.05; margin: 3px 0 4px;
+        }
+        .featured .ttl span { color: var(--accent-blue); }
+        .featured .sub { color: var(--text-secondary); font-size: 14px; }
+        .featured .go {
+            display: inline-block; margin-top: 10px; font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700; letter-spacing: 1px; font-size: 13px; color: var(--accent-blue);
+        }
+
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 10px;
+        }
+        .card {
+            display: block; text-decoration: none;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 10px; padding: 13px 15px;
+            transition: border-color .15s, background .15s, transform .12s;
+        }
+        .card:hover {
+            border-color: var(--kvk-accent-dim);
+            background: rgba(var(--kvk-accent-rgb), 0.05);
+            transform: translateY(-1px);
+        }
+        .card .ct {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+            font-size: 16px; letter-spacing: 0.5px; color: var(--text-primary);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .card .cd { color: var(--text-secondary); font-size: 12.5px; margin-top: 3px; line-height: 1.45; }
+        .card .pill {
+            margin-left: auto; font-family: 'Barlow Condensed', sans-serif;
+            font-size: 9.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+            padding: 1px 7px; border-radius: 4px;
+        }
+        .pill.win  { background: rgba(61,170,109,0.16); color: var(--accent-green); }
+        .pill.loss { background: rgba(196,61,61,0.16);  color: var(--accent-red); }
+        .pill.live { background: rgba(61,124,196,0.18); color: var(--accent-blue); }
+        .pill.draft{ background: rgba(212,168,67,0.16); color: var(--accent-gold); }
+        .card .ico { font-size: 15px; }
     </style>
 </head>
 <body data-kvk="generic">
     <div class="kvk-header">
         <div class="kvk-tag">Age of Empires Mobile · Era 8 (E#008)</div>
         <h1 class="kvk-title">ERA 8 <span>COMMAND</span></h1>
-        <div class="kvk-subtitle">Dashboards · Flyers · Reference</div>
+        <div class="kvk-subtitle">Cross-server war coordination · dashboards, flyers &amp; reference</div>
     </div>
+
     <div class="wrap">
-        <h2>Command Center</h2>
-        <a href="app/index.html">DKP &amp; TMG Tracker</a>
-        <a href="dashboards/tme_command_center.html">TME Command Center <span class="meta">· vs Era #090</span></a>
-        <a href="dashboards/desolate_desert.html">Desolate Desert Command Center</a>
-        <a href="dashboards/kvk_history.html">KvK History &amp; Trends</a>
 
-        <h2>Reference</h2>
-        <a href="glossary/index.html">Heroes &amp; Bestiary Glossary</a>
-        <a href="marches/index.html">My Marches — Hero Builds</a>
+        <h2><span class="h2dot">◆</span> Active KvK</h2>
+        <a class="featured" href="dashboards/tme_command_center.html">
+            <div class="tag">The Mightiest Empire · in progress</div>
+            <div class="ttl">vs <span>Era #090</span></div>
+            <div class="sub">Live prep tracker, alliance &amp; kraken intel, role assignments, invasion plan.</div>
+            <div class="go">Open Command Center →</div>
+        </a>
 
-        <h2>Tools</h2>
-        <a href="dashboards/horse_breeding.html">Horse Breeding Optimizer</a>
+        <h2><span class="h2dot">◆</span> Command Center</h2>
+        <div class="grid">
+            <a class="card" href="app/index.html">
+                <div class="ct"><span class="ico">🏆</span> DKP &amp; TMG Tracker</div>
+                <div class="cd">Player DKP standings and TMG season records.</div>
+            </a>
+            <a class="card" href="dashboards/kvk_history.html">
+                <div class="ct"><span class="ico">📜</span> KvK History &amp; Trends</div>
+                <div class="cd">Win/loss ledger, top-4 power &amp; merits, M:P trend charts.</div>
+            </a>
+        </div>
 
-        <h2>Dashboards</h2>
-        <a href="dashboards/primordial_conflict_dashboard.html">Primordial Conflict Dashboard</a>
+        <h2><span class="h2dot">◆</span> Event Dashboards</h2>
+        <div class="grid">
+            <a class="card" href="dashboards/tme_command_center.html">
+                <div class="ct"><span class="ico">⚔️</span> The Mightiest Empire <span class="pill live">live</span></div>
+                <div class="cd">vs Era #090 — prep, intel, invasion.</div>
+            </a>
+            <a class="card" href="dashboards/desolate_desert.html">
+                <div class="ct"><span class="ico">🏜️</span> Desolate Desert <span class="pill win">win</span></div>
+                <div class="cd">Zones, nodes, diplomacy &amp; route planner.</div>
+            </a>
+            <a class="card" href="dashboards/primordial_conflict_dashboard.html">
+                <div class="ct"><span class="ico">🌋</span> Primordial Conflict <span class="pill win">win</span></div>
+                <div class="cd">Cross-server rankings &amp; per-server rosters.</div>
+            </a>
+        </div>
 
-        <h2>Flyers</h2>
-        <a href="flyers/behemoth_conquest_flyer.html">Behemoth Conquest — Strategy Brief</a>
-        <a href="flyers/day6_showdown_flyer.html">Day 6 Showdown Flyer</a>
-        <a href="flyers/order_workshop_flyer.html">Order Workshop Flyer</a>
-        <a href="flyers/golden_expedition_flyer.html">Golden Expedition — Strategy Brief <span class="meta">· draft</span></a>
+        <h2><span class="h2dot">◆</span> Strategy Flyers</h2>
+        <div class="grid">
+            <a class="card" href="flyers/behemoth_conquest_flyer.html">
+                <div class="ct"><span class="ico">🦣</span> Behemoth Conquest <span class="pill loss">loss</span></div>
+                <div class="cd">Bloodline, blessings &amp; invasion brief.</div>
+            </a>
+            <a class="card" href="flyers/golden_expedition_flyer.html">
+                <div class="ct"><span class="ico">🧭</span> Golden Expedition <span class="pill draft">draft</span></div>
+                <div class="cd">Guardians, Elephant &amp; daily loop.</div>
+            </a>
+            <a class="card" href="flyers/day6_showdown_flyer.html">
+                <div class="ct"><span class="ico">🔥</span> Day 6 Showdown</div>
+                <div class="cd">The decisive-day push playbook.</div>
+            </a>
+            <a class="card" href="flyers/order_workshop_flyer.html">
+                <div class="ct"><span class="ico">🔧</span> Order Workshop</div>
+                <div class="cd">Workshop timing &amp; vote coordination.</div>
+            </a>
+        </div>
+
+        <h2><span class="h2dot">◆</span> Reference &amp; Tools</h2>
+        <div class="grid">
+            <a class="card" href="glossary/index.html">
+                <div class="ct"><span class="ico">📖</span> Heroes &amp; Bestiary Glossary</div>
+                <div class="cd">Terms, heroes and monster reference.</div>
+            </a>
+            <a class="card" href="marches/index.html">
+                <div class="ct"><span class="ico">🐎</span> My Marches — Hero Builds</div>
+                <div class="cd">Per-march hero &amp; gem build cards.</div>
+            </a>
+            <a class="card" href="dashboards/horse_breeding.html">
+                <div class="ct"><span class="ico">🧬</span> Horse Breeding Optimizer</div>
+                <div class="cd">Bulk breed-rule strategy tool.</div>
+            </a>
+        </div>
+
     </div>
+
+    <script src="assets/auth.js"></script>
+    <script src="assets/site-header.js"></script>
 </body>
 </html>

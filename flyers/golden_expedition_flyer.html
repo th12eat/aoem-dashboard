@@ -200,9 +200,9 @@
     <h1 class="kvk-title">GOLDEN <span>EXPEDITION</span></h1>
     <div class="kvk-subtitle">Three days. One enemy server. Take everything that isn't bubbled.</div>
     <div class="time-row" style="margin-top:18px;">
-      <div><div class="label">Opponent</div><div class="time tbd">TBD Server</div></div>
+      <div><div class="label">Opponent</div><div class="time tbd" id="ge-opp">TBD Server</div></div>
       <div class="divider"></div>
-      <div><div class="label">Event Window</div><div class="time tbd">Dates TBD</div></div>
+      <div><div class="label">Event Window</div><div class="time tbd" id="ge-window">Dates TBD</div></div>
     </div>
   </header>
 
@@ -350,6 +350,23 @@
     <div class="footer"><a href="../index.html">← Era 8 Command</a></div>
 
   </div>
+
+  <script>
+    // Load published Golden Expedition fields (../data/live/golden.json) if present.
+    (async function(){
+      try{
+        const res=await fetch('../data/live/golden.json');
+        if(!res.ok) return;
+        const j=await res.json();
+        if(!j) return;
+        const set=function(id,v){ var el=document.getElementById(id); if(el&&v!=null) el.textContent=v; };
+        set('ge-opp', j.opponent);
+        set('ge-window', j.eventWindow);
+      }catch(e){ console.error('golden live load failed; using fallback', e); }
+    })();
+  </script>
+<script src="../assets/auth.js"></script>
+<script src="../assets/site-header.js"></script>
 
 </body>
 </html>

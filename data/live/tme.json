@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "oppServer": "Era 90",
+  "invasionTime": "19:00 UTC",
+  "weWonPrep": null,
+  "ourRank": 16,
+  "oppRank": 11,
+  "prepStarted": false,
+  "alliances": [
+    { "tag": "WC1", "roleKey": "rolePrimaryStrike", "position": "NE-inner", "tower": "Swordsman (N) / Pikeman (W)", "color": "#3b82f6", "allies": 169, "power": "20,238,517,730", "merits": "2,272,826,034", "prepPoints": "54,638,000" },
+    { "tag": "REU", "roleKey": "roleSecondaryStrike", "position": "SE-inner", "tower": "Archer (E)", "color": "#f59e0b", "allies": 166, "power": "12,699,637,836", "merits": "912,404,888", "prepPoints": "30,594,000" },
+    { "tag": "AGC", "roleKey": "roleTowerHold", "position": "NE-outer", "tower": "Archer (E)", "color": "#ef4444", "allies": 164, "power": "11,739,696,945", "merits": "186,806,496", "prepPoints": "29,321,200" },
+    { "tag": "MyT", "roleKey": "roleFlanking", "position": "SE-outer", "tower": "Cavalry (S)", "color": "#22c55e", "allies": 138, "power": "10,430,075,595", "merits": "898,618,923", "prepPoints": "9,502,400" }
+  ],
+  "prepStages": [
+    { "nameKey": "prepStage1", "ourPts": 0.139, "oppPts": 0.168, "won": false },
+    { "nameKey": "prepStage2", "ourPts": 0, "oppPts": 0, "won": null },
+    { "nameKey": "prepStage3", "ourPts": 0, "oppPts": 0, "won": null },
+    { "nameKey": "prepStage4", "ourPts": 0, "oppPts": 0, "won": null },
+    { "nameKey": "prepStage5", "ourPts": 0, "oppPts": 0, "won": null }
+  ],
+  "totalOur": 0.139,
+  "totalOpp": 0.168,
+  "prepLastUpdated": "2026-06-28 — Day 1 (Stage 1 in progress)",
+  "oppAlliances": [
+    { "tag": "RIP", "name": "靈車特戰隊", "allies": 168, "power": "20,212,765,060", "merits": "2,541,548,484", "prepPoints": "61,994,800" },
+    { "tag": "INT", "name": "英特榮耀", "allies": 166, "power": "14,829,324,819", "merits": "1,022,902,133", "prepPoints": "43,583,600" },
+    { "tag": "YFQ", "name": "月落楓橋", "allies": 170, "power": "10,405,496,654", "merits": "190,589,970", "prepPoints": "43,662,400" },
+    { "tag": "OvO", "name": "大秦御貓軍", "allies": 110, "power": "6,265,770,680", "merits": "95,788,191", "prepPoints": "TBD" }
+  ],
+  "krakens": [
+    { "rank": 1, "name": "勾意狼", "alliance": "RIP", "power": "419,247,749", "merits": "279,231,815", "ratio": "0.67" },
+    { "rank": 2, "name": "Golden葛格", "alliance": "RIP", "power": "376,234,265", "merits": "198,142,382", "ratio": "0.53" },
+    { "rank": 3, "name": "歐特", "alliance": "INT", "power": "353,231,814", "merits": "174,948,678", "ratio": "0.50" },
+    { "rank": 4, "name": "Uboo+GiGi", "alliance": "RIP", "power": "351,010,656", "merits": "141,838,087", "ratio": "0.40" },
+    { "rank": 5, "name": "韩陆彩", "alliance": "RIP", "power": "337,291,190", "merits": "291,662,295", "ratio": "0.86" },
+    { "rank": 6, "name": "君奉天", "alliance": "RIP", "power": "313,942,422", "merits": "159,886,164", "ratio": "0.51" },
+    { "rank": 7, "name": "Ec狼", "alliance": "OvO", "power": "303,535,266", "merits": "199,982,056", "ratio": "0.66" },
+    { "rank": 8, "name": "丹荼役者", "alliance": "RIP", "power": "291,307,095", "merits": "153,440,208", "ratio": "0.53" },
+    { "rank": 9, "name": "武士刀", "alliance": "INT", "power": "287,419,898", "merits": "115,001,998", "ratio": "0.40" },
+    { "rank": 10, "name": "老爺²⁶⁹", "alliance": "RIP", "power": "283,084,939", "merits": "17,650,961", "ratio": "0.06" },
+    { "rank": 11, "name": "免費的暱稱", "alliance": "RIP", "power": "277,214,170", "merits": "100,967,120", "ratio": "0.36" },
+    { "rank": 12, "name": "好色的大叔", "alliance": "RIP", "power": "252,681,150", "merits": "187,716,159", "ratio": "0.74" }
+  ],
+  "roles": {
+    "WC1": { "rallyLead": "TBD", "taxiRunners": ["TBD", "TBD", "TBD", "TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD", "TBD", "TBD", "TBD"] },
+    "MyT": { "rallyLead": "TBD", "taxiRunners": ["TBD", "TBD", "TBD", "TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD", "TBD", "TBD", "TBD"] },
+    "REU": { "rallyLead": "TBD", "taxiRunners": ["TBD", "TBD", "TBD", "TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD", "TBD", "TBD", "TBD"] },
+    "AGC": { "rallyLead": "TBD", "taxiRunners": ["TBD", "TBD", "TBD", "TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD", "TBD", "TBD", "TBD"] }
+  }
+}

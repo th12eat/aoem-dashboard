@@ -20,7 +20,7 @@ const { useState, useCallback, useMemo, useEffect, useRef } = React;
 /* ═══════════════════════════════════════════════════
    EVENT DATA
    ═══════════════════════════════════════════════════ */
-const EVENT_CONFIG = {
+let EVENT_CONFIG = {
   eventStart: "2026-05-25",
   eventEnd: "2026-06-01",
   matchingStart: "2026-05-22",
@@ -410,7 +410,7 @@ function MapTab({ state, setState }) {
   );
 }
 
-const KINGDOM_POINTS = {
+let KINGDOM_POINTS = {
   era8: "—",
   era51: "—",
   era82: "—",
@@ -418,7 +418,7 @@ const KINGDOM_POINTS = {
   lastUpdated: "Awaiting event start",
 };
 
-const ALLIANCE_POINTS = [
+let ALLIANCE_POINTS = [
   { tag: "WC1", points: "—" },
   { tag: "MyT", points: "—" },
   { tag: "REU", points: "—" },
@@ -496,13 +496,13 @@ function PointsTab() {
   );
 }
 
-const DEFAULT_DIPLOMACY = [
+let DEFAULT_DIPLOMACY = [
   { id: 1, server: "Era 51", alliance: "TBD", relation: "ally", notes: "Friends in Era 51. No zeroing citadels, no killing farmers. Help each other reach Aaru, then fight Aaru normally." },
   { id: 2, server: "Era 82", alliance: "TBD", relation: "neutral", notes: "No contact yet. Don't mess with them unless they mess with us." },
   { id: 3, server: "Era 2", alliance: "TBD", relation: "neutral", notes: "No contact yet. Don't mess with them unless they mess with us." },
 ];
 
-const CONTACTS = [
+let CONTACTS = [
   { server: "Era 51", name: "DarthGluttony128", note: "Darth is superscript, 128 is subscript. Need to confirm alliance control + specific terms." },
   { server: "Era 51", name: "SnipeR", note: "Special characters in name (details TBD). Need to confirm alliance control + specific terms." },
 ];
@@ -880,7 +880,29 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+// Overlay published live config (../data/live/desolate.json) onto the in-code defaults,
+// then mount. On any failure the in-code defaults render unchanged. localStorage (diplomacy
+// edits, routes, node assignments) still overlays on top via loadState() in App's state.
+(async () => {
+  try {
+    const res = await fetch("../data/live/desolate.json");
+    if (res.ok) {
+      const j = await res.json();
+      if (j) {
+        if (j.eventConfig)    EVENT_CONFIG    = j.eventConfig;
+        if (j.kingdomPoints)  KINGDOM_POINTS  = j.kingdomPoints;
+        if (j.alliancePoints) ALLIANCE_POINTS = j.alliancePoints;
+        if (j.diplomacy)      DEFAULT_DIPLOMACY = j.diplomacy;
+        if (j.contacts)       CONTACTS        = j.contacts;
+      }
+    }
+  } catch (e) {
+    console.error("Desolate live config load failed; using in-code defaults", e);
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+})();
     </script>
+<script src="../assets/auth.js"></script>
+<script src="../assets/site-header.js"></script>
 </body>
 </html>

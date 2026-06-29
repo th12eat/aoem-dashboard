@@ -1647,7 +1647,9 @@ function switchTab(id) {
 }
 
 /* ── Ranking data (Matching-stage scouting; power & merits in millions) ── */
-const SRV_COLOR = {
+// Fallbacks (used if ../data/live/primordial.json fails to load). The DOMContentLoaded
+// handler below overlays the published rosters/colors when the file is available.
+let SRV_COLOR = {
   'E#008': null,
   'E#068': 'var(--accent-green)',
   'E#034': 'var(--accent-orange)',
@@ -1655,7 +1657,7 @@ const SRV_COLOR = {
 };
 
 // Combined cross-server Top 50 — [name, tag, server, power, merits]
-const TOP50 = [
+let TOP50 = [
   ['時宗','eRa','E#008',424.6,221.6],['Corle⁶⁸','S68','E#068',310.4,307.3],
   ['민트','REU','E#008',304.1,303.5],['MyNIK99','S68','E#068',291.8,115.7],
   ['Collin6666','eRa','E#008',272.9,53.1],['Moo°°','S68','E#068',272.7,223.8],
@@ -1684,7 +1686,7 @@ const TOP50 = [
 ];
 
 // Per-server Top 12 — [name, tag, power, merits]
-const SERVER12 = {
+let SERVER12 = {
   'E#008': [
     ['時宗','eRa',424.6,221.6],['민트','REU',304.1,303.5],['Collin6666','eRa',272.9,53.1],
     ['XnJinX','eRa',266.4,223.9],['Macklemore','eRa',260.2,107.2],['Lumberjack','eRa',249.4,257.5],
@@ -1772,7 +1774,20 @@ function makeSortable(container, data, opts){
   render();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Overlay published rosters (../data/live/primordial.json) onto the in-code fallbacks.
+  try{
+    const res=await fetch('../data/live/primordial.json');
+    if(res.ok){
+      const j=await res.json();
+      if(j){
+        if(Array.isArray(j.top50)) TOP50=j.top50;
+        if(j.server12) SERVER12=j.server12;
+        if(Array.isArray(j.servers)) SRV_COLOR=Object.fromEntries(j.servers.map(s=>[s.code,s.color]));
+      }
+    }
+  }catch(e){ console.error('primordial roster load failed; using fallback',e); }
+
   const top50 = TOP50.map(a => ({ name:a[0], tag:a[1], server:a[2], power:a[3], merits:a[4] }));
   makeSortable(document.getElementById('top50-cols'), top50,
     { split: true, col3: 'Server', colorByServer: true });
@@ -1785,5 +1800,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<script src="../assets/auth.js"></script>
+<script src="../assets/site-header.js"></script>
 </body>
 </html>

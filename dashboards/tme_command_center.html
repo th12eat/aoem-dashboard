@@ -3096,6 +3096,16 @@ function TMECommandCenter(){
   const[t,setT]=useState(EN);
   const[mapViewOverride,setMapViewOverride]=useState(null);
 
+  // Load published live config (../data/live/tme.json) if present; fall back to DEFAULT_CONFIG.
+  useEffect(()=>{
+    (async()=>{
+      try{
+        const res=await fetch("../data/live/tme.json");
+        if(res.ok){ const j=await res.json(); if(j) setConfig(j); }
+      }catch(e){ console.error("TME live config load failed; using DEFAULT_CONFIG",e); }
+    })();
+  },[]);
+
   // Until prep is meaningfully underway, don't let an early/partial score flip attack-defense.
   const isDefense=config.prepStarted===false?false:(config.totalOur < config.totalOpp);
   const mapIsDefense=mapViewOverride!==null?mapViewOverride:isDefense;
@@ -3499,5 +3509,7 @@ function TMECommandCenter(){
 
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(TMECommandCenter));
     </script>
+<script src="../assets/auth.js"></script>
+<script src="../assets/site-header.js"></script>
 </body>
 </html>

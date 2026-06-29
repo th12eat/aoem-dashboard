@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "opponent": "#087",
+  "startLabel": "Jun 22",
+  "endLabel": "Jun 30",
+  "timezone": "UTC+0",
+  "eventStartISO": "2026-06-22T00:00:00Z",
+  "eventEndISO": "2026-06-30T00:00:00Z",
+  "scoreUs": "37.4B",
+  "scoreThem": "57.8B",
+  "result": "Loss"
+}

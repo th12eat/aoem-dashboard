@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal — Era 8 Command</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/kvk-theme.css">
+  <style>
+    body { background: var(--bg-deep); color: var(--text-primary); font-family: 'Barlow', sans-serif; margin: 0; padding: 0 1rem 4rem; }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    .banner { background: rgba(212,168,67,0.08); border: 1px dashed var(--kvk-accent-dim); border-radius: 8px;
+              padding: 10px 14px; font-size: 13px; color: var(--kvk-accent); text-align: center; margin: 22px 0 18px;
+              font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; }
+    h1.title { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 2px; margin: 8px 0 0; }
+    .sub { color: var(--text-secondary); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; margin-bottom: 8px; }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--bg-card);
+               border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
+    .toolbar label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1px;
+                     text-transform: uppercase; color: var(--text-muted); }
+    select, .inp { background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px;
+                   padding: 8px 11px; color: var(--text-primary); font-size: 14px; font-family: 'Barlow', sans-serif; }
+    select:focus, .inp:focus { outline: none; border-color: var(--kvk-accent-dim); }
+
+    .btn { padding: 8px 14px; border-radius: 8px; cursor: pointer; border: 1px solid var(--border);
+           background: var(--bg-card2); color: var(--text-secondary); font-family: 'Barlow Condensed', sans-serif;
+           font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+    .btn:hover { filter: brightness(1.1); color: var(--text-primary); }
+    .btn.primary { background: var(--kvk-accent); color: var(--bg-deep); border-color: var(--kvk-accent); }
+    .btn.disabled, .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+    .btn.disabled:hover { filter: none; color: var(--text-secondary); }
+
+    .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+    .panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .panel h2 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; margin: 0 0 12px;
+                border-bottom: 1px solid var(--border); padding-bottom: 7px; }
+
+    .field { margin-bottom: 12px; }
+    .field > label { display: block; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 12px;
+            letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .field input.inp, .field textarea.inp { width: 100%; box-sizing: border-box; }
+    textarea.inp { resize: vertical; min-height: 54px; font-family: 'Barlow', sans-serif; }
+
+    .arr { border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 12px; }
+    .arr > .arrhd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .arr > .arrhd .nm { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 1px;
+                        text-transform: uppercase; font-size: 13px; color: var(--kvk-accent); }
+    .arrow { border: 1px solid var(--border); border-radius: 7px; padding: 8px; margin-bottom: 7px; background: var(--bg-deep); }
+    .arrow .cells { display: grid; gap: 6px; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+    .arrow .cell label { font-size: 10px; color: var(--text-muted); font-family: 'Barlow Condensed', sans-serif;
+                         letter-spacing: 0.5px; text-transform: uppercase; display: block; margin-bottom: 2px; }
+    .arrow .cell input { width: 100%; box-sizing: border-box; background: var(--bg-card); border: 1px solid var(--border);
+                         border-radius: 6px; padding: 6px 8px; color: var(--text-primary); font-size: 13px; }
+    .arrow .rm { float: right; cursor: pointer; color: var(--accent-red); font-size: 16px; line-height: 1; background: none; border: none; }
+    .mini { font-size: 11px; padding: 5px 10px; }
+
+    pre.preview { background: #07090f; border: 1px solid var(--border); border-radius: 8px; padding: 12px;
+                  font-size: 11.5px; line-height: 1.45; color: var(--text-secondary); overflow: auto; max-height: 520px;
+                  white-space: pre; font-family: ui-monospace, Menlo, Consolas, monospace; }
+    pre.preview .add { color: #4ade80; } pre.preview .del { color: #f87171; }
+    .status { font-size: 12.5px; color: var(--text-muted); margin: 8px 0; min-height: 1.2em; }
+    .lockmsg { font-size: 11px; color: var(--accent-red); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; }
+  </style>
+</head>
+<body data-kvk="generic">
+  <div class="wrap">
+    <div class="banner">⚙ Preview build — editing &amp; preview are live, but <strong>Publish is disabled</strong> until hosted. Use <em>Download JSON</em> to export edits.</div>
+    <h1 class="title">Admin Portal</h1>
+    <div class="sub">Edit event data · preview the exact JSON · (publish activates when hosted)</div>
+
+    <div class="toolbar">
+      <label for="eventSel">Event</label>
+      <select id="eventSel"></select>
+      <button class="btn" id="loadBtn">Load current</button>
+      <button class="btn" id="previewBtn">Preview JSON</button>
+      <button class="btn" id="downloadBtn">Download JSON</button>
+      <button class="btn disabled" id="publishBtn" title="Activates when hosted">Publish 🔒</button>
+      <button class="btn disabled" id="archiveBtn" title="Activates when hosted">Archive &amp; reset 🔒</button>
+    </div>
+    <div class="status" id="status">Pick an event and click “Load current”.</div>
+
+    <div class="layout">
+      <div class="panel">
+        <h2 id="formTitle">Editor</h2>
+        <div id="form"></div>
+      </div>
+      <div class="panel">
+        <h2>Preview <span style="font-size:11px;color:var(--text-muted)">— what would be written</span></h2>
+        <pre class="preview" id="preview">Load an event, edit, then “Preview JSON”.</pre>
+        <div class="lockmsg" id="lockmsg"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/auth.js"></script>
+  <script src="../assets/publisher.js"></script>
+  <script src="../assets/site-header.js"></script>
+  <script>
+  /* ============================================================
+     Admin Portal controller (PREVIEW BUILD)
+     - Load/Preview/Download are fully functional.
+     - Publish / Archive render but their handlers are intentionally
+       NOT attached to Publisher.publish() (which is also flag-locked).
+     ============================================================ */
+  (function () {
+    'use strict';
+
+    // ---- schema descriptors: which fields are editable per event ----
+    // type: 'text' | 'num' | 'textarea' | 'array'
+    // arrays declare their row columns so we can render repeatable editors.
+    var SCHEMAS = {
+      tme: { path: 'data/live/tme.json', label: 'TME — vs opponent', fields: [
+        { key: 'oppServer', type: 'text', label: 'Opponent server' },
+        { key: 'invasionTime', type: 'text', label: 'Invasion time' },
+        { key: 'ourRank', type: 'num', label: 'Our rank' },
+        { key: 'oppRank', type: 'num', label: 'Opp rank' },
+        { key: 'prepStarted', type: 'text', label: 'Prep started (true/false)' },
+        { key: 'prepLastUpdated', type: 'text', label: 'Prep last updated' },
+        { key: 'alliances', type: 'array', label: 'Our alliances',
+          cols: ['tag','power','merits','prepPoints','allies','position','tower'] },
+        { key: 'oppAlliances', type: 'array', label: 'Opponent alliances',
+          cols: ['tag','name','power','merits','prepPoints','allies'] },
+        { key: 'krakens', type: 'array', label: 'Krakens (top players)',
+          cols: ['rank','name','alliance','power','merits','ratio'] }
+      ]},
+      desolate: { path: 'data/live/desolate.json', label: 'Desolate Desert', fields: [
+        { key: 'kingdomPoints', type: 'object', label: 'Kingdom points',
+          okeys: ['era8','era51','era82','era2','lastUpdated'] },
+        { key: 'alliancePoints', type: 'array', label: 'Alliance points', cols: ['tag','points'] },
+        { key: 'diplomacy', type: 'array', label: 'Diplomacy', cols: ['server','alliance','relation','notes'] },
+        { key: 'contacts', type: 'array', label: 'Contacts', cols: ['server','name','note'] }
+      ]},
+      primordial: { path: 'data/live/primordial.json', label: 'Primordial — rosters', fields: [
+        { key: 'top50', type: 'matrix', label: 'Top 50 [name,tag,server,power,merits]', width: 5 }
+      ]},
+      behemoth: { path: 'data/live/behemoth.json', label: 'Behemoth (flyer)', fields: [
+        { key: 'opponent', type: 'text', label: 'Opponent' },
+        { key: 'startLabel', type: 'text', label: 'Start label' },
+        { key: 'endLabel', type: 'text', label: 'End label' },
+        { key: 'timezone', type: 'text', label: 'Timezone' },
+        { key: 'eventStartISO', type: 'text', label: 'Event start (ISO)' },
+        { key: 'eventEndISO', type: 'text', label: 'Event end (ISO)' },
+        { key: 'scoreUs', type: 'text', label: 'Score — us' },
+        { key: 'scoreThem', type: 'text', label: 'Score — them' },
+        { key: 'result', type: 'text', label: 'Result (Win/Loss/TBD)' }
+      ]},
+      golden: { path: 'data/live/golden.json', label: 'Golden Expedition (flyer)', fields: [
+        { key: 'opponent', type: 'text', label: 'Opponent' },
+        { key: 'eventWindow', type: 'text', label: 'Event window' },
+        { key: 'eventStartISO', type: 'text', label: 'Event start (ISO)' },
+        { key: 'eventEndISO', type: 'text', label: 'Event end (ISO)' },
+        { key: 'scoreUs', type: 'text', label: 'Score — us' },
+        { key: 'scoreThem', type: 'text', label: 'Score — them' },
+        { key: 'result', type: 'text', label: 'Result' }
+      ]},
+      history: { path: 'data/history.json', label: 'KvK History (ledger)', root: 'events', fields: [
+        { key: 'events', type: 'array', label: 'Events',
+          cols: ['event','date','opp','result','note'] }
+      ]}
+    };
+
+    var state = { eventKey: null, model: null };
+    var $ = function (id) { return document.getElementById(id); };
+
+    // populate selector
+    var sel = $('eventSel');
+    Object.keys(SCHEMAS).forEach(function (k) {
+      var o = document.createElement('option'); o.value = k; o.textContent = SCHEMAS[k].label; sel.appendChild(o);
+    });
+
+    function setStatus(t) { $('status').textContent = t; }
+
+    // ---- form rendering ----
+    function renderForm() {
+      var schema = SCHEMAS[state.eventKey];
+      var model = state.model || {};
+      $('formTitle').textContent = schema.label;
+      var host = $('form'); host.innerHTML = '';
+
+      schema.fields.forEach(function (f) {
+        if (f.type === 'array')      host.appendChild(arrayEditor(f, model[f.key] || []));
+        else if (f.type === 'matrix') host.appendChild(matrixEditor(f, model[f.key] || []));
+        else if (f.type === 'object') host.appendChild(objectEditor(f, model[f.key] || {}));
+        else host.appendChild(scalarField(f, model[f.key]));
+      });
+    }
+
+    function scalarField(f, val) {
+      var d = document.createElement('div'); d.className = 'field';
+      var lab = document.createElement('label'); lab.textContent = f.label; d.appendChild(lab);
+      var inp = document.createElement(f.type === 'textarea' ? 'textarea' : 'input');
+      inp.className = 'inp';
+      inp.value = (val == null ? '' : val);
+      inp.addEventListener('input', function () {
+        var v = inp.value;
+        if (f.type === 'num') v = v === '' ? null : Number(v);
+        else if (f.type === 'text' && (v === 'true' || v === 'false')) v = (v === 'true');
+        state.model[f.key] = v;
+      });
+      d.appendChild(inp); return d;
+    }
+
+    function objectEditor(f, obj) {
+      var d = document.createElement('div'); d.className = 'arr';
+      d.innerHTML = '<div class="arrhd"><span class="nm">' + f.label + '</span></div>';
+      f.okeys.forEach(function (k) {
+        var fld = document.createElement('div'); fld.className = 'field';
+        fld.innerHTML = '<label>' + k + '</label>';
+        var inp = document.createElement('input'); inp.className = 'inp'; inp.value = obj[k] == null ? '' : obj[k];
+        inp.addEventListener('input', function () { state.model[f.key] = state.model[f.key] || {}; state.model[f.key][k] = inp.value; });
+        fld.appendChild(inp); d.appendChild(fld);
+      });
+      return d;
+    }
+
+    function arrayEditor(f, rows) {
+      var d = document.createElement('div'); d.className = 'arr';
+      var hd = document.createElement('div'); hd.className = 'arrhd';
+      hd.innerHTML = '<span class="nm">' + f.label + '</span>';
+      var add = document.createElement('button'); add.className = 'btn mini'; add.textContent = '+ Add row';
+      hd.appendChild(add); d.appendChild(hd);
+      var body = document.createElement('div'); d.appendChild(body);
+
+      function draw() {
+        body.innerHTML = '';
+        (state.model[f.key] || []).forEach(function (row, i) {
+          var rd = document.createElement('div'); rd.className = 'arrow';
+          var rm = document.createElement('button'); rm.className = 'rm'; rm.innerHTML = '×';
+          rm.addEventListener('click', function () { state.model[f.key].splice(i, 1); draw(); });
+          rd.appendChild(rm);
+          var cells = document.createElement('div'); cells.className = 'cells';
+          f.cols.forEach(function (c) {
+            var cell = document.createElement('div'); cell.className = 'cell';
+            cell.innerHTML = '<label>' + c + '</label>';
+            var inp = document.createElement('input');
+            inp.value = row[c] == null ? '' : row[c];
+            inp.addEventListener('input', function () {
+              var v = inp.value;
+              // keep numeric columns numeric where the original was a number
+              if (typeof row[c] === 'number' && v !== '' && !isNaN(Number(v))) v = Number(v);
+              state.model[f.key][i][c] = v;
+            });
+            cell.appendChild(inp); cells.appendChild(cell);
+          });
+          rd.appendChild(cells); body.appendChild(rd);
+        });
+      }
+      add.addEventListener('click', function () {
+        state.model[f.key] = state.model[f.key] || [];
+        var blank = {}; f.cols.forEach(function (c) { blank[c] = ''; });
+        state.model[f.key].push(blank); draw();
+      });
+      draw();
+      return d;
+    }
+
+    // matrix = array-of-arrays (e.g. primordial top50). Read-only-ish grid w/ add/remove.
+    function matrixEditor(f, rows) {
+      var d = document.createElement('div'); d.className = 'arr';
+      var hd = document.createElement('div'); hd.className = 'arrhd';
+      hd.innerHTML = '<span class="nm">' + f.label + '</span>';
+      var add = document.createElement('button'); add.className = 'btn mini'; add.textContent = '+ Add row';
+      hd.appendChild(add); d.appendChild(hd);
+      var body = document.createElement('div'); d.appendChild(body);
+      function draw() {
+        body.innerHTML = '';
+        (state.model[f.key] || []).forEach(function (row, i) {
+          var rd = document.createElement('div'); rd.className = 'arrow';
+          var rm = document.createElement('button'); rm.className = 'rm'; rm.innerHTML = '×';
+          rm.addEventListener('click', function () { state.model[f.key].splice(i, 1); draw(); });
+          rd.appendChild(rm);
+          var cells = document.createElement('div'); cells.className = 'cells';
+          for (var c = 0; c < f.width; c++) (function (ci) {
+            var cell = document.createElement('div'); cell.className = 'cell';
+            cell.innerHTML = '<label>' + ci + '</label>';
+            var inp = document.createElement('input');
+            inp.value = row[ci] == null ? '' : row[ci];
+            inp.addEventListener('input', function () {
+              var v = inp.value;
+              if (typeof row[ci] === 'number' && v !== '' && !isNaN(Number(v))) v = Number(v);
+              state.model[f.key][i][ci] = v;
+            });
+            cell.appendChild(inp); cells.appendChild(cell);
+          })(c);
+          rd.appendChild(cells); body.appendChild(rd);
+        });
+      }
+      add.addEventListener('click', function () {
+        state.model[f.key] = state.model[f.key] || [];
+        state.model[f.key].push(new Array(f.width).fill('')); draw();
+      });
+      draw();
+      return d;
+    }
+
+    // ---- actions (Load / Preview / Download are real) ----
+    $('loadBtn').addEventListener('click', function () {
+      state.eventKey = sel.value;
+      var schema = SCHEMAS[state.eventKey];
+      setStatus('Loading ' + schema.path + ' …');
+      Publisher.load(schema.path).then(function (data) {
+        if (!data) { setStatus('Could not load ' + schema.path + ' (using empty model).'); data = {}; }
+        else setStatus('Loaded ' + schema.path + '.');
+        state.model = data;
+        renderForm();
+      });
+    });
+
+    $('previewBtn').addEventListener('click', function () {
+      if (!state.model) { setStatus('Load an event first.'); return; }
+      var schema = SCHEMAS[state.eventKey];
+      Publisher.preview(schema.path, state.model).then(function (res) {
+        // show diff with colorized +/- markers
+        var html = res.diff.split('\n').map(function (ln) {
+          if (ln.charAt(0) === '+') return '<span class="add">' + esc(ln) + '</span>';
+          if (ln.charAt(0) === '-') return '<span class="del">' + esc(ln) + '</span>';
+          return esc(ln);
+        }).join('\n');
+        $('preview').innerHTML = html || esc(res.json);
+        setStatus('Preview shows the exact JSON that would be written (diff vs current).');
+      });
+    });
+
+    $('downloadBtn').addEventListener('click', function () {
+      if (!state.model) { setStatus('Load an event first.'); return; }
+      var schema = SCHEMAS[state.eventKey];
+      var blob = new Blob([JSON.stringify(state.model, null, 2) + '\n'], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = schema.path.split('/').pop();
+      a.click();
+      setStatus('Downloaded ' + a.download + ' — hand it off for a manual commit.');
+    });
+
+    // ---- Publish / Archive: rendered, but NOT wired to Publisher.publish() ----
+    // WIRE LATER (go-live):
+    //   $('publishBtn').addEventListener('click', () =>
+    //     Publisher.publish(SCHEMAS[state.eventKey].path, state.model, 'admin: update ' + state.eventKey));
+    $('publishBtn').addEventListener('click', function () {
+      $('lockmsg').textContent = '🔒 Publishing is disabled in this preview build — it activates when hosted.';
+    });
+    $('archiveBtn').addEventListener('click', function () {
+      $('lockmsg').textContent = '🔒 Archive & reset activates when hosted (will snapshot + append to history + clear live).';
+    });
+
+    function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]); }); }
+  })();
+  </script>
+</body>
+</html>

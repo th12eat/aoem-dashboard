@@ -836,17 +836,17 @@
     <div class="time-row">
       <div>
         <div class="label" data-i18n="lbl_starts">Starts</div>
-        <div class="time">Jun 22</div>
+        <div class="time" id="beh-start">Jun 22</div>
       </div>
       <div class="divider"></div>
       <div>
         <div class="label" data-i18n="lbl_ends">Ends</div>
-        <div class="time">Jun 30</div>
+        <div class="time" id="beh-end">Jun 30</div>
       </div>
       <div class="divider"></div>
       <div>
         <div class="label" data-i18n="lbl_tz">Timezone</div>
-        <div class="time">UTC+0</div>
+        <div class="time" id="beh-tz">UTC+0</div>
       </div>
     </div>
 
@@ -868,11 +868,11 @@
   <div class="section topband">
     <div class="tug-wrap">
       <div class="tug-row">
-        <span class="tug-us">37.4B <span class="tug-name" data-i18n="tug_us">US &middot; #008</span></span>
+        <span class="tug-us"><span id="beh-score-us">37.4B</span> <span class="tug-name" data-i18n="tug_us">US &middot; #008</span></span>
         <span class="tug-name" data-i18n="tug_points_lbl">Behemoth Points</span>
-        <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#087</span> 57.8B</span>
+        <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#087</span> <span id="beh-score-them">57.8B</span></span>
       </div>
-      <div class="tug-bar"><div class="tug-fill-us" style="width:39.3%;"></div><div class="tug-fill-them" style="width:60.7%;"></div></div>
+      <div class="tug-bar"><div class="tug-fill-us" id="beh-fill-us" style="width:39.3%;"></div><div class="tug-fill-them" id="beh-fill-them" style="width:60.7%;"></div></div>
       <div class="tug-cap" data-i18n="tug_points_cap"><strong>Final &mdash; we lost</strong>, 37.4B to 57.8B. They scored heavily off our Behemoth's leftover HP (we couldn't finish the kill) plus eliminations.</div>
     </div>
   </div>
@@ -3514,7 +3514,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     enSnapshot[el.getAttribute('data-i18n')] = el.innerHTML;
   });
-  startCountdown();
+  applyBehemothLive().then(startCountdown);
   updateBlessings();
 });
 
@@ -3560,8 +3560,24 @@ var CD_LABELS = {
 };
 
 // Event window (UTC+0). Start of day Jun 22 → end of day Jun 30.
+// Fallback values; overridden by ../data/live/behemoth.json when present (see loader below).
 var EVENT_START = new Date('2026-06-22T00:00:00Z').getTime();
 var EVENT_END   = new Date('2026-06-30T00:00:00Z').getTime();
+
+// Load published behemoth fields and apply before the countdown starts.
+function applyBehemothLive() {
+  return fetch('../data/live/behemoth.json').then(function(res){
+    if(!res.ok) return;
+    return res.json().then(function(j){
+      if(!j) return;
+      if(j.eventStartISO) EVENT_START = new Date(j.eventStartISO).getTime();
+      if(j.eventEndISO)   EVENT_END   = new Date(j.eventEndISO).getTime();
+      var set=function(id,v){ var el=document.getElementById(id); if(el&&v!=null) el.textContent=v; };
+      set('beh-start', j.startLabel); set('beh-end', j.endLabel); set('beh-tz', j.timezone);
+      set('beh-score-us', j.scoreUs); set('beh-score-them', j.scoreThem);
+    });
+  }).catch(function(e){ console.error('behemoth live load failed; using fallback', e); });
+}
 var _cdStarted = false;
 
 function startCountdown() {
@@ -4109,5 +4125,7 @@ window.addEventListener('DOMContentLoaded', function () {
     <button type="button" class="scion-modal-btn" data-close data-i18n="scion_modal_btn">Got it</button>
   </div>
 </div>
+<script src="../assets/auth.js"></script>
+<script src="../assets/site-header.js"></script>
 </body>
 </html>

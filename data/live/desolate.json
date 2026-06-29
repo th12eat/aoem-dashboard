@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "eventConfig": {
+    "eventStart": "2026-05-25",
+    "eventEnd": "2026-06-01",
+    "matchingStart": "2026-05-22",
+    "servers": ["Era 8", "Era 51", "Era 82", "Era 2"],
+    "ourServer": "Era 8",
+    "ourAlliances": ["WC1", "MyT", "REU", "AGC"]
+  },
+  "kingdomPoints": {
+    "era8": "—",
+    "era51": "—",
+    "era82": "—",
+    "era2": "—",
+    "lastUpdated": "Awaiting event start"
+  },
+  "alliancePoints": [
+    { "tag": "WC1", "points": "—" },
+    { "tag": "MyT", "points": "—" },
+    { "tag": "REU", "points": "—" },
+    { "tag": "AGC", "points": "—" }
+  ],
+  "diplomacy": [
+    { "id": 1, "server": "Era 51", "alliance": "TBD", "relation": "ally", "notes": "Friends in Era 51. No zeroing citadels, no killing farmers. Help each other reach Aaru, then fight Aaru normally." },
+    { "id": 2, "server": "Era 82", "alliance": "TBD", "relation": "neutral", "notes": "No contact yet. Don't mess with them unless they mess with us." },
+    { "id": 3, "server": "Era 2", "alliance": "TBD", "relation": "neutral", "notes": "No contact yet. Don't mess with them unless they mess with us." }
+  ],
+  "contacts": [
+    { "server": "Era 51", "name": "DarthGluttony128", "note": "Darth is superscript, 128 is subscript. Need to confirm alliance control + specific terms." },
+    { "server": "Era 51", "name": "SnipeR", "note": "Special characters in name (details TBD). Need to confirm alliance control + specific terms." }
+  ]
+}
