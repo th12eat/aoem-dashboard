@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order Workshop — Era8 Brief</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/kvk-theme.css">
 <style>
 :root {
   --gold:#d4a017; --gold-light:#f0c842; --gold-dim:#7a5c0e;
   --teal:#1abc9c; --crimson:#c0392b;
-  --bg:#09090c; --bg2:#0e0f14; --bg3:#14151c;
+  --bg:#0a0c14; --bg2:#11141f; --bg3:#161a28;
   --border:rgba(212,160,23,0.25); --text:#e8dcc8; --dim:#7a7060;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -23,7 +24,10 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;fo
 .lang-btn.active{background:rgba(212,160,23,0.12);border-color:rgba(212,160,23,0.5);color:var(--gold-light);}
 
 /* HEADER */
-.header{text-align:center;padding:28px 0 20px;border-bottom:1px solid var(--border);margin-bottom:18px;}
+.header{text-align:center;padding:28px 16px 20px;border-bottom:2px solid var(--kvk-accent-dim);margin-bottom:18px;position:relative;overflow:hidden;}
+.header::after{content:'';position:absolute;inset:0;z-index:0;background-image:var(--kvk-bg);background-size:cover;background-position:center top;background-repeat:no-repeat;opacity:.5;pointer-events:none;-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.9) 0%,rgba(0,0,0,.35) 55%,transparent 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,.9) 0%,rgba(0,0,0,.35) 55%,transparent 100%);}
+.header::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center top,rgba(var(--kvk-accent-rgb),0.14) 0%,transparent 70%);}
+.header>*{position:relative;z-index:2;}
 .header-pre{font-size:10px;letter-spacing:5px;color:var(--gold-dim);text-transform:uppercase;margin-bottom:6px;}
 .header-title{font-family:'Cinzel Decorative',serif;font-size:30px;color:var(--gold-light);text-shadow:0 0 40px rgba(212,160,23,0.4);margin-bottom:4px;}
 .header-sub{font-size:11px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;}
@@ -150,7 +154,7 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;fo
 }
 </style>
 </head>
-<body>
+<body data-kvk="workshop">
 <div class="page">
 
 <div class="lang-bar">
@@ -161,7 +165,7 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;fo
 </div>
 
 <!-- HEADER -->
-<div class="header">
+<div class="header" style="--kvk-bg:url('../assets/kvk-bg/workshop.jpg')">
   <div class="header-pre" data-t="header_pre"></div>
   <div class="header-title" data-t="header_title"></div>
   <div class="header-sub" data-t="header_sub"></div>
