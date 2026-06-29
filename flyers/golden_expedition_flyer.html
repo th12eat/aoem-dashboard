@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golden Expedition — Strategy Brief | Era 8</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/kvk-theme.css">
+<style>
+  /* local aliases → shared canonical tokens (kept so component CSS reads cleanly) */
+  :root {
+    --bg-deep: #0a0c14;
+    --bg-card: #11141f;
+    --bg-card2: #161a28;
+    --border: #1e2435;
+    --text-primary: #e8eaf0;
+    --text-secondary: #8a90a5;
+    --text-muted: #565c72;
+    --accent-gold: #d4a843;  --accent-gold-dim: #a17e2f;
+    --accent-red: #c43d3d;   --accent-red-dim: #8a2b2b;
+    --accent-blue: #3d7cc4;  --accent-blue-dim: #2b5a8a;
+    --accent-green: #3daa6d; --accent-green-dim: #2a7a4c;
+    --accent-purple: #9a6dd4;--accent-purple-dim: #6b4a9a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  .flyer { max-width: 800px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* the .kvk-header (from shared CSS) handles the title + fade-behind graphic.
+     Below: the meta row + countdown that sit under the title. */
+  .kvk-header { margin-bottom: 22px; }
+
+  .draft-banner {
+    max-width: 800px; margin: 0 auto 18px; padding: 9px 16px;
+    background: rgba(242,193,78,0.08); border: 1px dashed var(--kvk-accent-dim);
+    border-radius: 8px; text-align: center;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 1px;
+    color: var(--kvk-accent); text-transform: uppercase;
+  }
+
+  .time-row {
+    display: inline-flex; align-items: center; gap: 16px;
+    background: rgba(242,193,78,0.10); border: 1px solid var(--kvk-accent-dim);
+    border-radius: 8px; padding: 8px 22px;
+  }
+  .time-row .label {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--kvk-accent);
+  }
+  .time-row .time { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--text-primary); letter-spacing: 1px; }
+  .time-row .divider { width: 1px; height: 30px; background: var(--kvk-accent-dim); }
+
+  /* -- SECTIONS -- */
+  .section { margin-bottom: 26px; }
+  .sh {
+    font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px;
+    color: var(--text-primary); padding-bottom: 6px; border-bottom: 1px solid var(--border);
+    margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
+  }
+  .sh .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 6px;
+    background: var(--kvk-accent); color: var(--bg-deep);
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px; flex-shrink: 0;
+  }
+
+  .blurb { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px; }
+  .blurb strong { color: var(--text-primary); font-weight: 600; }
+  .blurb em { color: var(--kvk-accent); font-style: normal; font-weight: 600; }
+
+  /* -- TIMELINE (advertised vs real) -- */
+  .timeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 8px; }
+  @media (max-width: 560px) { .timeline { grid-template-columns: repeat(2, 1fr); } }
+  .tl {
+    border-radius: 8px; padding: 12px 8px; border: 1px solid var(--border);
+    background: var(--bg-card); text-align: center;
+  }
+  .tl .tlday {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .tl .tlicon { font-size: 22px; line-height: 1; margin: 4px 0; }
+  .tl .tlname { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--text-primary); }
+  .tl.fight { border-color: var(--kvk-accent-dim); background: rgba(242,193,78,0.07); }
+  .tl.fight .tlname { color: var(--kvk-accent); }
+
+  /* -- STAT BOXES -- */
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-bottom: 14px; }
+  .stat-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; text-align: center; }
+  .stat-box .val { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--kvk-accent); line-height: 1.1; }
+  .stat-box .lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  /* -- TARGET CARDS (Guardians / Elephant) -- */
+  .target {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 0; margin-bottom: 14px; overflow: hidden;
+  }
+  .target-head {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 13px 16px; border-bottom: 1px solid var(--border);
+    background: linear-gradient(90deg, rgba(255,255,255,0.03), transparent);
+  }
+  .target-head .ticon { font-size: 26px; line-height: 1; }
+  .target-head .ttitle { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1.5px; color: var(--text-primary); }
+  .target-head .ttiming {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 5px; margin-left: auto;
+    background: rgba(242,193,78,0.12); color: var(--kvk-accent); border: 1px solid var(--kvk-accent-dim);
+  }
+  .target-body { padding: 14px 16px; }
+  .target-body ul { list-style: none; padding: 0; margin: 0; }
+  .target-body li { font-size: 13px; color: var(--text-secondary); line-height: 1.55; padding: 3px 0 3px 16px; position: relative; }
+  .target-body li::before { content: '\25B8'; position: absolute; left: 0; color: var(--kvk-accent-dim); }
+  .target-body li strong { color: var(--text-primary); font-weight: 600; }
+  .target-body li b { color: var(--kvk-accent); font-weight: 700; }
+
+  /* spawn schedule chips */
+  .sched { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; }
+  .sched .slot {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
+    padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-deep); color: var(--text-secondary);
+  }
+  .sched .slot b { color: var(--kvk-accent); }
+
+  /* zone badges */
+  .zones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+  @media (max-width: 500px) { .zones { grid-template-columns: 1fr; } }
+  .zone { border-radius: 8px; padding: 12px; border: 1px solid var(--border); background: var(--bg-deep); }
+  .zone .zname { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 1px; }
+  .zone .zdesc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-top: 3px; }
+  .zone.z1 .zname { color: var(--text-secondary); }
+  .zone.z2 .zname { color: var(--kvk-accent); }
+  .zone.z3 .zname { color: var(--accent-red); }
+  .zone.z3 { border-color: var(--accent-red-dim); }
+
+  /* -- STRAT CARDS -- */
+  .strat { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 10px; }
+  .strat h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; color: var(--kvk-accent); }
+  .strat ul { list-style: none; padding: 0; }
+  .strat li { font-size: 13px; color: var(--text-secondary); line-height: 1.55; padding: 3px 0 3px 16px; position: relative; }
+  .strat li::before { content: '\25B8'; position: absolute; left: 0; color: var(--kvk-accent-dim); }
+  .strat li strong { color: var(--text-primary); font-weight: 600; }
+
+  /* -- DAILY ROUTINE (numbered) -- */
+  .routine { counter-reset: step; }
+  .step {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 14px; margin-bottom: 8px;
+  }
+  .step::before {
+    counter-increment: step; content: counter(step);
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--kvk-accent); color: var(--bg-deep);
+    font-family: 'Bebas Neue', sans-serif; font-size: 15px;
+  }
+  .step .stxt { font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; }
+  .step .stxt strong { color: var(--text-primary); font-weight: 600; }
+  .step .stxt b { color: var(--kvk-accent); font-weight: 700; }
+
+  /* -- CALLOUTS -- */
+  .co { border-radius: 8px; padding: 12px 16px; margin: 10px 0; font-size: 13px; line-height: 1.55; color: var(--text-secondary); }
+  .co strong { font-weight: 700; }
+  .co.warn { background: rgba(196,61,61,0.08); border: 1px solid var(--accent-red-dim); }
+  .co.warn strong { color: var(--accent-red); }
+  .co.info { background: rgba(61,124,196,0.08); border: 1px solid var(--accent-blue-dim); }
+  .co.info strong { color: var(--accent-blue); }
+  .co.gold { background: rgba(242,193,78,0.08); border: 1px solid var(--kvk-accent-dim); }
+  .co.gold strong { color: var(--kvk-accent); }
+
+  /* -- DO / DON'T units -- */
+  .ud-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 500px) { .ud-grid { grid-template-columns: 1fr; } }
+  .ud { border-radius: 8px; padding: 14px; border: 1px solid var(--border); background: var(--bg-card); }
+  .ud h4 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+  .ud p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+  .ud.do h4 { color: var(--accent-green); } .ud.do { border-color: var(--accent-green-dim); }
+  .ud.dont h4 { color: var(--accent-red); } .ud.dont { border-color: var(--accent-red-dim); }
+
+  .tbd { color: var(--text-muted); font-style: italic; }
+
+  .footer { text-align: center; margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--border); }
+  .footer a { color: var(--kvk-accent); text-decoration: none; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; font-size: 13px; }
+</style>
+</head>
+<body data-kvk="golden">
+
+  <header class="kvk-header" style="--kvk-bg:url('../assets/kvk-bg/golden.jpg')">
+    <div class="kvk-tag">Cross-Server PvE + PvP · Era 8</div>
+    <h1 class="kvk-title">GOLDEN <span>EXPEDITION</span></h1>
+    <div class="kvk-subtitle">Three days. One enemy server. Take everything that isn't bubbled.</div>
+    <div class="time-row" style="margin-top:18px;">
+      <div><div class="label">Opponent</div><div class="time tbd">TBD Server</div></div>
+      <div class="divider"></div>
+      <div><div class="label">Event Window</div><div class="time tbd">Dates TBD</div></div>
+    </div>
+  </header>
+
+  <div class="draft-banner">⚙ Draft template — figures &amp; opponent confirmed once the event opens. Screenshots welcome.</div>
+
+  <div class="flyer">
+
+    <!-- 1 · WHAT IT IS -->
+    <div class="section">
+      <div class="sh"><span class="n">1</span> The Format</div>
+      <p class="blurb">
+        Golden Expedition is a <strong>single-phase cross-server brawl</strong> blending PvE and PvP. The store
+        page sells it as a 5–6 day event, but only <em>three days are actual combat</em> — the rest is matchmaking
+        and recovery. For those three days we share a map with <strong>one enemy server</strong> and can teleport
+        freely to either side and fight for as long as we like.
+      </p>
+      <div class="timeline">
+        <div class="tl"><div class="tlday">Day 0</div><div class="tlicon">🎯</div><div class="tlname">Matchmaking</div></div>
+        <div class="tl"><div class="tlday">Gap</div><div class="tlicon">⏳</div><div class="tlname">Delay</div></div>
+        <div class="tl fight"><div class="tlday">Days 1–3</div><div class="tlicon">⚔️</div><div class="tlname">Expedition</div></div>
+        <div class="tl"><div class="tlday">After</div><div class="tlicon">🛟</div><div class="tlname">Recovery</div></div>
+        <div class="tl"><div class="tlday">—</div><div class="tlicon">🏆</div><div class="tlname">Rewards</div></div>
+      </div>
+      <div class="co info"><strong>Map access:</strong> teleport anywhere there are open tiles. Watch for random
+        <strong>cross-border tiles</strong> that open a path into areas the enemy already holds.</div>
+    </div>
+
+    <!-- 2 · WHERE POINTS COME FROM -->
+    <div class="section">
+      <div class="sh"><span class="n">2</span> Where Points Come From</div>
+      <div class="stat-row">
+        <div class="stat-box"><div class="val">⚔️</div><div class="lbl">Eliminations<br>(majority of points)</div></div>
+        <div class="stat-box"><div class="val">🐘</div><div class="lbl">Elephant<br>16M / day cap</div></div>
+        <div class="stat-box"><div class="val">🛡️</div><div class="lbl">Golden Guardians<br>15M / day cap</div></div>
+        <div class="stat-box"><div class="val">🏕️</div><div class="lbl">Tribes<br>5 stamina each</div></div>
+        <div class="stat-box"><div class="val">🌾</div><div class="lbl">Gathering<br>uncapped (for now)</div></div>
+      </div>
+      <p class="blurb"><strong>Eliminations are the bulk of the scoreboard</strong> — zeroing citadels and killing
+        units on the enemy server outweighs everything else. The PvE objectives (Guardians, Elephant) are reliable
+        daily floors; the PvP is where the event is won or lost.</p>
+    </div>
+
+    <!-- 3 · GOLDEN GUARDIANS -->
+    <div class="section">
+      <div class="sh"><span class="n">3</span> Golden Guardians <span style="font-size:14px;color:var(--text-muted);">· hourly PvE</span></div>
+      <div class="target">
+        <div class="target-head">
+          <span class="ticon">🛡️</span>
+          <span class="ttitle">Golden Guardian</span>
+          <span class="ttiming">Every hour · from 01:00 Day 1</span>
+        </div>
+        <div class="target-body">
+          <ul>
+            <li>Spawn <strong>every hour</strong> at random map locations, starting <b>01:00 on Day 1</b>.</li>
+            <li>Daily caps: <b>20 guardians</b> for rewards and <b>15M points</b> — whichever you hit first.</li>
+            <li>You get a <strong>mail notification</strong> when each daily is complete (one for rewards, one for points).</li>
+            <li>Tougher guardians spawn deeper in enemy territory — better rewards <strong>and</strong> you can deal more damage to them, so points come faster.</li>
+          </ul>
+          <div class="zones">
+            <div class="zone z1"><div class="zname">Zone 1</div><div class="zdesc">Baseline guardians. Easy clears near safe ground.</div></div>
+            <div class="zone z2"><div class="zname">Zone 2</div><div class="zdesc">Harder, richer. More damage per hit → finish dailies quicker.</div></div>
+            <div class="zone z3"><div class="zname">Zone 3</div><div class="zdesc">Hardest &amp; best. Deep in contested space — go with cover.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="co gold"><strong>Efficiency:</strong> push toward Zone 2/3 guardians once you have support nearby —
+        the higher per-hit damage clears the 15M / 20-kill dailies far faster than farming Zone 1.</div>
+    </div>
+
+    <!-- 4 · THE ELEPHANT -->
+    <div class="section">
+      <div class="sh"><span class="n">4</span> The Elephant <span style="font-size:14px;color:var(--text-muted);">· 6-hour boss</span></div>
+      <div class="target">
+        <div class="target-head">
+          <span class="ticon">🐘</span>
+          <span class="ttitle">Elephant</span>
+          <span class="ttiming">Every 6 hours</span>
+        </div>
+        <div class="target-body">
+          <ul>
+            <li>Spawns at <b>06:00 · 12:00 · 18:00</b> (server time). Unlike the Behemoth, you can hit it <strong>solo or by rally</strong>.</li>
+            <li><strong>Alternates servers</strong> each spawn — usually starts on ours.</li>
+            <li>Daily caps: <b>16M points</b> from damage, plus <b>2 rewards</b> for kills.</li>
+            <li><b>+10M bonus points</b> go to the server that lands the killing blow — worth coordinating a finish.</li>
+            <li>Already teleported to the elephant's server? Use the <strong>teleporter to send troops remotely</strong> instead of relocating your citadel.</li>
+          </ul>
+          <div class="sched">
+            <span class="slot"><b>06:00</b> spawn</span>
+            <span class="slot"><b>12:00</b> spawn</span>
+            <span class="slot"><b>18:00</b> spawn</span>
+          </div>
+        </div>
+      </div>
+      <div class="co warn"><strong>Switch to military before spawn.</strong> Recall farming marches, grab your 16M,
+        then stay on the elephant to fight the enemy server contesting it.</div>
+    </div>
+
+    <!-- 5 · DAILY ROUTINE -->
+    <div class="section">
+      <div class="sh"><span class="n">5</span> Your Daily Loop</div>
+      <div class="routine">
+        <div class="step"><div class="stxt"><strong>Teleport across immediately.</strong> Get onto the enemy server at the start of the day — don't wait.</div></div>
+        <div class="step"><div class="stxt"><strong>Clear tribes.</strong> <b>5 stamina</b> each. Most players carry ~150 stamina — <b>burn stamina potions here</b>, don't hoard them.</div></div>
+        <div class="step"><div class="stxt"><strong>Finish Guardian dailies.</strong> Hunt hourly spawns until both mails (20 kills / 15M points) arrive.</div></div>
+        <div class="step"><div class="stxt"><strong>Farm with T1 marches.</strong> Send <b>T1 farmers</b> to gather — never your T8/T7. Farming marches are far more exposed than military ones.</div></div>
+        <div class="step"><div class="stxt"><strong>Pivot for the Elephant.</strong> Before each 6-hour spawn: recall farmers → switch to military → take your <b>16M</b>.</div></div>
+        <div class="step"><div class="stxt"><strong>Hunt off the Elephant.</strong> Once your points are in, fight the enemy server contesting it. <b>Eliminations win the event.</b></div></div>
+        <div class="step"><div class="stxt"><strong>Bubble before sleep.</strong> Shield up when you log off — getting zeroed or caught in a bad trade hands them the points.</div></div>
+      </div>
+    </div>
+
+    <!-- 6 · UNITS: DO / DON'T -->
+    <div class="section">
+      <div class="sh"><span class="n">6</span> Marches: Do &amp; Don't</div>
+      <div class="ud-grid">
+        <div class="ud do">
+          <h4>✔ Do</h4>
+          <p>Farm with <strong>T1 marches</strong> — cheap and expendable. Switch to your real military for the Elephant and PvP. Join a <strong>rally</strong> if you're worried about being caught in the open.</p>
+        </div>
+        <div class="ud dont">
+          <h4>✘ Don't</h4>
+          <p>Don't gather with <strong>T8/T7</strong> units — farming marches get picked off, and those troops are too valuable to feed the enemy. Don't sit unbubbled overnight.</p>
+        </div>
+      </div>
+      <div class="co info"><strong>Caught in the open?</strong> Jump into the rally — there's usually no time for the enemy
+        to counter-rally, so the rally is the safe seat. Solo open-field marches are the ones that get traded badly.</div>
+    </div>
+
+    <!-- 7 · WIN CONDITION -->
+    <div class="section">
+      <div class="sh"><span class="n">7</span> How We Win</div>
+      <div class="strat">
+        <h3>The Plan</h3>
+        <ul>
+          <li><strong>Pressure first.</strong> Teleport across on the bell and stay aggressive — open tiles and cross-border tiles let us reach their farmers and citadels.</li>
+          <li><strong>Bank the PvE floors.</strong> Guardians (15M) and Elephant (16M) are guaranteed points everyone should hit daily.</li>
+          <li><strong>Win the killing blows.</strong> Coordinate Elephant finishes for the +10M server bonus.</li>
+          <li><strong>Out-eliminate them.</strong> Eliminations are the majority of the score — zero their citadels, farm their farmers, protect ours by bubbling and rallying.</li>
+        </ul>
+      </div>
+      <div class="co gold"><strong>Coordinator note:</strong> this is a draft brief built ahead of the event.
+        Caps, opponent server, and exact timings will be confirmed (and screenshots added) once Golden Expedition opens.</div>
+    </div>
+
+    <div class="footer"><a href="../index.html">← Era 8 Command</a></div>
+
+  </div>
+
+</body>
+</html>

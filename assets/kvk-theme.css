@@ -8,7 +8,7 @@
    -----
    1. <link rel="stylesheet" href="../assets/kvk-theme.css">   (adjust ../ depth)
    2. On <html> or <body>, set the event:  <body data-kvk="behemoth">
-        data-kvk values: behemoth | tme | desolate | primordial | day6 | workshop | history | generic
+        data-kvk values: behemoth | tme | desolate | primordial | day6 | workshop | golden | history | generic
    3. To show a background graphic behind the title, set --kvk-bg on the
       header element (or :root):  style="--kvk-bg:url('../assets/kvk-bg/behemoth.jpg')"
    ============================================================ */
@@ -44,6 +44,7 @@
 [data-kvk="primordial"] { --kvk-accent:#9b6dff; --kvk-accent-dim:#6b4c9a; --kvk-accent-rgb:155,109,255; }
 [data-kvk="day6"]       { --kvk-accent:#c43d3d; --kvk-accent-dim:#8a2b2b; --kvk-accent-rgb:196,61,61; }
 [data-kvk="workshop"]   { --kvk-accent:#d4a017; --kvk-accent-dim:#7a5c0e; --kvk-accent-rgb:212,160,23; }
+[data-kvk="golden"]     { --kvk-accent:#f2c14e; --kvk-accent-dim:#b88a26; --kvk-accent-rgb:242,193,78; }
 [data-kvk="history"]    { --kvk-accent:#d4a843; --kvk-accent-dim:#a17e2f; --kvk-accent-rgb:212,168,67; }
 [data-kvk="generic"]    { --kvk-accent:#d4a843; --kvk-accent-dim:#a17e2f; --kvk-accent-rgb:212,168,67; }
 
