@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Era 8 — KvK History & Trends</title>
+<style>
+  :root{
+    --bg:#0b1220; --bg2:#0f172a; --card:#111a2e; --border:#1e3a5f;
+    --txt:#e2e8f0; --mut:#64748b; --mut2:#94a3b8;
+    --us:#3b82f6; --opp:#f87171; --gold:#fbbf24; --green:#4ade80; --red:#ef4444;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,sans-serif;line-height:1.5;padding:16px;}
+  .wrap{max-width:980px;margin:0 auto;}
+  header{text-align:center;margin-bottom:20px;}
+  .sub{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+  h1{font-size:24px;font-weight:800;letter-spacing:1px;margin:4px 0;}
+  .hint{font-size:12px;color:var(--mut2);}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px;}
+  .card-h{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:12px;letter-spacing:.5px;}
+  /* W/L summary chips */
+  .summary{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:6px;}
+  .chip{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:8px 14px;text-align:center;min-width:90px;}
+  .chip .big{font-family:'Bebas Neue',sans-serif;font-size:26px;font-weight:800;line-height:1;}
+  .chip .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-top:3px;}
+  .chip.win .big{color:var(--green);} .chip.loss .big{color:var(--red);}
+  /* ledger table */
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{width:100%;border-collapse:collapse;font-size:12px;min-width:760px;}
+  th,td{padding:7px 8px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap;}
+  th{font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:600;}
+  td.l,th.l{text-align:left;}
+  .grp-us{color:#9dc0f0;border-bottom:2px solid var(--us);}
+  .grp-opp{color:#e89a9a;border-bottom:2px solid var(--opp);}
+  tbody tr:hover{background:rgba(255,255,255,.03);}
+  .num{font-variant-numeric:tabular-nums;}
+  .res-win{color:var(--green);font-weight:700;} .res-loss{color:var(--red);font-weight:700;} .res-tbd{color:var(--gold);font-weight:700;}
+  .mp-hi{color:var(--green);} .mp-mid{color:var(--mut2);} .mp-lo{color:var(--mut);}
+  .multi-note{font-size:11px;color:var(--mut);font-style:italic;}
+  /* charts */
+  .charts{display:grid;grid-template-columns:1fr;gap:18px;}
+  @media(min-width:720px){.charts{grid-template-columns:1fr 1fr;}}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;margin-top:8px;color:var(--mut2);}
+  .legend b{font-weight:700;}
+  .note{font-size:11px;color:var(--mut);margin-top:10px;line-height:1.6;}
+  svg{width:100%;height:auto;display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="sub">Age of Empires Mobile · Era 8 (E#008)</div>
+    <h1>KvK HISTORY &amp; TRENDS</h1>
+    <div class="hint">Top-4 alliance power, merits &amp; M:P across cross-server events. Source: our own dashboards.</div>
+  </header>
+
+  <!-- W/L SUMMARY -->
+  <div class="card">
+    <div class="card-h">⚔ Win / Loss Record</div>
+    <div class="summary" id="summary"></div>
+  </div>
+
+  <!-- LEDGER -->
+  <div class="card">
+    <div class="card-h">📜 Event Ledger</div>
+    <div class="scroll">
+      <table id="ledger">
+        <thead>
+          <tr>
+            <th class="l" rowspan="2">Event</th><th class="l" rowspan="2">Date</th><th class="l" rowspan="2">Opponent</th>
+            <th class="grp-us" colspan="3">Us · Top-4</th>
+            <th class="grp-opp" colspan="3">Opponent · Top-4</th>
+            <th rowspan="2">Result</th>
+          </tr>
+          <tr>
+            <th>Power</th><th>Merits</th><th>M:P</th>
+            <th>Power</th><th>Merits</th><th>M:P</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="note" id="ledgerNote"></div>
+  </div>
+
+  <!-- TRENDS -->
+  <div class="card">
+    <div class="card-h">📈 Trends — Our Top-4 (combined)</div>
+    <div class="charts">
+      <div><div id="chartMP"></div><div class="legend" id="legMP"></div></div>
+      <div><div id="chartPM"></div><div class="legend" id="legPM"></div></div>
+    </div>
+    <div class="note">M:P (merit ÷ power) is a proxy for combat activity — rising M:P means we're fighting more per unit of power, not just getting bigger. Multi-server brackets (Primordial, Desolate Desert) lack clean top-4 alliance figures, so they appear in the ledger as win/loss only and are excluded from the alliance charts.</div>
+  </div>
+</div>
+
+<script>
+// ============ DATA ============
+// Each event: per-alliance [tag, power, merits]. Multi-server = win/loss only (no alliance data).
+const EVENTS = [
+  { event:"TME", date:"2026-05-18", opp:"Era 38", result:"Loss",
+    ours:[["WC1",17236872426,1493190936],["AGC",11113145620,154684345],["MyT",10077180519,744926645],["REU",8634995031,825232103]],
+    oppA:[["E38",17825083183,1701935323],["K38",11735334303,710232458],["S38",9901400493,389679065],["NAS",7193506001,107554795]] },
+  { event:"TME", date:"2026-06-15", opp:"Era 23", result:"Win",
+    ours:[["WC1",19612039793,2087503559],["REU",12075304942,887427033],["AGC",11296408344,177822588],["MyT",10266594886,848149532]],
+    oppA:[["LOD",17173032779,2132765554],["boi",14806866449,1082278581],["R65",13881483676,1766240250],["ILF",4866546542,92039230]] },
+  { event:"TME", date:"2026-06-28", opp:"Era 90", result:"TBD",
+    ours:[["WC1",20238517730,2272826034],["REU",12699637836,912404888],["AGC",11739696945,186806496],["MyT",10430075595,898618923]],
+    oppA:[["RIP",20212765060,2541548484],["INT",14829324819,1022902133],["YFQ",10405496654,190589970],["OvO",6265770680,95788191]] },
+  // Multi-server brackets / non-alliance-comparable events:
+  { event:"Behemoth", date:"2026-06-30", opp:"Era 87", result:"Loss", note:"Final 37.4B vs 57.8B" },
+  { event:"Primordial", date:"2026-05", opp:"E#016 / E#022 / E#092", result:"—", multi:true },
+  { event:"Desolate Desert", date:"2026-05", opp:"Era 51 / 82 / 2", result:"—", multi:true },
+];
+
+const fmtB = n => (n/1e9).toFixed(2)+"B";
+const fmtMP = (p,m) => (m/p*100).toFixed(1)+"%";
+const sum = (rows,i) => rows.reduce((a,r)=>a+r[i],0);
+const mpClass = v => v>=8?"mp-hi":v>=4?"mp-mid":"mp-lo";
+
+// ---- W/L summary ----
+(function(){
+  let w=0,l=0,t=0;
+  EVENTS.forEach(e=>{ if(e.result==="Win")w++; else if(e.result==="Loss")l++; else if(e.result==="TBD")t++; });
+  const html=[
+    `<div class="chip win"><div class="big">${w}</div><div class="lbl">Wins</div></div>`,
+    `<div class="chip loss"><div class="big">${l}</div><div class="lbl">Losses</div></div>`,
+    `<div class="chip"><div class="big">${t}</div><div class="lbl">In progress</div></div>`,
+    `<div class="chip"><div class="big">${EVENTS.length}</div><div class="lbl">Events tracked</div></div>`,
+  ].join("");
+  document.getElementById("summary").innerHTML=html;
+})();
+
+// ---- ledger ----
+(function(){
+  const tb=document.querySelector("#ledger tbody");
+  EVENTS.forEach(e=>{
+    const rc = e.result==="Win"?"res-win":e.result==="Loss"?"res-loss":e.result==="TBD"?"res-tbd":"";
+    if(e.multi || !e.ours){
+      const extra = e.note?` <span class="multi-note">(${e.note})</span>`:` <span class="multi-note">(multi-server)</span>`;
+      tb.insertAdjacentHTML("beforeend",
+        `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${extra}</td>`+
+        `<td colspan="6" class="multi-note" style="text-align:center">no top-4 alliance comparison</td>`+
+        `<td class="${rc}">${e.result}</td></tr>`);
+      return;
+    }
+    const oP=sum(e.ours,1),oM=sum(e.ours,2),pP=sum(e.oppA,1),pM=sum(e.oppA,2);
+    const oMP=oM/oP*100, pMP=pM/pP*100;
+    tb.insertAdjacentHTML("beforeend",
+      `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}</td>`+
+      `<td class="num">${fmtB(oP)}</td><td class="num">${fmtB(oM)}</td><td class="num ${mpClass(oMP)}">${oMP.toFixed(1)}%</td>`+
+      `<td class="num">${fmtB(pP)}</td><td class="num">${fmtB(pM)}</td><td class="num ${mpClass(pMP)}">${pMP.toFixed(1)}%</td>`+
+      `<td class="${rc}">${e.result}</td></tr>`);
+  });
+  document.getElementById("ledgerNote").textContent =
+    "M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).";
+})();
+
+// ---- charts (SVG line) ----
+function lineChart(series, opts){
+  // series: [{name,color,vals:[{x,y}]}], opts:{w,h,ymin,ymax,yfmt,xlabels}
+  const {w=420,h=220,ymin,ymax,yfmt,xlabels}=opts;
+  const padL=42,padR=58,padT=14,padB=26;
+  const pw=w-padL-padR, ph=h-padT-padB;
+  const n=xlabels.length;
+  const X=i=> n<=1?padL:padL+pw*i/(n-1);
+  const Y=v=> padT+ph*(1-(v-ymin)/(ymax-ymin));
+  let s=`<svg viewBox="0 0 ${w} ${h}" font-family="system-ui,sans-serif">`;
+  s+=`<rect width="${w}" height="${h}" fill="#0b1220" rx="8"/>`;
+  // gridlines
+  const ticks=5;
+  for(let k=0;k<=ticks;k++){
+    const v=ymin+(ymax-ymin)*k/ticks, y=Y(v);
+    s+=`<line x1="${padL}" y1="${y.toFixed(0)}" x2="${padL+pw}" y2="${y.toFixed(0)}" stroke="#1e3a5f" stroke-width="1"/>`;
+    s+=`<text x="${padL-6}" y="${(y+3).toFixed(0)}" text-anchor="end" font-size="9" fill="#64748b">${yfmt(v)}</text>`;
+  }
+  xlabels.forEach((lb,i)=>{ s+=`<text x="${X(i).toFixed(0)}" y="${h-padB+16}" text-anchor="middle" font-size="9" fill="#94a3b8">${lb}</text>`; });
+  series.forEach(se=>{
+    const pts=se.vals.map(p=>`${X(p.x).toFixed(0)},${Y(p.y).toFixed(0)}`).join(" ");
+    s+=`<polyline points="${pts}" fill="none" stroke="${se.color}" stroke-width="2.5" ${se.dash?'stroke-dasharray="4,3"':''}/>`;
+    se.vals.forEach(p=>{ s+=`<circle cx="${X(p.x).toFixed(0)}" cy="${Y(p.y).toFixed(0)}" r="3.2" fill="${se.color}"/>`; });
+    const last=se.vals[se.vals.length-1];
+    s+=`<text x="${(X(last.x)+6).toFixed(0)}" y="${(Y(last.y)+3).toFixed(0)}" font-size="10" font-weight="700" fill="${se.color}">${se.name}</text>`;
+  });
+  s+=`</svg>`;
+  return s;
+}
+
+(function(){
+  const tme=EVENTS.filter(e=>e.ours);
+  const xlabels=tme.map(e=>e.date.slice(5)); // MM-DD
+  // M:P chart: us combined vs opp combined
+  const usMP=tme.map((e,i)=>({x:i,y:sum(e.ours,2)/sum(e.ours,1)*100}));
+  const oppMP=tme.map((e,i)=>({x:i,y:sum(e.oppA,2)/sum(e.oppA,1)*100}));
+  document.getElementById("chartMP").innerHTML=lineChart(
+    [{name:"Us",color:"#3b82f6",vals:usMP},{name:"Opp",color:"#f87171",vals:oppMP}],
+    {ymin:0,ymax:12,yfmt:v=>v.toFixed(0)+"%",xlabels});
+  document.getElementById("legMP").innerHTML=
+    `<span style="color:#3b82f6"><b>■ Us M:P</b></span> <span style="color:#f87171"><b>■ Opponent M:P</b></span> — combined top-4`;
+  // Power & Merits chart (us): both scaled to billions
+  const usP=tme.map((e,i)=>({x:i,y:sum(e.ours,1)/1e9}));
+  const usM=tme.map((e,i)=>({x:i,y:sum(e.ours,2)/1e9}));
+  document.getElementById("chartPM").innerHTML=lineChart(
+    [{name:"Power",color:"#fbbf24",vals:usP},{name:"Merits",color:"#4ade80",vals:usM}],
+    {ymin:0,ymax:60,yfmt:v=>v.toFixed(0)+"B",xlabels});
+  document.getElementById("legPM").innerHTML=
+    `<span style="color:#fbbf24"><b>■ Power</b></span> <span style="color:#4ade80"><b>■ Merits</b></span> — our combined top-4 (B)`;
+})();
+</script>
+</body>
+</html>
