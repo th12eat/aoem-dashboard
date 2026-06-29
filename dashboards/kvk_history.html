@@ -4,14 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Era 8 — KvK History & Trends</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/kvk-theme.css">
 <style>
+  /* local aliases mapped onto the shared theme tokens */
   :root{
-    --bg:#0b1220; --bg2:#0f172a; --card:#111a2e; --border:#1e3a5f;
-    --txt:#e2e8f0; --mut:#64748b; --mut2:#94a3b8;
-    --us:#3b82f6; --opp:#f87171; --gold:#fbbf24; --green:#4ade80; --red:#ef4444;
+    --bg:var(--bg-deep); --bg2:var(--bg-card2); --card:var(--bg-card);
+    --txt:var(--text-primary); --mut:var(--text-muted); --mut2:var(--text-secondary);
+    --us:var(--accent-blue); --opp:var(--accent-red); --gold:var(--kvk-accent); --green:var(--accent-green); --red:var(--accent-red);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,sans-serif;line-height:1.5;padding:16px;}
+  body{background:var(--bg);color:var(--txt);font-family:'Barlow',system-ui,sans-serif;line-height:1.5;padding:16px;}
   .wrap{max-width:980px;margin:0 auto;}
   header{text-align:center;margin-bottom:20px;}
   .sub{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
@@ -47,12 +50,12 @@
   svg{width:100%;height:auto;display:block;}
 </style>
 </head>
-<body>
+<body data-kvk="history">
 <div class="wrap">
-  <header>
-    <div class="sub">Age of Empires Mobile · Era 8 (E#008)</div>
-    <h1>KvK HISTORY &amp; TRENDS</h1>
-    <div class="hint">Top-4 alliance power, merits &amp; M:P across cross-server events. Source: our own dashboards.</div>
+  <header class="kvk-header" style="--kvk-bg:url('../assets/kvk-bg/history.jpg')">
+    <div class="kvk-tag">Age of Empires Mobile · Era 8 (E#008)</div>
+    <h1 class="kvk-title">KVK <span>HISTORY</span> &amp; TRENDS</h1>
+    <div class="kvk-subtitle">Top-4 alliance power, merits &amp; M:P across cross-server events</div>
   </header>
 
   <!-- W/L SUMMARY -->

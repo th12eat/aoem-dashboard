@@ -1,0 +1,112 @@
+/* ============================================================
+   AoEM Era 8 — Shared KvK Theme
+   Centralizes the Behemoth-Conquest look (dark slate + gold base,
+   Bebas Neue / Barlow type) and adds a per-KvK accent + a
+   fade-behind-title background graphic.
+
+   USAGE
+   -----
+   1. <link rel="stylesheet" href="../assets/kvk-theme.css">   (adjust ../ depth)
+   2. On <html> or <body>, set the event:  <body data-kvk="behemoth">
+        data-kvk values: behemoth | tme | desolate | primordial | day6 | workshop | history | generic
+   3. To show a background graphic behind the title, set --kvk-bg on the
+      header element (or :root):  style="--kvk-bg:url('../assets/kvk-bg/behemoth.jpg')"
+   ============================================================ */
+
+:root {
+  /* -- canonical palette (from Behemoth Conquest) -- */
+  --bg-deep: #0a0c14;
+  --bg-card: #11141f;
+  --bg-card2: #161a28;
+  --border: #1e2435;
+  --text-primary: #e8eaf0;
+  --text-secondary: #8a90a5;
+  --text-muted: #565c72;
+
+  /* fixed semantic accents (stay constant across events) */
+  --accent-gold: #d4a843;  --accent-gold-dim: #a17e2f;
+  --accent-red: #c43d3d;   --accent-red-dim: #8a2b2b;
+  --accent-blue: #3d7cc4;  --accent-blue-dim: #2b5a8a;
+  --accent-green: #3daa6d; --accent-green-dim: #2a7a4c;
+  --accent-purple: #9a6dd4;--accent-purple-dim: #6b4a9a;
+
+  /* -- per-KvK accent (defaults to gold; data-kvk overrides below) -- */
+  --kvk-accent: var(--accent-gold);
+  --kvk-accent-dim: var(--accent-gold-dim);
+  --kvk-accent-rgb: 212,168,67;   /* used for translucent glows */
+  --kvk-bg: none;                  /* background graphic for the title; set per page */
+}
+
+/* ---- per-KvK accent assignments ---- */
+[data-kvk="behemoth"]   { --kvk-accent:#d4a843; --kvk-accent-dim:#a17e2f; --kvk-accent-rgb:212,168,67; }
+[data-kvk="tme"]        { --kvk-accent:#3d7cc4; --kvk-accent-dim:#2b5a8a; --kvk-accent-rgb:61,124,196; }
+[data-kvk="desolate"]   { --kvk-accent:#c8902f; --kvk-accent-dim:#8a6320; --kvk-accent-rgb:200,144,47; }
+[data-kvk="primordial"] { --kvk-accent:#9b6dff; --kvk-accent-dim:#6b4c9a; --kvk-accent-rgb:155,109,255; }
+[data-kvk="day6"]       { --kvk-accent:#c43d3d; --kvk-accent-dim:#8a2b2b; --kvk-accent-rgb:196,61,61; }
+[data-kvk="workshop"]   { --kvk-accent:#1abc9c; --kvk-accent-dim:#138a73; --kvk-accent-rgb:26,188,156; }
+[data-kvk="history"]    { --kvk-accent:#d4a843; --kvk-accent-dim:#a17e2f; --kvk-accent-rgb:212,168,67; }
+[data-kvk="generic"]    { --kvk-accent:#d4a843; --kvk-accent-dim:#a17e2f; --kvk-accent-rgb:212,168,67; }
+
+/* ============================================================
+   Shared themed header
+   Markup:
+     <div class="kvk-header" style="--kvk-bg:url('...')">
+       <div class="kvk-tag">New Game Mode · Era 8</div>
+       <h1 class="kvk-title">BEHEMOTH <span>CONQUEST</span></h1>
+       <div class="kvk-subtitle">…</div>
+     </div>
+   ============================================================ */
+.kvk-header {
+  text-align: center;
+  padding: 36px 20px 28px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid var(--kvk-accent-dim);
+  margin-bottom: 28px;
+}
+/* layer 1: the KvK background graphic — 50% translucent, fades out downward */
+.kvk-header::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: var(--kvk-bg);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.35) 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.35) 55%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+/* layer 2: accent glow on top of the graphic for tint + legibility */
+.kvk-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center top, rgba(var(--kvk-accent-rgb),0.14) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+.kvk-header > * { position: relative; z-index: 2; }
+
+.kvk-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 13px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--kvk-accent); margin-bottom: 6px;
+}
+.kvk-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 8vw, 66px); letter-spacing: 3px; line-height: 1;
+  color: var(--text-primary); margin: 0;
+}
+.kvk-title span { color: var(--kvk-accent); }
+.kvk-subtitle {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 17px;
+  color: var(--text-secondary); margin-top: 8px; letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   Shared utility accents — opt-in classes that follow --kvk-accent
+   ============================================================ */
+.kvk-accent       { color: var(--kvk-accent); }
+.kvk-accent-bd    { border-color: var(--kvk-accent-dim); }
+.kvk-accent-bg    { background: rgba(var(--kvk-accent-rgb), 0.12); }
