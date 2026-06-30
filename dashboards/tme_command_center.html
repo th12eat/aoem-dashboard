@@ -2695,7 +2695,7 @@ function towerIcon(towerStr) {
 
 const DEFAULT_CONFIG = {
   oppServer: "Era 90",
-  invasionTime: "19:00 UTC",
+  invasionTime: "11:00 UTC",
   weWonPrep: null,
   ourRank: 16,
   oppRank: 11,
@@ -3316,15 +3316,6 @@ function TMECommandCenter(){
             <div style={{fontSize:10,color:"#64748b",padding:"8px 12px 10px"}}>{t.krakenDesc}</div>
           </div>
 
-          <div style={card}>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-              <div style={{fontSize:11,color:"#94a3b8"}}>{t.oppServerLabel}<div style={{color:"#e2e8f0",fontSize:12,marginTop:2}}>{config.oppServer}</div></div>
-              <div style={{fontSize:11,color:"#94a3b8"}}>{t.invTimeLabel}<div style={{color:"#e2e8f0",fontSize:12,marginTop:2}}>{config.invasionTime}</div></div>
-            </div>
-            <div style={{fontSize:11,color:isDefense?"#f87171":"#4ade80",marginTop:10,fontWeight:700}}>
-              {isDefense?"\uD83D\uDEE1\uFE0F Defending":"\u2694\uFE0F Attacking"} (auto: {config.totalOur} vs {config.totalOpp})
-            </div>
-          </div>
         </>)}
 
         {activeTab==="map"&&(<>
