@@ -49,7 +49,7 @@
   var CSS =
     '.ehdr{position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;' +
       'padding:8px 16px;background:rgba(10,12,20,0.92);backdrop-filter:blur(8px);' +
-      'border-bottom:1px solid var(--border,#1e2435);font-family:"Barlow Condensed",sans-serif;}' +
+      'border-bottom:2px solid var(--kvk-accent-dim,#a17e2f);font-family:"Barlow Condensed",sans-serif;}' +
     '.ehdr a{text-decoration:none;color:inherit;}' +
     '.ehdr-brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:1.5px;' +
       'text-transform:uppercase;font-size:15px;color:var(--text-primary,#e8eaf0);}' +

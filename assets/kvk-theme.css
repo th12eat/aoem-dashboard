@@ -44,6 +44,18 @@
   --font-ui: 'Barlow Condensed', sans-serif;       /* labels, tags, chrome */
   --font-body: 'Barlow', system-ui, sans-serif;    /* body copy */
   --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  /* -- canonical type scale (Behemoth Conquest sizes) -- */
+  --fs-title:  clamp(42px, 8vw, 66px); /* page/event display title (Bebas) */
+  --fs-stat:   30px;  /* big stat numbers / countdown values */
+  --fs-h2:     24px;  /* section headers (Bebas) */
+  --fs-h3:     18px;  /* sub-section / card titles */
+  --fs-lead:   16px;  /* lead / emphasis body */
+  --fs-body:   14px;  /* default body copy */
+  --fs-label:  13px;  /* labels, table cells, secondary text */
+  --fs-sub:    12px;  /* sublabels, captions */
+  --fs-micro:  11px;  /* tags, pills, smallest UI text */
+  --fs-tiny:   9.5px; /* table headers, fine print */
 }
 
 /* ---- per-KvK accent assignments ---- */
@@ -57,6 +69,11 @@
 [data-kvk="history"]    { --kvk-accent:#d4a843; --kvk-accent-dim:#a17e2f; --kvk-accent-rgb:212,168,67; }
 [data-kvk="generic"]    { --kvk-accent:#d4a843; --kvk-accent-dim:#a17e2f; --kvk-accent-rgb:212,168,67; }
 
+/* ---- base type scale: applies the Behemoth sizes app-wide ----
+   Pages opt in simply by linking this stylesheet. Page-specific
+   element rules still override where a page needs a custom size. */
+body { font-size: var(--fs-body); }
+
 /* ============================================================
    Shared themed header
    Markup:
@@ -68,13 +85,20 @@
    ============================================================ */
 .kvk-header {
   text-align: center;
-  padding: 36px 20px 28px;
+  /* bulky, image-forward header (Behemoth standard): tall band so more of the
+     background graphic shows, with the title/meta sitting inside it */
+  padding: 56px 20px 36px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
   overflow: hidden;
   border-bottom: 2px solid var(--kvk-accent-dim);
   margin-bottom: 28px;
 }
-/* layer 1: the KvK background graphic — 50% translucent, fades out downward */
+/* layer 1: the KvK background graphic — 50% translucent, fades out downward.
+   Fade pushed lower so more of the image is visible in the taller band. */
 .kvk-header::after {
   content: '';
   position: absolute; inset: 0;
@@ -82,9 +106,9 @@
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-  opacity: 0.5;
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.35) 55%, transparent 100%);
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.35) 55%, transparent 100%);
+  opacity: 0.55;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.55) 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.55) 70%, transparent 100%);
   pointer-events: none;
   z-index: 0;
 }
@@ -99,18 +123,18 @@
 .kvk-header > * { position: relative; z-index: 2; }
 
 .kvk-tag {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 600; font-size: 13px; letter-spacing: 3px;
+  font-family: var(--font-ui);
+  font-weight: 600; font-size: var(--fs-label); letter-spacing: 3px;
   text-transform: uppercase; color: var(--kvk-accent); margin-bottom: 6px;
 }
 .kvk-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(42px, 8vw, 66px); letter-spacing: 3px; line-height: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-title); letter-spacing: 3px; line-height: 1;
   color: var(--text-primary); margin: 0;
 }
 .kvk-title span { color: var(--kvk-accent); }
 .kvk-subtitle {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 17px;
+  font-family: var(--font-ui); font-size: var(--fs-lead);
   color: var(--text-secondary); margin-top: 8px; letter-spacing: 0.5px;
 }
 
@@ -120,3 +144,52 @@
 .kvk-accent       { color: var(--kvk-accent); }
 .kvk-accent-bd    { border-color: var(--kvk-accent-dim); }
 .kvk-accent-bg    { background: rgba(var(--kvk-accent-rgb), 0.12); }
+
+/* ============================================================
+   Shared ranking/data table — the Primordial roster-table look.
+   Markup:
+     <table class="rank-table">
+       <thead><tr><th>#</th><th>Name</th>
+         <th class="num">Power</th>...</tr></thead>
+       <tbody><tr><td>1</td><td class="name">WC1</td>
+         <td class="num">20.24B</td>... </tr></tbody>
+     </table>
+   Numeric cells use .num (right-aligned, condensed); flag M:P
+   cells with .mp-hi / .mp-lo for the green/red activity cue.
+   ============================================================ */
+.rank-table { width: 100%; border-collapse: collapse; font-size: var(--fs-label); }
+.rank-table th {
+  font-family: var(--font-ui);
+  font-size: var(--fs-tiny);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.rank-table td {
+  padding: 5px 8px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+.rank-table tr:last-child td { border-bottom: none; }
+.rank-table td.name { color: var(--text-primary); font-weight: 600; }
+.rank-table th.num { text-align: right; }
+.rank-table td.num {
+  text-align: right;
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  font-variant-numeric: tabular-nums;
+}
+.rank-table th.sortable { cursor: pointer; user-select: none; }
+.rank-table th.sortable:hover { color: var(--text-secondary); }
+.rank-table th.sortable.active { color: var(--kvk-accent); }
+.rank-table th .caret { font-size: var(--fs-tiny); }
+.rank-table td.mp-hi { color: var(--accent-green); }
+.rank-table td.mp-lo { color: var(--accent-red); }
+.rank-table td.tag { font-family: var(--font-ui); color: var(--text-muted); }
+.rank-table tbody tr:hover td { background: var(--bg-card2); }
+/* highlight our own / home rows */
+.rank-table tr.is-ours td, .rank-table tr.highlight td { background: rgba(var(--kvk-accent-rgb), 0.07); }

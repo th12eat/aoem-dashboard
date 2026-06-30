@@ -3207,7 +3207,7 @@ function TMECommandCenter(){
   return(
     <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'Barlow',system-ui,sans-serif"}}>
       {/* Header (language switcher now lives in the shared site header) */}
-      <div style={{background:"radial-gradient(ellipse at center top, rgba(61,124,196,0.22) 0%, rgba(10,12,20,0.55) 60%, #0a0c14 100%), linear-gradient(to bottom, rgba(10,12,20,0.45), #0a0c14), url('../assets/kvk-bg/tme.jpg')",backgroundSize:"cover,cover,cover",backgroundPosition:"center top",backgroundRepeat:"no-repeat",borderBottom:"2px solid #2b5a8a",padding:16,textAlign:"center",position:"sticky",top:0,zIndex:10}}>
+      <div style={{background:"radial-gradient(ellipse at center top, rgba(61,124,196,0.30) 0%, rgba(10,12,20,0.45) 65%, #0a0c14 100%), url('../assets/kvk-bg/tme.jpg')",backgroundSize:"cover,cover",backgroundPosition:"center top",backgroundRepeat:"no-repeat",borderBottom:"2px solid #2b5a8a",padding:"56px 20px 36px",minHeight:260,display:"flex",flexDirection:"column",justifyContent:"center",textAlign:"center",position:"relative",zIndex:10}}>
         <div style={{fontSize:11,color:"#5b9bd8",letterSpacing:3,textTransform:"uppercase",marginBottom:2,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:600}}>{t.headerSub}</div>
         <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:34,letterSpacing:2,color:"#f8fafc",lineHeight:1}}>{t.headerTitle}</div>
         <div style={{fontSize:13,color:"#94a3b8",marginTop:4}}>
@@ -3243,68 +3243,68 @@ function TMECommandCenter(){
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\uD83C\uDFF0"} {t.allianceOverview}</div>
             <div style={{overflowX:"auto"}}>
-              <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,padding:"0 8px",marginBottom:6,minWidth:440}}>
-                <span style={{fontSize:9,color:"#64748b"}}></span>
-                <span style={{fontSize:9,color:"#64748b"}}>{t.colRole}</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"center"}}>{t.colAllies}</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colPower}</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colMerits}</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>M:P</span>
-              </div>
-              {computedAlliances.map((a,i)=>(
-                <div key={a.tag} style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,alignItems:"center",padding:8,background:"#0f172a",borderRadius:6,borderLeft:`3px solid ${a.color}`,marginBottom:i<3?6:0,minWidth:440}}>
-                  <div style={{fontSize:13,fontWeight:800,color:a.color}}>{a.tag}</div>
-                  <div>
-                    <div style={{fontSize:10,color:"#e2e8f0"}}>{t[a.roleKey]||a.roleKey}</div>
-                    <div style={{fontSize:9,color:"#fbbf24"}}>{a.teleportTime}</div>
-                  </div>
-                  <div style={{fontSize:11,color:"#cbd5e1",textAlign:"center"}}>{a.allies}</div>
-                  <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.power)}</div>
-                  <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.merits)}</div>
-                  <div style={{fontSize:10,color:"#4ade80",textAlign:"right"}}>{mpRatio(a.merits,a.power)}</div>
-                </div>
-              ))}
-              <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,padding:"8px 8px 0",marginTop:6,borderTop:"1px solid #334155",minWidth:440}}>
-                <div style={{fontSize:10,fontWeight:700,color:"#94a3b8"}}>{t.colTotal}</div><div></div>
-                <div style={{fontSize:11,fontWeight:700,color:"#e2e8f0",textAlign:"center"}}>{sumF(config.alliances,"allies")}</div>
-                <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(sumF(config.alliances,"power"))}</div>
-                <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(sumF(config.alliances,"merits"))}</div>
-                <div style={{fontSize:10,fontWeight:700,color:"#4ade80",textAlign:"right"}}>{mpRatio(sumF(config.alliances,"merits"),sumF(config.alliances,"power"))}</div>
-              </div>
+              <table className="rank-table" style={{minWidth:440}}>
+                <thead><tr>
+                  <th>Tag</th><th>{t.colRole}</th>
+                  <th className="num">{t.colAllies}</th>
+                  <th className="num">{t.colPower}</th>
+                  <th className="num">{t.colMerits}</th>
+                  <th className="num">M:P</th>
+                </tr></thead>
+                <tbody>
+                {computedAlliances.map((a)=>(
+                  <tr key={a.tag} style={{borderLeft:`3px solid ${a.color}`}}>
+                    <td className="name" style={{color:a.color,fontWeight:800}}>{a.tag}</td>
+                    <td>{t[a.roleKey]||a.roleKey}<div style={{fontSize:9,color:"#fbbf24"}}>{a.teleportTime}</div></td>
+                    <td className="num">{a.allies}</td>
+                    <td className="num">{fmt(a.power)}</td>
+                    <td className="num">{fmt(a.merits)}</td>
+                    <td className="num mp-hi">{mpRatio(a.merits,a.power)}</td>
+                  </tr>
+                ))}
+                  <tr style={{fontWeight:700}}>
+                    <td className="name">{t.colTotal}</td><td></td>
+                    <td className="num" style={{color:"#e2e8f0"}}>{sumF(config.alliances,"allies")}</td>
+                    <td className="num" style={{color:"#e2e8f0"}}>{fmtN(sumF(config.alliances,"power"))}</td>
+                    <td className="num" style={{color:"#e2e8f0"}}>{fmtN(sumF(config.alliances,"merits"))}</td>
+                    <td className="num mp-hi">{mpRatio(sumF(config.alliances,"merits"),sumF(config.alliances,"power"))}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#f87171",marginBottom:10}}>{"\uD83D\uDD34"} {t.oppIntel} {"\u2014"} {config.oppServer}</div>
             <div style={{overflowX:"auto"}}>
-              <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,padding:"0 8px",marginBottom:6,minWidth:440}}>
-                <span style={{fontSize:9,color:"#64748b"}}></span>
-                <span style={{fontSize:9,color:"#64748b"}}>Name</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"center"}}>{t.colAllies}</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colPower}</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colMerits}</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>M:P</span>
-              </div>
-              {computedOppAlliances.map((a,i)=>(
-                <div key={a.tag} style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,alignItems:"center",padding:8,background:"#0f172a",borderRadius:6,borderLeft:"3px solid #f87171",marginBottom:i<computedOppAlliances.length-1?6:0,minWidth:440}}>
-                  <div style={{fontSize:13,fontWeight:800,color:"#f87171"}}>{a.tag}</div>
-                  <div>
-                    <div style={{fontSize:10,color:"#e2e8f0"}}>{a.name}</div>
-                    <div style={{fontSize:9,color:"#f87171"}}>{a.teleportTime}</div>
-                  </div>
-                  <div style={{fontSize:11,color:"#cbd5e1",textAlign:"center"}}>{a.allies}</div>
-                  <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.power)}</div>
-                  <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(a.merits)}</div>
-                  <div style={{fontSize:10,color:"#4ade80",textAlign:"right"}}>{mpRatio(a.merits,a.power)}</div>
-                </div>
-              ))}
-              <div style={{display:"grid",gridTemplateColumns:"52px 1fr 48px 65px 65px 45px",gap:6,padding:"8px 8px 0",marginTop:6,borderTop:"1px solid #334155",minWidth:440}}>
-                <div style={{fontSize:10,fontWeight:700,color:"#94a3b8"}}>{t.colTotal}</div><div></div>
-                <div style={{fontSize:11,fontWeight:700,color:"#e2e8f0",textAlign:"center"}}>{computedOppAlliances.reduce((s,a)=>s+a.allies,0)}</div>
-                <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</div>
-                <div style={{fontSize:10,fontWeight:700,color:"#e2e8f0",textAlign:"right"}}>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0))}</div>
-                <div style={{fontSize:10,fontWeight:700,color:"#4ade80",textAlign:"right"}}>{mpRatio(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0),computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</div>
-              </div>
+              <table className="rank-table" style={{minWidth:440}}>
+                <thead><tr>
+                  <th>Tag</th><th>Name</th>
+                  <th className="num">{t.colAllies}</th>
+                  <th className="num">{t.colPower}</th>
+                  <th className="num">{t.colMerits}</th>
+                  <th className="num">M:P</th>
+                </tr></thead>
+                <tbody>
+                {computedOppAlliances.map((a)=>(
+                  <tr key={a.tag} style={{borderLeft:"3px solid #f87171"}}>
+                    <td className="name" style={{color:"#f87171",fontWeight:800}}>{a.tag}</td>
+                    <td>{a.name}<div style={{fontSize:9,color:"#f87171"}}>{a.teleportTime}</div></td>
+                    <td className="num">{a.allies}</td>
+                    <td className="num">{fmt(a.power)}</td>
+                    <td className="num">{fmt(a.merits)}</td>
+                    <td className="num mp-hi">{mpRatio(a.merits,a.power)}</td>
+                  </tr>
+                ))}
+                  <tr style={{fontWeight:700}}>
+                    <td className="name">{t.colTotal}</td><td></td>
+                    <td className="num" style={{color:"#e2e8f0"}}>{computedOppAlliances.reduce((s,a)=>s+a.allies,0)}</td>
+                    <td className="num" style={{color:"#e2e8f0"}}>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</td>
+                    <td className="num" style={{color:"#e2e8f0"}}>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0))}</td>
+                    <td className="num mp-hi">{mpRatio(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0),computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -3312,24 +3312,26 @@ function TMECommandCenter(){
             <div style={{fontSize:13,fontWeight:700,color:"#f59e0b",marginBottom:6}}>{"\uD83D\uDC0B"} {t.krakenTargets}</div>
             <div style={{fontSize:10,color:"#64748b",marginBottom:10}}>{t.krakenDesc}</div>
             <div style={{overflowX:"auto"}}>
-              <div style={{display:"grid",gridTemplateColumns:"28px 1fr 44px 62px 62px 42px",gap:6,padding:"0 8px",marginBottom:6,minWidth:380}}>
-                <span style={{fontSize:9,color:"#64748b"}}>#</span>
-                <span style={{fontSize:9,color:"#64748b"}}>Name</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"center"}}>Tag</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colPower}</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.colMerits}</span>
-                <span style={{fontSize:9,color:"#64748b",textAlign:"right"}}>M:P</span>
-              </div>
-              {config.krakens.map((k,i)=>(
-                <div key={i} style={{display:"grid",gridTemplateColumns:"28px 1fr 44px 62px 62px 42px",gap:6,alignItems:"center",padding:"6px 8px",background:i%2===0?"#0f172a":"transparent",borderRadius:4,minWidth:380}}>
-                  <div style={{fontSize:11,color:i<3?"#fbbf24":"#94a3b8",fontWeight:i<3?700:400}}>{k.rank}</div>
-                  <div style={{fontSize:11,color:"#e2e8f0",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{k.name}</div>
-                  <div style={{fontSize:10,color:"#f87171",textAlign:"center",fontWeight:700}}>{k.alliance}</div>
-                  <div style={{fontSize:10,color:"#cbd5e1",textAlign:"right"}}>{fmt(k.power)}</div>
-                  <div style={{fontSize:10,color:"#a78bfa",textAlign:"right"}}>{fmt(k.merits)}</div>
-                  <div style={{fontSize:10,color:parseFloat(k.ratio)>=1?"#4ade80":parseFloat(k.ratio)>=0.7?"#fbbf24":"#94a3b8",textAlign:"right",fontWeight:parseFloat(k.ratio)>=1?700:400}}>{k.ratio}</div>
-                </div>
-              ))}
+              <table className="rank-table" style={{minWidth:380}}>
+                <thead><tr>
+                  <th>#</th><th>Name</th><th>Tag</th>
+                  <th className="num">{t.colPower}</th>
+                  <th className="num">{t.colMerits}</th>
+                  <th className="num">M:P</th>
+                </tr></thead>
+                <tbody>
+                {config.krakens.map((k,i)=>(
+                  <tr key={i}>
+                    <td style={{color:i<3?"#fbbf24":"#94a3b8",fontWeight:i<3?700:400}}>{k.rank}</td>
+                    <td className="name" style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:120}}>{k.name}</td>
+                    <td className="tag" style={{color:"#f87171",fontWeight:700}}>{k.alliance}</td>
+                    <td className="num">{fmt(k.power)}</td>
+                    <td className="num" style={{color:"#a78bfa"}}>{fmt(k.merits)}</td>
+                    <td className="num" style={{color:parseFloat(k.ratio)>=1?"#4ade80":parseFloat(k.ratio)>=0.7?"#fbbf24":"#94a3b8",fontWeight:parseFloat(k.ratio)>=1?700:400}}>{k.ratio}</td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
             </div>
           </div>
 

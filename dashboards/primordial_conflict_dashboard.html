@@ -63,7 +63,11 @@
   .header {
     text-align: center;
     margin-bottom: 40px;
-    padding: 28px 20px 32px;
+    padding: 56px 20px 36px;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     border-bottom: 2px solid var(--kvk-accent-dim);
     position: relative;
     overflow: hidden;
@@ -71,9 +75,9 @@
   .header::after {
     content:''; position:absolute; inset:0; z-index:0;
     background-image:var(--kvk-bg); background-size:cover; background-position:center top; background-repeat:no-repeat;
-    opacity:.5; pointer-events:none;
-    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.9) 0%,rgba(0,0,0,.35) 55%,transparent 100%);
-    mask-image:linear-gradient(to bottom,rgba(0,0,0,.9) 0%,rgba(0,0,0,.35) 55%,transparent 100%);
+    opacity:.55; pointer-events:none;
+    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 70%,transparent 100%);
+    mask-image:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 70%,transparent 100%);
   }
   .header::before {
     content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
@@ -81,21 +85,10 @@
   }
   .header > * { position:relative; z-index:2; }
 
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
-  }
-
   .header h1 {
     font-family: var(--font-display);
     font-weight: 900;
-    font-size: 2.6rem;
+    font-size: var(--fs-title);
     letter-spacing: 0.12em;
     background: linear-gradient(135deg, var(--accent-gold), #f0d878, var(--accent-gold));
     -webkit-background-clip: text;
@@ -106,7 +99,7 @@
 
   .header .subtitle {
     font-family: var(--font-ui);
-    font-size: 0.95rem;
+    font-size: var(--fs-lead);
     color: var(--text-secondary);
     letter-spacing: 0.3em;
     text-transform: uppercase;
@@ -124,7 +117,7 @@
     padding: 6px 16px;
     border-radius: 4px;
     font-family: var(--font-ui);
-    font-size: 0.8rem;
+    font-size: var(--fs-label);
     font-weight: 500;
     border: 1px solid;
   }
@@ -152,7 +145,7 @@
   .tab {
     padding: 12px 24px;
     font-family: var(--font-ui);
-    font-size: 0.85rem;
+    font-size: var(--fs-label);
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -215,7 +208,7 @@
   .day-card .day-num {
     font-family: var(--font-display);
     font-weight: 900;
-    font-size: 1.8rem;
+    font-size: var(--fs-stat);
     color: var(--text-muted);
     line-height: 1;
   }
@@ -226,7 +219,7 @@
 
   .day-card .day-label {
     font-family: var(--font-ui);
-    font-size: 0.65rem;
+    font-size: var(--fs-tiny);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--text-muted);
@@ -234,7 +227,7 @@
   }
 
   .day-card .day-desc {
-    font-size: 0.75rem;
+    font-size: var(--fs-sub);
     color: var(--text-secondary);
     margin-top: 8px;
     line-height: 1.4;
@@ -246,7 +239,7 @@
     padding: 2px 8px;
     border-radius: 3px;
     font-family: var(--font-ui);
-    font-size: 0.6rem;
+    font-size: var(--fs-tiny);
     letter-spacing: 0.05em;
     text-transform: uppercase;
     font-weight: 500;
@@ -270,7 +263,7 @@
   .section h2 {
     font-family: var(--font-ui);
     font-weight: 700;
-    font-size: 1.15rem;
+    font-size: var(--fs-h3);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--accent-gold);
@@ -287,19 +280,19 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.7rem;
+    font-size: var(--fs-micro);
   }
 
   .section h3 {
     font-family: var(--font-ui);
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: var(--fs-lead);
     color: var(--text-primary);
     margin: 16px 0 8px;
   }
 
   .section p, .section li {
-    font-size: 1.05rem;
+    font-size: var(--fs-lead);
     line-height: 1.7;
     color: var(--text-secondary);
   }
@@ -354,7 +347,7 @@
   .currency-card .curr-name {
     font-family: var(--font-ui);
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: var(--fs-body);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 8px;
@@ -365,7 +358,7 @@
   .currency-card.points .curr-name { color: var(--points-color); }
 
   .currency-card .curr-desc {
-    font-size: 0.95rem;
+    font-size: var(--fs-lead);
     line-height: 1.6;
     color: var(--text-secondary);
   }
@@ -375,7 +368,7 @@
     padding-top: 10px;
     border-top: 1px solid var(--border);
     font-family: var(--font-ui);
-    font-size: 0.72rem;
+    font-size: var(--fs-sub);
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -386,12 +379,12 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 12px;
-    font-size: 0.9rem;
+    font-size: var(--fs-body);
   }
 
   .points-table th {
     font-family: var(--font-ui);
-    font-size: 0.7rem;
+    font-size: var(--fs-micro);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-muted);
@@ -406,7 +399,7 @@
     color: var(--text-secondary);
     border-bottom: 1px solid var(--border)44;
     font-family: var(--font-ui);
-    font-size: 0.8rem;
+    font-size: var(--fs-label);
   }
 
   .points-table tr:hover td {
@@ -431,7 +424,7 @@
     border-radius: 0 6px 6px 0;
     padding: 14px 18px;
     margin: 12px 0;
-    font-size: 0.95rem;
+    font-size: var(--fs-lead);
     line-height: 1.6;
   }
 
@@ -459,7 +452,7 @@
   .callout > strong:first-of-type {
     display: block;
     font-family: var(--font-ui);
-    font-size: 0.7rem;
+    font-size: var(--fs-micro);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 4px;
@@ -496,14 +489,14 @@
 
   .time-block .time-val {
     font-family: var(--font-ui);
-    font-size: 1.6rem;
+    font-size: var(--fs-h2);
     font-weight: 500;
     color: var(--accent-purple);
   }
 
   .time-block .time-label {
     font-family: var(--font-ui);
-    font-size: 0.65rem;
+    font-size: var(--fs-tiny);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--text-muted);
@@ -529,19 +522,19 @@
   .tp-slot .tp-rank {
     font-family: var(--font-ui);
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: var(--fs-label);
     color: var(--accent-gold);
   }
 
   .tp-slot .tp-time {
     font-family: var(--font-ui);
-    font-size: 0.85rem;
+    font-size: var(--fs-label);
     color: var(--accent-purple);
     margin-top: 4px;
   }
 
   .tp-slot .tp-desc {
-    font-size: 0.7rem;
+    font-size: var(--fs-micro);
     color: var(--text-muted);
     margin-top: 2px;
   }
@@ -554,7 +547,7 @@
     background: var(--accent-orange)15;
     color: var(--accent-orange);
     font-family: var(--font-ui);
-    font-size: 0.7rem;
+    font-size: var(--fs-micro);
     font-weight: 500;
     letter-spacing: 0.05em;
   }
@@ -566,7 +559,7 @@
     border-top: 1px solid var(--border);
     margin-top: 32px;
     font-family: var(--font-ui);
-    font-size: 0.7rem;
+    font-size: var(--fs-micro);
     color: var(--text-muted);
     letter-spacing: 0.05em;
   }
@@ -610,7 +603,7 @@
   .server-card .sc-name {
     font-family: var(--font-ui);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: var(--fs-lead);
     letter-spacing: 0.05em;
     display: block;
   }
@@ -622,7 +615,7 @@
 
   .server-card .sc-rank {
     font-family: var(--font-ui);
-    font-size: 0.7rem;
+    font-size: var(--fs-micro);
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -635,29 +628,29 @@
     justify-content: space-between;
     padding: 5px 0;
     border-bottom: 1px solid var(--border)44;
-    font-size: 0.9rem;
+    font-size: var(--fs-body);
   }
 
   .server-card .sc-stat-label {
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: var(--fs-label);
   }
 
   .server-card .sc-stat-val {
     font-family: var(--font-ui);
-    font-size: 0.82rem;
+    font-size: var(--fs-label);
     color: var(--text-primary);
   }
 
   .roster-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.82rem;
+    font-size: var(--fs-label);
   }
 
   .roster-table th {
     font-family: var(--font-ui);
-    font-size: 0.65rem;
+    font-size: var(--fs-tiny);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-muted);
@@ -677,7 +670,7 @@
   .roster-table td.num {
     text-align: right;
     font-family: var(--font-ui);
-    font-size: 0.78rem;
+    font-size: var(--fs-label);
   }
 
   /* Sortable headers */
@@ -688,7 +681,7 @@
   }
   .roster-table th.sortable:hover { color: var(--text-secondary); }
   .roster-table th.sortable.active { color: var(--accent-gold); }
-  .roster-table th .caret { font-size: 0.6rem; }
+  .roster-table th .caret { font-size: var(--fs-tiny); }
 
   /* M:P ratio flags: green = over-performs its power, red = low battle activity */
   .roster-table td.mp-hi { color: var(--accent-green); }
@@ -696,7 +689,7 @@
 
   .roster-table td.alliance-tag {
     font-family: var(--font-ui);
-    font-size: 0.72rem;
+    font-size: var(--fs-sub);
     color: var(--text-muted);
   }
 
@@ -735,7 +728,7 @@
 
   .bar-label {
     font-family: var(--font-ui);
-    font-size: 0.6rem;
+    font-size: var(--fs-tiny);
     color: var(--text-muted);
     margin-top: 6px;
     text-align: center;
@@ -748,7 +741,7 @@
 
   .bar-val {
     font-family: var(--font-ui);
-    font-size: 0.6rem;
+    font-size: var(--fs-tiny);
     color: var(--text-secondary);
     margin-bottom: 3px;
     text-align: center;
@@ -756,7 +749,7 @@
 
   .section-subtitle {
     font-family: var(--font-ui);
-    font-size: 0.7rem;
+    font-size: var(--fs-micro);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--text-muted);
@@ -773,7 +766,7 @@
     .timeline { grid-template-columns: repeat(4, 1fr); }
     .two-col { grid-template-columns: 1fr; }
     .teleport-grid { grid-template-columns: repeat(3, 1fr); }
-    .header h1 { font-size: 1.8rem; }
+    .header h1 { font-size: var(--fs-stat); }
     /* On narrow screens keep cells on one line so the table can scroll cleanly. */
     .table-scroll .roster-table,
     .table-scroll .points-table { min-width: 460px; }
@@ -784,7 +777,7 @@
     .timeline { grid-template-columns: repeat(2, 1fr); }
     .container { padding: 16px 12px; }
     .section { padding: 20px 16px; }
-    .tab { padding: 10px 14px; font-size: 0.75rem; }
+    .tab { padding: 10px 14px; font-size: var(--fs-sub); }
   }
 </style>
 </head>

@@ -45,7 +45,11 @@
   /* -- HEADER -- */
   .header {
     text-align: center;
-    padding: 36px 20px 28px;
+    padding: 56px 20px 36px;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
     border-bottom: 2px solid var(--accent-gold-dim);
     margin-bottom: 28px;
@@ -84,9 +88,9 @@
   .header::after {
     content:''; position:absolute; inset:0; z-index:0;
     background-image:var(--kvk-bg); background-size:cover; background-position:center top; background-repeat:no-repeat;
-    opacity:.5; pointer-events:none;
-    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.9) 0%,rgba(0,0,0,.35) 55%,transparent 100%);
-    mask-image:linear-gradient(to bottom,rgba(0,0,0,.9) 0%,rgba(0,0,0,.35) 55%,transparent 100%);
+    opacity:.55; pointer-events:none;
+    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 70%,transparent 100%);
+    mask-image:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 70%,transparent 100%);
   }
   .header::before { background: radial-gradient(ellipse at center top, rgba(var(--kvk-accent-rgb),0.12) 0%, transparent 70%); z-index:1; }
   .header > * { position:relative; z-index:2; }
@@ -340,16 +344,16 @@
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 14px;
-    font-size: 13px;
+    font-size: var(--fs-label);
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 8px;
     overflow: hidden;
   }
   .mtable th {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--font-ui);
     font-weight: 600;
-    font-size: 11px;
+    font-size: var(--fs-tiny);
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--text-muted);
@@ -365,7 +369,7 @@
   }
   .mtable tr:last-child td { border-bottom: none; }
   .mtable td.name { color: var(--text-primary); font-weight: 600; }
-  .mtable td.tiers { font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; }
+  .mtable td.tiers { font-family: var(--font-ui); letter-spacing: 0.5px; }
   .mtable td.tiers b { color: var(--accent-gold); font-weight: 700; }
 
   .pill {

@@ -30,9 +30,10 @@
   .chip.win .big{color:var(--green);} .chip.loss .big{color:var(--red);}
   /* ledger table */
   .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  table{width:100%;border-collapse:collapse;font-size:12px;min-width:760px;}
-  th,td{padding:7px 8px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap;}
-  th{font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:600;}
+  table{width:100%;border-collapse:collapse;font-size:var(--fs-label);min-width:760px;font-family:var(--font-ui);}
+  th,td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap;}
+  th{font-size:var(--fs-tiny);text-transform:uppercase;letter-spacing:.08em;color:var(--mut);font-weight:600;}
+  td{font-variant-numeric:tabular-nums;}
   td.l,th.l{text-align:left;}
   .grp-us{color:#9dc0f0;border-bottom:2px solid var(--us);}
   .grp-opp{color:#e89a9a;border-bottom:2px solid var(--opp);}
