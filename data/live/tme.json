@@ -42,6 +42,18 @@
     { "rank": 11, "name": "免費的暱稱", "alliance": "RIP", "power": "277,214,170", "merits": "100,967,120", "ratio": "0.36" },
     { "rank": 12, "name": "好色的大叔", "alliance": "RIP", "power": "252,681,150", "merits": "187,716,159", "ratio": "0.74" }
   ],
+  "ourTop": [
+    { "rank": 1, "name": "時宗", "alliance": "eRa", "power": "428,700,000", "merits": "270,081,000" },
+    { "rank": 2, "name": "민트", "alliance": "REU", "power": "313,800,000", "merits": "307,524,000" },
+    { "rank": 3, "name": "Collin6666", "alliance": "eRa", "power": "301,500,000", "merits": "63,315,000" },
+    { "rank": 4, "name": "XnJinX", "alliance": "eRa", "power": "293,600,000", "merits": "226,072,000" },
+    { "rank": 5, "name": "Lumberjack", "alliance": "eRa", "power": "267,000,000", "merits": "264,330,000" },
+    { "rank": 6, "name": "Macklemore", "alliance": "eRa", "power": "266,900,000", "merits": "112,098,000" },
+    { "rank": 7, "name": "BloodYoda", "alliance": "eRa", "power": "251,200,000", "merits": "228,592,000" },
+    { "rank": 8, "name": "ibubu♣JP", "alliance": "eRa", "power": "244,500,000", "merits": "68,460,000" },
+    { "rank": 9, "name": "뎏라에빛", "alliance": "REU", "power": "236,400,000", "merits": "40,188,000" },
+    { "rank": 10, "name": "TommyTorpedo", "alliance": "eRa", "power": "228,700,000", "merits": "128,072,000" }
+  ],
   "roles": {
     "WC1": { "rallyLead": "TBD", "taxiRunners": ["TBD", "TBD", "TBD", "TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD", "TBD", "TBD", "TBD"] },
     "MyT": { "rallyLead": "TBD", "taxiRunners": ["TBD", "TBD", "TBD", "TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD", "TBD", "TBD", "TBD"] },

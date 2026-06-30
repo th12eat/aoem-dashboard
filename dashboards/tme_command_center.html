@@ -2736,6 +2736,18 @@ const DEFAULT_CONFIG = {
     { rank: 11, name: "免費的暱稱", alliance: "RIP", power: "277,214,170", merits: "100,967,120", ratio: "0.36" },
     { rank: 12, name: "好色的大叔", alliance: "RIP", power: "252,681,150", merits: "187,716,159", ratio: "0.74" },
   ],
+  ourTop: [
+    { rank: 1, name: "時宗", alliance: "eRa", power: "428,700,000", merits: "270,081,000" },
+    { rank: 2, name: "민트", alliance: "REU", power: "313,800,000", merits: "307,524,000" },
+    { rank: 3, name: "Collin6666", alliance: "eRa", power: "301,500,000", merits: "63,315,000" },
+    { rank: 4, name: "XnJinX", alliance: "eRa", power: "293,600,000", merits: "226,072,000" },
+    { rank: 5, name: "Lumberjack", alliance: "eRa", power: "267,000,000", merits: "264,330,000" },
+    { rank: 6, name: "Macklemore", alliance: "eRa", power: "266,900,000", merits: "112,098,000" },
+    { rank: 7, name: "BloodYoda", alliance: "eRa", power: "251,200,000", merits: "228,592,000" },
+    { rank: 8, name: "ibubu♣JP", alliance: "eRa", power: "244,500,000", merits: "68,460,000" },
+    { rank: 9, name: "뎏라에빛", alliance: "REU", power: "236,400,000", merits: "40,188,000" },
+    { rank: 10, name: "TommyTorpedo", alliance: "eRa", power: "228,700,000", merits: "128,072,000" },
+  ],
   roles: {
     WC1: { rallyLead: "TBD", taxiRunners: ["TBD","TBD","TBD","TBD"], siegeCoord: "TBD", siegeHelpers: ["TBD","TBD","TBD","TBD"] },
     MyT: { rallyLead: "TBD", taxiRunners: ["TBD","TBD","TBD","TBD"], siegeCoord: "TBD", siegeHelpers: ["TBD","TBD","TBD","TBD"] },
@@ -3227,6 +3239,8 @@ function TMECommandCenter(){
   // exactly: Tag | Name | Time | Allies | Power | Merits | M:P
   // M:P activity class for cmp-tbl (alliance %: hi>=8, mid>=4, lo<4)
   const mpCls=pct=>{const v=parseFloat(pct)||0;return v>=8?"hi":v>=4?"mid":"lo";};
+  // opponent label without the leading "E" (E#090 -> #090)
+  const oppLabel=oppCode.replace(/^E/,"");
 
   return(
     <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'Barlow',system-ui,sans-serif"}}>
@@ -3242,11 +3256,14 @@ function TMECommandCenter(){
         <div id="evtMeta"></div>
       </div>
 
-      {/* Tabs — shared .tabs/.tab standard */}
+      {/* Tabs — shared .tabs/.tab standard; Prep tab pulses while prep is live */}
       <div className="tabs">
-        {tabs.map(tb=>(
-          <button key={tb.id} className={"tab"+(activeTab===tb.id?" active":"")} onClick={()=>setActiveTab(tb.id)}>{tb.label}</button>
-        ))}
+        {tabs.map(tb=>{
+          const isNow=tb.id==="prep"&&config.prepStarted===true;
+          return(
+          <button key={tb.id} className={"tab"+(activeTab===tb.id?" active":"")+(isNow?" is-now":"")} onClick={()=>setActiveTab(tb.id)}>{tb.label}</button>
+          );
+        })}
       </div>
 
       <div style={{padding:12,maxWidth:960,margin:"0 auto"}}>
@@ -3264,57 +3281,78 @@ function TMECommandCenter(){
             </div>
           </div>
 
-          <div className="cmp-card">
-            <div className="cmp-head us">{"OUR ALLIANCES"}</div>
-            <table className="cmp-tbl">
-              <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
-              <tbody>
-              {computedAlliances.map((a,i)=>(
-                <tr key={a.tag}>
-                  <td className="c-rk">{i+1}</td>
-                  <td className="c-nm">{a.name||a.tag} <span className="tg" style={{color:a.color}}>[{a.tag}]</span></td>
-                  <td className="c-p">{fmt(a.power)}</td>
-                  <td className={"c-mp "+mpCls(mpRatio(a.merits,a.power))}>{mpRatio(a.merits,a.power)}</td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
+          <div className="cmp-grid">
+            <div className="cmp-card">
+              <div className="cmp-head us">{"OUR ALLIANCES"}</div>
+              <table className="cmp-tbl">
+                <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
+                <tbody>
+                {computedAlliances.map((a,i)=>(
+                  <tr key={a.tag}>
+                    <td className="c-rk">{i+1}</td>
+                    <td className="c-nm">{a.name||a.tag} <span className="tg" style={{color:a.color}}>[{a.tag}]</span></td>
+                    <td className="c-p">{fmt(a.power)}</td>
+                    <td className={"c-mp "+mpCls(mpRatio(a.merits,a.power))}>{mpRatio(a.merits,a.power)}</td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="cmp-card">
+              <div className="cmp-head them">{oppLabel+" ALLIANCES"}</div>
+              <table className="cmp-tbl">
+                <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
+                <tbody>
+                {computedOppAlliances.map((a,i)=>(
+                  <tr key={a.tag}>
+                    <td className="c-rk">{i+1}</td>
+                    <td className="c-nm">{a.name} <span className="tg">[{a.tag}]</span></td>
+                    <td className="c-p">{fmt(a.power)}</td>
+                    <td className={"c-mp "+mpCls(mpRatio(a.merits,a.power))}>{mpRatio(a.merits,a.power)}</td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="cmp-card">
-            <div className="cmp-head them">{oppCode+" ALLIANCES"}</div>
-            <table className="cmp-tbl">
-              <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
-              <tbody>
-              {computedOppAlliances.map((a,i)=>(
-                <tr key={a.tag}>
-                  <td className="c-rk">{i+1}</td>
-                  <td className="c-nm">{a.name} <span className="tg">[{a.tag}]</span></td>
-                  <td className="c-p">{fmt(a.power)}</td>
-                  <td className={"c-mp "+mpCls(mpRatio(a.merits,a.power))}>{mpRatio(a.merits,a.power)}</td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
-          </div>
+          <div className="cmp-grid">
+            <div className="cmp-card">
+              <div className="cmp-head us">{"OUR TOP POWER"}</div>
+              <table className="cmp-tbl">
+                <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
+                <tbody>
+                {(config.ourTop||[]).map((k,i)=>{const pct=mpRatio(k.merits,k.power);return(
+                  <tr key={i}>
+                    <td className="c-rk">{k.rank}</td>
+                    <td className="c-nm">{k.name} <span className="tg">[{k.alliance}]</span></td>
+                    <td className="c-p">{fmt(k.power)}</td>
+                    <td className={"c-mp "+mpCls(pct)}>{pct}</td>
+                  </tr>
+                );})}
+                </tbody>
+              </table>
+            </div>
 
-          <div className="cmp-card">
-            <div className="cmp-head them">{oppCode+" TOP POWER"}</div>
-            <table className="cmp-tbl">
-              <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
-              <tbody>
-              {config.krakens.map((k,i)=>{const pct=mpRatio(k.merits,k.power);return(
-                <tr key={i}>
-                  <td className="c-rk">{k.rank}</td>
-                  <td className="c-nm">{k.name} <span className="tg">[{k.alliance}]</span></td>
-                  <td className="c-p">{fmt(k.power)}</td>
-                  <td className={"c-mp "+mpCls(pct)}>{pct}</td>
-                </tr>
-              );})}
-              </tbody>
-            </table>
-            <div style={{fontSize:10,color:"#64748b",padding:"8px 12px 10px"}}>{t.krakenDesc}</div>
+            <div className="cmp-card">
+              <div className="cmp-head them">{oppLabel+" TOP POWER"}</div>
+              <table className="cmp-tbl">
+                <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
+                <tbody>
+                {config.krakens.map((k,i)=>{const pct=mpRatio(k.merits,k.power);return(
+                  <tr key={i}>
+                    <td className="c-rk">{k.rank}</td>
+                    <td className="c-nm">{k.name} <span className="tg">[{k.alliance}]</span></td>
+                    <td className="c-p">{fmt(k.power)}</td>
+                    <td className={"c-mp "+mpCls(pct)}>{pct}</td>
+                  </tr>
+                );})}
+                </tbody>
+              </table>
+            </div>
           </div>
+          <div style={{fontSize:10,color:"#64748b",margin:"-4px 0 12px",padding:"0 2px"}}>{t.krakenDesc}</div>
 
         </>)}
 
