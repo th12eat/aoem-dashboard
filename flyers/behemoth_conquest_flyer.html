@@ -812,24 +812,7 @@
 
   <!-- HEADER -->
   <div class="header" style="--kvk-bg:url('../assets/kvk-bg/behemoth.jpg')">
-    <!-- LANG SWITCHER -->
-    <div class="lang-bar">
-      <span class="lang-globe" aria-hidden="true">&#127760;</span>
-      <select id="langSelect" class="lang-select" aria-label="Language" onchange="switchLang(this.value)">
-        <option value="en">English</option>
-        <option value="es">Español</option>
-        <option value="fr">Français</option>
-        <option value="ko">한국어</option>
-        <option value="ja">日本語</option>
-        <option value="zh">中文</option>
-        <option value="ar">العربية</option>
-        <option value="da">Dansk</option>
-        <option value="de">Deutsch</option>
-        <option value="ru">Русский</option>
-        <option value="it">Italiano</option>
-        <option value="pt">Português</option>
-      </select>
-    </div>
+    <!-- LANG SWITCHER moved to the shared header (see registration at end of body) -->
     <div class="event-tag" data-i18n="event_tag">New Game Mode &middot; Era 8</div>
     <h1>BEHEMOTH <span>CONQUEST</span></h1>
     <div class="subtitle" data-i18n="subtitle">Awaken the bloodline &middot; March into enemy empires &middot; Cross-server war</div>
@@ -4127,5 +4110,13 @@ window.addEventListener('DOMContentLoaded', function () {
 </div>
 <script src="../assets/auth.js"></script>
 <script src="../assets/site-header.js"></script>
+<script>
+  // Register this page's languages with the shared header dropdown.
+  SiteHeader.setLanguages({
+    codes: ['en','es','fr','ko','ja','zh','ar','da','de','ru','it','pt'],
+    current: 'en',
+    onChange: function (lang) { switchLang(lang); }
+  });
+</script>
 </body>
 </html>

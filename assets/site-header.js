@@ -31,6 +31,20 @@
   var ROOT = rootPrefix();
   var href = function (p) { return ROOT + p; };
 
+  // ---- canonical language display names (native, short enough for the chip) ----
+  // Pages register only the codes they support; names come from here so the
+  // dropdown looks identical everywhere. Add codes here as new langs appear.
+  var LANG_NAMES = {
+    en: 'English', es: 'Español', fr: 'Français', ko: '한국어', ja: '日本語',
+    zh: '中文', zh_hk: '中文（繁）', zh_cn: '中文（简）', pt: 'Português',
+    de: 'Deutsch', it: 'Italiano', ru: 'Русский', ar: 'العربية', da: 'Dansk',
+    nl: 'Nederlands', sv: 'Svenska', fi: 'Suomi', nb: 'Norsk', si: 'සිංහල',
+    ta: 'தமிழ்', hi: 'हिन्दी'
+  };
+
+  // language config registered by the current page (null = no switcher shown)
+  var langCfg = null; // { codes:[...], current, onChange }
+
   // ---- scoped styles ----
   var CSS =
     '.ehdr{position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;' +
@@ -40,7 +54,17 @@
     '.ehdr-brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:1.5px;' +
       'text-transform:uppercase;font-size:15px;color:var(--text-primary,#e8eaf0);}' +
     '.ehdr-brand .ehdr-mark{color:var(--kvk-accent,#d4a843);font-size:18px;}' +
-    '.ehdr-right{position:relative;}' +
+    '.ehdr-right{position:relative;display:flex;align-items:center;gap:8px;}' +
+    '.ehdr-lang{display:none;align-items:center;gap:6px;border:1px solid var(--border,#1e2435);' +
+      'background:var(--bg-card,#11141f);border-radius:20px;padding:3px 6px 3px 10px;color:var(--text-secondary,#8a90a5);}' +
+    '.ehdr-lang.on{display:flex;}' +
+    '.ehdr-lang .ehdr-globe{font-size:13px;opacity:0.8;line-height:1;}' +
+    '.ehdr-lang select{appearance:none;-webkit-appearance:none;background:transparent;border:none;outline:none;cursor:pointer;' +
+      'color:var(--text-secondary,#8a90a5);font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:13px;' +
+      'letter-spacing:0.5px;padding:2px 16px 2px 2px;}' +
+    '.ehdr-lang select:hover{color:var(--text-primary,#e8eaf0);}' +
+    '.ehdr-lang select option{background:var(--bg-card,#11141f);color:var(--text-primary,#e8eaf0);}' +
+    '.ehdr-lang .ehdr-caret{margin-left:-14px;pointer-events:none;}' +
     '.ehdr-chip{display:flex;align-items:center;gap:8px;cursor:pointer;border:1px solid var(--border,#1e2435);' +
       'background:var(--bg-card,#11141f);border-radius:20px;padding:4px 10px 4px 5px;color:var(--text-secondary,#8a90a5);}' +
     '.ehdr-chip:hover{border-color:var(--kvk-accent-dim,#a17e2f);}' +
@@ -99,6 +123,11 @@
       '<a class="ehdr-brand" href="' + href('index.html') + '">' +
         '<span class="ehdr-mark">◆</span><span>Era 8 Command</span></a>' +
       '<div class="ehdr-right">' +
+        '<div class="ehdr-lang" id="ehdrLang">' +
+          '<span class="ehdr-globe" aria-hidden="true">🌐</span>' +
+          '<select id="ehdrLangSel" aria-label="Language"></select>' +
+          '<span class="ehdr-caret">▼</span>' +
+        '</div>' +
         '<div class="ehdr-chip" id="ehdrChip">' +
           '<span class="ehdr-av">' + avatar + '</span>' +
           '<span class="ehdr-name">' + name + '</span>' +
@@ -108,6 +137,14 @@
       '</div>';
 
     document.body.insertBefore(bar, document.body.firstChild);
+
+    // language dropdown: change fires the page's registered handler
+    var langSel = bar.querySelector('#ehdrLangSel');
+    langSel.addEventListener('change', function () {
+      if (langCfg && typeof langCfg.onChange === 'function') langCfg.onChange(langSel.value);
+      if (langCfg) langCfg.current = langSel.value;
+    });
+    renderLang(); // reflect any config registered before the header mounted
 
     var chip = bar.querySelector('#ehdrChip');
     var menu = bar.querySelector('#ehdrMenu');
@@ -124,10 +161,46 @@
     });
   }
 
+  // (re)build the language dropdown from langCfg; hides it when none registered
+  function renderLang() {
+    var wrap = document.getElementById('ehdrLang');
+    var sel = document.getElementById('ehdrLangSel');
+    if (!wrap || !sel) return; // header not mounted yet — render() calls this on mount
+    if (!langCfg || !langCfg.codes || !langCfg.codes.length) {
+      wrap.classList.remove('on');
+      return;
+    }
+    sel.innerHTML = langCfg.codes.map(function (code) {
+      return '<option value="' + code + '">' + (LANG_NAMES[code] || code.toUpperCase()) + '</option>';
+    }).join('');
+    if (langCfg.current) sel.value = langCfg.current;
+    wrap.classList.add('on');
+  }
+
   function init() { injectStyles(); render(); }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
+
+  // ---- public API ----------------------------------------------------------
+  // Pages register their available languages; the header renders one uniform
+  // dropdown next to the profile chip. Safe to call before or after mount.
+  //   SiteHeader.setLanguages({ codes:['en','fr',...], current:'en', onChange: fn })
+  //   SiteHeader.setCurrentLanguage('fr')   // reflect an external change
+  window.SiteHeader = {
+    setLanguages: function (cfg) {
+      if (!cfg || !cfg.codes) { langCfg = null; renderLang(); return; }
+      langCfg = { codes: cfg.codes.slice(), current: cfg.current || cfg.codes[0], onChange: cfg.onChange };
+      renderLang();
+    },
+    setCurrentLanguage: function (code) {
+      if (!langCfg) return;
+      langCfg.current = code;
+      var sel = document.getElementById('ehdrLangSel');
+      if (sel) sel.value = code;
+    },
+    LANG_NAMES: LANG_NAMES
+  };
 })();

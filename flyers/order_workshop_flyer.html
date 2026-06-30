@@ -157,12 +157,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 <body data-kvk="workshop">
 <div class="page">
 
-<div class="lang-bar">
-  <button class="lang-btn active" onclick="setLang('en')">EN</button>
-  <button class="lang-btn" onclick="setLang('fr')">FR</button>
-  <button class="lang-btn" onclick="setLang('es')">ES</button>
-  <button class="lang-btn" onclick="setLang('ko')">한국어</button>
-</div>
+<!-- LANG SWITCHER moved to the shared header (see registration at end of body) -->
 
 <!-- HEADER -->
 <div class="header" style="--kvk-bg:url('../assets/kvk-bg/workshop.jpg')">
@@ -708,5 +703,13 @@ setLang('en');
 </script>
 <script src="../assets/auth.js"></script>
 <script src="../assets/site-header.js"></script>
+<script>
+  // Register this page's languages with the shared header dropdown.
+  SiteHeader.setLanguages({
+    codes: ['en','fr','es','ko'],
+    current: 'en',
+    onChange: function (lang) { setLang(lang); }
+  });
+</script>
 </body>
 </html>

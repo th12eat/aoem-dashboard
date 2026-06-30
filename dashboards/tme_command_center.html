@@ -3106,6 +3106,25 @@ function TMECommandCenter(){
     })();
   },[]);
 
+  // Register this page's languages with the shared header dropdown.
+  // SiteHeader is loaded via a plain <script>; retry briefly in case React mounts first.
+  useEffect(()=>{
+    let tries=0;
+    const reg=()=>{
+      if(window.SiteHeader){
+        window.SiteHeader.setLanguages({
+          codes: LANGUAGES.map(l=>l.code),
+          current: uiLang,
+          onChange: handleLang
+        });
+      } else if(tries++ < 50){ setTimeout(reg, 50); }
+    };
+    reg();
+  },[]);
+
+  // Keep the header dropdown in sync if language changes from elsewhere.
+  useEffect(()=>{ if(window.SiteHeader) window.SiteHeader.setCurrentLanguage(uiLang); },[uiLang]);
+
   // Until prep is meaningfully underway, don't let an early/partial score flip attack-defense.
   const isDefense=config.prepStarted===false?false:(config.totalOur < config.totalOpp);
   const mapIsDefense=mapViewOverride!==null?mapViewOverride:isDefense;
@@ -3187,11 +3206,8 @@ function TMECommandCenter(){
 
   return(
     <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'Barlow',system-ui,sans-serif"}}>
-      {/* Header */}
+      {/* Header (language switcher now lives in the shared site header) */}
       <div style={{background:"radial-gradient(ellipse at center top, rgba(61,124,196,0.22) 0%, rgba(10,12,20,0.55) 60%, #0a0c14 100%), linear-gradient(to bottom, rgba(10,12,20,0.45), #0a0c14), url('../assets/kvk-bg/tme.jpg')",backgroundSize:"cover,cover,cover",backgroundPosition:"center top",backgroundRepeat:"no-repeat",borderBottom:"2px solid #2b5a8a",padding:16,textAlign:"center",position:"sticky",top:0,zIndex:10}}>
-        <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:6}}>
-          <LangPicker value={uiLang} onChange={handleLang}/>
-        </div>
         <div style={{fontSize:11,color:"#5b9bd8",letterSpacing:3,textTransform:"uppercase",marginBottom:2,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:600}}>{t.headerSub}</div>
         <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:34,letterSpacing:2,color:"#f8fafc",lineHeight:1}}>{t.headerTitle}</div>
         <div style={{fontSize:13,color:"#94a3b8",marginTop:4}}>
