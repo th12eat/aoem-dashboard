@@ -26,7 +26,7 @@
     { "tag": "INT", "name": "英特榮耀", "allies": 166, "power": "14,829,324,819", "merits": "1,022,902,133", "prepPoints": "4,657,885,853" },
     { "tag": "RIP", "name": "靈車特戰隊", "allies": 168, "power": "20,212,765,060", "merits": "2,541,548,484", "prepPoints": "4,111,196,846" },
     { "tag": "YFQ", "name": "月落楓橋", "allies": 170, "power": "10,405,496,654", "merits": "190,589,970", "prepPoints": "2,243,372,851" },
-    { "tag": "MMC", "name": "MundoMejor", "allies": "TBD", "power": "TBD", "merits": "TBD", "prepPoints": "1,198,037,424" }
+    { "tag": "OvO", "name": "大秦御貓軍", "allies": 110, "power": "6,265,770,680", "merits": "95,788,191", "prepPoints": "TBD" }
   ],
   "krakens": [
     { "rank": 1, "name": "勾意狼", "alliance": "RIP", "power": "419,247,749", "merits": "279,231,815", "ratio": "0.67" },
