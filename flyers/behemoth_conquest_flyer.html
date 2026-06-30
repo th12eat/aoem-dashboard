@@ -14,8 +14,11 @@
     --text-primary: #e8eaf0;
     --text-secondary: #8a90a5;
     --text-muted: #565c72;
-    --accent-gold: #d4a843;
-    --accent-gold-dim: #a17e2f;
+    /* Behemoth's identity accent is maroon — these follow the per-event
+       --kvk-accent token (data-kvk="behemoth" → maroon). Semantic
+       red/green/blue below are unchanged (warnings, loss, us). */
+    --accent-gold: var(--kvk-accent);
+    --accent-gold-dim: var(--kvk-accent-dim);
     --accent-red: #c43d3d;
     --accent-red-dim: #8a2b2b;
     --accent-blue: #3d7cc4;
@@ -60,7 +63,7 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(ellipse at center top, rgba(212,168,67,0.10) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center top, rgba(var(--kvk-accent-rgb),0.10) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -112,7 +115,7 @@
     display: inline-flex;
     align-items: center;
     gap: 16px;
-    background: rgba(212,168,67,0.1);
+    background: rgba(var(--kvk-accent-rgb),0.1);
     border: 1px solid var(--accent-gold-dim);
     border-radius: 8px;
     padding: 8px 22px;
@@ -251,7 +254,7 @@
     margin-top: 3px;
     line-height: 1.4;
   }
-  .phase.active { border-color: var(--accent-gold); background: rgba(212,168,67,0.08); }
+  .phase.active { border-color: var(--accent-gold); background: rgba(var(--kvk-accent-rgb),0.08); }
   .phase.active .pname { color: var(--accent-gold); }
   .phase.active::after {
     content: attr(data-nowlabel);
@@ -337,7 +340,7 @@
   .co.warn strong { color: var(--accent-red); }
   .co.info { background: rgba(61,124,196,0.08); border: 1px solid var(--accent-blue-dim); }
   .co.info strong { color: var(--accent-blue); }
-  .co.gold { background: rgba(212,168,67,0.08); border: 1px solid var(--accent-gold-dim); }
+  .co.gold { background: rgba(var(--kvk-accent-rgb),0.08); border: 1px solid var(--accent-gold-dim); }
   .co.gold strong { color: var(--accent-gold); }
 
   /* -- MISSION TABLE -- */
@@ -461,9 +464,9 @@
   .stage-head .sdays {
     font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px; letter-spacing:1px;
     text-transform:uppercase; padding:3px 10px; border-radius:5px; margin-left:auto;
-    background:rgba(212,168,67,0.12); color:var(--accent-gold); border:1px solid var(--accent-gold-dim);
+    background:rgba(var(--kvk-accent-rgb),0.12); color:var(--accent-gold); border:1px solid var(--accent-gold-dim);
   }
-  .stage.now .stage-head { background:rgba(212,168,67,0.07); }
+  .stage.now .stage-head { background:rgba(var(--kvk-accent-rgb),0.07); }
   .stage.now .stage-head::after {
     content:'NOW'; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:10px; letter-spacing:1px;
     background:var(--accent-gold); color:var(--bg-deep); padding:2px 8px; border-radius:4px;
@@ -509,11 +512,11 @@
   .scion-slot.is-next { box-shadow:0 0 0 1px var(--accent-gold-dim); }
   .scion-slot.is-next .slot-state { color:var(--accent-gold); }
   /* live now */
-  .scion-slot.is-live { border-color:var(--accent-gold); background:rgba(212,168,67,0.14); animation:scionPulse 1.4s ease-in-out infinite; }
+  .scion-slot.is-live { border-color:var(--accent-gold); background:rgba(var(--kvk-accent-rgb),0.14); animation:scionPulse 1.4s ease-in-out infinite; }
   .scion-slot.is-live .slot-state { color:var(--accent-gold); }
   @keyframes scionPulse {
-    0%,100% { box-shadow:0 0 0 0 rgba(212,168,67,0.55); }
-    50%     { box-shadow:0 0 0 5px rgba(212,168,67,0); }
+    0%,100% { box-shadow:0 0 0 0 rgba(var(--kvk-accent-rgb),0.55); }
+    50%     { box-shadow:0 0 0 5px rgba(var(--kvk-accent-rgb),0); }
   }
   @media (prefers-reduced-motion: reduce) { .scion-slot.is-live { animation:none; box-shadow:0 0 0 2px var(--accent-gold); } }
 
@@ -545,8 +548,8 @@
   .bless-tbl .bl-v.has-us   { color:#5b8def; background:rgba(61,124,196,0.16); opacity:1; }
   .bless-tbl .bl-v.has-them { color:#c43d3d; background:rgba(196,61,61,0.16); opacity:1; }
   /* "open to donate next" — gold, gentle pulse */
-  .bless-tbl .bl-v.open { color:var(--accent-gold); background:rgba(212,168,67,0.16); opacity:1; box-shadow:inset 0 0 0 1px var(--accent-gold-dim); animation:blessPulse 1.6s ease-in-out infinite; }
-  @keyframes blessPulse { 0%,100%{ box-shadow:inset 0 0 0 1px rgba(212,168,67,0.35);} 50%{ box-shadow:inset 0 0 0 2px rgba(212,168,67,0.9);} }
+  .bless-tbl .bl-v.open { color:var(--accent-gold); background:rgba(var(--kvk-accent-rgb),0.16); opacity:1; box-shadow:inset 0 0 0 1px var(--accent-gold-dim); animation:blessPulse 1.6s ease-in-out infinite; }
+  @keyframes blessPulse { 0%,100%{ box-shadow:inset 0 0 0 1px rgba(var(--kvk-accent-rgb),0.35);} 50%{ box-shadow:inset 0 0 0 2px rgba(var(--kvk-accent-rgb),0.9);} }
   @media (prefers-reduced-motion: reduce){ .bless-tbl .bl-v.open{ animation:none; } }
   .bless-legend { display:flex; flex-wrap:wrap; gap:14px; margin:7px 0 3px; font-size:10.5px; color:var(--text-secondary); }
   .bless-legend .lg-us { color:#5b8def; } .bless-legend .lg-them { color:#c43d3d; }
@@ -559,7 +562,7 @@
     background:var(--bg-card); border:1px solid var(--accent-gold-dim); border-radius:999px;
     cursor:pointer; transition:background .15s; max-width:90%;
   }
-  .ical-btn:hover { background:rgba(212,168,67,0.12); }
+  .ical-btn:hover { background:rgba(var(--kvk-accent-rgb),0.12); }
   .ical-btn .ical-ico { font-size:16px; line-height:1; flex-shrink:0; }
   .ical-btn .ical-label {
     font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.5px;
@@ -577,7 +580,7 @@
     position:relative; max-width:420px; width:100%;
     background:var(--bg-card); border:1px solid var(--accent-gold-dim); border-radius:14px;
     padding:26px 22px 22px; text-align:center;
-    box-shadow:0 0 40px rgba(212,168,67,0.18);
+    box-shadow:0 0 40px rgba(var(--kvk-accent-rgb),0.18);
   }
   .scion-modal-icon { font-size:34px; line-height:1; margin-bottom:6px; }
   .scion-modal-card h3 {
@@ -588,9 +591,9 @@
   .scion-modal-btn {
     font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:1px;
     padding:9px 26px; border-radius:8px; border:1px solid var(--accent-gold-dim);
-    background:rgba(212,168,67,0.12); color:var(--accent-gold); cursor:pointer; transition:background .15s;
+    background:rgba(var(--kvk-accent-rgb),0.12); color:var(--accent-gold); cursor:pointer; transition:background .15s;
   }
-  .scion-modal-btn:hover { background:rgba(212,168,67,0.22); }
+  .scion-modal-btn:hover { background:rgba(var(--kvk-accent-rgb),0.22); }
   .scion-modal-close {
     position:absolute; top:10px; right:14px; font-size:24px; line-height:1;
     color:var(--text-muted); cursor:pointer; font-family:sans-serif;
@@ -713,7 +716,7 @@
     color: var(--text-secondary); font-family: 'Barlow', sans-serif; font-size: 12px;
     font-weight: 600; letter-spacing: .5px; cursor: pointer; transition: background .15s, color .15s;
   }
-  #cmpToggle:hover { background: rgba(212,168,67,0.07); color: var(--text-primary); }
+  #cmpToggle:hover { background: rgba(var(--kvk-accent-rgb),0.07); color: var(--text-primary); }
   #cmpToggle .chev { display: inline-block; transition: transform .2s; }
   #cmpToggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
   #cmpToggle .cmp-lbl-less { display: none; }
@@ -729,8 +732,8 @@
     transition: background .15s, color .15s, border-color .15s;
   }
   .map-toggle .mt-btn .mt-sub { display: block; font-family: 'Barlow', sans-serif; font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; text-transform: uppercase; }
-  .map-toggle .mt-btn:hover { background: rgba(212,168,67,0.06); color: var(--text-primary); }
-  .map-toggle .mt-btn.active { border-color: var(--accent-gold-dim); background: rgba(212,168,67,0.10); color: var(--accent-gold); }
+  .map-toggle .mt-btn:hover { background: rgba(var(--kvk-accent-rgb),0.06); color: var(--text-primary); }
+  .map-toggle .mt-btn.active { border-color: var(--accent-gold-dim); background: rgba(var(--kvk-accent-rgb),0.10); color: var(--accent-gold); }
   .map-toggle .mt-btn.active .mt-sub { color: var(--accent-gold-dim); }
   .map-box[hidden], .spawn-box[hidden] { display: none; }
 
@@ -1211,8 +1214,8 @@
 <line x1="40" y1="-40" x2="720" y2="640" stroke="rgba(255,255,255,0.07)" stroke-width="2" stroke-dasharray="6,8"/>
 <text x="740" y="34" text-anchor="end" font-family="Barlow Condensed,sans-serif" font-size="15" fill="rgba(196,61,61,0.8)" font-weight="700" letter-spacing="1">ENEMY CITADELS</text>
 <text x="20" y="582" text-anchor="start" font-family="Barlow Condensed,sans-serif" font-size="15" fill="rgba(91,141,239,0.85)" font-weight="700" letter-spacing="1">OUR CITADELS</text>
-<rect x="235" y="155" width="290" height="290" fill="rgba(212,168,67,0.04)" stroke="rgba(212,168,67,0.35)" stroke-width="1.5" stroke-dasharray="5,5" rx="8"/>
-<text x="380" y="173" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="10.5" fill="rgba(212,168,67,0.5)" letter-spacing="1">TELEPORT ZONE &mdash; no citadels</text>
+<rect x="235" y="155" width="290" height="290" fill="rgba(var(--kvk-accent-rgb),0.04)" stroke="rgba(var(--kvk-accent-rgb),0.35)" stroke-width="1.5" stroke-dasharray="5,5" rx="8"/>
+<text x="380" y="173" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="10.5" fill="rgba(var(--kvk-accent-rgb),0.5)" letter-spacing="1">TELEPORT ZONE &mdash; no citadels</text>
 <circle cx="694" cy="158" r="6" fill="rgba(196,61,61,0.5)" stroke="#c43d3d" stroke-width="1.2"/>
 <circle cx="314" cy="132" r="6" fill="rgba(196,61,61,0.5)" stroke="#c43d3d" stroke-width="1.2"/>
 <circle cx="275" cy="37" r="6" fill="rgba(196,61,61,0.5)" stroke="#c43d3d" stroke-width="1.2"/>
@@ -1276,16 +1279,16 @@
 <g><rect x="512" y="287" width="26" height="26" rx="6" transform="rotate(45 525 300)" fill="rgba(13,15,24,0.9)" stroke="#c43d3d" stroke-width="2"/><circle cx="525" cy="300" r="4" fill="#c43d3d"/></g>
 <g><rect x="367" y="432" width="26" height="26" rx="6" transform="rotate(45 380 445)" fill="rgba(13,15,24,0.9)" stroke="#5b8def" stroke-width="2"/><circle cx="380" cy="445" r="4" fill="#5b8def"/></g>
 <g><rect x="222" y="287" width="26" height="26" rx="6" transform="rotate(45 235 300)" fill="rgba(13,15,24,0.9)" stroke="#5b8def" stroke-width="2"/><circle cx="235" cy="300" r="4" fill="#5b8def"/></g>
-<circle cx="380" cy="300" r="34" fill="rgba(212,168,67,0.12)" stroke="rgba(212,168,67,0.55)" stroke-width="2"/>
+<circle cx="380" cy="300" r="34" fill="rgba(var(--kvk-accent-rgb),0.12)" stroke="rgba(var(--kvk-accent-rgb),0.55)" stroke-width="2"/>
 <text x="380" y="313" text-anchor="middle" font-size="38">🐘</text>
-<text x="380" y="244" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="15" fill="#d4a843" letter-spacing="1.5">BEHEMOTH</text>
-<text x="380" y="352" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="700" fill="#d4a843">3.75M HP</text>
+<text x="380" y="244" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="15" fill="#b23a48" letter-spacing="1.5">BEHEMOTH</text>
+<text x="380" y="352" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="700" fill="#b23a48">3.75M HP</text>
 <g font-family="Barlow Condensed,sans-serif" font-size="12.5" font-weight="700">
-<text x="380" y="371" text-anchor="middle" fill="#d4a843">Undying Force</text>
-<path d="M346 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(212,168,67,0.85)" stroke="#d4a843" stroke-width="0.8"/>
-<path d="M369 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(212,168,67,0.85)" stroke="#d4a843" stroke-width="0.8"/>
-<path d="M392 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(212,168,67,0.85)" stroke="#d4a843" stroke-width="0.8"/>
-<text x="409" y="389" text-anchor="start" fill="#d4a843">3&times;</text>
+<text x="380" y="371" text-anchor="middle" fill="#b23a48">Undying Force</text>
+<path d="M346 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(var(--kvk-accent-rgb),0.85)" stroke="#b23a48" stroke-width="0.8"/>
+<path d="M369 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(var(--kvk-accent-rgb),0.85)" stroke="#b23a48" stroke-width="0.8"/>
+<path d="M392 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(var(--kvk-accent-rgb),0.85)" stroke="#b23a48" stroke-width="0.8"/>
+<text x="409" y="389" text-anchor="start" fill="#b23a48">3&times;</text>
 </g>
 <line x1="194" y1="375" x2="341" y2="316" stroke="#5b8def" stroke-width="3" marker-end="url(#rally)"/>
 <text x="268" y="362" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="13" font-weight="700" fill="#5b8def">RALLY</text>
@@ -1301,8 +1304,8 @@
 <line x1="40" y1="-40" x2="720" y2="640" stroke="rgba(255,255,255,0.07)" stroke-width="2" stroke-dasharray="6,8"/>
 <text x="740" y="34" text-anchor="end" font-family="Barlow Condensed,sans-serif" font-size="15" fill="rgba(91,141,239,0.8)" font-weight="700" letter-spacing="1">OUR CITADELS</text>
 <text x="20" y="582" text-anchor="start" font-family="Barlow Condensed,sans-serif" font-size="15" fill="rgba(196,61,61,0.85)" font-weight="700" letter-spacing="1">ENEMY CITADELS</text>
-<rect x="235" y="155" width="290" height="290" fill="rgba(212,168,67,0.04)" stroke="rgba(212,168,67,0.35)" stroke-width="1.5" stroke-dasharray="5,5" rx="8"/>
-<text x="380" y="173" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="10.5" fill="rgba(212,168,67,0.5)" letter-spacing="1">TELEPORT ZONE &mdash; no citadels</text>
+<rect x="235" y="155" width="290" height="290" fill="rgba(var(--kvk-accent-rgb),0.04)" stroke="rgba(var(--kvk-accent-rgb),0.35)" stroke-width="1.5" stroke-dasharray="5,5" rx="8"/>
+<text x="380" y="173" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="10.5" fill="rgba(var(--kvk-accent-rgb),0.5)" letter-spacing="1">TELEPORT ZONE &mdash; no citadels</text>
 <circle cx="694" cy="158" r="6" fill="rgba(91,141,239,0.5)" stroke="#5b8def" stroke-width="1.2"/>
 <circle cx="314" cy="132" r="6" fill="rgba(91,141,239,0.5)" stroke="#5b8def" stroke-width="1.2"/>
 <circle cx="275" cy="37" r="6" fill="rgba(91,141,239,0.5)" stroke="#5b8def" stroke-width="1.2"/>
@@ -1366,16 +1369,16 @@
 <g><rect x="512" y="287" width="26" height="26" rx="6" transform="rotate(45 525 300)" fill="rgba(13,15,24,0.9)" stroke="#5b8def" stroke-width="2"/><circle cx="525" cy="300" r="4" fill="#5b8def"/></g>
 <g><rect x="367" y="432" width="26" height="26" rx="6" transform="rotate(45 380 445)" fill="rgba(13,15,24,0.9)" stroke="#c43d3d" stroke-width="2"/><circle cx="380" cy="445" r="4" fill="#c43d3d"/></g>
 <g><rect x="222" y="287" width="26" height="26" rx="6" transform="rotate(45 235 300)" fill="rgba(13,15,24,0.9)" stroke="#c43d3d" stroke-width="2"/><circle cx="235" cy="300" r="4" fill="#c43d3d"/></g>
-<circle cx="380" cy="300" r="34" fill="rgba(212,168,67,0.12)" stroke="rgba(212,168,67,0.55)" stroke-width="2"/>
+<circle cx="380" cy="300" r="34" fill="rgba(var(--kvk-accent-rgb),0.12)" stroke="rgba(var(--kvk-accent-rgb),0.55)" stroke-width="2"/>
 <text x="380" y="313" text-anchor="middle" font-size="38">🐘</text>
-<text x="380" y="244" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="15" fill="#d4a843" letter-spacing="1.5">BEHEMOTH</text>
-<text x="380" y="352" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="700" fill="#d4a843">3.75M HP</text>
+<text x="380" y="244" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="15" fill="#b23a48" letter-spacing="1.5">BEHEMOTH</text>
+<text x="380" y="352" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="700" fill="#b23a48">3.75M HP</text>
 <g font-family="Barlow Condensed,sans-serif" font-size="12.5" font-weight="700">
-<text x="380" y="371" text-anchor="middle" fill="#d4a843">Undying Force</text>
-<path d="M346 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(212,168,67,0.85)" stroke="#d4a843" stroke-width="0.8"/>
-<path d="M369 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(212,168,67,0.85)" stroke="#d4a843" stroke-width="0.8"/>
-<path d="M392 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(212,168,67,0.85)" stroke="#d4a843" stroke-width="0.8"/>
-<text x="409" y="389" text-anchor="start" fill="#d4a843">3&times;</text>
+<text x="380" y="371" text-anchor="middle" fill="#b23a48">Undying Force</text>
+<path d="M346 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(var(--kvk-accent-rgb),0.85)" stroke="#b23a48" stroke-width="0.8"/>
+<path d="M369 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(var(--kvk-accent-rgb),0.85)" stroke="#b23a48" stroke-width="0.8"/>
+<path d="M392 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(var(--kvk-accent-rgb),0.85)" stroke="#b23a48" stroke-width="0.8"/>
+<text x="409" y="389" text-anchor="start" fill="#b23a48">3&times;</text>
 </g>
 <line x1="194" y1="375" x2="341" y2="316" stroke="#c43d3d" stroke-width="3" marker-end="url(#rally2)"/>
 <text x="268" y="362" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="13" font-weight="700" fill="#c43d3d">RALLY</text>

@@ -97,14 +97,14 @@ const BUILDINGS = [
    ═══════════════════════════════════════════════════ */
 const S = {
   app: { fontFamily: "'Barlow', 'Segoe UI', system-ui, sans-serif", color: "#e8eaf0", minHeight: "100vh", background: "#0a0c14" },
-  header: { maxWidth: 960, width: "100%", margin: "0 auto", textAlign: "center", padding: "56px 20px 36px", minHeight: 260, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", borderBottom: "2px solid #8a6320", background: "linear-gradient(to bottom, rgba(10,12,20,0.30) 0%, rgba(10,12,20,0.62) 60%, #0a0c14 100%), radial-gradient(ellipse at center top, rgba(200,144,47,0.28) 0%, transparent 60%), url('../assets/kvk-bg/desolate.jpg')", backgroundSize: "cover,cover,cover", backgroundPosition: "center top", backgroundRepeat: "no-repeat" },
-  headerTitle: { fontFamily: "'Bebas Neue', sans-serif", fontSize: "var(--fs-title, clamp(42px,8vw,66px))", letterSpacing: "3px", lineHeight: 1, background: "linear-gradient(90deg, #e0a93f, #c8902f)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 },
+  header: { maxWidth: 960, width: "100%", margin: "0 auto", textAlign: "center", padding: "56px 20px 36px", minHeight: 260, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", borderBottom: "2px solid #a85f26", background: "linear-gradient(to bottom, rgba(10,12,20,0.30) 0%, rgba(10,12,20,0.62) 60%, #0a0c14 100%), radial-gradient(ellipse at center top, rgba(227,134,58,0.28) 0%, transparent 60%), url('../assets/kvk-bg/desolate.jpg')", backgroundSize: "cover,cover,cover", backgroundPosition: "center top", backgroundRepeat: "no-repeat" },
+  headerTitle: { fontFamily: "'Bebas Neue', sans-serif", fontSize: "var(--fs-title, clamp(42px,8vw,66px))", letterSpacing: "3px", lineHeight: 1, background: "linear-gradient(90deg, #f0a050, #e3863a)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 },
   headerSub: { fontFamily: "'Barlow Condensed', sans-serif", fontSize: "var(--fs-label, 13px)", letterSpacing: "1px", color: "#94a3b8", marginTop: "4px", textTransform: "uppercase" },
   tabs: { display: "flex", gap: "4px", padding: "12px 16px", overflowX: "auto", borderBottom: "1px solid #1e293b" },
   tab: (active) => ({ padding: "8px 16px", borderRadius: "6px", border: "none", background: active ? "#7c3aed" : "#1e293b", color: active ? "#fff" : "#94a3b8", fontWeight: active ? 700 : 500, fontSize: "13px", cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.15s" }),
   content: { padding: "16px", maxWidth: "960px", margin: "0 auto" },
   card: { background: "#1e293b", borderRadius: "10px", padding: "16px", marginBottom: "16px", border: "1px solid #334155" },
-  cardTitle: { fontSize: "14px", fontWeight: 700, color: "#f59e0b", letterSpacing: "1px", marginBottom: "12px", textTransform: "uppercase" },
+  cardTitle: { fontSize: "14px", fontWeight: 700, color: "#e3863a", letterSpacing: "1px", marginBottom: "12px", textTransform: "uppercase" },
   grid2: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "12px" },
   grid3: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "12px" },
   badge: (color) => ({ display: "inline-block", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: 700, background: color + "22", color: color, border: `1px solid ${color}44` }),
@@ -154,7 +154,7 @@ function OverviewTab({ state, setState }) {
           </div>
           <div>
             <span style={{ color: "#94a3b8", fontSize: "12px" }}>Current Day</span>
-            <div style={{ fontSize: "15px", fontWeight: 600, color: "#f59e0b" }}>Day {currentDay.day}: {currentDay.title}</div>
+            <div style={{ fontSize: "15px", fontWeight: 600, color: "#e3863a" }}>Day {currentDay.day}: {currentDay.title}</div>
           </div>
           <div>
             <span style={{ color: "#94a3b8", fontSize: "12px" }}>Aaru Palace Vote</span>
@@ -184,7 +184,7 @@ function OverviewTab({ state, setState }) {
         <div style={S.cardTitle}>Key Mechanics</div>
         <div style={S.grid2}>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Placer Gold</div>
+            <div style={{ fontWeight: 700, color: "#e3863a", marginBottom: "4px" }}>Placer Gold</div>
             <div style={{ fontSize: "12px", color: "#94a3b8" }}>Earned from holding Pillar Cities + lump sum from first capture of gates and Pillar Cities. Spent on building flags and structures in higher zones. Key resource for expansion.</div>
           </div>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
