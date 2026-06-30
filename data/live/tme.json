@@ -7,10 +7,10 @@
   "oppRank": 11,
   "prepStarted": true,
   "alliances": [
-    { "tag": "WC1", "roleKey": "rolePrimaryStrike", "position": "NE-inner", "tower": "Swordsman (N) / Pikeman (W)", "color": "#3b82f6", "allies": 169, "power": "20,238,517,730", "merits": "2,272,826,034", "prepPoints": "5,564,608,662" },
-    { "tag": "REU", "roleKey": "roleSecondaryStrike", "position": "SE-inner", "tower": "Archer (E)", "color": "#f59e0b", "allies": 166, "power": "12,699,637,836", "merits": "912,404,888", "prepPoints": "2,140,121,366" },
-    { "tag": "MyT", "roleKey": "roleFlanking", "position": "SE-outer", "tower": "Cavalry (S)", "color": "#22c55e", "allies": 138, "power": "10,430,075,595", "merits": "898,618,923", "prepPoints": "1,887,244,295" },
-    { "tag": "AGC", "roleKey": "roleTowerHold", "position": "NE-outer", "tower": "Archer (E)", "color": "#ef4444", "allies": 164, "power": "11,739,696,945", "merits": "186,806,496", "prepPoints": "1,519,654,225" }
+    { "tag": "WC1", "name": "WorldClass", "roleKey": "rolePrimaryStrike", "position": "NE-inner", "tower": "Swordsman (N) / Pikeman (W)", "color": "#3b82f6", "allies": 169, "power": "20,238,517,730", "merits": "2,272,826,034", "prepPoints": "5,564,608,662" },
+    { "tag": "REU", "name": "Reunions", "roleKey": "roleSecondaryStrike", "position": "SE-inner", "tower": "Archer (E)", "color": "#f59e0b", "allies": 166, "power": "12,699,637,836", "merits": "912,404,888", "prepPoints": "2,140,121,366" },
+    { "tag": "MyT", "name": "Mythic", "roleKey": "roleFlanking", "position": "SE-outer", "tower": "Cavalry (S)", "color": "#22c55e", "allies": 138, "power": "10,430,075,595", "merits": "898,618,923", "prepPoints": "1,887,244,295" },
+    { "tag": "AGC", "name": "AuroraGodCourt", "roleKey": "roleTowerHold", "position": "NE-outer", "tower": "Archer (E)", "color": "#ef4444", "allies": 164, "power": "11,739,696,945", "merits": "186,806,496", "prepPoints": "1,519,654,225" }
   ],
   "prepStages": [
     { "nameKey": "prepStage1", "ourPts": 1.27, "oppPts": 1.42, "won": false },

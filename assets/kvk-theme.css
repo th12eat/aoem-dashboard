@@ -206,6 +206,43 @@ body { font-size: var(--fs-body); }
 .rank-table tr.is-ours td, .rank-table tr.highlight td { background: rgba(var(--kvk-accent-rgb), 0.07); }
 
 /* ============================================================
+   Shared scoreboard table — the Primordial "points-table" look:
+   centered numeric columns, left-aligned first (label) column,
+   uppercase muted headers, subtle row hover. Markup:
+     <table class="points-table">
+       <thead><tr><th>Rank</th><th>Server</th><th>Points</th></tr></thead>
+       <tbody><tr><td>1</td><td>E#008 (Us)</td><td>19.8B</td></tr></tbody>
+     </table>
+   ============================================================ */
+.points-table { width: 100%; border-collapse: collapse; font-size: var(--fs-body); }
+.points-table th {
+  font-family: var(--font-ui);
+  font-size: var(--fs-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+}
+.points-table td {
+  text-align: center;
+  padding: 6px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(var(--kvk-accent-rgb), 0.10);
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+}
+.points-table tbody tr:last-child td { border-bottom: none; }
+.points-table tbody tr:hover td { background: var(--bg-card2); }
+/* first (label) column reads left; numeric columns stay centered */
+.points-table th:first-child, .points-table td:first-child { text-align: left; }
+.points-table td.name { color: var(--text-primary); font-weight: 600; }
+.points-table td.mp-hi { color: var(--accent-green); }
+.points-table td.mp-lo { color: var(--accent-red); }
+.points-table tr.total td { font-weight: 700; color: var(--text-primary); border-top: 1px solid var(--border); }
+
+/* ============================================================
    Shared tab bar — same width as header/body (var(--w-content)),
    centered, underline-active style. Active state follows the
    per-event --kvk-accent. Markup:

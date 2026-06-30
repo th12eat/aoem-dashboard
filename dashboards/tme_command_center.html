@@ -3261,33 +3261,33 @@ function TMECommandCenter(){
           </div>
 
           <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\uD83C\uDFF0"} {t.allianceOverview}</div>
+            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{t.allianceOverview}</div>
             <div style={{overflowX:"auto"}}>
-              <table className="rank-table" style={{minWidth:440}}>
+              <table className="points-table" style={{minWidth:440}}>
                 <thead><tr>
-                  <th>Tag</th><th>{t.colRole}</th>
-                  <th className="num">{t.colAllies}</th>
-                  <th className="num">{t.colPower}</th>
-                  <th className="num">{t.colMerits}</th>
-                  <th className="num">M:P</th>
+                  <th>Tag</th><th>Name</th>
+                  <th>{t.colAllies}</th>
+                  <th>{t.colPower}</th>
+                  <th>{t.colMerits}</th>
+                  <th>M:P</th>
                 </tr></thead>
                 <tbody>
                 {computedAlliances.map((a)=>(
-                  <tr key={a.tag} style={{borderLeft:`3px solid ${a.color}`}}>
-                    <td className="name" style={{color:a.color,fontWeight:800}}>{a.tag}</td>
-                    <td>{t[a.roleKey]||a.roleKey}<div style={{fontSize:9,color:"#fbbf24"}}>{a.teleportTime}</div></td>
-                    <td className="num">{a.allies}</td>
-                    <td className="num">{fmt(a.power)}</td>
-                    <td className="num">{fmt(a.merits)}</td>
-                    <td className="num mp-hi">{mpRatio(a.merits,a.power)}</td>
+                  <tr key={a.tag}>
+                    <td style={{color:a.color,fontWeight:800}}>{a.tag}</td>
+                    <td className="name">{a.name||a.tag}<div style={{fontSize:9,color:"#fbbf24",fontWeight:400}}>{a.teleportTime}</div></td>
+                    <td>{a.allies}</td>
+                    <td>{fmt(a.power)}</td>
+                    <td>{fmt(a.merits)}</td>
+                    <td className="mp-hi">{mpRatio(a.merits,a.power)}</td>
                   </tr>
                 ))}
-                  <tr style={{fontWeight:700}}>
-                    <td className="name">{t.colTotal}</td><td></td>
-                    <td className="num" style={{color:"#e2e8f0"}}>{sumF(config.alliances,"allies")}</td>
-                    <td className="num" style={{color:"#e2e8f0"}}>{fmtN(sumF(config.alliances,"power"))}</td>
-                    <td className="num" style={{color:"#e2e8f0"}}>{fmtN(sumF(config.alliances,"merits"))}</td>
-                    <td className="num mp-hi">{mpRatio(sumF(config.alliances,"merits"),sumF(config.alliances,"power"))}</td>
+                  <tr className="total">
+                    <td>{t.colTotal}</td><td></td>
+                    <td>{sumF(config.alliances,"allies")}</td>
+                    <td>{fmtN(sumF(config.alliances,"power"))}</td>
+                    <td>{fmtN(sumF(config.alliances,"merits"))}</td>
+                    <td className="mp-hi">{mpRatio(sumF(config.alliances,"merits"),sumF(config.alliances,"power"))}</td>
                   </tr>
                 </tbody>
               </table>
@@ -3295,33 +3295,33 @@ function TMECommandCenter(){
           </div>
 
           <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#f87171",marginBottom:10}}>{"\uD83D\uDD34"} {t.oppIntel} {"\u2014"} {config.oppServer}</div>
+            <div style={{fontSize:13,fontWeight:700,color:"#f87171",marginBottom:10}}>{t.oppIntel} {"\u2014"} {config.oppServer}</div>
             <div style={{overflowX:"auto"}}>
-              <table className="rank-table" style={{minWidth:440}}>
+              <table className="points-table" style={{minWidth:440}}>
                 <thead><tr>
                   <th>Tag</th><th>Name</th>
-                  <th className="num">{t.colAllies}</th>
-                  <th className="num">{t.colPower}</th>
-                  <th className="num">{t.colMerits}</th>
-                  <th className="num">M:P</th>
+                  <th>{t.colAllies}</th>
+                  <th>{t.colPower}</th>
+                  <th>{t.colMerits}</th>
+                  <th>M:P</th>
                 </tr></thead>
                 <tbody>
                 {computedOppAlliances.map((a)=>(
-                  <tr key={a.tag} style={{borderLeft:"3px solid #f87171"}}>
-                    <td className="name" style={{color:"#f87171",fontWeight:800}}>{a.tag}</td>
-                    <td>{a.name}<div style={{fontSize:9,color:"#f87171"}}>{a.teleportTime}</div></td>
-                    <td className="num">{a.allies}</td>
-                    <td className="num">{fmt(a.power)}</td>
-                    <td className="num">{fmt(a.merits)}</td>
-                    <td className="num mp-hi">{mpRatio(a.merits,a.power)}</td>
+                  <tr key={a.tag}>
+                    <td style={{color:"#f87171",fontWeight:800}}>{a.tag}</td>
+                    <td className="name">{a.name}<div style={{fontSize:9,color:"#f87171",fontWeight:400}}>{a.teleportTime}</div></td>
+                    <td>{a.allies}</td>
+                    <td>{fmt(a.power)}</td>
+                    <td>{fmt(a.merits)}</td>
+                    <td className="mp-hi">{mpRatio(a.merits,a.power)}</td>
                   </tr>
                 ))}
-                  <tr style={{fontWeight:700}}>
-                    <td className="name">{t.colTotal}</td><td></td>
-                    <td className="num" style={{color:"#e2e8f0"}}>{computedOppAlliances.reduce((s,a)=>s+a.allies,0)}</td>
-                    <td className="num" style={{color:"#e2e8f0"}}>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</td>
-                    <td className="num" style={{color:"#e2e8f0"}}>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0))}</td>
-                    <td className="num mp-hi">{mpRatio(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0),computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</td>
+                  <tr className="total">
+                    <td>{t.colTotal}</td><td></td>
+                    <td>{computedOppAlliances.reduce((s,a)=>s+parseNum(a.allies),0)}</td>
+                    <td>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</td>
+                    <td>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0))}</td>
+                    <td className="mp-hi">{mpRatio(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0),computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</td>
                   </tr>
                 </tbody>
               </table>
@@ -3329,7 +3329,7 @@ function TMECommandCenter(){
           </div>
 
           <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#f59e0b",marginBottom:6}}>{"\uD83D\uDC0B"} {t.krakenTargets}</div>
+            <div style={{fontSize:13,fontWeight:700,color:"#f59e0b",marginBottom:6}}>{t.krakenTargets}</div>
             <div style={{fontSize:10,color:"#64748b",marginBottom:10}}>{t.krakenDesc}</div>
             <div style={{overflowX:"auto"}}>
               <table className="rank-table" style={{minWidth:380}}>
