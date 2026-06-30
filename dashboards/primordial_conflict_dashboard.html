@@ -134,46 +134,8 @@
     color: var(--text-secondary);
   }
 
-  /* ─── Tabs ─── */
-  .tabs {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 28px;
-    border-bottom: 1px solid var(--border);
-    overflow-x: auto;
-  }
-
-  .tab {
-    padding: 12px 24px;
-    font-family: var(--font-ui);
-    font-size: var(--fs-label);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    background: none;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    white-space: nowrap;
-    transition: color 0.2s;
-  }
-
-  .tab:hover { color: var(--text-secondary); }
-
-  .tab.active {
-    color: var(--accent-gold);
-  }
-
-  .tab.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--accent-gold);
-  }
+  /* Tabs use the shared .tabs/.tab standard from kvk-theme.css
+     (centered, 960-wide, --kvk-accent active). */
 
   .tab-content { display: none; }
   .tab-content.active { display: block; }

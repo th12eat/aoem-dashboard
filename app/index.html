@@ -116,36 +116,41 @@ body::after {
 }
 
 /* Navigation Tabs */
+/* aligned to the shared .tabs/.tab standard (centered, 960, accent underline) */
 .nav-tabs {
   display: flex;
-  background: var(--bg-secondary);
+  justify-content: center;
+  gap: 4px;
+  max-width: var(--w-content);
+  margin: 0 auto;
   border-bottom: 1px solid var(--border-color);
-  padding: 0 2rem;
-  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.nav-tabs::-webkit-scrollbar { display: none; }
 
 .nav-tab {
-  padding: 0.9rem 1.5rem;
+  flex: 0 0 auto;
+  padding: 11px 20px;
+  margin-bottom: -1px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
-  border-bottom: 3px solid transparent;
-  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+  transition: color .15s, border-color .15s;
   user-select: none;
+  white-space: nowrap;
 }
 
-.nav-tab:hover {
-  color: var(--text-primary);
-  background: rgba(255, 215, 0, 0.03);
-}
+.nav-tab:hover { color: var(--text-secondary); }
 
 .nav-tab.active {
-  color: var(--accent-gold);
-  border-bottom-color: var(--accent-gold);
-  background: rgba(255, 215, 0, 0.05);
+  color: var(--kvk-accent);
+  border-bottom-color: var(--kvk-accent);
 }
 
 /* Main Content */

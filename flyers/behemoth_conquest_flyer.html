@@ -735,30 +735,33 @@
   .map-box[hidden], .spawn-box[hidden] { display: none; }
 
   /* -- Tabs -- */
+  /* tab-bar/tab-btn mirror the shared .tabs/.tab standard (kvk-theme.css);
+     class names kept because the page JS queries .tab-btn. */
   .tab-bar {
-    display: flex; justify-content: center; gap: 4px; margin: 0 0 20px;
+    display: flex; justify-content: center; gap: 4px; margin: 0 auto 28px;
+    max-width: var(--w-content);
     border-bottom: 1px solid var(--border);
     overflow-x: auto; -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
   .tab-bar::-webkit-scrollbar { display: none; }
   .tab-btn {
-    flex: 0 0 auto; padding: 9px 16px; background: none; border: none;
+    flex: 0 0 auto; padding: 11px 20px; background: none; border: none;
     border-bottom: 2px solid transparent; margin-bottom: -1px;
-    font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 600;
-    letter-spacing: 0.5px; color: var(--text-muted); cursor: pointer;
+    font-family: var(--font-ui); font-size: var(--fs-label); font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); cursor: pointer;
     white-space: nowrap; transition: color .15s, border-color .15s;
   }
-  .tab-btn:hover { color: var(--text-primary); }
-  .tab-btn.active { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
-  /* current live stage: a pulsing gold dot before the label (shows even when not the active/viewed tab) */
-  .tab-btn.is-now { color: var(--accent-gold); }
+  .tab-btn:hover { color: var(--text-secondary); }
+  .tab-btn.active { color: var(--kvk-accent); border-bottom-color: var(--kvk-accent); }
+  /* current live stage: a pulsing accent dot before the label */
+  .tab-btn.is-now { color: var(--kvk-accent); }
   .tab-btn.is-now::before {
     content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent-gold); margin-right: 6px; vertical-align: middle;
+    background: var(--kvk-accent); margin-right: 6px; vertical-align: middle;
     animation: tabNowPulse 1.6s ease-in-out infinite;
   }
-  @keyframes tabNowPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,168,67,0.6); } 50% { box-shadow: 0 0 0 4px rgba(212,168,67,0); } }
+  @keyframes tabNowPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
   @media (prefers-reduced-motion: reduce) { .tab-btn.is-now::before { animation: none; } }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }

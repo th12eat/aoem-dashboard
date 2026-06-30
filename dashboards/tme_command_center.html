@@ -3218,9 +3218,9 @@ function TMECommandCenter(){
   const tlTimes=tlTimesCalc();
 
   const tabs=[
-    {id:"overview",label:`\uD83D\uDCCB ${t.tabOverview}`},{id:"map",label:`\uD83D\uDDFA\uFE0F ${t.tabMap}`},
-    {id:"timeline",label:`\u23F1\uFE0F ${t.tabTimeline}`},{id:"prep",label:`\uD83D\uDCCA ${t.tabPrep}`},
-    {id:"roles",label:`\uD83D\uDC65 ${t.tabRoles}`},
+    {id:"overview",label:t.tabOverview},{id:"map",label:t.tabMap},
+    {id:"timeline",label:t.tabTimeline},{id:"prep",label:t.tabPrep},
+    {id:"roles",label:t.tabRoles},
   ];
   const card={background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:16,marginBottom:12};
 
@@ -3238,10 +3238,10 @@ function TMECommandCenter(){
         <div id="evtMeta"></div>
       </div>
 
-      {/* Tabs */}
-      <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",background:"#0f172a",borderBottom:"1px solid #1e3a5f",padding:"0 8px"}}>
+      {/* Tabs — shared .tabs/.tab standard */}
+      <div className="tabs">
         {tabs.map(tb=>(
-          <button key={tb.id} onClick={()=>setActiveTab(tb.id)} style={{flex:"none",padding:"10px 14px",fontSize:11,fontFamily:"inherit",background:activeTab===tb.id?"#1e293b":"transparent",color:activeTab===tb.id?"#fbbf24":"#64748b",border:"none",borderBottom:activeTab===tb.id?"2px solid #fbbf24":"2px solid transparent",cursor:"pointer",whiteSpace:"nowrap"}}>{tb.label}</button>
+          <button key={tb.id} className={"tab"+(activeTab===tb.id?" active":"")} onClick={()=>setActiveTab(tb.id)}>{tb.label}</button>
         ))}
       </div>
 

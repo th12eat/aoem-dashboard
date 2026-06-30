@@ -204,3 +204,51 @@ body { font-size: var(--fs-body); }
 .rank-table tbody tr:hover td { background: var(--bg-card2); }
 /* highlight our own / home rows */
 .rank-table tr.is-ours td, .rank-table tr.highlight td { background: rgba(var(--kvk-accent-rgb), 0.07); }
+
+/* ============================================================
+   Shared tab bar — same width as header/body (var(--w-content)),
+   centered, underline-active style. Active state follows the
+   per-event --kvk-accent. Markup:
+     <div class="tabs">
+       <button class="tab active">Overview</button>
+       <button class="tab">…</button>
+     </div>
+   ============================================================ */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  max-width: var(--w-content);
+  margin: 0 auto 28px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex: 0 0 auto;
+  padding: 11px 20px;
+  margin-bottom: -1px;
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .15s, border-color .15s;
+}
+.tab:hover { color: var(--text-secondary); }
+.tab.active { color: var(--kvk-accent); border-bottom-color: var(--kvk-accent); }
+/* "live now" marker (Behemoth stage pulse) — opt-in via .tab.is-now */
+.tab.is-now { color: var(--kvk-accent); }
+.tab.is-now::before {
+  content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--kvk-accent); margin-right: 6px; vertical-align: middle;
+  animation: tabNowPulse 1.6s ease-in-out infinite;
+}
+@keyframes tabNowPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
