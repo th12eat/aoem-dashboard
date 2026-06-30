@@ -45,15 +45,67 @@
   // language config registered by the current page (null = no switcher shown)
   var langCfg = null; // { codes:[...], current, onChange }
 
+  // ---- breadcrumb page names, keyed by filename ----
+  // The brand renders "◆ ERA 8 COMMAND › <page>". Home (index.html) shows no crumb.
+  // A page can override with <body data-page-name="…"> or SiteHeader.setPageName().
+  var PAGE_NAMES = {
+    'index.html': null,                                   // home — no crumb
+    'tme_command_center.html': 'The Mightiest Empire',
+    'desolate_desert.html': 'Desolate Desert',
+    'primordial_conflict_dashboard.html': 'Primordial Conflict',
+    'kvk_history.html': 'KvK History',
+    'horse_breeding.html': 'Horse Breeding',
+    'behemoth_conquest_flyer.html': 'Behemoth Conquest',
+    'day6_showdown_flyer.html': 'Day 6 Showdown',
+    'order_workshop_flyer.html': 'Order Workshop',
+    'golden_expedition_flyer.html': 'Golden Expedition',
+    'login.html': 'Sign In',
+    'profile.html': 'Profile'
+  };
+  var pageNameOverride = null;
+
+  function escapeHTML(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]);
+    });
+  }
+
+  function currentPageName() {
+    if (pageNameOverride !== null) return pageNameOverride;
+    var attr = document.body && document.body.getAttribute('data-page-name');
+    if (attr) return attr;
+    var file = (location.pathname.split('/').pop() || 'index.html');
+    if (file === '' ) file = 'index.html';
+    // app/index.html and admin/index.html collide with home's "index.html";
+    // disambiguate by parent dir.
+    if (file === 'index.html') {
+      var parts = location.pathname.split('/').filter(Boolean);
+      var dir = parts.length >= 2 ? parts[parts.length - 2] : '';
+      if (dir === 'app') return 'DKP & TMG Tracker';
+      if (dir === 'admin') return 'Admin Portal';
+      if (dir === 'glossary') return 'Glossary';
+      if (dir === 'marches') return 'My Marches';
+    }
+    return PAGE_NAMES.hasOwnProperty(file) ? PAGE_NAMES[file] : null;
+  }
+
   // ---- scoped styles ----
   var CSS =
-    '.ehdr{position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;' +
+    /* full-bleed even when the page <body> has horizontal padding (index, kvk_history) */
+    '.ehdr{position:sticky;top:0;z-index:1000;box-sizing:border-box;width:100vw;margin-left:calc(50% - 50vw);' +
+      'display:flex;align-items:center;justify-content:space-between;' +
       'padding:8px 16px;background:rgba(10,12,20,0.92);backdrop-filter:blur(8px);' +
       'border-bottom:2px solid var(--kvk-accent-dim,#a17e2f);font-family:"Barlow Condensed",sans-serif;}' +
     '.ehdr a{text-decoration:none;color:inherit;}' +
+    '.ehdr-crumbs{display:flex;align-items:center;gap:9px;min-width:0;}' +
     '.ehdr-brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:1.5px;' +
-      'text-transform:uppercase;font-size:15px;color:var(--text-primary,#e8eaf0);}' +
-    '.ehdr-brand .ehdr-mark{color:var(--kvk-accent,#d4a843);font-size:18px;}' +
+      'text-transform:uppercase;font-size:15px;color:var(--text-primary,#e8eaf0);flex:0 0 auto;}' +
+    '.ehdr-brand .ehdr-mark{color:var(--kvk-accent,#d4a843);font-size:18px;line-height:1;}' +
+    /* 90° chevron drawn from borders — crisp thin ">" */
+    '.ehdr-chevron{flex:0 0 auto;width:6px;height:6px;border-top:2px solid var(--text-muted,#565c72);' +
+      'border-right:2px solid var(--text-muted,#565c72);transform:rotate(45deg);margin:0 2px;}' +
+    '.ehdr-page{font-weight:600;letter-spacing:1px;text-transform:uppercase;font-size:13px;' +
+      'color:var(--text-secondary,#8a90a5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}' +
     '.ehdr-right{position:relative;display:flex;align-items:center;gap:8px;}' +
     '.ehdr-lang{display:none;align-items:center;gap:6px;border:1px solid var(--border,#1e2435);' +
       'background:var(--bg-card,#11141f);border-radius:20px;padding:3px 6px 3px 10px;color:var(--text-secondary,#8a90a5);}' +
@@ -117,11 +169,19 @@
     var name = authed() ? (u.displayName || u.username || 'Commander') : 'Guest';
     var avatar = (u && u.avatar) ? u.avatar : '👤';
 
+    var pageName = currentPageName();
+    var crumb = pageName
+      ? '<span class="ehdr-chevron" aria-hidden="true"></span><span class="ehdr-page">' + escapeHTML(pageName) + '</span>'
+      : '';
+
     var bar = document.createElement('div');
     bar.className = 'ehdr';
     bar.innerHTML =
-      '<a class="ehdr-brand" href="' + href('index.html') + '">' +
-        '<span class="ehdr-mark">◆</span><span>Era 8 Command</span></a>' +
+      '<div class="ehdr-crumbs">' +
+        '<a class="ehdr-brand" href="' + href('index.html') + '">' +
+          '<span class="ehdr-mark">◆</span><span>Era 8 Command</span></a>' +
+        crumb +
+      '</div>' +
       '<div class="ehdr-right">' +
         '<div class="ehdr-lang" id="ehdrLang">' +
           '<span class="ehdr-globe" aria-hidden="true">🌐</span>' +
@@ -200,6 +260,25 @@
       langCfg.current = code;
       var sel = document.getElementById('ehdrLangSel');
       if (sel) sel.value = code;
+    },
+    // Override the breadcrumb page name (else it's derived from the URL/PAGE_NAMES).
+    setPageName: function (name) {
+      pageNameOverride = name;
+      var el = document.querySelector('.ehdr-page');
+      var crumbs = document.querySelector('.ehdr-crumbs');
+      if (!crumbs) return;
+      if (name) {
+        if (!el) {
+          crumbs.insertAdjacentHTML('beforeend',
+            '<span class="ehdr-chevron" aria-hidden="true"></span><span class="ehdr-page"></span>');
+          el = crumbs.querySelector('.ehdr-page');
+        }
+        el.textContent = name;
+      } else if (el) {
+        var chev = crumbs.querySelector('.ehdr-chevron');
+        if (chev) chev.remove();
+        el.remove();
+      }
     },
     LANG_NAMES: LANG_NAMES
   };
