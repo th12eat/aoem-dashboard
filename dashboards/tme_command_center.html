@@ -3225,10 +3225,8 @@ function TMECommandCenter(){
   const card={background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:16,marginBottom:12};
   // shared fixed column widths so Alliance Overview + Opponent Intel line up
   // exactly: Tag | Name | Time | Allies | Power | Merits | M:P
-  const ALLI_COLS=["12%","26%","14%","12%","14%","14%","8%"];
-  // tinted/outlined card variants (Behemoth blue=us / red=them flow)
-  const cardUs={...card,background:"rgba(61,124,196,0.06)",border:"1px solid var(--accent-blue-dim)"};
-  const cardThem={...card,background:"rgba(196,61,61,0.06)",border:"1px solid var(--accent-red-dim)"};
+  // M:P activity class for cmp-tbl (alliance %: hi>=8, mid>=4, lo<4)
+  const mpCls=pct=>{const v=parseFloat(pct)||0;return v>=8?"hi":v>=4?"mid":"lo";};
 
   return(
     <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'Barlow',system-ui,sans-serif"}}>
@@ -3266,103 +3264,56 @@ function TMECommandCenter(){
             </div>
           </div>
 
-          <div style={cardUs}>
-            <div style={{fontSize:13,fontWeight:700,color:"#5b9bd8",marginBottom:10,letterSpacing:0.5}}>{t.allianceOverview}</div>
-            <div style={{overflowX:"auto"}}>
-              <table className="points-table" style={{minWidth:520}}>
-                <colgroup>{ALLI_COLS.map((w,i)=><col key={i} style={{width:w}}/>)}</colgroup>
-                <thead><tr>
-                  <th>Tag</th><th>Name</th><th>Time</th>
-                  <th>{t.colAllies}</th>
-                  <th>{t.colPower}</th>
-                  <th>{t.colMerits}</th>
-                  <th>M:P</th>
-                </tr></thead>
-                <tbody>
-                {computedAlliances.map((a)=>(
-                  <tr key={a.tag}>
-                    <td style={{color:a.color,fontWeight:800}}>{a.tag}</td>
-                    <td className="name">{a.name||a.tag}</td>
-                    <td style={{color:"#fbbf24",fontFamily:"var(--font-ui)"}}>{a.teleportTime}</td>
-                    <td>{a.allies}</td>
-                    <td>{fmt(a.power)}</td>
-                    <td>{fmt(a.merits)}</td>
-                    <td className="mp-hi">{mpRatio(a.merits,a.power)}</td>
-                  </tr>
-                ))}
-                  <tr className="total">
-                    <td>{t.colTotal}</td><td></td><td></td>
-                    <td>{sumF(config.alliances,"allies")}</td>
-                    <td>{fmtN(sumF(config.alliances,"power"))}</td>
-                    <td>{fmtN(sumF(config.alliances,"merits"))}</td>
-                    <td className="mp-hi">{mpRatio(sumF(config.alliances,"merits"),sumF(config.alliances,"power"))}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div className="cmp-card">
+            <div className="cmp-head us">{"OUR ALLIANCES"}</div>
+            <table className="cmp-tbl">
+              <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
+              <tbody>
+              {computedAlliances.map((a,i)=>(
+                <tr key={a.tag}>
+                  <td className="c-rk">{i+1}</td>
+                  <td className="c-nm">{a.name||a.tag} <span className="tg" style={{color:a.color}}>[{a.tag}]</span></td>
+                  <td className="c-p">{fmt(a.power)}</td>
+                  <td className={"c-mp "+mpCls(mpRatio(a.merits,a.power))}>{mpRatio(a.merits,a.power)}</td>
+                </tr>
+              ))}
+              </tbody>
+            </table>
           </div>
 
-          <div style={cardThem}>
-            <div style={{fontSize:13,fontWeight:700,color:"#f87171",marginBottom:10,letterSpacing:0.5}}>{t.oppIntel}</div>
-            <div style={{overflowX:"auto"}}>
-              <table className="points-table" style={{minWidth:520}}>
-                <colgroup>{ALLI_COLS.map((w,i)=><col key={i} style={{width:w}}/>)}</colgroup>
-                <thead><tr>
-                  <th>Tag</th><th>Name</th><th>Time</th>
-                  <th>{t.colAllies}</th>
-                  <th>{t.colPower}</th>
-                  <th>{t.colMerits}</th>
-                  <th>M:P</th>
-                </tr></thead>
-                <tbody>
-                {computedOppAlliances.map((a)=>(
-                  <tr key={a.tag}>
-                    <td style={{color:"#f87171",fontWeight:800}}>{a.tag}</td>
-                    <td className="name">{a.name}</td>
-                    <td style={{color:"#f87171",fontFamily:"var(--font-ui)"}}>{a.teleportTime}</td>
-                    <td>{a.allies}</td>
-                    <td>{fmt(a.power)}</td>
-                    <td>{fmt(a.merits)}</td>
-                    <td className="mp-hi">{mpRatio(a.merits,a.power)}</td>
-                  </tr>
-                ))}
-                  <tr className="total">
-                    <td>{t.colTotal}</td><td></td><td></td>
-                    <td>{computedOppAlliances.reduce((s,a)=>s+parseNum(a.allies),0)}</td>
-                    <td>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</td>
-                    <td>{fmtN(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0))}</td>
-                    <td className="mp-hi">{mpRatio(computedOppAlliances.reduce((s,a)=>s+parseNum(a.merits),0),computedOppAlliances.reduce((s,a)=>s+parseNum(a.power),0))}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div className="cmp-card">
+            <div className="cmp-head them">{oppCode+" ALLIANCES"}</div>
+            <table className="cmp-tbl">
+              <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
+              <tbody>
+              {computedOppAlliances.map((a,i)=>(
+                <tr key={a.tag}>
+                  <td className="c-rk">{i+1}</td>
+                  <td className="c-nm">{a.name} <span className="tg">[{a.tag}]</span></td>
+                  <td className="c-p">{fmt(a.power)}</td>
+                  <td className={"c-mp "+mpCls(mpRatio(a.merits,a.power))}>{mpRatio(a.merits,a.power)}</td>
+                </tr>
+              ))}
+              </tbody>
+            </table>
           </div>
 
-          <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#f59e0b",marginBottom:6}}>{t.krakenTargets}</div>
-            <div style={{fontSize:10,color:"#64748b",marginBottom:10}}>{t.krakenDesc}</div>
-            <div style={{overflowX:"auto"}}>
-              <table className="rank-table" style={{minWidth:380}}>
-                <thead><tr>
-                  <th>#</th><th>Name</th><th>Tag</th>
-                  <th className="num">{t.colPower}</th>
-                  <th className="num">{t.colMerits}</th>
-                  <th className="num">M:P</th>
-                </tr></thead>
-                <tbody>
-                {config.krakens.map((k,i)=>(
-                  <tr key={i}>
-                    <td style={{color:i<3?"#fbbf24":"#94a3b8",fontWeight:i<3?700:400}}>{k.rank}</td>
-                    <td className="name" style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:120}}>{k.name}</td>
-                    <td className="tag" style={{color:"#f87171",fontWeight:700}}>{k.alliance}</td>
-                    <td className="num">{fmt(k.power)}</td>
-                    <td className="num" style={{color:"#a78bfa"}}>{fmt(k.merits)}</td>
-                    <td className="num" style={{color:parseFloat(k.ratio)>=1?"#4ade80":parseFloat(k.ratio)>=0.7?"#fbbf24":"#94a3b8",fontWeight:parseFloat(k.ratio)>=1?700:400}}>{k.ratio}</td>
-                  </tr>
-                ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="cmp-card">
+            <div className="cmp-head them">{oppCode+" TOP POWER"}</div>
+            <table className="cmp-tbl">
+              <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
+              <tbody>
+              {config.krakens.map((k,i)=>{const pct=mpRatio(k.merits,k.power);return(
+                <tr key={i}>
+                  <td className="c-rk">{k.rank}</td>
+                  <td className="c-nm">{k.name} <span className="tg">[{k.alliance}]</span></td>
+                  <td className="c-p">{fmt(k.power)}</td>
+                  <td className={"c-mp "+mpCls(pct)}>{pct}</td>
+                </tr>
+              );})}
+              </tbody>
+            </table>
+            <div style={{fontSize:10,color:"#64748b",padding:"8px 12px 10px"}}>{t.krakenDesc}</div>
           </div>
 
           <div style={card}>
