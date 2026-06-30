@@ -35,6 +35,15 @@
   --kvk-accent-dim: var(--accent-gold-dim);
   --kvk-accent-rgb: 212,168,67;   /* used for translucent glows */
   --kvk-bg: none;                  /* background graphic for the title; set per page */
+
+  /* -- layout: single standard content width across the whole app -- */
+  --w-content: 960px;
+
+  /* -- canonical font stacks (the Behemoth Conquest type system) -- */
+  --font-display: 'Bebas Neue', sans-serif;        /* titles, big stat numbers */
+  --font-ui: 'Barlow Condensed', sans-serif;       /* labels, tags, chrome */
+  --font-body: 'Barlow', system-ui, sans-serif;    /* body copy */
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
 }
 
 /* ---- per-KvK accent assignments ---- */

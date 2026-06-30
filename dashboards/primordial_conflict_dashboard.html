@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Primordial Conflict — Era8 War Room</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/kvk-theme.css">
 <style>
   :root {
@@ -35,7 +35,7 @@
   body {
     background: var(--bg-deep);
     color: var(--text-primary);
-    font-family: 'Crimson Text', Georgia, serif;
+    font-family: var(--font-body);
     min-height: 100vh;
     overflow-x: hidden;
   }
@@ -52,7 +52,7 @@
   }
 
   .container {
-    max-width: 1280px;
+    max-width: var(--w-content);
     margin: 0 auto;
     padding: 24px 20px;
     position: relative;
@@ -93,7 +93,7 @@
   }
 
   .header h1 {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-display);
     font-weight: 900;
     font-size: 2.6rem;
     letter-spacing: 0.12em;
@@ -105,7 +105,7 @@
   }
 
   .header .subtitle {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 0.95rem;
     color: var(--text-secondary);
     letter-spacing: 0.3em;
@@ -123,7 +123,7 @@
   .server-badge {
     padding: 6px 16px;
     border-radius: 4px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.8rem;
     font-weight: 500;
     border: 1px solid;
@@ -151,7 +151,7 @@
 
   .tab {
     padding: 12px 24px;
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -213,7 +213,7 @@
   }
 
   .day-card .day-num {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-display);
     font-weight: 900;
     font-size: 1.8rem;
     color: var(--text-muted);
@@ -225,7 +225,7 @@
   }
 
   .day-card .day-label {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -245,7 +245,7 @@
     margin-top: 8px;
     padding: 2px 8px;
     border-radius: 3px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.6rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -268,7 +268,7 @@
   }
 
   .section h2 {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-weight: 700;
     font-size: 1.15rem;
     letter-spacing: 0.1em;
@@ -291,7 +291,7 @@
   }
 
   .section h3 {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-weight: 600;
     font-size: 0.95rem;
     color: var(--text-primary);
@@ -352,7 +352,7 @@
   .currency-card.points::before { background: var(--points-color); }
 
   .currency-card .curr-name {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-weight: 700;
     font-size: 0.9rem;
     letter-spacing: 0.08em;
@@ -374,7 +374,7 @@
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid var(--border);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.72rem;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -390,7 +390,7 @@
   }
 
   .points-table th {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -405,7 +405,7 @@
     padding: 6px;
     color: var(--text-secondary);
     border-bottom: 1px solid var(--border)44;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.8rem;
   }
 
@@ -458,7 +458,7 @@
   /* Callout TITLE: only the first <strong> is the block-level mono label. */
   .callout > strong:first-of-type {
     display: block;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -495,14 +495,14 @@
   }
 
   .time-block .time-val {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 1.6rem;
     font-weight: 500;
     color: var(--accent-purple);
   }
 
   .time-block .time-label {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -527,14 +527,14 @@
   }
 
   .tp-slot .tp-rank {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-weight: 700;
     font-size: 0.8rem;
     color: var(--accent-gold);
   }
 
   .tp-slot .tp-time {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.85rem;
     color: var(--accent-purple);
     margin-top: 4px;
@@ -553,7 +553,7 @@
     border-radius: 3px;
     background: var(--accent-orange)15;
     color: var(--accent-orange);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.05em;
@@ -565,7 +565,7 @@
     padding: 24px 0;
     border-top: 1px solid var(--border);
     margin-top: 32px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.7rem;
     color: var(--text-muted);
     letter-spacing: 0.05em;
@@ -608,7 +608,7 @@
   }
 
   .server-card .sc-name {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-weight: 700;
     font-size: 1rem;
     letter-spacing: 0.05em;
@@ -621,7 +621,7 @@
   .server-card.s056 .sc-name { color: var(--accent-purple); }
 
   .server-card .sc-rank {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.7rem;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -644,7 +644,7 @@
   }
 
   .server-card .sc-stat-val {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.82rem;
     color: var(--text-primary);
   }
@@ -656,7 +656,7 @@
   }
 
   .roster-table th {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -676,7 +676,7 @@
   .roster-table th.num { text-align: right; }
   .roster-table td.num {
     text-align: right;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.78rem;
   }
 
@@ -695,7 +695,7 @@
   .roster-table td.mp-lo { color: var(--accent-red); }
 
   .roster-table td.alliance-tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.72rem;
     color: var(--text-muted);
   }
@@ -734,7 +734,7 @@
   }
 
   .bar-label {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.6rem;
     color: var(--text-muted);
     margin-top: 6px;
@@ -747,7 +747,7 @@
   }
 
   .bar-val {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.6rem;
     color: var(--text-secondary);
     margin-bottom: 3px;
@@ -755,7 +755,7 @@
   }
 
   .section-subtitle {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-ui);
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
