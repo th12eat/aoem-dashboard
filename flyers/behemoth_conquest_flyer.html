@@ -14,11 +14,12 @@
     --text-primary: #e8eaf0;
     --text-secondary: #8a90a5;
     --text-muted: #565c72;
-    /* Behemoth's identity accent is maroon — these follow the per-event
-       --kvk-accent token (data-kvk="behemoth" → maroon). Semantic
+    /* Behemoth's identity accent is maroon (matches --kvk-accent for
+       data-kvk="behemoth"). Literal here to avoid a circular var() with
+       the theme's :root (--kvk-accent: var(--accent-gold)). Semantic
        red/green/blue below are unchanged (warnings, loss, us). */
-    --accent-gold: var(--kvk-accent);
-    --accent-gold-dim: var(--kvk-accent-dim);
+    --accent-gold: #b23a48;
+    --accent-gold-dim: #7d2632;
     --accent-red: #c43d3d;
     --accent-red-dim: #8a2b2b;
     --accent-blue: #3d7cc4;

@@ -36,8 +36,9 @@
   .flyer { max-width: var(--w-content); margin: 0 auto; padding: 0 20px 60px; }
 
   /* the .kvk-header (from shared CSS) handles the title + fade-behind graphic.
-     Below: the meta row + countdown that sit under the title. */
-  .kvk-header { margin-bottom: 22px; }
+     Constrain to the standard content width + center, matching the other
+     event pages (whose headers sit inside a 960 wrapper). */
+  .kvk-header { max-width: var(--w-content); margin: 0 auto 22px; }
 
   .draft-banner {
     max-width: 800px; margin: 0 auto 18px; padding: 9px 16px;

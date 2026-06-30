@@ -61,7 +61,7 @@
 /* ---- per-KvK accent assignments ---- */
 [data-kvk="behemoth"]   { --kvk-accent:#b23a48; --kvk-accent-dim:#7d2632; --kvk-accent-rgb:178,58,72; }
 [data-kvk="tme"]        { --kvk-accent:#3d7cc4; --kvk-accent-dim:#2b5a8a; --kvk-accent-rgb:61,124,196; }
-[data-kvk="desolate"]   { --kvk-accent:#e3863a; --kvk-accent-dim:#a85f26; --kvk-accent-rgb:227,134,58; }
+[data-kvk="desolate"]   { --kvk-accent:#f5731f; --kvk-accent-dim:#b4500f; --kvk-accent-rgb:245,115,31; }
 [data-kvk="primordial"] { --kvk-accent:#9b6dff; --kvk-accent-dim:#6b4c9a; --kvk-accent-rgb:155,109,255; }
 [data-kvk="day6"]       { --kvk-accent:#c43d3d; --kvk-accent-dim:#8a2b2b; --kvk-accent-rgb:196,61,61; }
 [data-kvk="workshop"]   { --kvk-accent:#d4a017; --kvk-accent-dim:#7a5c0e; --kvk-accent-rgb:212,160,23; }
