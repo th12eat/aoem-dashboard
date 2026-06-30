@@ -24,8 +24,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 .lang-btn.active{background:rgba(212,160,23,0.12);border-color:rgba(212,160,23,0.5);color:var(--gold-light);}
 
 /* HEADER */
-.header{text-align:center;padding:56px 16px 36px;min-height:260px;display:flex;flex-direction:column;justify-content:center;border-bottom:2px solid var(--kvk-accent-dim);margin-bottom:18px;position:relative;overflow:hidden;}
-.header::after{content:'';position:absolute;inset:0;z-index:0;background-image:var(--kvk-bg);background-size:cover;background-position:center top;background-repeat:no-repeat;opacity:.55;pointer-events:none;-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 70%,transparent 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 70%,transparent 100%);}
+.header{text-align:center;padding:56px 16px 36px;min-height:260px;display:flex;flex-direction:column;justify-content:center;align-items:center;border-bottom:2px solid var(--kvk-accent-dim);margin-bottom:18px;position:relative;overflow:hidden;}
+.header::after{content:'';position:absolute;inset:0;z-index:0;background-image:var(--kvk-bg);background-size:cover;background-position:center top;background-repeat:no-repeat;opacity:.42;pointer-events:none;-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.85) 0%,rgba(0,0,0,.45) 50%,rgba(0,0,0,.12) 80%,transparent 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,.85) 0%,rgba(0,0,0,.45) 50%,rgba(0,0,0,.12) 80%,transparent 100%);}
 .header::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center top,rgba(var(--kvk-accent-rgb),0.14) 0%,transparent 70%);}
 .header>*{position:relative;z-index:2;}
 .header-pre{font-size:10px;letter-spacing:5px;color:var(--gold-dim);text-transform:uppercase;margin-bottom:6px;}
@@ -164,6 +164,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
   <div class="header-pre" data-t="header_pre"></div>
   <div class="header-title" data-t="header_title"></div>
   <div class="header-sub" data-t="header_sub"></div>
+  <div id="evtMeta"></div>
 </div>
 
 <!-- ROW 1 -->
@@ -700,6 +701,17 @@ function setLang(lang) {
 
 // Init with English
 setLang('en');
+</script>
+<script src="../assets/event-header.js"></script>
+<script>
+  // Workshop is a recurring daily window (no single end date); show the daily
+  // window + a calendar stub. Countdown hides itself with no start/end ISO.
+  EventHeader.mount('#evtMeta', {
+    startLabel: '19:00', endLabel: '20:00', timezone: 'UTC',
+    startLabelText: 'Window', endLabelText: 'Close',
+    liveLabel: 'Daily Workshop Window',
+    ical: { stub: true, label: 'Add to Calendar' }
+  });
 </script>
 <script src="../assets/auth.js"></script>
 <script src="../assets/site-header.js"></script>

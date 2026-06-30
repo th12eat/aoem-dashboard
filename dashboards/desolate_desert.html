@@ -8,11 +8,12 @@
     <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone@7.26.0/babel.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/kvk-theme.css">
     <style>
         body { margin: 0; background: #0a0c14; font-family: 'Barlow', system-ui, sans-serif; color: #e8eaf0; }
     </style>
 </head>
-<body>
+<body data-kvk="desolate">
     <div id="root"></div>
     <script type="text/babel">
 const { useState, useCallback, useMemo, useEffect, useRef } = React;
@@ -96,7 +97,7 @@ const BUILDINGS = [
    ═══════════════════════════════════════════════════ */
 const S = {
   app: { fontFamily: "'Barlow', 'Segoe UI', system-ui, sans-serif", color: "#e8eaf0", minHeight: "100vh", background: "#0a0c14" },
-  header: { textAlign: "center", padding: "56px 20px 36px", minHeight: 260, display: "flex", flexDirection: "column", justifyContent: "center", borderBottom: "2px solid #8a6320", background: "radial-gradient(ellipse at center top, rgba(200,144,47,0.30) 0%, rgba(10,12,20,0.45) 65%, #0a0c14 100%), url('../assets/kvk-bg/desolate.jpg')", backgroundSize: "cover,cover", backgroundPosition: "center top", backgroundRepeat: "no-repeat" },
+  header: { maxWidth: 960, width: "100%", margin: "0 auto", textAlign: "center", padding: "56px 20px 36px", minHeight: 260, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", borderBottom: "2px solid #8a6320", background: "linear-gradient(to bottom, rgba(10,12,20,0.30) 0%, rgba(10,12,20,0.62) 60%, #0a0c14 100%), radial-gradient(ellipse at center top, rgba(200,144,47,0.28) 0%, transparent 60%), url('../assets/kvk-bg/desolate.jpg')", backgroundSize: "cover,cover,cover", backgroundPosition: "center top", backgroundRepeat: "no-repeat" },
   headerTitle: { fontFamily: "'Bebas Neue', sans-serif", fontSize: "40px", letterSpacing: "3px", lineHeight: 1, background: "linear-gradient(90deg, #e0a93f, #c8902f)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 },
   headerSub: { fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", letterSpacing: "1px", color: "#94a3b8", marginTop: "4px" },
   tabs: { display: "flex", gap: "4px", padding: "12px 16px", overflowX: "auto", borderBottom: "1px solid #1e293b" },
@@ -839,6 +840,27 @@ function App() {
     });
   }, []);
 
+  // Standard event-meta block (Start|End|TZ + countdown + stage + ical stub).
+  useEffect(() => {
+    let tries = 0;
+    const fmt = (d) => { try { return new Date(d + "T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}); } catch(e){ return d; } };
+    const mount = () => {
+      if (window.EventHeader && document.getElementById("evtMeta")) {
+        const ec = EVENT_CONFIG;
+        window.EventHeader.mount("#evtMeta", {
+          startLabel: ec.eventStart ? fmt(ec.eventStart) : "TBD",
+          endLabel: ec.eventEnd ? fmt(ec.eventEnd) : "TBD",
+          timezone: "UTC+0",
+          startISO: ec.eventStart ? ec.eventStart + "T00:00:00Z" : null,
+          endISO: ec.eventEnd ? ec.eventEnd + "T00:00:00Z" : null,
+          liveLabel: "Contest Live",
+          ical: { stub: true, label: "Add to Calendar" }
+        });
+      } else if (tries++ < 50) { setTimeout(mount, 50); }
+    };
+    mount();
+  }, []);
+
   const TABS = [
     { id: "overview", label: "Overview" },
     { id: "schedule", label: "Schedule" },
@@ -854,9 +876,10 @@ function App() {
       <div style={S.header}>
         <div style={S.headerSub}>Age of Empires Mobile — Era 8 Command Center</div>
         <h1 style={S.headerTitle}>DESOLATE DESERT</h1>
-        <div style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>
+        <div style={{ fontSize: "var(--fs-sub,12px)", color: "#64748b", marginTop: "4px" }}>
           {EVENT_CONFIG.servers.join(" vs ")}
         </div>
+        <div id="evtMeta"></div>
       </div>
 
       <div style={S.tabs}>
@@ -902,6 +925,7 @@ function App() {
   ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 })();
     </script>
+<script src="../assets/event-header.js"></script>
 <script src="../assets/auth.js"></script>
 <script src="../assets/site-header.js"></script>
 </body>

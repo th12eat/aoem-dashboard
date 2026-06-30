@@ -199,11 +199,7 @@
     <div class="kvk-tag">Cross-Server PvE + PvP · Era 8</div>
     <h1 class="kvk-title">GOLDEN <span>EXPEDITION</span></h1>
     <div class="kvk-subtitle">Three days. One enemy server. Take everything that isn't bubbled.</div>
-    <div class="time-row" style="margin-top:18px;">
-      <div><div class="label">Opponent</div><div class="time tbd" id="ge-opp">TBD Server</div></div>
-      <div class="divider"></div>
-      <div><div class="label">Event Window</div><div class="time tbd" id="ge-window">Dates TBD</div></div>
-    </div>
+    <div id="evtMeta"></div>
   </header>
 
   <div class="draft-banner">⚙ Draft template — figures &amp; opponent confirmed once the event opens. Screenshots welcome.</div>
@@ -351,18 +347,25 @@
 
   </div>
 
+<script src="../assets/event-header.js"></script>
   <script>
-    // Load published Golden Expedition fields (../data/live/golden.json) if present.
+    // Standard event meta (Start|End|TZ + countdown + stage + ical), fed by golden.json.
     (async function(){
+      var cfg = { startLabel:'TBD', endLabel:'TBD', timezone:'UTC+0',
+                  pendingLabel:'Awaiting Schedule', liveLabel:'Expedition Live',
+                  ical:{ stub:true, label:'Add to Calendar' } };
       try{
         const res=await fetch('../data/live/golden.json');
-        if(!res.ok) return;
-        const j=await res.json();
-        if(!j) return;
-        const set=function(id,v){ var el=document.getElementById(id); if(el&&v!=null) el.textContent=v; };
-        set('ge-opp', j.opponent);
-        set('ge-window', j.eventWindow);
-      }catch(e){ console.error('golden live load failed; using fallback', e); }
+        if(res.ok){ const j=await res.json(); if(j){
+          if(j.startLabel) cfg.startLabel=j.startLabel;
+          if(j.endLabel) cfg.endLabel=j.endLabel;
+          if(j.timezone) cfg.timezone=j.timezone;
+          if(j.eventStartISO) cfg.startISO=j.eventStartISO;
+          if(j.eventEndISO) cfg.endISO=j.eventEndISO;
+          if(j.stages) cfg.stages=j.stages;
+        }}
+      }catch(e){ console.error('golden live load failed; using defaults', e); }
+      EventHeader.mount('#evtMeta', cfg);
     })();
   </script>
 <script src="../assets/auth.js"></script>

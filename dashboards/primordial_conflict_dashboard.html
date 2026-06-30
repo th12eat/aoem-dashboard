@@ -68,6 +68,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     border-bottom: 2px solid var(--kvk-accent-dim);
     position: relative;
     overflow: hidden;
@@ -75,9 +76,9 @@
   .header::after {
     content:''; position:absolute; inset:0; z-index:0;
     background-image:var(--kvk-bg); background-size:cover; background-position:center top; background-repeat:no-repeat;
-    opacity:.55; pointer-events:none;
-    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 70%,transparent 100%);
-    mask-image:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 70%,transparent 100%);
+    opacity:.42; pointer-events:none;
+    -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.85) 0%,rgba(0,0,0,.45) 50%,rgba(0,0,0,.12) 80%,transparent 100%);
+    mask-image:linear-gradient(to bottom,rgba(0,0,0,.85) 0%,rgba(0,0,0,.45) 50%,rgba(0,0,0,.12) 80%,transparent 100%);
   }
   .header::before {
     content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
@@ -795,6 +796,7 @@
       <span class="server-badge opponent">E#034 ERA°FAMILYBIG</span>
       <span class="server-badge opponent">E#056 DEATHREAPPERS</span>
     </div>
+    <div id="evtMeta"></div>
   </div>
 
   <!-- Tabs -->
@@ -1793,6 +1795,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 </script>
 
+<script src="../assets/event-header.js"></script>
+<script>
+  // Standard event-meta block. Primordial concluded Jun 11 (we won), so the
+  // stage indicator resolves to "Event Complete".
+  EventHeader.mount('#evtMeta', {
+    startLabel: 'Jun 5', endLabel: 'Jun 11', timezone: 'UTC+0',
+    startISO: '2026-06-05T00:00:00Z', endISO: '2026-06-11T23:59:59Z',
+    completeLabel: 'Event Complete — Victory',
+    ical: { stub: true, label: 'Add to Calendar' }
+  });
+</script>
 <script src="../assets/auth.js"></script>
 <script src="../assets/site-header.js"></script>
 </body>
