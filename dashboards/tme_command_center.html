@@ -3065,14 +3065,32 @@ function DiamondMap({ alliances, isDefense, t }) {
   );
 }
 
-function PrepChart({stages,t,totalOur,totalOpp}){
-  const mx=Math.max(...stages.map(s=>Math.max(s.ourPts,s.oppPts)),totalOur,totalOpp);
-  const icon=s=>{if(s.ourPts===0&&s.oppPts===0)return"\u2014";return s.ourPts>=s.oppPts?"\u2705":"\u274C";};
-  return(<div style={{display:"flex",flexDirection:"column",gap:10}}>{stages.map((s,i)=>(<div key={i}><div style={{fontSize:12,color:"#cbd5e1",fontFamily:"monospace",marginBottom:3}}>{icon(s)} {t[s.nameKey]||s.nameKey}</div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#60a5fa",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.ourPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.ourPts/mx)*100:0}%`,background:"linear-gradient(90deg,#1e40af,#3b82f6)",borderRadius:3}}/></div></div><div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#f87171",width:40,textAlign:"right",fontFamily:"monospace"}}>{s.oppPts}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(s.oppPts/mx)*100:0}%`,background:"linear-gradient(90deg,#991b1b,#ef4444)",borderRadius:3}}/></div></div></div>))}
-    <div style={{borderTop:"1px solid #334155",marginTop:6,paddingTop:10}}>
-      <div style={{fontSize:12,color:"#e2e8f0",fontFamily:"monospace",marginBottom:3,fontWeight:700}}>{totalOur>=totalOpp?"\u2705":"\u274C"} {t.colTotal}</div>
-      <div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#60a5fa",width:40,textAlign:"right",fontFamily:"monospace"}}>{totalOur}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(totalOur/mx)*100:0}%`,background:"linear-gradient(90deg,#1e40af,#3b82f6)",borderRadius:3}}/></div></div>
-      <div style={{display:"flex",gap:4,alignItems:"center"}}><span style={{fontSize:10,color:"#f87171",width:40,textAlign:"right",fontFamily:"monospace"}}>{totalOpp}B</span><div style={{flex:1}}><div style={{height:14,width:`${mx>0?(totalOpp/mx)*100:0}%`,background:"linear-gradient(90deg,#991b1b,#ef4444)",borderRadius:3}}/></div></div>
+function PrepChart({stages,t,totalOur,totalOpp,oppLabel}){
+  // Behemoth "tug" style: one split bar per stage (blue=us | red=them),
+  // sized by each side's share of that stage's total. Label row above.
+  const Tug=({label,our,opp,strong})=>{
+    const sum=(our+opp)||1;
+    const uPct=(our/sum)*100, oPct=(opp/sum)*100;
+    const won=our>=opp;
+    return(
+      <div style={{marginBottom:12}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:strong?800:700,marginBottom:4}}>
+          <span style={{color:"#5b8def"}}>{our}B <span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>US</span></span>
+          <span style={{fontSize:11,fontWeight:600,color:won?"#4ade80":"#f87171",letterSpacing:0.5,textTransform:"uppercase"}}>{label}</span>
+          <span style={{color:"#f87171"}}><span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{oppLabel||"OPP"}</span> {opp}B</span>
+        </div>
+        <div style={{display:"flex",height:22,borderRadius:6,overflow:"hidden",border:"1px solid #334155"}}>
+          <div style={{width:uPct+"%",background:"linear-gradient(90deg, rgba(61,124,196,0.55), rgba(91,141,239,0.85))"}}/>
+          <div style={{width:oPct+"%",background:"linear-gradient(90deg, rgba(196,61,61,0.85), rgba(196,61,61,0.55))"}}/>
+        </div>
+      </div>
+    );
+  };
+  const active=stages.filter(s=>s.ourPts>0||s.oppPts>0);
+  return(<div>
+    {active.map((s,i)=><Tug key={i} label={t[s.nameKey]||s.nameKey} our={s.ourPts} opp={s.oppPts}/>)}
+    <div style={{borderTop:"1px solid #334155",marginTop:2,paddingTop:12}}>
+      <Tug label={t.colTotal} our={totalOur} opp={totalOpp} strong/>
     </div>
   </div>);
 }
@@ -3437,7 +3455,7 @@ function TMECommandCenter(){
               <span><span style={{color:"#60a5fa"}}>{"\u25A0"}</span> Era 8: <strong>{config.totalOur}B</strong></span>
               <span><span style={{color:"#f87171"}}>{"\u25A0"}</span> {config.oppServer}: <strong>{config.totalOpp}B</strong></span>
             </div>
-            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp}/>
+            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp} oppLabel={oppLabel}/>
           </div>
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:4}}>{"\uD83D\uDCC5"} {t.stageSchedule||"PREP STAGE SCHEDULE"}</div>
