@@ -338,9 +338,9 @@ body { font-size: var(--fs-body); }
   animation: tabNowPulse 1.6s ease-in-out infinite;
 }
 @keyframes tabNowPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-/* pulsing glow ring for a "live right now" element (e.g. current prep stage) */
+/* pulsing glow for a "live right now" element (e.g. current prep stage) */
 @keyframes livePulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(251,191,36,0.55); }
-  50%     { box-shadow: 0 0 0 4px rgba(251,191,36,0); }
+  0%,100% { box-shadow: 0 0 3px 0 rgba(251,191,36,0.45); border-color: rgba(251,191,36,0.5); }
+  50%     { box-shadow: 0 0 14px 4px rgba(251,191,36,0.85); border-color: rgba(253,224,71,1); }
 }
-.live-pulse { animation: livePulse 1.6s ease-in-out infinite; border-radius: 6px; }
+.live-pulse { animation: livePulse 1.25s ease-in-out infinite; border-radius: 6px; border: 2px solid rgba(251,191,36,0.7); }
