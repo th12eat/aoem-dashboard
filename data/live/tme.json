@@ -52,7 +52,9 @@
     { "rank": 7, "name": "BloodYoda", "alliance": "eRa", "power": "262,538,190", "merits": "233,721,373" },
     { "rank": 8, "name": "ibubu♣JP", "alliance": "eRa", "power": "248,054,902", "merits": "79,129,364" },
     { "rank": 9, "name": "또라에몬", "alliance": "REU", "power": "240,915,320", "merits": "TBD" },
-    { "rank": 10, "name": "TommyTorpedo", "alliance": "eRa", "power": "231,700,285", "merits": "133,782,915" }
+    { "rank": 10, "name": "TommyTorpedo", "alliance": "eRa", "power": "231,700,285", "merits": "133,782,915" },
+    { "rank": 11, "name": "MuRageKT✕", "alliance": "eRa", "power": "230,807,185", "merits": "161,519,425" },
+    { "rank": 12, "name": "조은마난색기", "alliance": "REU", "power": "219,064,834", "merits": "TBD" }
   ],
   "roles": {
     "WC1": { "rallyLead": "TBD", "taxiRunners": ["TBD", "TBD", "TBD", "TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD", "TBD", "TBD", "TBD"] },
