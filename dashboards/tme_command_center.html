@@ -3068,27 +3068,30 @@ function DiamondMap({ alliances, isDefense, t }) {
 function PrepChart({stages,t,totalOur,totalOpp,oppLabel}){
   // Behemoth "tug" style: one split bar per stage (blue=us | red=them),
   // sized by each side's share of that stage's total. Label row above.
-  const Tug=({label,our,opp,strong})=>{
+  const Tug=({label,our,opp,strong,live})=>{
+    const pending=(our===0&&opp===0);
     const sum=(our+opp)||1;
-    const uPct=(our/sum)*100, oPct=(opp/sum)*100;
+    const uPct=pending?50:(our/sum)*100, oPct=pending?50:(opp/sum)*100;
     const won=our>=opp;
     return(
-      <div style={{marginBottom:12}}>
+      <div style={{marginBottom:12,opacity:pending?0.5:1}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:strong?800:700,marginBottom:4}}>
-          <span style={{color:"#5b8def"}}>{our}B <span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>US</span></span>
-          <span style={{fontSize:11,fontWeight:600,color:won?"#4ade80":"#f87171",letterSpacing:0.5,textTransform:"uppercase"}}>{label}</span>
-          <span style={{color:"#f87171"}}><span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{oppLabel||"OPP"}</span> {opp}B</span>
+          <span style={{color:pending?"#64748b":"#5b8def"}}>{our}B <span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>US</span></span>
+          <span style={{fontSize:11,fontWeight:600,color:pending?"#64748b":(won?"#4ade80":"#f87171"),letterSpacing:0.5,textTransform:"uppercase"}}>{label}{pending?" · Not Started":live?" · Live":""}</span>
+          <span style={{color:pending?"#64748b":"#f87171"}}><span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{oppLabel||"OPP"}</span> {opp}B</span>
         </div>
-        <div style={{display:"flex",height:22,borderRadius:6,overflow:"hidden",border:"1px solid #334155"}}>
-          <div style={{width:uPct+"%",background:"linear-gradient(90deg, rgba(61,124,196,0.55), rgba(91,141,239,0.85))"}}/>
-          <div style={{width:oPct+"%",background:"linear-gradient(90deg, rgba(196,61,61,0.85), rgba(196,61,61,0.55))"}}/>
+        <div className={live?"live-pulse":""} style={{display:"flex",height:22,borderRadius:6,overflow:"hidden",border:live?"1px solid #fbbf24":"1px solid #334155"}}>
+          <div style={{width:uPct+"%",background:pending?"#1e293b":"linear-gradient(90deg, rgba(61,124,196,0.55), rgba(91,141,239,0.85))"}}/>
+          <div style={{width:oPct+"%",background:pending?"#161c2b":"linear-gradient(90deg, rgba(196,61,61,0.85), rgba(196,61,61,0.55))"}}/>
         </div>
       </div>
     );
   };
-  const active=stages.filter(s=>s.ourPts>0||s.oppPts>0);
+  // current live stage = highest-index stage that has any points
+  let liveIdx=-1;
+  stages.forEach((s,i)=>{ if(s.ourPts>0||s.oppPts>0) liveIdx=i; });
   return(<div>
-    {active.map((s,i)=><Tug key={i} label={t[s.nameKey]||s.nameKey} our={s.ourPts} opp={s.oppPts}/>)}
+    {stages.map((s,i)=><Tug key={i} label={t[s.nameKey]||s.nameKey} our={s.ourPts} opp={s.oppPts} live={i===liveIdx}/>)}
     <div style={{borderTop:"1px solid #334155",marginTop:2,paddingTop:12}}>
       <Tug label={t.colTotal} our={totalOur} opp={totalOpp} strong/>
     </div>
