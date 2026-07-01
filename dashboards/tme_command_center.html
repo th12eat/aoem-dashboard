@@ -3241,6 +3241,9 @@ function TMECommandCenter(){
   // exactly: Tag | Name | Time | Allies | Power | Merits | M:P
   // M:P activity class for cmp-tbl (alliance %: hi>=8, mid>=4, lo<4)
   const mpCls=pct=>{const v=parseFloat(pct)||0;return v>=8?"hi":v>=4?"mid":"lo";};
+  // player M:P runs on a much wider scale (~6-102%); scale the tiers to that
+  // so "good" actually means high combat output, not just any activity.
+  const mpClsP=pct=>{const v=parseFloat(pct)||0;return v>=65?"hi":v>=35?"mid":"lo";};
   // opponent label without the leading "E" (E#090 -> #090)
   const oppLabel=oppCode.replace(/^E/,"");
 
@@ -3330,7 +3333,7 @@ function TMECommandCenter(){
                     <td className="c-rk">{k.rank}</td>
                     <td className="c-nm">{k.name} <span className="tg">[{k.alliance}]</span></td>
                     <td className="c-p">{fmt(k.power)}</td>
-                    <td className={"c-mp "+mpCls(pct)}>{pct}</td>
+                    <td className={"c-mp "+mpClsP(pct)}>{pct}</td>
                   </tr>
                 );})}
                 </tbody>
@@ -3347,7 +3350,7 @@ function TMECommandCenter(){
                     <td className="c-rk">{k.rank}</td>
                     <td className="c-nm">{k.name} <span className="tg">[{k.alliance}]</span></td>
                     <td className="c-p">{fmt(k.power)}</td>
-                    <td className={"c-mp "+mpCls(pct)}>{pct}</td>
+                    <td className={"c-mp "+mpClsP(pct)}>{pct}</td>
                   </tr>
                 );})}
                 </tbody>

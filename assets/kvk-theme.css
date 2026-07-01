@@ -286,9 +286,10 @@ body { font-size: var(--fs-body); }
 /* numeric columns: fixed width + tabular figures so digits line up */
 .cmp-tbl .c-p  { width: 68px; text-align: right; color: var(--kvk-accent); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
 .cmp-tbl .c-mp { width: 54px; text-align: right; font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
-.cmp-tbl .c-mp.hi  { color: var(--accent-green); }
-.cmp-tbl .c-mp.mid { color: var(--text-secondary); }
-.cmp-tbl .c-mp.lo  { color: var(--text-muted); }
+/* M:P traffic-light: good=green, average=amber, low=red (fixed semantic hues) */
+.cmp-tbl .c-mp.hi  { color: #3daa6d; }
+.cmp-tbl .c-mp.mid { color: #d4a843; }
+.cmp-tbl .c-mp.lo  { color: #c9603f; }
 
 /* ============================================================
    Shared tab bar — same width as header/body (var(--w-content)),
