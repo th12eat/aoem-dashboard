@@ -7,26 +7,26 @@
   "oppRank": 11,
   "prepStarted": true,
   "alliances": [
-    { "tag": "WC1", "name": "WorldClass", "roleKey": "rolePrimaryStrike", "position": "NE-inner", "tower": "Swordsman (N) / Pikeman (W)", "color": "#3b82f6", "allies": 169, "power": "20,238,517,730", "merits": "2,272,826,034", "prepPoints": "5,564,608,662" },
-    { "tag": "REU", "name": "Reunions", "roleKey": "roleSecondaryStrike", "position": "SE-inner", "tower": "Archer (E)", "color": "#f59e0b", "allies": 166, "power": "12,699,637,836", "merits": "912,404,888", "prepPoints": "2,140,121,366" },
-    { "tag": "MyT", "name": "Mythic", "roleKey": "roleFlanking", "position": "SE-outer", "tower": "Cavalry (S)", "color": "#22c55e", "allies": 138, "power": "10,430,075,595", "merits": "898,618,923", "prepPoints": "1,887,244,295" },
-    { "tag": "AGC", "name": "AuroraGodCourt", "roleKey": "roleTowerHold", "position": "NE-outer", "tower": "Archer (E)", "color": "#ef4444", "allies": 164, "power": "11,739,696,945", "merits": "186,806,496", "prepPoints": "1,519,654,225" }
+    { "tag": "WC1", "name": "WorldClass", "roleKey": "rolePrimaryStrike", "position": "NE-inner", "tower": "Swordsman (N) / Pikeman (W)", "color": "#3b82f6", "allies": 169, "power": "20,427,268,040", "merits": "2,272,830,539", "prepPoints": "10,458,868,941" },
+    { "tag": "REU", "name": "Reunions", "roleKey": "roleSecondaryStrike", "position": "SE-inner", "tower": "Archer (E)", "color": "#f59e0b", "allies": 166, "power": "13,020,851,767", "merits": "912,406,343", "prepPoints": "4,213,128,975" },
+    { "tag": "MyT", "name": "Mythic", "roleKey": "roleFlanking", "position": "SE-outer", "tower": "Cavalry (S)", "color": "#22c55e", "allies": 138, "power": "10,521,121,074", "merits": "901,008,602", "prepPoints": "3,547,212,243" },
+    { "tag": "AGC", "name": "AuroraGodCourt", "roleKey": "roleTowerHold", "position": "NE-outer", "tower": "Archer (E)", "color": "#ef4444", "allies": 164, "power": "11,814,085,114", "merits": "186,806,499", "prepPoints": "2,963,547,660" }
   ],
   "prepStages": [
     { "nameKey": "prepStage1", "ourPts": 1.27, "oppPts": 1.42, "won": false },
     { "nameKey": "prepStage2", "ourPts": 9.43, "oppPts": 9.98, "won": false },
-    { "nameKey": "prepStage3", "ourPts": 0, "oppPts": 0, "won": null },
+    { "nameKey": "prepStage3", "ourPts": 8.3, "oppPts": 14.9, "won": false },
     { "nameKey": "prepStage4", "ourPts": 0, "oppPts": 0, "won": null },
     { "nameKey": "prepStage5", "ourPts": 0, "oppPts": 0, "won": null }
   ],
-  "totalOur": 10.7,
-  "totalOpp": 11.4,
-  "prepLastUpdated": "2026-06-30 — Day 2 (Stage 2 in progress)",
+  "totalOur": 20.7,
+  "totalOpp": 27.4,
+  "prepLastUpdated": "2026-07-01 — Day 3 (Stage 3 in progress)",
   "oppAlliances": [
-    { "tag": "INT", "name": "英特榮耀", "allies": 166, "power": "14,829,324,819", "merits": "1,022,902,133", "prepPoints": "4,657,885,853" },
-    { "tag": "RIP", "name": "靈車特戰隊", "allies": 168, "power": "20,212,765,060", "merits": "2,541,548,484", "prepPoints": "4,111,196,846" },
-    { "tag": "YFQ", "name": "月落楓橋", "allies": 170, "power": "10,405,496,654", "merits": "190,589,970", "prepPoints": "2,243,372,851" },
-    { "tag": "OvO", "name": "大秦御貓軍", "allies": 110, "power": "6,265,770,680", "merits": "95,788,191", "prepPoints": "TBD" }
+    { "tag": "INT", "name": "英特榮耀", "allies": 166, "power": "14,829,324,819", "merits": "1,022,902,133", "prepPoints": "11,172,717,646" },
+    { "tag": "RIP", "name": "靈車特戰隊", "allies": 168, "power": "20,212,765,060", "merits": "2,541,548,484", "prepPoints": "10,012,536,387" },
+    { "tag": "YFQ", "name": "月落楓橋", "allies": 170, "power": "10,405,496,654", "merits": "190,589,970", "prepPoints": "4,725,082,142" },
+    { "tag": "OvO", "name": "大秦御貓軍", "allies": 110, "power": "6,265,770,680", "merits": "95,788,191", "prepPoints": "2,264,826,577" }
   ],
   "krakens": [
     { "rank": 1, "name": "勾意狼", "alliance": "RIP", "power": "419,247,749", "merits": "279,231,815", "ratio": "0.67" },
@@ -43,16 +43,16 @@
     { "rank": 12, "name": "好色的大叔", "alliance": "RIP", "power": "252,681,150", "merits": "187,716,159", "ratio": "0.74" }
   ],
   "ourTop": [
-    { "rank": 1, "name": "時宗", "alliance": "eRa", "power": "428,700,000", "merits": "270,081,000" },
-    { "rank": 2, "name": "민트", "alliance": "REU", "power": "313,800,000", "merits": "307,524,000" },
-    { "rank": 3, "name": "Collin6666", "alliance": "eRa", "power": "301,500,000", "merits": "63,315,000" },
-    { "rank": 4, "name": "XnJinX", "alliance": "eRa", "power": "293,600,000", "merits": "226,072,000" },
-    { "rank": 5, "name": "Lumberjack", "alliance": "eRa", "power": "267,000,000", "merits": "264,330,000" },
-    { "rank": 6, "name": "Macklemore", "alliance": "eRa", "power": "266,900,000", "merits": "112,098,000" },
-    { "rank": 7, "name": "BloodYoda", "alliance": "eRa", "power": "251,200,000", "merits": "228,592,000" },
-    { "rank": 8, "name": "ibubu♣JP", "alliance": "eRa", "power": "244,500,000", "merits": "68,460,000" },
-    { "rank": 9, "name": "뎏라에빛", "alliance": "REU", "power": "236,400,000", "merits": "40,188,000" },
-    { "rank": 10, "name": "TommyTorpedo", "alliance": "eRa", "power": "228,700,000", "merits": "128,072,000" }
+    { "rank": 1, "name": "時宗", "alliance": "eRa", "power": "438,952,874", "merits": "323,905,649" },
+    { "rank": 2, "name": "민트", "alliance": "REU", "power": "323,741,781", "merits": "310,548,721" },
+    { "rank": 3, "name": "Collin6666", "alliance": "eRa", "power": "316,151,431", "merits": "65,767,405" },
+    { "rank": 4, "name": "XnJinX", "alliance": "eRa", "power": "295,813,708", "merits": "230,306,208" },
+    { "rank": 5, "name": "Macklemore", "alliance": "eRa", "power": "274,523,136", "merits": "112,432,858" },
+    { "rank": 6, "name": "Lumberjack", "alliance": "eRa", "power": "271,250,032", "merits": "277,411,196" },
+    { "rank": 7, "name": "BloodYoda", "alliance": "eRa", "power": "262,538,190", "merits": "233,721,373" },
+    { "rank": 8, "name": "ibubu♣JP", "alliance": "eRa", "power": "248,054,902", "merits": "79,129,364" },
+    { "rank": 9, "name": "또라에몬", "alliance": "REU", "power": "240,915,320", "merits": "TBD" },
+    { "rank": 10, "name": "TommyTorpedo", "alliance": "eRa", "power": "231,700,285", "merits": "133,782,915" }
   ],
   "roles": {
     "WC1": { "rallyLead": "TBD", "taxiRunners": ["TBD", "TBD", "TBD", "TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD", "TBD", "TBD", "TBD"] },
