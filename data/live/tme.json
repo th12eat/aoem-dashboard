@@ -7,25 +7,25 @@
   "oppRank": 11,
   "prepStarted": true,
   "alliances": [
-    { "tag": "WC1", "name": "WorldClass", "roleKey": "rolePrimaryStrike", "position": "NE-inner", "tower": "Swordsman (N) / Pikeman (W)", "color": "#3b82f6", "allies": 169, "power": "20,427,268,040", "merits": "2,272,830,539", "prepPoints": "10,458,868,941" },
-    { "tag": "REU", "name": "Reunions", "roleKey": "roleSecondaryStrike", "position": "SE-inner", "tower": "Archer (E)", "color": "#f59e0b", "allies": 166, "power": "13,020,851,767", "merits": "912,406,343", "prepPoints": "4,213,128,975" },
-    { "tag": "MyT", "name": "Mythic", "roleKey": "roleFlanking", "position": "SE-outer", "tower": "Cavalry (S)", "color": "#22c55e", "allies": 138, "power": "10,521,121,074", "merits": "901,008,602", "prepPoints": "3,547,212,243" },
-    { "tag": "AGC", "name": "AuroraGodCourt", "roleKey": "roleTowerHold", "position": "NE-outer", "tower": "Archer (E)", "color": "#ef4444", "allies": 164, "power": "11,814,085,114", "merits": "186,806,499", "prepPoints": "2,963,547,660" }
+    { "tag": "WC1", "name": "WorldClass", "roleKey": "rolePrimaryStrike", "position": "NE-inner", "tower": "Swordsman (N) / Pikeman (W)", "color": "#3b82f6", "allies": 169, "power": "20,427,268,040", "merits": "2,272,830,539", "prepPoints": "18,551,113,675" },
+    { "tag": "REU", "name": "Reunions", "roleKey": "roleSecondaryStrike", "position": "SE-inner", "tower": "Archer (E)", "color": "#f59e0b", "allies": 166, "power": "13,020,851,767", "merits": "912,406,343", "prepPoints": "6,439,540,154" },
+    { "tag": "MyT", "name": "Mythic", "roleKey": "roleFlanking", "position": "SE-outer", "tower": "Cavalry (S)", "color": "#22c55e", "allies": 138, "power": "10,521,121,074", "merits": "901,008,602", "prepPoints": "5,240,160,531" },
+    { "tag": "AGC", "name": "AuroraGodCourt", "roleKey": "roleTowerHold", "position": "NE-outer", "tower": "Archer (E)", "color": "#ef4444", "allies": 164, "power": "11,814,085,114", "merits": "186,806,499", "prepPoints": "6,115,197,327" }
   ],
   "prepStages": [
     { "nameKey": "prepStage1", "ourPts": 1.27, "oppPts": 1.42, "won": false },
     { "nameKey": "prepStage2", "ourPts": 9.43, "oppPts": 9.98, "won": false },
     { "nameKey": "prepStage3", "ourPts": 8.3, "oppPts": 14.9, "won": false },
-    { "nameKey": "prepStage4", "ourPts": 0, "oppPts": 0, "won": null },
+    { "nameKey": "prepStage4", "ourPts": 10.6, "oppPts": 18.4, "won": false },
     { "nameKey": "prepStage5", "ourPts": 0, "oppPts": 0, "won": null }
   ],
-  "totalOur": 20.7,
-  "totalOpp": 27.4,
-  "prepLastUpdated": "2026-07-01 — Day 3 (Stage 3 in progress)",
+  "totalOur": 35,
+  "totalOpp": 47.6,
+  "prepLastUpdated": "2026-07-02 — Day 4 (Stage 4 in progress)",
   "oppAlliances": [
-    { "tag": "INT", "name": "英特榮耀", "allies": 166, "power": "14,829,324,819", "merits": "1,022,902,133", "prepPoints": "11,172,717,646" },
-    { "tag": "RIP", "name": "靈車特戰隊", "allies": 168, "power": "20,212,765,060", "merits": "2,541,548,484", "prepPoints": "10,012,536,387" },
-    { "tag": "YFQ", "name": "月落楓橋", "allies": 170, "power": "10,405,496,654", "merits": "190,589,970", "prepPoints": "4,725,082,142" },
+    { "tag": "INT", "name": "英特榮耀", "allies": 166, "power": "14,829,324,819", "merits": "1,022,902,133", "prepPoints": "16,637,721,904" },
+    { "tag": "RIP", "name": "靈車特戰隊", "allies": 168, "power": "20,212,765,060", "merits": "2,541,548,484", "prepPoints": "22,290,695,349" },
+    { "tag": "YFQ", "name": "月落楓橋", "allies": 170, "power": "10,405,496,654", "merits": "190,589,970", "prepPoints": "6,894,118,330" },
     { "tag": "OvO", "name": "大秦御貓軍", "allies": 110, "power": "6,265,770,680", "merits": "95,788,191", "prepPoints": "2,264,826,577" }
   ],
   "krakens": [
