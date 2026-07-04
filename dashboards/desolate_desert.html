@@ -22,10 +22,10 @@ const { useState, useCallback, useMemo, useEffect, useRef } = React;
    EVENT DATA
    ═══════════════════════════════════════════════════ */
 let EVENT_CONFIG = {
-  eventStart: "2026-05-25",
-  eventEnd: "2026-06-01",
-  matchingStart: "2026-05-22",
-  servers: ["Era 8", "Era 51", "Era 82", "Era 2"],
+  eventStart: "TBD",
+  eventEnd: "TBD",
+  matchingStart: "TBD",
+  servers: ["Era 8", "Era #023", "Era #014", "Era #019"],
   ourServer: "Era 8",
   ourAlliances: ["WC1", "MyT", "REU", "AGC"],
 };
@@ -413,9 +413,9 @@ function MapTab({ state, setState }) {
 
 let KINGDOM_POINTS = {
   era8: "—",
-  era51: "—",
-  era82: "—",
-  era2: "—",
+  era023: "—",
+  era014: "—",
+  era019: "—",
   lastUpdated: "Awaiting event start",
 };
 
@@ -435,9 +435,9 @@ function PointsTab() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "10px" }}>
           {[
             { label: "Era 8 (Us)", value: KINGDOM_POINTS.era8, color: "#14b8a6" },
-            { label: "Era 51", value: KINGDOM_POINTS.era51, color: "#a855f7" },
-            { label: "Era 82", value: KINGDOM_POINTS.era82, color: "#3b82f6" },
-            { label: "Era 2", value: KINGDOM_POINTS.era2, color: "#f97316" },
+            { label: "Era #023", value: KINGDOM_POINTS.era023, color: "#a855f7" },
+            { label: "Era #014", value: KINGDOM_POINTS.era014, color: "#3b82f6" },
+            { label: "Era #019", value: KINGDOM_POINTS.era019, color: "#f97316" },
           ].map(k => (
             <div key={k.label} style={{ padding: "12px", background: "#0f172a", borderRadius: "8px", textAlign: "center" }}>
               <div style={{ fontSize: "11px", color: "#94a3b8" }}>{k.label}</div>
@@ -498,15 +498,12 @@ function PointsTab() {
 }
 
 let DEFAULT_DIPLOMACY = [
-  { id: 1, server: "Era 51", alliance: "TBD", relation: "ally", notes: "Friends in Era 51. No zeroing citadels, no killing farmers. Help each other reach Aaru, then fight Aaru normally." },
-  { id: 2, server: "Era 82", alliance: "TBD", relation: "neutral", notes: "No contact yet. Don't mess with them unless they mess with us." },
-  { id: 3, server: "Era 2", alliance: "TBD", relation: "neutral", notes: "No contact yet. Don't mess with them unless they mess with us." },
+  { id: 1, server: "Era #023", alliance: "TBD", relation: "ally", notes: "Shared half (left/right eyes) — highest-priority peace. Beat us in TME invasion recently; SD rank 13." },
+  { id: 2, server: "Era #019", alliance: "TBD", relation: "ally", notes: "SD rank 2 — must-win for their top-3 season reward. Appease/feed to survive." },
+  { id: 3, server: "Era #014", alliance: "TBD", relation: "ally", notes: "SD rank 11. Maintain peace." },
 ];
 
-let CONTACTS = [
-  { server: "Era 51", name: "DarthGluttony128", note: "Darth is superscript, 128 is subscript. Need to confirm alliance control + specific terms." },
-  { server: "Era 51", name: "SnipeR", note: "Special characters in name (details TBD). Need to confirm alliance control + specific terms." },
-];
+let CONTACTS = [];
 
 function DiplomacyTab({ state, setState }) {
   const diplomacy = state.diplomacy || DEFAULT_DIPLOMACY;
@@ -826,6 +823,103 @@ function PveTab() {
 }
 
 /* ═══════════════════════════════════════════════════
+   RESEARCH / SCOUTING
+   ═══════════════════════════════════════════════════ */
+let RESEARCH = {
+  ours: { server: "Era 8", sdRank: null, alliances: [], players: [] },
+  opponents: []
+};
+
+// M:P % + activity tier (players run a wide scale; alliances a low one)
+const rmp = (m, p) => { const mm=parseInt(String(m).replace(/,/g,""),10)||0; const pp=parseInt(String(p).replace(/,/g,""),10)||1; return ((mm/pp)*100); };
+const rfmt = (v) => { const n=parseInt(String(v).replace(/,/g,""),10); if(isNaN(n))return v; if(n>=1e9)return (n/1e9).toFixed(2)+"B"; if(n>=1e6)return (n/1e6).toFixed(1)+"M"; return String(v); };
+const allianceMpCls = (pct) => pct>=8?"hi":pct>=4?"mid":"lo";
+const playerMpCls = (pct) => pct>=65?"hi":pct>=35?"mid":"lo";
+
+function ScoutCard({ title, subtitle, side, alliances, players }) {
+  const headCls = side === "us" ? "cmp-head us" : "cmp-head them";
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: 1,
+        textTransform: "uppercase", color: side === "us" ? "#5b9bd8" : "#f5731f", marginBottom: 8 }}>{title}</div>
+      {subtitle && <div style={{ fontSize: 12, color: "#94a3b8", marginBottom: 10, lineHeight: 1.5 }}>{subtitle}</div>}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 12 }}>
+        {/* Alliances */}
+        <div className="cmp-card">
+          <div className={headCls}>Top Alliances</div>
+          {alliances && alliances.length ? (
+            <table className="cmp-tbl">
+              <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">Power</th><th className="c-mp">M:P</th></tr></thead>
+              <tbody>
+              {alliances.map((a, i) => { const pct = rmp(a.merits, a.power); return (
+                <tr key={i}>
+                  <td className="c-rk">{i + 1}</td>
+                  <td className="c-nm">{a.name ? a.name + " " : ""}<span className="tg">[{a.tag}]</span></td>
+                  <td className="c-p">{rfmt(a.power)}</td>
+                  <td className={"c-mp " + allianceMpCls(pct)}>{pct.toFixed(1)}%</td>
+                </tr>
+              ); })}
+              </tbody>
+            </table>
+          ) : <div style={{ padding: "14px 12px", fontSize: 12, color: "#64748b", fontStyle: "italic" }}>Awaiting scouting data.</div>}
+        </div>
+        {/* Players */}
+        <div className="cmp-card">
+          <div className={headCls}>Top Players</div>
+          {players && players.length ? (
+            <table className="cmp-tbl">
+              <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">Power</th><th className="c-mp">M:P</th></tr></thead>
+              <tbody>
+              {players.map((k, i) => { const pct = rmp(k.merits, k.power); return (
+                <tr key={i}>
+                  <td className="c-rk">{k.rank || i + 1}</td>
+                  <td className="c-nm">{k.name} <span className="tg">[{k.alliance}]</span></td>
+                  <td className="c-p">{rfmt(k.power)}</td>
+                  <td className={"c-mp " + playerMpCls(pct)}>{pct.toFixed(1)}%</td>
+                </tr>
+              ); })}
+              </tbody>
+            </table>
+          ) : <div style={{ padding: "14px 12px", fontSize: 12, color: "#64748b", fontStyle: "italic" }}>Awaiting scouting data.</div>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ResearchTab() {
+  const r = RESEARCH || { ours: {}, opponents: [] };
+  const priBadge = { critical: "#ef4444", high: "#f5731f", medium: "#f59e0b", low: "#94a3b8" };
+  return (
+    <div>
+      <div style={S.card}>
+        <div style={S.cardTitle}>Scouting &amp; Research</div>
+        <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6 }}>
+          Top alliances and players per server. We are <strong style={{ color: "#e8eaf0" }}>SD rank {r.ours?.sdRank ?? "—"}</strong> and
+          heavily outmatched — the plan is to appease the contenders and survive. Power is raw strength; M:P (merits ÷ power)
+          flags combat activity: <span style={{ color: "#3daa6d" }}>green</span> high, <span style={{ color: "#d4a843" }}>amber</span> average,
+          <span style={{ color: "#c9603f" }}> red</span> low/parked.
+        </div>
+      </div>
+
+      <ScoutCard title="Era 8 — Us" side="us" alliances={r.ours?.alliances} players={r.ours?.players} />
+
+      {(r.opponents || []).map((o, i) => (
+        <div key={i} style={S.card}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4, flexWrap: "wrap" }}>
+            <span style={{ ...S.cardTitle, color: "#f5731f", marginBottom: 0 }}>{o.server}</span>
+            <span style={S.badge("#7c3aed")}>SD Rank {o.sdRank ?? "?"}</span>
+            {o.priority && <span style={{ ...S.badge(priBadge[o.priority] || "#94a3b8"), textTransform: "uppercase" }}>{o.priority} priority</span>}
+          </div>
+          {o.note && <div style={{ fontSize: 12, color: "#94a3b8", marginBottom: 12, lineHeight: 1.5 }}>{o.note}</div>}
+          <ScoutCard side="them" alliances={o.alliances} players={o.players} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
    MAIN APP
    ═══════════════════════════════════════════════════ */
 function App() {
@@ -863,6 +957,7 @@ function App() {
 
   const TABS = [
     { id: "overview", label: "Overview" },
+    { id: "research", label: "Research" },
     { id: "schedule", label: "Schedule" },
     { id: "map", label: "Map & Nodes" },
     { id: "routes", label: "Route Planner" },
@@ -892,6 +987,7 @@ function App() {
 
       <div style={S.content}>
         {tab === "overview" && <OverviewTab state={state} setState={setState} />}
+        {tab === "research" && <ResearchTab />}
         {tab === "schedule" && <ScheduleTab />}
         {tab === "map" && <MapTab state={state} setState={setState} />}
         {tab === "routes" && <RoutePlannerTab state={state} setState={setState} />}
@@ -917,6 +1013,7 @@ function App() {
         if (j.alliancePoints) ALLIANCE_POINTS = j.alliancePoints;
         if (j.diplomacy)      DEFAULT_DIPLOMACY = j.diplomacy;
         if (j.contacts)       CONTACTS        = j.contacts;
+        if (j.research)       RESEARCH        = j.research;
       }
     }
   } catch (e) {
