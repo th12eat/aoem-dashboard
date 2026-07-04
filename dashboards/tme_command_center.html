@@ -3097,7 +3097,7 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel}){
   let liveIdx=-1;
   stages.forEach((s,i)=>{ if(s.ourPts>0||s.oppPts>0) liveIdx=i; });
   // stage title prefixed with its day ("Day 1: Forging Gear"); stage index i -> Day i+1
-  const stageLabel=(s,i)=>`Day ${i+1}: ${t[s.nameKey]||s.nameKey}`;
+  const stageLabel=(s,i)=>`Stage ${i+1}: ${t[s.nameKey]||s.nameKey}`;
   return(<div>
     {/* always-visible: current live stage */}
     {liveIdx>=0 && <Tug label={stageLabel(stages[liveIdx],liveIdx)} our={stages[liveIdx].ourPts} opp={stages[liveIdx].oppPts} live/>}
