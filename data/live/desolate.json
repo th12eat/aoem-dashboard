@@ -13,14 +13,32 @@
     "notes": "We are heavily outmatched. Survival plan: appease Era #019 (SD rank 2, must-win for their top-3 reward) and make peace with Era #023 (shared half)."
   },
   "kingdomPoints": {
-    "era8": "—",
-    "era023": "—",
-    "era014": "—",
-    "era019": "—",
-    "lastUpdated": "Awaiting event start"
+    "era8": "1.31B",
+    "era023": "1.26B",
+    "era014": "1.98B",
+    "era019": "1.82B",
+    "lastUpdated": "2026-07-06 — Day 1 (Desert Star points)"
   },
+  "kingdomScoreboard": [
+    { "rank": 1, "server": "Era #014", "points": "1,976,376,030" },
+    { "rank": 2, "server": "Era #019", "points": "1,817,609,005" },
+    { "rank": 3, "server": "Era 8", "points": "1,313,267,425" },
+    { "rank": 4, "server": "Era #023", "points": "1,263,779,600" }
+  ],
+  "allianceScoreboard": [
+    { "rank": 1, "tag": "X14", "name": "Sakura", "server": "Era #014", "points": "707,109,250" },
+    { "rank": 2, "tag": "KNY", "name": "DemonSlayer", "server": "Era #019", "points": "656,610,690" },
+    { "rank": 3, "tag": "Ȼ14", "name": "LXCelestials", "server": "Era #014", "points": "646,990,635" },
+    { "rank": 4, "tag": "XIX", "name": "LeGENDZ", "server": "Era #019", "points": "641,728,015" },
+    { "rank": 5, "tag": "GnG", "name": "GANGSTA", "server": "Era #014", "points": "612,682,800" },
+    { "rank": 6, "tag": "eRa", "name": "WorldClass", "server": "Era 8", "points": "565,123,540" },
+    { "rank": 7, "tag": "LOD", "name": "LegionOfDonuts", "server": "Era #023", "points": "562,107,530" },
+    { "rank": 8, "tag": "PBJ", "name": "Reiwa令和", "server": "Era #019", "points": "376,197,315" },
+    { "rank": 9, "tag": "DXR", "name": "DefiantRebels", "server": "Era #019", "points": "322,971,000" },
+    { "rank": 10, "tag": "boi", "name": "Jericho", "server": "Era #023", "points": "295,525,445" }
+  ],
   "alliancePoints": [
-    { "tag": "WC1", "points": "—" },
+    { "tag": "WC1", "points": "565,123,540" },
     { "tag": "MyT", "points": "—" },
     { "tag": "REU", "points": "—" },
     { "tag": "AGC", "points": "—" }
