@@ -83,6 +83,7 @@
 
   // current stage label, or "Event Complete" past endISO
   function stageLabel(cfg, now) {
+    if (cfg.forceComplete) return cfg.completeLabel || 'Event Complete';
     if (cfg.endISO && now >= Date.parse(cfg.endISO)) return cfg.completeLabel || 'Event Complete';
     if (cfg.startISO && now < Date.parse(cfg.startISO)) return cfg.pendingLabel || 'Event Not Started';
     if (cfg.stages && cfg.stages.length) {

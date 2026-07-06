@@ -3199,12 +3199,14 @@ function TMECommandCenter(){
           timezone: 'UTC',
           pendingLabel: 'Invasion Time TBD',
           liveLabel: 'Prep In Progress',
+          forceComplete: config.eventOver === true,
+          completeLabel: 'Event Complete',
           ical: { stub:true, label:'Add Invasion to Calendar' }
         });
       } else if(tries++ < 50){ setTimeout(mount, 50); }
     };
     mount();
-  },[config.invasionTime]);
+  },[config.invasionTime, config.eventOver]);
 
   // Until prep is meaningfully underway, don't let an early/partial score flip attack-defense.
   const isDefense=config.prepStarted===false?false:(config.totalOur < config.totalOpp);
