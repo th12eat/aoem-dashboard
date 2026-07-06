@@ -445,6 +445,9 @@ let ALLIANCE_POINTS = [
 let KINGDOM_SCOREBOARD = [];   // [{rank, server, points}]
 let ALLIANCE_SCOREBOARD = [];  // [{rank, tag, name, server, points}]
 
+// Placer Gold tracker (cap 500k; costs/generation partly TBD)
+let PLACER_GOLD = { cap: 500000, flagZone1Cost: 5000, note: "", alliances: [] };
+
 function PointsTab() {
   return (
     <div>
@@ -525,6 +528,50 @@ function PointsTab() {
           </tbody>
         </table>
       </div>
+
+      {/* Placer Gold tracker */}
+      {PLACER_GOLD && PLACER_GOLD.alliances && PLACER_GOLD.alliances.length ? (
+        <div style={S.card}>
+          <div style={S.cardTitle}>Placer Gold — Estimated Balances</div>
+          <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>{PLACER_GOLD.note}</div>
+          <table style={S.table}>
+            <thead>
+              <tr>
+                <th style={S.th}>Alliance</th>
+                <th style={{ ...S.th, textAlign: "right" }}>Current</th>
+                <th style={{ ...S.th, minWidth: "140px" }}>Cap ({(PLACER_GOLD.cap/1000)}k)</th>
+                <th style={{ ...S.th, textAlign: "right" }}>Gen /h</th>
+                <th style={{ ...S.th, textAlign: "right" }}>Z1 flags affordable</th>
+              </tr>
+            </thead>
+            <tbody>
+              {PLACER_GOLD.alliances.map(a => {
+                const pct = Math.min(100, Math.round((a.current / PLACER_GOLD.cap) * 100));
+                const capped = a.current >= PLACER_GOLD.cap;
+                const flags = PLACER_GOLD.flagZone1Cost ? Math.floor(a.current / PLACER_GOLD.flagZone1Cost) : "—";
+                return (
+                <tr key={a.tag}>
+                  <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
+                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: capped ? "#ef4444" : "#e8eaf0" }}>{a.current.toLocaleString()}</td>
+                  <td style={S.td}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ flex: 1, height: "6px", background: "#0f172a", borderRadius: "3px", overflow: "hidden" }}>
+                        <div style={{ width: pct + "%", height: "100%", background: capped ? "#ef4444" : "#f5731f", borderRadius: "3px" }} />
+                      </div>
+                      <span style={{ fontSize: "11px", color: "#94a3b8", minWidth: "32px" }}>{pct}%</span>
+                    </div>
+                  </td>
+                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: (a.perHour > 0 ? "#3daa6d" : "#64748b") }}>{a.perHour > 0 ? "+" + a.perHour.toLocaleString() : "0"}</td>
+                  <td style={{ ...S.td, textAlign: "right", color: "#94a3b8" }}>{flags}</td>
+                </tr>
+              ); })}
+            </tbody>
+          </table>
+          <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>
+            Cap warning at 500k — gold wasted once maxed, so spend on flags before capping. "Z1 flags affordable" = current ÷ {(PLACER_GOLD.flagZone1Cost/1000)}k (Zone-1 cost).
+          </div>
+        </div>
+      ) : null}
 
       {/* Achievements — per-alliance progress */}
       <div style={S.card}>
@@ -1099,6 +1146,7 @@ function App() {
         if (j.research)       RESEARCH        = j.research;
         if (j.kingdomScoreboard)  KINGDOM_SCOREBOARD  = j.kingdomScoreboard;
         if (j.allianceScoreboard) ALLIANCE_SCOREBOARD = j.allianceScoreboard;
+        if (j.placerGold)         PLACER_GOLD         = j.placerGold;
       }
     }
   } catch (e) {

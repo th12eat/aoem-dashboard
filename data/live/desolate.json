@@ -43,6 +43,17 @@
     { "tag": "AGC", "points": "231,076,590" },
     { "tag": "MyT", "points": "216,439,105" }
   ],
+  "placerGold": {
+    "cap": 500000,
+    "flagZone1Cost": 5000,
+    "note": "Stronghold free · Resource Center 1k · Zone-1 flag 5k. Costs scale by zone and by flag-count tier (10/20/30…) — exact multipliers TBD. Gate/dock & city generation (lump-sum + per-hour) TBD.",
+    "alliances": [
+      { "tag": "WC1", "current": 199000, "perHour": 0 },
+      { "tag": "REU", "current": 199000, "perHour": 0 },
+      { "tag": "AGC", "current": 199000, "perHour": 0 },
+      { "tag": "MyT", "current": 194000, "perHour": 0 }
+    ]
+  },
   "diplomacy": [
     { "id": 1, "server": "Era #023", "alliance": "TBD", "relation": "ally", "notes": "Shared half (left/right eyes) — highest-priority peace. Beat us in TME invasion recently; SD rank 13." },
     { "id": 2, "server": "Era #019", "alliance": "TBD", "relation": "ally", "notes": "SD rank 2 — must-win for their top-3 season reward. Appease/feed to survive." },
