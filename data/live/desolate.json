@@ -38,10 +38,10 @@
     { "rank": 10, "tag": "boi", "name": "Jericho", "server": "Era #023", "points": "295,525,445" }
   ],
   "alliancePoints": [
-    { "tag": "WC1", "points": "565,123,540" },
-    { "tag": "MyT", "points": "—" },
-    { "tag": "REU", "points": "—" },
-    { "tag": "AGC", "points": "—" }
+    { "tag": "WC1", "points": "565,623,540" },
+    { "tag": "REU", "points": "305,507,870" },
+    { "tag": "AGC", "points": "231,076,590" },
+    { "tag": "MyT", "points": "216,439,105" }
   ],
   "diplomacy": [
     { "id": 1, "server": "Era #023", "alliance": "TBD", "relation": "ally", "notes": "Shared half (left/right eyes) — highest-priority peace. Beat us in TME invasion recently; SD rank 13." },
