@@ -22,9 +22,9 @@ const { useState, useCallback, useMemo, useEffect, useRef } = React;
    EVENT DATA
    ═══════════════════════════════════════════════════ */
 let EVENT_CONFIG = {
-  eventStart: "TBD",
-  eventEnd: "TBD",
-  matchingStart: "TBD",
+  eventStart: "2026-07-05",
+  eventEnd: "2026-07-13",
+  matchingStart: "2026-07-03",
   servers: ["Era 8", "Era #023", "Era #014", "Era #019"],
   ourServer: "Era 8",
   ourAlliances: ["WC1", "MyT", "REU", "AGC"],
@@ -937,16 +937,19 @@ function App() {
   // Standard event-meta block (Start|End|TZ + countdown + stage + ical stub).
   useEffect(() => {
     let tries = 0;
-    const fmt = (d) => { try { return new Date(d + "T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}); } catch(e){ return d; } };
+    // only treat a value as a real date if it parses as YYYY-MM-DD; otherwise
+    // pass it through as a label (e.g. "TBD") and skip the countdown ISO.
+    const isDate = (d) => typeof d === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d) && !isNaN(Date.parse(d + "T00:00:00Z"));
+    const fmt = (d) => isDate(d) ? new Date(d + "T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}) : (d || "TBD");
     const mount = () => {
       if (window.EventHeader && document.getElementById("evtMeta")) {
         const ec = EVENT_CONFIG;
         window.EventHeader.mount("#evtMeta", {
-          startLabel: ec.eventStart ? fmt(ec.eventStart) : "TBD",
-          endLabel: ec.eventEnd ? fmt(ec.eventEnd) : "TBD",
+          startLabel: fmt(ec.eventStart),
+          endLabel: fmt(ec.eventEnd),
           timezone: "UTC+0",
-          startISO: ec.eventStart ? ec.eventStart + "T00:00:00Z" : null,
-          endISO: ec.eventEnd ? ec.eventEnd + "T00:00:00Z" : null,
+          startISO: isDate(ec.eventStart) ? ec.eventStart + "T00:00:00Z" : null,
+          endISO: isDate(ec.eventEnd) ? ec.eventEnd + "T00:00:00Z" : null,
           liveLabel: "Contest Live",
           ical: { stub: true, label: "Add to Calendar" }
         });

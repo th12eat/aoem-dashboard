@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "eventConfig": {
-    "eventStart": "TBD",
-    "eventEnd": "TBD",
-    "matchingStart": "TBD",
+    "eventStart": "2026-07-05",
+    "eventEnd": "2026-07-13",
+    "matchingStart": "2026-07-03",
     "servers": ["Era 8", "Era #023", "Era #014", "Era #019"],
     "ourServer": "Era 8",
     "ourAlliances": ["WC1", "MyT", "REU", "AGC"],
