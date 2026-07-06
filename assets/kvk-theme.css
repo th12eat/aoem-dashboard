@@ -283,6 +283,9 @@ body { font-size: var(--fs-body); }
 .cmp-tbl th.c-rk { text-align: center; }
 .cmp-tbl .c-nm { color: var(--text-primary); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cmp-tbl .c-nm .tg { color: var(--text-muted); font-weight: 400; }
+/* .cmp-tbl-wrap: let names use the full cell (no ellipsis/truncation) — for wide 2-up layouts with plenty of room */
+.cmp-tbl.cmp-tbl-wrap { table-layout: auto; }
+.cmp-tbl.cmp-tbl-wrap .c-nm { overflow: visible; text-overflow: clip; white-space: normal; word-break: break-word; }
 /* numeric columns: fixed width + tabular figures so digits line up */
 .cmp-tbl .c-p  { width: 68px; text-align: right; color: var(--kvk-accent); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
 .cmp-tbl .c-cb { width: 72px; text-align: right; color: var(--text-secondary); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }

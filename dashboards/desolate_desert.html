@@ -1015,7 +1015,7 @@ function ServerTable({ server, sdRank, priority, rows, kind }) {
         {priority && <span style={{ fontSize: 9.5, fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, letterSpacing: 0.5, textTransform: "uppercase", color: priBadge[priority] || "#94a3b8" }}>{priority}</span>}
       </div>
       {rows && rows.length ? (
-        <table className="cmp-tbl">
+        <table className="cmp-tbl cmp-tbl-wrap">
           <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">Power</th><th className="c-mp">M:P</th></tr></thead>
           <tbody>
           {rows.map((r, i) => { const has = r.merits !== "" && r.merits != null; const pct = rmp(r.merits, r.power);
@@ -1044,7 +1044,6 @@ function ResearchTab() {
     { server: r.ours?.server || "Era 8", sdRank: r.ours?.sdRank, priority: null, alliances: r.ours?.alliances || [], players: r.ours?.players || [] },
     ...(r.opponents || []).map(o => ({ server: o.server, sdRank: o.sdRank, priority: o.priority, alliances: o.alliances || [], players: o.players || [] }))
   ];
-  const grid = { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 12 };
   return (
     <div>
       <div style={S.card}>
@@ -1063,7 +1062,7 @@ function ResearchTab() {
       {/* ALLIANCES */}
       <div style={S.card}>
         <div style={S.cardTitle}>Top Alliances</div>
-        <div style={grid}>
+        <div className="cmp-grid">
           {servers.map((s, i) => <ServerTable key={i} server={s.server} sdRank={s.sdRank} priority={s.priority} rows={s.alliances} kind="alliances" />)}
         </div>
       </div>
@@ -1071,7 +1070,7 @@ function ResearchTab() {
       {/* PLAYERS */}
       <div style={S.card}>
         <div style={S.cardTitle}>Top Players</div>
-        <div style={grid}>
+        <div className="cmp-grid">
           {servers.map((s, i) => <ServerTable key={i} server={s.server} sdRank={s.sdRank} priority={s.priority} rows={s.players} kind="players" />)}
         </div>
       </div>
