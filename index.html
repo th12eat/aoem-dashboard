@@ -28,31 +28,32 @@
         h2 .h2dot { color: var(--kvk-accent); font-size: 15px; }
 
         /* featured active-KvK banner */
+        /* accent follows the featured event's --kvk-accent (set via data-kvk on the element) */
         .featured {
             display: block; text-decoration: none;
-            border: 1px solid var(--accent-blue-dim);
+            border: 1px solid var(--kvk-accent-dim);
             border-radius: 14px; overflow: hidden;
             background:
-              radial-gradient(ellipse at 80% 0%, rgba(61,124,196,0.22), transparent 60%),
-              linear-gradient(180deg, rgba(61,124,196,0.10), var(--bg-card));
+              radial-gradient(ellipse at 80% 0%, rgba(var(--kvk-accent-rgb),0.22), transparent 60%),
+              linear-gradient(180deg, rgba(var(--kvk-accent-rgb),0.10), var(--bg-card));
             padding: 20px 22px; margin-bottom: 6px;
             transition: border-color .15s, transform .12s;
         }
-        .featured:hover { border-color: var(--accent-blue); transform: translateY(-1px); }
+        .featured:hover { border-color: var(--kvk-accent); transform: translateY(-1px); }
         .featured .tag {
             font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
             font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
-            color: var(--accent-blue);
+            color: var(--kvk-accent);
         }
         .featured .ttl {
             font-family: 'Bebas Neue', sans-serif; font-size: 34px; letter-spacing: 1.5px;
             color: var(--text-primary); line-height: 1.05; margin: 3px 0 4px;
         }
-        .featured .ttl span { color: var(--accent-blue); }
+        .featured .ttl span { color: var(--kvk-accent); }
         .featured .sub { color: var(--text-secondary); font-size: 14px; }
         .featured .go {
             display: inline-block; margin-top: 10px; font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 700; letter-spacing: 1px; font-size: 13px; color: var(--accent-blue);
+            font-weight: 700; letter-spacing: 1px; font-size: 13px; color: var(--kvk-accent);
         }
 
         .grid {
@@ -98,7 +99,7 @@
     <div class="wrap">
 
         <h2><span class="h2dot">◆</span> Active KvK</h2>
-        <a class="featured" href="dashboards/desolate_desert.html">
+        <a class="featured" href="dashboards/desolate_desert.html" data-kvk="desolate">
             <div class="tag">Desolate Desert · in progress</div>
             <div class="ttl">vs <span>Era #023 · #014 · #019</span></div>
             <div class="sub">Season-final KvK — scouting/research, diplomacy, zones &amp; route planner. We're outmatched; appease and survive.</div>
