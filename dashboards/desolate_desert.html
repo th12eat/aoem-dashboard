@@ -31,13 +31,13 @@ let EVENT_CONFIG = {
 };
 
 const SCHEDULE = [
-  { day: 1, date: "2026-05-25", title: "Map Opens", desc: "Relocate to Waste Land. Construct alliance buildings (Stronghold, flags, gathering center, supply depot).", zone: "Waste Land" },
-  { day: 2, date: "2026-05-26", title: "Mountain Forts & Pillar Cities", desc: "Waste Land Mountain Forts/Docks and Pillar Cities accessible. Occupy Forts to enter Forbidden Zone. Pillar Cities earn Placer Gold + Desert Points/min.", zone: "Waste Land → Forbidden Zone" },
-  { day: 3, date: "2026-05-27", title: "Tower of Rotation Opens", desc: "Tower of Rotation and Forbidden Zone Mountain Fort now open. Tower awakens daily, spawning Silent Guardians & Echoing Phantoms for 2hrs. Must be adjacent to alliance land.", zone: "Forbidden Zone" },
-  { day: 4, date: "2026-05-28", title: "Contest Continues", desc: "Continue territory expansion. Tower of Rotation daily spawn. Peaceful Riverland events.", zone: "Forbidden Zone" },
-  { day: 5, date: "2026-05-29", title: "Contest Continues", desc: "Push toward Eternal Realm Mountain Forts. Accumulate Placer Gold for Z3 flags.", zone: "Forbidden Zone" },
-  { day: 6, date: "2026-05-30", title: "Eternal Realm Opens", desc: "Eternal Realm Mountain Forts open. Alliances occupying these can enter the Eternal Realm. Flags cost more but have higher durability.", zone: "Eternal Realm" },
-  { day: 7, date: "2026-05-31", title: "Aaru Palace", desc: "Aaru Palace opens. War declarations begin at voted time. Holding palace = massive Desert Points/sec. Longest hold or 1hr consecutive = huge point influx. Guardians spawn for bonus points + kingdom buffs.", zone: "Eternal Realm" },
+  { day: 1, date: "2026-07-05", title: "Map Opens", desc: "Relocate to Waste Land. Construct alliance buildings (Stronghold, flags, gathering center, supply depot).", zone: "Waste Land" },
+  { day: 2, date: "2026-07-06", title: "Mountain Forts & Pillar Cities", desc: "Waste Land Mountain Forts/Docks and Pillar Cities accessible. Occupy Forts to enter Forbidden Zone. Pillar Cities earn Placer Gold + Desert Points/min.", zone: "Waste Land → Forbidden Zone" },
+  { day: 3, date: "2026-07-07", title: "Tower of Rotation Opens", desc: "Tower of Rotation and Forbidden Zone Mountain Fort now open. Tower awakens daily, spawning Silent Guardians & Echoing Phantoms for 2hrs. Must be adjacent to alliance land.", zone: "Forbidden Zone" },
+  { day: 4, date: "2026-07-08", title: "Contest Continues", desc: "Continue territory expansion. Tower of Rotation daily spawn. Peaceful Riverland events.", zone: "Forbidden Zone" },
+  { day: 5, date: "2026-07-09", title: "Contest Continues", desc: "Push toward Eternal Realm Mountain Forts. Accumulate Placer Gold for Z3 flags.", zone: "Forbidden Zone" },
+  { day: 6, date: "2026-07-10", title: "Eternal Realm Opens", desc: "Eternal Realm Mountain Forts open. Alliances occupying these can enter the Eternal Realm. Flags cost more but have higher durability.", zone: "Eternal Realm" },
+  { day: 7, date: "2026-07-11", title: "Aaru Palace", desc: "Aaru Palace opens. War declarations begin at voted time. Holding palace = massive Desert Points/sec. Longest hold or 1hr consecutive = huge point influx. Guardians spawn for bonus points + kingdom buffs.", zone: "Eternal Realm" },
 ];
 
 const ZONES = [
@@ -607,7 +607,7 @@ function DiplomacyTab({ state, setState }) {
       <div style={S.card}>
         <div style={S.cardTitle}>Aaru Palace Time Vote</div>
         <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "12px" }}>
-          Top 300 power-ranked players vote. Kingdom with most Desert Points picks the time. Voting closes Saturday 00:00 UTC (2026-05-31).
+          Top 300 power-ranked players vote. Kingdom with most Desert Points picks the time. Voting closes Saturday 00:00 UTC (2026-07-11).
         </div>
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
           {AARU_TIME_SLOTS.map(slot => (
