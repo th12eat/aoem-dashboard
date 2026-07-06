@@ -60,18 +60,33 @@ const KEY_NODES = [
   { id: "aaru", name: "Aaru Palace", zone: "z3", type: "palace", desc: "Final objective. Massive Desert Points per second. Hold longest or 1hr consecutive to win.", points: 5000 },
 ];
 
+// Per-alliance progress toward each alliance achievement. target = denominator;
+// cur = current value per alliance (null = not yet scouted). WC1 values are known;
+// REU/MyT/AGC count-based rows use the Day-1 state (stronghold built, rest 0), and
+// the point-based Desert Treasure rows are left null until we have their points.
 const ACHIEVEMENTS = [
-  { name: "Desert Roots", req: "Build alliance stronghold", personal: "100K Desert Points" },
-  { name: "Pioneer the Frontier I", req: "Build 5 alliance flags", personal: "200K Desert Points" },
-  { name: "Pioneer the Frontier II", req: "Build 10 alliance flags", personal: "500K Desert Points" },
-  { name: "Pioneer the Frontier III", req: "Build 15 alliance flags", personal: "800K Desert Points" },
-  { name: "Pioneer the Frontier IV", req: "Build 20 alliance flags", personal: "1.2M Desert Points" },
-  { name: "Siege and Plunder I", req: "Occupy 1 Lv.7 city", personal: "500K Desert Points" },
-  { name: "Desert Treasure I", req: "Alliance 200M Desert Points", personal: "5M Desert Points" },
-  { name: "Desert Treasure II", req: "Alliance 400M Desert Points", personal: "10M Desert Points" },
-  { name: "Desert Treasure III", req: "Alliance 800M Desert Points", personal: "20M Desert Points" },
-  { name: "Tower Master I", req: "Occupy 1 Tower of Rotation + 4M pts via Peaceful Riverland", personal: "10M Desert Points" },
-  { name: "Crowned in Aaru", req: "Occupy Aaru Palace + 8M pts through occupation", personal: "20M Desert Points" },
+  { name: "Desert Roots", req: "Build alliance stronghold", target: 1, personal: "100K Desert Points",
+    cur: { WC1: 1, REU: 1, MyT: 1, AGC: 1 } },
+  { name: "Pioneer the Frontier I", req: "Build 5 alliance flags", target: 5, personal: "200K Desert Points",
+    cur: { WC1: 0, REU: 0, MyT: 0, AGC: 0 } },
+  { name: "Pioneer the Frontier II", req: "Build 10 alliance flags", target: 10, personal: "500K Desert Points",
+    cur: { WC1: 0, REU: 0, MyT: 0, AGC: 0 } },
+  { name: "Pioneer the Frontier III", req: "Build 15 alliance flags", target: 15, personal: "800K Desert Points",
+    cur: { WC1: 0, REU: 0, MyT: 0, AGC: 0 } },
+  { name: "Pioneer the Frontier IV", req: "Build 20 alliance flags", target: 20, personal: "1.2M Desert Points",
+    cur: { WC1: 0, REU: 0, MyT: 0, AGC: 0 } },
+  { name: "Siege and Plunder I", req: "Occupy 1 Lv.7 city", target: 1, personal: "500K Desert Points",
+    cur: { WC1: 0, REU: 0, MyT: 0, AGC: 0 } },
+  { name: "Desert Treasure I", req: "Alliance Desert Points", target: 160000000, personal: "5M Desert Points",
+    cur: { WC1: 160000000, REU: null, MyT: null, AGC: null } },
+  { name: "Desert Treasure II", req: "Alliance Desert Points", target: 320000000, personal: "10M Desert Points",
+    cur: { WC1: 320000000, REU: null, MyT: null, AGC: null } },
+  { name: "Desert Treasure III", req: "Alliance Desert Points", target: 640000000, personal: "20M Desert Points",
+    cur: { WC1: 565623540, REU: null, MyT: null, AGC: null } },
+  { name: "Tower Master I", req: "Occupy Tower + Peaceful Riverland pts", target: 4000000, personal: "10M Desert Points",
+    cur: { WC1: 0, REU: 0, MyT: 0, AGC: 0 } },
+  { name: "Crowned in Aaru", req: "Occupy Aaru Palace + occupation pts", target: 8000000, personal: "20M Desert Points",
+    cur: { WC1: 0, REU: 0, MyT: 0, AGC: 0 } },
 ];
 
 const AARU_TIME_SLOTS = [
@@ -511,27 +526,44 @@ function PointsTab() {
         </table>
       </div>
 
-      {/* Achievements Reference */}
+      {/* Achievements — per-alliance progress */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Conquest Achievements</div>
+        <div style={S.cardTitle}>Conquest Achievements — Alliance Progress</div>
+        <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>
+          Progress toward each alliance-level achievement. <span style={{ color: "#3daa6d" }}>✓</span> = met.
+          Personal requirements (met individually, not tracked here) shown at right. Point-based rows for REU/MyT/AGC pending scouting.
+        </div>
+        <div style={{ overflowX: "auto" }}>
         <table style={S.table}>
           <thead>
             <tr>
               <th style={S.th}>Achievement</th>
-              <th style={S.th}>Alliance Requirement</th>
-              <th style={S.th}>Personal Requirement</th>
+              <th style={S.th}>Requirement</th>
+              {["WC1","REU","MyT","AGC"].map(tag => <th key={tag} style={{ ...S.th, textAlign: "center" }}>{tag}</th>)}
+              <th style={S.th}>Personal</th>
             </tr>
           </thead>
           <tbody>
-            {ACHIEVEMENTS.map(a => (
+            {ACHIEVEMENTS.map(a => {
+              const abbr = (n) => { n = Number(n); if (n >= 1e9) return (n/1e9).toFixed(2).replace(/\.?0+$/,"")+"B"; if (n >= 1e6) return (n/1e6).toFixed(0)+"M"; if (n >= 1e3) return (n/1e3).toFixed(0)+"K"; return String(n); };
+              const cell = (tag) => {
+                const cur = a.cur ? a.cur[tag] : null;
+                if (cur == null) return <span style={{ color: "#475569" }}>—</span>;
+                const met = cur >= a.target;
+                const label = a.target >= 1e6 ? (abbr(cur) + "/" + abbr(a.target)) : (cur + "/" + a.target);
+                return <span style={{ color: met ? "#3daa6d" : "#94a3b8", fontWeight: met ? 700 : 400, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{met ? "✓ " : ""}{label}</span>;
+              };
+              return (
               <tr key={a.name}>
                 <td style={S.td}><span style={{ fontWeight: 600 }}>{a.name}</span></td>
-                <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{a.req}</td>
-                <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{a.personal}</td>
+                <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{a.req}{a.target >= 1e6 ? " (" + abbr(a.target) + ")" : (a.target > 1 ? " (" + a.target + ")" : "")}</td>
+                {["WC1","REU","MyT","AGC"].map(tag => <td key={tag} style={{ ...S.td, textAlign: "center", fontSize: "12px" }}>{cell(tag)}</td>)}
+                <td style={{ ...S.td, fontSize: "11px", color: "#64748b" }}>{a.personal}</td>
               </tr>
-            ))}
+            ); })}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
