@@ -22,7 +22,7 @@ const { useState, useCallback, useMemo, useEffect, useRef } = React;
    EVENT DATA
    ═══════════════════════════════════════════════════ */
 let EVENT_CONFIG = {
-  eventStart: "2026-07-05",
+  eventStart: "2026-07-06",
   eventEnd: "2026-07-13",
   matchingStart: "2026-07-03",
   servers: ["Era 8", "Era #023", "Era #014", "Era #019"],
@@ -31,13 +31,13 @@ let EVENT_CONFIG = {
 };
 
 const SCHEDULE = [
-  { day: 1, date: "2026-07-05", title: "Map Opens", desc: "Relocate to Waste Land. Construct alliance buildings (Stronghold, flags, gathering center, supply depot).", zone: "Waste Land" },
-  { day: 2, date: "2026-07-06", title: "Mountain Forts & Pillar Cities", desc: "Waste Land Mountain Forts/Docks and Pillar Cities accessible. Occupy Forts to enter Forbidden Zone. Pillar Cities earn Placer Gold + Desert Points/min.", zone: "Waste Land → Forbidden Zone" },
-  { day: 3, date: "2026-07-07", title: "Tower of Rotation Opens", desc: "Tower of Rotation and Forbidden Zone Mountain Fort now open. Tower awakens daily, spawning Silent Guardians & Echoing Phantoms for 2hrs. Must be adjacent to alliance land.", zone: "Forbidden Zone" },
-  { day: 4, date: "2026-07-08", title: "Contest Continues", desc: "Continue territory expansion. Tower of Rotation daily spawn. Peaceful Riverland events.", zone: "Forbidden Zone" },
-  { day: 5, date: "2026-07-09", title: "Contest Continues", desc: "Push toward Eternal Realm Mountain Forts. Accumulate Placer Gold for Z3 flags.", zone: "Forbidden Zone" },
-  { day: 6, date: "2026-07-10", title: "Eternal Realm Opens", desc: "Eternal Realm Mountain Forts open. Alliances occupying these can enter the Eternal Realm. Flags cost more but have higher durability.", zone: "Eternal Realm" },
-  { day: 7, date: "2026-07-11", title: "Aaru Palace", desc: "Aaru Palace opens. War declarations begin at voted time. Holding palace = massive Desert Points/sec. Longest hold or 1hr consecutive = huge point influx. Guardians spawn for bonus points + kingdom buffs.", zone: "Eternal Realm" },
+  { day: 1, date: "2026-07-06", title: "Map Opens", desc: "Relocate to Waste Land. Construct alliance buildings (Stronghold, flags, gathering center, supply depot).", zone: "Waste Land" },
+  { day: 2, date: "2026-07-07", title: "Mountain Forts & Pillar Cities", desc: "Waste Land Mountain Forts/Docks and Pillar Cities accessible. Occupy Forts to enter Forbidden Zone. Pillar Cities earn Placer Gold + Desert Points/min.", zone: "Waste Land → Forbidden Zone" },
+  { day: 3, date: "2026-07-08", title: "Tower of Rotation Opens", desc: "Tower of Rotation and Forbidden Zone Mountain Fort now open. Tower awakens daily, spawning Silent Guardians & Echoing Phantoms for 2hrs. Must be adjacent to alliance land.", zone: "Forbidden Zone" },
+  { day: 4, date: "2026-07-09", title: "Contest Continues", desc: "Continue territory expansion. Tower of Rotation daily spawn. Peaceful Riverland events.", zone: "Forbidden Zone" },
+  { day: 5, date: "2026-07-10", title: "Contest Continues", desc: "Push toward Eternal Realm Mountain Forts. Accumulate Placer Gold for Z3 flags.", zone: "Forbidden Zone" },
+  { day: 6, date: "2026-07-11", title: "Eternal Realm Opens", desc: "Eternal Realm Mountain Forts open. Alliances occupying these can enter the Eternal Realm. Flags cost more but have higher durability.", zone: "Eternal Realm" },
+  { day: 7, date: "2026-07-12", title: "Aaru Palace", desc: "Aaru Palace opens. War declarations begin at voted time. Holding palace = massive Desert Points/sec. Longest hold or 1hr consecutive = huge point influx. Guardians spawn for bonus points + kingdom buffs.", zone: "Eternal Realm" },
 ];
 
 const ZONES = [
@@ -355,7 +355,7 @@ function MapTab({ state, setState }) {
           />
         </div>
         <div style={{ fontSize: "11px", color: "#94a3b8", textAlign: "center", marginTop: "8px" }}>
-          Scroll to zoom, drag to pan. Server positions: Era 8 (East/Purple) | Era 51 (North/Cyan) | Era 2 (West/Orange) | Era 82 (South/Teal)
+          Scroll to zoom, drag to pan. Server positions: Era 8 (Purple) | Era #023 (Blue) | Era #014 (Green) | Era #019 (Orange)
         </div>
       </div>
 
@@ -593,12 +593,16 @@ function DiplomacyTab({ state, setState }) {
         <div style={S.cardTitle}>Rules of Engagement</div>
         <div style={{ display: "grid", gap: "8px" }}>
           <div style={{ padding: "10px", background: "#22c55e11", border: "1px solid #22c55e44", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (Era 51)</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>No zeroing citadels. No killing farmers. Actively help each other reach Aaru Palace. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
+            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (Era #014)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>No zeroing citadels. No killing farmers. Coordinate and support each other. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
           </div>
           <div style={{ padding: "10px", background: "#94a3b811", border: "1px solid #94a3b844", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (Era 82, Era 2)</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>If they don't mess with us, we don't mess with them. If they do, we respond in kind.</div>
+            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (Era #023)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Shared half (left/right eyes). Keep the peace — if they don't mess with us, we don't mess with them. If they do, respond in kind.</div>
+          </div>
+          <div style={{ padding: "10px", background: "#ef444411", border: "1px solid #ef444444", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemy (Era #019)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>SD rank 2, must-win for their top-3 season reward — heavily outmatched. Avoid feeding kills; bubble/dodge bad trades. Survive rather than trade blows head-on.</div>
           </div>
         </div>
       </div>
@@ -836,85 +840,89 @@ const rfmt = (v) => { const n=parseInt(String(v).replace(/,/g,""),10); if(isNaN(
 const allianceMpCls = (pct) => pct>=8?"hi":pct>=4?"mid":"lo";
 const playerMpCls = (pct) => pct>=65?"hi":pct>=35?"mid":"lo";
 
-function ScoutCard({ title, subtitle, side, alliances, players }) {
-  const headCls = side === "us" ? "cmp-head us" : "cmp-head them";
+// Per-server map-position colors (muted): us purple, and the three opponents
+// matched to their map positions. rgb triplets so we can tint bar/border.
+const SERVER_COLORS = {
+  "Era 8":    { rgb: "154,109,212", hex: "#9a6dd4" },  // purple
+  "Era #023": { rgb: "91,139,196",  hex: "#5b8bc4" },  // blue
+  "Era #014": { rgb: "90,168,122",  hex: "#5aa87a" },  // green
+  "Era #019": { rgb: "212,147,74",  hex: "#d4934a" }   // orange
+};
+const serverColor = (srv) => SERVER_COLORS[srv] || { rgb: "138,144,165", hex: "#8a90a5" };
+
+// One server's table (alliances OR players) as a cmp-card, tinted by map color.
+function ServerTable({ server, sdRank, priority, rows, kind }) {
+  const c = serverColor(server);
+  const priBadge = { critical: "#ef4444", high: "#f5731f", medium: "#f59e0b", low: "#94a3b8" };
+  const cls = kind === "players" ? playerMpCls : allianceMpCls;
   return (
-    <div style={{ marginBottom: 16 }}>
-      <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: 1,
-        textTransform: "uppercase", color: side === "us" ? "#5b9bd8" : "#f5731f", marginBottom: 8 }}>{title}</div>
-      {subtitle && <div style={{ fontSize: 12, color: "#94a3b8", marginBottom: 10, lineHeight: 1.5 }}>{subtitle}</div>}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 12 }}>
-        {/* Alliances */}
-        <div className="cmp-card">
-          <div className={headCls}>Top Alliances</div>
-          {alliances && alliances.length ? (
-            <table className="cmp-tbl">
-              <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">Power</th><th className="c-mp">M:P</th></tr></thead>
-              <tbody>
-              {alliances.map((a, i) => { const has = a.merits !== "" && a.merits != null; const pct = rmp(a.merits, a.power); return (
-                <tr key={i}>
-                  <td className="c-rk">{i + 1}</td>
-                  <td className="c-nm">{a.name ? a.name + " " : ""}<span className="tg">[{a.tag}]</span></td>
-                  <td className="c-p">{rfmt(a.power)}</td>
-                  <td className={"c-mp " + (has ? allianceMpCls(pct) : "")} style={has ? undefined : { color: "#64748b" }}>{has ? pct.toFixed(1) + "%" : "—"}</td>
-                </tr>
-              ); })}
-              </tbody>
-            </table>
-          ) : <div style={{ padding: "14px 12px", fontSize: 12, color: "#64748b", fontStyle: "italic" }}>Awaiting scouting data.</div>}
-        </div>
-        {/* Players */}
-        <div className="cmp-card">
-          <div className={headCls}>Top Players</div>
-          {players && players.length ? (
-            <table className="cmp-tbl">
-              <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">Power</th><th className="c-mp">M:P</th></tr></thead>
-              <tbody>
-              {players.map((k, i) => { const has = k.merits !== "" && k.merits != null; const pct = rmp(k.merits, k.power); return (
-                <tr key={i}>
-                  <td className="c-rk">{k.rank || i + 1}</td>
-                  <td className="c-nm">{k.name} <span className="tg">[{k.alliance}]</span></td>
-                  <td className="c-p">{rfmt(k.power)}</td>
-                  <td className={"c-mp " + (has ? playerMpCls(pct) : "")} style={has ? undefined : { color: "#64748b" }}>{has ? pct.toFixed(1) + "%" : "—"}</td>
-                </tr>
-              ); })}
-              </tbody>
-            </table>
-          ) : <div style={{ padding: "14px 12px", fontSize: 12, color: "#64748b", fontStyle: "italic" }}>Awaiting scouting data.</div>}
-        </div>
+    <div className="cmp-card" style={{ borderColor: "rgba(" + c.rgb + ",0.4)" }}>
+      <div className="cmp-head" style={{ background: "rgba(" + c.rgb + ",0.12)", borderBottomColor: "rgba(" + c.rgb + ",0.4)", color: c.hex, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+        <span>{server}{server === "Era 8" ? " · Us" : ""}</span>
+        {sdRank != null && <span style={{ fontSize: 10, fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, letterSpacing: 0.5, color: "#cbd5e1", background: "rgba(255,255,255,0.06)", padding: "1px 6px", borderRadius: 4 }}>SD #{sdRank}</span>}
+        {priority && <span style={{ fontSize: 9.5, fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, letterSpacing: 0.5, textTransform: "uppercase", color: priBadge[priority] || "#94a3b8" }}>{priority}</span>}
       </div>
+      {rows && rows.length ? (
+        <table className="cmp-tbl">
+          <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">Power</th><th className="c-mp">M:P</th></tr></thead>
+          <tbody>
+          {rows.map((r, i) => { const has = r.merits !== "" && r.merits != null; const pct = rmp(r.merits, r.power);
+            const nm = kind === "players"
+              ? (<span>{r.name} <span className="tg">[{r.alliance}]</span></span>)
+              : (<span>{r.name ? r.name + " " : ""}<span className="tg">[{r.tag}]</span></span>);
+            return (
+            <tr key={i}>
+              <td className="c-rk">{r.rank || i + 1}</td>
+              <td className="c-nm">{nm}</td>
+              <td className="c-p" style={{ color: c.hex }}>{rfmt(r.power)}</td>
+              <td className={"c-mp " + (has ? cls(pct) : "")} style={has ? undefined : { color: "#64748b" }}>{has ? pct.toFixed(1) + "%" : "—"}</td>
+            </tr>
+          ); })}
+          </tbody>
+        </table>
+      ) : <div style={{ padding: "14px 12px", fontSize: 12, color: "#64748b", fontStyle: "italic" }}>Awaiting scouting data.</div>}
     </div>
   );
 }
 
 function ResearchTab() {
   const r = RESEARCH || { ours: {}, opponents: [] };
-  const priBadge = { critical: "#ef4444", high: "#f5731f", medium: "#f59e0b", low: "#94a3b8" };
+  // ordered server list: us first, then opponents as given
+  const servers = [
+    { server: r.ours?.server || "Era 8", sdRank: r.ours?.sdRank, priority: null, alliances: r.ours?.alliances || [], players: r.ours?.players || [] },
+    ...(r.opponents || []).map(o => ({ server: o.server, sdRank: o.sdRank, priority: o.priority, alliances: o.alliances || [], players: o.players || [] }))
+  ];
+  const grid = { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 12 };
   return (
     <div>
       <div style={S.card}>
         <div style={S.cardTitle}>Scouting &amp; Research</div>
         <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6 }}>
-          Top alliances and players per server. We are <strong style={{ color: "#e8eaf0" }}>SD rank {r.ours?.sdRank ?? "—"}</strong> and
-          heavily outmatched — the plan is to appease the contenders and survive. Power is raw strength; M:P (merits ÷ power)
-          flags combat activity: <span style={{ color: "#3daa6d" }}>green</span> high, <span style={{ color: "#d4a843" }}>amber</span> average,
+          Top alliances and players per server, colored by map position
+          (<span style={{ color: "#9a6dd4" }}>Era 8</span>, <span style={{ color: "#5b8bc4" }}>#023</span>,
+          <span style={{ color: "#5aa87a" }}> #014</span>, <span style={{ color: "#d4934a" }}>#019</span>).
+          We're <strong style={{ color: "#e8eaf0" }}>SD rank {r.ours?.sdRank ?? "—"}</strong> and heavily outmatched — appease the
+          contenders and survive. Power is raw strength; M:P (merits ÷ power) flags combat activity:
+          <span style={{ color: "#3daa6d" }}> green</span> high, <span style={{ color: "#d4a843" }}>amber</span> average,
           <span style={{ color: "#c9603f" }}> red</span> low/parked.
         </div>
       </div>
 
-      <ScoutCard title="Era 8 — Us" side="us" alliances={r.ours?.alliances} players={r.ours?.players} />
-
-      {(r.opponents || []).map((o, i) => (
-        <div key={i} style={S.card}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4, flexWrap: "wrap" }}>
-            <span style={{ ...S.cardTitle, color: "#f5731f", marginBottom: 0 }}>{o.server}</span>
-            <span style={S.badge("#7c3aed")}>SD Rank {o.sdRank ?? "?"}</span>
-            {o.priority && <span style={{ ...S.badge(priBadge[o.priority] || "#94a3b8"), textTransform: "uppercase" }}>{o.priority} priority</span>}
-          </div>
-          {o.note && <div style={{ fontSize: 12, color: "#94a3b8", marginBottom: 12, lineHeight: 1.5 }}>{o.note}</div>}
-          <ScoutCard side="them" alliances={o.alliances} players={o.players} />
+      {/* ALLIANCES */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Top Alliances</div>
+        <div style={grid}>
+          {servers.map((s, i) => <ServerTable key={i} server={s.server} sdRank={s.sdRank} priority={s.priority} rows={s.alliances} kind="alliances" />)}
         </div>
-      ))}
+      </div>
+
+      {/* PLAYERS */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Top Players</div>
+        <div style={grid}>
+          {servers.map((s, i) => <ServerTable key={i} server={s.server} sdRank={s.sdRank} priority={s.priority} rows={s.players} kind="players" />)}
+        </div>
+      </div>
     </div>
   );
 }
