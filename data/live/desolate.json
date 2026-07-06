@@ -36,24 +36,24 @@
       "server": "Era 8",
       "sdRank": 17,
       "alliances": [
-        { "tag": "WC1", "name": "WorldClass", "power": "20,427,268,040", "merits": "2,272,830,539" },
-        { "tag": "REU", "name": "Reunions", "power": "13,020,851,767", "merits": "912,406,343" },
-        { "tag": "AGC", "name": "AuroraGodCourt", "power": "11,814,085,114", "merits": "186,806,499" },
-        { "tag": "MyT", "name": "Mythic", "power": "10,521,121,074", "merits": "901,008,602" }
+        { "tag": "WC1", "name": "WorldClass", "power": "20,515,426,655", "merits": "2,292,293,926" },
+        { "tag": "REU", "name": "Reunions", "power": "13,014,648,637", "merits": "908,084,687" },
+        { "tag": "AGC", "name": "AuroraGodCourt", "power": "11,708,772,196", "merits": "190,509,577" },
+        { "tag": "MyT", "name": "Mythic", "power": "10,098,323,705", "merits": "817,719,708" }
       ],
       "players": [
-        { "rank": 1, "name": "時宗", "alliance": "eRa", "power": "438,952,874", "merits": "323,905,649" },
-        { "rank": 2, "name": "민트", "alliance": "REU", "power": "323,741,781", "merits": "310,548,721" },
-        { "rank": 3, "name": "Collin6666", "alliance": "eRa", "power": "316,151,431", "merits": "65,767,405" },
-        { "rank": 4, "name": "XnJinX", "alliance": "eRa", "power": "295,813,708", "merits": "230,306,208" },
-        { "rank": 5, "name": "Macklemore", "alliance": "eRa", "power": "274,523,136", "merits": "112,432,858" },
-        { "rank": 6, "name": "Lumberjack", "alliance": "eRa", "power": "271,250,032", "merits": "277,411,196" },
-        { "rank": 7, "name": "BloodYoda", "alliance": "eRa", "power": "262,538,190", "merits": "233,721,373" },
-        { "rank": 8, "name": "ibubu♣JP", "alliance": "eRa", "power": "248,054,902", "merits": "79,129,364" },
-        { "rank": 9, "name": "또라에몽", "alliance": "REU", "power": "240,915,320", "merits": "41,444,177" },
-        { "rank": 10, "name": "TommyTorpedo", "alliance": "eRa", "power": "231,700,285", "merits": "133,782,915" },
-        { "rank": 11, "name": "MuRageKT✕", "alliance": "eRa", "power": "230,807,185", "merits": "161,519,425" },
-        { "rank": 12, "name": "조은마난색기", "alliance": "REU", "power": "219,064,834", "merits": "52,730,506" }
+        { "rank": 1, "name": "時宗", "alliance": "eRa", "power": "444,383,956", "merits": "329,925,951" },
+        { "rank": 2, "name": "민트", "alliance": "REU", "power": "322,404,810", "merits": "312,989,962" },
+        { "rank": 3, "name": "Collin6666", "alliance": "eRa", "power": "325,175,233", "merits": "67,315,532" },
+        { "rank": 4, "name": "XnJinX", "alliance": "eRa", "power": "295,878,977", "merits": "232,694,449" },
+        { "rank": 5, "name": "Lumberjack", "alliance": "eRa", "power": "279,533,394", "merits": "280,674,323" },
+        { "rank": 6, "name": "Macklemore", "alliance": "eRa", "power": "276,345,366", "merits": "112,447,537" },
+        { "rank": 7, "name": "BloodYoda", "alliance": "eRa", "power": "264,234,509", "merits": "233,725,546" },
+        { "rank": 8, "name": "ibubu♣JP", "alliance": "eRa", "power": "252,994,124", "merits": "81,410,101" },
+        { "rank": 9, "name": "또라에몽", "alliance": "REU", "power": "242,481,518", "merits": "41,444,177" },
+        { "rank": 10, "name": "TommyTorpedo", "alliance": "eRa", "power": "234,105,338", "merits": "133,829,845" },
+        { "rank": 11, "name": "MuRageKT✕", "alliance": "eRa", "power": "231,598,235", "merits": "161,519,425" },
+        { "rank": 12, "name": "조은마난색기", "alliance": "REU", "power": "217,327,869", "merits": "52,730,506" }
       ]
     },
     "opponents": [
@@ -61,30 +61,79 @@
         "server": "Era #023",
         "sdRank": 13,
         "priority": "high",
-        "note": "Shared half (left/right eyes). Beat us in TME invasion recently (we won prep, lost the fight). Alliance figures below are from that mid-June TME scouting — refresh when possible.",
+        "note": "Shared half (left/right eyes) — highest-priority peace. Beat us in TME invasion recently (we won prep, lost the fight).",
         "alliances": [
-          { "tag": "LOD", "name": "", "power": "17,173,032,779", "merits": "2,132,765,554" },
-          { "tag": "boi", "name": "", "power": "14,806,866,449", "merits": "1,082,278,581" },
-          { "tag": "R65", "name": "", "power": "13,881,483,676", "merits": "1,766,240,250" },
-          { "tag": "ILF", "name": "", "power": "4,866,546,542", "merits": "92,039,230" }
+          { "tag": "LOD", "name": "LegionOfDonuts", "power": "17,984,707,471", "merits": "2,357,903,732" },
+          { "tag": "boi", "name": "Jericho", "power": "14,697,585,991", "merits": "1,119,470,055" },
+          { "tag": "R65", "name": "Royalz65", "power": "12,913,707,927", "merits": "1,836,762,329" },
+          { "tag": "ILF", "name": "ImperiumLight", "power": "5,343,793,020", "merits": "127,498,313" }
         ],
-        "players": []
+        "players": [
+          { "rank": 1, "name": "Dax", "alliance": "LOD", "power": "323,204,627", "merits": "284,863,835" },
+          { "rank": 2, "name": "Lx Scorpio", "alliance": "LOD", "power": "306,781,371", "merits": "" },
+          { "rank": 3, "name": "DiscoPeat", "alliance": "LOD", "power": "293,678,482", "merits": "405,774,562" },
+          { "rank": 4, "name": "Triple3Crown", "alliance": "R65", "power": "292,669,968", "merits": "297,049,490" },
+          { "rank": 5, "name": "KRMirae", "alliance": "R65", "power": "273,074,083", "merits": "282,300,199" },
+          { "rank": 6, "name": "Class", "alliance": "LOD", "power": "271,570,341", "merits": "70,168,900" },
+          { "rank": 7, "name": "ZoroMihawk", "alliance": "R65", "power": "266,462,680", "merits": "202,440,142" },
+          { "rank": 8, "name": "Hasumodo", "alliance": "LOD", "power": "229,850,008", "merits": "146,501,739" },
+          { "rank": 9, "name": "AgimiX", "alliance": "LOD", "power": "223,036,152", "merits": "69,561,613" },
+          { "rank": 10, "name": "白马义从FL", "alliance": "R65", "power": "218,212,119", "merits": "63,809,855" },
+          { "rank": 11, "name": "MonkeyDluffy", "alliance": "LOD", "power": "215,282,875", "merits": "187,287,587" },
+          { "rank": 12, "name": "JoreaOhJorea", "alliance": "R65", "power": "212,579,406", "merits": "88,128,282" }
+        ]
       },
       {
         "server": "Era #014",
         "sdRank": 11,
         "priority": "medium",
-        "note": "Awaiting scouting intel.",
-        "alliances": [],
-        "players": []
+        "note": "SD rank 11. Maintain peace.",
+        "alliances": [
+          { "tag": "X14", "name": "Sakura", "power": "25,748,711,715", "merits": "3,451,059,618" },
+          { "tag": "Ȼ14", "name": "LXCelestials", "power": "22,344,670,496", "merits": "2,496,374,711" },
+          { "tag": "G14", "name": "GANGSTA", "power": "18,772,305,532", "merits": "849,229,776" },
+          { "tag": "L14", "name": "LegioXVulcanus", "power": "12,444,072,418", "merits": "167,379,852" }
+        ],
+        "players": [
+          { "rank": 1, "name": "8964Madmac", "alliance": "X14", "power": "548,813,610", "merits": "659,321,045" },
+          { "rank": 2, "name": "X|NASTY^E¹⁴", "alliance": "X14", "power": "482,364,979", "merits": "162,359,308" },
+          { "rank": 3, "name": "F27 ~ OoNoWinD", "alliance": "X14", "power": "460,627,871", "merits": "267,738,851" },
+          { "rank": 4, "name": "F5Skywalker", "alliance": "X14", "power": "434,265,906", "merits": "614,851,021" },
+          { "rank": 5, "name": "シロクロ", "alliance": "", "power": "358,481,000", "merits": "" },
+          { "rank": 6, "name": "F666灰骑士", "alliance": "", "power": "346,227,944", "merits": "" },
+          { "rank": 7, "name": "Lx Gioia^14", "alliance": "Ȼ14", "power": "331,454,421", "merits": "463,548,843" },
+          { "rank": 8, "name": "F1世界和平", "alliance": "X14", "power": "318,704,812", "merits": "" },
+          { "rank": 9, "name": "Lx CEWOKE★", "alliance": "Ȼ14", "power": "310,953,775", "merits": "234,269,139" },
+          { "rank": 10, "name": "F9527MRBONE", "alliance": "X14", "power": "294,866,508", "merits": "279,330,700" },
+          { "rank": 11, "name": "WorkerB", "alliance": "X14", "power": "291,215,571", "merits": "129,741,138" },
+          { "rank": 12, "name": "GNC盧王❖煌", "alliance": "X14", "power": "288,127,862", "merits": "" }
+        ]
       },
       {
         "server": "Era #019",
         "sdRank": 2,
         "priority": "critical",
-        "note": "SD rank 2 — huge incentive to win (top-3 season reward). Awaiting scouting intel. Appease/feed to survive.",
-        "alliances": [],
-        "players": []
+        "note": "SD rank 2 — must-win for their top-3 season reward. Appease/feed to survive.",
+        "alliances": [
+          { "tag": "XIX", "name": "LeGENDZ", "power": "26,591,382,447", "merits": "4,709,235,462" },
+          { "tag": "KNY", "name": "DemonSlayer", "power": "24,746,002,630", "merits": "5,956,987,202" },
+          { "tag": "PBJ", "name": "Reiwa令和", "power": "14,573,803,865", "merits": "" },
+          { "tag": "DXR", "name": "DefiantRebels", "power": "14,558,916,982", "merits": "" }
+        ],
+        "players": [
+          { "rank": 1, "name": "JJ^lx", "alliance": "XIX", "power": "628,608,746", "merits": "671,791,910" },
+          { "rank": 2, "name": "⇌scALp⇌¹⁹", "alliance": "KNY", "power": "489,486,762", "merits": "496,132,301" },
+          { "rank": 3, "name": "RiseNShine¹⁹", "alliance": "KNY", "power": "488,388,459", "merits": "829,635,518" },
+          { "rank": 4, "name": "Color賛", "alliance": "XIX", "power": "452,184,728", "merits": "884,300,895" },
+          { "rank": 5, "name": "xLui", "alliance": "XIX", "power": "421,984,987", "merits": "403,724,285" },
+          { "rank": 6, "name": "Jdub", "alliance": "KNY", "power": "416,906,363", "merits": "712,549,968" },
+          { "rank": 7, "name": "WarsW", "alliance": "XIX", "power": "414,616,165", "merits": "152,119,361" },
+          { "rank": 8, "name": "Guardian=", "alliance": "XIX", "power": "397,453,292", "merits": "228,815,964" },
+          { "rank": 9, "name": "KociTa", "alliance": "KNY", "power": "396,503,257", "merits": "669,167,773" },
+          { "rank": 10, "name": "TTSINC", "alliance": "XIX", "power": "346,699,784", "merits": "318,024,233" },
+          { "rank": 11, "name": "MOUNTAIN7", "alliance": "KNY", "power": "336,970,007", "merits": "" },
+          { "rank": 12, "name": "LU6EELMO^lx", "alliance": "XIX", "power": "321,512,180", "merits": "449,607,934" }
+        ]
       }
     ]
   }

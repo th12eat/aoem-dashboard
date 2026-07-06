@@ -851,12 +851,12 @@ function ScoutCard({ title, subtitle, side, alliances, players }) {
             <table className="cmp-tbl">
               <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">Power</th><th className="c-mp">M:P</th></tr></thead>
               <tbody>
-              {alliances.map((a, i) => { const pct = rmp(a.merits, a.power); return (
+              {alliances.map((a, i) => { const has = a.merits !== "" && a.merits != null; const pct = rmp(a.merits, a.power); return (
                 <tr key={i}>
                   <td className="c-rk">{i + 1}</td>
                   <td className="c-nm">{a.name ? a.name + " " : ""}<span className="tg">[{a.tag}]</span></td>
                   <td className="c-p">{rfmt(a.power)}</td>
-                  <td className={"c-mp " + allianceMpCls(pct)}>{pct.toFixed(1)}%</td>
+                  <td className={"c-mp " + (has ? allianceMpCls(pct) : "")} style={has ? undefined : { color: "#64748b" }}>{has ? pct.toFixed(1) + "%" : "—"}</td>
                 </tr>
               ); })}
               </tbody>
@@ -870,12 +870,12 @@ function ScoutCard({ title, subtitle, side, alliances, players }) {
             <table className="cmp-tbl">
               <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">Power</th><th className="c-mp">M:P</th></tr></thead>
               <tbody>
-              {players.map((k, i) => { const pct = rmp(k.merits, k.power); return (
+              {players.map((k, i) => { const has = k.merits !== "" && k.merits != null; const pct = rmp(k.merits, k.power); return (
                 <tr key={i}>
                   <td className="c-rk">{k.rank || i + 1}</td>
                   <td className="c-nm">{k.name} <span className="tg">[{k.alliance}]</span></td>
                   <td className="c-p">{rfmt(k.power)}</td>
-                  <td className={"c-mp " + playerMpCls(pct)}>{pct.toFixed(1)}%</td>
+                  <td className={"c-mp " + (has ? playerMpCls(pct) : "")} style={has ? undefined : { color: "#64748b" }}>{has ? pct.toFixed(1) + "%" : "—"}</td>
                 </tr>
               ); })}
               </tbody>
