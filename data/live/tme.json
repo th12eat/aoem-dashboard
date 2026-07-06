@@ -2,31 +2,34 @@
   "schemaVersion": 1,
   "oppServer": "Era 90",
   "invasionTime": "11:00 UTC",
-  "weWonPrep": null,
+  "weWonPrep": false,
   "ourRank": 16,
   "oppRank": 11,
   "prepStarted": true,
+  "eventOver": true,
+  "result": "Loss",
+  "finalScore": { "us": "118B", "them": "162B", "label": "Imperial City Domination — E#090" },
   "alliances": [
-    { "tag": "WC1", "name": "WorldClass", "roleKey": "rolePrimaryStrike", "position": "NE-inner", "tower": "Swordsman (N) / Pikeman (W)", "color": "#3b82f6", "allies": 169, "power": "20,427,268,040", "merits": "2,272,830,539", "prepPoints": "23,882,724,685" },
-    { "tag": "REU", "name": "Reunions", "roleKey": "roleSecondaryStrike", "position": "SE-inner", "tower": "Archer (E)", "color": "#f59e0b", "allies": 166, "power": "13,020,851,767", "merits": "912,406,343", "prepPoints": "8,330,590,804" },
-    { "tag": "MyT", "name": "Mythic", "roleKey": "roleFlanking", "position": "SE-outer", "tower": "Cavalry (S)", "color": "#22c55e", "allies": 138, "power": "10,521,121,074", "merits": "901,008,602", "prepPoints": "6,872,315,811" },
-    { "tag": "AGC", "name": "AuroraGodCourt", "roleKey": "roleTowerHold", "position": "NE-outer", "tower": "Archer (E)", "color": "#ef4444", "allies": 164, "power": "11,814,085,114", "merits": "186,806,499", "prepPoints": "7,764,213,127" }
+    { "tag": "WC1", "name": "WorldClass", "roleKey": "rolePrimaryStrike", "position": "NE-inner", "tower": "Swordsman (N) / Pikeman (W)", "color": "#3b82f6", "allies": 169, "power": "20,427,268,040", "merits": "2,272,830,539", "prepPoints": "26,213,823,905", "crossBorder": "38,389,802,230" },
+    { "tag": "REU", "name": "Reunions", "roleKey": "roleSecondaryStrike", "position": "SE-inner", "tower": "Archer (E)", "color": "#f59e0b", "allies": 166, "power": "13,020,851,767", "merits": "912,406,343", "prepPoints": "9,543,839,554", "crossBorder": "13,201,338,330" },
+    { "tag": "MyT", "name": "Mythic", "roleKey": "roleFlanking", "position": "SE-outer", "tower": "Cavalry (S)", "color": "#22c55e", "allies": 138, "power": "10,521,121,074", "merits": "901,008,602", "prepPoints": "7,802,350,061", "crossBorder": "11,115,233,190" },
+    { "tag": "AGC", "name": "AuroraGodCourt", "roleKey": "roleTowerHold", "position": "NE-outer", "tower": "Archer (E)", "color": "#ef4444", "allies": 164, "power": "11,814,085,114", "merits": "186,806,499", "prepPoints": "8,814,596,057", "crossBorder": "4,519,005,510" }
   ],
   "prepStages": [
     { "nameKey": "prepStage1", "ourPts": 1.27, "oppPts": 1.42, "won": false },
     { "nameKey": "prepStage2", "ourPts": 9.43, "oppPts": 9.98, "won": false },
     { "nameKey": "prepStage3", "ourPts": 8.3, "oppPts": 14.9, "won": false },
     { "nameKey": "prepStage4", "ourPts": 10.6, "oppPts": 18.4, "won": false },
-    { "nameKey": "prepStage5", "ourPts": 5.83, "oppPts": 7.86, "won": false }
+    { "nameKey": "prepStage5", "ourPts": 19.2, "oppPts": 19.3, "won": false }
   ],
-  "totalOur": 44.3,
-  "totalOpp": 57.6,
-  "prepLastUpdated": "2026-07-03 — Day 5 (Stage 5 in progress, 2-day stage)",
+  "totalOur": 48.8,
+  "totalOpp": 64,
+  "prepLastUpdated": "2026-07-05 — Final (prep lost 48.8B vs 64B; invasion lost 118B vs 162B)",
   "oppAlliances": [
-    { "tag": "INT", "name": "英特榮耀", "allies": 166, "power": "14,829,324,819", "merits": "1,022,902,133", "prepPoints": "20,099,686,084" },
-    { "tag": "RIP", "name": "靈車特戰隊", "allies": 168, "power": "20,212,765,060", "merits": "2,541,548,484", "prepPoints": "26,989,957,169" },
-    { "tag": "YFQ", "name": "月落楓橋", "allies": 170, "power": "10,405,496,654", "merits": "190,589,970", "prepPoints": "9,265,527,590" },
-    { "tag": "OvO", "name": "大秦御貓軍", "allies": 110, "power": "6,265,770,680", "merits": "95,788,191", "prepPoints": "2,264,826,577" }
+    { "tag": "RIP", "name": "靈車特戰隊", "allies": 168, "power": "20,212,765,060", "merits": "2,541,548,484", "prepPoints": "29,994,277,049", "crossBorder": "46,168,696,360" },
+    { "tag": "INT", "name": "英特榮耀", "allies": 166, "power": "14,829,324,819", "merits": "1,022,902,133", "prepPoints": "22,474,298,694", "crossBorder": "25,664,379,360" },
+    { "tag": "YFQ", "name": "月落楓橋", "allies": 170, "power": "10,405,496,654", "merits": "190,589,970", "prepPoints": "11,197,718,410", "crossBorder": "5,807,549,220" },
+    { "tag": "OvO", "name": "大秦御貓軍", "allies": 110, "power": "6,265,770,680", "merits": "95,788,191", "prepPoints": "TBD", "crossBorder": "TBD" }
   ],
   "krakens": [
     { "rank": 1, "name": "勾意狼", "alliance": "RIP", "power": "419,247,749", "merits": "279,231,815", "ratio": "0.67" },

@@ -285,6 +285,8 @@ body { font-size: var(--fs-body); }
 .cmp-tbl .c-nm .tg { color: var(--text-muted); font-weight: 400; }
 /* numeric columns: fixed width + tabular figures so digits line up */
 .cmp-tbl .c-p  { width: 68px; text-align: right; color: var(--kvk-accent); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
+.cmp-tbl .c-cb { width: 72px; text-align: right; color: var(--text-secondary); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
+.cmp-tbl th.c-cb { color: var(--text-muted); }
 .cmp-tbl .c-mp { width: 54px; text-align: right; font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
 /* M:P traffic-light: good=green, average=amber, low=red (fixed semantic hues) */
 .cmp-tbl .c-mp.hi  { color: #3daa6d; }

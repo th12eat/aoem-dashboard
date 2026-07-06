@@ -3065,7 +3065,7 @@ function DiamondMap({ alliances, isDefense, t }) {
   );
 }
 
-function PrepChart({stages,t,totalOur,totalOpp,oppLabel}){
+function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver}){
   // Behemoth "tug" style: one split bar per stage (blue=us | red=them),
   // sized by each side's share of that stage's total. Label row above.
   const [expanded,setExpanded]=useState(false);
@@ -3078,14 +3078,14 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel}){
       <div style={{marginBottom:12,opacity:(pending&&!placeholder)?0.5:1}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:strong?800:700,marginBottom:4}}>
           <span style={{color:(pending||placeholder)?"#64748b":"#5b8def"}}>{placeholder?"":our+"B "}<span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{placeholder?"":"US"}</span></span>
-          <span style={{fontSize:11,fontWeight:600,color:placeholder?"#fbbf24":pending?"#64748b":(won?"#4ade80":"#f87171"),letterSpacing:0.5,textTransform:"uppercase"}}>{label}{pending?" · Not Started":live?" · Live Now":""}</span>
+          <span style={{fontSize:11,fontWeight:600,color:placeholder?"#fbbf24":pending?"#64748b":(won?"#4ade80":"#f87171"),letterSpacing:0.5,textTransform:"uppercase"}}>{label}{pending?" · Not Started":live?(eventOver?" · Final":" · Live Now"):""}</span>
           <span style={{color:(pending||placeholder)?"#64748b":"#f87171"}}><span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{placeholder?"":oppLabel||"OPP"}</span> {placeholder?"":opp+"B"}</span>
         </div>
         {placeholder?(
           <div style={{height:22,display:"flex",alignItems:"center",justifyContent:"center",border:"1px dashed #334155",borderRadius:6,
             fontFamily:"'Barlow Condensed',sans-serif",fontSize:10,letterSpacing:1,textTransform:"uppercase",color:"#64748b"}}>↑ Shown above</div>
         ):(
-          <div className={live?"live-pulse":""} style={{display:"flex",height:22,borderRadius:6,overflow:"hidden",border:live?undefined:"1px solid #334155"}}>
+          <div className={(live&&!eventOver)?"live-pulse":""} style={{display:"flex",height:22,borderRadius:6,overflow:"hidden",border:(live&&!eventOver)?undefined:(live?"1px solid #fbbf24":"1px solid #334155")}}>
             <div style={{width:uPct+"%",background:pending?"#1e293b":"linear-gradient(90deg, rgba(61,124,196,0.55), rgba(91,141,239,0.85))"}}/>
             <div style={{width:oPct+"%",background:pending?"#161c2b":"linear-gradient(90deg, rgba(196,61,61,0.85), rgba(196,61,61,0.55))"}}/>
           </div>
@@ -3311,7 +3311,7 @@ function TMECommandCenter(){
       {/* Tabs — shared .tabs/.tab standard; Prep tab pulses while prep is live */}
       <div className="tabs">
         {tabs.map(tb=>{
-          const isNow=tb.id==="prep"&&config.prepStarted===true;
+          const isNow=tb.id==="prep"&&config.prepStarted===true&&!config.eventOver;
           return(
           <button key={tb.id} className={"tab"+(activeTab===tb.id?" active":"")+(isNow?" is-now":"")} onClick={()=>setActiveTab(tb.id)}>{tb.label}</button>
           );
@@ -3323,6 +3323,13 @@ function TMECommandCenter(){
         {activeTab==="overview"&&(<>
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\u26A1"} {t.sitBrief}</div>
+            {config.eventOver&&config.finalScore&&(
+              <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap",background:"rgba(196,61,61,0.10)",border:"1px solid #8a2b2b",borderRadius:8,padding:"10px 14px",marginBottom:12}}>
+                <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,letterSpacing:1,color:config.result==="Win"?"#4ade80":"#f87171"}}>{config.result==="Win"?"VICTORY":"DEFEAT"}</span>
+                <span style={{fontSize:13,color:"#e2e8f0",fontWeight:700}}>Era 8 {config.finalScore.us} <span style={{color:"#64748b",fontWeight:400}}>vs</span> {config.oppServer} {config.finalScore.them}</span>
+                <span style={{fontSize:11,color:"#94a3b8"}}>{config.finalScore.label}</span>
+              </div>
+            )}
             <div style={{fontSize:12,lineHeight:1.8,color:"#cbd5e1"}}>
               {config.prepStarted===false?(
                 <p style={{margin:"0 0 8px"}}>{t.newMatchup} <strong style={{color:"#f87171"}}>{config.oppServer} ({oppCode})</strong>. {t.standings.replace("{our}",config.ourRank).replace("{opp}",config.oppRank)} {t.prepNotStarted}</p>
@@ -3337,13 +3344,14 @@ function TMECommandCenter(){
             <div className="cmp-card">
               <div className="cmp-head us">{"OUR ALLIANCES"}</div>
               <table className="cmp-tbl">
-                <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
+                <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-cb">Cross-Border</th><th className="c-mp">M:P</th></tr></thead>
                 <tbody>
                 {computedAlliances.map((a,i)=>(
                   <tr key={a.tag}>
                     <td className="c-rk">{i+1}</td>
                     <td className="c-nm">{a.name||a.tag} <span className="tg" style={{color:a.color}}>[{a.tag}]</span></td>
                     <td className="c-p">{fmt(a.power)}</td>
+                    <td className="c-cb">{a.crossBorder?fmt(a.crossBorder):"—"}</td>
                     <td className={"c-mp "+mpCls(mpRatio(a.merits,a.power))}>{mpRatio(a.merits,a.power)}</td>
                   </tr>
                 ))}
@@ -3354,13 +3362,14 @@ function TMECommandCenter(){
             <div className="cmp-card">
               <div className="cmp-head them">{oppLabel+" ALLIANCES"}</div>
               <table className="cmp-tbl">
-                <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-mp">M:P</th></tr></thead>
+                <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{t.colPower}</th><th className="c-cb">Cross-Border</th><th className="c-mp">M:P</th></tr></thead>
                 <tbody>
                 {computedOppAlliances.map((a,i)=>(
                   <tr key={a.tag}>
                     <td className="c-rk">{i+1}</td>
                     <td className="c-nm">{a.name} <span className="tg">[{a.tag}]</span></td>
                     <td className="c-p">{fmt(a.power)}</td>
+                    <td className="c-cb">{a.crossBorder?fmt(a.crossBorder):"—"}</td>
                     <td className={"c-mp "+mpCls(mpRatio(a.merits,a.power))}>{mpRatio(a.merits,a.power)}</td>
                   </tr>
                 ))}
@@ -3484,7 +3493,7 @@ function TMECommandCenter(){
               <span><span style={{color:"#60a5fa"}}>{"\u25A0"}</span> Era 8: <strong>{config.totalOur}B</strong></span>
               <span><span style={{color:"#f87171"}}>{"\u25A0"}</span> {config.oppServer}: <strong>{config.totalOpp}B</strong></span>
             </div>
-            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp} oppLabel={oppLabel}/>
+            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp} oppLabel={oppLabel} eventOver={config.eventOver}/>
           </div>
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:4}}>{"\uD83D\uDCC5"} {t.stageSchedule||"PREP STAGE SCHEDULE"}</div>
