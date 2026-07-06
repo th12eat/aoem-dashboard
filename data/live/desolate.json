@@ -46,7 +46,15 @@
   "placerGold": {
     "cap": 500000,
     "flagZone1Cost": 5000,
-    "note": "Stronghold free · Resource Center 1k · Zone-1 flag 5k. Costs scale by zone and by flag-count tier (10/20/30…) — exact multipliers TBD. Gate/dock & city generation (lump-sum + per-hour) TBD.",
+    "note": "Stronghold free · Resource Center 1k · Zone-1 flag 5k. Flag costs scale by zone and by flag-count tier (10/20/30…) — exact multipliers TBD. Capture bonuses & /h generation below are confirmed. Aaru Palace and Towers of Rotation give NO bonus and NO hourly.",
+    "nodes": [
+      { "key": "gate_z1z2", "label": "Gate / Dock — Z1→Z2", "firstBonus": 100000, "perHour": 3000 },
+      { "key": "gate_eyes", "label": "Gate / Dock — Left/Right Eye (Z2→Z2)", "firstBonus": 150000, "perHour": 4000 },
+      { "key": "gate_z2z3", "label": "Gate / Dock — Z2→Z3", "firstBonus": 400000, "perHour": 8000 },
+      { "key": "pillar_city", "label": "Pillar City", "firstBonus": 300000, "perHour": 8000 },
+      { "key": "aaru_palace", "label": "Aaru Palace", "firstBonus": 0, "perHour": 0 },
+      { "key": "tower_rotation", "label": "Tower of Rotation", "firstBonus": 0, "perHour": 0 }
+    ],
     "alliances": [
       { "tag": "WC1", "current": 199000, "perHour": 0 },
       { "tag": "REU", "current": 199000, "perHour": 0 },

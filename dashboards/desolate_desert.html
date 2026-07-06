@@ -573,6 +573,39 @@ function PointsTab() {
         </div>
       ) : null}
 
+      {/* Placer Gold — node capture yields */}
+      {PLACER_GOLD && PLACER_GOLD.nodes && PLACER_GOLD.nodes.length ? (
+        <div style={S.card}>
+          <div style={S.cardTitle}>Placer Gold — Node Capture Yields</div>
+          <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>
+            First-capture bonus goes to the <strong>first</strong> alliance to take the node; the /h generation then accrues to whoever holds it. Grab high-value nodes early — the one-time bonus is the prize.
+          </div>
+          <table style={S.table}>
+            <thead>
+              <tr>
+                <th style={S.th}>Node</th>
+                <th style={{ ...S.th, textAlign: "right" }}>First-capture bonus</th>
+                <th style={{ ...S.th, textAlign: "right" }}>Generation /h</th>
+              </tr>
+            </thead>
+            <tbody>
+              {PLACER_GOLD.nodes.map(n => {
+                const none = !n.firstBonus && !n.perHour;
+                return (
+                <tr key={n.key}>
+                  <td style={{ ...S.td, color: none ? "#64748b" : "#e8eaf0" }}>{n.label}</td>
+                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: n.firstBonus > 0 ? "#f5731f" : "#64748b", fontWeight: n.firstBonus > 0 ? 600 : 400 }}>{n.firstBonus > 0 ? n.firstBonus.toLocaleString() : "—"}</td>
+                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: n.perHour > 0 ? "#3daa6d" : "#64748b" }}>{n.perHour > 0 ? "+" + n.perHour.toLocaleString() : "—"}</td>
+                </tr>
+              ); })}
+            </tbody>
+          </table>
+          <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>
+            Aaru Palace and Towers of Rotation yield no Placer Gold. Flag <em>costs</em> (per-zone × count-tier multipliers) are still TBD — send the cost table to complete the picture.
+          </div>
+        </div>
+      ) : null}
+
       {/* Achievements — per-alliance progress */}
       <div style={S.card}>
         <div style={S.cardTitle}>Conquest Achievements — Alliance Progress</div>
