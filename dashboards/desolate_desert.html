@@ -372,15 +372,6 @@ function OverviewTab({ state, setState }) {
 
   return (
     <div>
-      {/* Kingdom standings — front and center */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Kingdom Standings — Desert Star</div>
-        <KingdomBar />
-        <div style={{ marginTop: "10px", fontSize: "11px", color: "#64748b", textAlign: "center" }}>
-          Last updated: {KINGDOM_POINTS.lastUpdated} — the kingdom with the most Desert Points wins and picks the Aaru Palace fight time.
-        </div>
-      </div>
-
       {/* Rules of Engagement per opposing server */}
       <DiplomacyStatus />
 
@@ -1343,6 +1334,14 @@ function App() {
         <div style={{ marginTop: "10px", fontSize: "13px", color: "#cbd5e1" }}>
           <span style={{ color: "#94a3b8" }}>Aaru Palace Fight:</span>{" "}
           <strong style={{ color: "#f472b6" }}>{state.aaruTimeSlot || "Day 7 — time TBD (winner picks)"}</strong>
+        </div>
+      </div>
+
+      {/* Persistent Kingdom Standings bar — stays above the tabs on every tab */}
+      <div style={{ maxWidth: "960px", margin: "0 auto", padding: "14px 16px 0" }}>
+        <KingdomBar />
+        <div style={{ marginTop: "8px", fontSize: "11px", color: "#64748b", textAlign: "center" }}>
+          Last updated: {KINGDOM_POINTS.lastUpdated}
         </div>
       </div>
 
