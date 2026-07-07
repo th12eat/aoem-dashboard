@@ -23,104 +23,104 @@
     "notes": "We are heavily outmatched. Survival plan: appease Era #019 (SD rank 2, must-win for their top-3 reward) and make peace with Era #023 (shared half)."
   },
   "kingdomPoints": {
-    "era8": "1.31B",
-    "era023": "1.26B",
-    "era014": "1.98B",
-    "era019": "1.82B",
-    "lastUpdated": "2026-07-06 — Day 1 (Desert Star points)"
+    "era8": "3.86B",
+    "era023": "4.06B",
+    "era014": "7.89B",
+    "era019": "8.12B",
+    "lastUpdated": "2026-07-07 — Day 2 (Desert Star points)"
   },
   "kingdomScoreboard": [
     {
       "rank": 1,
-      "server": "Era #014",
-      "points": "1,976,376,030"
+      "server": "Era #019",
+      "points": "8,119,449,142"
     },
     {
       "rank": 2,
-      "server": "Era #019",
-      "points": "1,817,609,005"
+      "server": "Era #014",
+      "points": "7,893,178,601"
     },
     {
       "rank": 3,
-      "server": "Era 8",
-      "points": "1,313,267,425"
+      "server": "Era #023",
+      "points": "4,056,532,611"
     },
     {
       "rank": 4,
-      "server": "Era #023",
-      "points": "1,263,779,600"
+      "server": "Era 8",
+      "points": "3,856,552,347"
     }
   ],
   "allianceScoreboard": [
     {
       "rank": 1,
-      "tag": "X14",
-      "name": "Sakura",
-      "server": "Era #014",
-      "points": "707,109,250"
+      "tag": "XIX",
+      "name": "LeGENDZ",
+      "server": "Era #019",
+      "points": "3,905,851,160"
     },
     {
       "rank": 2,
       "tag": "KNY",
       "name": "DemonSlayer",
       "server": "Era #019",
-      "points": "656,610,690"
+      "points": "3,649,609,131"
     },
     {
       "rank": 3,
-      "tag": "Ȼ14",
-      "name": "LXCelestials",
+      "tag": "X14",
+      "name": "Sakura",
       "server": "Era #014",
-      "points": "646,990,635"
+      "points": "3,587,505,215"
     },
     {
       "rank": 4,
-      "tag": "XIX",
-      "name": "LeGENDZ",
-      "server": "Era #019",
-      "points": "641,728,015"
+      "tag": "Ȼ14",
+      "name": "LXCelestials",
+      "server": "Era #014",
+      "points": "3,122,024,469"
     },
     {
       "rank": 5,
       "tag": "GnG",
       "name": "GANGSTA",
       "server": "Era #014",
-      "points": "612,682,800"
+      "points": "2,224,232,590"
     },
     {
       "rank": 6,
-      "tag": "eRa",
-      "name": "WorldClass",
-      "server": "Era 8",
-      "points": "565,123,540"
-    },
-    {
-      "rank": 7,
       "tag": "LOD",
       "name": "LegionOfDonuts",
       "server": "Era #023",
-      "points": "562,107,530"
+      "points": "2,218,556,709"
+    },
+    {
+      "rank": 7,
+      "tag": "eRa",
+      "name": "WorldClass",
+      "server": "Era 8",
+      "points": "1,695,651,274"
     },
     {
       "rank": 8,
       "tag": "PBJ",
       "name": "Reiwa令和",
       "server": "Era #019",
-      "points": "376,197,315"
+      "points": "1,222,567,299"
     },
     {
       "rank": 9,
-      "tag": "DXR",
-      "name": "DefiantRebels",
-      "server": "Era #019",
-      "points": "322,971,000"
-    },
-    {
-      "rank": 10,
       "tag": "boi",
       "name": "Jericho",
       "server": "Era #023",
-      "points": "295,525,445"
+      "points": "1,084,615,529"
+    },
+    {
+      "rank": 10,
+      "tag": "DXR",
+      "name": "DefiantRebels",
+      "server": "Era #019",
+      "points": "1,023,229,656"
     }
   ],
   "alliancePoints": [
