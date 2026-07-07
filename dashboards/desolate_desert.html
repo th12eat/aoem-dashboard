@@ -46,6 +46,28 @@ const ZONES = [
   { id: "z3", name: "Eternal Realm", color: "#f59e0b", unlockDay: 6, desc: "Final zone. Access via Forbidden Zone Mountain Forts. Aaru Palace located here." },
 ];
 
+// Condensed stage line for the header/overview. `days` = which event day(s)
+// the stage covers; `startISO` = when it opens (drives the live indicator).
+const STAGES = [
+  { key: "d1", label: "Strongholds in Z1",              days: [1],       startISO: "2026-07-06T00:00:00Z" },
+  { key: "d2", label: "Z1→Z2 Gates & Pillar Cities",    days: [2],       startISO: "2026-07-07T00:00:00Z" },
+  { key: "d345", label: "Tower of Rotation & L/R Eye Gates", days: [3,4,5], startISO: "2026-07-08T00:00:00Z" },
+  { key: "d6", label: "Z3 Gates Open",                  days: [6],       startISO: "2026-07-11T00:00:00Z" },
+  { key: "d7", label: "Aaru Fight",                     days: [7],       startISO: "2026-07-12T00:00:00Z" },
+];
+
+// Per-player daily objectives (reset 00:00 UTC). `opensDay` = greyed until then.
+// Battle has no cap (unlimited — scales with eliminations).
+const DAILY_OBJECTIVES = [
+  { name: "Tower of Rotation", target: 5000000, opensDay: 3, note: "Damage Tower guardians (opens 00:00 UTC Day 3)" },
+  { name: "Gather Resources", target: 500000, note: "Gather within the DD map" },
+  { name: "Tribal Eliminations", target: 200000, note: "Kill Lv.31-35 tribes inside DD" },
+  { name: "Exploration", target: 400000, note: "Daily DD exploration quests" },
+  { name: "Ancient Dunes", target: 6000000, note: "DD special explorations" },
+  { name: "Pillar City", target: null, note: "Scales with Pillar Cities your alliance controls that day" },
+  { name: "Battle", target: null, note: "Unlimited — scales with eliminations you achieve" },
+];
+
 const KEY_NODES = [
   { id: "stronghold", name: "Desert Stronghold", zone: "z1", type: "building", desc: "Foundation of alliance lands. Flags must connect back to this or a Substronghold. Can be built anywhere in Waste Land.", points: 0 },
   { id: "mfort_wl_1", name: "Mountain Fort (WL) #1", zone: "z1", type: "fort", desc: "Gate to Forbidden Zone. Occupy to enter Z2.", points: 0 },
@@ -153,113 +175,145 @@ function saveState(state) {
    COMPONENTS
    ═══════════════════════════════════════════════════ */
 
-function OverviewTab({ state, setState }) {
-  const today = new Date().toISOString().split("T")[0];
-  const currentDay = SCHEDULE.find(s => s.date === today) || SCHEDULE.find(s => s.date >= today) || SCHEDULE[SCHEDULE.length - 1];
+// Which condensed stage are we in right now (last one whose startISO <= now)?
+function currentStageIndex() {
+  const now = Date.now();
+  let idx = -1;
+  STAGES.forEach((s, i) => { if (now >= Date.parse(s.startISO)) idx = i; });
+  return idx; // -1 if before Day 1
+}
 
+// Reusable Kingdom Desert-Star proportional bar (Orange>Blue>Purple>Green).
+function KingdomBar({ compact }) {
+  const ORDER = ["Era #019", "Era #023", "Era 8", "Era #014"];
+  const GRAD = {
+    "Era #019": { grad: "linear-gradient(90deg, #b4500f, #f5731f)", top: "#f5731f" },
+    "Era #023": { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" },
+    "Era 8":    { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" },
+    "Era #014": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" },
+  };
+  const ptsFor = (srv) => { const row = (KINGDOM_SCOREBOARD || []).find(k => k.server === srv); return row ? Number(String(row.points).replace(/,/g, "")) : 0; };
+  const segs = ORDER.map(srv => ({ srv, g: GRAD[srv], pts: ptsFor(srv), us: srv === "Era 8" }));
+  const total = segs.reduce((s, x) => s + x.pts, 0);
+  if (!total) return <div style={{ fontSize: "12px", color: "#64748b" }}>Awaiting scoreboard data.</div>;
+  const fmt = (n) => n >= 1e9 ? (n/1e9).toFixed(2) + "B" : n >= 1e6 ? (n/1e6).toFixed(0) + "M" : n.toLocaleString();
   return (
     <div>
-      {/* Event Status */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Event Status</div>
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "center" }}>
-          <div>
-            <span style={{ color: "#94a3b8", fontSize: "12px" }}>Event Period</span>
-            <div style={{ fontSize: "15px", fontWeight: 600 }}>{EVENT_CONFIG.matchingStart} → {EVENT_CONFIG.eventEnd}</div>
+      <div style={{ display: "flex", width: "100%", marginBottom: "6px" }}>
+        {segs.map(s => { const pct = (s.pts / total) * 100; return (
+          <div key={s.srv} style={{ width: pct + "%", textAlign: "center", padding: "0 2px", overflow: "hidden" }}>
+            {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 700, color: s.g.top, lineHeight: 1.2, whiteSpace: "nowrap" }}>{s.srv}{s.us ? " (Us)" : ""}</div> : null}
+            {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 600, color: "#cbd5e1", lineHeight: 1.2, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{fmt(s.pts)}</div> : null}
           </div>
-          <div>
-            <span style={{ color: "#94a3b8", fontSize: "12px" }}>Current Day</span>
-            <div style={{ fontSize: "15px", fontWeight: 600, color: "#f5731f" }}>Day {currentDay.day}: {currentDay.title}</div>
-          </div>
-          <div>
-            <span style={{ color: "#94a3b8", fontSize: "12px" }}>Aaru Palace Vote</span>
-            <div style={{ fontSize: "15px", fontWeight: 600, color: "#7c3aed" }}>{state.aaruTimeSlot || "Not decided yet"}</div>
-          </div>
-        </div>
+        ); })}
       </div>
-
-      {/* Zone Overview */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Zones</div>
-        {ZONES.map(z => (
-          <div key={z.id} style={S.zoneBar(z.color)}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div>
-                <span style={{ fontWeight: 700, color: z.color }}>{z.name}</span>
-                <span style={{ ...S.badge(z.color), marginLeft: "8px" }}>Unlocks Day {z.unlockDay}</span>
-              </div>
-            </div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>{z.desc}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Key Mechanics */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Key Mechanics</div>
-        <div style={S.grid2}>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f5731f", marginBottom: "4px" }}>Placer Gold</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Earned from holding Pillar Cities + lump sum from first capture of gates and Pillar Cities. Spent on building flags and structures in higher zones. Key resource for expansion.</div>
-          </div>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Desert Points</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Victory currency. Earned from holding nodes, PvE events, Aaru Palace. Kingdom with more points wins + picks Aaru time.</div>
-          </div>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Territory Control</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Flags must maintain an active connection back to a Stronghold or Substronghold. Disconnected flags become inactive. Higher zone flags cost more Placer Gold but are more durable.</div>
-          </div>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Tower of Rotation</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Wed-Sat at 05:00, 13:00, 21:00 UTC from Day 3. Spawns guardians for 2hrs. Must be adjacent to your land. Rewards: Death Sarcophagus + Desert Points.</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Alliance Buildings */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Alliance Buildings</div>
-        <div style={S.grid3}>
-          {BUILDINGS.map(b => (
-            <div key={b.name} style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-              <div style={{ fontSize: "18px", marginBottom: "4px" }}>{b.icon}</div>
-              <div style={{ fontWeight: 600, fontSize: "13px", marginBottom: "4px" }}>{b.name}</div>
-              <div style={{ fontSize: "11px", color: "#94a3b8" }}>{b.desc}</div>
-            </div>
-          ))}
-        </div>
+      <div style={{ display: "flex", width: "100%", height: "22px", borderRadius: "6px", overflow: "hidden", border: "1px solid #334155" }}>
+        {segs.map(s => { const pct = (s.pts / total) * 100; return (
+          <div key={s.srv} title={s.srv + ": " + s.pts.toLocaleString() + " (" + pct.toFixed(1) + "%)"} style={{ width: pct + "%", background: s.g.grad, borderRight: "1px solid rgba(0,0,0,0.3)" }} />
+        ); })}
       </div>
     </div>
   );
 }
 
-function ScheduleTab() {
+// Horizontal condensed schedule line with a pulsing dot on the current stage.
+function StageLine() {
+  const cur = currentStageIndex();
+  return (
+    <div style={{ display: "flex", alignItems: "flex-start", gap: "0", marginTop: "4px" }}>
+      {STAGES.map((s, i) => {
+        const done = i < cur, now = i === cur;
+        const dotColor = now ? "#f5731f" : done ? "#7c3aed" : "#475569";
+        const dayLbl = s.days.length > 1 ? `Day ${s.days[0]}–${s.days[s.days.length-1]}` : `Day ${s.days[0]}`;
+        return (
+          <div key={s.key} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", position: "relative" }}>
+            {i < STAGES.length - 1 ? <div style={{ position: "absolute", top: "7px", left: "50%", width: "100%", height: "2px", background: done ? "#7c3aed" : "#334155" }} /> : null}
+            <div className={now ? "live-pulse" : ""} style={{ width: "16px", height: "16px", borderRadius: "50%", background: dotColor, border: `2px solid ${now ? "#f5731f" : done ? "#7c3aed" : "#475569"}`, position: "relative", zIndex: 2 }} />
+            <div style={{ fontSize: "10px", fontWeight: 700, color: now ? "#f5731f" : "#94a3b8", marginTop: "6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>{dayLbl}</div>
+            <div style={{ fontSize: "11px", color: now ? "#e8eaf0" : "#94a3b8", marginTop: "2px", lineHeight: 1.25, padding: "0 4px" }}>{s.label}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function OverviewTab({ state, setState }) {
+  const [dailyOpen, setDailyOpen] = React.useState(false);
   const today = new Date().toISOString().split("T")[0];
+  const curStageIdx = currentStageIndex();
+  const curStage = STAGES[curStageIdx] || STAGES[0];
+  const currentDay = SCHEDULE.find(s => s.date === today) || SCHEDULE.find(s => s.date >= today) || SCHEDULE[SCHEDULE.length - 1];
 
   return (
     <div>
+      {/* Kingdom standings — front and center */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Event Schedule</div>
-        <div style={S.timeline}>
-          {SCHEDULE.map(s => {
-            const isPast = s.date < today;
-            const isToday = s.date === today;
-            const color = isToday ? "#22c55e" : isPast ? "#7c3aed" : "#475569";
-            return (
-              <div key={s.day} style={S.timelineItem}>
-                <div style={S.timelineDot(isPast || isToday, color)} />
-                <div style={{ display: "flex", gap: "12px", alignItems: "baseline" }}>
-                  <span style={{ fontWeight: 700, color: isToday ? "#22c55e" : "#e2e8f0", minWidth: "55px" }}>Day {s.day}</span>
-                  <span style={{ fontSize: "11px", color: "#64748b" }}>{s.date}</span>
-                  <span style={S.badge(ZONES.find(z => s.zone.includes(z.name))?.color || "#64748b")}>{s.zone}</span>
-                </div>
-                <div style={{ fontWeight: 600, fontSize: "14px", marginTop: "4px" }}>{s.title}</div>
-                <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "2px" }}>{s.desc}</div>
-              </div>
-            );
-          })}
+        <div style={S.cardTitle}>Kingdom Standings — Desert Star</div>
+        <KingdomBar />
+        <div style={{ marginTop: "10px", fontSize: "11px", color: "#64748b", textAlign: "center" }}>
+          Last updated: {KINGDOM_POINTS.lastUpdated} — the kingdom with the most Desert Points wins and picks the Aaru Palace fight time.
         </div>
+      </div>
+
+      {/* What is this event */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>The Event</div>
+        <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6 }}>
+          <strong style={{ color: "#f5731f" }}>Desolate Desert</strong> is a 7-day, four-kingdom land grab on a shared desert map. Alliances build a Stronghold and expand outward with connected flags, capturing <strong>gates/docks</strong> and <strong>Pillar Cities</strong> for Placer Gold and Desert Points. The map opens zone by zone (Waste Land → Forbidden Zone → Eternal Realm), climaxing in the <strong>Aaru Palace</strong> fight on Day 7. Most points wins — and PvE contribution (gathering, tribes, explorations, Tower damage) matters as much as PvP. This is the <strong>final event of the season</strong>.
+        </div>
+      </div>
+
+      {/* Event Status — stage + Aaru */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Event Status</div>
+        <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", alignItems: "center" }}>
+          <div>
+            <span style={{ color: "#94a3b8", fontSize: "12px" }}>Current Stage</span>
+            <div style={{ fontSize: "16px", fontWeight: 700, color: "#f5731f" }}>{curStageIdx < 0 ? "Pre-event" : (curStage.days.length > 1 ? `Day ${curStage.days[0]}–${curStage.days[curStage.days.length-1]}` : `Day ${curStage.days[0]}`) + ": " + curStage.label}</div>
+          </div>
+          <div>
+            <span style={{ color: "#94a3b8", fontSize: "12px" }}>Aaru Palace Fight (projected)</span>
+            <div style={{ fontSize: "16px", fontWeight: 700, color: "#9b6dff" }}>{state.aaruTimeSlot || "Day 7 — time TBD (winner picks)"}</div>
+          </div>
+        </div>
+        {/* condensed horizontal schedule */}
+        <div style={{ marginTop: "18px", paddingTop: "14px", borderTop: "1px solid #334155" }}>
+          <StageLine />
+        </div>
+      </div>
+
+      {/* Daily objectives — collapsible */}
+      <div style={S.card}>
+        <div onClick={() => setDailyOpen(o => !o)} style={{ ...S.cardTitle, marginBottom: dailyOpen ? "12px" : 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span>Daily Objectives (per player)</span>
+          <span style={{ fontSize: "16px", color: "#94a3b8", transform: dailyOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }}>▾</span>
+        </div>
+        {dailyOpen ? (
+          <div>
+            <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>Resets 00:00 UTC daily. Track your own progress toward each target.</div>
+            <table style={S.table}>
+              <thead><tr>
+                <th style={S.th}>Objective</th>
+                <th style={{ ...S.th, textAlign: "right" }}>Daily Target</th>
+                <th style={S.th}>Notes</th>
+              </tr></thead>
+              <tbody>
+                {DAILY_OBJECTIVES.map(o => {
+                  const locked = o.opensDay && currentDay.day < o.opensDay;
+                  const targetTxt = o.target == null ? "—" : (o.target >= 1e6 ? (o.target/1e6) + "M" : (o.target/1e3) + "K");
+                  return (
+                    <tr key={o.name} style={locked ? { opacity: 0.45 } : null}>
+                      <td style={{ ...S.td, fontWeight: 600, color: locked ? "#64748b" : "#e8eaf0" }}>{o.name}{locked ? " 🔒" : ""}</td>
+                      <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: o.target == null ? "#94a3b8" : (locked ? "#64748b" : "#f5731f"), fontWeight: 700 }}>{o.target == null ? "Unlimited" : "0 / " + targetTxt}</td>
+                      <td style={{ ...S.td, fontSize: "11px", color: "#94a3b8" }}>{o.note}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -451,47 +505,10 @@ let PLACER_GOLD = { cap: 500000, flagZone1Cost: 5000, note: "", alliances: [] };
 function PointsTab() {
   return (
     <div>
-      {/* Kingdom Scoreboard (Desert Star points) */}
+      {/* Kingdom standings bar (full view — headline copy lives on Overview) */}
       <div style={S.card}>
         <div style={S.cardTitle}>Kingdom Rankings — Desert Star</div>
-        {(() => {
-          // Fixed color order: Orange (#019) > Blue (#023) > Purple (Era 8) > Green (#014)
-          const ORDER = ["Era #019", "Era #023", "Era 8", "Era #014"];
-          const ptsFor = (srv) => {
-            const row = (KINGDOM_SCOREBOARD || []).find(k => k.server === srv);
-            return row ? Number(String(row.points).replace(/,/g, "")) : 0;
-          };
-          // richer, saturated gradients (map colors are muted → look pastel in a bar)
-          const GRAD = {
-            "Era #019": { grad: "linear-gradient(90deg, #b4500f, #f5731f)", top: "#f5731f" }, // orange
-            "Era #023": { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" }, // blue
-            "Era 8":    { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" }, // purple
-            "Era #014": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" }, // green
-          };
-          const segs = ORDER.map(srv => ({ srv, c: serverColor(srv), g: GRAD[srv], pts: ptsFor(srv), us: srv === "Era 8" }));
-          const total = segs.reduce((s, x) => s + x.pts, 0);
-          if (!total) return <div style={{ fontSize: "12px", color: "#64748b" }}>Awaiting scoreboard data.</div>;
-          const fmt = (n) => n >= 1e9 ? (n/1e9).toFixed(2) + "B" : n >= 1e6 ? (n/1e6).toFixed(0) + "M" : n.toLocaleString();
-          return (
-            <div>
-              {/* labels centered above each segment */}
-              <div style={{ display: "flex", width: "100%", marginBottom: "6px" }}>
-                {segs.map(s => { const pct = (s.pts / total) * 100; return (
-                  <div key={s.srv} style={{ width: pct + "%", textAlign: "center", padding: "0 2px", overflow: "hidden" }}>
-                    {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 700, color: s.g.top, lineHeight: 1.2, whiteSpace: "nowrap" }}>{s.srv}{s.us ? " (Us)" : ""}</div> : null}
-                    {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 600, color: "#cbd5e1", lineHeight: 1.2, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{fmt(s.pts)}</div> : null}
-                  </div>
-                ); })}
-              </div>
-              {/* thin proportional stacked bar (TME height) */}
-              <div style={{ display: "flex", width: "100%", height: "22px", borderRadius: "6px", overflow: "hidden", border: "1px solid #334155" }}>
-                {segs.map(s => { const pct = (s.pts / total) * 100; return (
-                  <div key={s.srv} title={s.srv + ": " + s.pts.toLocaleString() + " (" + pct.toFixed(1) + "%)"} style={{ width: pct + "%", background: s.g.grad, borderRight: "1px solid rgba(0,0,0,0.3)" }} />
-                ); })}
-              </div>
-            </div>
-          );
-        })()}
+        <KingdomBar />
         <div style={{ marginTop: "10px", fontSize: "11px", color: "#64748b", textAlign: "center" }}>
           Last updated: {KINGDOM_POINTS.lastUpdated} — Points lead determines Aaru Palace time selection priority
         </div>
@@ -911,6 +928,59 @@ function RoutePlannerTab({ state, setState }) {
 function PveTab() {
   return (
     <div>
+      {/* Zones */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Zones</div>
+        {ZONES.map(z => (
+          <div key={z.id} style={S.zoneBar(z.color)}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <span style={{ fontWeight: 700, color: z.color }}>{z.name}</span>
+                <span style={{ ...S.badge(z.color), marginLeft: "8px" }}>Unlocks Day {z.unlockDay}</span>
+              </div>
+            </div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>{z.desc}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Key Mechanics */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Key Mechanics</div>
+        <div style={S.grid2}>
+          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#f5731f", marginBottom: "4px" }}>Placer Gold</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Earned from holding Pillar Cities + lump sum from first capture of gates and Pillar Cities. Spent on building flags and structures in higher zones. Key resource for expansion.</div>
+          </div>
+          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Desert Points</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Victory currency. Earned from holding nodes, PvE events, Aaru Palace. Kingdom with more points wins + picks Aaru time.</div>
+          </div>
+          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Territory Control</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Flags must maintain an active connection back to a Stronghold or Substronghold. Disconnected flags become inactive. Higher zone flags cost more Placer Gold but are more durable.</div>
+          </div>
+          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Tower of Rotation</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Wed-Sat at 05:00, 13:00, 21:00 UTC from Day 3. Spawns guardians for 2hrs. Must be adjacent to your land. Rewards: Death Sarcophagus + Desert Points.</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Alliance Buildings */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Alliance Buildings</div>
+        <div style={S.grid3}>
+          {BUILDINGS.map(b => (
+            <div key={b.name} style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+              <div style={{ fontSize: "18px", marginBottom: "4px" }}>{b.icon}</div>
+              <div style={{ fontWeight: 600, fontSize: "13px", marginBottom: "4px" }}>{b.name}</div>
+              <div style={{ fontSize: "11px", color: "#94a3b8" }}>{b.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* PvE Contribution */}
       <div style={S.card}>
         <div style={S.cardTitle}>How PvE Players Help Win</div>
@@ -1129,6 +1199,10 @@ function App() {
           startISO: isDate(ec.eventStart) ? ec.eventStart + "T00:00:00Z" : null,
           endISO: isDate(ec.eventEnd) ? ec.eventEnd + "T00:00:00Z" : null,
           liveLabel: "Contest Live",
+          stages: STAGES.map(s => ({
+            fromISO: s.startISO,
+            label: "Contest Live · " + (s.days.length > 1 ? "Day " + s.days[0] + "–" + s.days[s.days.length-1] : "Day " + s.days[0]) + ": " + s.label
+          })),
           ical: { stub: true, label: "Add to Calendar" }
         });
       } else if (tries++ < 50) { setTimeout(mount, 50); }
@@ -1138,12 +1212,11 @@ function App() {
 
   const TABS = [
     { id: "overview", label: "Overview" },
-    { id: "research", label: "Research" },
-    { id: "schedule", label: "Schedule" },
-    { id: "map", label: "Map & Nodes" },
-    { id: "routes", label: "Route Planner" },
     { id: "pve", label: "PvE Guide" },
     { id: "points", label: "Points" },
+    { id: "research", label: "Research" },
+    { id: "map", label: "Map & Nodes" },
+    { id: "routes", label: "Route Planner" },
     { id: "diplomacy", label: "Diplomacy" },
   ];
 
@@ -1169,7 +1242,6 @@ function App() {
       <div style={S.content}>
         {tab === "overview" && <OverviewTab state={state} setState={setState} />}
         {tab === "research" && <ResearchTab />}
-        {tab === "schedule" && <ScheduleTab />}
         {tab === "map" && <MapTab state={state} setState={setState} />}
         {tab === "routes" && <RoutePlannerTab state={state} setState={setState} />}
         {tab === "pve" && <PveTab />}
