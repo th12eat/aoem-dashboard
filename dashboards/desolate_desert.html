@@ -613,8 +613,46 @@ let ALLIANCE_SCOREBOARD = [];  // [{rank, tag, name, server, points}]
 let PLACER_GOLD = { cap: 500000, flagZone1Cost: 5000, note: "", alliances: [] };
 
 function PointsTab() {
+  const [srcOpen, setSrcOpen] = React.useState(false);
+  const POINT_SOURCES = [
+    ["Gather 100 resources in DD", "15 pts"],
+    ["Defeat Lv.31-35 tribe", "13.5K pts"],
+    ["Complete exploration quest", "100K pts"],
+    ["Complete Ancient Dunes quest", "200K / 500K / 1M pts"],
+    ["Hold Lv.7 city (per ally per min)", "1K pts/min"],
+    ["Troops in Tower of Rotation range", "200K pts/min"],
+    ["Defeat a Tower Guardian", "100K pts"],
+    ["Hold Aaru Palace (per ally per min)", "300K pts/min"],
+    ["Damage Aaru Guardian (per 10K dmg)", "8K pts"],
+    ["Win Aaru Palace showdown", "20B pts (kingdom)"],
+    ["Gravely wound enemy unit", "1-36 pts (by level)"],
+    ["Defeat enemy unit", "5x wound pts"],
+  ];
   return (
     <div>
+      {/* Desert Points Sources — collapsible, at top */}
+      <div style={S.card}>
+        <div onClick={() => setSrcOpen(o => !o)} style={{ ...S.cardTitle, marginBottom: srcOpen ? "12px" : 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span>Desert Points Sources</span>
+          <span style={{ fontSize: "16px", color: "#94a3b8", transform: srcOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }}>▾</span>
+        </div>
+        {srcOpen ? (
+          <table style={S.table}>
+            <thead>
+              <tr>
+                <th style={S.th}>Activity</th>
+                <th style={S.th}>Points Earned</th>
+              </tr>
+            </thead>
+            <tbody>
+              {POINT_SOURCES.map(([act, pts]) => (
+                <tr key={act}><td style={S.td}>{act}</td><td style={S.td}>{pts}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        ) : null}
+      </div>
+
       {/* Cross-server Alliance Scoreboard (Desert Star points) */}
       {ALLIANCE_SCOREBOARD && ALLIANCE_SCOREBOARD.length ? (
         <div style={S.card}>
@@ -783,32 +821,6 @@ function PointsTab() {
         </div>
       </div>
 
-      {/* Desert Points Sources (moved from PvE Guide) */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Desert Points Sources</div>
-        <table style={S.table}>
-          <thead>
-            <tr>
-              <th style={S.th}>Activity</th>
-              <th style={S.th}>Points Earned</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td style={S.td}>Gather 100 resources in DD</td><td style={S.td}>15 pts</td></tr>
-            <tr><td style={S.td}>Defeat Lv.31-35 tribe</td><td style={S.td}>13.5K pts</td></tr>
-            <tr><td style={S.td}>Complete exploration quest</td><td style={S.td}>100K pts</td></tr>
-            <tr><td style={S.td}>Complete Ancient Dunes quest</td><td style={S.td}>200K / 500K / 1M pts</td></tr>
-            <tr><td style={S.td}>Hold Lv.7 city (per ally per min)</td><td style={S.td}>1K pts/min</td></tr>
-            <tr><td style={S.td}>Troops in Tower of Rotation range</td><td style={S.td}>200K pts/min</td></tr>
-            <tr><td style={S.td}>Defeat a Tower Guardian</td><td style={S.td}>100K pts</td></tr>
-            <tr><td style={S.td}>Hold Aaru Palace (per ally per min)</td><td style={S.td}>300K pts/min</td></tr>
-            <tr><td style={S.td}>Damage Aaru Guardian (per 10K dmg)</td><td style={S.td}>8K pts</td></tr>
-            <tr><td style={S.td}>Win Aaru Palace showdown</td><td style={S.td}>20B pts (kingdom)</td></tr>
-            <tr><td style={S.td}>Gravely wound enemy unit</td><td style={S.td}>1-36 pts (by level)</td></tr>
-            <tr><td style={S.td}>Defeat enemy unit</td><td style={S.td}>5x wound pts</td></tr>
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 }
