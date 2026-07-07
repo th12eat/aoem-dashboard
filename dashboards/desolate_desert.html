@@ -48,13 +48,16 @@ const ZONES = [
 
 // Condensed stage line for the header/overview. `days` = which event day(s)
 // the stage covers; `startISO` = when it opens (drives the live indicator).
+// zone key drives the connecting-line + dot color for each stage.
 const STAGES = [
-  { key: "d1", label: "Strongholds in Z1",              days: [1],       startISO: "2026-07-06T00:00:00Z" },
-  { key: "d2", label: "Z1→Z2 Gates & Pillar Cities",    days: [2],       startISO: "2026-07-07T00:00:00Z" },
-  { key: "d345", label: "Tower of Rotation & L/R Eye Gates", days: [3,4,5], startISO: "2026-07-08T00:00:00Z" },
-  { key: "d6", label: "Z3 Gates Open",                  days: [6],       startISO: "2026-07-11T00:00:00Z" },
-  { key: "d7", label: "Aaru Fight",                     days: [7],       startISO: "2026-07-12T00:00:00Z" },
+  { key: "d1", label: "Strongholds in Z1",              days: [1],       startISO: "2026-07-06T00:00:00Z", zone: "z1" },
+  { key: "d2", label: "Z2 Gates & Pillar Cities",       days: [2],       startISO: "2026-07-07T00:00:00Z", zone: "z2" },
+  { key: "d345", label: "Tower of Rotation & L/R Eye Gates Open", days: [3,4,5], startISO: "2026-07-08T00:00:00Z", zone: "z2" },
+  { key: "d6", label: "Z3 Gates Open",                  days: [6],       startISO: "2026-07-11T00:00:00Z", zone: "z3" },
+  { key: "d7", label: "Aaru Fight",                     days: [7],       startISO: "2026-07-12T00:00:00Z", zone: "z3" },
 ];
+// stage zone colors: Z1 purple, Z2 teal, Z3 pink (placeholder palette — easy to retune)
+const STAGE_ZONE_COLOR = { z1: "#9b6dff", z2: "#2dd4bf", z3: "#f472b6" };
 
 // Per-player daily objectives (reset 00:00 UTC). `opensDay` = greyed until then.
 // Battle has no cap (unlimited — scales with eliminations).
@@ -62,7 +65,7 @@ const DAILY_OBJECTIVES = [
   { name: "Tower of Rotation", target: 5000000, opensDay: 3, note: "Damage Tower guardians (opens 00:00 UTC Day 3)" },
   { name: "Gather Resources", target: 500000, note: "Gather within the DD map" },
   { name: "Tribal Eliminations", target: 200000, note: "Kill Lv.31-35 tribes inside DD" },
-  { name: "Exploration", target: 400000, note: "Daily DD exploration quests" },
+  { name: "Exploration", target: 400000, note: "Daily exploration quests" },
   { name: "Ancient Dunes", target: 6000000, note: "DD special explorations" },
   { name: "Pillar City", target: null, note: "Scales with Pillar Cities your alliance controls that day" },
   { name: "Battle", target: null, note: "Unlimited — scales with eliminations you achieve" },
@@ -223,13 +226,19 @@ function StageLine() {
     <div style={{ display: "flex", alignItems: "flex-start", gap: "0", marginTop: "4px" }}>
       {STAGES.map((s, i) => {
         const done = i < cur, now = i === cur;
-        const dotColor = now ? "#f5731f" : done ? "#7c3aed" : "#475569";
+        const zoneCol = STAGE_ZONE_COLOR[s.zone] || "#475569";
+        // dot: current stage = orange (pulsing yellow); every other dot = its zone color.
+        const dotColor = now ? "#f5731f" : zoneCol;
+        const dotBorder = now ? "#f5731f" : zoneCol;
+        // connecting line to the next dot = the zone open during THIS span (this stage's zone).
+        // Always colored — it's a legend of which zone is open when, not a progress track.
+        const lineColor = zoneCol;
         const dayLbl = s.days.length > 1 ? `Day ${s.days[0]}–${s.days[s.days.length-1]}` : `Day ${s.days[0]}`;
         return (
           <div key={s.key} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", position: "relative" }}>
-            {i < STAGES.length - 1 ? <div style={{ position: "absolute", top: "7px", left: "50%", width: "100%", height: "2px", background: done ? "#7c3aed" : "#334155" }} /> : null}
-            <div className={now ? "live-pulse" : ""} style={{ width: "16px", height: "16px", borderRadius: "50%", background: dotColor, border: `2px solid ${now ? "#f5731f" : done ? "#7c3aed" : "#475569"}`, position: "relative", zIndex: 2 }} />
-            <div style={{ fontSize: "10px", fontWeight: 700, color: now ? "#f5731f" : "#94a3b8", marginTop: "6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>{dayLbl}</div>
+            {i < STAGES.length - 1 ? <div style={{ position: "absolute", top: "7px", left: "50%", width: "100%", height: "3px", background: lineColor }} /> : null}
+            <div className={now ? "live-pulse" : ""} style={{ width: "16px", height: "16px", borderRadius: "50%", background: dotColor, border: `2px solid ${dotBorder}`, position: "relative", zIndex: 2 }} />
+            <div style={{ fontSize: "10px", fontWeight: 700, color: now ? "#f5731f" : zoneCol, marginTop: "6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>{dayLbl}</div>
             <div style={{ fontSize: "11px", color: now ? "#e8eaf0" : "#94a3b8", marginTop: "2px", lineHeight: 1.25, padding: "0 4px" }}>{s.label}</div>
           </div>
         );
@@ -239,10 +248,7 @@ function StageLine() {
 }
 
 function OverviewTab({ state, setState }) {
-  const [dailyOpen, setDailyOpen] = React.useState(false);
   const today = new Date().toISOString().split("T")[0];
-  const curStageIdx = currentStageIndex();
-  const curStage = STAGES[curStageIdx] || STAGES[0];
   const currentDay = SCHEDULE.find(s => s.date === today) || SCHEDULE.find(s => s.date >= today) || SCHEDULE[SCHEDULE.length - 1];
 
   return (
@@ -256,64 +262,46 @@ function OverviewTab({ state, setState }) {
         </div>
       </div>
 
-      {/* What is this event */}
+      {/* Minimap + event description */}
       <div style={S.card}>
+        <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
+          style={{ width: "100%", maxWidth: "520px", display: "block", margin: "0 auto 14px", borderRadius: "10px", border: "1px solid #334155" }} />
         <div style={S.cardTitle}>The Event</div>
         <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6 }}>
           <strong style={{ color: "#f5731f" }}>Desolate Desert</strong> is a 7-day, four-kingdom land grab on a shared desert map. Alliances build a Stronghold and expand outward with connected flags, capturing <strong>gates/docks</strong> and <strong>Pillar Cities</strong> for Placer Gold and Desert Points. The map opens zone by zone (Waste Land → Forbidden Zone → Eternal Realm), climaxing in the <strong>Aaru Palace</strong> fight on Day 7. Most points wins — and PvE contribution (gathering, tribes, explorations, Tower damage) matters as much as PvP. This is the <strong>final event of the season</strong>.
         </div>
       </div>
 
-      {/* Event Status — stage + Aaru */}
+      {/* Event Status — condensed horizontal schedule only */}
       <div style={S.card}>
         <div style={S.cardTitle}>Event Status</div>
-        <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", alignItems: "center" }}>
-          <div>
-            <span style={{ color: "#94a3b8", fontSize: "12px" }}>Current Stage</span>
-            <div style={{ fontSize: "16px", fontWeight: 700, color: "#f5731f" }}>{curStageIdx < 0 ? "Pre-event" : (curStage.days.length > 1 ? `Day ${curStage.days[0]}–${curStage.days[curStage.days.length-1]}` : `Day ${curStage.days[0]}`) + ": " + curStage.label}</div>
-          </div>
-          <div>
-            <span style={{ color: "#94a3b8", fontSize: "12px" }}>Aaru Palace Fight (projected)</span>
-            <div style={{ fontSize: "16px", fontWeight: 700, color: "#9b6dff" }}>{state.aaruTimeSlot || "Day 7 — time TBD (winner picks)"}</div>
-          </div>
-        </div>
-        {/* condensed horizontal schedule */}
-        <div style={{ marginTop: "18px", paddingTop: "14px", borderTop: "1px solid #334155" }}>
-          <StageLine />
-        </div>
+        <StageLine />
       </div>
 
-      {/* Daily objectives — collapsible */}
+      {/* Daily objectives — per player */}
       <div style={S.card}>
-        <div onClick={() => setDailyOpen(o => !o)} style={{ ...S.cardTitle, marginBottom: dailyOpen ? "12px" : 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span>Daily Objectives (per player)</span>
-          <span style={{ fontSize: "16px", color: "#94a3b8", transform: dailyOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }}>▾</span>
-        </div>
-        {dailyOpen ? (
-          <div>
-            <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>Resets 00:00 UTC daily. Track your own progress toward each target.</div>
-            <table style={S.table}>
-              <thead><tr>
-                <th style={S.th}>Objective</th>
-                <th style={{ ...S.th, textAlign: "right" }}>Daily Target</th>
-                <th style={S.th}>Notes</th>
-              </tr></thead>
-              <tbody>
-                {DAILY_OBJECTIVES.map(o => {
-                  const locked = o.opensDay && currentDay.day < o.opensDay;
-                  const targetTxt = o.target == null ? "—" : (o.target >= 1e6 ? (o.target/1e6) + "M" : (o.target/1e3) + "K");
-                  return (
-                    <tr key={o.name} style={locked ? { opacity: 0.45 } : null}>
-                      <td style={{ ...S.td, fontWeight: 600, color: locked ? "#64748b" : "#e8eaf0" }}>{o.name}{locked ? " 🔒" : ""}</td>
-                      <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: o.target == null ? "#94a3b8" : (locked ? "#64748b" : "#f5731f"), fontWeight: 700 }}>{o.target == null ? "Unlimited" : "0 / " + targetTxt}</td>
-                      <td style={{ ...S.td, fontSize: "11px", color: "#94a3b8" }}>{o.note}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        ) : null}
+        <div style={S.cardTitle}>Daily Objectives (per player)</div>
+        <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>Resets 00:00 UTC daily. Track your own progress toward each target.</div>
+        <table style={S.table}>
+          <thead><tr>
+            <th style={S.th}>Objective</th>
+            <th style={{ ...S.th, textAlign: "right" }}>Daily Target</th>
+            <th style={S.th}>Notes</th>
+          </tr></thead>
+          <tbody>
+            {DAILY_OBJECTIVES.map(o => {
+              const locked = o.opensDay && currentDay.day < o.opensDay;
+              const targetTxt = o.target == null ? "—" : (o.target >= 1e6 ? (o.target/1e6) + "M" : (o.target/1e3) + "K");
+              return (
+                <tr key={o.name} style={locked ? { opacity: 0.45 } : null}>
+                  <td style={{ ...S.td, fontWeight: 600, color: locked ? "#64748b" : "#e8eaf0" }}>{o.name}{locked ? " 🔒" : ""}</td>
+                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: o.target == null ? "#94a3b8" : (locked ? "#64748b" : "#f5731f"), fontWeight: 700 }}>{o.target == null ? "Unlimited" : "0 / " + targetTxt}</td>
+                  <td style={{ ...S.td, fontSize: "11px", color: "#94a3b8" }}>{o.note}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );
@@ -1229,6 +1217,10 @@ function App() {
           {EVENT_CONFIG.servers.join(" vs ")}
         </div>
         <div id="evtMeta"></div>
+        <div style={{ marginTop: "10px", fontSize: "13px", color: "#cbd5e1" }}>
+          <span style={{ color: "#94a3b8" }}>Aaru Palace Fight:</span>{" "}
+          <strong style={{ color: "#f472b6" }}>{state.aaruTimeSlot || "Day 7 — time TBD (winner picks)"}</strong>
+        </div>
       </div>
 
       <div className="tabs">
