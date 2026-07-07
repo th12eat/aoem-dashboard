@@ -541,8 +541,9 @@ function PointsTab() {
                 <th style={{ ...S.th, textAlign: "right" }}>Current</th>
                 <th style={{ ...S.th, minWidth: "130px" }}>Cap ({(PLACER_GOLD.cap/1000)}k)</th>
                 <th style={{ ...S.th, textAlign: "right" }}>Gen /h</th>
-                <th style={{ ...S.th, textAlign: "center" }}>Holdings</th>
-                <th style={{ ...S.th, textAlign: "right" }}>Z2 flags now</th>
+                <th style={{ ...S.th, textAlign: "center" }}>Gates</th>
+                <th style={{ ...S.th, textAlign: "center" }}>Pillars</th>
+                <th style={{ ...S.th, textAlign: "center" }}>Flags</th>
               </tr>
             </thead>
             <tbody>
@@ -550,12 +551,7 @@ function PointsTab() {
                 const has = a.current != null;
                 const pct = has ? Math.min(100, Math.round((a.current / PLACER_GOLD.cap) * 100)) : 0;
                 const capped = has && a.current >= PLACER_GOLD.cap;
-                const z2cost = PLACER_GOLD.flagZone2Cost || 50000;
-                const z2flags = has ? Math.floor(a.current / z2cost) : "—";
-                const hold = [];
-                if (a.gates) hold.push(a.gates + "G");
-                if (a.pillarCities) hold.push(a.pillarCities + "P");
-                if (a.flags != null) hold.push(a.flags + "🚩" + (a.flagsBuilding ? "+" + a.flagsBuilding : ""));
+                const flagTxt = a.flags != null ? (a.flags + (a.flagsBuilding ? " (+" + a.flagsBuilding + ")" : "")) : "—";
                 return (
                 <tr key={a.tag}>
                   <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span>{a.confirmed ? <span style={{ color: "#3daa6d", fontSize: "9px", marginLeft: "4px" }}>●</span> : null}</td>
@@ -569,14 +565,15 @@ function PointsTab() {
                     </div>
                   </td>
                   <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: (a.perHour > 0 ? "#3daa6d" : "#64748b") }}>{a.perHour > 0 ? "+" + a.perHour.toLocaleString() : "0"}</td>
-                  <td style={{ ...S.td, textAlign: "center", fontSize: "11px", color: "#94a3b8" }}>{hold.length ? hold.join(" · ") : "—"}</td>
-                  <td style={{ ...S.td, textAlign: "right", color: "#94a3b8" }}>{z2flags}</td>
+                  <td style={{ ...S.td, textAlign: "center", color: (a.gates ? "#e8eaf0" : "#64748b") }}>{a.gates || "0"}</td>
+                  <td style={{ ...S.td, textAlign: "center", color: (a.pillarCities ? "#f5731f" : "#64748b"), fontWeight: (a.pillarCities ? 600 : 400) }}>{a.pillarCities || "0"}</td>
+                  <td style={{ ...S.td, textAlign: "center", color: "#94a3b8" }}>{flagTxt}</td>
                 </tr>
               ); })}
             </tbody>
           </table>
           <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>
-            Holdings: <strong>G</strong>=gates/docks (3k/h) · <strong>P</strong>=Pillar Cities (8k/h) · 🚩=flags built (+building). <span style={{ color: "#3daa6d" }}>●</span> = panel-confirmed balance. "Z2 flags now" = current ÷ {((PLACER_GOLD.flagZone2Cost||50000)/1000)}k (Zone-2 cost for flags ≤10th). Cap warning at 500k — spend before capping; gold wasted once maxed.
+            <strong>Gates</strong> = gates/docks held (3k/h each) · <strong>Pillars</strong> = Pillar Cities held (8k/h each) · <strong>Flags</strong> = flags built (+ number building). <span style={{ color: "#3daa6d" }}>●</span> next to a tag = panel-confirmed balance; others' /h derived from holdings. Cap warning at 500k — spend before capping; gold is wasted once maxed.
           </div>
         </div>
       ) : null}
