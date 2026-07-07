@@ -144,7 +144,7 @@
   "placerGold": {
     "cap": 500000,
     "flagZone1Cost": 5000,
-    "note": "Stronghold free · Resource Center 1k · Zone-1 flag 5k. Flag costs scale by zone and by flag-count tier (10/20/30…) — exact multipliers TBD. Capture bonuses & /h generation below are confirmed. Aaru Palace and Towers of Rotation give NO bonus and NO hourly.",
+    "note": "Stronghold free · Resource Center 1k · Z1 flag 5k · Z2 flag 50k (for flags ≤10th; higher tiers TBD). Gates/docks Z1→Z2 give 100k first-capture + 3k/h; Pillar City 300k + 8k/h (see Node Yields). Only WC1's balance is panel-confirmed (329k / +14k/h); others' /h derived from holdings, balances pending their panels.",
     "nodes": [
       {
         "key": "gate_z1z2",
@@ -186,25 +186,53 @@
     "alliances": [
       {
         "tag": "WC1",
-        "current": 199000,
-        "perHour": 0
+        "current": 329000,
+        "perHour": 14000,
+        "gates": 2,
+        "pillarCities": 1,
+        "pillarNames": [
+          "City of Bull"
+        ],
+        "flags": 5,
+        "flagsBuilding": 2,
+        "confirmed": true
       },
       {
         "tag": "REU",
-        "current": 199000,
-        "perHour": 0
-      },
-      {
-        "tag": "AGC",
-        "current": 199000,
-        "perHour": 0
+        "current": null,
+        "perHour": 3000,
+        "gates": 1,
+        "pillarCities": 0,
+        "pillarNames": [],
+        "flags": 6,
+        "flagsBuilding": 0,
+        "confirmed": false
       },
       {
         "tag": "MyT",
-        "current": 194000,
-        "perHour": 0
+        "current": null,
+        "perHour": 3000,
+        "gates": 1,
+        "pillarCities": 0,
+        "pillarNames": [],
+        "flags": 5,
+        "flagsBuilding": 1,
+        "confirmed": false
+      },
+      {
+        "tag": "AGC",
+        "current": null,
+        "perHour": 0,
+        "gates": 0,
+        "pillarCities": 0,
+        "pillarNames": [],
+        "flags": 6,
+        "flagsBuilding": 0,
+        "confirmed": false
       }
-    ]
+    ],
+    "flagZone2Cost": 50000,
+    "lastUpdated": "2026-07-07 — gates live since ~01:00 UTC; WC1 took AGC's gate ~07:00"
   },
   "diplomacy": [
     {

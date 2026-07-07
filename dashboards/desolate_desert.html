@@ -539,36 +539,44 @@ function PointsTab() {
               <tr>
                 <th style={S.th}>Alliance</th>
                 <th style={{ ...S.th, textAlign: "right" }}>Current</th>
-                <th style={{ ...S.th, minWidth: "140px" }}>Cap ({(PLACER_GOLD.cap/1000)}k)</th>
+                <th style={{ ...S.th, minWidth: "130px" }}>Cap ({(PLACER_GOLD.cap/1000)}k)</th>
                 <th style={{ ...S.th, textAlign: "right" }}>Gen /h</th>
-                <th style={{ ...S.th, textAlign: "right" }}>Z1 flags affordable</th>
+                <th style={{ ...S.th, textAlign: "center" }}>Holdings</th>
+                <th style={{ ...S.th, textAlign: "right" }}>Z2 flags now</th>
               </tr>
             </thead>
             <tbody>
               {PLACER_GOLD.alliances.map(a => {
-                const pct = Math.min(100, Math.round((a.current / PLACER_GOLD.cap) * 100));
-                const capped = a.current >= PLACER_GOLD.cap;
-                const flags = PLACER_GOLD.flagZone1Cost ? Math.floor(a.current / PLACER_GOLD.flagZone1Cost) : "—";
+                const has = a.current != null;
+                const pct = has ? Math.min(100, Math.round((a.current / PLACER_GOLD.cap) * 100)) : 0;
+                const capped = has && a.current >= PLACER_GOLD.cap;
+                const z2cost = PLACER_GOLD.flagZone2Cost || 50000;
+                const z2flags = has ? Math.floor(a.current / z2cost) : "—";
+                const hold = [];
+                if (a.gates) hold.push(a.gates + "G");
+                if (a.pillarCities) hold.push(a.pillarCities + "P");
+                if (a.flags != null) hold.push(a.flags + "🚩" + (a.flagsBuilding ? "+" + a.flagsBuilding : ""));
                 return (
                 <tr key={a.tag}>
-                  <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
-                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: capped ? "#ef4444" : "#e8eaf0" }}>{a.current.toLocaleString()}</td>
+                  <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span>{a.confirmed ? <span style={{ color: "#3daa6d", fontSize: "9px", marginLeft: "4px" }}>●</span> : null}</td>
+                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: capped ? "#ef4444" : (has ? "#e8eaf0" : "#64748b") }}>{has ? a.current.toLocaleString() : "—"}</td>
                   <td style={S.td}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       <div style={{ flex: 1, height: "6px", background: "#0f172a", borderRadius: "3px", overflow: "hidden" }}>
                         <div style={{ width: pct + "%", height: "100%", background: capped ? "#ef4444" : "#f5731f", borderRadius: "3px" }} />
                       </div>
-                      <span style={{ fontSize: "11px", color: "#94a3b8", minWidth: "32px" }}>{pct}%</span>
+                      <span style={{ fontSize: "11px", color: "#94a3b8", minWidth: "32px" }}>{has ? pct + "%" : "—"}</span>
                     </div>
                   </td>
                   <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: (a.perHour > 0 ? "#3daa6d" : "#64748b") }}>{a.perHour > 0 ? "+" + a.perHour.toLocaleString() : "0"}</td>
-                  <td style={{ ...S.td, textAlign: "right", color: "#94a3b8" }}>{flags}</td>
+                  <td style={{ ...S.td, textAlign: "center", fontSize: "11px", color: "#94a3b8" }}>{hold.length ? hold.join(" · ") : "—"}</td>
+                  <td style={{ ...S.td, textAlign: "right", color: "#94a3b8" }}>{z2flags}</td>
                 </tr>
               ); })}
             </tbody>
           </table>
           <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>
-            Cap warning at 500k — gold wasted once maxed, so spend on flags before capping. "Z1 flags affordable" = current ÷ {(PLACER_GOLD.flagZone1Cost/1000)}k (Zone-1 cost).
+            Holdings: <strong>G</strong>=gates/docks (3k/h) · <strong>P</strong>=Pillar Cities (8k/h) · 🚩=flags built (+building). <span style={{ color: "#3daa6d" }}>●</span> = panel-confirmed balance. "Z2 flags now" = current ÷ {((PLACER_GOLD.flagZone2Cost||50000)/1000)}k (Zone-2 cost for flags ≤10th). Cap warning at 500k — spend before capping; gold wasted once maxed.
           </div>
         </div>
       ) : null}
@@ -601,7 +609,7 @@ function PointsTab() {
             </tbody>
           </table>
           <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>
-            Aaru Palace and Towers of Rotation yield no Placer Gold. Flag <em>costs</em> (per-zone × count-tier multipliers) are still TBD — send the cost table to complete the picture.
+            Aaru Palace and Towers of Rotation yield no Placer Gold. Flag <em>costs</em>: Z1 5k, Z2 50k (flags ≤10th) — higher count-tiers (11th+, 20th+…) still TBD.
           </div>
         </div>
       ) : null}
