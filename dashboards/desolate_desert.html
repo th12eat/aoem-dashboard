@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="../assets/kvk-theme.css">
     <style>
         body { margin: 0; background: #0a0c14; font-family: 'Barlow', system-ui, sans-serif; color: #e8eaf0; }
+        /* pin the tab bar to the top while scrolling within a tab */
+        .tabs {
+            position: sticky; top: 0; z-index: 50;
+            background: #0a0c14;
+            box-shadow: 0 6px 14px -8px rgba(0,0,0,0.9);
+        }
     </style>
 </head>
 <body data-kvk="desolate">
@@ -64,6 +70,24 @@ const STAGE_ZONE = {
   z2: { bright: "#2dd4bf", dark: "#134e48", label: "Zone 2" },
   z3: { bright: "#f472b6", dark: "#5e2545", label: "Zone 3" },
 };
+
+// Rules of Engagement — per opposing server, whether we FIGHT (true) or leave alone
+// (false) in each escalating column. Overall stance auto-derived from the count fought:
+//   0 = grey (retaliate only) · all = red (fight everywhere) · >=half = orange ·
+//   <half but >0 = yellow · full ally intent (explicit) = green.
+const ROE_COLUMNS = [
+  { key: "openField", label: "Open Field" },
+  { key: "riverland", label: "Peaceful Riverland" },
+  { key: "farms", label: "Farms" },
+  { key: "citadels", label: "Citadels" },
+  { key: "citiesGates", label: "Cities / Gates" },
+];
+// fight: map of column->bool. ally:true means green regardless (we side with them).
+const DIPLOMACY_ROE = [
+  { server: "Era #019", ally: false, fight: { openField: true,  riverland: true,  farms: true,  citadels: true,  citiesGates: true  } },
+  { server: "Era #014", ally: true,  fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #023", ally: false, fight: { openField: true,  riverland: true,  farms: true,  citadels: true,  citiesGates: true  } },
+];
 
 // Per-player daily objectives (reset 00:00 UTC). `opensDay` = greyed until then.
 // Battle has no cap (unlimited — scales with eliminations).
@@ -279,6 +303,69 @@ function StageLine() {
   );
 }
 
+// Rules-of-Engagement stoplight grid: one row per opposing server, a bright
+// circle per escalating column, plus an overall stance chip.
+function DiplomacyStatus() {
+  // bright, high-visibility palette
+  const GREEN = "#22c55e", RED = "#ef4444", GREY = "#9ca3af", ORANGE = "#f97316", YELLOW = "#facc15";
+  const stance = (row) => {
+    if (row.ally) return { color: GREEN, label: "Ally", desc: "Side with them everywhere" };
+    const n = ROE_COLUMNS.filter(c => row.fight[c.key]).length;
+    const total = ROE_COLUMNS.length;
+    if (n === 0) return { color: GREY, label: "Retaliate only", desc: "Don't initiate — hit back only" };
+    if (n === total) return { color: RED, label: "Hostile", desc: "Fight on all fronts" };
+    if (n >= total / 2) return { color: ORANGE, label: "Aggressive", desc: `Fight ${n}/${total} fronts` };
+    return { color: YELLOW, label: "Cautious", desc: `Fight ${n}/${total} fronts` };
+  };
+  return (
+    <div style={S.card}>
+      <div style={S.cardTitle}>Rules of Engagement — Opposing Servers</div>
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ ...S.table, minWidth: "620px" }}>
+          <thead>
+            <tr>
+              <th style={S.th}>Server</th>
+              <th style={{ ...S.th, textAlign: "center" }}>Stance</th>
+              {ROE_COLUMNS.map(c => <th key={c.key} style={{ ...S.th, textAlign: "center" }}>{c.label}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {DIPLOMACY_ROE.map(row => {
+              const st = stance(row);
+              const c = serverColor(row.server);
+              return (
+                <tr key={row.server}>
+                  <td style={{ ...S.td, fontWeight: 700, color: c.hex, whiteSpace: "nowrap" }}>{row.server}</td>
+                  <td style={{ ...S.td, textAlign: "center", whiteSpace: "nowrap" }}>
+                    <span style={{ display: "inline-block", padding: "2px 10px", borderRadius: "999px", fontSize: "11px", fontWeight: 800, letterSpacing: "0.5px", textTransform: "uppercase", background: st.color + "26", color: st.color, border: `1px solid ${st.color}` }} title={st.desc}>{st.label}</span>
+                  </td>
+                  {ROE_COLUMNS.map(col => {
+                    const fight = row.ally ? false : !!row.fight[col.key];
+                    const dot = row.ally ? GREEN : (fight ? RED : GREY);
+                    const glyph = row.ally ? "🤝" : (fight ? "⚔️" : "✋");
+                    return (
+                      <td key={col.key} style={{ ...S.td, textAlign: "center" }}>
+                        <span title={fight ? "Fight" : (row.ally ? "Ally" : "Leave alone / retaliate only")}
+                          style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "22px", height: "22px", borderRadius: "50%", background: dot, boxShadow: `0 0 8px ${dot}99`, fontSize: "11px" }}>{glyph}</span>
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div style={{ fontSize: "11px", color: "#64748b", marginTop: "10px", display: "flex", flexWrap: "wrap", gap: "14px" }}>
+        <span><span style={{ color: "#ef4444" }}>⚔️ Red</span> = fight here</span>
+        <span><span style={{ color: "#9ca3af" }}>✋ Grey</span> = leave alone (retaliate only)</span>
+        <span><span style={{ color: "#22c55e" }}>🤝 Green</span> = ally</span>
+        <span style={{ color: "#94a3b8" }}>Stance: Green ally · Grey retaliate-only · Yellow &lt;½ fronts · Orange ≥½ fronts · Red all fronts</span>
+      </div>
+    </div>
+  );
+}
+
 function OverviewTab({ state, setState }) {
   const today = new Date().toISOString().split("T")[0];
   const currentDay = SCHEDULE.find(s => s.date === today) || SCHEDULE.find(s => s.date >= today) || SCHEDULE[SCHEDULE.length - 1];
@@ -293,6 +380,9 @@ function OverviewTab({ state, setState }) {
           Last updated: {KINGDOM_POINTS.lastUpdated} — the kingdom with the most Desert Points wins and picks the Aaru Palace fight time.
         </div>
       </div>
+
+      {/* Rules of Engagement per opposing server */}
+      <DiplomacyStatus />
 
       {/* Minimap + event description */}
       <div style={S.card}>
@@ -525,15 +615,6 @@ let PLACER_GOLD = { cap: 500000, flagZone1Cost: 5000, note: "", alliances: [] };
 function PointsTab() {
   return (
     <div>
-      {/* Kingdom standings bar (full view — headline copy lives on Overview) */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Kingdom Rankings — Desert Star</div>
-        <KingdomBar />
-        <div style={{ marginTop: "10px", fontSize: "11px", color: "#64748b", textAlign: "center" }}>
-          Last updated: {KINGDOM_POINTS.lastUpdated} — Points lead determines Aaru Palace time selection priority
-        </div>
-      </div>
-
       {/* Cross-server Alliance Scoreboard (Desert Star points) */}
       {ALLIANCE_SCOREBOARD && ALLIANCE_SCOREBOARD.length ? (
         <div style={S.card}>
@@ -700,6 +781,33 @@ function PointsTab() {
           </tbody>
         </table>
         </div>
+      </div>
+
+      {/* Desert Points Sources (moved from PvE Guide) */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Desert Points Sources</div>
+        <table style={S.table}>
+          <thead>
+            <tr>
+              <th style={S.th}>Activity</th>
+              <th style={S.th}>Points Earned</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style={S.td}>Gather 100 resources in DD</td><td style={S.td}>15 pts</td></tr>
+            <tr><td style={S.td}>Defeat Lv.31-35 tribe</td><td style={S.td}>13.5K pts</td></tr>
+            <tr><td style={S.td}>Complete exploration quest</td><td style={S.td}>100K pts</td></tr>
+            <tr><td style={S.td}>Complete Ancient Dunes quest</td><td style={S.td}>200K / 500K / 1M pts</td></tr>
+            <tr><td style={S.td}>Hold Lv.7 city (per ally per min)</td><td style={S.td}>1K pts/min</td></tr>
+            <tr><td style={S.td}>Troops in Tower of Rotation range</td><td style={S.td}>200K pts/min</td></tr>
+            <tr><td style={S.td}>Defeat a Tower Guardian</td><td style={S.td}>100K pts</td></tr>
+            <tr><td style={S.td}>Hold Aaru Palace (per ally per min)</td><td style={S.td}>300K pts/min</td></tr>
+            <tr><td style={S.td}>Damage Aaru Guardian (per 10K dmg)</td><td style={S.td}>8K pts</td></tr>
+            <tr><td style={S.td}>Win Aaru Palace showdown</td><td style={S.td}>20B pts (kingdom)</td></tr>
+            <tr><td style={S.td}>Gravely wound enemy unit</td><td style={S.td}>1-36 pts (by level)</td></tr>
+            <tr><td style={S.td}>Defeat enemy unit</td><td style={S.td}>5x wound pts</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );
@@ -948,59 +1056,6 @@ function RoutePlannerTab({ state, setState }) {
 function PveTab() {
   return (
     <div>
-      {/* Zones */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Zones</div>
-        {ZONES.map(z => (
-          <div key={z.id} style={S.zoneBar(z.color)}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div>
-                <span style={{ fontWeight: 700, color: z.color }}>{z.name}</span>
-                <span style={{ ...S.badge(z.color), marginLeft: "8px" }}>Unlocks Day {z.unlockDay}</span>
-              </div>
-            </div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>{z.desc}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Key Mechanics */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Key Mechanics</div>
-        <div style={S.grid2}>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f5731f", marginBottom: "4px" }}>Placer Gold</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Earned from holding Pillar Cities + lump sum from first capture of gates and Pillar Cities. Spent on building flags and structures in higher zones. Key resource for expansion.</div>
-          </div>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Desert Points</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Victory currency. Earned from holding nodes, PvE events, Aaru Palace. Kingdom with more points wins + picks Aaru time.</div>
-          </div>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Territory Control</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Flags must maintain an active connection back to a Stronghold or Substronghold. Disconnected flags become inactive. Higher zone flags cost more Placer Gold but are more durable.</div>
-          </div>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Tower of Rotation</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Wed-Sat at 05:00, 13:00, 21:00 UTC from Day 3. Spawns guardians for 2hrs. Must be adjacent to your land. Rewards: Death Sarcophagus + Desert Points.</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Alliance Buildings */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Alliance Buildings</div>
-        <div style={S.grid3}>
-          {BUILDINGS.map(b => (
-            <div key={b.name} style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-              <div style={{ fontSize: "18px", marginBottom: "4px" }}>{b.icon}</div>
-              <div style={{ fontWeight: 600, fontSize: "13px", marginBottom: "4px" }}>{b.name}</div>
-              <div style={{ fontSize: "11px", color: "#94a3b8" }}>{b.desc}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* PvE Contribution */}
       <div style={S.card}>
         <div style={S.cardTitle}>How PvE Players Help Win</div>
@@ -1057,31 +1112,59 @@ function PveTab() {
         </div>
       </div>
 
-      {/* Points Sources Summary */}
+      {/* ── Reference material (moved to bottom) ── */}
+
+      {/* Zones */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Desert Points Sources</div>
-        <table style={S.table}>
-          <thead>
-            <tr>
-              <th style={S.th}>Activity</th>
-              <th style={S.th}>Points Earned</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td style={S.td}>Gather 100 resources in DD</td><td style={S.td}>15 pts</td></tr>
-            <tr><td style={S.td}>Defeat Lv.31-35 tribe</td><td style={S.td}>13.5K pts</td></tr>
-            <tr><td style={S.td}>Complete exploration quest</td><td style={S.td}>100K pts</td></tr>
-            <tr><td style={S.td}>Complete Ancient Dunes quest</td><td style={S.td}>200K / 500K / 1M pts</td></tr>
-            <tr><td style={S.td}>Hold Lv.7 city (per ally per min)</td><td style={S.td}>1K pts/min</td></tr>
-            <tr><td style={S.td}>Troops in Tower of Rotation range</td><td style={S.td}>200K pts/min</td></tr>
-            <tr><td style={S.td}>Defeat a Tower Guardian</td><td style={S.td}>100K pts</td></tr>
-            <tr><td style={S.td}>Hold Aaru Palace (per ally per min)</td><td style={S.td}>300K pts/min</td></tr>
-            <tr><td style={S.td}>Damage Aaru Guardian (per 10K dmg)</td><td style={S.td}>8K pts</td></tr>
-            <tr><td style={S.td}>Win Aaru Palace showdown</td><td style={S.td}>20B pts (kingdom)</td></tr>
-            <tr><td style={S.td}>Gravely wound enemy unit</td><td style={S.td}>1-36 pts (by level)</td></tr>
-            <tr><td style={S.td}>Defeat enemy unit</td><td style={S.td}>5x wound pts</td></tr>
-          </tbody>
-        </table>
+        <div style={S.cardTitle}>Zones</div>
+        {ZONES.map(z => (
+          <div key={z.id} style={S.zoneBar(z.color)}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <span style={{ fontWeight: 700, color: z.color }}>{z.name}</span>
+                <span style={{ ...S.badge(z.color), marginLeft: "8px" }}>Unlocks Day {z.unlockDay}</span>
+              </div>
+            </div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>{z.desc}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Key Mechanics */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Key Mechanics</div>
+        <div style={S.grid2}>
+          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#f5731f", marginBottom: "4px" }}>Placer Gold</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Earned from holding Pillar Cities + lump sum from first capture of gates and Pillar Cities. Spent on building flags and structures in higher zones. Key resource for expansion.</div>
+          </div>
+          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Desert Points</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Victory currency. Earned from holding nodes, PvE events, Aaru Palace. Kingdom with more points wins + picks Aaru time.</div>
+          </div>
+          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Territory Control</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Flags must maintain an active connection back to a Stronghold or Substronghold. Disconnected flags become inactive. Higher zone flags cost more Placer Gold but are more durable.</div>
+          </div>
+          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Tower of Rotation</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Wed-Sat at 05:00, 13:00, 21:00 UTC from Day 3. Spawns guardians for 2hrs. Must be adjacent to your land. Rewards: Death Sarcophagus + Desert Points.</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Alliance Buildings */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Alliance Buildings</div>
+        <div style={S.grid3}>
+          {BUILDINGS.map(b => (
+            <div key={b.name} style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+              <div style={{ fontSize: "18px", marginBottom: "4px" }}>{b.icon}</div>
+              <div style={{ fontWeight: 600, fontSize: "13px", marginBottom: "4px" }}>{b.name}</div>
+              <div style={{ fontSize: "11px", color: "#94a3b8" }}>{b.desc}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -1232,9 +1315,9 @@ function App() {
 
   const TABS = [
     { id: "overview", label: "Overview" },
-    { id: "pve", label: "PvE Guide" },
-    { id: "points", label: "Points" },
     { id: "research", label: "Research" },
+    { id: "points", label: "Points" },
+    { id: "pve", label: "PvE Guide" },
     { id: "map", label: "Map & Nodes" },
     { id: "routes", label: "Route Planner" },
     { id: "diplomacy", label: "Diplomacy" },
