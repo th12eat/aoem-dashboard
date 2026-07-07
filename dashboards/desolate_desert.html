@@ -56,8 +56,14 @@ const STAGES = [
   { key: "d6", label: "Z3 Gates Open",                  days: [6],       startISO: "2026-07-11T00:00:00Z", zone: "z3" },
   { key: "d7", label: "Aaru Fight",                     days: [7],       startISO: "2026-07-12T00:00:00Z", zone: "z3" },
 ];
-// stage zone colors: Z1 purple, Z2 teal, Z3 pink (placeholder palette — easy to retune)
+// stage zone colors: Z1 purple, Z2 teal, Z3 pink (placeholder palette — easy to retune).
+// `bright` = reached/current spans; `dark` = not-yet-reached spans; `label` = legend text.
 const STAGE_ZONE_COLOR = { z1: "#9b6dff", z2: "#2dd4bf", z3: "#f472b6" };
+const STAGE_ZONE = {
+  z1: { bright: "#9b6dff", dark: "#3b2a63", label: "Zone 1" },
+  z2: { bright: "#2dd4bf", dark: "#134e48", label: "Zone 2" },
+  z3: { bright: "#f472b6", dark: "#5e2545", label: "Zone 3" },
+};
 
 // Per-player daily objectives (reset 00:00 UTC). `opensDay` = greyed until then.
 // Battle has no cap (unlimited — scales with eliminations).
@@ -222,27 +228,53 @@ function KingdomBar({ compact }) {
 // Horizontal condensed schedule line with a pulsing dot on the current stage.
 function StageLine() {
   const cur = currentStageIndex();
+  // A stage is "reached" (bright) once we're at it or past it; future = dark.
+  const reached = (i) => cur >= 0 && i <= cur;
+  const zoneOf = (s) => STAGE_ZONE[s.zone] || { bright: "#475569", dark: "#334155", label: "" };
+  // Contiguous zone runs for the label row (e.g. z1 | z2 z2 | z3 z3).
+  const runs = [];
+  STAGES.forEach((s, i) => {
+    const last = runs[runs.length - 1];
+    if (last && last.zone === s.zone) last.count++;
+    else runs.push({ zone: s.zone, count: 1, firstIdx: i });
+  });
   return (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: "0", marginTop: "4px" }}>
-      {STAGES.map((s, i) => {
-        const done = i < cur, now = i === cur;
-        const zoneCol = STAGE_ZONE_COLOR[s.zone] || "#475569";
-        // dot: current stage = orange (pulsing yellow); every other dot = its zone color.
-        const dotColor = now ? "#f5731f" : zoneCol;
-        const dotBorder = now ? "#f5731f" : zoneCol;
-        // connecting line to the next dot = the zone open during THIS span (this stage's zone).
-        // Always colored — it's a legend of which zone is open when, not a progress track.
-        const lineColor = zoneCol;
-        const dayLbl = s.days.length > 1 ? `Day ${s.days[0]}–${s.days[s.days.length-1]}` : `Day ${s.days[0]}`;
-        return (
-          <div key={s.key} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", position: "relative" }}>
-            {i < STAGES.length - 1 ? <div style={{ position: "absolute", top: "7px", left: "50%", width: "100%", height: "3px", background: lineColor }} /> : null}
-            <div className={now ? "live-pulse" : ""} style={{ width: "16px", height: "16px", borderRadius: "50%", background: dotColor, border: `2px solid ${dotBorder}`, position: "relative", zIndex: 2 }} />
-            <div style={{ fontSize: "10px", fontWeight: 700, color: now ? "#f5731f" : zoneCol, marginTop: "6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>{dayLbl}</div>
-            <div style={{ fontSize: "11px", color: now ? "#e8eaf0" : "#94a3b8", marginTop: "2px", lineHeight: 1.25, padding: "0 4px" }}>{s.label}</div>
-          </div>
-        );
-      })}
+    <div>
+      {/* zone labels centered over each contiguous zone run */}
+      <div style={{ display: "flex", width: "100%", marginBottom: "6px" }}>
+        {runs.map(r => {
+          const z = STAGE_ZONE[r.zone] || {};
+          const anyReached = cur >= r.firstIdx;
+          return (
+            <div key={r.zone + r.firstIdx} style={{ flex: r.count, textAlign: "center" }}>
+              <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: anyReached ? z.bright : z.dark }}>{z.label}</span>
+            </div>
+          );
+        })}
+      </div>
+      {/* dots + connecting lines */}
+      <div style={{ display: "flex", alignItems: "flex-start", gap: "0" }}>
+        {STAGES.map((s, i) => {
+          const now = i === cur;
+          const z = zoneOf(s);
+          const dotOn = reached(i);
+          const dotColor = now ? "#f5731f" : (dotOn ? z.bright : z.dark);
+          const dotBorder = dotColor;
+          // line to the NEXT dot represents this span; bright once we've reached this stage.
+          const lineOn = cur >= i;
+          const lineColor = lineOn ? z.bright : z.dark;
+          const dayLbl = s.days.length > 1 ? `Day ${s.days[0]}–${s.days[s.days.length-1]}` : `Day ${s.days[0]}`;
+          const labelCol = now ? "#f5731f" : (dotOn ? z.bright : z.dark);
+          return (
+            <div key={s.key} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", position: "relative" }}>
+              {i < STAGES.length - 1 ? <div style={{ position: "absolute", top: "7px", left: "50%", width: "100%", height: "3px", background: lineColor }} /> : null}
+              <div className={now ? "live-pulse" : ""} style={{ width: "16px", height: "16px", borderRadius: "50%", background: dotColor, border: `2px solid ${dotBorder}`, position: "relative", zIndex: 2 }} />
+              <div style={{ fontSize: "10px", fontWeight: 700, color: labelCol, marginTop: "6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>{dayLbl}</div>
+              <div style={{ fontSize: "11px", color: now ? "#e8eaf0" : (dotOn ? "#94a3b8" : "#64748b"), marginTop: "2px", lineHeight: 1.25, padding: "0 4px" }}>{s.label}</div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
