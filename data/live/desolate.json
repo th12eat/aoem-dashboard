@@ -23,122 +23,122 @@
     "notes": "We are heavily outmatched. Survival plan: appease Era #019 (SD rank 2, must-win for their top-3 reward) and make peace with Era #023 (shared half)."
   },
   "kingdomPoints": {
-    "era8": "3.86B",
-    "era023": "4.06B",
-    "era014": "7.89B",
-    "era019": "8.12B",
-    "lastUpdated": "2026-07-07 — Day 2 (Desert Star points)"
+    "era8": "11.48B",
+    "era023": "15.99B",
+    "era014": "36.29B",
+    "era019": "34.62B",
+    "lastUpdated": "2026-07-08 — Day 3 (Desert Star points)"
   },
   "kingdomScoreboard": [
     {
       "rank": 1,
-      "server": "Era #019",
-      "points": "8,119,449,142"
+      "server": "Era #014",
+      "points": "36,288,425,774"
     },
     {
       "rank": 2,
-      "server": "Era #014",
-      "points": "7,893,178,601"
+      "server": "Era #019",
+      "points": "34,621,495,941"
     },
     {
       "rank": 3,
       "server": "Era #023",
-      "points": "4,056,532,611"
+      "points": "15,985,845,650"
     },
     {
       "rank": 4,
       "server": "Era 8",
-      "points": "3,856,552,347"
+      "points": "11,477,853,953"
     }
   ],
   "allianceScoreboard": [
     {
       "rank": 1,
-      "tag": "XIX",
-      "name": "LeGENDZ",
-      "server": "Era #019",
-      "points": "3,905,851,160"
-    },
-    {
-      "rank": 2,
-      "tag": "KNY",
-      "name": "DemonSlayer",
-      "server": "Era #019",
-      "points": "3,649,609,131"
-    },
-    {
-      "rank": 3,
       "tag": "X14",
       "name": "Sakura",
       "server": "Era #014",
-      "points": "3,587,505,215"
+      "points": "21,486,023,214"
+    },
+    {
+      "rank": 2,
+      "tag": "XIX",
+      "name": "LeGENDZ",
+      "server": "Era #019",
+      "points": "19,263,526,493"
+    },
+    {
+      "rank": 3,
+      "tag": "KNY",
+      "name": "DemonSlayer",
+      "server": "Era #019",
+      "points": "14,602,018,365"
     },
     {
       "rank": 4,
-      "tag": "Ȼ14",
-      "name": "LXCelestials",
-      "server": "Era #014",
-      "points": "3,122,024,469"
-    },
-    {
-      "rank": 5,
-      "tag": "GnG",
-      "name": "GANGSTA",
-      "server": "Era #014",
-      "points": "2,224,232,590"
-    },
-    {
-      "rank": 6,
       "tag": "LOD",
       "name": "LegionOfDonuts",
       "server": "Era #023",
-      "points": "2,218,556,709"
+      "points": "11,039,245,020"
+    },
+    {
+      "rank": 5,
+      "tag": "Ȼ14",
+      "name": "LXCelestials",
+      "server": "Era #014",
+      "points": "9,357,312,577"
+    },
+    {
+      "rank": 6,
+      "tag": "GnG",
+      "name": "GANGSTA",
+      "server": "Era #014",
+      "points": "8,400,058,843"
     },
     {
       "rank": 7,
       "tag": "eRa",
       "name": "WorldClass",
       "server": "Era 8",
-      "points": "1,695,651,274"
+      "points": "7,044,735,009"
     },
     {
       "rank": 8,
-      "tag": "PBJ",
-      "name": "Reiwa令和",
-      "server": "Era #019",
-      "points": "1,222,567,299"
-    },
-    {
-      "rank": 9,
       "tag": "boi",
       "name": "Jericho",
       "server": "Era #023",
-      "points": "1,084,615,529"
+      "points": "3,150,108,782"
+    },
+    {
+      "rank": 9,
+      "tag": "R65",
+      "name": "Royalz65",
+      "server": "Era #023",
+      "points": "2,510,052,779"
     },
     {
       "rank": 10,
-      "tag": "DXR",
-      "name": "DefiantRebels",
+      "tag": "PBJ",
+      "name": "Reiwa令和",
       "server": "Era #019",
-      "points": "1,023,229,656"
+      "points": "2,430,066,792"
     }
   ],
   "alliancePoints": [
     {
       "tag": "WC1",
-      "points": "1,695,651,274"
+      "points": "7,044,735,009"
     },
     {
       "tag": "REU",
-      "points": "1,071,830,985"
-    },
-    {
-      "tag": "AGC",
-      "points": "857,332,634"
+      "points": "2,142,602,645"
     },
     {
       "tag": "MyT",
-      "points": "726,236,653"
+      "points": "1,865,846,863"
+    },
+    {
+      "tag": "AGC",
+      "points": "1,341,780,124"
     }
   ],
   "placerGold": {
@@ -193,8 +193,8 @@
         "pillarNames": [
           "City of Bull"
         ],
-        "flags": 5,
-        "flagsBuilding": 2,
+        "flags": 8,
+        "flagsBuilding": 1,
         "confirmed": true
       },
       {
@@ -204,18 +204,18 @@
         "gates": 1,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 6,
-        "flagsBuilding": 0,
+        "flags": 17,
+        "flagsBuilding": 1,
         "confirmed": false
       },
       {
         "tag": "MyT",
         "current": null,
-        "perHour": 3000,
+        "perHour": 11000,
         "gates": 1,
-        "pillarCities": 0,
+        "pillarCities": 1,
         "pillarNames": [],
-        "flags": 5,
+        "flags": 13,
         "flagsBuilding": 1,
         "confirmed": false
       },
@@ -226,13 +226,13 @@
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 6,
+        "flags": 4,
         "flagsBuilding": 0,
         "confirmed": false
       }
     ],
     "flagZone2Cost": 50000,
-    "lastUpdated": "2026-07-07 — gates live since ~01:00 UTC; WC1 took AGC's gate ~07:00"
+    "lastUpdated": "2026-07-08 — Day 3 holdings; WC1 balance last confirmed Day 2 (329k)"
   },
   "diplomacy": [
     {
