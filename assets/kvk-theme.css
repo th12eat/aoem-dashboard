@@ -316,6 +316,24 @@ body { font-size: var(--fs-body); }
   scrollbar-width: none;
 }
 .tabs::-webkit-scrollbar { display: none; }
+
+/* -- Tab-bar scroll hints (mobile): fixed arrows that track an overflowing
+   tab bar's edges. Injected + positioned by assets/tab-scroll-hint.js;
+   shown only when the bar can scroll further that direction. -- */
+.tab-scroll-hint {
+  position: fixed; z-index: 60; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 30px;
+  color: var(--kvk-accent, #d4a843);
+  font-size: 18px; line-height: 1;
+  opacity: 0; transition: opacity .18s ease;
+}
+.tab-scroll-hint.is-visible { opacity: 0.95; animation: tabHintPulse 1.5s ease-in-out infinite; }
+.tab-scroll-hint.hint-left  { background: linear-gradient(90deg, var(--bg-deep, #0a0c14) 30%, transparent); justify-content: flex-start; padding-left: 2px; }
+.tab-scroll-hint.hint-right { background: linear-gradient(270deg, var(--bg-deep, #0a0c14) 30%, transparent); justify-content: flex-end; padding-right: 2px; }
+@keyframes tabHintPulse { 0%,100% { transform: translateX(0); } 50% { transform: translateX(var(--hint-nudge, 2px)); } }
+@media (prefers-reduced-motion: reduce) { .tab-scroll-hint.is-visible { animation: none; } }
+
 .tab {
   flex: 0 0 auto;
   padding: 11px 20px;
