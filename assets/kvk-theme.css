@@ -307,7 +307,9 @@ body { font-size: var(--fs-body); }
    ============================================================ */
 .tabs {
   display: flex;
-  justify-content: center;
+  /* "safe center" centers when tabs fit, but falls back to flex-start when they
+     overflow — otherwise centering clips the leftmost tab with no way to scroll to it. */
+  justify-content: safe center;
   gap: 4px;
   max-width: var(--w-content);
   margin: 0 auto 28px;
@@ -329,6 +331,8 @@ body { font-size: var(--fs-body); }
   opacity: 0; transition: opacity .18s ease;
 }
 .tab-scroll-hint.is-visible { opacity: 0.95; animation: tabHintPulse 1.5s ease-in-out infinite; }
+/* chevron glyphs render low in their line box — nudge up to optically center with tab text */
+.tab-scroll-hint .tsh-glyph { display: block; margin-top: -2px; }
 .tab-scroll-hint.hint-left  { background: linear-gradient(90deg, var(--bg-deep, #0a0c14) 30%, transparent); justify-content: flex-start; padding-left: 2px; }
 .tab-scroll-hint.hint-right { background: linear-gradient(270deg, var(--bg-deep, #0a0c14) 30%, transparent); justify-content: flex-end; padding-right: 2px; }
 @keyframes tabHintPulse { 0%,100% { transform: translateX(0); } 50% { transform: translateX(var(--hint-nudge, 2px)); } }

@@ -18,7 +18,13 @@
     el.className = "tab-scroll-hint hint-" + dir;
     el.setAttribute("aria-hidden", "true");
     el.style.setProperty("--hint-nudge", dir === "left" ? "-2px" : "2px");
-    el.textContent = dir === "left" ? "‹" : "›"; // ‹ ›
+    // glyph in a span nudged up ~2px: the ‹ › chevrons render low in their line
+    // box, so this optically centers them with the tab text. (Element itself
+    // keeps the translateX pulse animation.)
+    var g = document.createElement("span");
+    g.className = "tsh-glyph";
+    g.textContent = dir === "left" ? "‹" : "›"; // ‹ ›
+    el.appendChild(g);
     document.body.appendChild(el);
     return el;
   }
@@ -26,6 +32,19 @@
   function track(bar) {
     if (bar.__hintTracked) return;
     bar.__hintTracked = true;
+
+    // Fallback for browsers without `justify-content: safe center`: when the bar
+    // overflows, `center` would clip the first tab unreachably. Detect that (first
+    // tab starts left of the bar with scrollLeft 0) and pin start alignment.
+    (function ensureStartVisible() {
+      var first = bar.querySelector("button, a, .tab, .tab-btn");
+      if (!first) return;
+      var overflow = bar.scrollWidth - bar.clientWidth > EPS;
+      if (overflow && bar.scrollLeft === 0) {
+        var fr = first.getBoundingClientRect(), br = bar.getBoundingClientRect();
+        if (fr.left < br.left - 1) bar.style.justifyContent = "flex-start";
+      }
+    })();
     var left = makeHint("left");
     var right = makeHint("right");
 
