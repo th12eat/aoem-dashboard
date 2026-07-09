@@ -729,5 +729,31 @@
         ]
       }
     ]
+  },
+  "kingdomBuffs": {
+    "pillarCity": [
+      {
+        "label": "All Unit Types' Health +5%",
+        "active": false
+      },
+      {
+        "label": "All Unit Types' Attack +10%",
+        "active": false
+      },
+      {
+        "label": "All Unit Types' Defense +10%",
+        "active": false
+      }
+    ],
+    "tower": [
+      {
+        "label": "All Unit Types' Damage Reduction +5%",
+        "active": false
+      },
+      {
+        "label": "All Unit Types' Damage +6%",
+        "active": false
+      }
+    ]
   }
 }

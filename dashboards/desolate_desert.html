@@ -616,8 +616,13 @@ let ALLIANCE_SCOREBOARD = [];  // [{rank, tag, name, server, points}]
 // Placer Gold tracker (cap 500k; costs/generation partly TBD)
 let PLACER_GOLD = { cap: 500000, flagZone1Cost: 5000, note: "", alliances: [] };
 
+// Kingdom buffs from held Pillar Cities (3 unique) + Towers of Rotation (2 unique).
+// Each unique buff is capped once no matter how many nodes we hold; toggled manually.
+let KINGDOM_BUFFS = { pillarCity: [], tower: [] };
+
 function PointsTab() {
   const [srcOpen, setSrcOpen] = React.useState(false);
+  const [yieldOpen, setYieldOpen] = React.useState(false);
   const POINT_SOURCES = [
     ["Gather 100 resources in DD", "15 pts"],
     ["Defeat Lv.31-35 tribe", "13.5K pts"],
@@ -682,16 +687,97 @@ function PointsTab() {
         </div>
       ) : null}
 
-      {/* Placer Gold tracker (+ Desert Points column) */}
+      {/* Era 8 Alliance Desert Points + Kingdom Buffs held */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>Era 8 Alliance Desert Points</div>
+        <table style={S.table}>
+          <thead>
+            <tr>
+              <th style={S.th}>Alliance</th>
+              <th style={{ ...S.th, textAlign: "right" }}>Desert Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ALLIANCE_POINTS.map(a => (
+              <tr key={a.tag}>
+                <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
+                <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{a.points}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Kingdom Buffs — unique node buffs we currently hold (Behemoth blessings style) */}
+      {KINGDOM_BUFFS && (KINGDOM_BUFFS.pillarCity || KINGDOM_BUFFS.tower) ? (
+        <div style={S.card}>
+          <div style={S.cardTitle}>Kingdom Buffs Held</div>
+          <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>
+            Unique buffs from held Pillar Cities (3) &amp; Towers of Rotation (2). Each caps once — lit = we hold it.
+          </div>
+          {[
+            { key: "pillarCity", head: "Pillar City", color: "#f5731f", rgb: "245,115,31" },
+            { key: "tower", head: "Tower of Rotation", color: "#7c3aed", rgb: "124,58,237" },
+          ].map(grp => (
+            <div key={grp.key} style={{ marginBottom: "8px" }}>
+              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: grp.color, marginBottom: "4px" }}>{grp.head}</div>
+              {(KINGDOM_BUFFS[grp.key] || []).map((b, i) => (
+                <div key={i} style={{
+                  display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", borderRadius: "6px", marginBottom: "4px",
+                  background: b.active ? "rgba(" + grp.rgb + ",0.16)" : "#0f172a",
+                  border: "1px solid " + (b.active ? grp.color : "#1e2435"),
+                  opacity: b.active ? 1 : 0.5,
+                }}>
+                  <span style={{ fontSize: "12px" }}>{b.active ? "✓" : "○"}</span>
+                  <span style={{ fontSize: "12.5px", fontWeight: b.active ? 700 : 500, color: b.active ? "#e8eaf0" : "#94a3b8" }}>{b.label}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : null}
+
+      {/* Placer Gold — node capture yields (collapsible, above the estimator) */}
+      {PLACER_GOLD && PLACER_GOLD.nodes && PLACER_GOLD.nodes.length ? (
+        <div style={S.card}>
+          <div onClick={() => setYieldOpen(o => !o)} style={{ ...S.cardTitle, marginBottom: yieldOpen ? "12px" : 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span>Placer Gold — Node Capture Yields</span>
+            <span style={{ fontSize: "16px", color: "#94a3b8", transform: yieldOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }}>▾</span>
+          </div>
+          {yieldOpen ? (
+            <table style={S.table}>
+              <thead>
+                <tr>
+                  <th style={S.th}>Node</th>
+                  <th style={{ ...S.th, textAlign: "right" }}>First-capture bonus</th>
+                  <th style={{ ...S.th, textAlign: "right" }}>Generation /h</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PLACER_GOLD.nodes.map(n => {
+                  const none = !n.firstBonus && !n.perHour;
+                  return (
+                  <tr key={n.key}>
+                    <td style={{ ...S.td, color: none ? "#64748b" : "#e8eaf0" }}>{n.label}</td>
+                    <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: n.firstBonus > 0 ? "#f5731f" : "#64748b", fontWeight: n.firstBonus > 0 ? 600 : 400 }}>{n.firstBonus > 0 ? n.firstBonus.toLocaleString() : "—"}</td>
+                    <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: n.perHour > 0 ? "#3daa6d" : "#64748b" }}>{n.perHour > 0 ? "+" + n.perHour.toLocaleString() : "—"}</td>
+                  </tr>
+                ); })}
+              </tbody>
+            </table>
+          ) : null}
+        </div>
+      ) : null}
+
+      {/* Placer Gold estimator */}
       {PLACER_GOLD && PLACER_GOLD.alliances && PLACER_GOLD.alliances.length ? (
         <div style={S.card}>
-          <div style={S.cardTitle}>Alliance Tracker — Desert Points &amp; Placer Gold</div>
+          <div style={S.cardTitle}>Placer Gold — Estimated Balances</div>
           <div style={{ overflowX: "auto" }}>
           <table style={S.table}>
             <thead>
               <tr>
                 <th style={S.th}>Alliance</th>
-                <th style={{ ...S.th, textAlign: "right" }}>Desert Points</th>
                 <th style={{ ...S.th, minWidth: "150px" }}>Placer Gold (of {(PLACER_GOLD.cap/1000)}k)</th>
                 <th style={{ ...S.th, textAlign: "right" }}>Gen /h</th>
                 <th style={{ ...S.th, textAlign: "center" }}>Gates</th>
@@ -705,11 +791,9 @@ function PointsTab() {
                 const pct = has ? Math.min(100, Math.round((a.current / PLACER_GOLD.cap) * 100)) : 0;
                 const capped = has && a.current >= PLACER_GOLD.cap;
                 const flagTxt = a.flags != null ? (a.flags + (a.flagsBuilding ? " (+" + a.flagsBuilding + ")" : "")) : "—";
-                const dp = (ALLIANCE_POINTS.find(x => x.tag === a.tag) || {}).points;
                 return (
                 <tr key={a.tag}>
                   <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
-                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{dp || "—"}</td>
                   <td style={S.td}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       <div style={{ flex: 1, height: "6px", background: "#0f172a", borderRadius: "3px", overflow: "hidden" }}>
@@ -727,33 +811,6 @@ function PointsTab() {
             </tbody>
           </table>
           </div>
-        </div>
-      ) : null}
-
-      {/* Placer Gold — node capture yields */}
-      {PLACER_GOLD && PLACER_GOLD.nodes && PLACER_GOLD.nodes.length ? (
-        <div style={S.card}>
-          <div style={S.cardTitle}>Placer Gold — Node Capture Yields</div>
-          <table style={S.table}>
-            <thead>
-              <tr>
-                <th style={S.th}>Node</th>
-                <th style={{ ...S.th, textAlign: "right" }}>First-capture bonus</th>
-                <th style={{ ...S.th, textAlign: "right" }}>Generation /h</th>
-              </tr>
-            </thead>
-            <tbody>
-              {PLACER_GOLD.nodes.map(n => {
-                const none = !n.firstBonus && !n.perHour;
-                return (
-                <tr key={n.key}>
-                  <td style={{ ...S.td, color: none ? "#64748b" : "#e8eaf0" }}>{n.label}</td>
-                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: n.firstBonus > 0 ? "#f5731f" : "#64748b", fontWeight: n.firstBonus > 0 ? 600 : 400 }}>{n.firstBonus > 0 ? n.firstBonus.toLocaleString() : "—"}</td>
-                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: n.perHour > 0 ? "#3daa6d" : "#64748b" }}>{n.perHour > 0 ? "+" + n.perHour.toLocaleString() : "—"}</td>
-                </tr>
-              ); })}
-            </tbody>
-          </table>
         </div>
       ) : null}
 
@@ -1341,8 +1398,6 @@ function App() {
     { id: "points", label: "Points" },
     { id: "pve", label: "PvE Guide" },
     { id: "map", label: "Map & Nodes" },
-    { id: "routes", label: "Route Planner" },
-    { id: "diplomacy", label: "Diplomacy" },
   ];
 
   return (
@@ -1397,10 +1452,8 @@ function App() {
         {tab === "overview" && <OverviewTab state={state} setState={setState} />}
         {tab === "research" && <ResearchTab />}
         {tab === "map" && <MapTab state={state} setState={setState} />}
-        {tab === "routes" && <RoutePlannerTab state={state} setState={setState} />}
         {tab === "pve" && <PveTab />}
         {tab === "points" && <PointsTab />}
-        {tab === "diplomacy" && <DiplomacyTab state={state} setState={setState} />}
       </div>
     </div>
   );
@@ -1424,6 +1477,7 @@ function App() {
         if (j.kingdomScoreboard)  KINGDOM_SCOREBOARD  = j.kingdomScoreboard;
         if (j.allianceScoreboard) ALLIANCE_SCOREBOARD = j.allianceScoreboard;
         if (j.placerGold)         PLACER_GOLD         = j.placerGold;
+        if (j.kingdomBuffs)       KINGDOM_BUFFS       = j.kingdomBuffs;
       }
     }
   } catch (e) {
