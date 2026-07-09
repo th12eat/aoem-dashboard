@@ -33,6 +33,25 @@
             50%     { box-shadow: 0 0 0 5px rgba(250,204,21,0); }
         }
         @media (prefers-reduced-motion: reduce) { .tor-slot.is-live { animation: none; box-shadow: 0 0 0 2px #facc15; } }
+        /* small blinking dot used in the Tower schedule "LIVE" label */
+        .tor-live-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#facc15;
+            box-shadow:0 0 6px #facc15; animation: torDotBlink 1.2s ease-in-out infinite; }
+        @keyframes torDotBlink { 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+        /* header Tower badge — pulses, shows the live level, jumps to the schedule */
+        .tor-badge {
+            position: absolute; right: 16px; bottom: 14px; z-index: 12;
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 6px 12px 6px 10px; border-radius: 999px; cursor: pointer;
+            background: rgba(250,204,21,0.12); border: 1px solid #facc15; color: #facc15;
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.5px;
+            text-decoration: none; animation: torBadgePulse 1.6s ease-in-out infinite;
+        }
+        .tor-badge:hover { background: rgba(250,204,21,0.22); }
+        .tor-badge .tb-ico { font-size: 17px; line-height: 1; }
+        .tor-badge .tb-lvl { font-size: 13px; }
+        @keyframes torBadgePulse { 0%,100%{ box-shadow:0 0 0 0 rgba(250,204,21,0.5);} 50%{ box-shadow:0 0 0 6px rgba(250,204,21,0);} }
+        @media (prefers-reduced-motion: reduce){ .tor-badge{ animation:none; } .tor-live-dot{ animation:none; } }
+        @media (max-width: 520px){ .tor-badge{ right: 10px; bottom: 10px; padding: 5px 10px; } .tor-badge .tb-lvl{ font-size:12px; } }
     </style>
 </head>
 <body data-kvk="desolate">
@@ -73,7 +92,7 @@ const ZONES = [
 // zone key drives the connecting-line + dot color for each stage.
 const STAGES = [
   { key: "d1", label: "Strongholds in Z1",              days: [1],       startISO: "2026-07-06T00:00:00Z", zone: "z1" },
-  { key: "d2", label: "Z2 Gates & Pillar Cities",       days: [2],       startISO: "2026-07-07T00:00:00Z", zone: "z2" },
+  { key: "d2", label: "Z2 Gates Open & Pillar Cities",  days: [2],       startISO: "2026-07-07T00:00:00Z", zone: "z2" },
   { key: "d345", label: "Tower of Rotation & L/R Eye Gates Open", days: [3,4,5], startISO: "2026-07-08T00:00:00Z", zone: "z2" },
   { key: "d6", label: "Z3 Gates Open",                  days: [6],       startISO: "2026-07-11T00:00:00Z", zone: "z3" },
   { key: "d7", label: "Aaru Fight",                     days: [7],       startISO: "2026-07-12T00:00:00Z", zone: "z3" },
@@ -183,7 +202,7 @@ const BUILDINGS = [
    ═══════════════════════════════════════════════════ */
 const S = {
   app: { fontFamily: "'Barlow', 'Segoe UI', system-ui, sans-serif", color: "#e8eaf0", minHeight: "100vh", background: "#0a0c14" },
-  header: { maxWidth: 960, width: "100%", margin: "0 auto", textAlign: "center", padding: "56px 20px 36px", minHeight: 260, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", borderBottom: "2px solid #b4500f", background: "linear-gradient(to bottom, rgba(10,12,20,0.30) 0%, rgba(10,12,20,0.62) 60%, #0a0c14 100%), radial-gradient(ellipse at center top, rgba(245,115,31,0.30) 0%, transparent 60%), url('../assets/kvk-bg/desolate.jpg')", backgroundSize: "cover,cover,cover", backgroundPosition: "center top", backgroundRepeat: "no-repeat" },
+  header: { position: "relative", maxWidth: 960, width: "100%", margin: "0 auto", textAlign: "center", padding: "56px 20px 36px", minHeight: 260, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", borderBottom: "2px solid #b4500f", background: "linear-gradient(to bottom, rgba(10,12,20,0.30) 0%, rgba(10,12,20,0.62) 60%, #0a0c14 100%), radial-gradient(ellipse at center top, rgba(245,115,31,0.30) 0%, transparent 60%), url('../assets/kvk-bg/desolate.jpg')", backgroundSize: "cover,cover,cover", backgroundPosition: "center top", backgroundRepeat: "no-repeat" },
   headerTitle: { fontFamily: "'Bebas Neue', sans-serif", fontSize: "var(--fs-title, clamp(42px,8vw,66px))", letterSpacing: "3px", lineHeight: 1, background: "linear-gradient(90deg, #ff9244, #f5731f)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: 0 },
   headerSub: { fontFamily: "'Barlow Condensed', sans-serif", fontSize: "var(--fs-label, 13px)", letterSpacing: "1px", color: "#94a3b8", marginTop: "4px", textTransform: "uppercase" },
   tabs: { display: "flex", gap: "4px", padding: "12px 16px", overflowX: "auto", borderBottom: "1px solid #1e293b" },
@@ -429,6 +448,9 @@ function OverviewTab({ state, setState }) {
           </tbody>
         </table>
       </div>
+
+      {/* Tower of Rotation awakening schedule + live level tracker */}
+      <TowerSchedule />
     </div>
   );
 }
@@ -674,30 +696,6 @@ function PointsTab() {
         ) : null}
       </div>
 
-      {/* Cross-server Alliance Scoreboard (Desert Star points) */}
-      {ALLIANCE_SCOREBOARD && ALLIANCE_SCOREBOARD.length ? (
-        <div style={S.card}>
-          <div style={S.cardTitle}>Alliance Rankings — Desert Star</div>
-          <table style={S.table}>
-            <thead>
-              <tr>
-                <th style={S.th}>#</th>
-                <th style={S.th}>Alliance</th>
-                <th style={{ ...S.th, textAlign: "right" }}>Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ALLIANCE_SCOREBOARD.map((a, i) => { const c = serverColor(a.server); const us = a.server === "Era 8"; return (
-                <tr key={i} style={us ? { background: "rgba(154,109,212,0.10)" } : undefined}>
-                  <td style={S.td}>{a.rank || i + 1}</td>
-                  <td style={S.td}><span style={{ fontWeight: 600, color: c.hex }}>{a.name} [{a.tag}]</span> <span style={{ fontSize: "11px", color: "#64748b" }}>{a.server}</span></td>
-                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{a.points}</td>
-                </tr>
-              ); })}
-            </tbody>
-          </table>
-        </div>
-      ) : null}
 
       {/* Era 8 Alliance Desert Points + held node-buff columns (Behemoth blessings style) */}
       <div style={S.card}>
@@ -1123,46 +1121,77 @@ const TOR_WINDOWS = [
 ];
 const TOR_FIRST_DATE = "2026-07-08"; // Day 3
 const TOR_LAST_DATE = "2026-07-10";  // Day 5
+const TOR_LEVELS = 40;               // each 2-hr window = 40 level-slots (3 min each)
 
+// Shared live status of the Tower of Rotation / Peaceful Riverland event, computed
+// from the current UTC time. Returns {active, live, windowIdx, level, states[]}.
+function torStatus(now) {
+  const d = new Date(now);
+  const todayStr = d.getUTCFullYear() + "-" + String(d.getUTCMonth()+1).padStart(2,"0") + "-" + String(d.getUTCDate()).padStart(2,"0");
+  const active = todayStr >= TOR_FIRST_DATE && todayStr <= TOR_LAST_DATE;
+  const nowMin = d.getUTCHours()*60 + d.getUTCMinutes() + d.getUTCSeconds()/60;
+  let liveIdx = -1, nextIdx = -1;
+  for (let i=0;i<TOR_WINDOWS.length;i++){
+    const w = TOR_WINDOWS[i];
+    if (nowMin >= w.start && nowMin < w.end) liveIdx = i;
+    if (nextIdx === -1 && nowMin < w.start) nextIdx = i;
+  }
+  const live = active && liveIdx !== -1;
+  let level = 0;
+  if (live) {
+    const w = TOR_WINDOWS[liveIdx];
+    const per = (w.end - w.start) / TOR_LEVELS; // minutes per level slot
+    level = Math.min(TOR_LEVELS, Math.floor((nowMin - w.start) / per) + 1);
+  }
+  const states = TOR_WINDOWS.map((w, i) => {
+    if (!active) return "upcoming";
+    if (i === liveIdx) return "live";
+    if (i === nextIdx) return "next";
+    if (nowMin >= w.end) return "passed";
+    return "upcoming";
+  });
+  return { active, live, windowIdx: liveIdx, level, states };
+}
+
+// Full awakening schedule + level tracker (lives on Overview, id anchor for header jump).
 function TowerSchedule() {
   const [now, setNow] = React.useState(() => Date.now());
   React.useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 15000);
     return () => clearInterval(id);
   }, []);
-  const d = new Date(now);
-  const todayStr = d.getUTCFullYear() + "-" + String(d.getUTCMonth()+1).padStart(2,"0") + "-" + String(d.getUTCDate()).padStart(2,"0");
-  const active = todayStr >= TOR_FIRST_DATE && todayStr <= TOR_LAST_DATE;
-  const nowMin = d.getUTCHours()*60 + d.getUTCMinutes() + d.getUTCSeconds()/60;
-  // classify: live / next / passed / upcoming (only when active today)
-  let nextIdx = -1;
-  if (active) { for (let i=0;i<TOR_WINDOWS.length;i++){ if (nowMin < TOR_WINDOWS[i].start){ nextIdx=i; break; } } }
-  const stateOf = (w, i) => {
-    if (!active) return "upcoming";
-    if (nowMin >= w.start && nowMin < w.end) return "live";
-    if (i === nextIdx) return "next";
-    if (nowMin >= w.end) return "passed";
-    return "upcoming";
-  };
+  const st = torStatus(now);
   const stateLabel = { live: "Live now", next: "Next up", passed: "Done", upcoming: "" };
+  const nextGold = st.live ? (Math.ceil(st.level / 10) * 10) : null; // next lvl-10 milestone
   return (
-    <div style={{ marginTop: "12px" }}>
-      <div style={{ fontWeight: 600, fontSize: "12px", color: "#7c3aed", marginBottom: "6px" }}>
-        Awakening Schedule (UTC) {active ? "" : <span style={{ color: "#64748b", fontWeight: 500 }}>· inactive today (runs Days 3–5)</span>}
+    <div id="tower-schedule" style={S.card}>
+      <div style={{ ...S.cardTitle, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px" }}>
+        <span>Tower of Rotation — Awakening Schedule</span>
+        {st.live ? (
+          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", fontWeight: 800, color: "#facc15", textTransform: "none", letterSpacing: 0 }}>
+            <span className="tor-live-dot" />LIVE · Level {st.level}/{TOR_LEVELS}
+          </span>
+        ) : <span style={{ fontSize: "11px", fontWeight: 500, color: "#64748b", textTransform: "none", letterSpacing: 0 }}>{st.active ? "Between windows today" : "Runs Days 3–5"}</span>}
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" }}>
         {TOR_WINDOWS.map((w, i) => {
-          const st = stateOf(w, i);
-          const cls = "tor-slot" + (st === "live" ? " is-live" : st === "next" ? " is-next" : st === "passed" ? " is-passed" : "");
+          const s = st.states[i];
+          const cls = "tor-slot" + (s === "live" ? " is-live" : s === "next" ? " is-next" : s === "passed" ? " is-passed" : "");
           return (
             <div key={w.label} className={cls} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3px", padding: "9px 4px", borderRadius: "8px", border: "1px solid #7c3aed44", background: "#7c3aed11" }}>
               <span style={{ fontSize: "12px", fontWeight: 700, color: "#e2e8f0" }}>{w.label}</span>
-              {stateLabel[st] ? <span style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: st === "live" ? "#facc15" : st === "next" ? "#a78bfa" : "#64748b" }}>{stateLabel[st]}</span> : null}
+              {s === "live" ? <span style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: "#facc15" }}>Lvl {st.level}/{TOR_LEVELS}</span>
+                : stateLabel[s] ? <span style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: s === "next" ? "#a78bfa" : "#64748b" }}>{stateLabel[s]}</span> : null}
             </div>
           );
         })}
       </div>
-      <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "6px" }}>Wednesday through Saturday, starting Day 3. Windows reset daily at 00:00 UTC.</div>
+      <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "8px", lineHeight: 1.5 }}>
+        Wed–Sat, starting Day 3. Each 2-hr window is split into <strong>{TOR_LEVELS} level-slots</strong> (~3 min each) — the level ticks up every slot and any remaining NPCs reset.{st.live ? <span style={{ color: "#facc15" }}> Currently level {st.level}{nextGold && nextGold > st.level ? ` — gold chests at level ${nextGold}` : ""}.</span> : ""}
+      </div>
+      <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "6px", lineHeight: 1.5, padding: "8px 10px", background: "#0f172a", borderRadius: "6px" }}>
+        🎁 <strong style={{ color: "#e8eaf0" }}>Chests:</strong> Silent Guardians &amp; Echoing Phantoms have a chance to drop chests — you can pick up <strong>up to 10/day</strong>. Rarity varies; <strong style={{ color: "#facc15" }}>Gold Chests</strong> are the best, and up to <strong>5 drop every 10 levels</strong>.
+      </div>
     </div>
   );
 }
@@ -1193,25 +1222,6 @@ function PveTab() {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Tower of Rotation / Peaceful Riverland (same event) */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Tower of Rotation — Peaceful Riverland Event</div>
-        <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "12px" }}>
-          The Tower of Rotation awakening <strong>is</strong> the Peaceful Riverland event. It awakens Wed-Sat at 05:00, 13:00, and 21:00 UTC (from Day 3), spawning Silent Guardians and Echoing Phantoms for 2 hours each. You must have alliance land adjacent to the Tower; the occupying alliance receives special buffs. The <strong>Tower Master</strong> achievement requires 4M points earned here while holding the Tower.
-        </div>
-        <div style={S.grid2}>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 600, color: "#7c3aed" }}>Silent Guardians</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>PvE mobs that spawn around the tower</div>
-          </div>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 600, color: "#7c3aed" }}>Echoing Phantoms</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Stronger PvE mobs, higher point rewards</div>
-          </div>
-        </div>
-        <TowerSchedule />
       </div>
 
       {/* ═══ GLOSSARY / reference material ═══ */}
@@ -1253,8 +1263,8 @@ function PveTab() {
             <div style={{ fontSize: "12px", color: "#94a3b8" }}>Flags must maintain an active connection back to a Stronghold or Substronghold. Disconnected flags become inactive. Higher zone flags cost more Placer Gold but are more durable.</div>
           </div>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Tower of Rotation</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Wed-Sat at 05:00, 13:00, 21:00 UTC from Day 3. Spawns guardians for 2hrs. Must be adjacent to your land. Rewards: Death Sarcophagus + Desert Points.</div>
+            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Tower of Rotation / Peaceful Riverland</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>The Tower awakening <strong>is</strong> the Peaceful Riverland event — Wed–Sat at 05:00 / 13:00 / 21:00 UTC (from Day 3), for 2 hrs each. It spawns <strong>Silent Guardians</strong> (basic PvE mobs) and <strong>Echoing Phantoms</strong> (stronger, higher rewards). Must have alliance land adjacent to the Tower; the occupying alliance gets special buffs. <strong>Tower Master</strong> achievement = 4M points earned here while holding the Tower. (Live schedule + level tracker on the Overview tab.)</div>
           </div>
         </div>
       </div>
@@ -1378,6 +1388,11 @@ function App() {
     });
   }, []);
 
+  // ticking clock so the header Tower badge tracks the live level
+  const [nowTs, setNowTs] = useState(() => Date.now());
+  useEffect(() => { const id = setInterval(() => setNowTs(Date.now()), 15000); return () => clearInterval(id); }, []);
+  const tor = torStatus(nowTs);
+
   // Standard event-meta block (Start|End|TZ + countdown + stage + ical stub).
   useEffect(() => {
     let tries = 0;
@@ -1418,6 +1433,12 @@ function App() {
   return (
     <div style={S.app}>
       <div style={S.header}>
+        {tor.live ? (
+          <a href="#tower-schedule" className="tor-badge" title="Tower of Rotation is live — jump to schedule"
+            onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("tower-schedule"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>
+            <span className="tb-ico">🗼</span><span className="tb-lvl">Tower · Lvl {tor.level}</span>
+          </a>
+        ) : null}
         <div style={S.headerSub}>Season Finale · Four-Kingdom Land War</div>
         <h1 style={S.headerTitle}>DESOLATE DESERT</h1>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", justifyContent: "center", marginTop: "8px" }}>
