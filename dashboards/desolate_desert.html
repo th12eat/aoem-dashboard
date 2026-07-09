@@ -682,38 +682,17 @@ function PointsTab() {
         </div>
       ) : null}
 
-      {/* Per-Alliance Points (our alliances) */}
-      <div style={S.card}>
-        <div style={S.cardTitle}>Era 8 Alliance Desert Points</div>
-        <table style={S.table}>
-          <thead>
-            <tr>
-              <th style={S.th}>Alliance</th>
-              <th style={S.th}>Desert Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ALLIANCE_POINTS.map(a => (
-              <tr key={a.tag}>
-                <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
-                <td style={S.td}>{a.points}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Placer Gold tracker */}
+      {/* Placer Gold tracker (+ Desert Points column) */}
       {PLACER_GOLD && PLACER_GOLD.alliances && PLACER_GOLD.alliances.length ? (
         <div style={S.card}>
-          <div style={S.cardTitle}>Placer Gold — Estimated Balances</div>
-          <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>{PLACER_GOLD.note}</div>
+          <div style={S.cardTitle}>Alliance Tracker — Desert Points &amp; Placer Gold</div>
+          <div style={{ overflowX: "auto" }}>
           <table style={S.table}>
             <thead>
               <tr>
                 <th style={S.th}>Alliance</th>
-                <th style={{ ...S.th, textAlign: "right" }}>Current</th>
-                <th style={{ ...S.th, minWidth: "130px" }}>Cap ({(PLACER_GOLD.cap/1000)}k)</th>
+                <th style={{ ...S.th, textAlign: "right" }}>Desert Points</th>
+                <th style={{ ...S.th, minWidth: "150px" }}>Placer Gold (of {(PLACER_GOLD.cap/1000)}k)</th>
                 <th style={{ ...S.th, textAlign: "right" }}>Gen /h</th>
                 <th style={{ ...S.th, textAlign: "center" }}>Gates</th>
                 <th style={{ ...S.th, textAlign: "center" }}>Pillars</th>
@@ -726,16 +705,17 @@ function PointsTab() {
                 const pct = has ? Math.min(100, Math.round((a.current / PLACER_GOLD.cap) * 100)) : 0;
                 const capped = has && a.current >= PLACER_GOLD.cap;
                 const flagTxt = a.flags != null ? (a.flags + (a.flagsBuilding ? " (+" + a.flagsBuilding + ")" : "")) : "—";
+                const dp = (ALLIANCE_POINTS.find(x => x.tag === a.tag) || {}).points;
                 return (
                 <tr key={a.tag}>
-                  <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span>{a.confirmed ? <span style={{ color: "#3daa6d", fontSize: "9px", marginLeft: "4px" }}>●</span> : null}</td>
-                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: capped ? "#ef4444" : (has ? "#e8eaf0" : "#64748b") }}>{has ? a.current.toLocaleString() : "—"}</td>
+                  <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
+                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{dp || "—"}</td>
                   <td style={S.td}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       <div style={{ flex: 1, height: "6px", background: "#0f172a", borderRadius: "3px", overflow: "hidden" }}>
                         <div style={{ width: pct + "%", height: "100%", background: capped ? "#ef4444" : "#f5731f", borderRadius: "3px" }} />
                       </div>
-                      <span style={{ fontSize: "11px", color: "#94a3b8", minWidth: "32px" }}>{has ? pct + "%" : "—"}</span>
+                      <span style={{ fontSize: "11px", fontVariantNumeric: "tabular-nums", color: capped ? "#ef4444" : (has ? "#e8eaf0" : "#64748b"), minWidth: "52px", textAlign: "right" }}>{has ? a.current.toLocaleString() : "—"}</span>
                     </div>
                   </td>
                   <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: (a.perHour > 0 ? "#3daa6d" : "#64748b") }}>{a.perHour > 0 ? "+" + a.perHour.toLocaleString() : "0"}</td>
@@ -746,8 +726,6 @@ function PointsTab() {
               ); })}
             </tbody>
           </table>
-          <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>
-            <strong>Gates</strong> = gates/docks held (3k/h each) · <strong>Pillars</strong> = Pillar Cities held (8k/h each) · <strong>Flags</strong> = flags built (+ number building). <span style={{ color: "#3daa6d" }}>●</span> next to a tag = panel-confirmed balance; others' /h derived from holdings. Cap warning at 500k — spend before capping; gold is wasted once maxed.
           </div>
         </div>
       ) : null}
@@ -756,9 +734,6 @@ function PointsTab() {
       {PLACER_GOLD && PLACER_GOLD.nodes && PLACER_GOLD.nodes.length ? (
         <div style={S.card}>
           <div style={S.cardTitle}>Placer Gold — Node Capture Yields</div>
-          <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>
-            First-capture bonus goes to the <strong>first</strong> alliance to take the node; the /h generation then accrues to whoever holds it. Grab high-value nodes early — the one-time bonus is the prize.
-          </div>
           <table style={S.table}>
             <thead>
               <tr>
@@ -779,9 +754,6 @@ function PointsTab() {
               ); })}
             </tbody>
           </table>
-          <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>
-            Aaru Palace and Towers of Rotation yield no Placer Gold. Flag <em>costs</em>: Z1 5k, Z2 50k (flags ≤10th) — higher count-tiers (11th+, 20th+…) still TBD.
-          </div>
         </div>
       ) : null}
 
