@@ -47,6 +47,13 @@
             text-decoration: none; animation: torBadgePulse 1.6s ease-in-out infinite;
         }
         .tor-badge:hover { background: rgba(250,204,21,0.22); }
+        /* idle (event not live): greyed, no pulse, still clickable */
+        .tor-badge.is-idle {
+            background: rgba(148,163,184,0.10); border-color: #475569; color: #94a3b8;
+            animation: none;
+        }
+        .tor-badge.is-idle:hover { background: rgba(148,163,184,0.20); }
+        .tor-badge.is-idle .tb-ico { filter: grayscale(1); opacity: 0.7; }
         .tor-badge .tb-ico { font-size: 17px; line-height: 1; }
         .tor-badge .tb-lvl { font-size: 13px; }
         @keyframes torBadgePulse { 0%,100%{ box-shadow:0 0 0 0 rgba(250,204,21,0.5);} 50%{ box-shadow:0 0 0 6px rgba(250,204,21,0);} }
@@ -1220,14 +1227,16 @@ function TowerSchedule() {
   }, []);
   const st = torStatus(now);
   const stateLabel = { live: "Live now", next: "Next up", passed: "Done", upcoming: "" };
-  const nextGold = st.live ? (Math.ceil(st.level / 10) * 10) : null; // next lvl-10 milestone
+  const dispLevel = st.live ? st.level : 1;               // meter shows lvl 1 (greyed) when not live
+  const meterPct = (dispLevel / TOR_LEVELS) * 100;
+  const accent = st.live ? "#facc15" : "#475569";
   return (
     <div id="tower-schedule" style={S.card}>
       <div style={{ ...S.cardTitle, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px" }}>
         <span>Tower of Rotation — Awakening Schedule</span>
         {st.live ? (
           <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", fontWeight: 800, color: "#facc15", textTransform: "none", letterSpacing: 0 }}>
-            <span className="tor-live-dot" />LIVE · Level {st.level}/{TOR_LEVELS}
+            <span className="tor-live-dot" />LIVE
           </span>
         ) : <span style={{ fontSize: "11px", fontWeight: 500, color: "#64748b", textTransform: "none", letterSpacing: 0 }}>{st.active ? "Between windows today" : "Runs Days 3–5"}</span>}
       </div>
@@ -1238,17 +1247,29 @@ function TowerSchedule() {
           return (
             <div key={w.label} className={cls} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3px", padding: "9px 4px", borderRadius: "8px", border: "1px solid #7c3aed44", background: "#7c3aed11" }}>
               <span style={{ fontSize: "12px", fontWeight: 700, color: "#e2e8f0" }}>{w.label}</span>
-              {s === "live" ? <span style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: "#facc15" }}>Lvl {st.level}/{TOR_LEVELS}</span>
-                : stateLabel[s] ? <span style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: s === "next" ? "#a78bfa" : "#64748b" }}>{stateLabel[s]}</span> : null}
+              {stateLabel[s] ? <span style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: s === "live" ? "#facc15" : s === "next" ? "#a78bfa" : "#64748b" }}>{stateLabel[s]}</span> : null}
             </div>
           );
         })}
       </div>
-      <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "8px", lineHeight: 1.5 }}>
-        Wed–Sat, starting Day 3. Each 2-hr window is split into <strong>{TOR_LEVELS} level-slots</strong> (~3 min each) — the level ticks up every slot and any remaining NPCs reset.{st.live ? <span style={{ color: "#facc15" }}> Currently level {st.level}{nextGold && nextGold > st.level ? ` — gold chests at level ${nextGold}` : ""}.</span> : ""}
-      </div>
-      <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "6px", lineHeight: 1.5, padding: "8px 10px", background: "#0f172a", borderRadius: "6px" }}>
-        🎁 <strong style={{ color: "#e8eaf0" }}>Chests:</strong> Silent Guardians &amp; Echoing Phantoms have a chance to drop chests — you can pick up <strong>up to 10/day</strong>. Rarity varies; <strong style={{ color: "#facc15" }}>Gold Chests</strong> are the best, and up to <strong>5 drop every 10 levels</strong>.
+
+      {/* level meter + chest reminder */}
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "12px", flexWrap: "wrap" }}>
+        <div style={{ flex: 1, minWidth: "180px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "10px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: accent, marginBottom: "3px" }}>
+            <span>Level {dispLevel} / {TOR_LEVELS}</span>
+            <span style={{ color: "#64748b" }}>gold chest tiers · 10 / 20 / 30 / 40</span>
+          </div>
+          <div style={{ position: "relative", height: "10px", background: "#0f172a", borderRadius: "5px", overflow: "hidden", opacity: st.live ? 1 : 0.55 }}>
+            <div style={{ width: meterPct + "%", height: "100%", background: st.live ? "linear-gradient(90deg,#b45309,#facc15)" : "#475569", borderRadius: "5px", transition: "width .3s" }} />
+            {/* lvl-10 milestone ticks */}
+            {[10,20,30].map(m => <div key={m} style={{ position: "absolute", top: 0, bottom: 0, left: (m/TOR_LEVELS*100) + "%", width: "1px", background: "rgba(255,255,255,0.25)" }} />)}
+          </div>
+        </div>
+        <div title="Pick up chests — up to 10/day" style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "6px 12px", borderRadius: "8px", background: "#0f172a", border: "1px solid " + (st.live ? "#facc1566" : "#1e2435") }}>
+          <span style={{ fontSize: "18px", filter: st.live ? "none" : "grayscale(0.6)", opacity: st.live ? 1 : 0.7 }}>🎁</span>
+          <span style={{ fontVariantNumeric: "tabular-nums", fontWeight: 700, fontSize: "14px", color: st.live ? "#facc15" : "#94a3b8" }}>0<span style={{ color: "#64748b", fontWeight: 500 }}>/10</span></span>
+        </div>
       </div>
     </div>
   );
@@ -1322,7 +1343,7 @@ function PveTab() {
           </div>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
             <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Tower of Rotation / Peaceful Riverland</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>The Tower awakening <strong>is</strong> the Peaceful Riverland event — Wed–Sat at 05:00 / 13:00 / 21:00 UTC (from Day 3), for 2 hrs each. It spawns <strong>Silent Guardians</strong> (basic PvE mobs) and <strong>Echoing Phantoms</strong> (stronger, higher rewards). Must have alliance land adjacent to the Tower; the occupying alliance gets special buffs. <strong>Tower Master</strong> achievement = 4M points earned here while holding the Tower. (Live schedule + level tracker on the Overview tab.)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>The Tower awakening <strong>is</strong> the Peaceful Riverland event — Wed–Sat at 05:00 / 13:00 / 21:00 UTC (from Day 3), for 2 hrs each. It spawns <strong>Silent Guardians</strong> (basic PvE mobs) and <strong>Echoing Phantoms</strong> (stronger, higher rewards). Each 2-hr window is split into 40 level-slots (~3 min each); the level ticks up every slot and any remaining NPCs reset. Must have alliance land adjacent to the Tower; the occupying alliance gets special buffs. <strong>Tower Master</strong> achievement = 4M points earned here while holding the Tower. <strong style={{ color: "#e8eaf0" }}>Chests:</strong> Guardians &amp; Phantoms can drop chests — pick up <strong>up to 10/day</strong>; rarity varies, <strong style={{ color: "#facc15" }}>Gold Chests</strong> are best and up to <strong>5 drop every 10 levels</strong>. (Live schedule + level meter on the Overview tab.)</div>
           </div>
         </div>
       </div>
@@ -1491,12 +1512,11 @@ function App() {
   return (
     <div style={S.app}>
       <div style={S.header}>
-        {tor.live ? (
-          <a href="#tower-schedule" className="tor-badge" title="Tower of Rotation is live — jump to schedule"
-            onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("tower-schedule"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>
-            <span className="tb-ico">🗼</span><span className="tb-lvl">Tower · Lvl {tor.level}</span>
-          </a>
-        ) : null}
+        <a href="#tower-schedule" className={"tor-badge" + (tor.live ? "" : " is-idle")}
+          title={tor.live ? "Tower of Rotation is live — jump to schedule" : "Tower of Rotation — jump to schedule"}
+          onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("tower-schedule"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>
+          <span className="tb-ico">🗼</span><span className="tb-lvl">{tor.live ? "Tower · Lvl " + tor.level : "Tower"}</span>
+        </a>
         <div style={S.headerSub}>Season Finale · Four-Kingdom Land War</div>
         <h1 style={S.headerTitle}>DESOLATE DESERT</h1>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", justifyContent: "center", marginTop: "8px" }}>
