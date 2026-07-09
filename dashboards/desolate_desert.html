@@ -1188,6 +1188,22 @@ const TOR_FIRST_DATE = "2026-07-08"; // Day 3
 const TOR_LAST_DATE = "2026-07-10";  // Day 5
 const TOR_LEVELS = 40;               // each 2-hr window = 40 level-slots (3 min each)
 
+// Simple treasure-chest icon (inline SVG so it renders identically everywhere).
+function ChestIcon({ size = 18, color = "#facc15" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, display: "block" }}>
+      {/* lid */}
+      <path d="M3 9a9 5 0 0 1 18 0v1H3V9z" fill={color} opacity="0.9" />
+      {/* body */}
+      <rect x="3" y="10" width="18" height="9" rx="1.5" fill={color} />
+      {/* band + lock */}
+      <rect x="3" y="12.5" width="18" height="2" fill="#0a0c14" opacity="0.55" />
+      <rect x="10.5" y="11" width="3" height="6" rx="0.6" fill="#0a0c14" opacity="0.7" />
+      <circle cx="12" cy="13.5" r="1.1" fill={color} />
+    </svg>
+  );
+}
+
 // Shared live status of the Tower of Rotation / Peaceful Riverland event, computed
 // from the current UTC time. Returns {active, live, windowIdx, level, states[]}.
 function torStatus(now) {
@@ -1267,7 +1283,7 @@ function TowerSchedule() {
           </div>
         </div>
         <div title="Pick up chests — up to 10/day" style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "6px 12px", borderRadius: "8px", background: "#0f172a", border: "1px solid " + (st.live ? "#facc1566" : "#1e2435") }}>
-          <span style={{ fontSize: "18px", filter: st.live ? "none" : "grayscale(0.6)", opacity: st.live ? 1 : 0.7 }}>🎁</span>
+          <ChestIcon size={18} color={st.live ? "#facc15" : "#7b8496"} />
           <span style={{ fontVariantNumeric: "tabular-nums", fontWeight: 700, fontSize: "14px", color: st.live ? "#facc15" : "#94a3b8" }}>0<span style={{ color: "#64748b", fontWeight: 500 }}>/10</span></span>
         </div>
       </div>
@@ -1341,11 +1357,29 @@ function PveTab() {
             <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Territory Control</div>
             <div style={{ fontSize: "12px", color: "#94a3b8" }}>Flags must maintain an active connection back to a Stronghold or Substronghold. Disconnected flags become inactive. Higher zone flags cost more Placer Gold but are more durable.</div>
           </div>
-          <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Tower of Rotation / Peaceful Riverland</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>The Tower awakening <strong>is</strong> the Peaceful Riverland event — Wed–Sat at 05:00 / 13:00 / 21:00 UTC (from Day 3), for 2 hrs each. It spawns <strong>Silent Guardians</strong> (basic PvE mobs) and <strong>Echoing Phantoms</strong> (stronger, higher rewards). Each 2-hr window is split into 40 level-slots (~3 min each); the level ticks up every slot and any remaining NPCs reset. Must have alliance land adjacent to the Tower; the occupying alliance gets special buffs. <strong>Tower Master</strong> achievement = 4M points earned here while holding the Tower. <strong style={{ color: "#e8eaf0" }}>Chests:</strong> Guardians &amp; Phantoms can drop chests — pick up <strong>up to 10/day</strong>; rarity varies, <strong style={{ color: "#facc15" }}>Gold Chests</strong> are best and up to <strong>5 drop every 10 levels</strong>. (Live schedule + level meter on the Overview tab.)</div>
-          </div>
         </div>
+      </div>
+
+      {/* Tower of Rotation — own Glossary subsection */}
+      <div style={S.card}>
+        <div style={{ ...S.cardTitle, display: "flex", alignItems: "center", gap: "8px" }}>
+          <span>🗼</span><span>Tower of Rotation / Peaceful Riverland</span>
+        </div>
+        <div style={{ display: "grid", gap: "6px" }}>
+          {[
+            ["When", "Wed–Sat from Day 3 · 05:00 / 13:00 / 21:00 UTC · 2 hrs each"],
+            ["Levels", "Each window = 40 slots (~3 min). Level ticks up per slot; leftover NPCs reset."],
+            ["Enemies", "Silent Guardians (basic) and Echoing Phantoms (tougher, higher rewards)."],
+            ["Hold it", "Need alliance land adjacent. Occupier gets buffs. Tower Master = 4M pts held."],
+            ["Chests", "Drops from enemies — up to 10/day. Gold Chests are best; up to 5 every 10 levels."],
+          ].map(([k, v]) => (
+            <div key={k} style={{ display: "flex", gap: "10px", fontSize: "12px", lineHeight: 1.5 }}>
+              <span style={{ minWidth: "62px", fontWeight: 700, color: "#a78bfa" }}>{k}</span>
+              <span style={{ color: "#94a3b8" }}>{v}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>Live schedule + level meter on the Overview tab.</div>
       </div>
 
       {/* Alliance Buildings */}
@@ -1515,7 +1549,7 @@ function App() {
         <a href="#tower-schedule" className={"tor-badge" + (tor.live ? "" : " is-idle")}
           title={tor.live ? "Tower of Rotation is live — jump to schedule" : "Tower of Rotation — jump to schedule"}
           onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("tower-schedule"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>
-          <span className="tb-ico">🗼</span><span className="tb-lvl">{tor.live ? "Tower · Lvl " + tor.level : "Tower"}</span>
+          <span className="tb-ico">🗼</span><span className="tb-lvl">Tower · {tor.live ? tor.level : 1}/{TOR_LEVELS}</span>
         </a>
         <div style={S.headerSub}>Season Finale · Four-Kingdom Land War</div>
         <h1 style={S.headerTitle}>DESOLATE DESERT</h1>
