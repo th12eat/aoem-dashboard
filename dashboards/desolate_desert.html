@@ -616,9 +616,21 @@ let ALLIANCE_SCOREBOARD = [];  // [{rank, tag, name, server, points}]
 // Placer Gold tracker (cap 500k; costs/generation partly TBD)
 let PLACER_GOLD = { cap: 500000, flagZone1Cost: 5000, note: "", alliances: [] };
 
-// Kingdom buffs from held Pillar Cities (3 unique) + Towers of Rotation (2 unique).
-// Each unique buff is capped once no matter how many nodes we hold; toggled manually.
-let KINGDOM_BUFFS = { pillarCity: [], tower: [] };
+// Per-alliance node buffs. Each alliance row lights the buffs it currently grants
+// (from held Pillar Cities / Towers). allianceBuffs[tag] = array of buff keys.
+let ALLIANCE_BUFFS = { WC1: [], REU: [], MyT: [], AGC: [] };
+// Buff column defs: 3 Pillar City + 2 Tower. `key` matches entries in ALLIANCE_BUFFS.
+const BUFF_COLUMNS = {
+  pillar: { head: "Pillar City", color: "#f5731f", rgb: "245,115,31", cols: [
+    { key: "health",  short: "Health",  full: "All Unit Types' Health +5%" },
+    { key: "attack",  short: "Attack",  full: "All Unit Types' Attack +10%" },
+    { key: "defense", short: "Defense", full: "All Unit Types' Defense +10%" },
+  ]},
+  tower: { head: "Tower of Rotation", color: "#7c3aed", rgb: "124,58,237", cols: [
+    { key: "dmgReduction", short: "Dmg Reduction", full: "All Unit Types' Damage Reduction +5%" },
+    { key: "damage",       short: "Damage",        full: "All Unit Types' Damage +6%" },
+  ]},
+};
 
 function PointsTab() {
   const [srcOpen, setSrcOpen] = React.useState(false);
@@ -687,55 +699,57 @@ function PointsTab() {
         </div>
       ) : null}
 
-      {/* Era 8 Alliance Desert Points + Kingdom Buffs held */}
+      {/* Era 8 Alliance Desert Points + held node-buff columns (Behemoth blessings style) */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Era 8 Alliance Desert Points</div>
+        <div style={S.cardTitle}>Era 8 Alliance Desert Points &amp; Buffs</div>
+        <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>
+          Buff columns light up when an alliance holds a node granting that unique buff (each caps once).
+        </div>
+        <div style={{ overflowX: "auto" }}>
         <table style={S.table}>
           <thead>
+            {/* group header row */}
+            <tr>
+              <th style={{ ...S.th, borderBottom: "none" }}></th>
+              <th style={{ ...S.th, borderBottom: "none" }}></th>
+              <th colSpan={BUFF_COLUMNS.pillar.cols.length} style={{ ...S.th, textAlign: "center", color: BUFF_COLUMNS.pillar.color, borderBottom: "2px solid " + BUFF_COLUMNS.pillar.color }}>{BUFF_COLUMNS.pillar.head}</th>
+              <th colSpan={BUFF_COLUMNS.tower.cols.length} style={{ ...S.th, textAlign: "center", color: BUFF_COLUMNS.tower.color, borderBottom: "2px solid " + BUFF_COLUMNS.tower.color }}>{BUFF_COLUMNS.tower.head}</th>
+            </tr>
             <tr>
               <th style={S.th}>Alliance</th>
               <th style={{ ...S.th, textAlign: "right" }}>Desert Points</th>
+              {BUFF_COLUMNS.pillar.cols.map(c => <th key={c.key} title={c.full} style={{ ...S.th, textAlign: "center" }}>{c.short}</th>)}
+              {BUFF_COLUMNS.tower.cols.map(c => <th key={c.key} title={c.full} style={{ ...S.th, textAlign: "center" }}>{c.short}</th>)}
             </tr>
           </thead>
           <tbody>
-            {ALLIANCE_POINTS.map(a => (
-              <tr key={a.tag}>
-                <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
-                <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{a.points}</td>
-              </tr>
-            ))}
+            {ALLIANCE_POINTS.map(a => {
+              const held = ALLIANCE_BUFFS[a.tag] || [];
+              const buffCell = (c, grp) => {
+                const on = held.indexOf(c.key) !== -1;
+                return (
+                  <td key={c.key} title={c.full} style={{
+                    ...S.td, textAlign: "center", fontVariantNumeric: "tabular-nums", fontWeight: on ? 700 : 400,
+                    color: on ? "#e8eaf0" : "#475569",
+                    background: on ? "rgba(" + grp.rgb + ",0.18)" : undefined,
+                    boxShadow: on ? "inset 0 0 0 1px " + grp.color : undefined,
+                    opacity: on ? 1 : 0.5,
+                  }}>{c.short.startsWith("Dmg") || c.short === "Damage" ? (c.key === "damage" ? "+6%" : "+5%") : (c.key === "health" ? "+5%" : "+10%")}</td>
+                );
+              };
+              return (
+                <tr key={a.tag}>
+                  <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
+                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{a.points}</td>
+                  {BUFF_COLUMNS.pillar.cols.map(c => buffCell(c, BUFF_COLUMNS.pillar))}
+                  {BUFF_COLUMNS.tower.cols.map(c => buffCell(c, BUFF_COLUMNS.tower))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
-      </div>
-
-      {/* Kingdom Buffs — unique node buffs we currently hold (Behemoth blessings style) */}
-      {KINGDOM_BUFFS && (KINGDOM_BUFFS.pillarCity || KINGDOM_BUFFS.tower) ? (
-        <div style={S.card}>
-          <div style={S.cardTitle}>Kingdom Buffs Held</div>
-          <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>
-            Unique buffs from held Pillar Cities (3) &amp; Towers of Rotation (2). Each caps once — lit = we hold it.
-          </div>
-          {[
-            { key: "pillarCity", head: "Pillar City", color: "#f5731f", rgb: "245,115,31" },
-            { key: "tower", head: "Tower of Rotation", color: "#7c3aed", rgb: "124,58,237" },
-          ].map(grp => (
-            <div key={grp.key} style={{ marginBottom: "8px" }}>
-              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: grp.color, marginBottom: "4px" }}>{grp.head}</div>
-              {(KINGDOM_BUFFS[grp.key] || []).map((b, i) => (
-                <div key={i} style={{
-                  display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", borderRadius: "6px", marginBottom: "4px",
-                  background: b.active ? "rgba(" + grp.rgb + ",0.16)" : "#0f172a",
-                  border: "1px solid " + (b.active ? grp.color : "#1e2435"),
-                  opacity: b.active ? 1 : 0.5,
-                }}>
-                  <span style={{ fontSize: "12px" }}>{b.active ? "✓" : "○"}</span>
-                  <span style={{ fontSize: "12.5px", fontWeight: b.active ? 700 : 500, color: b.active ? "#e8eaf0" : "#94a3b8" }}>{b.label}</span>
-                </div>
-              ))}
-            </div>
-          ))}
         </div>
-      ) : null}
+      </div>
 
       {/* Placer Gold — node capture yields (collapsible, above the estimator) */}
       {PLACER_GOLD && PLACER_GOLD.nodes && PLACER_GOLD.nodes.length ? (
@@ -778,7 +792,7 @@ function PointsTab() {
             <thead>
               <tr>
                 <th style={S.th}>Alliance</th>
-                <th style={{ ...S.th, minWidth: "150px" }}>Placer Gold (of {(PLACER_GOLD.cap/1000)}k)</th>
+                <th style={{ ...S.th, minWidth: "160px" }}>Placer Gold</th>
                 <th style={{ ...S.th, textAlign: "right" }}>Gen /h</th>
                 <th style={{ ...S.th, textAlign: "center" }}>Gates</th>
                 <th style={{ ...S.th, textAlign: "center" }}>Pillars</th>
@@ -791,6 +805,7 @@ function PointsTab() {
                 const pct = has ? Math.min(100, Math.round((a.current / PLACER_GOLD.cap) * 100)) : 0;
                 const capped = has && a.current >= PLACER_GOLD.cap;
                 const flagTxt = a.flags != null ? (a.flags + (a.flagsBuilding ? " (+" + a.flagsBuilding + ")" : "")) : "—";
+                const capTxt = (PLACER_GOLD.cap/1000) + "k";
                 return (
                 <tr key={a.tag}>
                   <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
@@ -799,7 +814,7 @@ function PointsTab() {
                       <div style={{ flex: 1, height: "6px", background: "#0f172a", borderRadius: "3px", overflow: "hidden" }}>
                         <div style={{ width: pct + "%", height: "100%", background: capped ? "#ef4444" : "#f5731f", borderRadius: "3px" }} />
                       </div>
-                      <span style={{ fontSize: "11px", fontVariantNumeric: "tabular-nums", color: capped ? "#ef4444" : (has ? "#e8eaf0" : "#64748b"), minWidth: "52px", textAlign: "right" }}>{has ? a.current.toLocaleString() : "—"}</span>
+                      <span style={{ fontSize: "11px", fontVariantNumeric: "tabular-nums", color: capped ? "#ef4444" : (has ? "#e8eaf0" : "#64748b"), minWidth: "84px", textAlign: "right", whiteSpace: "nowrap" }}>{has ? a.current.toLocaleString() + " / " + capTxt : "— / " + capTxt}</span>
                     </div>
                   </td>
                   <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: (a.perHour > 0 ? "#3daa6d" : "#64748b") }}>{a.perHour > 0 ? "+" + a.perHour.toLocaleString() : "0"}</td>
@@ -1477,7 +1492,7 @@ function App() {
         if (j.kingdomScoreboard)  KINGDOM_SCOREBOARD  = j.kingdomScoreboard;
         if (j.allianceScoreboard) ALLIANCE_SCOREBOARD = j.allianceScoreboard;
         if (j.placerGold)         PLACER_GOLD         = j.placerGold;
-        if (j.kingdomBuffs)       KINGDOM_BUFFS       = j.kingdomBuffs;
+        if (j.allianceBuffs)      ALLIANCE_BUFFS      = j.allianceBuffs;
       }
     }
   } catch (e) {
