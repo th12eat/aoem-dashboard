@@ -654,9 +654,28 @@ const BUFF_COLUMNS = {
   ]},
 };
 
+// Placer Gold cost of the n-th flag in a given zone (1-based flag number).
+// Z1: 1-9=5k, else tier×10k. Z2: 50k×(tier+1). Z3: 100k×max(1,tier). tier=floor(n/10).
+function flagCost(zone, n) {
+  const t = Math.floor(n / 10);
+  if (zone === 1) return t === 0 ? 5000 : t * 10000;
+  if (zone === 2) return 50000 * (1 + t);
+  if (zone === 3) return 100000 * Math.max(1, t);
+  return 0;
+}
+// Tier rows for the reference table (each zone's per-flag cost within the band).
+const FLAG_COST_TIERS = [
+  { band: "1 – 9",   rep: 5 },
+  { band: "10 – 19", rep: 15 },
+  { band: "20 – 29", rep: 25 },
+  { band: "30 – 39", rep: 35 },
+  { band: "40 – 49", rep: 45 },
+];
+
 function PointsTab() {
   const [srcOpen, setSrcOpen] = React.useState(false);
   const [yieldOpen, setYieldOpen] = React.useState(false);
+  const [costOpen, setCostOpen] = React.useState(false);
   const POINT_SOURCES = [
     ["Gather 100 resources in DD", "15 pts"],
     ["Defeat Lv.31-35 tribe", "13.5K pts"],
@@ -826,6 +845,45 @@ function PointsTab() {
           </div>
         </div>
       ) : null}
+
+      {/* Flag cost by zone & count — collapsible reference */}
+      <div style={S.card}>
+        <div onClick={() => setCostOpen(o => !o)} style={{ ...S.cardTitle, marginBottom: costOpen ? "12px" : 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span>Flag Cost by Zone &amp; Count</span>
+          <span style={{ fontSize: "16px", color: "#94a3b8", transform: costOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }}>▾</span>
+        </div>
+        {costOpen ? (
+          <div>
+            <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>Placer Gold cost per flag, by how many an alliance has already built. Cost rises every 10 flags.</div>
+            <div style={{ overflowX: "auto" }}>
+            <table style={S.table}>
+              <thead>
+                <tr>
+                  <th style={S.th}>Flags built</th>
+                  <th style={{ ...S.th, textAlign: "right", color: "#d4a574" }}>Zone 1</th>
+                  <th style={{ ...S.th, textAlign: "right", color: "#2dd4bf" }}>Zone 2</th>
+                  <th style={{ ...S.th, textAlign: "right", color: "#f472b6" }}>Zone 3</th>
+                </tr>
+              </thead>
+              <tbody>
+                {FLAG_COST_TIERS.map(t => {
+                  const fmtk = (v) => (v/1000) + "k";
+                  return (
+                    <tr key={t.band}>
+                      <td style={{ ...S.td, fontWeight: 600 }}>{t.band}</td>
+                      <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{fmtk(flagCost(1, t.rep))}</td>
+                      <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{fmtk(flagCost(2, t.rep))}</td>
+                      <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{fmtk(flagCost(3, t.rep))}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            </div>
+            <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>Each cell = cost of the <em>next</em> flag while in that band. E.g. your 12th Zone-2 flag costs 100k.</div>
+          </div>
+        ) : null}
+      </div>
 
       {/* Achievements — per-alliance progress */}
       <div style={S.card}>
