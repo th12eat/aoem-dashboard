@@ -63,7 +63,7 @@
     '.evt-stage b{color:var(--kvk-accent,#d4a843);font-weight:700;}' +
     '.evt-stage .evt-stage-sub{color:#ffffff;font-weight:700;}' +
     '.evt-live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;' +
-      'margin-right:7px;vertical-align:middle;box-shadow:0 0 6px #ef4444;animation:evtLiveDot 1.2s ease-in-out infinite;}' +
+      'margin-right:7px;position:relative;top:-1px;vertical-align:middle;box-shadow:0 0 6px #ef4444;animation:evtLiveDot 1.2s ease-in-out infinite;}' +
     '@keyframes evtLiveDot{0%,100%{opacity:1;}50%{opacity:0.25;}}' +
     '@media (prefers-reduced-motion:reduce){.evt-live-dot{animation:none;}}' +
     '.evt-ical{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:14px auto 0;' +

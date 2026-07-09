@@ -1385,22 +1385,23 @@ function App() {
             const us = srv === "Era 8";
             return (
               <React.Fragment key={srv}>
-                {i > 0 ? <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "18px", letterSpacing: "1px", color: "#94a3b8" }}>VS</span> : null}
-                <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: "999px", fontSize: "13px", fontWeight: 700, color: "#fff", background: "rgba(" + c.rgb + ",0.22)", border: "1px solid " + c.hex, boxShadow: us ? "0 0 8px rgba(" + c.rgb + ",0.5)" : "none" }}>{disp}{us ? " · Us" : ""}</span>
+                {/* single VS divider — after our server, separating us from the opponents */}
+                {i === 1 ? <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "18px", letterSpacing: "1px", color: "#94a3b8" }}>VS</span> : null}
+                <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: "999px", fontSize: "13px", fontWeight: 700, color: "#fff", background: "rgba(" + c.rgb + ",0.22)", border: "1px solid " + c.hex, boxShadow: us ? "0 0 8px rgba(" + c.rgb + ",0.5)" : "none" }}>{disp}</span>
               </React.Fragment>
             );
           })}
         </div>
         <div id="evtMeta"></div>
         <div style={{ marginTop: "14px", display: "flex", flexWrap: "wrap", gap: "10px 18px", alignItems: "center", justifyContent: "center" }}>
-          <button type="button" title="Calendar export coming soon" disabled style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 16px", background: "#11141f", border: "1px solid #a1573f", borderRadius: "999px", cursor: "default", opacity: 0.75 }}>
-            <span style={{ fontSize: "16px", lineHeight: 1 }}>📅</span>
-            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.5px", color: "#f5731f" }}>Add to Calendar</span>
-          </button>
           <div style={{ fontSize: "13px", color: "#cbd5e1" }}>
             <span style={{ color: "#94a3b8" }}>Aaru Palace Fight:</span>{" "}
             <strong style={{ color: "#f472b6" }}>{state.aaruTimeSlot || "Day 7 — time TBD (winner picks)"}</strong>
           </div>
+          <button type="button" title="Calendar export coming soon" disabled style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 16px", background: "#11141f", border: "1px solid #a1573f", borderRadius: "999px", cursor: "default", opacity: 0.75 }}>
+            <span style={{ fontSize: "16px", lineHeight: 1 }}>📅</span>
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.5px", color: "#f5731f" }}>Add to Calendar</span>
+          </button>
         </div>
       </div>
 
