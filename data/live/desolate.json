@@ -23,32 +23,32 @@
     "notes": "We are heavily outmatched. Survival plan: appease Era #019 (SD rank 2, must-win for their top-3 reward) and make peace with Era #023 (shared half)."
   },
   "kingdomPoints": {
-    "era8": "11.48B",
-    "era023": "15.99B",
-    "era014": "36.29B",
-    "era019": "34.62B",
-    "lastUpdated": "2026-07-08 — Day 3 (Desert Star points)"
+    "era8": "16.4B",
+    "era023": "21.9B",
+    "era014": "47.7B",
+    "era019": "47.3B",
+    "lastUpdated": "2026-07-09 — Day 4 (Desert Star points; kingdom totals rounded)"
   },
   "kingdomScoreboard": [
     {
       "rank": 1,
       "server": "Era #014",
-      "points": "36,288,425,774"
+      "points": "47,700,000,000"
     },
     {
       "rank": 2,
       "server": "Era #019",
-      "points": "34,621,495,941"
+      "points": "47,300,000,000"
     },
     {
       "rank": 3,
       "server": "Era #023",
-      "points": "15,985,845,650"
+      "points": "21,900,000,000"
     },
     {
       "rank": 4,
       "server": "Era 8",
-      "points": "11,477,853,953"
+      "points": "16,400,000,000"
     }
   ],
   "allianceScoreboard": [
@@ -57,94 +57,94 @@
       "tag": "X14",
       "name": "Sakura",
       "server": "Era #014",
-      "points": "21,486,023,214"
+      "points": "26,277,947,313"
     },
     {
       "rank": 2,
       "tag": "XIX",
       "name": "LeGENDZ",
       "server": "Era #019",
-      "points": "19,263,526,493"
+      "points": "25,419,561,031"
     },
     {
       "rank": 3,
       "tag": "KNY",
       "name": "DemonSlayer",
       "server": "Era #019",
-      "points": "14,602,018,365"
+      "points": "20,585,012,101"
     },
     {
       "rank": 4,
       "tag": "LOD",
       "name": "LegionOfDonuts",
       "server": "Era #023",
-      "points": "11,039,245,020"
+      "points": "15,512,855,157"
     },
     {
       "rank": 5,
       "tag": "Ȼ14",
       "name": "LXCelestials",
       "server": "Era #014",
-      "points": "9,357,312,577"
+      "points": "13,787,383,354"
     },
     {
       "rank": 6,
       "tag": "GnG",
       "name": "GANGSTA",
       "server": "Era #014",
-      "points": "8,400,058,843"
+      "points": "11,797,575,306"
     },
     {
       "rank": 7,
       "tag": "eRa",
       "name": "WorldClass",
       "server": "Era 8",
-      "points": "7,044,735,009"
+      "points": "9,915,484,792"
     },
     {
       "rank": 8,
       "tag": "boi",
       "name": "Jericho",
       "server": "Era #023",
-      "points": "3,150,108,782"
+      "points": "4,138,155,745"
     },
     {
       "rank": 9,
-      "tag": "R65",
-      "name": "Royalz65",
-      "server": "Era #023",
-      "points": "2,510,052,779"
+      "tag": "DXR",
+      "name": "DefiantRebels",
+      "server": "Era #019",
+      "points": "3,536,167,052"
     },
     {
       "rank": 10,
       "tag": "PBJ",
       "name": "Reiwa令和",
       "server": "Era #019",
-      "points": "2,430,066,792"
+      "points": "3,343,467,317"
     }
   ],
   "alliancePoints": [
     {
       "tag": "WC1",
-      "points": "7,044,735,009"
+      "points": "9,915,484,792"
     },
     {
       "tag": "REU",
-      "points": "2,142,602,645"
+      "points": "3,297,034,269"
     },
     {
       "tag": "MyT",
-      "points": "1,865,846,863"
+      "points": "2,783,906,753"
     },
     {
       "tag": "AGC",
-      "points": "1,341,780,124"
+      "points": "1,712,337,903"
     }
   ],
   "placerGold": {
     "cap": 500000,
     "flagZone1Cost": 5000,
-    "note": "Stronghold free · Resource Center 1k · Z1 flag 5k · Z2 flag 50k (for flags ≤10th; higher tiers TBD). Gates/docks Z1→Z2 give 100k first-capture + 3k/h; Pillar City 300k + 8k/h (see Node Yields). Only WC1's balance is panel-confirmed (329k / +14k/h); others' /h derived from holdings, balances pending their panels.",
+    "note": "Stronghold free · Resource Center 1k · Z1 flag 5k · Z2 flag 50k (for flags ≤10th; higher tiers TBD). Gates/docks Z1→Z2 give 100k first-capture + 3k/h; Pillar City 300k + 8k/h (see Node Yields). Balances are estimates — no live panel today; /h derived from current holdings.",
     "nodes": [
       {
         "key": "gate_z1z2",
@@ -186,16 +186,14 @@
     "alliances": [
       {
         "tag": "WC1",
-        "current": 329000,
-        "perHour": 14000,
+        "current": null,
+        "perHour": 6000,
         "gates": 2,
-        "pillarCities": 1,
-        "pillarNames": [
-          "City of Bull"
-        ],
-        "flags": 8,
-        "flagsBuilding": 1,
-        "confirmed": true
+        "pillarCities": 0,
+        "pillarNames": [],
+        "flags": 2,
+        "flagsBuilding": 0,
+        "confirmed": false
       },
       {
         "tag": "REU",
@@ -204,19 +202,19 @@
         "gates": 1,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 17,
-        "flagsBuilding": 1,
+        "flags": 21,
+        "flagsBuilding": 0,
         "confirmed": false
       },
       {
         "tag": "MyT",
         "current": null,
-        "perHour": 11000,
+        "perHour": 3000,
         "gates": 1,
-        "pillarCities": 1,
+        "pillarCities": 0,
         "pillarNames": [],
-        "flags": 13,
-        "flagsBuilding": 1,
+        "flags": 9,
+        "flagsBuilding": 0,
         "confirmed": false
       },
       {
@@ -232,7 +230,7 @@
       }
     ],
     "flagZone2Cost": 50000,
-    "lastUpdated": "2026-07-08 — Day 3 holdings; WC1 balance last confirmed Day 2 (329k)"
+    "lastUpdated": "2026-07-09 — Day 4 holdings. WC1 & MyT lost pillars; WC1 down to 2 flags (gates held)."
   },
   "diplomacy": [
     {
