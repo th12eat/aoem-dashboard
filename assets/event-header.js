@@ -61,6 +61,11 @@
     '.evt-stage{font-family:var(--font-ui,"Barlow Condensed",sans-serif);font-size:var(--fs-sub,12px);' +
       'letter-spacing:2px;text-transform:uppercase;color:var(--text-secondary,#8a90a5);margin-top:8px;text-align:center;}' +
     '.evt-stage b{color:var(--kvk-accent,#d4a843);font-weight:700;}' +
+    '.evt-stage .evt-stage-sub{color:#ffffff;font-weight:700;}' +
+    '.evt-live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;' +
+      'margin-right:7px;vertical-align:middle;box-shadow:0 0 6px #ef4444;animation:evtLiveDot 1.2s ease-in-out infinite;}' +
+    '@keyframes evtLiveDot{0%,100%{opacity:1;}50%{opacity:0.25;}}' +
+    '@media (prefers-reduced-motion:reduce){.evt-live-dot{animation:none;}}' +
     '.evt-ical{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:14px auto 0;' +
       'padding:8px 16px;background:var(--bg-card,#11141f);border:1px solid var(--kvk-accent-dim,#a17e2f);' +
       'border-radius:999px;cursor:pointer;transition:background .15s;max-width:90%;}' +
@@ -121,7 +126,18 @@
     }
 
     var stage = root.querySelector('.evt-stage');
-    if (stage) stage.innerHTML = '<b>' + escapeHTML(stageLabel(cfg, now)) + '</b>';
+    if (stage) {
+      var lbl = stageLabel(cfg, now);
+      // A "Main | Sub" label renders Main in accent + Sub in white. A live dot
+      // shows while the event is running (between start and end).
+      var isLive = (!cfg.startISO || now >= Date.parse(cfg.startISO)) &&
+                   (!cfg.endISO || now < Date.parse(cfg.endISO)) && !cfg.forceComplete;
+      var dot = (isLive && cfg.liveDot) ? '<span class="evt-live-dot"></span>' : '';
+      var parts = String(lbl).split('|');
+      var html = dot + '<b>' + escapeHTML(parts[0].trim()) + '</b>';
+      if (parts.length > 1) html += ' <span class="evt-stage-sub">' + escapeHTML(parts[1].trim()) + '</span>';
+      stage.innerHTML = html;
+    }
   }
 
   function setText(root, sel, v) { var e = root.querySelector(sel); if (e) e.textContent = v; }

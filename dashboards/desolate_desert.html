@@ -375,12 +375,6 @@ function DiplomacyStatus() {
           </tbody>
         </table>
       </div>
-      <div style={{ fontSize: "11px", color: "#64748b", marginTop: "10px", display: "flex", flexWrap: "wrap", gap: "14px" }}>
-        <span><span style={{ color: "#ef4444" }}>⚔️ Red</span> = fight here</span>
-        <span><span style={{ color: "#9ca3af" }}>✋ Grey</span> = leave alone (retaliate only)</span>
-        <span><span style={{ color: "#22c55e" }}>🤝 Green</span> = ally</span>
-        <span style={{ color: "#94a3b8" }}>Stance: Green ally · Grey retaliate-only · Yellow &lt;½ fronts · Orange ≥½ fronts · Red all fronts</span>
-      </div>
     </div>
   );
 }
@@ -1306,19 +1300,6 @@ function ResearchTab() {
   ];
   return (
     <div>
-      <div style={S.card}>
-        <div style={S.cardTitle}>Scouting &amp; Research</div>
-        <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6 }}>
-          Top alliances and players per server, colored by map position
-          (<span style={{ color: "#9a6dd4" }}>Era 8</span>, <span style={{ color: "#5b8bc4" }}>#023</span>,
-          <span style={{ color: "#5aa87a" }}> #014</span>, <span style={{ color: "#d4934a" }}>#019</span>).
-          We're <strong style={{ color: "#e8eaf0" }}>SD rank {r.ours?.sdRank ?? "—"}</strong> and heavily outmatched — appease the
-          contenders and survive. Power is raw strength; M:P (merits ÷ power) flags combat activity:
-          <span style={{ color: "#3daa6d" }}> green</span> high, <span style={{ color: "#d4a843" }}>amber</span> average,
-          <span style={{ color: "#c9603f" }}> red</span> low/parked.
-        </div>
-      </div>
-
       {/* ALLIANCES */}
       <div style={S.card}>
         <div style={S.cardTitle}>Top Alliances</div>
@@ -1370,11 +1351,12 @@ function App() {
           startISO: isDate(ec.eventStart) ? ec.eventStart + "T00:00:00Z" : null,
           endISO: isDate(ec.eventEnd) ? ec.eventEnd + "T00:00:00Z" : null,
           liveLabel: "Contest Live",
+          liveDot: true,
           stages: STAGES.map(s => ({
             fromISO: s.startISO,
-            label: "Contest Live · " + (s.days.length > 1 ? "Day " + s.days[0] + "–" + s.days[s.days.length-1] : "Day " + s.days[0]) + ": " + s.label
-          })),
-          ical: { stub: true, label: "Add to Calendar" }
+            // "Main | Sub" → Sub renders white; shorthand day range next to CONTEST LIVE
+            label: "Contest Live | " + (s.days.length > 1 ? "Day " + s.days[0] + "–" + s.days[s.days.length-1] : "Day " + s.days[0])
+          }))
         });
       } else if (tries++ < 50) { setTimeout(mount, 50); }
     };
@@ -1383,7 +1365,7 @@ function App() {
 
   const TABS = [
     { id: "overview", label: "Overview" },
-    { id: "research", label: "Research" },
+    { id: "research", label: "Scouting" },
     { id: "points", label: "Points" },
     { id: "pve", label: "PvE Guide" },
     { id: "map", label: "Map & Nodes" },
@@ -1394,15 +1376,31 @@ function App() {
   return (
     <div style={S.app}>
       <div style={S.header}>
-        <div style={S.headerSub}>Age of Empires Mobile — Era 8 Command Center</div>
+        <div style={S.headerSub}>Season Finale · Four-Kingdom Land War</div>
         <h1 style={S.headerTitle}>DESOLATE DESERT</h1>
-        <div style={{ fontSize: "var(--fs-sub,12px)", color: "#64748b", marginTop: "4px" }}>
-          {EVENT_CONFIG.servers.join(" vs ")}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", justifyContent: "center", marginTop: "8px" }}>
+          {EVENT_CONFIG.servers.map((srv, i) => {
+            const disp = srv === "Era 8" ? "Era #008" : srv;
+            const c = serverColor(srv);
+            const us = srv === "Era 8";
+            return (
+              <React.Fragment key={srv}>
+                {i > 0 ? <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "18px", letterSpacing: "1px", color: "#94a3b8" }}>VS</span> : null}
+                <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: "999px", fontSize: "13px", fontWeight: 700, color: "#fff", background: "rgba(" + c.rgb + ",0.22)", border: "1px solid " + c.hex, boxShadow: us ? "0 0 8px rgba(" + c.rgb + ",0.5)" : "none" }}>{disp}{us ? " · Us" : ""}</span>
+              </React.Fragment>
+            );
+          })}
         </div>
         <div id="evtMeta"></div>
-        <div style={{ marginTop: "10px", fontSize: "13px", color: "#cbd5e1" }}>
-          <span style={{ color: "#94a3b8" }}>Aaru Palace Fight:</span>{" "}
-          <strong style={{ color: "#f472b6" }}>{state.aaruTimeSlot || "Day 7 — time TBD (winner picks)"}</strong>
+        <div style={{ marginTop: "14px", display: "flex", flexWrap: "wrap", gap: "10px 18px", alignItems: "center", justifyContent: "center" }}>
+          <button type="button" title="Calendar export coming soon" disabled style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 16px", background: "#11141f", border: "1px solid #a1573f", borderRadius: "999px", cursor: "default", opacity: 0.75 }}>
+            <span style={{ fontSize: "16px", lineHeight: 1 }}>📅</span>
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.5px", color: "#f5731f" }}>Add to Calendar</span>
+          </button>
+          <div style={{ fontSize: "13px", color: "#cbd5e1" }}>
+            <span style={{ color: "#94a3b8" }}>Aaru Palace Fight:</span>{" "}
+            <strong style={{ color: "#f472b6" }}>{state.aaruTimeSlot || "Day 7 — time TBD (winner picks)"}</strong>
+          </div>
         </div>
       </div>
 
