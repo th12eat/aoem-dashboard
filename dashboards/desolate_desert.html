@@ -59,6 +59,15 @@
         @keyframes torBadgePulse { 0%,100%{ box-shadow:0 0 0 0 rgba(250,204,21,0.5);} 50%{ box-shadow:0 0 0 6px rgba(250,204,21,0);} }
         @media (prefers-reduced-motion: reduce){ .tor-badge{ animation:none; } .tor-live-dot{ animation:none; } }
         @media (max-width: 520px){ .tor-badge{ right: 10px; bottom: 10px; padding: 5px 10px; } .tor-badge .tb-lvl{ font-size:12px; } }
+        /* Tower-live popup modal (Trial-of-Scion style) */
+        .tor-modal { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.82); }
+        .tor-modal-card { position: relative; max-width: 380px; width: 100%; background: #11141f; border: 1px solid #facc15; border-radius: 14px; padding: 26px 22px 22px; text-align: center; box-shadow: 0 0 40px rgba(250,204,21,0.2); }
+        .tor-modal-ico { font-size: 40px; line-height: 1; }
+        .tor-modal-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1.5px; color: #facc15; margin: 8px 0 14px; }
+        .tor-modal-close { position: absolute; top: 8px; right: 14px; font-size: 24px; line-height: 1; color: #64748b; cursor: pointer; font-family: sans-serif; }
+        .tor-modal-close:hover { color: #e8eaf0; }
+        .tor-modal-lvl { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: #e8eaf0; line-height: 1; }
+        .tor-modal-cd { font-variant-numeric: tabular-nums; font-size: 22px; font-weight: 700; color: #facc15; }
     </style>
 </head>
 <body data-kvk="desolate">
@@ -1231,7 +1240,42 @@ function torStatus(now) {
     if (nowMin >= w.end) return "passed";
     return "upcoming";
   });
-  return { active, live, windowIdx: liveIdx, level, states };
+  // ms remaining until the live window ends (for a countdown)
+  let msToEnd = 0;
+  if (live) msToEnd = Math.max(0, (TOR_WINDOWS[liveIdx].end - nowMin) * 60000);
+  return { active, live, windowIdx: liveIdx, level, states, msToEnd };
+}
+
+// Popup that fires once each time a Tower window goes live (edge-detected).
+function TowerLiveModal() {
+  const [now, setNow] = React.useState(() => Date.now());
+  const [open, setOpen] = React.useState(false);
+  const wasLive = React.useRef(false);
+  React.useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const st = torStatus(now);
+  React.useEffect(() => {
+    if (st.live && !wasLive.current) setOpen(true);   // just went live → pop
+    if (!st.live) setOpen(false);                     // window ended → dismiss
+    wasLive.current = st.live;
+  }, [st.live]);
+  if (!open || !st.live) return null;
+  const s = Math.floor(st.msToEnd / 1000);
+  const cd = String(Math.floor(s/3600)).padStart(2,"0") + ":" + String(Math.floor((s%3600)/60)).padStart(2,"0") + ":" + String(s%60).padStart(2,"0");
+  return (
+    <div className="tor-modal" onClick={() => setOpen(false)}>
+      <div className="tor-modal-card" onClick={e => e.stopPropagation()}>
+        <span className="tor-modal-close" onClick={() => setOpen(false)}>×</span>
+        <div className="tor-modal-ico">🗼</div>
+        <h3>Tower of Rotation is Live!</h3>
+        <div className="tor-modal-lvl">Level {st.level} / {TOR_LEVELS}</div>
+        <div style={{ fontSize: "11px", color: "#64748b", margin: "10px 0 2px", letterSpacing: "0.5px", textTransform: "uppercase" }}>Ends in</div>
+        <div className="tor-modal-cd">{cd}</div>
+      </div>
+    </div>
+  );
 }
 
 // Full awakening schedule + level tracker (lives on Overview, id anchor for header jump).
@@ -1545,6 +1589,7 @@ function App() {
 
   return (
     <div style={S.app}>
+      <TowerLiveModal />
       <div style={S.header}>
         <a href="#tower-schedule" className={"tor-badge" + (tor.live ? "" : " is-idle")}
           title={tor.live ? "Tower of Rotation is live — jump to schedule" : "Tower of Rotation — jump to schedule"}
