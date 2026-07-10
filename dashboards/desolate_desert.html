@@ -58,7 +58,17 @@
         .tor-badge .tb-lvl { font-size: 13px; }
         @keyframes torBadgePulse { 0%,100%{ box-shadow:0 0 0 0 rgba(250,204,21,0.5);} 50%{ box-shadow:0 0 0 6px rgba(250,204,21,0);} }
         @media (prefers-reduced-motion: reduce){ .tor-badge{ animation:none; } .tor-live-dot{ animation:none; } }
-        @media (max-width: 520px){ .tor-badge{ right: 10px; bottom: 10px; padding: 5px 10px; } .tor-badge .tb-lvl{ font-size:12px; } }
+        @media (max-width: 520px){ .hdr-pills{ right: 10px; bottom: 10px; } .tor-badge .tb-lvl{ font-size:12px; } }
+        /* header pill cluster (Tower badge + icon buttons), bottom-right of header */
+        .hdr-pills { position: absolute; right: 16px; bottom: 14px; z-index: 12; display: inline-flex; align-items: center; gap: 6px; }
+        .hdr-pills .tor-badge { position: static; }
+        .hdr-icobtn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; border-radius: 999px; cursor: pointer;
+            background: rgba(148,163,184,0.10); border: 1px solid #475569; color: #cbd5e1;
+            font-size: 15px; line-height: 1; text-decoration: none; transition: background .15s, border-color .15s;
+        }
+        .hdr-icobtn:hover { background: rgba(148,163,184,0.22); border-color: #7b8496; }
         /* Tower-live popup modal (Trial-of-Scion style) */
         .tor-modal { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.82); }
         .tor-modal-card { position: relative; max-width: 380px; width: 100%; background: #11141f; border: 1px solid #facc15; border-radius: 14px; padding: 26px 22px 22px; text-align: center; box-shadow: 0 0 40px rgba(250,204,21,0.2); }
@@ -85,6 +95,14 @@ let EVENT_CONFIG = {
   servers: ["Era 8", "Era #023", "Era #014", "Era #019"],
   ourServer: "Era 8",
   ourAlliances: ["WC1", "MyT", "REU", "AGC"],
+};
+
+// Per-alliance colors — reuse the TME map palette for consistency.
+const ALLIANCE_COLORS = {
+  WC1: "#3b82f6", // blue
+  REU: "#f59e0b", // amber
+  AGC: "#ef4444", // red
+  MyT: "#22c55e", // green
 };
 
 const SCHEDULE = [
@@ -414,6 +432,42 @@ function DiplomacyStatus() {
   );
 }
 
+// Map node positions (x,y as % of the image, 0–100) — filled in once we read them
+// off the coordinate grid. type: gate | city | tower. Empty until plotted.
+const MAP_NODES = {
+  // id: { x: 50, y: 50, type: "gate", label: "Gate A" },
+};
+// Connections we draw over the map: { from: nodeId, to: nodeId, owner: "WC1" }.
+// `from`/`to` may also be {x,y} literals. owner keys ALLIANCE_COLORS. Empty for now.
+const MAP_CONNECTIONS = [
+];
+
+// Minimap with an SVG overlay for alliance connection lines + node dots.
+function MapOverlay() {
+  const nodePt = (ref) => {
+    if (ref && typeof ref === "object" && "x" in ref) return ref;
+    const n = MAP_NODES[ref];
+    return n ? { x: n.x, y: n.y } : null;
+  };
+  const typeColor = { gate: "#facc15", city: "#f5731f", tower: "#a78bfa" };
+  return (
+    <div style={{ position: "relative", width: "100%", maxWidth: "520px", margin: "0 auto", lineHeight: 0 }}>
+      <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
+        style={{ width: "100%", display: "block", borderRadius: "10px", border: "1px solid #334155" }} />
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+        {MAP_CONNECTIONS.map((c, i) => {
+          const a = nodePt(c.from), b = nodePt(c.to);
+          if (!a || !b) return null;
+          return <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={ALLIANCE_COLORS[c.owner] || "#94a3b8"} strokeWidth="0.7" strokeLinecap="round" opacity="0.9" />;
+        })}
+        {Object.entries(MAP_NODES).map(([id, n]) => (
+          <circle key={id} cx={n.x} cy={n.y} r="1.1" fill={typeColor[n.type] || "#94a3b8"} stroke="#0a0c14" strokeWidth="0.3" />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
 function OverviewTab({ state, setState }) {
   const today = new Date().toISOString().split("T")[0];
   const currentDay = SCHEDULE.find(s => s.date === today) || SCHEDULE.find(s => s.date >= today) || SCHEDULE[SCHEDULE.length - 1];
@@ -423,13 +477,18 @@ function OverviewTab({ state, setState }) {
       {/* Rules of Engagement per opposing server */}
       <DiplomacyStatus />
 
-      {/* Minimap + event description */}
+      {/* The Map — minimap with per-alliance connection overlay */}
       <div style={S.card}>
-        <div style={S.cardTitle}>The Event</div>
-        <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
-          style={{ width: "100%", maxWidth: "520px", display: "block", margin: "0 auto 14px", borderRadius: "10px", border: "1px solid #334155" }} />
-        <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6 }}>
-          <strong style={{ color: "#f5731f" }}>Desolate Desert</strong> is a 7-day, four-kingdom land grab on a shared desert map. Alliances build a Stronghold and expand outward with connected flags, capturing <strong>gates/docks</strong> and <strong>Pillar Cities</strong> for Placer Gold and Desert Points. The map opens zone by zone (Waste Land → Forbidden Zone → Eternal Realm), climaxing in the <strong>Aaru Palace</strong> fight on Day 7. Most points wins — and PvE contribution (gathering, tribes, explorations, Tower damage) matters as much as PvP. This is the <strong>final event of the season</strong>.
+        <div style={S.cardTitle}>The Map</div>
+        <MapOverlay />
+        {/* Era 8 alliance color key */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "12px" }}>
+          {EVENT_CONFIG.ourAlliances.map(tag => (
+            <div key={tag} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <span style={{ width: "14px", height: "14px", borderRadius: "3px", background: ALLIANCE_COLORS[tag] || "#94a3b8", display: "inline-block" }} />
+              <span style={{ fontSize: "12px", fontWeight: 700, color: "#e8eaf0" }}>{tag}</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -440,7 +499,7 @@ function OverviewTab({ state, setState }) {
       </div>
 
       {/* Daily objectives — per player */}
-      <div style={S.card}>
+      <div id="daily-objectives" style={S.card}>
         <div style={S.cardTitle}>Daily Objectives (per player)</div>
         <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>Resets 00:00 UTC daily. Track your own progress toward each target.</div>
         <table style={S.table}>
@@ -1290,8 +1349,23 @@ function TowerSchedule() {
   const dispLevel = st.live ? st.level : 1;               // meter shows lvl 1 (greyed) when not live
   const meterPct = (dispLevel / TOR_LEVELS) * 100;
   const accent = st.live ? "#facc15" : "#475569";
+  // lifecycle: locked before Day 3 opens (00:00 UTC 2026-07-08) or after it closes
+  // for good (00:00 UTC Day 6 = 2026-07-11).
+  const todayStr = new Date(now).toISOString().slice(0,10);
+  const lock = todayStr < TOR_FIRST_DATE
+    ? "This event won't open until Day 3"
+    : (todayStr > TOR_LAST_DATE ? "This event has closed for the remainder of Desolate Desert" : null);
   return (
-    <div id="tower-schedule" style={S.card}>
+    <div id="tower-schedule" style={{ ...S.card, position: "relative" }}>
+      {lock ? (
+        <div style={{ position: "absolute", inset: 0, zIndex: 3, borderRadius: "10px", background: "rgba(10,12,20,0.72)", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "16px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+            <span style={{ fontSize: "26px", filter: "grayscale(1)", opacity: 0.7 }}>🗼🔒</span>
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.5px", color: "#94a3b8", maxWidth: "320px" }}>{lock}</span>
+          </div>
+        </div>
+      ) : null}
+      <div style={lock ? { filter: "grayscale(1)", opacity: 0.4, pointerEvents: "none" } : null}>
       <div style={{ ...S.cardTitle, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px" }}>
         <span>Tower of Rotation — Awakening Schedule</span>
         {st.live ? (
@@ -1330,6 +1404,7 @@ function TowerSchedule() {
           <ChestIcon size={18} color={st.live ? "#facc15" : "#7b8496"} />
           <span style={{ fontVariantNumeric: "tabular-nums", fontWeight: 700, fontSize: "14px", color: st.live ? "#facc15" : "#94a3b8" }}>0<span style={{ color: "#64748b", fontWeight: 500 }}>/10</span></span>
         </div>
+      </div>
       </div>
     </div>
   );
@@ -1547,6 +1622,7 @@ function App() {
 
   // ticking clock so the header Tower badge tracks the live level
   const [nowTs, setNowTs] = useState(() => Date.now());
+  const [helpOpen, setHelpOpen] = useState(false);
   useEffect(() => { const id = setInterval(() => setNowTs(Date.now()), 15000); return () => clearInterval(id); }, []);
   const tor = torStatus(nowTs);
 
@@ -1590,12 +1666,30 @@ function App() {
   return (
     <div style={S.app}>
       <TowerLiveModal />
+      {helpOpen ? (
+        <div className="tor-modal" onClick={() => setHelpOpen(false)}>
+          <div className="tor-modal-card" style={{ maxWidth: "560px", textAlign: "left", borderColor: "#f5731f" }} onClick={e => e.stopPropagation()}>
+            <span className="tor-modal-close" onClick={() => setHelpOpen(false)}>×</span>
+            <h3 style={{ color: "#f5731f", textAlign: "center" }}>What is Desolate Desert?</h3>
+            <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
+              style={{ width: "100%", maxWidth: "460px", display: "block", margin: "0 auto 14px", borderRadius: "10px", border: "1px solid #334155" }} />
+            <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6 }}>
+              <strong style={{ color: "#f5731f" }}>Desolate Desert</strong> is a 7-day, four-kingdom land grab on a shared desert map. Alliances build a Stronghold and expand outward with connected flags, capturing <strong>gates/docks</strong> and <strong>Pillar Cities</strong> for Placer Gold and Desert Points. The map opens zone by zone (Waste Land → Forbidden Zone → Eternal Realm), climaxing in the <strong>Aaru Palace</strong> fight on Day 7. Most points wins — and PvE contribution (gathering, tribes, explorations, Tower damage) matters as much as PvP. This is the <strong>final event of the season</strong>.
+            </div>
+          </div>
+        </div>
+      ) : null}
       <div style={S.header}>
-        <a href="#tower-schedule" className={"tor-badge" + (tor.live ? "" : " is-idle")}
-          title={tor.live ? "Tower of Rotation is live — jump to schedule" : "Tower of Rotation — jump to schedule"}
-          onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("tower-schedule"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>
-          <span className="tb-ico">🗼</span><span className="tb-lvl">Tower · {tor.live ? tor.level : 1}/{TOR_LEVELS}</span>
-        </a>
+        <div className="hdr-pills">
+          <a href="#tower-schedule" className={"tor-badge" + (tor.live ? "" : " is-idle")}
+            title={tor.live ? "Tower of Rotation is live — jump to schedule" : "Tower of Rotation — jump to schedule"}
+            onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("tower-schedule"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>
+            <span className="tb-ico">🗼</span><span className="tb-lvl">Tower · {tor.live ? tor.level : 1}/{TOR_LEVELS}</span>
+          </a>
+          <a href="#daily-objectives" className="hdr-icobtn" title="Jump to Daily Objectives"
+            onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("daily-objectives"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>📜</a>
+          <button type="button" className="hdr-icobtn" title="What is Desolate Desert?" onClick={() => setHelpOpen(true)}>❓</button>
+        </div>
         <div style={S.headerSub}>Season Finale · Four-Kingdom Land War</div>
         <h1 style={S.headerTitle}>DESOLATE DESERT</h1>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", justifyContent: "center", marginTop: "8px" }}>
