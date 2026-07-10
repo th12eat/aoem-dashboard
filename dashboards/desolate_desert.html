@@ -491,7 +491,7 @@ const MAP_NODES = {
 const ALLIANCE_SERVER = {
   WC1: "Era 8", REU: "Era 8", AGC: "Era 8", MyT: "Era 8",
   LOD: "Era #023", boi: "Era #023", R65: "Era #023", ILF: "Era #023",
-  X14: "Era #014", "Ȼ14": "Era #014", G14: "Era #014", L14: "Era #014",
+  X14: "Era #014", "Ȼ14": "Era #014", GnG: "Era #014", L14: "Era #014",
   XIX: "Era #019", KNY: "Era #019", PBJ: "Era #019", DXR: "Era #019",
 };
 const OUR_ALLIANCES = ["WC1", "REU", "AGC", "MyT"];
@@ -626,9 +626,11 @@ function MapOverlay({ mode = "live" }) {
           const off = routeOffset[i];
           const base = ownerColor(r.owner);
           let stroke = base, opacity = 0.95, dash = null, w = 0.8;
-          if (mode === "plan") { opacity = 0.3; dash = "1.5 1.5"; w = 0.6; }
-          else if (r.partial) { dash = "1.4 1.2"; opacity = 0.9; }             // building toward — dashed, not dimmed
-          else if (r.connected === false) { stroke = dimHex(base, 0.45); opacity = 0.6; } // disconnected — dimmed
+          // plan mode: solid owner-color lines (own toggle). live mode: partial=dashed, disconnected=dimmed.
+          if (mode !== "plan") {
+            if (r.partial) { dash = "1.4 1.2"; opacity = 0.9; }               // building toward — dashed, not dimmed
+            else if (r.connected === false) { stroke = dimHex(base, 0.45); opacity = 0.6; } // disconnected — dimmed
+          }
           return <polyline key={i} points={offsetLine(r.path, off)} fill="none" stroke={stroke} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash || undefined} opacity={opacity} />;
         })}
         {/* SSH markers on routes that have one */}
@@ -904,7 +906,7 @@ function MapTab({ state, setState }) {
           />
         </div>
         <div style={{ fontSize: "11px", color: "#94a3b8", textAlign: "center", marginTop: "8px" }}>
-          Scroll to zoom, drag to pan. Server positions: Era 8 (Purple) | Era #023 (Blue) | Era #014 (Green) | Era #019 (Orange)
+          Scroll to zoom, drag to pan. Server positions: Era #008 (Purple) | Era #023 (Green) | Era #014 (Orange) | Era #019 (Blue)
         </div>
       </div>
 
@@ -1798,9 +1800,9 @@ const playerMpCls = (pct) => pct>=65?"hi":pct>=35?"mid":"lo";
 // matched to their map positions. rgb triplets so we can tint bar/border.
 const SERVER_COLORS = {
   "Era 8":    { rgb: "154,109,212", hex: "#9a6dd4" },  // purple
-  "Era #023": { rgb: "91,139,196",  hex: "#5b8bc4" },  // blue
-  "Era #014": { rgb: "90,168,122",  hex: "#5aa87a" },  // green
-  "Era #019": { rgb: "212,147,74",  hex: "#d4934a" }   // orange
+  "Era #023": { rgb: "90,168,122",  hex: "#5aa87a" },  // green
+  "Era #014": { rgb: "212,147,74",  hex: "#d4934a" },  // orange
+  "Era #019": { rgb: "91,139,196",  hex: "#5b8bc4" }   // blue
 };
 const serverColor = (srv) => SERVER_COLORS[srv] || { rgb: "138,144,165", hex: "#8a90a5" };
 
