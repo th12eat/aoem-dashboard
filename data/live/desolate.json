@@ -847,7 +847,8 @@
     },
     "city_goose": {
       "occupant": "X14",
-      "connected": true
+      "connected": true,
+      "siege": true
     },
     "city_ram": {
       "occupant": "X14",
@@ -917,7 +918,8 @@
           "gate_windrest"
         ],
         "ssh": true,
-        "connected": true
+        "connected": true,
+        "sshSiege": true
       },
       {
         "owner": "KNY",
@@ -980,7 +982,8 @@
           "gate_primal_water"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "GnG",
@@ -1007,7 +1010,8 @@
           "gate_life"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "X14",
@@ -1079,7 +1083,8 @@
           "gate_chaos"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "PBJ",
@@ -1088,7 +1093,8 @@
           "gate_death"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "PBJ",
@@ -1107,6 +1113,24 @@
         ],
         "ssh": true,
         "connected": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "gate_life",
+          "gate_abundance"
+        ],
+        "connected": true,
+        "building": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "gate_life",
+          "city_goose"
+        ],
+        "connected": true,
+        "building": true
       }
     ],
     "planned": [

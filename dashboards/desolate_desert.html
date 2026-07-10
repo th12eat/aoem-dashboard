@@ -652,9 +652,10 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
           return <polyline key={i} className={building ? "route-building" : undefined} points={offsetLine(r.path, off)} fill="none" stroke={stroke} strokeWidth={hot ? w + 0.5 : w} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash || undefined} opacity={opacity} style={{ cursor: "pointer" }}
             onMouseEnter={(e) => hoverOn(r.owner, e)} onMouseMove={(e) => hoverOn(r.owner, e)} onMouseLeave={hoverOff} />;
         })}
-        {/* SSH markers */}
+        {/* SSH markers (diamond; pulsing red ring when under siege) */}
         {routes.map((r, i) => { if (!r.ssh) return null; const s = sshPoint(r, routeOffset[i]); if (!s) return null;
-          return <rect key={"s"+i} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={ownerColor(r.owner)} stroke="#0a0c14" strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`} opacity={dimmed(r.owner) ? 0.15 : 1} style={{ pointerEvents: "none" }}><title>Sub-Stronghold ({r.owner})</title></rect>;
+          const fade = dimmed(r.owner);
+          return <rect key={"s"+i} className={r.sshSiege && !fade ? "node-siege" : undefined} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={ownerColor(r.owner)} stroke={r.sshSiege ? "#ef4444" : "#0a0c14"} strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`} opacity={fade ? 0.15 : 1} style={{ pointerEvents: "none" }}><title>Sub-Stronghold ({r.owner}){r.sshSiege ? " · UNDER SIEGE" : ""}</title></rect>;
         })}
         {/* nodes */}
         {mode === "live" ? Object.entries(MAP_NODES).map(([id, n]) => {
@@ -682,7 +683,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
       </svg>
       {/* floating alliance tag near cursor / pinned */}
       {hl ? (
-        <div style={{ position: "absolute", left: (cursor ? cursor.x + 12 : 8), top: (cursor ? cursor.y + 12 : 8), pointerEvents: "none", background: ownerColor(hl), color: "#0a0c14", fontWeight: 800, fontSize: "12px", padding: "2px 8px", borderRadius: "6px", boxShadow: "0 1px 4px rgba(0,0,0,0.5)", whiteSpace: "nowrap", zIndex: 5 }}>{hl}{pinned ? " 📌" : ""}</div>
+        <div style={{ position: "absolute", left: (cursor ? cursor.x + 12 : 8), top: (cursor ? cursor.y + 12 : 8), pointerEvents: "none", background: ownerColor(hl), color: "#0a0c14", fontWeight: 800, fontSize: "12px", padding: "2px 8px", borderRadius: "6px", boxShadow: "0 1px 4px rgba(0,0,0,0.5)", whiteSpace: "nowrap", zIndex: 5 }}>{hl}</div>
       ) : null}
     </div>
   );
@@ -735,7 +736,7 @@ function NodeControlTable({ hl, setHl, pinned, setPinned }) {
               <tr key={tag} onClick={toggle} title="Click to pin/unpin this alliance's map highlight"
                 onMouseEnter={() => { if (!pinned) setHl(tag); }} onMouseLeave={() => { if (!pinned) setHl(null); }}
                 style={{ background: rowHot ? "rgba(" + c.rgb + ",0.28)" : "rgba(" + c.rgb + ",0.10)", cursor: "pointer", opacity: rowFade ? 0.5 : 1, boxShadow: rowHot ? "inset 0 0 0 1px " + c.hex : undefined }}>
-                <td style={{ ...S.td, fontWeight: 700, color: c.hex, whiteSpace: "nowrap" }}>{pinned && rowHot ? "📌 " : ""}{tag} <span style={{ fontSize: "10px", color: "#64748b" }}>{srv === "Era 8" ? "#008" : srv.replace("Era ","")}</span></td>
+                <td style={{ ...S.td, fontWeight: 700, color: c.hex, whiteSpace: "nowrap" }}>{tag} <span style={{ fontSize: "10px", color: "#64748b" }}>{srv === "Era 8" ? "#008" : srv.replace("Era ","")}</span></td>
                 {BUFF_DEFS.map(bd => {
                   const on = info.buffs.has(bd.key);
                   return (
