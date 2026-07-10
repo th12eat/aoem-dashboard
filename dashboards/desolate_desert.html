@@ -65,10 +65,17 @@
         .tor-badge .tb-lvl { font-size: 13px; }
         @keyframes torBadgePulse { 0%,100%{ box-shadow:0 0 0 0 rgba(250,204,21,0.5);} 50%{ box-shadow:0 0 0 6px rgba(250,204,21,0);} }
         @media (prefers-reduced-motion: reduce){ .tor-badge{ animation:none; } .tor-live-dot{ animation:none; } }
-        @media (max-width: 520px){ .hdr-pills{ right: 10px; bottom: 10px; } .tor-badge .tb-lvl{ font-size:12px; } }
         /* header pill cluster (Tower badge + icon buttons), bottom-right of header */
         .hdr-pills { position: absolute; right: 16px; bottom: 14px; z-index: 12; display: inline-flex; align-items: center; gap: 6px; }
         .hdr-pills .tor-badge { position: static; }
+        .hdr-pills-top { position: absolute; right: 16px; top: 14px; z-index: 12; display: inline-flex; align-items: center; gap: 6px; }
+        @media (max-width: 520px){
+            .hdr-pills-top{ right: 10px; top: 10px; }
+            /* stack the Tower badge below the header content so it can't overlap the
+               calendar/Aaru row; still a centered bottom badge. */
+            .hdr-pills{ position: static; right: auto; bottom: auto; justify-content: center; margin: 12px auto 0; }
+            .tor-badge .tb-lvl{ font-size:12px; }
+        }
         .hdr-icobtn {
             display: inline-flex; align-items: center; justify-content: center;
             width: 32px; height: 32px; border-radius: 999px; cursor: pointer;
@@ -104,14 +111,26 @@ let EVENT_CONFIG = {
   ourAlliances: ["WC1", "MyT", "REU", "AGC"],
 };
 
-// Per-alliance colors for our 4 (Era 8). Purple family so they read as "ours"
-// and stay distinct from opponent server hues (blue/orange/green).
-const ALLIANCE_COLORS = {
+// Per-alliance colors for our 4 (Era 8). LIVE uses a purple family (distinct from
+// opponent server hues on the shared board); PLAN uses the original TME palette
+// (no opponents on the plan map, so no clash).
+const ALLIANCE_COLORS = {        // live (purple family)
   WC1: "#a855f7", // violet
   REU: "#ec4899", // magenta
   MyT: "#f472b6", // pink
   AGC: "#c4b5fd", // lavender
 };
+const ALLIANCE_COLORS_PLAN = {   // plan (TME palette)
+  WC1: "#3b82f6", // blue
+  REU: "#f59e0b", // amber
+  AGC: "#ef4444", // red
+  MyT: "#22c55e", // green
+};
+// resolve an owner's color for a given map mode (plan uses the TME set for ours).
+function allianceColor(tag, mode) {
+  const set = (mode === "plan" && ALLIANCE_COLORS_PLAN[tag]) ? ALLIANCE_COLORS_PLAN : ALLIANCE_COLORS;
+  return set[tag];
+}
 
 const SCHEDULE = [
   { day: 1, date: "2026-07-06", title: "Map Opens", desc: "Relocate to Waste Land. Construct alliance buildings (Stronghold, flags, gathering center, supply depot).", zone: "Waste Land" },
@@ -141,11 +160,12 @@ const STAGES = [
 ];
 // stage zone colors: Z1 purple, Z2 teal, Z3 pink (placeholder palette — easy to retune).
 // `bright` = reached/current spans; `dark` = not-yet-reached spans; `label` = legend text.
-const STAGE_ZONE_COLOR = { z1: "#9b6dff", z2: "#2dd4bf", z3: "#f472b6" };
+// Zone palette matches the PvE Glossary: Z1 beige, Z2 bright purple, Z3 bright orange.
+const STAGE_ZONE_COLOR = { z1: "#d4a574", z2: "#7c3aed", z3: "#f59e0b" };
 const STAGE_ZONE = {
-  z1: { bright: "#9b6dff", dark: "#3b2a63", label: "Zone 1" },
-  z2: { bright: "#2dd4bf", dark: "#134e48", label: "Zone 2" },
-  z3: { bright: "#f472b6", dark: "#5e2545", label: "Zone 3" },
+  z1: { bright: "#d4a574", dark: "#5a4630", label: "Zone 1" },
+  z2: { bright: "#7c3aed", dark: "#3a2160", label: "Zone 2" },
+  z3: { bright: "#f59e0b", dark: "#654206", label: "Zone 3" },
 };
 
 // Rules of Engagement — per opposing server, whether we FIGHT (true) or leave alone
@@ -503,10 +523,10 @@ const ALLIANCE_SERVER = {
   XIX: "Era #019", KNY: "Era #019", PBJ: "Era #019", DXR: "Era #019",
 };
 const OUR_ALLIANCES = ["WC1", "REU", "AGC", "MyT"];
-// Owner → line/dot color. Our 4 alliances get distinct TME colors; every opponent
-// alliance uses its muted server-corner color (we don't break their alliances out).
-function ownerColor(owner) {
-  if (ALLIANCE_COLORS[owner] && ALLIANCE_SERVER[owner] === "Era 8") return ALLIANCE_COLORS[owner];
+// Owner → line/dot color. Our 4 alliances get distinct colors (per mode); every
+// opponent alliance uses its muted server-corner color (we don't break them out).
+function ownerColor(owner, mode) {
+  if (ALLIANCE_SERVER[owner] === "Era 8") return allianceColor(owner, mode);
   const srv = ALLIANCE_SERVER[owner] || owner;
   return serverColor(srv).hex;
 }
@@ -640,7 +660,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
         {/* routes: solid=connected · dimmed=disconnected · dashed=partial (building) · plan=solid */}
         {routes.map((r, i) => {
           const off = routeOffset[i];
-          const base = ownerColor(r.owner);
+          const base = ownerColor(r.owner, mode);
           let stroke = base, opacity = 0.95, dash = null, w = 0.8, building = false;
           if (mode !== "plan") {
             if (r.building) { building = true; opacity = 0.95; }               // growing toward connection (animated)
@@ -655,7 +675,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
         {/* SSH markers (diamond; pulsing red ring when under siege) */}
         {routes.map((r, i) => { if (!r.ssh) return null; const s = sshPoint(r, routeOffset[i]); if (!s) return null;
           const fade = dimmed(r.owner);
-          return <rect key={"s"+i} className={r.sshSiege && !fade ? "node-siege" : undefined} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={ownerColor(r.owner)} stroke={r.sshSiege ? "#ef4444" : "#0a0c14"} strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`} opacity={fade ? 0.15 : 1} style={{ pointerEvents: "none" }}><title>Sub-Stronghold ({r.owner}){r.sshSiege ? " · UNDER SIEGE" : ""}</title></rect>;
+          return <rect key={"s"+i} className={r.sshSiege && !fade ? "node-siege" : undefined} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={ownerColor(r.owner, mode)} stroke={r.sshSiege ? "#ef4444" : "#0a0c14"} strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`} opacity={fade ? 0.15 : 1} style={{ pointerEvents: "none" }}><title>Sub-Stronghold ({r.owner}){r.sshSiege ? " · UNDER SIEGE" : ""}</title></rect>;
         })}
         {/* nodes */}
         {mode === "live" ? Object.entries(MAP_NODES).map(([id, n]) => {
@@ -664,7 +684,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
           const occ = st.occupant;
           const connected = st.connected != null ? st.connected : true;
           let fill;
-          if (occ) fill = connected ? ownerColor(occ) : dimHex(ownerColor(occ), 0.42);
+          if (occ) fill = connected ? ownerColor(occ, mode) : dimHex(ownerColor(occ, mode), 0.42);
           else fill = active ? NEUTRAL : dimHex(NEUTRAL, 0.42);
           const status = occ ? (occ + (connected ? " · connected" : " · disconnected (no buff)")) : (active ? "unoccupied" : "inactive (not yet capturable)");
           const fade = occ ? dimmed(occ) : !!hl;             // dim unowned nodes too when a highlight is active
@@ -683,7 +703,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
       </svg>
       {/* floating alliance tag near cursor / pinned */}
       {hl ? (
-        <div style={{ position: "absolute", left: (cursor ? cursor.x + 12 : 8), top: (cursor ? cursor.y + 12 : 8), pointerEvents: "none", background: ownerColor(hl), color: "#0a0c14", fontWeight: 800, fontSize: "12px", padding: "2px 8px", borderRadius: "6px", boxShadow: "0 1px 4px rgba(0,0,0,0.5)", whiteSpace: "nowrap", zIndex: 5 }}>{hl}</div>
+        <div style={{ position: "absolute", left: (cursor ? cursor.x + 12 : 8), top: (cursor ? cursor.y + 12 : 8), pointerEvents: "none", background: ownerColor(hl, mode), color: "#fff", fontWeight: 800, fontSize: "12px", letterSpacing: "0.5px", padding: "3px 10px", borderRadius: "999px", border: "1px solid rgba(255,255,255,0.65)", textShadow: "0 1px 2px rgba(0,0,0,0.7)", boxShadow: "0 1px 5px rgba(0,0,0,0.6)", whiteSpace: "nowrap", zIndex: 5 }}>{hl}</div>
       ) : null}
     </div>
   );
@@ -786,20 +806,22 @@ function OverviewTab({ state, setState }) {
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "12px" }}>
           {EVENT_CONFIG.ourAlliances.map(tag => (
             <div key={tag} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <span style={{ width: "14px", height: "14px", borderRadius: "3px", background: ALLIANCE_COLORS[tag] || "#94a3b8", display: "inline-block" }} />
+              <span style={{ width: "14px", height: "14px", borderRadius: "3px", background: allianceColor(tag, mapMode) || "#94a3b8", display: "inline-block" }} />
               <span style={{ fontSize: "12px", fontWeight: 700, color: "#e8eaf0" }}>{tag}</span>
             </div>
           ))}
         </div>
-        {/* Opponent server color key */}
+        {/* Opponent server color key — live only (plan map has no opponents) */}
+        {mapMode === "live" ? (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "8px", paddingTop: "8px", borderTop: "1px solid #1e2435" }}>
-          {[["Era 8","#008 (us)"],["Era #019","#019"],["Era #014","#014"],["Era #023","#023"]].map(([srv,lbl]) => (
+          {[["Era #019","#019"],["Era #014","#014"],["Era #023","#023"]].map(([srv,lbl]) => (
             <div key={srv} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <span style={{ width: "14px", height: "14px", borderRadius: "3px", background: serverColor(srv).hex, display: "inline-block" }} />
               <span style={{ fontSize: "12px", fontWeight: 600, color: "#94a3b8" }}>{lbl}</span>
             </div>
           ))}
         </div>
+        ) : null}
         {/* Symbol/status key */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "8px", paddingTop: "8px", borderTop: "1px solid #1e2435", fontSize: "11px", color: "#94a3b8" }}>
           <span style={{ display: "flex", alignItems: "center", gap: "6px" }}><span style={{ width: "10px", height: "10px", background: "#94a3b8", transform: "rotate(45deg)", display: "inline-block" }} /> Sub-Stronghold</span>
@@ -1980,7 +2002,6 @@ function App() {
     { id: "research", label: "Scouting" },
     { id: "points", label: "Points" },
     { id: "pve", label: "PvE Guide" },
-    { id: "map", label: "Map & Nodes" },
   ];
 
   return (
@@ -2000,15 +2021,19 @@ function App() {
         </div>
       ) : null}
       <div style={S.header}>
+        {/* top-right: quest + help icon buttons */}
+        <div className="hdr-pills-top">
+          <a href="#daily-objectives" className="hdr-icobtn" title="Jump to Daily Objectives"
+            onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("daily-objectives"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>📜</a>
+          <button type="button" className="hdr-icobtn" title="What is Desolate Desert?" onClick={() => setHelpOpen(true)}>❓</button>
+        </div>
+        {/* bottom-right: Tower badge */}
         <div className="hdr-pills">
           <a href="#tower-schedule" className={"tor-badge" + (tor.live ? "" : " is-idle")}
             title={tor.live ? "Tower of Rotation is live — jump to schedule" : "Tower of Rotation — jump to schedule"}
             onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("tower-schedule"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>
             <span className="tb-ico">🗼</span><span className="tb-lvl">Tower · {tor.live ? tor.level : 1}/{TOR_LEVELS}</span>
           </a>
-          <a href="#daily-objectives" className="hdr-icobtn" title="Jump to Daily Objectives"
-            onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("daily-objectives"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>📜</a>
-          <button type="button" className="hdr-icobtn" title="What is Desolate Desert?" onClick={() => setHelpOpen(true)}>❓</button>
         </div>
         <div style={S.headerSub}>Season Finale · Four-Kingdom Land War</div>
         <h1 style={S.headerTitle}>DESOLATE DESERT</h1>
@@ -2058,7 +2083,6 @@ function App() {
       <div style={S.content}>
         {tab === "overview" && <OverviewTab state={state} setState={setState} />}
         {tab === "research" && <ResearchTab />}
-        {tab === "map" && <MapTab state={state} setState={setState} />}
         {tab === "pve" && <PveTab />}
         {tab === "points" && <PointsTab />}
       </div>
