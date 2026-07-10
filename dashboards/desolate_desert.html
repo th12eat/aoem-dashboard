@@ -432,10 +432,60 @@ function DiplomacyStatus() {
   );
 }
 
-// Map node positions (x,y as % of the image, 0–100) — filled in once we read them
-// off the coordinate grid. type: gate | city | tower. Empty until plotted.
+// Map node positions (x,y as % of the image, 0–100), plotted from the marked
+// minimap and named clockwise from 12 o'clock. type: gate | city | tower | aaru.
 const MAP_NODES = {
-  // id: { x: 50, y: 50, type: "gate", label: "Gate A" },
+  // outer-ring gates (clockwise)
+  kingsguard_dock: { x: 52.5, y: 19.2, type: "gate", label: "Kingsguard Dock", info: "Z1→Z2" },
+  crown_fort: { x: 60.3, y: 19.0, type: "gate", label: "Crown Fort", info: "Z1→Z2" },
+  gate_sunshine: { x: 69.7, y: 28.4, type: "gate", label: "Gate of Sunshine", info: "Z2↔Z2" },
+  gate_moonfall: { x: 64.4, y: 35.3, type: "gate", label: "Gate of Moonfall", info: "Z2↔Z2" },
+  north_wind_fort: { x: 79.8, y: 40.3, type: "gate", label: "North Wind Fort", info: "Z1→Z2" },
+  soaring_fort: { x: 79.7, y: 48.3, type: "gate", label: "Soaring Fort", info: "Z1→Z2" },
+  vengeance_fort: { x: 81.1, y: 57.7, type: "gate", label: "Vengeance Fort", info: "Z1→Z2" },
+  ruler_fort: { x: 80.5, y: 65.2, type: "gate", label: "Ruler Fort", info: "Z1→Z2" },
+  dawn_fort: { x: 61.7, y: 85.1, type: "gate", label: "Dawn Fort", info: "Z1→Z2" },
+  duskfire_dock: { x: 55.4, y: 84.5, type: "gate", label: "Duskfire Dock", info: "Z1→Z2" },
+  lightbearer_dock: { x: 45.5, y: 84.1, type: "gate", label: "Lightbearer Dock", info: "Z1→Z2" },
+  blazing_fort: { x: 38.8, y: 84.4, type: "gate", label: "Blazing Fort", info: "Z1→Z2" },
+  gate_fury: { x: 28.5, y: 73.9, type: "gate", label: "Gate of Fury", info: "Z2↔Z2" },
+  gate_grace: { x: 36.6, y: 66.2, type: "gate", label: "Gate of Grace", info: "Z2↔Z2" },
+  mourning_fort: { x: 17.8, y: 63.8, type: "gate", label: "Mourning Fort", info: "Z1→Z2" },
+  balance_fort: { x: 17.3, y: 52.4, type: "gate", label: "Balance Fort", info: "Z1→Z2" },
+  immortality_fort: { x: 17.7, y: 46.0, type: "gate", label: "Immortality Fort", info: "Z1→Z2" },
+  judgement_fort: { x: 17.7, y: 37.0, type: "gate", label: "Judgement Fort", info: "Z1→Z2" },
+  jade_eye_fort: { x: 35.9, y: 17.6, type: "gate", label: "Jade Eye Fort", info: "Z1→Z2" },
+  majesty_dock: { x: 42.9, y: 18.4, type: "gate", label: "Majesty Dock", info: "Z1→Z2" },
+  // inner-ring gates around Aaru (Z2→Z3)
+  gate_death: { x: 52.7, y: 38.2, type: "gate", label: "Gate of Death", info: "Z2→Z3" },
+  gate_windrest: { x: 62.6, y: 47.4, type: "gate", label: "Gate of Windrest", info: "Z2→Z3" },
+  gate_dawn_earth: { x: 61.1, y: 56.3, type: "gate", label: "Gate of Dawn Earth", info: "Z2→Z3" },
+  gate_azure_sky: { x: 55.2, y: 63.3, type: "gate", label: "Gate of Azure Sky", info: "Z2→Z3" },
+  gate_primal_water: { x: 46.7, y: 64.2, type: "gate", label: "Gate of Primal Water", info: "Z2→Z3" },
+  gate_life: { x: 36.0, y: 53.7, type: "gate", label: "Gate of Life", info: "Z2→Z3" },
+  gate_abundance: { x: 36.9, y: 44.9, type: "gate", label: "Gate of Abundance", info: "Z2→Z3" },
+  gate_chaos: { x: 44.0, y: 39.1, type: "gate", label: "Gate of Chaos", info: "Z2→Z3" },
+  // pillar cities
+  city_ibis: { x: 57.7, y: 29.1, type: "city", label: "City of Ibis", info: "Defense +10%" },
+  city_hippo: { x: 71.7, y: 44.0, type: "city", label: "City of Hippo", info: "Defense +10%" },
+  city_crocodile: { x: 70.1, y: 58.3, type: "city", label: "City of Crocodile", info: "Attack +10%" },
+  city_bull: { x: 72.3, y: 68.6, type: "city", label: "City of Bull", info: "Health +5%" },
+  city_lion: { x: 64.9, y: 74.7, type: "city", label: "City of Lion", info: "Health +5%" },
+  city_cat: { x: 56.0, y: 74.7, type: "city", label: "City of Cat", info: "Attack +10%" },
+  city_scorpion: { x: 42.9, y: 73.8, type: "city", label: "City of Scorpion", info: "Defense +10%" },
+  city_vulture: { x: 27.1, y: 58.1, type: "city", label: "City of Vulture", info: "Defense +10%" },
+  city_goose: { x: 28.9, y: 44.5, type: "city", label: "City of Goose", info: "Attack +10%" },
+  city_ram: { x: 27.3, y: 35.3, type: "city", label: "City of Ram", info: "Health +5%" },
+  city_leopard: { x: 34.6, y: 27.8, type: "city", label: "City of Leopard", info: "Health +5%" },
+  city_jackal: { x: 42.9, y: 29.7, type: "city", label: "City of Jackal", info: "Attack +10%" },
+  // towers of rotation
+  tower_1: { x: 70.3, y: 53.1, type: "tower", label: "Tower of Rotation", info: "Dmg Reduction +5%" },
+  tower_2: { x: 66.2, y: 69.1, type: "tower", label: "Tower of Rotation", info: "Dmg Reduction +5%" },
+  tower_3: { x: 51.2, y: 72.6, type: "tower", label: "Tower of Rotation", info: "Damage +6%" },
+  tower_4: { x: 28.8, y: 50.8, type: "tower", label: "Tower of Rotation", info: "Dmg Reduction +5%" },
+  tower_5: { x: 32.6, y: 33.2, type: "tower", label: "Tower of Rotation", info: "Dmg Reduction +5%" },
+  tower_6: { x: 48.5, y: 30.0, type: "tower", label: "Tower of Rotation", info: "Damage +6%" },
+  aaru: { x: 49.8, y: 49.9, type: "aaru", label: "Aaru Palace", info: "" },
 };
 // Connections we draw over the map: { from: nodeId, to: nodeId, owner: "WC1" }.
 // `from`/`to` may also be {x,y} literals. owner keys ALLIANCE_COLORS. Empty for now.
@@ -449,7 +499,7 @@ function MapOverlay() {
     const n = MAP_NODES[ref];
     return n ? { x: n.x, y: n.y } : null;
   };
-  const typeColor = { gate: "#facc15", city: "#f5731f", tower: "#a78bfa" };
+  const typeColor = { gate: "#ef4444", city: "#22c55e", tower: "#3b82f6", aaru: "#facc15" };
   return (
     <div style={{ position: "relative", width: "100%", maxWidth: "520px", margin: "0 auto", lineHeight: 0 }}>
       <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
@@ -461,7 +511,9 @@ function MapOverlay() {
           return <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={ALLIANCE_COLORS[c.owner] || "#94a3b8"} strokeWidth="0.7" strokeLinecap="round" opacity="0.9" />;
         })}
         {Object.entries(MAP_NODES).map(([id, n]) => (
-          <circle key={id} cx={n.x} cy={n.y} r="1.1" fill={typeColor[n.type] || "#94a3b8"} stroke="#0a0c14" strokeWidth="0.3" />
+          <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={typeColor[n.type] || "#facc15"} stroke="#0a0c14" strokeWidth="0.3">
+            <title>{n.label}{n.info ? " — " + n.info : ""}</title>
+          </circle>
         ))}
       </svg>
     </div>
