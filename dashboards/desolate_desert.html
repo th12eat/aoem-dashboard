@@ -568,44 +568,75 @@ function allianceFromMap(tag) {
   return { perHour, buffs, pillars, gates, towers };
 }
 
-// Minimap with an SVG overlay for alliance connection lines + node dots.
-function MapOverlay() {
+// Minimap + SVG overlay. mode: "live" (actual state) or "plan" (original plan).
+function MapOverlay({ mode = "live" }) {
   const [now, setNow] = React.useState(() => Date.now());
   React.useEffect(() => { const id = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(id); }, []);
   const pt = (id) => { const n = MAP_NODES[id]; return n ? { x: n.x, y: n.y } : null; };
-  const line = (path) => path.map(id => pt(id)).filter(Boolean).map(p => p.x + "," + p.y).join(" ");
-  // SSH marker position on a route: explicit sshAt index, else the path midpoint.
-  const sshPoint = (r) => {
-    const pts = r.path.map(id => pt(id)).filter(Boolean);
-    if (!pts.length) return null;
-    if (typeof r.sshAt === "number" && r.path[r.sshAt]) {
-      const a = pt(r.path[r.sshAt]); const b = pt(r.path[Math.min(r.sshAt+1, r.path.length-1)]);
-      return b ? { x: (a.x+b.x)/2, y: (a.y+b.y)/2 } : a;
-    }
-    return pts[Math.floor((pts.length-1)/2)];
-  };
   const NEUTRAL = "#d9dde6";
+  const routes = (mode === "plan" ? MAP_ROUTES.planned : MAP_ROUTES.actual) || [];
+
+  // Parallel-offset: routes sharing an undirected edge fan out so they don't overlap.
+  // Assign each route a slot per edge; offset the whole route by its max slot.
+  const edgeKey = (a, b) => a < b ? a + "|" + b : b + "|" + a;
+  const edgeSlots = {};           // edgeKey -> [routeIdx,...]
+  routes.forEach((r, ri) => {
+    for (let k = 0; k < r.path.length - 1; k++) {
+      const ek = edgeKey(r.path[k], r.path[k+1]);
+      (edgeSlots[ek] = edgeSlots[ek] || []).push(ri);
+    }
+  });
+  // per-route offset index = its position among routes sharing its busiest edge
+  const routeOffset = routes.map((r, ri) => {
+    let slot = 0, total = 1;
+    for (let k = 0; k < r.path.length - 1; k++) {
+      const arr = edgeSlots[edgeKey(r.path[k], r.path[k+1])];
+      if (arr && arr.length > total) { total = arr.length; slot = arr.indexOf(ri); }
+    }
+    return (slot - (total - 1) / 2) * 0.9;   // centered spread, ~0.9% units apart
+  });
+  // build an offset polyline: shift each segment perpendicular by `off`
+  const offsetLine = (path, off) => {
+    const p = path.map(pt).filter(Boolean);
+    if (p.length < 2 || !off) return p.map(q => q.x + "," + q.y).join(" ");
+    return p.map((q, i) => {
+      const a = p[Math.max(0, i-1)], b = p[Math.min(p.length-1, i+1)];
+      let dx = b.x - a.x, dy = b.y - a.y; const len = Math.hypot(dx, dy) || 1;
+      const nx = -dy/len, ny = dx/len;    // unit normal
+      return (q.x + nx*off) + "," + (q.y + ny*off);
+    }).join(" ");
+  };
+  const sshPoint = (r, off) => {
+    const p = r.path.map(pt).filter(Boolean); if (!p.length) return null;
+    let a, b;
+    if (typeof r.sshAt === "number" && p[r.sshAt]) { a = p[r.sshAt]; b = p[Math.min(r.sshAt+1, p.length-1)]; }
+    else { const m = Math.floor((p.length-1)/2); a = p[m]; b = p[Math.min(m+1, p.length-1)]; }
+    let cx = (a.x+b.x)/2, cy = (a.y+b.y)/2;
+    if (off) { let dx=b.x-a.x, dy=b.y-a.y; const l=Math.hypot(dx,dy)||1; cx += (-dy/l)*off; cy += (dx/l)*off; }
+    return { x: cx, y: cy };
+  };
+
   return (
     <div style={{ position: "relative", width: "100%", maxWidth: "520px", margin: "0 auto", lineHeight: 0 }}>
       <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
         style={{ width: "100%", display: "block", borderRadius: "10px", border: "1px solid #334155" }} />
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
-        {/* planned routes — faint dashed intent; disconnected = dimmer still */}
-        {MAP_ROUTES.planned.map((r, i) => (
-          <polyline key={"p"+i} points={line(r.path)} fill="none" stroke={ownerColor(r.owner)} strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="1.5 1.5" opacity="0.28" />
-        ))}
-        {/* actual routes — solid reality; connected full, disconnected dimmed */}
-        {MAP_ROUTES.actual.map((r, i) => {
-          const col = r.connected === false ? dimHex(ownerColor(r.owner), 0.45) : ownerColor(r.owner);
-          return <polyline key={"a"+i} points={line(r.path)} fill="none" stroke={col} strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" opacity={r.connected === false ? 0.6 : 0.95} />;
+        {/* routes: solid=connected · dimmed=disconnected · dashed=partial (building) · plan=faint dashed */}
+        {routes.map((r, i) => {
+          const off = routeOffset[i];
+          const base = ownerColor(r.owner);
+          let stroke = base, opacity = 0.95, dash = null, w = 0.8;
+          if (mode === "plan") { opacity = 0.3; dash = "1.5 1.5"; w = 0.6; }
+          else if (r.partial) { dash = "1.4 1.2"; opacity = 0.9; }             // building toward — dashed, not dimmed
+          else if (r.connected === false) { stroke = dimHex(base, 0.45); opacity = 0.6; } // disconnected — dimmed
+          return <polyline key={i} points={offsetLine(r.path, off)} fill="none" stroke={stroke} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash || undefined} opacity={opacity} />;
         })}
-        {/* SSH markers (small diamonds) on any route that has one */}
-        {[...MAP_ROUTES.planned, ...MAP_ROUTES.actual].filter(r => r.ssh).map((r, i) => {
-          const s = sshPoint(r); if (!s) return null;
+        {/* SSH markers on routes that have one */}
+        {routes.map((r, i) => { if (!r.ssh) return null; const s = sshPoint(r, routeOffset[i]); if (!s) return null;
           return <rect key={"s"+i} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={ownerColor(r.owner)} stroke="#0a0c14" strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`}><title>Sub-Stronghold ({r.owner})</title></rect>;
         })}
-        {/* nodes — 4 display states */}
-        {Object.entries(MAP_NODES).map(([id, n]) => {
+        {/* nodes — only shown in live mode (plan mode is about intended lines) */}
+        {mode === "live" ? Object.entries(MAP_NODES).map(([id, n]) => {
           const st = MAP_STATE[id] || {};
           const active = st.active != null ? st.active : nodeActiveDefault(n, now);
           const occ = st.occupant;
@@ -619,7 +650,9 @@ function MapOverlay() {
               <title>{n.label}{n.info ? " — " + n.info : ""} · {status}</title>
             </circle>
           );
-        })}
+        }) : Object.entries(MAP_NODES).map(([id, n]) => (
+          <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={NEUTRAL} stroke="#0a0c14" strokeWidth="0.3" opacity="0.55"><title>{n.label}</title></circle>
+        ))}
       </svg>
     </div>
   );
@@ -664,7 +697,7 @@ function NodeControlTable() {
             const grpRgb = { pillar: "245,115,31", tower: "124,58,237" };
             return (
               <tr key={tag} style={{ background: "rgba(" + c.rgb + ",0.10)" }}>
-                <td style={{ ...S.td, fontWeight: 700, color: c.hex, whiteSpace: "nowrap" }}>{tag} <span style={{ fontSize: "10px", color: "#64748b" }}>{srv.replace("Era ","")}</span></td>
+                <td style={{ ...S.td, fontWeight: 700, color: c.hex, whiteSpace: "nowrap" }}>{tag} <span style={{ fontSize: "10px", color: "#64748b" }}>{srv === "Era 8" ? "#008" : srv.replace("Era ","")}</span></td>
                 {BUFF_DEFS.map(bd => {
                   const on = info.buffs.has(bd.key);
                   return (
@@ -690,6 +723,7 @@ function OverviewTab({ state, setState }) {
   const today = new Date().toISOString().split("T")[0];
   const currentDay = SCHEDULE.find(s => s.date === today) || SCHEDULE.find(s => s.date >= today) || SCHEDULE[SCHEDULE.length - 1];
   const [mapTblOpen, setMapTblOpen] = React.useState(false);
+  const [mapMode, setMapMode] = React.useState("live");
 
   return (
     <div>
@@ -698,8 +732,15 @@ function OverviewTab({ state, setState }) {
 
       {/* The Map — minimap with per-alliance connection overlay */}
       <div style={S.card}>
-        <div style={S.cardTitle}>The Map</div>
-        <MapOverlay />
+        <div style={{ ...S.cardTitle, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px", marginBottom: "12px" }}>
+          <span>The Map</span>
+          <div style={{ display: "inline-flex", border: "1px solid #334155", borderRadius: "999px", overflow: "hidden" }}>
+            {["live","plan"].map(m => (
+              <button key={m} onClick={() => setMapMode(m)} style={{ border: "none", cursor: "pointer", padding: "4px 12px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", fontFamily: "'Barlow Condensed', sans-serif", background: mapMode === m ? "#f5731f" : "transparent", color: mapMode === m ? "#0a0c14" : "#94a3b8" }}>{m === "live" ? "Live" : "Plan"}</button>
+            ))}
+          </div>
+        </div>
+        <MapOverlay mode={mapMode} />
         {/* Era 8 alliance color key */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "12px" }}>
           {EVENT_CONFIG.ourAlliances.map(tag => (

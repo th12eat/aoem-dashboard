@@ -735,5 +735,458 @@
     "REU": [],
     "MyT": [],
     "AGC": []
+  },
+  "mapState": {
+    "north_wind_fort": {
+      "occupant": "AGC",
+      "connected": true
+    },
+    "soaring_fort": {
+      "occupant": "MyT",
+      "connected": true
+    },
+    "vengeance_fort": {
+      "occupant": "REU",
+      "connected": true
+    },
+    "ruler_fort": {
+      "occupant": "WC1",
+      "connected": true
+    },
+    "gate_moonfall": {
+      "occupant": "KNY",
+      "connected": false
+    },
+    "gate_sunshine": {
+      "occupant": "PBJ",
+      "connected": false
+    },
+    "city_hippo": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "tower_1": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "city_crocodile": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "city_bull": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "tower_2": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "city_lion": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "city_cat": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "tower_3": {
+      "occupant": "GnG",
+      "connected": false
+    },
+    "dawn_fort": {
+      "occupant": "LOD",
+      "connected": false
+    },
+    "duskfire_dock": {
+      "occupant": "boi",
+      "connected": true
+    },
+    "lightbearer_dock": {
+      "occupant": "LOD",
+      "connected": true
+    },
+    "blazing_fort": {
+      "occupant": "LOD",
+      "connected": false
+    },
+    "city_scorpion": {
+      "occupant": "GnG",
+      "connected": false
+    },
+    "gate_grace": {
+      "occupant": "GnG",
+      "connected": true
+    },
+    "gate_fury": {
+      "occupant": "X14",
+      "connected": false
+    },
+    "mourning_fort": {
+      "occupant": "X14",
+      "connected": false
+    },
+    "balance_fort": {
+      "occupant": "GnG",
+      "connected": true
+    },
+    "immortality_fort": {
+      "occupant": "Ȼ14",
+      "connected": true
+    },
+    "judgement_fort": {
+      "occupant": "X14",
+      "connected": true
+    },
+    "city_vulture": {
+      "occupant": "Ȼ14",
+      "connected": true
+    },
+    "tower_4": {
+      "occupant": "Ȼ14",
+      "connected": true
+    },
+    "city_goose": {
+      "occupant": "X14",
+      "connected": true
+    },
+    "city_ram": {
+      "occupant": "X14",
+      "connected": true
+    },
+    "tower_5": {
+      "occupant": "XIX",
+      "connected": true
+    },
+    "city_leopard": {
+      "occupant": "XIX",
+      "connected": true
+    },
+    "jade_eye_fort": {
+      "occupant": "XIX",
+      "connected": true
+    },
+    "city_jackal": {
+      "occupant": "XIX",
+      "connected": false
+    },
+    "majesty_dock": {
+      "occupant": "DXR",
+      "connected": true
+    },
+    "tower_6": {
+      "occupant": "DXR",
+      "connected": true
+    },
+    "city_ibis": {
+      "occupant": "PBJ",
+      "connected": true
+    },
+    "kingsguard_dock": {
+      "occupant": "XIX",
+      "connected": false
+    },
+    "crown_fort": {
+      "occupant": "PBJ",
+      "connected": true
+    }
+  },
+  "mapRoutes": {
+    "actual": [
+      {
+        "owner": "KNY",
+        "path": [
+          "city_hippo",
+          "tower_1"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "tower_1",
+          "gate_windrest"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "MyT",
+        "path": [
+          "tower_1",
+          "gate_windrest"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "tower_1",
+          "city_crocodile"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "city_crocodile",
+          "city_bull"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "tower_2",
+          "city_lion"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "LOD",
+        "path": [
+          "tower_2",
+          "gate_azure_sky"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "city_lion",
+          "city_cat"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "city_cat",
+          "tower_3"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "GnG",
+        "path": [
+          "city_scorpion",
+          "gate_primal_water"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "GnG",
+        "path": [
+          "gate_grace",
+          "city_scorpion"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "Ȼ14",
+        "path": [
+          "city_vulture",
+          "tower_4"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "Ȼ14",
+        "path": [
+          "tower_4",
+          "gate_life"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "X14",
+        "path": [
+          "judgement_fort",
+          "city_goose"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "city_goose",
+          "gate_life"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "X14",
+        "path": [
+          "judgement_fort",
+          "city_ram"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "tower_5",
+          "city_leopard"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "city_leopard",
+          "jade_eye_fort"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "DXR",
+        "path": [
+          "majesty_dock",
+          "city_jackal"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "DXR",
+        "path": [
+          "majesty_dock",
+          "tower_6"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "DXR",
+        "path": [
+          "city_jackal",
+          "gate_chaos"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "PBJ",
+        "path": [
+          "tower_6",
+          "gate_death"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "PBJ",
+        "path": [
+          "tower_6",
+          "city_ibis"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "PBJ",
+        "path": [
+          "city_ibis",
+          "gate_sunshine"
+        ],
+        "ssh": true,
+        "connected": true
+      }
+    ],
+    "planned": [
+      {
+        "owner": "WC1",
+        "path": [
+          "north_wind_fort",
+          "gate_sunshine"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "ruler_fort",
+          "city_bull",
+          "tower_2"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "city_bull",
+          "city_crocodile",
+          "gate_dawn_earth"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "AGC",
+        "path": [
+          "ruler_fort",
+          "city_bull",
+          "tower_2"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "vengeance_fort",
+          "tower_1",
+          "city_crocodile"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "MyT",
+        "path": [
+          "soaring_fort",
+          "city_hippo",
+          "tower_1"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "MyT",
+        "path": [
+          "city_hippo",
+          "gate_windrest"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "MyT",
+        "path": [
+          "city_hippo",
+          "gate_moonfall"
+        ],
+        "ssh": false,
+        "connected": true
+      }
+    ]
   }
 }
