@@ -97,12 +97,13 @@ let EVENT_CONFIG = {
   ourAlliances: ["WC1", "MyT", "REU", "AGC"],
 };
 
-// Per-alliance colors — reuse the TME map palette for consistency.
+// Per-alliance colors for our 4 (Era 8). Purple family so they read as "ours"
+// and stay distinct from opponent server hues (blue/orange/green).
 const ALLIANCE_COLORS = {
-  WC1: "#3b82f6", // blue
-  REU: "#f59e0b", // amber
-  AGC: "#ef4444", // red
-  MyT: "#22c55e", // green
+  WC1: "#a855f7", // violet
+  REU: "#ec4899", // magenta
+  MyT: "#f472b6", // pink
+  AGC: "#c4b5fd", // lavender
 };
 
 const SCHEDULE = [
@@ -569,9 +570,15 @@ function allianceFromMap(tag) {
 }
 
 // Minimap + SVG overlay. mode: "live" (actual state) or "plan" (original plan).
-function MapOverlay({ mode = "live" }) {
+// hl/setHl: highlighted alliance tag (shared with the Node Control table).
+function MapOverlay({ mode = "live", hl, setHl, pinned }) {
   const [now, setNow] = React.useState(() => Date.now());
+  const [cursor, setCursor] = React.useState(null); // {x,y} px within wrapper, for the tag tooltip
+  const wrapRef = React.useRef(null);
   React.useEffect(() => { const id = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(id); }, []);
+  const hoverOn = (tag, e) => { if (!pinned) setHl(tag); if (e && wrapRef.current) { const r = wrapRef.current.getBoundingClientRect(); setCursor({ x: e.clientX - r.left, y: e.clientY - r.top, tag }); } };
+  const hoverOff = () => { if (!pinned) setHl(null); setCursor(null); };
+  const dimmed = (owner) => hl && owner !== hl;   // when a highlight is active, everything else fades
   const pt = (id) => { const n = MAP_NODES[id]; return n ? { x: n.x, y: n.y } : null; };
   const NEUTRAL = "#d9dde6";
   const routes = (mode === "plan" ? MAP_ROUTES.planned : MAP_ROUTES.actual) || [];
@@ -617,27 +624,29 @@ function MapOverlay({ mode = "live" }) {
   };
 
   return (
-    <div style={{ position: "relative", width: "100%", maxWidth: "520px", margin: "0 auto", lineHeight: 0 }}>
+    <div ref={wrapRef} style={{ position: "relative", width: "100%", maxWidth: "520px", margin: "0 auto", lineHeight: 0 }}>
       <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
         style={{ width: "100%", display: "block", borderRadius: "10px", border: "1px solid #334155" }} />
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
-        {/* routes: solid=connected · dimmed=disconnected · dashed=partial (building) · plan=faint dashed */}
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+        {/* routes: solid=connected · dimmed=disconnected · dashed=partial (building) · plan=solid */}
         {routes.map((r, i) => {
           const off = routeOffset[i];
           const base = ownerColor(r.owner);
           let stroke = base, opacity = 0.95, dash = null, w = 0.8;
-          // plan mode: solid owner-color lines (own toggle). live mode: partial=dashed, disconnected=dimmed.
           if (mode !== "plan") {
-            if (r.partial) { dash = "1.4 1.2"; opacity = 0.9; }               // building toward — dashed, not dimmed
-            else if (r.connected === false) { stroke = dimHex(base, 0.45); opacity = 0.6; } // disconnected — dimmed
+            if (r.partial) { dash = "1.4 1.2"; opacity = 0.9; }
+            else if (r.connected === false) { stroke = dimHex(base, 0.45); opacity = 0.6; }
           }
-          return <polyline key={i} points={offsetLine(r.path, off)} fill="none" stroke={stroke} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash || undefined} opacity={opacity} />;
+          if (dimmed(r.owner)) opacity *= 0.15;              // fade non-highlighted
+          const hot = hl && r.owner === hl;
+          return <polyline key={i} points={offsetLine(r.path, off)} fill="none" stroke={stroke} strokeWidth={hot ? w + 0.5 : w} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash || undefined} opacity={opacity} style={{ cursor: "pointer" }}
+            onMouseEnter={(e) => hoverOn(r.owner, e)} onMouseMove={(e) => hoverOn(r.owner, e)} onMouseLeave={hoverOff} />;
         })}
-        {/* SSH markers on routes that have one */}
+        {/* SSH markers */}
         {routes.map((r, i) => { if (!r.ssh) return null; const s = sshPoint(r, routeOffset[i]); if (!s) return null;
-          return <rect key={"s"+i} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={ownerColor(r.owner)} stroke="#0a0c14" strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`}><title>Sub-Stronghold ({r.owner})</title></rect>;
+          return <rect key={"s"+i} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={ownerColor(r.owner)} stroke="#0a0c14" strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`} opacity={dimmed(r.owner) ? 0.15 : 1} style={{ pointerEvents: "none" }}><title>Sub-Stronghold ({r.owner})</title></rect>;
         })}
-        {/* nodes — only shown in live mode (plan mode is about intended lines) */}
+        {/* nodes */}
         {mode === "live" ? Object.entries(MAP_NODES).map(([id, n]) => {
           const st = MAP_STATE[id] || {};
           const active = st.active != null ? st.active : nodeActiveDefault(n, now);
@@ -647,15 +656,23 @@ function MapOverlay({ mode = "live" }) {
           if (occ) fill = connected ? ownerColor(occ) : dimHex(ownerColor(occ), 0.42);
           else fill = active ? NEUTRAL : dimHex(NEUTRAL, 0.42);
           const status = occ ? (occ + (connected ? " · connected" : " · disconnected (no buff)")) : (active ? "unoccupied" : "inactive (not yet capturable)");
+          const fade = occ ? dimmed(occ) : !!hl;             // dim unowned nodes too when a highlight is active
+          const hot = hl && occ === hl;
           return (
-            <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={fill} stroke="#0a0c14" strokeWidth="0.3">
+            <circle key={id} cx={n.x} cy={n.y} r={(n.type === "aaru" ? 1.6 : 1.0) * (hot ? 1.5 : 1)} fill={fill} stroke={hot ? "#fff" : "#0a0c14"} strokeWidth={hot ? 0.5 : 0.3} opacity={fade ? 0.18 : 1}
+              style={{ cursor: occ ? "pointer" : "default" }}
+              onMouseEnter={occ ? (e) => hoverOn(occ, e) : undefined} onMouseMove={occ ? (e) => hoverOn(occ, e) : undefined} onMouseLeave={occ ? hoverOff : undefined}>
               <title>{n.label}{n.info ? " — " + n.info : ""} · {status}</title>
             </circle>
           );
         }) : Object.entries(MAP_NODES).map(([id, n]) => (
-          <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={NEUTRAL} stroke="#0a0c14" strokeWidth="0.3" opacity="0.55"><title>{n.label}</title></circle>
+          <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={NEUTRAL} stroke="#0a0c14" strokeWidth="0.3" opacity="0.55" style={{ pointerEvents: "none" }}><title>{n.label}</title></circle>
         ))}
       </svg>
+      {/* floating alliance tag near cursor / pinned */}
+      {hl ? (
+        <div style={{ position: "absolute", left: (cursor ? cursor.x + 12 : 8), top: (cursor ? cursor.y + 12 : 8), pointerEvents: "none", background: ownerColor(hl), color: "#0a0c14", fontWeight: 800, fontSize: "12px", padding: "2px 8px", borderRadius: "6px", boxShadow: "0 1px 4px rgba(0,0,0,0.5)", whiteSpace: "nowrap", zIndex: 5 }}>{hl}{pinned ? " 📌" : ""}</div>
+      ) : null}
     </div>
   );
 }
@@ -663,7 +680,7 @@ function MapOverlay({ mode = "live" }) {
 // All-16-alliance buff + placer/h table, derived live from MAP_STATE. Rows tinted
 // by server (Scouting-table style); buff cells light up when the alliance holds
 // a connected node granting that buff. Behemoth-blessings highlighting.
-function NodeControlTable() {
+function NodeControlTable({ hl, setHl, pinned, setPinned }) {
   const BUFF_DEFS = [
     { key: "health", short: "Health", grp: "pillar" },
     { key: "attack", short: "Attack", grp: "pillar" },
@@ -697,9 +714,17 @@ function NodeControlTable() {
             const srv = ALLIANCE_SERVER[tag]; const c = serverColor(srv);
             const grpColor = { pillar: "#f5731f", tower: "#7c3aed" };
             const grpRgb = { pillar: "245,115,31", tower: "124,58,237" };
+            const rowHot = hl === tag;
+            const rowFade = hl && hl !== tag;
+            const toggle = () => {
+              if (pinned && hl === tag) { setPinned(false); setHl(null); }   // click active pin → off
+              else { setPinned(true); setHl(tag); }                          // pin this alliance
+            };
             return (
-              <tr key={tag} style={{ background: "rgba(" + c.rgb + ",0.10)" }}>
-                <td style={{ ...S.td, fontWeight: 700, color: c.hex, whiteSpace: "nowrap" }}>{tag} <span style={{ fontSize: "10px", color: "#64748b" }}>{srv === "Era 8" ? "#008" : srv.replace("Era ","")}</span></td>
+              <tr key={tag} onClick={toggle} title="Click to pin/unpin this alliance's map highlight"
+                onMouseEnter={() => { if (!pinned) setHl(tag); }} onMouseLeave={() => { if (!pinned) setHl(null); }}
+                style={{ background: rowHot ? "rgba(" + c.rgb + ",0.28)" : "rgba(" + c.rgb + ",0.10)", cursor: "pointer", opacity: rowFade ? 0.5 : 1, boxShadow: rowHot ? "inset 0 0 0 1px " + c.hex : undefined }}>
+                <td style={{ ...S.td, fontWeight: 700, color: c.hex, whiteSpace: "nowrap" }}>{pinned && rowHot ? "📌 " : ""}{tag} <span style={{ fontSize: "10px", color: "#64748b" }}>{srv === "Era 8" ? "#008" : srv.replace("Era ","")}</span></td>
                 {BUFF_DEFS.map(bd => {
                   const on = info.buffs.has(bd.key);
                   return (
@@ -726,6 +751,8 @@ function OverviewTab({ state, setState }) {
   const currentDay = SCHEDULE.find(s => s.date === today) || SCHEDULE.find(s => s.date >= today) || SCHEDULE[SCHEDULE.length - 1];
   const [mapTblOpen, setMapTblOpen] = React.useState(false);
   const [mapMode, setMapMode] = React.useState("live");
+  const [hl, setHl] = React.useState(null);         // highlighted alliance tag
+  const [pinned, setPinned] = React.useState(false); // pinned via table click
 
   return (
     <div>
@@ -742,13 +769,22 @@ function OverviewTab({ state, setState }) {
             ))}
           </div>
         </div>
-        <MapOverlay mode={mapMode} />
+        <MapOverlay mode={mapMode} hl={hl} setHl={setHl} pinned={pinned} />
         {/* Era 8 alliance color key */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "12px" }}>
           {EVENT_CONFIG.ourAlliances.map(tag => (
             <div key={tag} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <span style={{ width: "14px", height: "14px", borderRadius: "3px", background: ALLIANCE_COLORS[tag] || "#94a3b8", display: "inline-block" }} />
               <span style={{ fontSize: "12px", fontWeight: 700, color: "#e8eaf0" }}>{tag}</span>
+            </div>
+          ))}
+        </div>
+        {/* Opponent server color key */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "8px", paddingTop: "8px", borderTop: "1px solid #1e2435" }}>
+          {[["Era 8","#008 (us)"],["Era #019","#019"],["Era #014","#014"],["Era #023","#023"]].map(([srv,lbl]) => (
+            <div key={srv} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <span style={{ width: "14px", height: "14px", borderRadius: "3px", background: serverColor(srv).hex, display: "inline-block" }} />
+              <span style={{ fontSize: "12px", fontWeight: 600, color: "#94a3b8" }}>{lbl}</span>
             </div>
           ))}
         </div>
@@ -760,7 +796,7 @@ function OverviewTab({ state, setState }) {
           <span>Node Control — Buffs &amp; Placer Gold (all alliances)</span>
           <span style={{ fontSize: "16px", color: "#94a3b8", transform: mapTblOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }}>▾</span>
         </div>
-        {mapTblOpen ? <NodeControlTable /> : null}
+        {mapTblOpen ? <NodeControlTable hl={hl} setHl={setHl} pinned={pinned} setPinned={setPinned} /> : null}
       </div>
 
       {/* Event Status — condensed horizontal schedule only */}
