@@ -127,7 +127,7 @@ const ZONES = [
 const STAGES = [
   { key: "d1", label: "Strongholds in Z1",              days: [1],       startISO: "2026-07-06T00:00:00Z", zone: "z1" },
   { key: "d2", label: "Z2 Gates Open & Pillar Cities",  days: [2],       startISO: "2026-07-07T00:00:00Z", zone: "z2" },
-  { key: "d345", label: "Tower of Rotation & L/R Eye Gates Open", days: [3,4,5], startISO: "2026-07-08T00:00:00Z", zone: "z2" },
+  { key: "d345", label: "L/R Eye Gates Open & Tower of Rotation", days: [3,4,5], startISO: "2026-07-08T00:00:00Z", zone: "z2" },
   { key: "d6", label: "Z3 Gates Open",                  days: [6],       startISO: "2026-07-11T00:00:00Z", zone: "z3" },
   { key: "d7", label: "Aaru Fight",                     days: [7],       startISO: "2026-07-12T00:00:00Z", zone: "z3" },
 ];
@@ -487,35 +487,156 @@ const MAP_NODES = {
   tower_6: { x: 48.5, y: 30.0, type: "tower", label: "Tower of Rotation", info: "Damage +6%" },
   aaru: { x: 49.8, y: 49.9, type: "aaru", label: "Aaru Palace", info: "" },
 };
-// Connections we draw over the map: { from: nodeId, to: nodeId, owner: "WC1" }.
-// `from`/`to` may also be {x,y} literals. owner keys ALLIANCE_COLORS. Empty for now.
-const MAP_CONNECTIONS = [
-];
+// Which server each alliance belongs to (for map/table coloring).
+const ALLIANCE_SERVER = {
+  WC1: "Era 8", REU: "Era 8", AGC: "Era 8", MyT: "Era 8",
+  LOD: "Era #023", boi: "Era #023", R65: "Era #023", ILF: "Era #023",
+  X14: "Era #014", "Ȼ14": "Era #014", G14: "Era #014", L14: "Era #014",
+  XIX: "Era #019", KNY: "Era #019", PBJ: "Era #019", DXR: "Era #019",
+};
+const OUR_ALLIANCES = ["WC1", "REU", "AGC", "MyT"];
+// Owner → line/dot color. Our 4 alliances get distinct TME colors; every opponent
+// alliance uses its muted server-corner color (we don't break their alliances out).
+function ownerColor(owner) {
+  if (ALLIANCE_COLORS[owner] && ALLIANCE_SERVER[owner] === "Era 8") return ALLIANCE_COLORS[owner];
+  const srv = ALLIANCE_SERVER[owner] || owner;
+  return serverColor(srv).hex;
+}
+// Placer-gold /h a node yields to whoever holds it (0 for towers/Aaru).
+function nodePerHour(n) {
+  if (!n) return 0;
+  if (n.type === "city") return 8000;
+  if (n.type === "gate") return n.info && n.info.includes("Z2→Z3") ? 8000 : (n.info && n.info.includes("Z2↔Z2") ? 4000 : 3000);
+  return 0; // tower, aaru
+}
+// The unique buff key a node grants (cities + towers only), matching BUFF_COLUMNS keys.
+function nodeBuffKey(n) {
+  if (!n || !n.info) return null;
+  const i = n.info;
+  if (n.type === "city") return i.includes("Health") ? "health" : i.includes("Attack") ? "attack" : i.includes("Defense") ? "defense" : null;
+  if (n.type === "tower") return i.includes("Reduction") ? "dmgReduction" : i.includes("Damage") ? "damage" : null;
+  return null;
+}
+
+// ── MAP STATE (source of truth) ──────────────────────────────────────────────
+// Per-node: who occupies it and whether the occupant has an active flag-connection.
+// Occupied+connected → occupant gets buff + placer/h. Occupied+disconnected →
+// keeps placer/h but NO buff (node color muted). Empty until the mapping is given.
+let MAP_STATE = {
+  // node_id: { occupant: "WC1", connected: true },
+};
+// Route lines drawn over the map. `planned` = faint/translucent intent; `actual`
+// = solid reality. Each entry: { owner, path: [nodeId, nodeId, ...] }.
+let MAP_ROUTES = { planned: [], actual: [] };
+
+// Derive per-alliance holdings from MAP_STATE: placer/h (all occupied nodes) and
+// the set of active buffs (connected occupied cities/towers only).
+function allianceFromMap(tag) {
+  let perHour = 0; const buffs = new Set(); let pillars = 0, gates = 0, towers = 0;
+  for (const [id, st] of Object.entries(MAP_STATE)) {
+    if (st.occupant !== tag) continue;
+    const n = MAP_NODES[id]; if (!n) continue;
+    perHour += nodePerHour(n);
+    if (n.type === "city") pillars++; else if (n.type === "gate") gates++; else if (n.type === "tower") towers++;
+    if (st.connected) { const bk = nodeBuffKey(n); if (bk) buffs.add(bk); }
+  }
+  return { perHour, buffs, pillars, gates, towers };
+}
 
 // Minimap with an SVG overlay for alliance connection lines + node dots.
 function MapOverlay() {
-  const nodePt = (ref) => {
-    if (ref && typeof ref === "object" && "x" in ref) return ref;
-    const n = MAP_NODES[ref];
-    return n ? { x: n.x, y: n.y } : null;
-  };
-  const typeColor = { gate: "#ef4444", city: "#22c55e", tower: "#3b82f6", aaru: "#facc15" };
+  const pt = (id) => { const n = MAP_NODES[id]; return n ? { x: n.x, y: n.y } : null; };
+  const polyPts = (path) => path.map(id => pt(id)).filter(Boolean);
+  // build an SVG polyline "x,y x,y ..." from a node path
+  const line = (path) => polyPts(path).map(p => p.x + "," + p.y).join(" ");
   return (
     <div style={{ position: "relative", width: "100%", maxWidth: "520px", margin: "0 auto", lineHeight: 0 }}>
       <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
         style={{ width: "100%", display: "block", borderRadius: "10px", border: "1px solid #334155" }} />
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
-        {MAP_CONNECTIONS.map((c, i) => {
-          const a = nodePt(c.from), b = nodePt(c.to);
-          if (!a || !b) return null;
-          return <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={ALLIANCE_COLORS[c.owner] || "#94a3b8"} strokeWidth="0.7" strokeLinecap="round" opacity="0.9" />;
-        })}
-        {Object.entries(MAP_NODES).map(([id, n]) => (
-          <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={typeColor[n.type] || "#facc15"} stroke="#0a0c14" strokeWidth="0.3">
-            <title>{n.label}{n.info ? " — " + n.info : ""}</title>
-          </circle>
+        {/* planned routes — faint/translucent intent */}
+        {MAP_ROUTES.planned.map((r, i) => (
+          <polyline key={"p"+i} points={line(r.path)} fill="none" stroke={ownerColor(r.owner)} strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="1.5 1.5" opacity="0.28" />
         ))}
+        {/* actual routes — solid reality */}
+        {MAP_ROUTES.actual.map((r, i) => (
+          <polyline key={"a"+i} points={line(r.path)} fill="none" stroke={ownerColor(r.owner)} strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" opacity="0.95" />
+        ))}
+        {/* nodes: neutral by default; occupant color when held (muted if disconnected) */}
+        {Object.entries(MAP_NODES).map(([id, n]) => {
+          const st = MAP_STATE[id];
+          let fill = "#d9dde6";              // neutral / unowned
+          if (st && st.occupant) fill = ownerColor(st.occupant);
+          const muted = st && st.occupant && !st.connected; // occupied but no active connection
+          return (
+            <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={fill}
+              stroke="#0a0c14" strokeWidth="0.3" opacity={muted ? 0.4 : 1}>
+              <title>{n.label}{n.info ? " — " + n.info : ""}{st && st.occupant ? " · " + st.occupant + (st.connected ? " (connected)" : " (disconnected — no buff)") : ""}</title>
+            </circle>
+          );
+        })}
       </svg>
+    </div>
+  );
+}
+
+// All-16-alliance buff + placer/h table, derived live from MAP_STATE. Rows tinted
+// by server (Scouting-table style); buff cells light up when the alliance holds
+// a connected node granting that buff. Behemoth-blessings highlighting.
+function NodeControlTable() {
+  const BUFF_DEFS = [
+    { key: "health", short: "Health", grp: "pillar" },
+    { key: "attack", short: "Attack", grp: "pillar" },
+    { key: "defense", short: "Defense", grp: "pillar" },
+    { key: "dmgReduction", short: "Dmg Red.", grp: "tower" },
+    { key: "damage", short: "Damage", grp: "tower" },
+  ];
+  const buffVal = { health: "+5%", attack: "+10%", defense: "+10%", dmgReduction: "+5%", damage: "+6%" };
+  const order = ["Era 8", "Era #019", "Era #014", "Era #023"];
+  const tags = Object.keys(ALLIANCE_SERVER).sort((a,b) => order.indexOf(ALLIANCE_SERVER[a]) - order.indexOf(ALLIANCE_SERVER[b]));
+  const fmt = (n) => n >= 1e6 ? (n/1e6) + "M" : n >= 1e3 ? (n/1e3) + "k" : String(n);
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table style={{ ...S.table, minWidth: "560px" }}>
+        <thead>
+          <tr>
+            <th style={{ ...S.th, borderBottom: "none" }}></th>
+            <th colSpan={3} style={{ ...S.th, textAlign: "center", color: "#f5731f", borderBottom: "2px solid #f5731f" }}>Pillar City</th>
+            <th colSpan={2} style={{ ...S.th, textAlign: "center", color: "#7c3aed", borderBottom: "2px solid #7c3aed" }}>Tower</th>
+            <th style={{ ...S.th, borderBottom: "none" }}></th>
+          </tr>
+          <tr>
+            <th style={S.th}>Alliance</th>
+            {BUFF_DEFS.map(bd => <th key={bd.key} style={{ ...S.th, textAlign: "center" }}>{bd.short}</th>)}
+            <th style={{ ...S.th, textAlign: "right" }}>Placer /h</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tags.map(tag => {
+            const info = allianceFromMap(tag);
+            const srv = ALLIANCE_SERVER[tag]; const c = serverColor(srv);
+            const grpColor = { pillar: "#f5731f", tower: "#7c3aed" };
+            const grpRgb = { pillar: "245,115,31", tower: "124,58,237" };
+            return (
+              <tr key={tag} style={{ background: "rgba(" + c.rgb + ",0.10)" }}>
+                <td style={{ ...S.td, fontWeight: 700, color: c.hex, whiteSpace: "nowrap" }}>{tag} <span style={{ fontSize: "10px", color: "#64748b" }}>{srv.replace("Era ","")}</span></td>
+                {BUFF_DEFS.map(bd => {
+                  const on = info.buffs.has(bd.key);
+                  return (
+                    <td key={bd.key} style={{ ...S.td, textAlign: "center", fontVariantNumeric: "tabular-nums", fontWeight: on ? 700 : 400,
+                      color: on ? "#e8eaf0" : "#475569",
+                      background: on ? "rgba(" + grpRgb[bd.grp] + ",0.18)" : undefined,
+                      boxShadow: on ? "inset 0 0 0 1px " + grpColor[bd.grp] : undefined,
+                      opacity: on ? 1 : 0.5 }}>{buffVal[bd.key]}</td>
+                  );
+                })}
+                <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: info.perHour > 0 ? "#3daa6d" : "#64748b" }}>{info.perHour > 0 ? "+" + fmt(info.perHour) : "0"}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>Derived from map node control. A buff lights only if the alliance holds a <em>connected</em> node granting it (same buff doesn't stack). Placer /h counts all occupied gates/docks &amp; Pillar Cities.</div>
     </div>
   );
 }
@@ -523,6 +644,7 @@ function MapOverlay() {
 function OverviewTab({ state, setState }) {
   const today = new Date().toISOString().split("T")[0];
   const currentDay = SCHEDULE.find(s => s.date === today) || SCHEDULE.find(s => s.date >= today) || SCHEDULE[SCHEDULE.length - 1];
+  const [mapTblOpen, setMapTblOpen] = React.useState(false);
 
   return (
     <div>
@@ -542,6 +664,15 @@ function OverviewTab({ state, setState }) {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Map-derived buffs & placer gold for all 16 alliances — collapsible */}
+      <div style={S.card}>
+        <div onClick={() => setMapTblOpen(o => !o)} style={{ ...S.cardTitle, marginBottom: mapTblOpen ? "12px" : 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span>Node Control — Buffs &amp; Placer Gold (all alliances)</span>
+          <span style={{ fontSize: "16px", color: "#94a3b8", transform: mapTblOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }}>▾</span>
+        </div>
+        {mapTblOpen ? <NodeControlTable /> : null}
       </div>
 
       {/* Event Status — condensed horizontal schedule only */}
@@ -1418,14 +1549,7 @@ function TowerSchedule() {
         </div>
       ) : null}
       <div style={lock ? { filter: "grayscale(1)", opacity: 0.4, pointerEvents: "none" } : null}>
-      <div style={{ ...S.cardTitle, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px" }}>
-        <span>Tower of Rotation — Awakening Schedule</span>
-        {st.live ? (
-          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", fontWeight: 800, color: "#facc15", textTransform: "none", letterSpacing: 0 }}>
-            <span className="tor-live-dot" />LIVE
-          </span>
-        ) : <span style={{ fontSize: "11px", fontWeight: 500, color: "#64748b", textTransform: "none", letterSpacing: 0 }}>{st.active ? "Between windows today" : "Runs Days 3–5"}</span>}
-      </div>
+      <div style={S.cardTitle}>Tower of Rotation — Awakening Schedule</div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" }}>
         {TOR_WINDOWS.map((w, i) => {
           const s = st.states[i];
@@ -1817,6 +1941,8 @@ function App() {
         if (j.allianceScoreboard) ALLIANCE_SCOREBOARD = j.allianceScoreboard;
         if (j.placerGold)         PLACER_GOLD         = j.placerGold;
         if (j.allianceBuffs)      ALLIANCE_BUFFS      = j.allianceBuffs;
+        if (j.mapState)           MAP_STATE           = j.mapState;
+        if (j.mapRoutes)          MAP_ROUTES          = j.mapRoutes;
       }
     }
   } catch (e) {

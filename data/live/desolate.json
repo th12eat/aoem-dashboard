@@ -186,7 +186,7 @@
     "alliances": [
       {
         "tag": "WC1",
-        "current": null,
+        "current": 112000,
         "perHour": 3000,
         "gates": 1,
         "pillarCities": 0,
