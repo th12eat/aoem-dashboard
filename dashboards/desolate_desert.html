@@ -517,16 +517,41 @@ function nodeBuffKey(n) {
   if (n.type === "tower") return i.includes("Reduction") ? "dmgReduction" : i.includes("Damage") ? "damage" : null;
   return null;
 }
+// darken a #rrggbb toward black by factor f (0..1) — for the "dimmed" display states.
+function dimHex(hex, f) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || ""); if (!m) return hex;
+  const n = parseInt(m[1], 16);
+  const r = Math.round(((n>>16)&255) * f), g = Math.round(((n>>8)&255) * f), bl = Math.round((n&255) * f);
+  return "#" + [r,g,bl].map(v => v.toString(16).padStart(2,"0")).join("");
+}
+// Default "active" (capturable) state by node, derived from the event day:
+//   towers active Day 3+ (2026-07-08); inner Z3 gates active Day 6+ (2026-07-11);
+//   Aaru Day 7+ (2026-07-12); everything else active from Day 1. Overridable via
+//   MAP_STATE[id].active.
+function nodeActiveDefault(n, now) {
+  const today = new Date(now).toISOString().slice(0,10);
+  if (!n) return true;
+  if (n.type === "tower") return today >= "2026-07-08";
+  if (n.type === "aaru") return today >= "2026-07-12";
+  if (n.type === "gate" && n.info && n.info.includes("Z2→Z3")) return today >= "2026-07-11";
+  return true;
+}
 
 // ── MAP STATE (source of truth) ──────────────────────────────────────────────
-// Per-node: who occupies it and whether the occupant has an active flag-connection.
-// Occupied+connected → occupant gets buff + placer/h. Occupied+disconnected →
-// keeps placer/h but NO buff (node color muted). Empty until the mapping is given.
+// Per-node, up to 3 flags (all optional):
+//   active    — capturable yet? (defaults by day via nodeActiveDefault; override here)
+//   occupant  — alliance tag holding it (omit = unoccupied)
+//   connected — occupant has a path reaching an SSH/SH (buff active). default true.
+// Display: unoccupied+active = neutral white; unoccupied+inactive = dimmed neutral;
+// occupied+connected = owner color; occupied+disconnected = dimmed owner color.
 let MAP_STATE = {
-  // node_id: { occupant: "WC1", connected: true },
+  // node_id: { active: true, occupant: "WC1", connected: true },
 };
-// Route lines drawn over the map. `planned` = faint/translucent intent; `actual`
-// = solid reality. Each entry: { owner, path: [nodeId, nodeId, ...] }.
+// Route lines over the map. planned = faint dashed intent; actual = solid reality.
+// Each: { owner, path:[nodeId,...], ssh: true|false, connected: true|false,
+//         sshAt: <index in path where the SSH sits, optional> }.
+//   ssh       — does this line contain a Sub-Stronghold?
+//   connected — is the line tied back to an SSH/SH somewhere in the total path?
 let MAP_ROUTES = { planned: [], actual: [] };
 
 // Derive per-alliance holdings from MAP_STATE: placer/h (all occupied nodes) and
@@ -545,33 +570,53 @@ function allianceFromMap(tag) {
 
 // Minimap with an SVG overlay for alliance connection lines + node dots.
 function MapOverlay() {
+  const [now, setNow] = React.useState(() => Date.now());
+  React.useEffect(() => { const id = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(id); }, []);
   const pt = (id) => { const n = MAP_NODES[id]; return n ? { x: n.x, y: n.y } : null; };
-  const polyPts = (path) => path.map(id => pt(id)).filter(Boolean);
-  // build an SVG polyline "x,y x,y ..." from a node path
-  const line = (path) => polyPts(path).map(p => p.x + "," + p.y).join(" ");
+  const line = (path) => path.map(id => pt(id)).filter(Boolean).map(p => p.x + "," + p.y).join(" ");
+  // SSH marker position on a route: explicit sshAt index, else the path midpoint.
+  const sshPoint = (r) => {
+    const pts = r.path.map(id => pt(id)).filter(Boolean);
+    if (!pts.length) return null;
+    if (typeof r.sshAt === "number" && r.path[r.sshAt]) {
+      const a = pt(r.path[r.sshAt]); const b = pt(r.path[Math.min(r.sshAt+1, r.path.length-1)]);
+      return b ? { x: (a.x+b.x)/2, y: (a.y+b.y)/2 } : a;
+    }
+    return pts[Math.floor((pts.length-1)/2)];
+  };
+  const NEUTRAL = "#d9dde6";
   return (
     <div style={{ position: "relative", width: "100%", maxWidth: "520px", margin: "0 auto", lineHeight: 0 }}>
       <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
         style={{ width: "100%", display: "block", borderRadius: "10px", border: "1px solid #334155" }} />
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
-        {/* planned routes — faint/translucent intent */}
+        {/* planned routes — faint dashed intent; disconnected = dimmer still */}
         {MAP_ROUTES.planned.map((r, i) => (
           <polyline key={"p"+i} points={line(r.path)} fill="none" stroke={ownerColor(r.owner)} strokeWidth="0.6" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="1.5 1.5" opacity="0.28" />
         ))}
-        {/* actual routes — solid reality */}
-        {MAP_ROUTES.actual.map((r, i) => (
-          <polyline key={"a"+i} points={line(r.path)} fill="none" stroke={ownerColor(r.owner)} strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" opacity="0.95" />
-        ))}
-        {/* nodes: neutral by default; occupant color when held (muted if disconnected) */}
+        {/* actual routes — solid reality; connected full, disconnected dimmed */}
+        {MAP_ROUTES.actual.map((r, i) => {
+          const col = r.connected === false ? dimHex(ownerColor(r.owner), 0.45) : ownerColor(r.owner);
+          return <polyline key={"a"+i} points={line(r.path)} fill="none" stroke={col} strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" opacity={r.connected === false ? 0.6 : 0.95} />;
+        })}
+        {/* SSH markers (small diamonds) on any route that has one */}
+        {[...MAP_ROUTES.planned, ...MAP_ROUTES.actual].filter(r => r.ssh).map((r, i) => {
+          const s = sshPoint(r); if (!s) return null;
+          return <rect key={"s"+i} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={ownerColor(r.owner)} stroke="#0a0c14" strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`}><title>Sub-Stronghold ({r.owner})</title></rect>;
+        })}
+        {/* nodes — 4 display states */}
         {Object.entries(MAP_NODES).map(([id, n]) => {
-          const st = MAP_STATE[id];
-          let fill = "#d9dde6";              // neutral / unowned
-          if (st && st.occupant) fill = ownerColor(st.occupant);
-          const muted = st && st.occupant && !st.connected; // occupied but no active connection
+          const st = MAP_STATE[id] || {};
+          const active = st.active != null ? st.active : nodeActiveDefault(n, now);
+          const occ = st.occupant;
+          const connected = st.connected != null ? st.connected : true;
+          let fill;
+          if (occ) fill = connected ? ownerColor(occ) : dimHex(ownerColor(occ), 0.42);
+          else fill = active ? NEUTRAL : dimHex(NEUTRAL, 0.42);
+          const status = occ ? (occ + (connected ? " · connected" : " · disconnected (no buff)")) : (active ? "unoccupied" : "inactive (not yet capturable)");
           return (
-            <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={fill}
-              stroke="#0a0c14" strokeWidth="0.3" opacity={muted ? 0.4 : 1}>
-              <title>{n.label}{n.info ? " — " + n.info : ""}{st && st.occupant ? " · " + st.occupant + (st.connected ? " (connected)" : " (disconnected — no buff)") : ""}</title>
+            <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={fill} stroke="#0a0c14" strokeWidth="0.3">
+              <title>{n.label}{n.info ? " — " + n.info : ""} · {status}</title>
             </circle>
           );
         })}
