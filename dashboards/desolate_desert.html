@@ -33,6 +33,13 @@
             50%     { box-shadow: 0 0 0 5px rgba(250,204,21,0); }
         }
         @media (prefers-reduced-motion: reduce) { .tor-slot.is-live { animation: none; box-shadow: 0 0 0 2px #facc15; } }
+        /* map: a "building" route grows/flows like a progress bar */
+        .route-building { stroke-dasharray: 3 3; animation: routeFlow 1.1s linear infinite; }
+        @keyframes routeFlow { to { stroke-dashoffset: -6; } }
+        /* map: a node under siege pulses red */
+        .node-siege { animation: siegePulse 1s ease-in-out infinite; }
+        @keyframes siegePulse { 0%,100% { stroke: #ef4444; stroke-width: 0.5; } 50% { stroke: #ef4444; stroke-width: 1.4; } }
+        @media (prefers-reduced-motion: reduce) { .route-building, .node-siege { animation: none; } }
         /* small blinking dot used in the Tower schedule "LIVE" label */
         .tor-live-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#facc15;
             box-shadow:0 0 6px #facc15; animation: torDotBlink 1.2s ease-in-out infinite; }
@@ -543,6 +550,7 @@ function nodeActiveDefault(n, now) {
 //   active    — capturable yet? (defaults by day via nodeActiveDefault; override here)
 //   occupant  — alliance tag holding it (omit = unoccupied)
 //   connected — occupant has a path reaching an SSH/SH (buff active). default true.
+//   siege     — under attack? renders a pulsing red ring.
 // Display: unoccupied+active = neutral white; unoccupied+inactive = dimmed neutral;
 // occupied+connected = owner color; occupied+disconnected = dimmed owner color.
 let MAP_STATE = {
@@ -553,6 +561,7 @@ let MAP_STATE = {
 //         sshAt: <index in path where the SSH sits, optional> }.
 //   ssh       — does this line contain a Sub-Stronghold?
 //   connected — is the line tied back to an SSH/SH somewhere in the total path?
+//   building  — actively being built (line animates/grows like a progress bar).
 let MAP_ROUTES = { planned: [], actual: [] };
 
 // Derive per-alliance holdings from MAP_STATE: placer/h (all occupied nodes) and
@@ -632,14 +641,15 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
         {routes.map((r, i) => {
           const off = routeOffset[i];
           const base = ownerColor(r.owner);
-          let stroke = base, opacity = 0.95, dash = null, w = 0.8;
+          let stroke = base, opacity = 0.95, dash = null, w = 0.8, building = false;
           if (mode !== "plan") {
-            if (r.partial) { dash = "1.4 1.2"; opacity = 0.9; }
-            else if (r.connected === false) { stroke = dimHex(base, 0.45); opacity = 0.6; }
+            if (r.building) { building = true; opacity = 0.95; }               // growing toward connection (animated)
+            else if (r.partial) { dash = "1.4 1.2"; opacity = 0.9; }           // planned-partial (static dashed)
+            else if (r.connected === false) { stroke = dimHex(base, 0.45); opacity = 0.6; } // disconnected — dimmed
           }
           if (dimmed(r.owner)) opacity *= 0.15;              // fade non-highlighted
           const hot = hl && r.owner === hl;
-          return <polyline key={i} points={offsetLine(r.path, off)} fill="none" stroke={stroke} strokeWidth={hot ? w + 0.5 : w} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash || undefined} opacity={opacity} style={{ cursor: "pointer" }}
+          return <polyline key={i} className={building ? "route-building" : undefined} points={offsetLine(r.path, off)} fill="none" stroke={stroke} strokeWidth={hot ? w + 0.5 : w} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash || undefined} opacity={opacity} style={{ cursor: "pointer" }}
             onMouseEnter={(e) => hoverOn(r.owner, e)} onMouseMove={(e) => hoverOn(r.owner, e)} onMouseLeave={hoverOff} />;
         })}
         {/* SSH markers */}
@@ -658,11 +668,12 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
           const status = occ ? (occ + (connected ? " · connected" : " · disconnected (no buff)")) : (active ? "unoccupied" : "inactive (not yet capturable)");
           const fade = occ ? dimmed(occ) : !!hl;             // dim unowned nodes too when a highlight is active
           const hot = hl && occ === hl;
+          const siege = !!st.siege;
           return (
-            <circle key={id} cx={n.x} cy={n.y} r={(n.type === "aaru" ? 1.6 : 1.0) * (hot ? 1.5 : 1)} fill={fill} stroke={hot ? "#fff" : "#0a0c14"} strokeWidth={hot ? 0.5 : 0.3} opacity={fade ? 0.18 : 1}
+            <circle key={id} className={siege && !fade ? "node-siege" : undefined} cx={n.x} cy={n.y} r={(n.type === "aaru" ? 1.6 : 1.0) * (hot ? 1.5 : 1)} fill={fill} stroke={hot ? "#fff" : (siege ? "#ef4444" : "#0a0c14")} strokeWidth={hot ? 0.5 : 0.3} opacity={fade ? 0.18 : 1}
               style={{ cursor: occ ? "pointer" : "default" }}
               onMouseEnter={occ ? (e) => hoverOn(occ, e) : undefined} onMouseMove={occ ? (e) => hoverOn(occ, e) : undefined} onMouseLeave={occ ? hoverOff : undefined}>
-              <title>{n.label}{n.info ? " — " + n.info : ""} · {status}</title>
+              <title>{n.label}{n.info ? " — " + n.info : ""} · {status}{siege ? " · UNDER SIEGE" : ""}</title>
             </circle>
           );
         }) : Object.entries(MAP_NODES).map(([id, n]) => (
@@ -787,6 +798,14 @@ function OverviewTab({ state, setState }) {
               <span style={{ fontSize: "12px", fontWeight: 600, color: "#94a3b8" }}>{lbl}</span>
             </div>
           ))}
+        </div>
+        {/* Symbol/status key */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "8px", paddingTop: "8px", borderTop: "1px solid #1e2435", fontSize: "11px", color: "#94a3b8" }}>
+          <span style={{ display: "flex", alignItems: "center", gap: "6px" }}><span style={{ width: "10px", height: "10px", background: "#94a3b8", transform: "rotate(45deg)", display: "inline-block" }} /> Sub-Stronghold</span>
+          <span style={{ display: "flex", alignItems: "center", gap: "6px" }}><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="#94a3b8" strokeWidth="2" /></svg> connected</span>
+          <span style={{ display: "flex", alignItems: "center", gap: "6px" }}><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="#94a3b8" strokeWidth="2" strokeDasharray="3 3" /></svg> building</span>
+          <span style={{ display: "flex", alignItems: "center", gap: "6px", opacity: 0.55 }}><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="#94a3b8" strokeWidth="2" /></svg> disconnected</span>
+          <span style={{ display: "flex", alignItems: "center", gap: "6px" }}><span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#d9dde6", border: "1.5px solid #ef4444", display: "inline-block" }} /> under siege</span>
         </div>
       </div>
 
