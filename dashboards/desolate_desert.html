@@ -71,9 +71,10 @@
         .hdr-pills-top { position: absolute; right: 16px; top: 14px; z-index: 12; display: inline-flex; align-items: center; gap: 6px; }
         @media (max-width: 520px){
             .hdr-pills-top{ right: 10px; top: 10px; }
-            /* stack the Tower badge below the header content so it can't overlap the
-               calendar/Aaru row; still a centered bottom badge. */
-            .hdr-pills{ position: static; right: auto; bottom: auto; justify-content: center; margin: 12px auto 0; }
+            /* keep the Tower badge pinned bottom-right; reserve space below the
+               header content so it can't overlap the calendar/Aaru row. */
+            .hdr-pills{ right: 10px; bottom: 10px; }
+            .dd-header{ padding-bottom: 58px !important; }
             .tor-badge .tb-lvl{ font-size:12px; }
         }
         .hdr-icobtn {
@@ -2020,7 +2021,7 @@ function App() {
           </div>
         </div>
       ) : null}
-      <div style={S.header}>
+      <div className="dd-header" style={S.header}>
         {/* top-right: quest + help icon buttons */}
         <div className="hdr-pills-top">
           <a href="#daily-objectives" className="hdr-icobtn" title="Jump to Daily Objectives"
