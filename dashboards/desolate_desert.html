@@ -241,13 +241,13 @@ const ACHIEVEMENTS = [
   { name: "Desert Roots", req: "Build alliance stronghold", target: 1, personal: "100K Desert Points",
     cur: { WC1: 1, REU: 1, MyT: 1, AGC: 1 } },
   { name: "Pioneer the Frontier I", req: "Build 5 alliance flags", target: 5, personal: "200K Desert Points",
-    cur: { WC1: 18, REU: 21, MyT: 20, AGC: 8 } },
+    cur: { WC1: 20, REU: 20, MyT: 20, AGC: 20 } },
   { name: "Pioneer the Frontier II", req: "Build 10 alliance flags", target: 10, personal: "500K Desert Points",
-    cur: { WC1: 18, REU: 21, MyT: 20, AGC: 8 } },
+    cur: { WC1: 20, REU: 20, MyT: 20, AGC: 20 } },
   { name: "Pioneer the Frontier III", req: "Build 15 alliance flags", target: 15, personal: "800K Desert Points",
-    cur: { WC1: 18, REU: 21, MyT: 20, AGC: 8 } },
+    cur: { WC1: 20, REU: 20, MyT: 20, AGC: 20 } },
   { name: "Pioneer the Frontier IV", req: "Build 20 alliance flags", target: 20, personal: "1.2M Desert Points",
-    cur: { WC1: 18, REU: 21, MyT: 20, AGC: 8 } },
+    cur: { WC1: 20, REU: 20, MyT: 20, AGC: 20 } },
   { name: "Siege and Plunder I", req: "Occupy 1 Lv.7 city (Pillar City)", target: 1, personal: "500K Desert Points",
     cur: { WC1: 1, REU: 0, MyT: 1, AGC: 0 } },
   { name: "Desert Treasure I", req: "Alliance Desert Points", target: 160000000, personal: "5M Desert Points",
@@ -1280,51 +1280,22 @@ function PointsTab() {
 
       {/* Era 8 Alliance Desert Points + held node-buff columns (Behemoth blessings style) */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Era 8 Alliance Desert Points &amp; Buffs</div>
-        <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>
-          Buff columns light up when an alliance holds a node granting that unique buff (each caps once).
-        </div>
+        <div style={S.cardTitle}>Era 8 Alliance Desert Points</div>
         <div style={{ overflowX: "auto" }}>
         <table style={S.table}>
           <thead>
-            {/* group header row */}
-            <tr>
-              <th style={{ ...S.th, borderBottom: "none" }}></th>
-              <th style={{ ...S.th, borderBottom: "none" }}></th>
-              <th colSpan={BUFF_COLUMNS.pillar.cols.length} style={{ ...S.th, textAlign: "center", color: BUFF_COLUMNS.pillar.color, borderBottom: "2px solid " + BUFF_COLUMNS.pillar.color }}>{BUFF_COLUMNS.pillar.head}</th>
-              <th colSpan={BUFF_COLUMNS.tower.cols.length} style={{ ...S.th, textAlign: "center", color: BUFF_COLUMNS.tower.color, borderBottom: "2px solid " + BUFF_COLUMNS.tower.color }}>{BUFF_COLUMNS.tower.head}</th>
-            </tr>
             <tr>
               <th style={S.th}>Alliance</th>
               <th style={{ ...S.th, textAlign: "right" }}>Desert Points</th>
-              {BUFF_COLUMNS.pillar.cols.map(c => <th key={c.key} title={c.full} style={{ ...S.th, textAlign: "center" }}>{c.short}</th>)}
-              {BUFF_COLUMNS.tower.cols.map(c => <th key={c.key} title={c.full} style={{ ...S.th, textAlign: "center" }}>{c.short}</th>)}
             </tr>
           </thead>
           <tbody>
-            {ALLIANCE_POINTS.map(a => {
-              const held = ALLIANCE_BUFFS[a.tag] || [];
-              const buffCell = (c, grp) => {
-                const on = held.indexOf(c.key) !== -1;
-                return (
-                  <td key={c.key} title={c.full} style={{
-                    ...S.td, textAlign: "center", fontVariantNumeric: "tabular-nums", fontWeight: on ? 700 : 400,
-                    color: on ? "#e8eaf0" : "#475569",
-                    background: on ? "rgba(" + grp.rgb + ",0.18)" : undefined,
-                    boxShadow: on ? "inset 0 0 0 1px " + grp.color : undefined,
-                    opacity: on ? 1 : 0.5,
-                  }}>{c.short.startsWith("Dmg") || c.short === "Damage" ? (c.key === "damage" ? "+6%" : "+5%") : (c.key === "health" ? "+5%" : "+10%")}</td>
-                );
-              };
-              return (
-                <tr key={a.tag}>
-                  <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
-                  <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{a.points}</td>
-                  {BUFF_COLUMNS.pillar.cols.map(c => buffCell(c, BUFF_COLUMNS.pillar))}
-                  {BUFF_COLUMNS.tower.cols.map(c => buffCell(c, BUFF_COLUMNS.tower))}
-                </tr>
-              );
-            })}
+            {ALLIANCE_POINTS.map(a => (
+              <tr key={a.tag}>
+                <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>
+                <td style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{a.points}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
         </div>
