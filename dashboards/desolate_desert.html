@@ -515,6 +515,12 @@ const MAP_NODES = {
   tower_5: { x: 32.6, y: 33.2, type: "tower", label: "Tower of Rotation", info: "Dmg Reduction +5%" },
   tower_6: { x: 48.5, y: 30.0, type: "tower", label: "Tower of Rotation", info: "Damage +6%" },
   aaru: { x: 49.8, y: 49.9, type: "aaru", label: "Aaru Palace", info: "" },
+  // Invisible diamond corners around Aaru — pure path anchors (no dot, no occupation,
+  // no line drawn to Aaru itself). Denote the tile path to/around the Palace.
+  aaru_n: { x: 49.8, y: 44.5, type: "aaru_corner", label: "Aaru — North" },
+  aaru_e: { x: 55.2, y: 49.9, type: "aaru_corner", label: "Aaru — East" },
+  aaru_s: { x: 49.8, y: 55.3, type: "aaru_corner", label: "Aaru — South" },
+  aaru_w: { x: 44.4, y: 49.9, type: "aaru_corner", label: "Aaru — West" },
 };
 // Which server each alliance belongs to (for map/table coloring).
 const ALLIANCE_SERVER = {
@@ -680,6 +686,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
         })}
         {/* nodes */}
         {mode === "live" ? Object.entries(MAP_NODES).map(([id, n]) => {
+          if (n.type === "aaru_corner") return null;   // invisible path anchors
           const st = MAP_STATE[id] || {};
           const active = st.active != null ? st.active : nodeActiveDefault(n, now);
           const occ = st.occupant;
@@ -699,6 +706,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
             </circle>
           );
         }) : Object.entries(MAP_NODES).map(([id, n]) => (
+          n.type === "aaru_corner" ? null :
           <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={NEUTRAL} stroke="#0a0c14" strokeWidth="0.3" opacity="0.55" style={{ pointerEvents: "none" }}><title>{n.label}</title></circle>
         ))}
       </svg>

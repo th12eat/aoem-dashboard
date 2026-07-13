@@ -20,35 +20,36 @@
     "season": "Stellar Dynasty — final event of the season (top-3 season reward on the line)",
     "ourSdRank": 22,
     "mapFormat": "Map splits in phases: quarters → halves → full. We share our HALF (left/right eyes) with Era #023, making #023 the highest-priority diplomacy.",
-    "notes": "We are heavily outmatched. Survival plan: appease Era #019 (SD rank 2, must-win for their top-3 reward) and make peace with Era #023 (shared half)."
+    "notes": "We are heavily outmatched. Survival plan: appease Era #019 (SD rank 2, must-win for their top-3 reward) and make peace with Era #023 (shared half).",
+    "aaruResult": "Era #019 won · Aaru fight 19:00 UTC Day 7"
   },
   "kingdomPoints": {
-    "era8": "19.51B",
-    "era023": "30.17B",
-    "era014": "62.37B",
-    "era019": "62.47B",
-    "lastUpdated": "2026-07-10 — Day 5"
+    "era8": "25.01B",
+    "era023": "39.41B",
+    "era014": "84.39B",
+    "era019": "123.44B",
+    "lastUpdated": "2026-07-13 — Final · Era #019 won · Aaru fight 19:00 UTC"
   },
   "kingdomScoreboard": [
     {
       "rank": 1,
       "server": "Era #019",
-      "points": "62,469,714,567"
+      "points": "123,443,439,840"
     },
     {
       "rank": 2,
       "server": "Era #014",
-      "points": "62,371,118,798"
+      "points": "84,389,710,304"
     },
     {
       "rank": 3,
       "server": "Era #023",
-      "points": "30,170,322,077"
+      "points": "39,408,429,255"
     },
     {
       "rank": 4,
       "server": "Era 8",
-      "points": "19,510,086,796"
+      "points": "25,005,848,847"
     }
   ],
   "allianceScoreboard": [
@@ -126,19 +127,19 @@
   "alliancePoints": [
     {
       "tag": "WC1",
-      "points": "11,868,319,387"
+      "points": "14,876,350,313"
     },
     {
       "tag": "REU",
-      "points": "3,943,805,199"
+      "points": "5,188,725,210"
     },
     {
       "tag": "MyT",
-      "points": "3,263,976,953"
+      "points": "4,370,107,803"
     },
     {
       "tag": "AGC",
-      "points": "2,079,267,958"
+      "points": "2,968,267,267"
     }
   ],
   "placerGold": {
@@ -775,19 +776,19 @@
     },
     "city_bull": {
       "occupant": "KNY",
-      "connected": true
+      "connected": false
     },
     "tower_2": {
       "occupant": "KNY",
-      "connected": true
+      "connected": false
     },
     "city_lion": {
       "occupant": "KNY",
-      "connected": true
+      "connected": false
     },
     "city_cat": {
       "occupant": "KNY",
-      "connected": true
+      "connected": false
     },
     "tower_3": {
       "occupant": "GnG",
@@ -810,8 +811,8 @@
       "connected": false
     },
     "city_scorpion": {
-      "occupant": "GnG",
-      "connected": false
+      "occupant": "KNY",
+      "connected": true
     },
     "gate_grace": {
       "occupant": "GnG",
@@ -835,7 +836,7 @@
     },
     "judgement_fort": {
       "occupant": "X14",
-      "connected": true
+      "connected": false
     },
     "city_vulture": {
       "occupant": "Ȼ14",
@@ -847,11 +848,10 @@
     },
     "city_goose": {
       "occupant": "X14",
-      "connected": true,
-      "siege": true
+      "connected": false
     },
     "city_ram": {
-      "occupant": "X14",
+      "occupant": "XIX",
       "connected": true
     },
     "tower_5": {
@@ -880,7 +880,7 @@
     },
     "city_ibis": {
       "occupant": "PBJ",
-      "connected": true
+      "connected": false
     },
     "kingsguard_dock": {
       "occupant": "XIX",
@@ -888,6 +888,38 @@
     },
     "crown_fort": {
       "occupant": "PBJ",
+      "connected": false
+    },
+    "gate_death": {
+      "occupant": "PBJ",
+      "connected": true
+    },
+    "gate_chaos": {
+      "occupant": "DXR",
+      "connected": true
+    },
+    "gate_windrest": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "gate_primal_water": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "gate_dawn_earth": {
+      "occupant": "KNY",
+      "connected": false
+    },
+    "gate_abundance": {
+      "occupant": "XIX",
+      "connected": false
+    },
+    "gate_life": {
+      "occupant": "XIX",
+      "connected": true
+    },
+    "aaru": {
+      "occupant": "XIX",
       "connected": true
     }
   },
@@ -933,47 +965,11 @@
       {
         "owner": "KNY",
         "path": [
-          "city_crocodile",
-          "city_bull"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "KNY",
-        "path": [
-          "tower_2",
-          "city_lion"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "LOD",
-        "path": [
-          "tower_2",
-          "gate_azure_sky"
-        ],
-        "ssh": true,
-        "connected": true
-      },
-      {
-        "owner": "KNY",
-        "path": [
-          "city_lion",
-          "city_cat"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "KNY",
-        "path": [
           "city_cat",
           "tower_3"
         ],
         "ssh": false,
-        "connected": true
+        "connected": false
       },
       {
         "owner": "GnG",
@@ -982,8 +978,7 @@
           "gate_primal_water"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": false
       },
       {
         "owner": "GnG",
@@ -992,7 +987,7 @@
           "city_scorpion"
         ],
         "ssh": true,
-        "connected": true
+        "connected": false
       },
       {
         "owner": "Ȼ14",
@@ -1010,32 +1005,13 @@
           "gate_life"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "X14",
-        "path": [
-          "judgement_fort",
-          "city_goose"
-        ],
-        "ssh": false,
-        "connected": true
+        "connected": false
       },
       {
         "owner": "XIX",
         "path": [
           "city_goose",
           "gate_life"
-        ],
-        "ssh": true,
-        "connected": true
-      },
-      {
-        "owner": "X14",
-        "path": [
-          "judgement_fort",
-          "city_ram"
         ],
         "ssh": true,
         "connected": true
@@ -1083,18 +1059,7 @@
           "gate_chaos"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "PBJ",
-        "path": [
-          "tower_6",
-          "gate_death"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
         "owner": "PBJ",
@@ -1103,7 +1068,7 @@
           "city_ibis"
         ],
         "ssh": false,
-        "connected": true
+        "connected": false
       },
       {
         "owner": "PBJ",
@@ -1112,7 +1077,7 @@
           "gate_sunshine"
         ],
         "ssh": true,
-        "connected": true
+        "connected": false
       },
       {
         "owner": "XIX",
@@ -1120,17 +1085,95 @@
           "gate_life",
           "gate_abundance"
         ],
+        "connected": false
+      },
+      {
+        "owner": "PBJ",
+        "path": [
+          "gate_death",
+          "aaru_n",
+          "aaru_e"
+        ],
+        "ssh": true,
         "connected": true,
-        "building": true
+        "sshAt": 0
+      },
+      {
+        "owner": "DXR",
+        "path": [
+          "gate_chaos",
+          "aaru_n",
+          "aaru_w"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "gate_windrest",
+          "aaru_e",
+          "aaru_s",
+          "gate_primal_water"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "gate_primal_water",
+          "city_scorpion"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Ȼ14",
+        "path": [
+          "immortality_fort",
+          "tower_4"
+        ],
+        "ssh": false,
+        "connected": true
       },
       {
         "owner": "XIX",
         "path": [
           "gate_life",
-          "city_goose"
+          "aaru_e",
+          "aaru_s"
         ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "tower_5",
+          "city_ram"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "LOD",
+        "path": [
+          "gate_azure_sky",
+          "aaru_s"
+        ],
+        "ssh": true,
         "connected": true,
         "building": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "ruler_fort",
+          "city_bull"
+        ],
+        "ssh": false,
+        "connected": true
       }
     ],
     "planned": [
