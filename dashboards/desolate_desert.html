@@ -617,6 +617,28 @@ let MAP_STATE = {
 //   building  — actively being built (line animates/grows like a progress bar).
 let MAP_ROUTES = { planned: [], actual: [] };
 
+// Planned node ownership, derived from the planned routes: each node a route
+// touches is "owned" by that route's alliance on the plan map. Overrides pin
+// down the intended split where routes overlap or a claim should be narrowed:
+//   AGC owns nothing; REU owns only Tower 1 (its other route nodes stay neutral).
+const PLAN_OWNER_OVERRIDE = {
+  ruler_fort: "WC1", city_bull: "WC1", tower_2: "WC1",   // WC1+AGC overlap → WC1
+  city_crocodile: "WC1",                                  // WC1+REU overlap → WC1
+  vengeance_fort: null, tower_1: "REU",                   // REU limited to Tower 1
+};
+function planOwners() {
+  const owners = {};
+  for (const r of (MAP_ROUTES.planned || [])) {
+    for (const id of r.path) if (!(id in owners)) owners[id] = r.owner;
+  }
+  for (const [id, tag] of Object.entries(PLAN_OWNER_OVERRIDE)) {
+    if (tag === null) delete owners[id]; else owners[id] = tag;
+  }
+  // AGC owns nothing on the plan map.
+  for (const id of Object.keys(owners)) if (owners[id] === "AGC") delete owners[id];
+  return owners;
+}
+
 // Derive per-alliance holdings from MAP_STATE: placer/h (all occupied nodes) and
 // the set of active buffs (connected occupied cities/towers only).
 function allianceFromMap(tag) {
@@ -638,6 +660,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
   const [cursor, setCursor] = React.useState(null); // {x,y} px within wrapper, for the tag tooltip
   const [hoverNode, setHoverNode] = React.useState(null); // node id under the cursor (enlarge + white ring)
   const wrapRef = React.useRef(null);
+  const planOwn = React.useMemo(() => (mode === "plan" ? planOwners() : {}), [mode]);
   React.useEffect(() => { const id = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(id); }, []);
   const hoverOn = (tag, e) => { if (!pinned) setHl(tag); if (e && wrapRef.current) { const r = wrapRef.current.getBoundingClientRect(); setCursor({ x: e.clientX - r.left, y: e.clientY - r.top, tag }); } };
   const hoverOff = () => { if (!pinned) setHl(null); setCursor(null); };
@@ -761,9 +784,13 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
         }) : Object.entries(MAP_NODES).map(([id, n]) => {
           if (n.type === "aaru_corner") return null;
           const over = hoverNode === id;
+          const owner = planOwn[id];                        // planned owner (from routes + overrides)
+          const fill = owner ? allianceColor(owner, "plan") : NEUTRAL;
+          const opacity = owner ? 1 : 0.55;
+          const tip = n.label + (n.info ? " — " + n.info : "") + (owner ? " · " + owner + " (planned)" : "");
           return (
-          <circle key={id} cx={n.x} cy={n.y} r={(n.type === "aaru" ? 1.6 : 1.0) * (over ? 1.5 : 1)} fill={NEUTRAL} stroke={over ? "#fff" : "#0a0c14"} strokeWidth={over ? 0.5 : 0.3} opacity="0.55" style={{ cursor: "default" }}
-            onMouseEnter={() => setHoverNode(id)} onMouseLeave={() => setHoverNode(null)}><title>{n.label}{n.info ? " — " + n.info : ""}</title></circle>
+          <circle key={id} cx={n.x} cy={n.y} r={(n.type === "aaru" ? 1.6 : 1.0) * (over ? 1.5 : 1)} fill={fill} stroke={over ? "#fff" : "#0a0c14"} strokeWidth={over ? 0.5 : 0.3} opacity={opacity} style={{ cursor: "default" }}
+            onMouseEnter={() => setHoverNode(id)} onMouseLeave={() => setHoverNode(null)}><title>{tip}</title></circle>
           );
         })}
         {/* server-crest hit-areas (live only): click a corner badge to break out
