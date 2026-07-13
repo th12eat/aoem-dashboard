@@ -1819,8 +1819,11 @@ function TowerSchedule() {
     : (todayStr > TOR_LAST_DATE ? "This event has closed for the remainder of Desolate Desert" : null);
   return (
     <div id="tower-schedule" style={{ ...S.card, position: "relative" }}>
+      {/* section header stays at normal contrast even when locked, so the
+          "This event…" overlay text isn't ambiguous without a readable title */}
+      <div style={{ ...S.cardTitle, position: "relative", zIndex: 4 }}>Tower of Rotation — Awakening Schedule</div>
       {lock ? (
-        <div style={{ position: "absolute", inset: 0, zIndex: 3, borderRadius: "10px", background: "rgba(10,12,20,0.72)", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "16px" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 3, borderRadius: "10px", background: "rgba(10,12,20,0.72)", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "16px" }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
             <span style={{ fontSize: "26px", filter: "grayscale(1)", opacity: 0.7 }}>🗼🔒</span>
             <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.5px", color: "#94a3b8", maxWidth: "320px" }}>{lock}</span>
@@ -1828,7 +1831,6 @@ function TowerSchedule() {
         </div>
       ) : null}
       <div style={lock ? { filter: "grayscale(1)", opacity: 0.4, pointerEvents: "none" } : null}>
-      <div style={S.cardTitle}>Tower of Rotation — Awakening Schedule</div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" }}>
         {TOR_WINDOWS.map((w, i) => {
           const s = st.states[i];
