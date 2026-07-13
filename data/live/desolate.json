@@ -836,7 +836,7 @@
     },
     "judgement_fort": {
       "occupant": "X14",
-      "connected": false
+      "connected": true
     },
     "city_vulture": {
       "occupant": "Ȼ14",
@@ -921,6 +921,10 @@
     "aaru": {
       "occupant": "XIX",
       "connected": true
+    },
+    "gate_azure_sky": {
+      "occupant": "LOD",
+      "connected": true
     }
   },
   "mapRoutes": {
@@ -944,16 +948,6 @@
         "connected": true
       },
       {
-        "owner": "MyT",
-        "path": [
-          "tower_1",
-          "gate_windrest"
-        ],
-        "ssh": true,
-        "connected": true,
-        "sshSiege": true
-      },
-      {
         "owner": "KNY",
         "path": [
           "tower_1",
@@ -963,22 +957,13 @@
         "connected": true
       },
       {
-        "owner": "KNY",
-        "path": [
-          "city_cat",
-          "tower_3"
-        ],
-        "ssh": false,
-        "connected": false
-      },
-      {
         "owner": "GnG",
         "path": [
           "city_scorpion",
           "gate_primal_water"
         ],
         "ssh": false,
-        "connected": false
+        "connected": true
       },
       {
         "owner": "GnG",
@@ -987,7 +972,7 @@
           "city_scorpion"
         ],
         "ssh": true,
-        "connected": false
+        "connected": true
       },
       {
         "owner": "Ȼ14",
@@ -1005,7 +990,7 @@
           "gate_life"
         ],
         "ssh": false,
-        "connected": false
+        "connected": true
       },
       {
         "owner": "XIX",
@@ -1040,7 +1025,7 @@
           "majesty_dock",
           "city_jackal"
         ],
-        "ssh": true,
+        "ssh": false,
         "connected": true
       },
       {
@@ -1064,39 +1049,14 @@
       {
         "owner": "PBJ",
         "path": [
-          "tower_6",
-          "city_ibis"
-        ],
-        "ssh": false,
-        "connected": false
-      },
-      {
-        "owner": "PBJ",
-        "path": [
-          "city_ibis",
-          "gate_sunshine"
-        ],
-        "ssh": true,
-        "connected": false
-      },
-      {
-        "owner": "XIX",
-        "path": [
-          "gate_life",
-          "gate_abundance"
-        ],
-        "connected": false
-      },
-      {
-        "owner": "PBJ",
-        "path": [
           "gate_death",
           "aaru_n",
           "aaru_e"
         ],
         "ssh": true,
         "connected": true,
-        "sshAt": 0
+        "sshAt": 0,
+        "sshOutward": true
       },
       {
         "owner": "DXR",
@@ -1105,8 +1065,10 @@
           "aaru_n",
           "aaru_w"
         ],
-        "ssh": false,
-        "connected": true
+        "ssh": true,
+        "connected": true,
+        "sshAt": 0,
+        "sshOutward": true
       },
       {
         "owner": "KNY",
@@ -1141,7 +1103,7 @@
         "owner": "XIX",
         "path": [
           "gate_life",
-          "aaru_e",
+          "aaru_w",
           "aaru_s"
         ],
         "ssh": false,
@@ -1164,7 +1126,9 @@
         ],
         "ssh": true,
         "connected": true,
-        "building": true
+        "building": true,
+        "sshAt": 0,
+        "sshOutward": true
       },
       {
         "owner": "WC1",

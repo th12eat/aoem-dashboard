@@ -654,6 +654,15 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
     let a, b;
     if (typeof r.sshAt === "number" && p[r.sshAt]) { a = p[r.sshAt]; b = p[Math.min(r.sshAt+1, p.length-1)]; }
     else { const m = Math.floor((p.length-1)/2); a = p[m]; b = p[Math.min(m+1, p.length-1)]; }
+    // sshOutward: place the marker just *beyond* node `a`, away from `b`. An SSH
+    // can't sit in Zone 3, so when a route enters Z3 through a gate the SSH lives
+    // on the Z2 side of that gate (a = the gate, b = the first in-Z3 anchor).
+    if (r.sshOutward && a && b) {
+      let dx = a.x-b.x, dy = a.y-b.y; const l = Math.hypot(dx,dy)||1;
+      let cx = a.x + (dx/l)*2.4, cy = a.y + (dy/l)*2.4;
+      if (off) { cx += (-dy/l)*off; cy += (dx/l)*off; }
+      return { x: cx, y: cy };
+    }
     let cx = (a.x+b.x)/2, cy = (a.y+b.y)/2;
     if (off) { let dx=b.x-a.x, dy=b.y-a.y; const l=Math.hypot(dx,dy)||1; cx += (-dy/l)*off; cy += (dx/l)*off; }
     return { x: cx, y: cy };
