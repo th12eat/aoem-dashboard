@@ -620,11 +620,11 @@ let MAP_ROUTES = { planned: [], actual: [] };
 // Planned node ownership, derived from the planned routes: each node a route
 // touches is "owned" by that route's alliance on the plan map. Overrides pin
 // down the intended split where routes overlap or a claim should be narrowed:
-//   AGC owns nothing; REU owns only Tower 1 (its other route nodes stay neutral).
+//   AGC owns nothing; REU owns Vengeance Fort + Tower 1 (but not city_crocodile).
 const PLAN_OWNER_OVERRIDE = {
   ruler_fort: "WC1", city_bull: "WC1", tower_2: "WC1",   // WC1+AGC overlap → WC1
   city_crocodile: "WC1",                                  // WC1+REU overlap → WC1
-  vengeance_fort: null, tower_1: "REU",                   // REU limited to Tower 1
+  vengeance_fort: "REU", tower_1: "REU",                  // REU: Vengeance Fort + Tower 1
 };
 function planOwners() {
   const owners = {};
