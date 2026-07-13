@@ -636,6 +636,7 @@ function allianceFromMap(tag) {
 function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
   const [now, setNow] = React.useState(() => Date.now());
   const [cursor, setCursor] = React.useState(null); // {x,y} px within wrapper, for the tag tooltip
+  const [hoverNode, setHoverNode] = React.useState(null); // node id under the cursor (enlarge + white ring)
   const wrapRef = React.useRef(null);
   React.useEffect(() => { const id = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(id); }, []);
   const hoverOn = (tag, e) => { if (!pinned) setHl(tag); if (e && wrapRef.current) { const r = wrapRef.current.getBoundingClientRect(); setCursor({ x: e.clientX - r.left, y: e.clientY - r.top, tag }); } };
@@ -741,20 +742,30 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
           else fill = active ? NEUTRAL : dimHex(NEUTRAL, 0.42);
           const status = st.occupant ? (st.occupant + (connected ? " · connected" : " · disconnected (no buff)")) : (active ? "unoccupied" : "inactive (not yet capturable)");
           const fade = occ ? (hl && occ !== hl) : (!!hl && !focus);   // dim only for alliance-highlight, not for focus
-          const hot = hl && occ === hl;
+          const over = hoverNode === id;                              // cursor directly over this node
+          const hot = (hl && occ === hl) || over;                    // enlarge + white ring on hover OR alliance-highlight
           const siege = !!st.siege && !!occ;
           const tip = n.label + (n.info ? " — " + n.info : "") + " · " + status + (siege ? " · UNDER SIEGE" : "");
+          // occupied nodes also drive the alliance-highlight pill; every node gets
+          // the local hover indicator (enlarge + white ring).
+          const enter = (e) => { setHoverNode(id); if (occ) hoverOn(occ, e); };
+          const move  = (e) => { if (occ) hoverOn(occ, e); };
+          const leave = () => { setHoverNode(null); if (occ) hoverOff(); };
           return (
             <circle key={id} className={siege && !fade ? "node-siege" : undefined} cx={n.x} cy={n.y} r={(n.type === "aaru" ? 1.6 : 1.0) * (hot ? 1.5 : 1)} fill={fill} stroke={hot ? "#fff" : (siege ? "#ef4444" : "#0a0c14")} strokeWidth={hot ? 0.5 : 0.3} opacity={fade ? 0.18 : 1}
               style={{ cursor: occ ? "pointer" : "default" }}
-              onMouseEnter={occ ? (e) => hoverOn(occ, e) : undefined} onMouseMove={occ ? (e) => hoverOn(occ, e) : undefined} onMouseLeave={occ ? hoverOff : undefined}>
+              onMouseEnter={enter} onMouseMove={move} onMouseLeave={leave}>
               <title>{tip}</title>
             </circle>
           );
-        }) : Object.entries(MAP_NODES).map(([id, n]) => (
-          n.type === "aaru_corner" ? null :
-          <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={NEUTRAL} stroke="#0a0c14" strokeWidth="0.3" opacity="0.55"><title>{n.label}{n.info ? " — " + n.info : ""}</title></circle>
-        ))}
+        }) : Object.entries(MAP_NODES).map(([id, n]) => {
+          if (n.type === "aaru_corner") return null;
+          const over = hoverNode === id;
+          return (
+          <circle key={id} cx={n.x} cy={n.y} r={(n.type === "aaru" ? 1.6 : 1.0) * (over ? 1.5 : 1)} fill={NEUTRAL} stroke={over ? "#fff" : "#0a0c14"} strokeWidth={over ? 0.5 : 0.3} opacity="0.55" style={{ cursor: "default" }}
+            onMouseEnter={() => setHoverNode(id)} onMouseLeave={() => setHoverNode(null)}><title>{n.label}{n.info ? " — " + n.info : ""}</title></circle>
+          );
+        })}
         {/* server-crest hit-areas (live only): click a corner badge to break out
             that server's alliances into distinct shades; click again to toggle off */}
         {mode === "live" ? SERVER_BADGES.map(b => {
