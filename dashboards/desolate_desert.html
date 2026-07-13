@@ -754,11 +754,9 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
             that server's alliances into distinct shades; click again to toggle off */}
         {mode === "live" ? SERVER_BADGES.map(b => {
           const on = focus === b.srv;
-          const c = serverColor(b.srv);
           return (
             <circle key={b.srv} cx={b.x} cy={b.y} r="6.5"
-              fill={on ? "rgba(255,255,255,0.05)" : "transparent"}
-              stroke={on ? c.hex : "transparent"} strokeWidth={on ? 0.7 : 0}
+              fill="transparent" stroke="none"
               style={{ cursor: "pointer" }}
               onClick={() => setFocus(on ? null : b.srv)}>
               <title>{b.srv}{on ? " — focused (click to reset)" : " — click to highlight this server's alliances"}</title>
