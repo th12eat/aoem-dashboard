@@ -133,6 +133,26 @@ function allianceColor(tag, mode) {
   return set[tag];
 }
 
+// Per-server alliance shade families. Normally opponents render as one flat
+// server color; when a server badge is focused on the map, that server's
+// alliances break out into these distinct shades (the way our Era 8 four do).
+// Key order = display order in the map key. Era 8 mirrors ALLIANCE_COLORS.
+const SERVER_ALLIANCE_SHADES = {
+  "Era 8":    { WC1: "#a855f7", MyT: "#f472b6", REU: "#ec4899", AGC: "#c4b5fd" },
+  "Era #019": { XIX: "#4a7fc0", KNY: "#8ab4e8", PBJ: "#2f5a8f", DXR: "#b3d1f2" },
+  "Era #014": { X14: "#d4934a", "Ȼ14": "#ecb673", GnG: "#a3691f", L14: "#f5d3a6" },
+  "Era #023": { LOD: "#4f9d70", boi: "#82c99e", R65: "#327c53", ILF: "#aadcc0" },
+};
+// Server badge hit-areas — positions match the four crests baked into the
+// minimap background (N/W/E/S corners of the diamond). Clicking focuses that
+// server's alliances. Live mode only (plan has no opponents).
+const SERVER_BADGES = [
+  { srv: "Era #019", x: 48.5, y: 10.5 },  // north — blue snake
+  { srv: "Era #014", x: 10.5, y: 49.5 },  // west  — orange lion
+  { srv: "Era 8",    x: 89.0, y: 49.5 },  // east  — purple phoenix
+  { srv: "Era #023", x: 48.5, y: 89.0 },  // south — teal
+];
+
 const SCHEDULE = [
   { day: 1, date: "2026-07-06", title: "Map Opens", desc: "Relocate to Waste Land. Construct alliance buildings (Stronghold, flags, gathering center, supply depot).", zone: "Waste Land" },
   { day: 2, date: "2026-07-07", title: "Mountain Forts & Pillar Cities", desc: "Waste Land Mountain Forts/Docks and Pillar Cities accessible. Occupy Forts to enter Forbidden Zone. Pillar Cities earn Placer Gold + Desert Points/min.", zone: "Waste Land → Forbidden Zone" },
@@ -531,10 +551,16 @@ const ALLIANCE_SERVER = {
 };
 const OUR_ALLIANCES = ["WC1", "REU", "AGC", "MyT"];
 // Owner → line/dot color. Our 4 alliances get distinct colors (per mode); every
-// opponent alliance uses its muted server-corner color (we don't break them out).
-function ownerColor(owner, mode) {
-  if (ALLIANCE_SERVER[owner] === "Era 8") return allianceColor(owner, mode);
+// opponent alliance normally uses its muted server-corner color. When `focus`
+// (a server name) is set and this owner belongs to it, break out into the
+// per-alliance shade family so that server's alliances become distinguishable.
+function ownerColor(owner, mode, focus) {
   const srv = ALLIANCE_SERVER[owner] || owner;
+  if (focus && srv === focus) {
+    const shade = (SERVER_ALLIANCE_SHADES[srv] || {})[owner];
+    if (shade) return shade;
+  }
+  if (srv === "Era 8") return allianceColor(owner, mode);
   return serverColor(srv).hex;
 }
 // Placer-gold /h a node yields to whoever holds it (0 for towers/Aaru).
@@ -607,14 +633,20 @@ function allianceFromMap(tag) {
 
 // Minimap + SVG overlay. mode: "live" (actual state) or "plan" (original plan).
 // hl/setHl: highlighted alliance tag (shared with the Node Control table).
-function MapOverlay({ mode = "live", hl, setHl, pinned }) {
+function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
   const [now, setNow] = React.useState(() => Date.now());
   const [cursor, setCursor] = React.useState(null); // {x,y} px within wrapper, for the tag tooltip
   const wrapRef = React.useRef(null);
   React.useEffect(() => { const id = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(id); }, []);
   const hoverOn = (tag, e) => { if (!pinned) setHl(tag); if (e && wrapRef.current) { const r = wrapRef.current.getBoundingClientRect(); setCursor({ x: e.clientX - r.left, y: e.clientY - r.top, tag }); } };
   const hoverOff = () => { if (!pinned) setHl(null); setCursor(null); };
-  const dimmed = (owner) => hl && owner !== hl;   // when a highlight is active, everything else fades
+  // Server focus (live only): only the focused server's owners stay lit.
+  const srvOf = (owner) => ALLIANCE_SERVER[owner] || owner;
+  const outOfFocus = (owner) => focus && srvOf(owner) !== focus;
+  // when a highlight is active, everything else fades; a focused server also
+  // fades all non-member owners.
+  const dimmed = (owner) => (hl && owner !== hl) || outOfFocus(owner);
+  const col = (owner) => ownerColor(owner, mode, focus);   // focus-aware color
   const pt = (id) => { const n = MAP_NODES[id]; return n ? { x: n.x, y: n.y } : null; };
   const NEUTRAL = "#d9dde6";
   const routes = (mode === "plan" ? MAP_ROUTES.planned : MAP_ROUTES.actual) || [];
@@ -676,7 +708,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
         {/* routes: solid=connected · dimmed=disconnected · dashed=partial (building) · plan=solid */}
         {routes.map((r, i) => {
           const off = routeOffset[i];
-          const base = ownerColor(r.owner, mode);
+          const base = col(r.owner);
           let stroke = base, opacity = 0.95, dash = null, w = 0.8, building = false;
           if (mode !== "plan") {
             if (r.building) { building = true; opacity = 0.95; }               // growing toward connection (animated)
@@ -691,7 +723,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
         {/* SSH markers (diamond; pulsing red ring when under siege) */}
         {routes.map((r, i) => { if (!r.ssh) return null; const s = sshPoint(r, routeOffset[i]); if (!s) return null;
           const fade = dimmed(r.owner);
-          return <rect key={"s"+i} className={r.sshSiege && !fade ? "node-siege" : undefined} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={ownerColor(r.owner, mode)} stroke={r.sshSiege ? "#ef4444" : "#0a0c14"} strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`} opacity={fade ? 0.15 : 1} style={{ pointerEvents: "none" }}><title>Sub-Stronghold ({r.owner}){r.sshSiege ? " · UNDER SIEGE" : ""}</title></rect>;
+          return <rect key={"s"+i} className={r.sshSiege && !fade ? "node-siege" : undefined} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={col(r.owner)} stroke={r.sshSiege ? "#ef4444" : "#0a0c14"} strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`} opacity={fade ? 0.15 : 1} style={{ pointerEvents: "none" }}><title>Sub-Stronghold ({r.owner}){r.sshSiege ? " · UNDER SIEGE" : ""}</title></rect>;
         })}
         {/* nodes */}
         {mode === "live" ? Object.entries(MAP_NODES).map(([id, n]) => {
@@ -701,7 +733,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
           const occ = st.occupant;
           const connected = st.connected != null ? st.connected : true;
           let fill;
-          if (occ) fill = connected ? ownerColor(occ, mode) : dimHex(ownerColor(occ, mode), 0.42);
+          if (occ) fill = connected ? col(occ) : dimHex(col(occ), 0.42);
           else fill = active ? NEUTRAL : dimHex(NEUTRAL, 0.42);
           const status = occ ? (occ + (connected ? " · connected" : " · disconnected (no buff)")) : (active ? "unoccupied" : "inactive (not yet capturable)");
           const fade = occ ? dimmed(occ) : !!hl;             // dim unowned nodes too when a highlight is active
@@ -718,10 +750,25 @@ function MapOverlay({ mode = "live", hl, setHl, pinned }) {
           n.type === "aaru_corner" ? null :
           <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={NEUTRAL} stroke="#0a0c14" strokeWidth="0.3" opacity="0.55" style={{ pointerEvents: "none" }}><title>{n.label}</title></circle>
         ))}
+        {/* server-crest hit-areas (live only): click a corner badge to break out
+            that server's alliances into distinct shades; click again to toggle off */}
+        {mode === "live" ? SERVER_BADGES.map(b => {
+          const on = focus === b.srv;
+          const c = serverColor(b.srv);
+          return (
+            <circle key={b.srv} cx={b.x} cy={b.y} r="6.5"
+              fill={on ? "rgba(255,255,255,0.05)" : "transparent"}
+              stroke={on ? c.hex : "transparent"} strokeWidth={on ? 0.7 : 0}
+              style={{ cursor: "pointer" }}
+              onClick={() => setFocus(on ? null : b.srv)}>
+              <title>{b.srv}{on ? " — focused (click to reset)" : " — click to highlight this server's alliances"}</title>
+            </circle>
+          );
+        }) : null}
       </svg>
       {/* floating alliance tag near cursor / pinned */}
       {hl ? (
-        <div style={{ position: "absolute", left: (cursor ? cursor.x + 12 : 8), top: (cursor ? cursor.y + 12 : 8), pointerEvents: "none", background: ownerColor(hl, mode), color: "#fff", fontWeight: 800, fontSize: "12px", letterSpacing: "0.5px", padding: "3px 10px", borderRadius: "999px", border: "1px solid rgba(255,255,255,0.65)", textShadow: "0 1px 2px rgba(0,0,0,0.7)", boxShadow: "0 1px 5px rgba(0,0,0,0.6)", whiteSpace: "nowrap", zIndex: 5 }}>{hl}</div>
+        <div style={{ position: "absolute", left: (cursor ? cursor.x + 12 : 8), top: (cursor ? cursor.y + 12 : 8), pointerEvents: "none", background: col(hl), color: "#fff", fontWeight: 800, fontSize: "12px", letterSpacing: "0.5px", padding: "3px 10px", borderRadius: "999px", border: "1px solid rgba(255,255,255,0.65)", textShadow: "0 1px 2px rgba(0,0,0,0.7)", boxShadow: "0 1px 5px rgba(0,0,0,0.6)", whiteSpace: "nowrap", zIndex: 5 }}>{hl}</div>
       ) : null}
     </div>
   );
@@ -803,6 +850,11 @@ function OverviewTab({ state, setState }) {
   const [mapMode, setMapMode] = React.useState("live");
   const [hl, setHl] = React.useState(null);         // highlighted alliance tag
   const [pinned, setPinned] = React.useState(false); // pinned via table click
+  const [focus, setFocusRaw] = React.useState(null); // focused server (badge click)
+  // clearing focus also clears any highlight scoped to that server
+  const setFocus = (srv) => { setFocusRaw(srv); setHl(null); };
+  // leaving live mode drops focus (plan map has no opponents)
+  React.useEffect(() => { if (mapMode !== "live") setFocusRaw(null); }, [mapMode]);
 
   return (
     <div>
@@ -819,7 +871,32 @@ function OverviewTab({ state, setState }) {
             ))}
           </div>
         </div>
-        <MapOverlay mode={mapMode} hl={hl} setHl={setHl} pinned={pinned} />
+        <MapOverlay mode={mapMode} hl={hl} setHl={setHl} pinned={pinned} focus={focus} setFocus={setFocus} />
+        {/* Alliance color key. Default = our Era 8 four. When a server badge is
+            focused (live), swap to that server's alliance→shade breakout and hide
+            the opponent-server row (only that server is visible on the map). */}
+        {focus ? (() => {
+          const srvLbl = focus === "Era 8" ? "#008" : focus.replace("Era ", "");
+          const shades = SERVER_ALLIANCE_SHADES[focus] || {};
+          return (
+            <React.Fragment>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginTop: "12px", fontSize: "11px", color: "#94a3b8" }}>
+                <span style={{ width: "10px", height: "10px", borderRadius: "3px", background: serverColor(focus).hex, display: "inline-block" }} />
+                <span style={{ fontWeight: 700, color: "#e8eaf0" }}>{focus}</span> alliances
+                <button onClick={() => setFocus(null)} style={{ border: "1px solid #334155", background: "transparent", color: "#94a3b8", cursor: "pointer", borderRadius: "999px", padding: "1px 9px", fontSize: "10px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", fontFamily: "'Barlow Condensed', sans-serif" }}>reset</button>
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "8px" }}>
+                {Object.keys(shades).map(tag => (
+                  <div key={tag} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ width: "14px", height: "14px", borderRadius: "3px", background: shades[tag], display: "inline-block" }} />
+                    <span style={{ fontSize: "12px", fontWeight: 700, color: "#e8eaf0" }}>{tag}</span>
+                  </div>
+                ))}
+              </div>
+            </React.Fragment>
+          );
+        })() : (
+        <React.Fragment>
         {/* Era 8 alliance color key */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "12px" }}>
           {EVENT_CONFIG.ourAlliances.map(tag => (
@@ -833,13 +910,15 @@ function OverviewTab({ state, setState }) {
         {mapMode === "live" ? (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "8px", paddingTop: "8px", borderTop: "1px solid #1e2435" }}>
           {[["Era #019","#019"],["Era #014","#014"],["Era #023","#023"]].map(([srv,lbl]) => (
-            <div key={srv} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <div key={srv} onClick={() => setFocus(srv)} title={"Click to break out " + srv + "'s alliances"} style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
               <span style={{ width: "14px", height: "14px", borderRadius: "3px", background: serverColor(srv).hex, display: "inline-block" }} />
               <span style={{ fontSize: "12px", fontWeight: 600, color: "#94a3b8" }}>{lbl}</span>
             </div>
           ))}
         </div>
         ) : null}
+        </React.Fragment>
+        )}
         {/* Symbol/status key */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "8px", paddingTop: "8px", borderTop: "1px solid #1e2435", fontSize: "11px", color: "#94a3b8" }}>
           <span style={{ display: "flex", alignItems: "center", gap: "6px" }}><span style={{ width: "10px", height: "10px", background: "#94a3b8", transform: "rotate(45deg)", display: "inline-block" }} /> Sub-Stronghold</span>
