@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "snapshots": [
+    {
+      "eventId": "desolate-2026-07-13",
+      "event": "Desolate Desert",
+      "date": "2026-07-13",
+      "season": "Stellar Dynasty",
+      "result": "Loss",
+      "opponent": "Era #019 / #014 / #023",
+      "file": "desolate-2026-07-13.json"
+    }
+  ]
+}

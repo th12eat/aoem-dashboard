@@ -1,0 +1,1293 @@
+{
+  "schemaVersion": 2,
+  "eventConfig": {
+    "eventStart": "2026-07-06",
+    "eventEnd": "2026-07-13",
+    "matchingStart": "2026-07-03",
+    "servers": [
+      "Era 8",
+      "Era #023",
+      "Era #014",
+      "Era #019"
+    ],
+    "ourServer": "Era 8",
+    "ourAlliances": [
+      "WC1",
+      "MyT",
+      "REU",
+      "AGC"
+    ],
+    "season": "Stellar Dynasty — final event of the season (top-3 season reward on the line)",
+    "ourSdRank": 22,
+    "mapFormat": "Map splits in phases: quarters → halves → full. We share our HALF (left/right eyes) with Era #023, making #023 the highest-priority diplomacy.",
+    "notes": "We are heavily outmatched. Survival plan: appease Era #019 (SD rank 2, must-win for their top-3 reward) and make peace with Era #023 (shared half).",
+    "aaruResult": "Era #019 won · Aaru fight 19:00 UTC Day 7"
+  },
+  "kingdomPoints": {
+    "era8": "25.01B",
+    "era023": "39.41B",
+    "era014": "84.39B",
+    "era019": "123.44B",
+    "lastUpdated": "2026-07-13 — Final · Era #019 won · Aaru fight 19:00 UTC"
+  },
+  "kingdomScoreboard": [
+    {
+      "rank": 1,
+      "server": "Era #019",
+      "points": "123,443,439,840"
+    },
+    {
+      "rank": 2,
+      "server": "Era #014",
+      "points": "84,389,710,304"
+    },
+    {
+      "rank": 3,
+      "server": "Era #023",
+      "points": "39,408,429,255"
+    },
+    {
+      "rank": 4,
+      "server": "Era 8",
+      "points": "25,005,848,847"
+    }
+  ],
+  "allianceScoreboard": [
+    {
+      "rank": 1,
+      "tag": "X14",
+      "name": "Sakura",
+      "server": "Era #014",
+      "points": "26,277,947,313"
+    },
+    {
+      "rank": 2,
+      "tag": "XIX",
+      "name": "LeGENDZ",
+      "server": "Era #019",
+      "points": "25,419,561,031"
+    },
+    {
+      "rank": 3,
+      "tag": "KNY",
+      "name": "DemonSlayer",
+      "server": "Era #019",
+      "points": "20,585,012,101"
+    },
+    {
+      "rank": 4,
+      "tag": "LOD",
+      "name": "LegionOfDonuts",
+      "server": "Era #023",
+      "points": "15,512,855,157"
+    },
+    {
+      "rank": 5,
+      "tag": "Ȼ14",
+      "name": "LXCelestials",
+      "server": "Era #014",
+      "points": "13,787,383,354"
+    },
+    {
+      "rank": 6,
+      "tag": "GnG",
+      "name": "GANGSTA",
+      "server": "Era #014",
+      "points": "11,797,575,306"
+    },
+    {
+      "rank": 7,
+      "tag": "eRa",
+      "name": "WorldClass",
+      "server": "Era 8",
+      "points": "9,915,484,792"
+    },
+    {
+      "rank": 8,
+      "tag": "boi",
+      "name": "Jericho",
+      "server": "Era #023",
+      "points": "4,138,155,745"
+    },
+    {
+      "rank": 9,
+      "tag": "DXR",
+      "name": "DefiantRebels",
+      "server": "Era #019",
+      "points": "3,536,167,052"
+    },
+    {
+      "rank": 10,
+      "tag": "PBJ",
+      "name": "Reiwa令和",
+      "server": "Era #019",
+      "points": "3,343,467,317"
+    }
+  ],
+  "alliancePoints": [
+    {
+      "tag": "WC1",
+      "points": "14,876,350,313"
+    },
+    {
+      "tag": "REU",
+      "points": "5,188,725,210"
+    },
+    {
+      "tag": "MyT",
+      "points": "4,370,107,803"
+    },
+    {
+      "tag": "AGC",
+      "points": "2,968,267,267"
+    }
+  ],
+  "placerGold": {
+    "cap": 500000,
+    "flagZone1Cost": 5000,
+    "note": "Stronghold free · Resource Center 1k · Z1 flag 5k · Z2 flag 50k (for flags ≤10th; higher tiers TBD). Gates/docks Z1→Z2 give 100k first-capture + 3k/h; Pillar City 300k + 8k/h (see Node Yields). Balances are estimates — no live panel today; /h derived from current holdings.",
+    "nodes": [
+      {
+        "key": "gate_z1z2",
+        "label": "Gate / Dock — Z1→Z2",
+        "firstBonus": 100000,
+        "perHour": 3000
+      },
+      {
+        "key": "gate_eyes",
+        "label": "Gate / Dock — Left/Right Eye (Z2→Z2)",
+        "firstBonus": 150000,
+        "perHour": 4000
+      },
+      {
+        "key": "gate_z2z3",
+        "label": "Gate / Dock — Z2→Z3",
+        "firstBonus": 400000,
+        "perHour": 8000
+      },
+      {
+        "key": "pillar_city",
+        "label": "Pillar City",
+        "firstBonus": 300000,
+        "perHour": 8000
+      },
+      {
+        "key": "aaru_palace",
+        "label": "Aaru Palace",
+        "firstBonus": 0,
+        "perHour": 0
+      },
+      {
+        "key": "tower_rotation",
+        "label": "Tower of Rotation",
+        "firstBonus": 0,
+        "perHour": 0
+      }
+    ],
+    "alliances": [
+      {
+        "tag": "WC1",
+        "current": 112000,
+        "perHour": 3000,
+        "gates": 1,
+        "pillarCities": 0,
+        "pillarNames": [],
+        "flags": 18,
+        "flagsBuilding": 1,
+        "confirmed": false
+      },
+      {
+        "tag": "REU",
+        "current": null,
+        "perHour": 3000,
+        "gates": 1,
+        "pillarCities": 0,
+        "pillarNames": [],
+        "flags": 18,
+        "flagsBuilding": 0,
+        "confirmed": false
+      },
+      {
+        "tag": "MyT",
+        "current": null,
+        "perHour": 3000,
+        "gates": 1,
+        "pillarCities": 0,
+        "pillarNames": [],
+        "flags": 20,
+        "flagsBuilding": 0,
+        "confirmed": false
+      },
+      {
+        "tag": "AGC",
+        "current": null,
+        "perHour": 3000,
+        "gates": 1,
+        "pillarCities": 0,
+        "pillarNames": [],
+        "flags": 8,
+        "flagsBuilding": 1,
+        "confirmed": false
+      }
+    ],
+    "flagZone2Cost": 50000,
+    "lastUpdated": "2026-07-10 — Day 5. AGC took a WC1 Z1 gate (WC1 -1 gate, AGC +1)."
+  },
+  "diplomacy": [
+    {
+      "id": 1,
+      "server": "Era #023",
+      "alliance": "TBD",
+      "relation": "ally",
+      "notes": "Shared half (left/right eyes) — highest-priority peace. Beat us in TME invasion recently; SD rank 13."
+    },
+    {
+      "id": 2,
+      "server": "Era #019",
+      "alliance": "TBD",
+      "relation": "ally",
+      "notes": "SD rank 2 — must-win for their top-3 season reward. Appease/feed to survive."
+    },
+    {
+      "id": 3,
+      "server": "Era #014",
+      "alliance": "TBD",
+      "relation": "ally",
+      "notes": "SD rank 11. Maintain peace."
+    }
+  ],
+  "contacts": [],
+  "research": {
+    "ours": {
+      "server": "Era 8",
+      "sdRank": 22,
+      "alliances": [
+        {
+          "tag": "WC1",
+          "name": "WorldClass",
+          "power": "20,515,426,655",
+          "merits": "2,292,293,926"
+        },
+        {
+          "tag": "REU",
+          "name": "Reunions",
+          "power": "13,014,648,637",
+          "merits": "908,084,687"
+        },
+        {
+          "tag": "AGC",
+          "name": "AuroraGodCourt",
+          "power": "11,708,772,196",
+          "merits": "190,509,577"
+        },
+        {
+          "tag": "MyT",
+          "name": "Mythic",
+          "power": "10,098,323,705",
+          "merits": "817,719,708"
+        }
+      ],
+      "players": [
+        {
+          "rank": 1,
+          "name": "時宗",
+          "alliance": "eRa",
+          "power": "444,383,956",
+          "merits": "329,925,951"
+        },
+        {
+          "rank": 2,
+          "name": "민트",
+          "alliance": "REU",
+          "power": "322,404,810",
+          "merits": "312,989,962"
+        },
+        {
+          "rank": 3,
+          "name": "Collin6666",
+          "alliance": "eRa",
+          "power": "325,175,233",
+          "merits": "67,315,532"
+        },
+        {
+          "rank": 4,
+          "name": "XnJinX",
+          "alliance": "eRa",
+          "power": "295,878,977",
+          "merits": "232,694,449"
+        },
+        {
+          "rank": 5,
+          "name": "Lumberjack",
+          "alliance": "eRa",
+          "power": "279,533,394",
+          "merits": "280,674,323"
+        },
+        {
+          "rank": 6,
+          "name": "Macklemore",
+          "alliance": "eRa",
+          "power": "276,345,366",
+          "merits": "112,447,537"
+        },
+        {
+          "rank": 7,
+          "name": "BloodYoda",
+          "alliance": "eRa",
+          "power": "264,234,509",
+          "merits": "233,725,546"
+        },
+        {
+          "rank": 8,
+          "name": "ibubu♣JP",
+          "alliance": "eRa",
+          "power": "252,994,124",
+          "merits": "81,410,101"
+        },
+        {
+          "rank": 9,
+          "name": "또라에몽",
+          "alliance": "REU",
+          "power": "242,481,518",
+          "merits": "41,444,177"
+        },
+        {
+          "rank": 10,
+          "name": "TommyTorpedo",
+          "alliance": "eRa",
+          "power": "234,105,338",
+          "merits": "133,829,845"
+        },
+        {
+          "rank": 11,
+          "name": "MuRageKT✕",
+          "alliance": "eRa",
+          "power": "231,598,235",
+          "merits": "161,519,425"
+        },
+        {
+          "rank": 12,
+          "name": "조은마난색기",
+          "alliance": "REU",
+          "power": "217,327,869",
+          "merits": "52,730,506"
+        }
+      ]
+    },
+    "opponents": [
+      {
+        "server": "Era #023",
+        "sdRank": 9,
+        "priority": "high",
+        "note": "Shared half (left/right eyes) — highest-priority peace. Beat us in TME invasion recently (we won prep, lost the fight).",
+        "alliances": [
+          {
+            "tag": "LOD",
+            "name": "LegionOfDonuts",
+            "power": "17,984,707,471",
+            "merits": "2,357,903,732"
+          },
+          {
+            "tag": "boi",
+            "name": "Jericho",
+            "power": "14,697,585,991",
+            "merits": "1,119,470,055"
+          },
+          {
+            "tag": "R65",
+            "name": "Royalz65",
+            "power": "12,913,707,927",
+            "merits": "1,836,762,329"
+          },
+          {
+            "tag": "ILF",
+            "name": "ImperiumLight",
+            "power": "5,343,793,020",
+            "merits": "127,498,313"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "Dax",
+            "alliance": "LOD",
+            "power": "323,204,627",
+            "merits": "284,863,835"
+          },
+          {
+            "rank": 2,
+            "name": "冰scorpio",
+            "alliance": "LOD",
+            "power": "306,781,371",
+            "merits": "57,478,858"
+          },
+          {
+            "rank": 3,
+            "name": "DiscoPeat",
+            "alliance": "LOD",
+            "power": "293,678,482",
+            "merits": "405,774,562"
+          },
+          {
+            "rank": 4,
+            "name": "Triple3Crown",
+            "alliance": "R65",
+            "power": "292,669,968",
+            "merits": "297,049,490"
+          },
+          {
+            "rank": 5,
+            "name": "KRMirae",
+            "alliance": "R65",
+            "power": "273,074,083",
+            "merits": "282,300,199"
+          },
+          {
+            "rank": 6,
+            "name": "Class",
+            "alliance": "LOD",
+            "power": "271,570,341",
+            "merits": "70,168,900"
+          },
+          {
+            "rank": 7,
+            "name": "ZoroMihawk",
+            "alliance": "R65",
+            "power": "266,462,680",
+            "merits": "202,440,142"
+          },
+          {
+            "rank": 8,
+            "name": "Hasumodo",
+            "alliance": "LOD",
+            "power": "229,850,008",
+            "merits": "146,501,739"
+          },
+          {
+            "rank": 9,
+            "name": "AgimiX",
+            "alliance": "LOD",
+            "power": "223,036,152",
+            "merits": "69,561,613"
+          },
+          {
+            "rank": 10,
+            "name": "白马义从FL",
+            "alliance": "R65",
+            "power": "218,212,119",
+            "merits": "63,809,855"
+          },
+          {
+            "rank": 11,
+            "name": "MonkeyDluffy",
+            "alliance": "LOD",
+            "power": "215,282,875",
+            "merits": "187,287,587"
+          },
+          {
+            "rank": 12,
+            "name": "JoreaOhJorea",
+            "alliance": "R65",
+            "power": "212,579,406",
+            "merits": "88,128,282"
+          }
+        ]
+      },
+      {
+        "server": "Era #014",
+        "sdRank": 15,
+        "priority": "medium",
+        "note": "SD rank 11. Maintain peace.",
+        "alliances": [
+          {
+            "tag": "X14",
+            "name": "Sakura",
+            "power": "25,748,711,715",
+            "merits": "3,451,059,618"
+          },
+          {
+            "tag": "Ȼ14",
+            "name": "LXCelestials",
+            "power": "22,344,670,496",
+            "merits": "2,496,374,711"
+          },
+          {
+            "tag": "GnG",
+            "name": "GANGSTA",
+            "power": "18,772,305,532",
+            "merits": "849,229,776"
+          },
+          {
+            "tag": "L14",
+            "name": "LegioXVulcanus",
+            "power": "12,444,072,418",
+            "merits": "167,379,852"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "8964Madmac",
+            "alliance": "X14",
+            "power": "548,813,610",
+            "merits": "659,321,045"
+          },
+          {
+            "rank": 2,
+            "name": "X|NASTY^E¹⁴",
+            "alliance": "X14",
+            "power": "482,364,979",
+            "merits": "162,359,308"
+          },
+          {
+            "rank": 3,
+            "name": "F27 ~ OoNoWinD",
+            "alliance": "X14",
+            "power": "460,627,871",
+            "merits": "267,738,851"
+          },
+          {
+            "rank": 4,
+            "name": "F5Skywalker",
+            "alliance": "X14",
+            "power": "434,265,906",
+            "merits": "614,851,021"
+          },
+          {
+            "rank": 5,
+            "name": "シロクロ",
+            "alliance": "GnG",
+            "power": "358,481,000",
+            "merits": "95,406,859"
+          },
+          {
+            "rank": 6,
+            "name": "F666灰骑士",
+            "alliance": "--",
+            "power": "346,227,944",
+            "merits": "100,347,169"
+          },
+          {
+            "rank": 7,
+            "name": "Lx Gioia^14",
+            "alliance": "Ȼ14",
+            "power": "331,454,421",
+            "merits": "463,548,843"
+          },
+          {
+            "rank": 8,
+            "name": "F1世界和平",
+            "alliance": "X14",
+            "power": "318,704,812",
+            "merits": "112,425,970"
+          },
+          {
+            "rank": 9,
+            "name": "Lx CEWOKE★",
+            "alliance": "Ȼ14",
+            "power": "310,953,775",
+            "merits": "234,269,139"
+          },
+          {
+            "rank": 10,
+            "name": "F9527MRBONE",
+            "alliance": "X14",
+            "power": "294,866,508",
+            "merits": "279,330,700"
+          },
+          {
+            "rank": 11,
+            "name": "WorkerB",
+            "alliance": "X14",
+            "power": "291,215,571",
+            "merits": "129,741,138"
+          },
+          {
+            "rank": 12,
+            "name": "ᴳⁿᴳ盧王❖煌",
+            "alliance": "X14",
+            "power": "288,127,862",
+            "merits": "95,479,860"
+          }
+        ]
+      },
+      {
+        "server": "Era #019",
+        "sdRank": 3,
+        "priority": "critical",
+        "note": "SD rank 2 — must-win for their top-3 season reward. Appease/feed to survive.",
+        "alliances": [
+          {
+            "tag": "XIX",
+            "name": "LeGENDZ",
+            "power": "26,591,382,447",
+            "merits": "4,709,235,462"
+          },
+          {
+            "tag": "KNY",
+            "name": "DemonSlayer",
+            "power": "24,746,002,630",
+            "merits": "5,956,987,202"
+          },
+          {
+            "tag": "PBJ",
+            "name": "Reiwa令和",
+            "power": "14,573,803,865",
+            "merits": "703,684,809"
+          },
+          {
+            "tag": "DXR",
+            "name": "DefiantRebels",
+            "power": "14,558,916,982",
+            "merits": "258,829,179"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "JJ^lx",
+            "alliance": "XIX",
+            "power": "628,608,746",
+            "merits": "671,791,910"
+          },
+          {
+            "rank": 2,
+            "name": "⇌scALp⇌¹⁹",
+            "alliance": "KNY",
+            "power": "489,486,762",
+            "merits": "496,132,301"
+          },
+          {
+            "rank": 3,
+            "name": "RiseNShine¹⁹",
+            "alliance": "KNY",
+            "power": "488,388,459",
+            "merits": "829,635,518"
+          },
+          {
+            "rank": 4,
+            "name": "Color賛",
+            "alliance": "XIX",
+            "power": "452,184,728",
+            "merits": "884,300,895"
+          },
+          {
+            "rank": 5,
+            "name": "xLui",
+            "alliance": "XIX",
+            "power": "421,984,987",
+            "merits": "403,724,285"
+          },
+          {
+            "rank": 6,
+            "name": "Jdub",
+            "alliance": "KNY",
+            "power": "416,906,363",
+            "merits": "712,549,968"
+          },
+          {
+            "rank": 7,
+            "name": "WarsW",
+            "alliance": "XIX",
+            "power": "414,616,165",
+            "merits": "152,119,361"
+          },
+          {
+            "rank": 8,
+            "name": "Guardian=",
+            "alliance": "XIX",
+            "power": "397,453,292",
+            "merits": "228,815,964"
+          },
+          {
+            "rank": 9,
+            "name": "KociTa",
+            "alliance": "KNY",
+            "power": "396,503,257",
+            "merits": "669,167,773"
+          },
+          {
+            "rank": 10,
+            "name": "TTSINC",
+            "alliance": "XIX",
+            "power": "346,699,784",
+            "merits": "318,024,233"
+          },
+          {
+            "rank": 11,
+            "name": "MOUNTAIN7",
+            "alliance": "KNY",
+            "power": "336,970,007",
+            "merits": "118,078,649"
+          },
+          {
+            "rank": 12,
+            "name": "LU6EELMO^lx",
+            "alliance": "XIX",
+            "power": "321,512,180",
+            "merits": "449,607,934"
+          }
+        ]
+      }
+    ]
+  },
+  "allianceBuffs": {
+    "WC1": [],
+    "REU": [],
+    "MyT": [],
+    "AGC": []
+  },
+  "mapState": {
+    "north_wind_fort": {
+      "occupant": "AGC",
+      "connected": true
+    },
+    "soaring_fort": {
+      "occupant": "MyT",
+      "connected": true
+    },
+    "vengeance_fort": {
+      "occupant": "REU",
+      "connected": true
+    },
+    "ruler_fort": {
+      "occupant": "WC1",
+      "connected": true
+    },
+    "gate_moonfall": {
+      "occupant": "KNY",
+      "connected": false
+    },
+    "gate_sunshine": {
+      "occupant": "PBJ",
+      "connected": false
+    },
+    "city_hippo": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "tower_1": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "city_crocodile": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "city_bull": {
+      "occupant": "KNY",
+      "connected": false
+    },
+    "tower_2": {
+      "occupant": "KNY",
+      "connected": false
+    },
+    "city_lion": {
+      "occupant": "KNY",
+      "connected": false
+    },
+    "city_cat": {
+      "occupant": "KNY",
+      "connected": false
+    },
+    "tower_3": {
+      "occupant": "GnG",
+      "connected": false
+    },
+    "dawn_fort": {
+      "occupant": "LOD",
+      "connected": false
+    },
+    "duskfire_dock": {
+      "occupant": "boi",
+      "connected": true
+    },
+    "lightbearer_dock": {
+      "occupant": "LOD",
+      "connected": true
+    },
+    "blazing_fort": {
+      "occupant": "LOD",
+      "connected": false
+    },
+    "city_scorpion": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "gate_grace": {
+      "occupant": "GnG",
+      "connected": true
+    },
+    "gate_fury": {
+      "occupant": "X14",
+      "connected": false
+    },
+    "mourning_fort": {
+      "occupant": "X14",
+      "connected": false
+    },
+    "balance_fort": {
+      "occupant": "GnG",
+      "connected": true
+    },
+    "immortality_fort": {
+      "occupant": "Ȼ14",
+      "connected": true
+    },
+    "judgement_fort": {
+      "occupant": "X14",
+      "connected": true
+    },
+    "city_vulture": {
+      "occupant": "Ȼ14",
+      "connected": true
+    },
+    "tower_4": {
+      "occupant": "Ȼ14",
+      "connected": true
+    },
+    "city_goose": {
+      "occupant": "X14",
+      "connected": false
+    },
+    "city_ram": {
+      "occupant": "XIX",
+      "connected": true
+    },
+    "tower_5": {
+      "occupant": "XIX",
+      "connected": true
+    },
+    "city_leopard": {
+      "occupant": "XIX",
+      "connected": true
+    },
+    "jade_eye_fort": {
+      "occupant": "XIX",
+      "connected": true
+    },
+    "city_jackal": {
+      "occupant": "XIX",
+      "connected": false
+    },
+    "majesty_dock": {
+      "occupant": "DXR",
+      "connected": true
+    },
+    "tower_6": {
+      "occupant": "DXR",
+      "connected": true
+    },
+    "city_ibis": {
+      "occupant": "PBJ",
+      "connected": false
+    },
+    "kingsguard_dock": {
+      "occupant": "XIX",
+      "connected": false
+    },
+    "crown_fort": {
+      "occupant": "PBJ",
+      "connected": false
+    },
+    "gate_death": {
+      "occupant": "PBJ",
+      "connected": true
+    },
+    "gate_chaos": {
+      "occupant": "DXR",
+      "connected": true
+    },
+    "gate_windrest": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "gate_primal_water": {
+      "occupant": "KNY",
+      "connected": true
+    },
+    "gate_dawn_earth": {
+      "occupant": "KNY",
+      "connected": false
+    },
+    "gate_abundance": {
+      "occupant": "XIX",
+      "connected": false
+    },
+    "gate_life": {
+      "occupant": "XIX",
+      "connected": true
+    },
+    "aaru": {
+      "occupant": "XIX",
+      "connected": true
+    },
+    "gate_azure_sky": {
+      "occupant": "LOD",
+      "connected": true
+    }
+  },
+  "mapRoutes": {
+    "actual": [
+      {
+        "owner": "KNY",
+        "path": [
+          "city_hippo",
+          "tower_1"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "tower_1",
+          "gate_windrest"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "tower_1",
+          "city_crocodile"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "GnG",
+        "path": [
+          "city_scorpion",
+          "gate_primal_water"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "GnG",
+        "path": [
+          "gate_grace",
+          "city_scorpion"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "Ȼ14",
+        "path": [
+          "city_vulture",
+          "tower_4"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "Ȼ14",
+        "path": [
+          "tower_4",
+          "gate_life"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "city_goose",
+          "gate_life"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "tower_5",
+          "city_leopard"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "city_leopard",
+          "jade_eye_fort"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "DXR",
+        "path": [
+          "majesty_dock",
+          "city_jackal"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "DXR",
+        "path": [
+          "majesty_dock",
+          "tower_6"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "DXR",
+        "path": [
+          "city_jackal",
+          "gate_chaos"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "PBJ",
+        "path": [
+          "gate_death",
+          "aaru_n",
+          "aaru_e"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshAt": 0,
+        "sshOutward": true
+      },
+      {
+        "owner": "DXR",
+        "path": [
+          "gate_chaos",
+          "aaru_n",
+          "aaru_w"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshAt": 0,
+        "sshOutward": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "gate_windrest",
+          "aaru_e",
+          "aaru_s",
+          "gate_primal_water"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "KNY",
+        "path": [
+          "gate_primal_water",
+          "city_scorpion"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Ȼ14",
+        "path": [
+          "immortality_fort",
+          "tower_4"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "gate_life",
+          "aaru_w",
+          "aaru_s"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "XIX",
+        "path": [
+          "tower_5",
+          "city_ram"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "LOD",
+        "path": [
+          "gate_azure_sky",
+          "aaru_s"
+        ],
+        "ssh": true,
+        "connected": true,
+        "building": true,
+        "sshAt": 0,
+        "sshOutward": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "ruler_fort",
+          "city_bull"
+        ],
+        "ssh": false,
+        "connected": true
+      }
+    ],
+    "planned": [
+      {
+        "owner": "WC1",
+        "path": [
+          "north_wind_fort",
+          "gate_sunshine"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "ruler_fort",
+          "city_bull",
+          "tower_2"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "city_bull",
+          "city_crocodile",
+          "gate_dawn_earth"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "AGC",
+        "path": [
+          "ruler_fort",
+          "city_bull",
+          "tower_2"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "vengeance_fort",
+          "tower_1",
+          "city_crocodile"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "MyT",
+        "path": [
+          "soaring_fort",
+          "city_hippo",
+          "tower_1"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "MyT",
+        "path": [
+          "city_hippo",
+          "gate_windrest"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "MyT",
+        "path": [
+          "city_hippo",
+          "gate_moonfall"
+        ],
+        "ssh": false,
+        "connected": true
+      }
+    ]
+  },
+  "archive": {
+    "event": "Desolate Desert",
+    "eventId": "desolate-2026-07-13",
+    "season": "Stellar Dynasty",
+    "eventStart": "2026-07-06",
+    "eventEnd": "2026-07-13",
+    "ourServer": "Era 8",
+    "result": "Loss",
+    "ourKingdomRank": 4,
+    "kingdomWinner": "Era #019",
+    "aaruWinner": "Era #019",
+    "aaruTime": "19:00 - 23:00 UTC",
+    "aaruPalaceOccupant": "XIX",
+    "ourSdRank": 22,
+    "archivedAt": "2026-07-13",
+    "note": "Multi-kingdom Desert Star (4 servers). We were heavily outmatched; survival plan was appease Era #019 + peace with Era #023. Downloads folder day-labels are offset ~1 day vs in-game day."
+  },
+  "timeline": [
+    {
+      "date": "2026-07-10",
+      "day": 5,
+      "label": "Day 5",
+      "kingdom": {
+        "Era #019": "62,469,714,567",
+        "Era #014": "62,371,118,798",
+        "Era #023": "30,170,322,077",
+        "Era 8": "19,510,086,796"
+      },
+      "ours": {
+        "WC1": "11,868,319,387",
+        "REU": "3,943,805,199",
+        "MyT": "3,263,976,953",
+        "AGC": "2,079,267,958"
+      }
+    },
+    {
+      "date": "2026-07-11",
+      "day": 6,
+      "label": "Day 6",
+      "kingdom": {
+        "Era #019": "81,518,288,499",
+        "Era #014": "77,850,196,899",
+        "Era #023": "33,939,970,640",
+        "Era 8": "21,882,780,684"
+      },
+      "ours": {
+        "WC1": "12,973,599,483",
+        "REU": "4,531,675,733",
+        "MyT": "3,886,081,472",
+        "AGC": "2,494,713,307"
+      }
+    },
+    {
+      "date": "2026-07-13",
+      "day": 7,
+      "label": "Final",
+      "kingdom": {
+        "Era #019": "123,443,439,840",
+        "Era #014": "84,389,710,304",
+        "Era #023": "39,408,429,255",
+        "Era 8": "25,005,848,847"
+      },
+      "ours": {
+        "WC1": "14,876,350,313",
+        "REU": "5,188,725,210",
+        "MyT": "4,370,107,803",
+        "AGC": "2,968,267,267"
+      }
+    }
+  ]
+}
