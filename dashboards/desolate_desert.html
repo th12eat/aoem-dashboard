@@ -707,6 +707,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
         {/* routes: solid=connected · dimmed=disconnected · dashed=partial (building) · plan=solid */}
         {routes.map((r, i) => {
+          if (outOfFocus(r.owner)) return null;             // focus: show only the focused server's lines
           const off = routeOffset[i];
           const base = col(r.owner);
           let stroke = base, opacity = 0.95, dash = null, w = 0.8, building = false;
@@ -715,14 +716,14 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
             else if (r.partial) { dash = "1.4 1.2"; opacity = 0.9; }           // planned-partial (static dashed)
             else if (r.connected === false) { stroke = dimHex(base, 0.45); opacity = 0.6; } // disconnected — dimmed
           }
-          if (dimmed(r.owner)) opacity *= 0.15;              // fade non-highlighted
+          if (hl && r.owner !== hl) opacity *= 0.15;         // fade non-highlighted alliance
           const hot = hl && r.owner === hl;
           return <polyline key={i} className={building ? "route-building" : undefined} points={offsetLine(r.path, off)} fill="none" stroke={stroke} strokeWidth={hot ? w + 0.5 : w} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash || undefined} opacity={opacity} style={{ cursor: "pointer" }}
             onMouseEnter={(e) => hoverOn(r.owner, e)} onMouseMove={(e) => hoverOn(r.owner, e)} onMouseLeave={hoverOff} />;
         })}
         {/* SSH markers (diamond; pulsing red ring when under siege) */}
-        {routes.map((r, i) => { if (!r.ssh) return null; const s = sshPoint(r, routeOffset[i]); if (!s) return null;
-          const fade = dimmed(r.owner);
+        {routes.map((r, i) => { if (!r.ssh || outOfFocus(r.owner)) return null; const s = sshPoint(r, routeOffset[i]); if (!s) return null;
+          const fade = hl && r.owner !== hl;
           return <rect key={"s"+i} className={r.sshSiege && !fade ? "node-siege" : undefined} x={s.x-0.9} y={s.y-0.9} width="1.8" height="1.8" fill={col(r.owner)} stroke={r.sshSiege ? "#ef4444" : "#0a0c14"} strokeWidth="0.3" transform={`rotate(45 ${s.x} ${s.y})`} opacity={fade ? 0.15 : 1} style={{ pointerEvents: "none" }}><title>Sub-Stronghold ({r.owner}){r.sshSiege ? " · UNDER SIEGE" : ""}</title></rect>;
         })}
         {/* nodes */}
@@ -730,25 +731,29 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
           if (n.type === "aaru_corner") return null;   // invisible path anchors
           const st = MAP_STATE[id] || {};
           const active = st.active != null ? st.active : nodeActiveDefault(n, now);
-          const occ = st.occupant;
+          // In focus mode a node held by a non-focused server renders like the
+          // plan map: neutral white, no alliance-highlight action (but keep the
+          // passive name+buff tooltip). Only the focused server's nodes stay lit.
+          const occ = (st.occupant && !outOfFocus(st.occupant)) ? st.occupant : null;
           const connected = st.connected != null ? st.connected : true;
           let fill;
           if (occ) fill = connected ? col(occ) : dimHex(col(occ), 0.42);
           else fill = active ? NEUTRAL : dimHex(NEUTRAL, 0.42);
-          const status = occ ? (occ + (connected ? " · connected" : " · disconnected (no buff)")) : (active ? "unoccupied" : "inactive (not yet capturable)");
-          const fade = occ ? dimmed(occ) : !!hl;             // dim unowned nodes too when a highlight is active
+          const status = st.occupant ? (st.occupant + (connected ? " · connected" : " · disconnected (no buff)")) : (active ? "unoccupied" : "inactive (not yet capturable)");
+          const fade = occ ? (hl && occ !== hl) : (!!hl && !focus);   // dim only for alliance-highlight, not for focus
           const hot = hl && occ === hl;
-          const siege = !!st.siege;
+          const siege = !!st.siege && !!occ;
+          const tip = n.label + (n.info ? " — " + n.info : "") + " · " + status + (siege ? " · UNDER SIEGE" : "");
           return (
             <circle key={id} className={siege && !fade ? "node-siege" : undefined} cx={n.x} cy={n.y} r={(n.type === "aaru" ? 1.6 : 1.0) * (hot ? 1.5 : 1)} fill={fill} stroke={hot ? "#fff" : (siege ? "#ef4444" : "#0a0c14")} strokeWidth={hot ? 0.5 : 0.3} opacity={fade ? 0.18 : 1}
               style={{ cursor: occ ? "pointer" : "default" }}
               onMouseEnter={occ ? (e) => hoverOn(occ, e) : undefined} onMouseMove={occ ? (e) => hoverOn(occ, e) : undefined} onMouseLeave={occ ? hoverOff : undefined}>
-              <title>{n.label}{n.info ? " — " + n.info : ""} · {status}{siege ? " · UNDER SIEGE" : ""}</title>
+              <title>{tip}</title>
             </circle>
           );
         }) : Object.entries(MAP_NODES).map(([id, n]) => (
           n.type === "aaru_corner" ? null :
-          <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={NEUTRAL} stroke="#0a0c14" strokeWidth="0.3" opacity="0.55" style={{ pointerEvents: "none" }}><title>{n.label}</title></circle>
+          <circle key={id} cx={n.x} cy={n.y} r={n.type === "aaru" ? 1.6 : 1.0} fill={NEUTRAL} stroke="#0a0c14" strokeWidth="0.3" opacity="0.55"><title>{n.label}{n.info ? " — " + n.info : ""}</title></circle>
         ))}
         {/* server-crest hit-areas (live only): click a corner badge to break out
             that server's alliances into distinct shades; click again to toggle off */}
