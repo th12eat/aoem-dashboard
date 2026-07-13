@@ -268,6 +268,9 @@ const AARU_TIME_SLOTS = [
   { label: "11:00 - 15:00 UTC", start: "11:00", end: "15:00" },
   { label: "19:00 - 23:00 UTC", start: "19:00", end: "23:00" },
 ];
+// Official, settled Aaru fight window (Era #019 won the vote). Authoritative —
+// shown regardless of any per-device saved time-vote preference.
+const AARU_OFFICIAL_TIME = "19:00 - 23:00 UTC";
 
 const BUILDINGS = [
   { name: "Desert Stronghold", desc: "Foundation of alliance lands. Built in Waste Land. All flags must connect back to a Stronghold or Substronghold to remain active.", icon: "🏰" },
@@ -1576,24 +1579,25 @@ function DiplomacyTab({ state, setState }) {
       <div style={S.card}>
         <div style={S.cardTitle}>Aaru Palace Time Vote</div>
         <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "12px" }}>
-          Top 300 power-ranked players vote. Kingdom with most Desert Points picks the time. Voting closes Saturday 00:00 UTC (2026-07-11).
+          Top 300 power-ranked players vote. Kingdom with most Desert Points picks the time. <strong style={{ color: "#f472b6" }}>Result: Era #019 won and set {AARU_OFFICIAL_TIME}.</strong>
         </div>
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-          {AARU_TIME_SLOTS.map(slot => (
+          {AARU_TIME_SLOTS.map(slot => {
+            const official = slot.label === AARU_OFFICIAL_TIME;
+            return (
             <button
               key={slot.label}
-              style={S.btn(state.aaruTimeSlot === slot.label ? "#22c55e" : "#334155")}
-              onClick={() => setState(prev => ({ ...prev, aaruTimeSlot: slot.label }))}
+              style={{ ...S.btn(official ? "#22c55e" : "#334155"), opacity: official ? 1 : 0.5, cursor: "default" }}
+              disabled
             >
-              {slot.label}
+              {official ? "✓ " : ""}{slot.label}
             </button>
-          ))}
+            );
+          })}
         </div>
-        {state.aaruTimeSlot && (
-          <div style={{ marginTop: "8px", fontSize: "13px", color: "#22c55e" }}>
-            Selected: {state.aaruTimeSlot}
-          </div>
-        )}
+        <div style={{ marginTop: "8px", fontSize: "13px", color: "#22c55e" }}>
+          Official: {AARU_OFFICIAL_TIME}
+        </div>
       </div>
     </div>
   );
@@ -2164,7 +2168,7 @@ function App() {
         <div style={{ marginTop: "14px", display: "flex", flexWrap: "wrap", gap: "10px 18px", alignItems: "center", justifyContent: "center" }}>
           <div style={{ fontSize: "13px", color: "#cbd5e1" }}>
             <span style={{ color: "#94a3b8" }}>Aaru Palace Fight:</span>{" "}
-            <strong style={{ color: "#f472b6" }}>{state.aaruTimeSlot || "Day 7 — time TBD (winner picks)"}</strong>
+            <strong style={{ color: "#f472b6" }}>{AARU_OFFICIAL_TIME}</strong>
           </div>
           <button type="button" title="Calendar export coming soon" disabled style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 16px", background: "#11141f", border: "1px solid #a1573f", borderRadius: "999px", cursor: "default", opacity: 0.75 }}>
             <span style={{ fontSize: "16px", lineHeight: 1 }}>📅</span>
