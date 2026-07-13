@@ -148,6 +148,19 @@ function renderLedger(){
     const rc = e.result==="Win"?"res-win":e.result==="Loss"?"res-loss":e.result==="TBD"?"res-tbd":"";
     const tag = e.multi?` <span class="multi-note">(multi-server)</span>`:"";
     if(!e.ours){
+      // Archived multi-server events store our side under `ourRoster` (no single
+      // opponent to compare — per-server rosters live in the snapshot). Show our
+      // Power/Merit/M:P; note the opponent columns rather than faking a matchup.
+      if(e.ourRoster){
+        const oP=sum(e.ourRoster,1),oM=sum(e.ourRoster,2),oMP=oM/oP*100;
+        const snapNote=e.snapshot?` <span class="multi-note">(rosters in snapshot)</span>`:tag;
+        tb.insertAdjacentHTML("beforeend",
+          `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${snapNote}</td>`+
+          `<td class="num">${fmtB(oP)}</td><td class="num">${fmtB(oM)}</td><td class="num ${mpClass(oMP)}">${oMP.toFixed(1)}%</td>`+
+          `<td colspan="3" class="multi-note" style="text-align:center">multi-server — no single opponent</td>`+
+          `<td class="${rc}">${e.result}</td></tr>`);
+        return;
+      }
       const extra = e.note?` <span class="multi-note">(${e.note})</span>`:tag;
       tb.insertAdjacentHTML("beforeend",
         `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${extra}</td>`+
