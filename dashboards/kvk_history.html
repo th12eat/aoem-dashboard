@@ -42,6 +42,10 @@
   .res-win{color:var(--green);font-weight:700;} .res-loss{color:var(--red);font-weight:700;} .res-tbd{color:var(--gold);font-weight:700;}
   .mp-hi{color:var(--green);} .mp-mid{color:var(--mut2);} .mp-lo{color:var(--mut);}
   .multi-note{font-size:11px;color:var(--mut);font-style:italic;}
+  tr.multi-head{cursor:pointer;}
+  tr.multi-head:hover{background:rgba(255,255,255,.05);}
+  .caret{display:inline-block;width:1em;color:var(--mut2);font-size:11px;}
+  tr.multi-sub td{color:var(--mut2);}
   /* charts */
   .charts{display:grid;grid-template-columns:1fr;gap:18px;}
   @media(min-width:720px){.charts{grid-template-columns:1fr 1fr;}}
@@ -126,6 +130,9 @@ const fmtB = n => (n/1e9).toFixed(2)+"B";
 const fmtMP = (p,m) => (m/p*100).toFixed(1)+"%";
 const sum = (rows,i) => rows.reduce((a,r)=>a+r[i],0);
 const mpClass = v => v>=8?"mp-hi":v>=4?"mp-mid":"mp-lo";
+// which multi-server rows are expanded (keyed by event|date)
+const expanded = new Set();
+const multiKey = e => e.event+"|"+e.date;
 
 // ---- W/L summary ----
 function renderSummary(){
@@ -148,17 +155,46 @@ function renderLedger(){
     const rc = e.result==="Win"?"res-win":e.result==="Loss"?"res-loss":e.result==="TBD"?"res-tbd":"";
     const tag = e.multi?` <span class="multi-note">(multi-server)</span>`:"";
     if(!e.ours){
-      // Archived multi-server events store our side under `ourRoster` (no single
-      // opponent to compare — per-server rosters live in the snapshot). Show our
-      // Power/Merit/M:P; note the opponent columns rather than faking a matchup.
-      if(e.ourRoster){
+      // Archived multi-server events store our side under `ourRoster` and each
+      // opponent server's top-4 under `oppRosters` {server: [[tag,power,merits]]}.
+      // Collapsed: our data + AVERAGE of all opponent servers. Click to expand
+      // into one row per server (our columns blank except the header row).
+      if(e.ourRoster && e.oppRosters){
         const oP=sum(e.ourRoster,1),oM=sum(e.ourRoster,2),oMP=oM/oP*100;
-        const snapNote=e.snapshot?` <span class="multi-note">(rosters in snapshot)</span>`:tag;
-        tb.insertAdjacentHTML("beforeend",
-          `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${snapNote}</td>`+
-          `<td class="num">${fmtB(oP)}</td><td class="num">${fmtB(oM)}</td><td class="num ${mpClass(oMP)}">${oMP.toFixed(1)}%</td>`+
-          `<td colspan="3" class="multi-note" style="text-align:center">multi-server — no single opponent</td>`+
-          `<td class="${rc}">${e.result}</td></tr>`);
+        const usCells =
+          `<td class="num">${fmtB(oP)}</td><td class="num">${fmtB(oM)}</td><td class="num ${mpClass(oMP)}">${oMP.toFixed(1)}%</td>`;
+        const usBlank = `<td class="num"></td><td class="num"></td><td class="num"></td>`;
+        const oppCells = rows => {
+          const p=sum(rows,1),m=sum(rows,2),mp=m/p*100;
+          return `<td class="num">${fmtB(p)}</td><td class="num">${fmtB(m)}</td><td class="num ${mpClass(mp)}">${mp.toFixed(1)}%</td>`;
+        };
+        const servers=Object.keys(e.oppRosters);
+        const isOpen=expanded.has(multiKey(e));
+        const caret=`<span class="caret">${isOpen?"▾":"▸"}</span> `;
+        if(!isOpen){
+          // collapsed: opponent columns = average across all servers
+          const allRows=servers.flatMap(s=>e.oppRosters[s]);
+          const nS=servers.length;
+          const avg=[["avg",sum(allRows,1)/nS,sum(allRows,2)/nS]];
+          tb.insertAdjacentHTML("beforeend",
+            `<tr class="multi-head" data-key="${multiKey(e)}"><td class="l">${caret}${e.event}</td><td class="l num">${e.date}</td>`+
+            `<td class="l">${e.opp}<span class="multi-note"> (avg of ${nS} — click)</span></td>`+
+            `${usCells}${oppCells(avg)}<td class="${rc}">${e.result}</td></tr>`);
+        } else {
+          // expanded: header row (our data + strongest server), then one row per remaining server
+          const ranked=servers.slice().sort((a,b)=>sum(e.oppRosters[b],1)-sum(e.oppRosters[a],1));
+          ranked.forEach((s,idx)=>{
+            if(idx===0){
+              tb.insertAdjacentHTML("beforeend",
+                `<tr class="multi-head" data-key="${multiKey(e)}"><td class="l">${caret}${e.event}</td><td class="l num">${e.date}</td>`+
+                `<td class="l">${s}</td>${usCells}${oppCells(e.oppRosters[s])}<td class="${rc}">${e.result}</td></tr>`);
+            } else {
+              tb.insertAdjacentHTML("beforeend",
+                `<tr class="multi-sub" data-key="${multiKey(e)}"><td class="l"></td><td class="l"></td>`+
+                `<td class="l">${s}</td>${usBlank}${oppCells(e.oppRosters[s])}<td></td></tr>`);
+            }
+          });
+        }
         return;
       }
       const extra = e.note?` <span class="multi-note">(${e.note})</span>`:tag;
@@ -231,7 +267,19 @@ function renderCharts(){
     `<span style="color:#fbbf24"><b>■ Power</b></span> <span style="color:#4ade80"><b>■ Merits</b></span> — our combined top-4 (B)`;
 }
 
-function renderAll(){ renderSummary(); renderLedger(); renderCharts(); }
+// toggle expand/collapse for a multi-server row (delegated, bound once)
+function bindLedgerToggle(){
+  const tb=document.querySelector("#ledger tbody");
+  if(tb.dataset.bound) return; tb.dataset.bound="1";
+  tb.addEventListener("click", ev=>{
+    const tr=ev.target.closest("tr.multi-head"); if(!tr) return;
+    const k=tr.dataset.key; if(!k) return;
+    if(expanded.has(k)) expanded.delete(k); else expanded.add(k);
+    renderLedger();
+  });
+}
+
+function renderAll(){ renderSummary(); renderLedger(); renderCharts(); bindLedgerToggle(); }
 
 // Load published history (../data/history.json) if present; else use in-code fallback.
 (async function(){
