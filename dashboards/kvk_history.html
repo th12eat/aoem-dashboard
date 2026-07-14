@@ -49,6 +49,9 @@
   /* charts */
   .charts{display:grid;grid-template-columns:1fr;gap:18px;}
   @media(min-width:720px){.charts{grid-template-columns:1fr 1fr;}}
+  .pm-toggle{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;margin-bottom:8px;}
+  .pm-toggle button{border:none;background:transparent;color:var(--mut);cursor:pointer;padding:3px 12px;font-size:11px;font-weight:700;letter-spacing:.04em;font-family:var(--font-ui);}
+  .pm-toggle button.on{background:var(--gold,#fbbf24);color:#0b1220;}
   .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;margin-top:8px;color:var(--mut2);}
   .legend b{font-weight:700;}
   .note{font-size:11px;color:var(--mut);margin-top:10px;line-height:1.6;}
@@ -97,7 +100,12 @@
     <div class="card-h">📈 Trends — Our Top-4 (combined)</div>
     <div class="charts">
       <div><div id="chartMP"></div><div class="legend" id="legMP"></div></div>
-      <div><div id="chartPM"></div><div class="legend" id="legPM"></div></div>
+      <div>
+        <div class="pm-toggle" id="pmToggle">
+          <button data-mode="abs" class="on">Absolute (B)</button><button data-mode="pct">% Growth</button>
+        </div>
+        <div id="chartPM"></div><div class="legend" id="legPM"></div>
+      </div>
     </div>
     <div class="note">M:P (merit ÷ power) is a proxy for combat activity — rising M:P means we're fighting more per unit of power, not just getting bigger. Any event with captured top-4 alliance data feeds these charts (multi-server brackets included). Past events without alliance figures show as win/loss only until data is added.</div>
   </div>
@@ -136,6 +144,8 @@ const mpClass = v => v>=8?"mp-hi":v>=4?"mp-mid":"mp-lo";
 // which multi-server rows are expanded (keyed by event|date)
 const expanded = new Set();
 const multiKey = e => e.event+"|"+e.date;
+// Power/Merits chart mode: "abs" (billions) or "pct" (% growth vs first event)
+let pmMode = "abs";
 // multi-server placement: derive each server's finish (1..N) from kingdomFinal
 // points (most points = #1). Color: #1 green, #2 yellow, #3 orange, #4 red.
 const OUR_SERVER = "Era 8";
@@ -257,6 +267,8 @@ function lineChart(series, opts){
     s+=`<line x1="${padL}" y1="${y.toFixed(0)}" x2="${padL+pw}" y2="${y.toFixed(0)}" stroke="#1e3a5f" stroke-width="1"/>`;
     s+=`<text x="${padL-6}" y="${(y+3).toFixed(0)}" text-anchor="end" font-size="9" fill="#64748b">${yfmt(v)}</text>`;
   }
+  // emphasize the zero baseline when the range crosses it (e.g. % growth mode)
+  if(ymin<0 && ymax>0){ const yz=Y(0); s+=`<line x1="${padL}" y1="${yz.toFixed(0)}" x2="${padL+pw}" y2="${yz.toFixed(0)}" stroke="#475569" stroke-width="1.5" stroke-dasharray="2,2"/>`; }
   xlabels.forEach((lb,i)=>{ s+=`<text x="${X(i).toFixed(0)}" y="${h-padB+16}" text-anchor="middle" font-size="9" fill="#94a3b8">${lb}</text>`; });
   series.forEach(se=>{
     const pts=se.vals.map(p=>`${X(p.x).toFixed(0)},${Y(p.y).toFixed(0)}`).join(" ");
@@ -281,14 +293,34 @@ function renderCharts(){
     {ymin:0,ymax:12,yfmt:v=>v.toFixed(0)+"%",xlabels});
   document.getElementById("legMP").innerHTML=
     `<span style="color:#3b82f6"><b>■ Us M:P</b></span> <span style="color:#f87171"><b>■ Opponent M:P</b></span> — combined top-4`;
-  // Power & Merits chart (us): both scaled to billions
-  const usP=tme.map((e,i)=>({x:i,y:sum(e.ours,1)/1e9}));
-  const usM=tme.map((e,i)=>({x:i,y:sum(e.ours,2)/1e9}));
-  document.getElementById("chartPM").innerHTML=lineChart(
-    [{name:"Power",color:"#fbbf24",vals:usP},{name:"Merits",color:"#4ade80",vals:usM}],
-    {ymin:0,ymax:60,yfmt:v=>v.toFixed(0)+"B",xlabels});
-  document.getElementById("legPM").innerHTML=
-    `<span style="color:#fbbf24"><b>■ Power</b></span> <span style="color:#4ade80"><b>■ Merits</b></span> — our combined top-4 (B)`;
+  // Power & Merits chart (us) — two modes via toggle:
+  //   abs = billions; pct = % growth vs the first captured event (baseline 0%),
+  //   with a third M:P-ratio %-growth track.
+  const P=tme.map(e=>sum(e.ours,1)), M=tme.map(e=>sum(e.ours,2));
+  const MP=tme.map((e,i)=>M[i]/P[i]);      // ratio (not ×100 — growth is relative)
+  if(pmMode==="pct"){
+    const pct=(arr)=>arr.map((v,i)=>({x:i,y:arr[0]?(v/arr[0]-1)*100:0}));
+    const series=[
+      {name:"Power",color:"#fbbf24",vals:pct(P)},
+      {name:"Merits",color:"#4ade80",vals:pct(M)},
+      {name:"M:P",color:"#38bdf8",vals:pct(MP)},
+    ];
+    // symmetric-ish auto y-range around the data (include 0)
+    const ys=series.flatMap(s=>s.vals.map(p=>p.y)).concat(0);
+    let lo=Math.min(...ys), hi=Math.max(...ys); const pad=Math.max(5,(hi-lo)*0.1);
+    lo=Math.floor((lo-pad)/5)*5; hi=Math.ceil((hi+pad)/5)*5;
+    document.getElementById("chartPM").innerHTML=lineChart(series,
+      {ymin:lo,ymax:hi,yfmt:v=>(v>0?"+":"")+v.toFixed(0)+"%",xlabels});
+    document.getElementById("legPM").innerHTML=
+      `<span style="color:#fbbf24"><b>■ Power</b></span> <span style="color:#4ade80"><b>■ Merits</b></span> <span style="color:#38bdf8"><b>■ M:P</b></span> — % growth vs ${xlabels[0]||"first"} (top-4 combined)`;
+  } else {
+    const usP=P.map((v,i)=>({x:i,y:v/1e9})), usM=M.map((v,i)=>({x:i,y:v/1e9}));
+    document.getElementById("chartPM").innerHTML=lineChart(
+      [{name:"Power",color:"#fbbf24",vals:usP},{name:"Merits",color:"#4ade80",vals:usM}],
+      {ymin:0,ymax:60,yfmt:v=>v.toFixed(0)+"B",xlabels});
+    document.getElementById("legPM").innerHTML=
+      `<span style="color:#fbbf24"><b>■ Power</b></span> <span style="color:#4ade80"><b>■ Merits</b></span> — our combined top-4 (B)`;
+  }
 }
 
 // toggle expand/collapse for a multi-server row (delegated, bound once)
@@ -307,7 +339,19 @@ function bindLedgerToggle(){
 // order otherwise). Most-recent-first (ISO-date descending).
 function sortEvents(){ EVENTS.sort((a,b)=> (a.date<b.date?1:a.date>b.date?-1:0)); }
 
-function renderAll(){ sortEvents(); renderSummary(); renderLedger(); renderCharts(); bindLedgerToggle(); }
+// Power/Merits abs↔% toggle (bound once)
+function bindPmToggle(){
+  const box=document.getElementById("pmToggle");
+  if(!box || box.dataset.bound) return; box.dataset.bound="1";
+  box.addEventListener("click", ev=>{
+    const b=ev.target.closest("button"); if(!b) return;
+    pmMode=b.dataset.mode;
+    box.querySelectorAll("button").forEach(x=>x.classList.toggle("on", x===b));
+    renderCharts();
+  });
+}
+
+function renderAll(){ sortEvents(); renderSummary(); renderLedger(); renderCharts(); bindLedgerToggle(); bindPmToggle(); }
 
 // Load published history (../data/history.json) if present; else use in-code fallback.
 (async function(){
