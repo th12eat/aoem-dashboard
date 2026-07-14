@@ -136,6 +136,19 @@ const mpClass = v => v>=8?"mp-hi":v>=4?"mp-mid":"mp-lo";
 // which multi-server rows are expanded (keyed by event|date)
 const expanded = new Set();
 const multiKey = e => e.event+"|"+e.date;
+// multi-server placement: derive each server's finish (1..N) from kingdomFinal
+// points (most points = #1). Color: #1 green, #2 yellow, #3 orange, #4 red.
+const OUR_SERVER = "Era 8";
+const RANK_COLOR = {1:"#22c55e",2:"#eab308",3:"#f97316",4:"#ef4444"};
+const parseNum = s => typeof s==="number"?s:Number(String(s).replace(/[^0-9.]/g,""));
+function serverRanks(e){
+  if(!e.kingdomFinal) return null;
+  const arr=Object.entries(e.kingdomFinal).map(([srv,pts])=>({srv,pts:parseNum(pts)}));
+  arr.sort((a,b)=>b.pts-a.pts);
+  const m={}; arr.forEach((x,i)=>{ m[x.srv]=i+1; }); return m;
+}
+const rankTag  = n => ` <span style="color:${RANK_COLOR[n]||'#94a3b8'};font-weight:700">#${n}</span>`;
+const rankCell = n => `<td style="color:${RANK_COLOR[n]||'#94a3b8'};font-weight:700">#${n}</td>`;
 
 // ---- W/L summary ----
 function renderSummary(){
@@ -174,6 +187,11 @@ function renderLedger(){
         const servers=Object.keys(e.oppRosters);
         const isOpen=expanded.has(multiKey(e));
         const caret=`<span class="caret">${isOpen?"▾":"▸"}</span> `;
+        // placement badges (from kingdomFinal points); our result = our server's rank.
+        const ranks=serverRanks(e);
+        const ourRank=ranks?ranks[OUR_SERVER]:null;
+        const resCell=ourRank?rankCell(ourRank):`<td class="${rc}">${e.result}</td>`;
+        const srvLabel=s=>s+(ranks&&ranks[s]?rankTag(ranks[s]):"");
         if(!isOpen){
           // collapsed: opponent columns = average across all servers
           const allRows=servers.flatMap(s=>e.oppRosters[s]);
@@ -182,19 +200,21 @@ function renderLedger(){
           tb.insertAdjacentHTML("beforeend",
             `<tr class="multi-head" data-key="${multiKey(e)}"><td class="l">${caret}${e.event}</td><td class="l num">${e.date}</td>`+
             `<td class="l">${e.opp}<span class="multi-note"> (avg of ${nS} — click)</span></td>`+
-            `${usCells}${oppCells(avg)}<td class="${rc}">${e.result}</td></tr>`);
+            `${usCells}${oppCells(avg)}${resCell}</tr>`);
         } else {
           // expanded: header row (our data + strongest server), then one row per remaining server
+          // opponents' placements ride as badges beside each server name; the
+          // Result column shows OUR placement on the header row (blank on subs).
           const ranked=servers.slice().sort((a,b)=>sum(e.oppRosters[b],1)-sum(e.oppRosters[a],1));
           ranked.forEach((s,idx)=>{
             if(idx===0){
               tb.insertAdjacentHTML("beforeend",
                 `<tr class="multi-head" data-key="${multiKey(e)}"><td class="l">${caret}${e.event}</td><td class="l num">${e.date}</td>`+
-                `<td class="l">${s}</td>${usCells}${oppCells(e.oppRosters[s])}<td class="${rc}">${e.result}</td></tr>`);
+                `<td class="l">${srvLabel(s)}</td>${usCells}${oppCells(e.oppRosters[s])}${resCell}</tr>`);
             } else {
               tb.insertAdjacentHTML("beforeend",
                 `<tr class="multi-sub" data-key="${multiKey(e)}"><td class="l"></td><td class="l"></td>`+
-                `<td class="l">${s}</td>${usBlank}${oppCells(e.oppRosters[s])}<td></td></tr>`);
+                `<td class="l">${srvLabel(s)}</td>${usBlank}${oppCells(e.oppRosters[s])}<td></td></tr>`);
             }
           });
         }
@@ -250,7 +270,8 @@ function lineChart(series, opts){
 }
 
 function renderCharts(){
-  const tme=EVENTS.filter(e=>e.ours);
+  // trends read oldest→newest so time flows left→right (ledger is newest-first).
+  const tme=EVENTS.filter(e=>e.ours).slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
   const xlabels=tme.map(e=>e.date.slice(5)); // MM-DD
   // M:P chart: us combined vs opp combined
   const usMP=tme.map((e,i)=>({x:i,y:sum(e.ours,2)/sum(e.ours,1)*100}));
@@ -282,9 +303,9 @@ function bindLedgerToggle(){
   });
 }
 
-// keep the ledger chronological regardless of stored order (archive appends
-// out of order otherwise). Stable ISO-date sort, ascending.
-function sortEvents(){ EVENTS.sort((a,b)=> (a.date<b.date?-1:a.date>b.date?1:0)); }
+// keep the ledger ordered regardless of stored order (archive appends out of
+// order otherwise). Most-recent-first (ISO-date descending).
+function sortEvents(){ EVENTS.sort((a,b)=> (a.date<b.date?1:a.date>b.date?-1:0)); }
 
 function renderAll(){ sortEvents(); renderSummary(); renderLedger(); renderCharts(); bindLedgerToggle(); }
 
