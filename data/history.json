@@ -69,7 +69,7 @@
       "event": "TME",
       "date": "2026-06-15",
       "opp": "Era #023",
-      "result": "Win",
+      "result": "Loss",
       "ours": [
         [
           "WC1",
@@ -114,6 +114,14 @@
           92039230
         ]
       ]
+    },
+    {
+      "event": "Behemoth",
+      "date": "2026-06-30",
+      "opp": "Era #087",
+      "result": "Loss",
+      "note": "Final 37.4B vs 57.8B",
+      "multi": true
     },
     {
       "event": "TME",
@@ -165,14 +173,6 @@
           95788191
         ]
       ]
-    },
-    {
-      "event": "Behemoth",
-      "date": "2026-06-30",
-      "opp": "Era #087",
-      "result": "Loss",
-      "note": "Final 37.4B vs 57.8B",
-      "multi": true
     },
     {
       "event": "Desolate Desert",

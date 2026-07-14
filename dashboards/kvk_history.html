@@ -117,7 +117,7 @@ let EVENTS = [
     oppA:[["E38",17825083183,1701935323],["K38",11735334303,710232458],["S38",9901400493,389679065],["NAS",7193506001,107554795]] },
   { event:"Desolate Desert", date:"2026-06-01", opp:"Era #051 / #082 / #002", result:"Win", multi:true },
   { event:"Primordial", date:"2026-06-11", opp:"Era #016 / #022 / #092", result:"Win", multi:true },
-  { event:"TME", date:"2026-06-15", opp:"Era #023", result:"Win",
+  { event:"TME", date:"2026-06-15", opp:"Era #023", result:"Loss",
     ours:[["WC1",19612039793,2087503559],["REU",12075304942,887427033],["AGC",11296408344,177822588],["MyT",10266594886,848149532]],
     oppA:[["LOD",17173032779,2132765554],["boi",14806866449,1082278581],["R65",13881483676,1766240250],["ILF",4866546542,92039230]] },
   { event:"TME", date:"2026-06-28", opp:"Era #090", result:"TBD",
@@ -279,7 +279,11 @@ function bindLedgerToggle(){
   });
 }
 
-function renderAll(){ renderSummary(); renderLedger(); renderCharts(); bindLedgerToggle(); }
+// keep the ledger chronological regardless of stored order (archive appends
+// out of order otherwise). Stable ISO-date sort, ascending.
+function sortEvents(){ EVENTS.sort((a,b)=> (a.date<b.date?-1:a.date>b.date?1:0)); }
+
+function renderAll(){ sortEvents(); renderSummary(); renderLedger(); renderCharts(); bindLedgerToggle(); }
 
 // Load published history (../data/history.json) if present; else use in-code fallback.
 (async function(){
