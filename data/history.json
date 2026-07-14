@@ -120,8 +120,51 @@
       "date": "2026-06-30",
       "opp": "Era #087",
       "result": "Loss",
-      "note": "Final 37.4B vs 57.8B",
-      "multi": true
+      "note": "Final 37.4B vs 57.8B. Alliance figures from the Behemoth flyer — power rounded to 0.1B, merits derived from whole-percent M:P (approx).",
+      "ours": [
+        [
+          "WC1",
+          20100000000,
+          2211000000
+        ],
+        [
+          "REU",
+          12300000000,
+          861000000
+        ],
+        [
+          "AGC",
+          11600000000,
+          232000000
+        ],
+        [
+          "MyT",
+          10300000000,
+          824000000
+        ]
+      ],
+      "oppA": [
+        [
+          "JAN",
+          15500000000,
+          1705000000
+        ],
+        [
+          "ACA",
+          14100000000,
+          1269000000
+        ],
+        [
+          "WJD",
+          9300000000,
+          93000000
+        ],
+        [
+          "GOX",
+          8100000000,
+          81000000
+        ]
+      ]
     },
     {
       "event": "TME",

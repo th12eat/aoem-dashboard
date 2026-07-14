@@ -123,7 +123,10 @@ let EVENTS = [
   { event:"TME", date:"2026-06-28", opp:"Era #090", result:"TBD",
     ours:[["WC1",20238517730,2272826034],["REU",12699637836,912404888],["AGC",11739696945,186806496],["MyT",10430075595,898618923]],
     oppA:[["RIP",20212765060,2541548484],["INT",14829324819,1022902133],["YFQ",10405496654,190589970],["OvO",6265770680,95788191]] },
-  { event:"Behemoth", date:"2026-06-30", opp:"Era #087", result:"Loss", note:"Final 37.4B vs 57.8B", multi:true },
+  { event:"Behemoth", date:"2026-06-30", opp:"Era #087", result:"Loss",
+    note:"Final 37.4B vs 57.8B. Alliance figures from the Behemoth flyer — power rounded to 0.1B, merits derived from whole-percent M:P (approx).",
+    ours:[["WC1",20100000000,2211000000],["REU",12300000000,861000000],["AGC",11600000000,232000000],["MyT",10300000000,824000000]],
+    oppA:[["JAN",15500000000,1705000000],["ACA",14100000000,1269000000],["WJD",9300000000,93000000],["GOX",8100000000,81000000]] },
 ];
 
 const fmtB = n => (n/1e9).toFixed(2)+"B";
