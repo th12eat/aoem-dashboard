@@ -214,7 +214,7 @@ function renderLedger(){
           const avg=[["avg",sum(allRows,1)/nS,sum(allRows,2)/nS]];
           tb.insertAdjacentHTML("beforeend",
             `<tr class="multi-head" data-key="${multiKey(e)}"><td class="l">${caret}${e.event}</td><td class="l num">${e.date}</td>`+
-            `<td class="l">${e.opp}<span class="multi-note"> (avg of ${nS} — click)</span>${basisNote}</td>`+
+            `<td class="l">${e.opp}<span class="multi-note"> (multi-server)</span>${basisNote}</td>`+
             `${usCells}${oppCells(avg)}${resCell}</tr>`);
         } else {
           // expanded: header row (our data + strongest server), then one row per remaining server
