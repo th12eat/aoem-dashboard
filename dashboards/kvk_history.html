@@ -123,8 +123,8 @@ let EVENTS = [
   { event:"TME", date:"2026-05-18", opp:"Era #038", result:"Loss",
     ours:[["WC1",17236872426,1493190936],["AGC",11113145620,154684345],["MyT",10077180519,744926645],["REU",8634995031,825232103]],
     oppA:[["E38",17825083183,1701935323],["K38",11735334303,710232458],["S38",9901400493,389679065],["NAS",7193506001,107554795]] },
-  { event:"Desolate Desert", date:"2026-06-01", opp:"Era #051 / #082 / #002", result:"Win", multi:true },
-  { event:"Primordial", date:"2026-06-11", opp:"Era #016 / #022 / #092", result:"Win", multi:true },
+  { event:"Desolate Desert", date:"2026-06-01", opp:"Era #051 / #082 / #002", result:"Win", multi:true, placement:1 },
+  { event:"Primordial", date:"2026-06-11", opp:"Era #016 / #022 / #092", result:"Win", multi:true, placement:1 },
   { event:"TME", date:"2026-06-15", opp:"Era #023", result:"Loss",
     ours:[["WC1",19612039793,2087503559],["REU",12075304942,887427033],["AGC",11296408344,177822588],["MyT",10266594886,848149532]],
     oppA:[["LOD",17173032779,2132765554],["boi",14806866449,1082278581],["R65",13881483676,1766240250],["ILF",4866546542,92039230]] },
@@ -230,11 +230,13 @@ function renderLedger(){
         }
         return;
       }
+      // no rosters captured — but an explicit `placement` still colors the result
       const extra = e.note?` <span class="multi-note">(${e.note})</span>`:tag;
+      const resCell = e.placement?rankCell(e.placement):`<td class="${rc}">${e.result}</td>`;
       tb.insertAdjacentHTML("beforeend",
         `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${extra}</td>`+
         `<td colspan="6" class="multi-note" style="text-align:center">alliance data not captured</td>`+
-        `<td class="${rc}">${e.result}</td></tr>`);
+        `${resCell}</tr>`);
       return;
     }
     const oP=sum(e.ours,1),oM=sum(e.ours,2),pP=sum(e.oppA,1),pM=sum(e.oppA,2);

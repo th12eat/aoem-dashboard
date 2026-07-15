@@ -56,14 +56,16 @@
       "date": "2026-06-01",
       "opp": "Era #051 / #082 / #002",
       "result": "Win",
-      "multi": true
+      "multi": true,
+      "placement": 1
     },
     {
       "event": "Primordial",
       "date": "2026-06-11",
       "opp": "Era #016 / #022 / #092",
       "result": "Win",
-      "multi": true
+      "multi": true,
+      "placement": 1
     },
     {
       "event": "TME",
