@@ -288,23 +288,41 @@ function lineChart(series, opts){
   return s;
 }
 
+// combined top-4 {p,m} for us and opponent from EITHER storage format:
+//   1v1 events use ours/oppA; multi-server use ourRoster + oppRosters (opponent
+//   = average across servers, matching the ledger's collapsed view). All rows
+//   are now on the same top-4-alliance basis, so all feed the trend charts.
+function chartFigs(e){
+  if(e.ours && e.oppA){
+    return { us:{p:sum(e.ours,1),m:sum(e.ours,2)}, opp:{p:sum(e.oppA,1),m:sum(e.oppA,2)} };
+  }
+  if(e.ourRoster && e.oppRosters){
+    const srv=Object.keys(e.oppRosters), all=srv.flatMap(s=>e.oppRosters[s]);
+    return { us:{p:sum(e.ourRoster,1),m:sum(e.ourRoster,2)},
+             opp:{p:sum(all,1)/srv.length,m:sum(all,2)/srv.length} };
+  }
+  return null;
+}
+
 function renderCharts(){
   // trends read oldest→newest so time flows left→right (ledger is newest-first).
-  const tme=EVENTS.filter(e=>e.ours).slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+  // include every event with roster data (1v1 AND multi-server) — all top-4 basis.
+  const tme=EVENTS.filter(e=>chartFigs(e)).slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+  const fig=tme.map(chartFigs);
   const xlabels=tme.map(e=>e.date.slice(5)); // MM-DD
   // M:P chart: us combined vs opp combined
-  const usMP=tme.map((e,i)=>({x:i,y:sum(e.ours,2)/sum(e.ours,1)*100}));
-  const oppMP=tme.map((e,i)=>({x:i,y:sum(e.oppA,2)/sum(e.oppA,1)*100}));
+  const usMP=fig.map((f,i)=>({x:i,y:f.us.m/f.us.p*100}));
+  const oppMP=fig.map((f,i)=>({x:i,y:f.opp.m/f.opp.p*100}));
   document.getElementById("chartMP").innerHTML=lineChart(
-    [{name:"Us",color:"#3b82f6",vals:usMP},{name:"Opp",color:"#f87171",vals:oppMP}],
+    [{name:"Era #008",color:"#3b82f6",vals:usMP},{name:"Opp",color:"#f87171",vals:oppMP}],
     {ymin:0,ymax:12,yfmt:v=>v.toFixed(0)+"%",xlabels});
   document.getElementById("legMP").innerHTML=
-    `<span style="color:#3b82f6"><b>■ Us M:P</b></span> <span style="color:#f87171"><b>■ Opponent M:P</b></span> — combined top-4`;
+    `<span style="color:#3b82f6"><b>■ Era #008 M:P</b></span> <span style="color:#f87171"><b>■ Opponent M:P</b></span> — combined top-4`;
   // Power & Merits chart (us) — two modes via toggle:
   //   abs = billions; pct = % growth vs the first captured event (baseline 0%),
   //   with a third M:P-ratio %-growth track.
-  const P=tme.map(e=>sum(e.ours,1)), M=tme.map(e=>sum(e.ours,2));
-  const MP=tme.map((e,i)=>M[i]/P[i]);      // ratio (not ×100 — growth is relative)
+  const P=fig.map(f=>f.us.p), M=fig.map(f=>f.us.m);
+  const MP=P.map((p,i)=>M[i]/p);      // ratio (not ×100 — growth is relative)
   if(pmMode==="pct"){
     const pct=(arr)=>arr.map((v,i)=>({x:i,y:arr[0]?(v/arr[0]-1)*100:0}));
     const series=[
