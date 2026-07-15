@@ -124,7 +124,10 @@ let EVENTS = [
     ours:[["WC1",17236872426,1493190936],["AGC",11113145620,154684345],["MyT",10077180519,744926645],["REU",8634995031,825232103]],
     oppA:[["E38",17825083183,1701935323],["K38",11735334303,710232458],["S38",9901400493,389679065],["NAS",7193506001,107554795]] },
   { event:"Desolate Desert", date:"2026-06-01", opp:"Era #051 / #082 / #002", result:"Win", multi:true, placement:1 },
-  { event:"Primordial", date:"2026-06-11", opp:"Era #016 / #022 / #092", result:"Win", multi:true, placement:1 },
+  { event:"Primordial", date:"2026-06-11", opp:"Era #068 / Era #034 / Era #056", result:"Win", multi:true, placement:1, basis:"top-12 players",
+    note:"Figures are each server's top-12 players (from the Primordial Conflict dashboard scouting), not top-4 alliances — not directly comparable to alliance-based rows.",
+    ourRoster:[["時宗",424600000,221600000],["민트",304100000,303500000],["Collin6666",272900000,53100000],["XnJinX",266400000,223900000],["Macklemore",260200000,107200000],["Lumberjack",249400000,257500000],["BloodYoda",245300000,227200000],["ibubu♣JP",230600000,54800000],["TommyTorpedo",227700000,125200000],["MuRage",224800000,159300000],["Astrah",200700000,263800000],["Hermes++",195400000,65800000]],
+    oppRosters:{"Era #068":[["Corle⁶⁸",310400000,307300000],["MyNIK99",291800000,115700000],["Moo°°",272700000,223800000],["LozzerSalty",219500000,204400000],["LozzerSour",192800000,193000000],["AlphaBeta",184800000,148800000],["neddmann",184700000,40700000],["MaCeno",178300000,60400000],["PENDRAGON",176100000,28300000],["ForrSalee",171000000,102100000],["★SNORLAXE⁶⁸★",168400000,145900000],["LozzerLucccc",159500000,75500000]],"Era #034":[["l조선l노가리맛사탕",259900000,85600000],["사풍흑호",246600000,138600000],["스재",220200000,100500000],["onlyzonks",187800000,117700000],["화양연화KOR",182600000,197800000],["뽀로로k",181800000,99300000],["TRKickAss",172100000,87700000],["DarkVifaro",162500000,43800000],["Dïablø",154200000,95200000],["GoodDay",148100000,96500000],["▪MK▪",132000000,81500000],["가나다라마바사야",131600000,42800000]],"Era #056":[["Champa",208000000,135800000],["Mandau",162200000,200100000],["Kirrik^GM",159300000,143700000],["6Dark6King6",150100000,40600000],["²²²UKELzY",137200000,47000000],["®Ⓢtoxic",134400000,45700000],["Tsahou",132100000,30000000],["HIDE",130500000,21600000],["xxDRAXxx",129400000,28300000],["®Ⓢ TORIZ",123300000,52700000],["fxkingrabbit",118500000,91200000],["☆Kunimitsu☆",116700000,46500000]]} },
   { event:"TME", date:"2026-06-15", opp:"Era #023", result:"Loss",
     ours:[["WC1",19612039793,2087503559],["REU",12075304942,887427033],["AGC",11296408344,177822588],["MyT",10266594886,848149532]],
     oppA:[["LOD",17173032779,2132765554],["boi",14806866449,1082278581],["R65",13881483676,1766240250],["ILF",4866546542,92039230]] },
@@ -197,11 +200,13 @@ function renderLedger(){
         const servers=Object.keys(e.oppRosters);
         const isOpen=expanded.has(multiKey(e));
         const caret=`<span class="caret">${isOpen?"▾":"▸"}</span> `;
-        // placement badges (from kingdomFinal points); our result = our server's rank.
+        // placement badges (from kingdomFinal points when available); our result
+        // = our server's derived rank, else an explicit `placement`, else W/L.
         const ranks=serverRanks(e);
-        const ourRank=ranks?ranks[OUR_SERVER]:null;
+        const ourRank=ranks?ranks[OUR_SERVER]:(e.placement||null);
         const resCell=ourRank?rankCell(ourRank):`<td class="${rc}">${e.result}</td>`;
         const srvLabel=s=>s+(ranks&&ranks[s]?rankTag(ranks[s]):"");
+        const basisNote=e.basis?` <span class="multi-note">· ${e.basis}</span>`:"";
         if(!isOpen){
           // collapsed: opponent columns = average across all servers
           const allRows=servers.flatMap(s=>e.oppRosters[s]);
@@ -209,7 +214,7 @@ function renderLedger(){
           const avg=[["avg",sum(allRows,1)/nS,sum(allRows,2)/nS]];
           tb.insertAdjacentHTML("beforeend",
             `<tr class="multi-head" data-key="${multiKey(e)}"><td class="l">${caret}${e.event}</td><td class="l num">${e.date}</td>`+
-            `<td class="l">${e.opp}<span class="multi-note"> (avg of ${nS} — click)</span></td>`+
+            `<td class="l">${e.opp}<span class="multi-note"> (avg of ${nS} — click)</span>${basisNote}</td>`+
             `${usCells}${oppCells(avg)}${resCell}</tr>`);
         } else {
           // expanded: header row (our data + strongest server), then one row per remaining server
