@@ -13,6 +13,23 @@
         *, *::before, *::after { box-sizing: border-box; }
         html, body { max-width: 100%; overflow-x: hidden; }
         body { margin: 0; background: #0a0c14; font-family: 'Barlow', system-ui, sans-serif; color: #e8eaf0; }
+        /* header icon buttons (help ? + scroll) — ported from Desolate Desert */
+        .hdr-pills-top { position: absolute; right: 16px; top: 14px; z-index: 12; display: inline-flex; align-items: center; gap: 6px; }
+        .hdr-icobtn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; cursor: pointer; background: rgba(148,163,184,0.10); border: 1px solid #475569; color: #cbd5e1; font-size: 15px; line-height: 1; text-decoration: none; transition: background .15s, border-color .15s; }
+        .hdr-icobtn:hover { background: rgba(148,163,184,0.22); border-color: #7b8496; }
+        /* invasion-time badge (Tower-badge analogue) — bottom-right, pulses */
+        .hdr-pills { position: absolute; right: 16px; bottom: 14px; z-index: 12; display: inline-flex; align-items: center; gap: 6px; }
+        .inv-badge { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px 6px 10px; border-radius: 999px; cursor: pointer; background: rgba(239,68,68,0.14); border: 1px solid #ef4444; color: #fca5a5; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.5px; text-decoration: none; animation: invBadgePulse 1.8s ease-in-out infinite; }
+        .inv-badge:hover { background: rgba(239,68,68,0.24); }
+        .inv-badge .ib-ico { font-size: 16px; line-height: 1; }
+        .inv-badge .ib-lbl { font-size: 13px; }
+        @keyframes invBadgePulse { 0%,100%{ box-shadow:0 0 0 0 rgba(239,68,68,0.5);} 50%{ box-shadow:0 0 0 6px rgba(239,68,68,0);} }
+        /* help / info modal (Desolate Desert style) */
+        .tme-modal { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.82); }
+        .tme-modal-card { position: relative; max-width: 560px; width: 100%; background: #11141f; border: 1px solid #3b82f6; border-radius: 14px; padding: 26px 22px 22px; text-align: left; box-shadow: 0 0 40px rgba(59,130,246,0.2); max-height: 86vh; overflow-y: auto; }
+        .tme-modal-close { position: absolute; top: 8px; right: 14px; font-size: 24px; line-height: 1; color: #64748b; cursor: pointer; font-family: sans-serif; }
+        .tme-modal-close:hover { color: #e8eaf0; }
+        @media (max-width: 520px){ .hdr-pills-top{ right:10px; top:10px; } .hdr-pills{ right:10px; bottom:10px; } }
     </style>
 </head>
 <body data-kvk="tme">
@@ -55,7 +72,29 @@ const EN = {
   tabMap: "Map",
   tabTimeline: "Timeline",
   tabPrep: "Prep",
+  tabPoints: "Points",
   tabRoles: "Roles",
+  // header buttons / help modal
+  jumpDaily: "Jump to today's plan",
+  helpTitle: "What is TME?",
+  helpIntro: "The Mightiest Empire (TME) is a cross-server war between two kingdoms, run in two phases:",
+  helpPrepH: "Preparation (Mon–Sat)",
+  helpPrepB: "Five daily scoring stages — Forging Gear, Enhancing Buildings, Enhancing Technologies, Unit Training, Power Boost. Each server earns points completing that day's activities; the running total is the bar atop every tab. Out-score the enemy server day by day to win prep.",
+  helpInvH: "Invasion (Sunday)",
+  helpInvB: "The two servers fight on a shared battlefield — alliances teleport in and rally objectives. Each server's top 3 alliances by prep points teleport in early (30 / 20 / 10 min before start) to seize position. Holding objectives scores the points that decide the war.",
+  helpFoot: "Use Overview for what to do today, Scouting to compare rosters, and Map for battlefield positions.",
+  invBadgeTitle: "Invasion time — open the Map",
+  invasionWord: "Invasion",
+  // daily plan section
+  todayWord: "TODAY",
+  mmDayTitle: "MATCHMAKING — PREP AHEAD",
+  mmDayNote: "No scoring yet — use today to prepare for Stage 1.",
+  prepNextHead: "Prep ahead for tomorrow",
+  invDayTitle: "INVASION DAY",
+  invDayNote: "Prep is over — today is the battle. Teleport in at your alliance's window, group up, and rally objectives. Each server's top 3 alliances (by prep points) may enter early.",
+  invTimesHead: "Your alliance invasion windows (UTC)",
+  invBase: "Base invasion time",
+  early: "early", onTime: "on time",
   prepStage1: "Forging Gear",
   prepStage2: "Enhancing Buildings",
   prepStage3: "Enhancing Technologies",
@@ -3107,15 +3146,19 @@ function TimelineStrip({prepStages, prepStarted, eventOver, invasionTime, t}){
           const on=reached(i);
           const now=i===currentIdx;
           const dotColor=on?z.bright:z.dark;
-          const lineColor=reached(i)?z.bright:z.dark;       // line entering this dot
-          const sub=n.stage==="invasion"?invasionTime:n.days;
+          // the connecting line "belongs" to the segment it comes FROM, so it
+          // takes the previous node's stage colour (matchmaking→forging = grey).
+          const prevZ=i>0?TL_STAGE[TIMELINE[i-1].stage]:z;
+          const lineColor=reached(i)?prevZ.bright:prevZ.dark;
+          // only the invasion node shows a sub-label (its time); days removed.
+          const sub=n.stage==="invasion"?invasionTime:"";
           return(
             <div key={n.key} style={{flex:1,minWidth:120,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",position:"relative",padding:"0 4px"}}>
               {i>0&&<div style={{position:"absolute",top:7,right:"50%",width:"100%",height:3,background:lineColor,zIndex:1}}/>}
               <div className={now?"live-pulse":""} style={{width:16,height:16,borderRadius:"50%",background:dotColor,border:`2px solid ${now?"#fbbf24":"#0f172a"}`,boxShadow:on?`0 0 6px ${z.bright}`:"none",position:"relative",zIndex:2}}/>
               <div style={{fontSize:8.5,fontWeight:700,letterSpacing:0.5,marginTop:6,color:on?z.bright:z.dark,textTransform:"uppercase"}}>{z.label}</div>
               <div style={{fontSize:11,fontWeight:700,color:now?"#fbbf24":(on?"#e8eaf0":"#64748b"),margin:"1px 0",lineHeight:1.2}}>{(n.titleKey&&t&&t[n.titleKey])||n.title}</div>
-              <div style={{fontSize:10,color:on?"#94a3b8":"#475569",lineHeight:1.3,fontFamily:n.stage==="invasion"?"monospace":"inherit"}}>{sub}</div>
+              {sub&&<div style={{fontSize:10,color:on?"#94a3b8":"#475569",lineHeight:1.3,fontFamily:"monospace"}}>{sub}</div>}
             </div>
           );
         })}
@@ -3196,6 +3239,99 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact}){
   </div>);
 }
 
+// "What to do today" — changes by the current day (derived from prep data),
+// reusing the two-column Prep Stage Schedule cells. Matchmaking shows the
+// prep-ahead for Stage 1; a stage day shows that day's how-to-score plus a
+// footnote prepping the next stage; once prep is over it shows invasion day +
+// each alliance's teleport time.
+function DailyPlan({config,t,schedule,alliances,invasionTime}){
+  // current day-index: 0=matchmaking, 1-5=stage days, 6=invasion
+  const dayIdx=(()=>{
+    if(config.eventOver) return 6;
+    let live=-1;(config.prepStages||[]).forEach((s,i)=>{if(s.ourPts>0||s.oppPts>0)live=i;});
+    if(live>=0) return 1+live;
+    if(config.prepStarted===true) return 1;
+    return 0;
+  })();
+  // schedule row for a stageIdx (0=matchmaking … 5)
+  const rowFor=(idx)=>schedule.find(s=>s.stageIdx===idx);
+  const prepAheadCol=(row)=>{
+    const txt=row&&row.prepKey?(t[row.prepKey]??row.prepKey):"";
+    return(
+      <div style={{fontSize:12,lineHeight:1.55,color:txt?"#a7f3d0":"#475569",background:"#0b1220",borderRadius:6,border:"1px dashed #1e3a5f",padding:"10px 12px",fontStyle:txt?"normal":"italic"}}>
+        <div style={{fontSize:9,color:"#64748b",letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>{t.prepColHead||"Prep ahead"}</div>
+        {txt||(t.prepNone||"—")}
+      </div>
+    );
+  };
+  const scoreCol=(row)=>{
+    if(!row) return null;
+    const kingTxt=row.kingBuffKey?(t[row.kingBuffKey]??""):"";
+    const empty=!row.methodKeys.length;
+    return(
+      <div style={{padding:"10px 12px",background:"#0f172a",borderRadius:6,borderLeft:`3px solid ${row.color}`}}>
+        <div style={{fontSize:9,color:"#64748b",letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>{t.stageColHead||"How to score today"}</div>
+        <div style={{fontSize:13,fontWeight:700,color:row.color,marginBottom:6}}>{row.stageIdx>=1?`${t.stageWord||"Stage"} ${row.stageIdx}: ${t[row.nameKey]}`:t[row.nameKey]}</div>
+        {kingTxt&&<div style={{fontSize:10,lineHeight:1.5,color:"#fcd34d",background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.3)",borderRadius:4,padding:"4px 7px",marginBottom:6}}>{"👑"} {kingTxt}</div>}
+        {empty
+          ? <div style={{fontSize:11,color:"#475569",fontStyle:"italic"}}>{t.stageNoMethods||"—"}</div>
+          : <ul style={{margin:0,paddingLeft:18}}>{row.methodKeys.map((mk,j)=>(<li key={j} style={{fontSize:12,lineHeight:1.6,color:"#cbd5e1"}}>{t[mk]||mk}</li>))}</ul>}
+      </div>
+    );
+  };
+
+  // ── invasion day ──
+  if(dayIdx>=6){
+    return(
+      <div id="daily-plan" style={{background:"linear-gradient(135deg,#1a1020 0%,#2a1520 100%)",border:"1px solid #7a2b3a",borderRadius:10,padding:16,marginBottom:12}}>
+        <div style={{fontSize:13,fontWeight:700,color:"#f87171",marginBottom:8}}>{"⚔️"} {t.invDayTitle||"INVASION DAY"}</div>
+        <div style={{fontSize:12,lineHeight:1.7,color:"#e2e8f0",marginBottom:12}}>{t.invDayNote||"Prep is over — today is the battle. Teleport in at your alliance's window, group up, and rally objectives. Each server's top 3 alliances (by prep points) may enter early."}</div>
+        <div style={{fontSize:9,color:"#64748b",letterSpacing:1,textTransform:"uppercase",marginBottom:6}}>{t.invTimesHead||"Your alliance invasion windows (UTC)"}</div>
+        {[...alliances].sort((a,b)=>a.prepRank-b.prepRank).map(a=>(
+          <div key={a.tag} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:"#0f172a",borderRadius:4,borderLeft:`3px solid ${a.color}`,marginBottom:3}}>
+            <div style={{fontSize:13,fontWeight:800,color:"#fbbf24",width:24,textAlign:"center"}}>#{a.prepRank}</div>
+            <div style={{fontSize:12,fontWeight:700,color:a.color,flex:1}}>{a.tag}</div>
+            <div style={{fontSize:12,color:"#e2e8f0",fontFamily:"monospace"}}>{a.teleportTime}</div>
+            <div style={{fontSize:10,color:"#64748b",width:64,textAlign:"right"}}>{a.prepRank<=3?`${[30,20,10][a.prepRank-1]}m ${t.early||"early"}`:t.onTime||"on time"}</div>
+          </div>
+        ))}
+        <div style={{fontSize:9,color:"#64748b",marginTop:8}}>{t.invBase||"Base invasion time"}: <span style={{fontFamily:"monospace",color:"#94a3b8"}}>{invasionTime}</span></div>
+      </div>
+    );
+  }
+
+  // ── matchmaking or a stage day ──
+  const isMM=dayIdx===0;
+  const todayRow=isMM?null:rowFor(dayIdx);
+  const nextRow=rowFor(dayIdx+1);           // for prep-ahead footnote / MM's stage-1 prep
+  const heading=isMM?(t.mmDayTitle||"MATCHMAKING — PREP AHEAD"):(`${t.todayWord||"TODAY"}: ${t[todayRow.nameKey]}`);
+  return(
+    <div id="daily-plan" style={{background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:16,marginBottom:12}}>
+      <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"📋"} {heading}</div>
+      {isMM?(
+        // matchmaking day → just the prep-ahead for Stage 1
+        <>
+          <div style={{fontSize:12,color:"#94a3b8",marginBottom:10}}>{t.mmDayNote||"No scoring yet — use today to prepare for Stage 1."}</div>
+          {prepAheadCol(nextRow)}
+        </>
+      ):(
+        // stage day → today's how-to-score + footnote prepping the next stage
+        <>
+          <div style={{display:"grid",gridTemplateColumns:"1fr",gap:10}}>
+            {scoreCol(todayRow)}
+          </div>
+          {nextRow&&nextRow.prepKey&&(t[nextRow.prepKey]!==undefined)&&(
+            <div style={{marginTop:12,paddingTop:10,borderTop:"1px dashed #1e3a5f"}}>
+              <div style={{fontSize:9,color:"#64748b",letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>{"↪"} {t.prepNextHead||`Prep ahead for ${t[nextRow.nameKey]}`}</div>
+              <div style={{fontSize:11,lineHeight:1.55,color:"#a7f3d0"}}>{t[nextRow.prepKey]||nextRow.prepKey}</div>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 function fmt(str){const n=parseInt(String(str).replace(/,/g,""),10);if(n>=1e9)return(n/1e9).toFixed(2)+"B";if(n>=1e6)return(n/1e6).toFixed(1)+"M";return str;}
 function sumF(arr,f){return arr.reduce((s,a)=>s+(parseInt(String(a[f]).replace(/,/g,""),10)||0),0);}
 function fmtN(n){if(n>=1e9)return(n/1e9).toFixed(2)+"B";if(n>=1e6)return(n/1e6).toFixed(1)+"M";return n.toLocaleString();}
@@ -3226,6 +3362,9 @@ function LangPicker({ value, onChange }) {
 function TMECommandCenter(){
   const[config,setConfig]=useState(DEFAULT_CONFIG);
   const[activeTab,setActiveTab]=useState("overview");
+  const[helpOpen,setHelpOpen]=useState(false);
+  // jump to a section on Overview (used by the header scroll + invasion badge)
+  const jumpTo=useCallback((tab,id)=>{setActiveTab(tab);setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth",block:"center"});},60);},[]);
   const[uiLang,setUiLang]=useState("en");
   const[t,setT]=useState(EN);
   const[mapViewOverride,setMapViewOverride]=useState(null);
@@ -3354,7 +3493,7 @@ function TMECommandCenter(){
 
   const tabs=[
     {id:"overview",label:t.tabOverview},{id:"scouting",label:t.tabScouting||"Scouting"},
-    {id:"map",label:t.tabMap},{id:"prep",label:t.tabPrep},
+    {id:"map",label:t.tabMap},{id:"prep",label:t.tabPoints||"Points"},
   ];
   const card={background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:16,marginBottom:12};
   // shared fixed column widths so Alliance Overview + Opponent Intel line up
@@ -3369,8 +3508,27 @@ function TMECommandCenter(){
 
   return(
     <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'Barlow',system-ui,sans-serif"}}>
+      {helpOpen&&(
+        <div className="tme-modal" onClick={()=>setHelpOpen(false)}>
+          <div className="tme-modal-card" onClick={e=>e.stopPropagation()}>
+            <span className="tme-modal-close" onClick={()=>setHelpOpen(false)}>{"\u00D7"}</span>
+            <h3 style={{color:"#60a5fa",textAlign:"center",marginTop:0}}>{t.helpTitle||"What is TME?"}</h3>
+            <div style={{fontSize:13,color:"#e2e8f0",lineHeight:1.65}}>
+              <p style={{marginTop:0}}>{t.helpIntro||"The Mightiest Empire (TME) is a cross-server war between two kingdoms. It runs in two phases:"}</p>
+              <p><strong style={{color:"#60a5fa"}}>{t.helpPrepH||"Preparation (Mon\u2013Sat)"}</strong> {"\u2014"} {t.helpPrepB||"Five daily scoring stages (Forging Gear, Enhancing Buildings, Enhancing Technologies, Unit Training, Power Boost). Each server earns points by completing that day's activities. The running total is shown in the bar at the top of every tab. Winning prep is about out-scoring the enemy server day by day."}</p>
+              <p><strong style={{color:"#f87171"}}>{t.helpInvH||"Invasion (Sunday)"}</strong> {"\u2014"} {t.helpInvB||"The two servers fight on a shared battlefield. Alliances teleport in and rally towers/objectives. Each server's top 3 alliances (by prep points) may teleport in early \u2014 30, 20, and 10 minutes before the start \u2014 to seize position. Holding objectives scores the points that decide the war."}</p>
+              <p style={{marginBottom:0,color:"#94a3b8",fontSize:12}}>{t.helpFoot||"Use the Overview for what to do today, Scouting to compare rosters, and Map for battlefield positions."}</p>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Header (language switcher now lives in the shared site header) */}
       <div style={{maxWidth:960,width:"100%",margin:"0 auto",background:"linear-gradient(to bottom, rgba(10,12,20,0.30) 0%, rgba(10,12,20,0.62) 60%, #0a0c14 100%), radial-gradient(ellipse at center top, rgba(61,124,196,0.28) 0%, transparent 60%), url('../assets/kvk-bg/tme.jpg')",backgroundSize:"cover,cover,cover",backgroundPosition:"center top",backgroundRepeat:"no-repeat",borderBottom:"2px solid #2b5a8a",padding:"56px 20px 36px",minHeight:260,display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",textAlign:"center",position:"relative",zIndex:10}}>
+        {/* top-right: scroll-to-daily + help buttons */}
+        <div className="hdr-pills-top">
+          <a href="#daily-plan" className="hdr-icobtn" title={t.jumpDaily||"Jump to today's plan"} onClick={(e)=>{e.preventDefault();jumpTo("overview","daily-plan");}}>{"\uD83D\uDCDC"}</a>
+          <button type="button" className="hdr-icobtn" title={t.helpTitle||"What is TME?"} onClick={()=>setHelpOpen(true)}>{"\u2753"}</button>
+        </div>
         <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:600,fontSize:"var(--fs-label,13px)",color:"#5b9bd8",letterSpacing:3,textTransform:"uppercase",marginBottom:4}}>{t.headerSub}</div>
         <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"var(--fs-title, clamp(42px,8vw,66px))",letterSpacing:3,color:"#f8fafc",lineHeight:1}}>{t.headerTitle}</div>
         <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:"var(--fs-lead,16px)",color:"#94a3b8",marginTop:6}}>
@@ -3379,6 +3537,12 @@ function TMECommandCenter(){
           <span style={{color:isDefense?"#f59e0b":"#4ade80"}}>{isDefense?`\uD83D\uDEE1\uFE0F ${t.defending}`:`\u2694\uFE0F ${t.attacking}`}</span>
         </div>
         <div id="evtMeta"></div>
+        {/* bottom-right: invasion-time badge \u2192 jumps to Map tab */}
+        <div className="hdr-pills">
+          <a href="#tme-map" className="inv-badge" title={t.invBadgeTitle||"Invasion time \u2014 open the Map"} onClick={(e)=>{e.preventDefault();jumpTo("map","tme-map");}}>
+            <span className="ib-ico">{"\u2694\uFE0F"}</span><span className="ib-lbl">{(t.invasionWord||"Invasion")+" \u00B7 "+config.invasionTime}</span>
+          </a>
+        </div>
       </div>
 
       {/* Persistent prep progress bars — the full tug system, visible on every
@@ -3437,6 +3601,9 @@ function TMECommandCenter(){
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:12}}>{"⏱️"} {t.eventTimeline||"EVENT TIMELINE"}</div>
             <TimelineStrip prepStages={config.prepStages} prepStarted={config.prepStarted} eventOver={config.eventOver} invasionTime={config.invasionTime} t={t}/>
           </div>
+
+          {/* What to do today — changes by day; jumped-to by the header scroll button */}
+          <DailyPlan config={config} t={t} schedule={STAGE_SCHEDULE} alliances={computedAlliances} invasionTime={config.invasionTime}/>
 
         </>)}
 
@@ -3519,7 +3686,7 @@ function TMECommandCenter(){
         </>)}
 
         {activeTab==="map"&&(<>
-          <div style={card}>
+          <div id="tme-map" style={card}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
               <div style={{fontSize:13,fontWeight:700,color:"#fbbf24"}}>{"\uD83D\uDDFA\uFE0F"} {t.battlefield} {"\u2014"} {mapIsDefense?t.defPositions:t.offPositions}</div>
               <button onClick={()=>setMapViewOverride(v=>v===null?!isDefense:v===isDefense?!isDefense:null)} style={{padding:"4px 12px",fontSize:10,background:mapViewOverride!==null?"#1e3a5f":"#0f172a",border:"1px solid #334155",borderRadius:4,color:mapViewOverride!==null?"#fbbf24":"#64748b",cursor:"pointer",fontFamily:"monospace"}}>{mapIsDefense?"\uD83D\uDEE1\uFE0F DEF":"\u2694\uFE0F ATK"}</button>
@@ -3564,42 +3731,6 @@ function TMECommandCenter(){
         </>)}
 
         {activeTab==="prep"&&(<>
-          <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:4}}>{"\uD83D\uDCC5"} {t.stageSchedule||"PREP STAGE SCHEDULE"}</div>
-            {/* column headers */}
-            <div style={{display:"grid",gridTemplateColumns:"40% 60%",gap:8,padding:"0 2px 4px",borderBottom:"1px solid #1e3a5f",marginBottom:8}}>
-              <div style={{fontSize:9,color:"#64748b",letterSpacing:1,textTransform:"uppercase"}}>{t.prepColHead||"Prep ahead"}</div>
-              <div style={{fontSize:9,color:"#64748b",letterSpacing:1,textTransform:"uppercase"}}>{t.stageColHead||"Stage & how to score"}</div>
-            </div>
-            {STAGE_SCHEDULE.map((s)=>{
-              const stg=s.stageIdx>=1?config.prepStages[s.stageIdx-1]:null;
-              const active=stg&&(stg.ourPts>0||stg.oppPts>0);
-              const prepTxt=s.prepKey?(t[s.prepKey]??s.prepKey):"";
-              const kingTxt=s.kingBuffKey?(t[s.kingBuffKey]??""):"";
-              const empty=!s.methodKeys.length;
-              return(
-                <div key={s.nameKey} style={{display:"grid",gridTemplateColumns:"40% 60%",gap:8,alignItems:"stretch",marginBottom:8}}>
-                  {/* LEFT: prep-ahead instructions for the coming day(s) */}
-                  <div style={{fontSize:11,lineHeight:1.5,color:prepTxt?"#a7f3d0":"#475569",background:"#0b1220",borderRadius:6,border:"1px dashed #1e3a5f",padding:"8px 10px",display:"flex",alignItems:"center",fontStyle:prepTxt?"normal":"italic"}}>
-                    {prepTxt||(t.prepNone||"\u2014")}
-                  </div>
-                  {/* RIGHT: the day's stage + how to score */}
-                  <div style={{padding:"8px 10px",background:active?"#0f172a":"transparent",borderRadius:6,borderLeft:`3px solid ${active?s.color:"#1e3a5f"}`,opacity:active?1:(empty?0.55:0.72)}}>
-                    <div style={{display:"flex",alignItems:"baseline",gap:8,flexWrap:"wrap",marginBottom:4}}>
-                      <span style={{fontSize:11,color:"#64748b",fontFamily:"monospace"}}>{s.date}</span>
-                      <span style={{fontSize:13,fontWeight:700,color:s.color}}>{t.stageWord||"Stage"} {s.stageIdx}: {t[s.nameKey]}</span>
-                      {active&&<span style={{fontSize:9,color:"#fbbf24",border:"1px solid #fbbf24",borderRadius:3,padding:"0 5px"}}>{t.stageScored||"scored"}</span>}
-                    </div>
-                    {kingTxt&&<div style={{fontSize:10,lineHeight:1.5,color:"#fcd34d",background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.3)",borderRadius:4,padding:"4px 7px",marginBottom:6}}>{"\uD83D\uDC51"} {kingTxt}</div>}
-                    {empty
-                      ? <div style={{fontSize:10,color:"#475569",fontStyle:"italic"}}>{t.stageNoMethods||"\u2014"}</div>
-                      : <ul style={{margin:0,paddingLeft:18}}>{s.methodKeys.map((mk,j)=>(<li key={j} style={{fontSize:11,lineHeight:1.6,color:"#cbd5e1"}}>{t[mk]||mk}</li>))}</ul>}
-                  </div>
-                </div>
-              );
-            })}
-            <div style={{fontSize:9,color:"#64748b",marginTop:2}}>{t.stageScheduleNote||"One stage per day during the Preparation phase. Point methods are the same for both servers \u2014 out-earn them each day."}</div>
-          </div>
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\uD83C\uDFC6"} TME ALLIANCE RANKINGS</div>
             <div style={{fontSize:9,color:"#64748b",marginBottom:8}}>Teleport offset: #1 per server = 30min early, #2 = 20min, #3 = 10min, #4 = event start</div>
