@@ -3079,15 +3079,15 @@ const TL_STAGE = {
 };
 const TIMELINE = [
   { key: "mm",  stage: "matchmaking", title: "Matchmaking", days: "Sat & Sun" },
-  { key: "p1",  stage: "prep",        title: "Prep #1",     days: "Mon", prepIdx: 0 },
-  { key: "p2",  stage: "prep",        title: "Prep #2",     days: "Tue", prepIdx: 1 },
-  { key: "p3",  stage: "prep",        title: "Prep #3",     days: "Wed", prepIdx: 2 },
-  { key: "p4",  stage: "prep",        title: "Prep #4",     days: "Thu", prepIdx: 3 },
-  { key: "p5",  stage: "prep",        title: "Prep #5",     days: "Fri & Sat", prepIdx: 4 },
+  { key: "p1",  stage: "prep", titleKey: "prepStage1", title: "Forging Gear",           days: "Mon", prepIdx: 0 },
+  { key: "p2",  stage: "prep", titleKey: "prepStage2", title: "Enhancing Buildings",    days: "Tue", prepIdx: 1 },
+  { key: "p3",  stage: "prep", titleKey: "prepStage3", title: "Enhancing Technologies", days: "Wed", prepIdx: 2 },
+  { key: "p4",  stage: "prep", titleKey: "prepStage4", title: "Unit Training",          days: "Thu", prepIdx: 3 },
+  { key: "p5",  stage: "prep", titleKey: "prepStage5", title: "Power Boost",            days: "Fri & Sat", prepIdx: 4 },
   { key: "inv", stage: "invasion",    title: "Invasion",    days: "Sun" },
 ];
 
-function TimelineStrip({prepStages, prepStarted, eventOver, invasionTime}){
+function TimelineStrip({prepStages, prepStarted, eventOver, invasionTime, t}){
   // current node index (0=matchmaking … 6=invasion)
   const currentIdx = (()=>{
     if(eventOver) return TIMELINE.length-1;                 // invasion / done
@@ -3114,7 +3114,7 @@ function TimelineStrip({prepStages, prepStarted, eventOver, invasionTime}){
               {i>0&&<div style={{position:"absolute",top:7,right:"50%",width:"100%",height:3,background:lineColor,zIndex:1}}/>}
               <div className={now?"live-pulse":""} style={{width:16,height:16,borderRadius:"50%",background:dotColor,border:`2px solid ${now?"#fbbf24":"#0f172a"}`,boxShadow:on?`0 0 6px ${z.bright}`:"none",position:"relative",zIndex:2}}/>
               <div style={{fontSize:8.5,fontWeight:700,letterSpacing:0.5,marginTop:6,color:on?z.bright:z.dark,textTransform:"uppercase"}}>{z.label}</div>
-              <div style={{fontSize:11,fontWeight:700,color:now?"#fbbf24":(on?"#e8eaf0":"#64748b"),margin:"1px 0",lineHeight:1.2}}>{n.title}</div>
+              <div style={{fontSize:11,fontWeight:700,color:now?"#fbbf24":(on?"#e8eaf0":"#64748b"),margin:"1px 0",lineHeight:1.2}}>{(n.titleKey&&t&&t[n.titleKey])||n.title}</div>
               <div style={{fontSize:10,color:on?"#94a3b8":"#475569",lineHeight:1.3,fontFamily:n.stage==="invasion"?"monospace":"inherit"}}>{sub}</div>
             </div>
           );
@@ -3435,7 +3435,7 @@ function TMECommandCenter(){
           {/* Invasion schedule — horizontal strip (moved from the Timeline tab) */}
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:12}}>{"⏱️"} {t.eventTimeline||"EVENT TIMELINE"}</div>
-            <TimelineStrip prepStages={config.prepStages} prepStarted={config.prepStarted} eventOver={config.eventOver} invasionTime={config.invasionTime}/>
+            <TimelineStrip prepStages={config.prepStages} prepStarted={config.prepStarted} eventOver={config.eventOver} invasionTime={config.invasionTime} t={t}/>
           </div>
 
         </>)}
