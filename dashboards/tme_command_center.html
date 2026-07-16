@@ -3381,8 +3381,27 @@ function TMECommandCenter(){
         <div id="evtMeta"></div>
       </div>
 
-      {/* Tabs — shared .tabs/.tab standard; Prep tab pulses while prep is live */}
-      <div className="tabs">
+      {/* Persistent prep progress bars — the full tug system, visible on every
+          tab (collapsed by default; 'show all stages' expander available).
+          Sits ABOVE the tabs. Same tug style as Behemoth / Desolate Desert. */}
+      {config.prepStarted===true&&(
+        <div style={{maxWidth:960,margin:"0 auto",padding:"12px 16px 0"}}>
+          <div style={{background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:"12px 16px"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+              <span style={{fontSize:11,fontWeight:700,color:"#fbbf24",letterSpacing:0.5,textTransform:"uppercase"}}>{"📊"} {t.prepResults}</span>
+              <span style={{fontSize:9,color:"#64748b",fontFamily:"monospace"}}>Updated: {config.prepLastUpdated}</span>
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:12,fontSize:12}}>
+              <span><span style={{color:"#60a5fa"}}>{"■"}</span> Era 8: <strong>{config.totalOur}B</strong></span>
+              <span><span style={{color:"#f87171"}}>{"■"}</span> {config.oppServer}: <strong>{config.totalOpp}B</strong></span>
+            </div>
+            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp} oppLabel={oppLabel} eventOver={config.eventOver}/>
+          </div>
+        </div>
+      )}
+
+      {/* Tabs — below the persistent bar. Prep tab pulses while prep is live */}
+      <div className="tabs" style={{marginTop:12}}>
         {tabs.map(tb=>{
           const isNow=tb.id==="prep"&&config.prepStarted===true&&!config.eventOver;
           return(
@@ -3390,20 +3409,6 @@ function TMECommandCenter(){
           );
         })}
       </div>
-
-      {/* Persistent status bar — visible on every tab: overall prep points +
-          current stage tug (compact). Mirrors Desolate's always-visible bar. */}
-      {config.prepStarted===true&&(
-        <div style={{maxWidth:960,margin:"0 auto",padding:"12px 16px 0"}}>
-          <div style={{background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:"12px 16px"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-              <span style={{fontSize:11,fontWeight:700,color:"#fbbf24",letterSpacing:0.5,textTransform:"uppercase"}}>{"📊"} {t.prepResults}</span>
-              <span style={{fontSize:9,color:"#64748b",fontFamily:"monospace"}}>Updated: {config.prepLastUpdated}</span>
-            </div>
-            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp} oppLabel={oppLabel} eventOver={config.eventOver} compact/>
-          </div>
-        </div>
-      )}
 
       <div style={{padding:12,maxWidth:960,margin:"0 auto"}}>
 
@@ -3559,17 +3564,6 @@ function TMECommandCenter(){
         </>)}
 
         {activeTab==="prep"&&(<>
-          <div style={card}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-              <div style={{fontSize:13,fontWeight:700,color:"#fbbf24"}}>{"\uD83D\uDCCA"} {t.prepResults}</div>
-              <div style={{fontSize:9,color:"#64748b",fontFamily:"monospace"}}>Updated: {config.prepLastUpdated}</div>
-            </div>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:12,fontSize:12}}>
-              <span><span style={{color:"#60a5fa"}}>{"\u25A0"}</span> Era 8: <strong>{config.totalOur}B</strong></span>
-              <span><span style={{color:"#f87171"}}>{"\u25A0"}</span> {config.oppServer}: <strong>{config.totalOpp}B</strong></span>
-            </div>
-            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp} oppLabel={oppLabel} eventOver={config.eventOver}/>
-          </div>
           <div style={card}>
             <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:4}}>{"\uD83D\uDCC5"} {t.stageSchedule||"PREP STAGE SCHEDULE"}</div>
             {/* column headers */}
