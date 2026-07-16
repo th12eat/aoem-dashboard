@@ -51,6 +51,7 @@ const EN = {
   attacking: "ATTACKING",
   invasionLabel: "Invasion: Sunday",
   tabOverview: "Overview",
+  tabScouting: "Scouting",
   tabMap: "Map",
   tabTimeline: "Timeline",
   tabPrep: "Prep",
@@ -3067,7 +3068,31 @@ function DiamondMap({ alliances, isDefense, t }) {
   );
 }
 
-function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver}){
+function TimelineStrip({phases,times,byRank}){
+  // Horizontal invasion schedule (StageLine-style): dots + connecting line,
+  // time above, phase + short desc below. Scrolls horizontally on narrow screens.
+  const colorFor=(i)=>i>=1&&i<=4?(byRank[i-1]?.color||PHASE_COLORS[i]):(PHASE_COLORS[i]||"#94a3b8");
+  return(
+    <div style={{overflowX:"auto",paddingBottom:6}}>
+      <div style={{display:"flex",minWidth:phases.length*130,gap:0}}>
+        {phases.map((ph,i)=>{
+          const c=colorFor(i);
+          return(
+            <div key={i} style={{flex:1,minWidth:130,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",position:"relative",padding:"0 4px"}}>
+              {i<phases.length-1&&<div style={{position:"absolute",top:6,left:"50%",width:"100%",height:2,background:"#1e3a5f"}}/>}
+              <div style={{width:12,height:12,borderRadius:"50%",background:c,border:"2px solid #0f172a",boxShadow:`0 0 6px ${c}`,position:"relative",zIndex:2}}/>
+              <div style={{fontSize:9,color:"#fbbf24",fontWeight:700,letterSpacing:0.5,marginTop:6,fontFamily:"monospace"}}>{times[i]}</div>
+              <div style={{fontSize:11,fontWeight:700,color:c,margin:"2px 0",lineHeight:1.2}}>{ph.phase}</div>
+              <div style={{fontSize:10,color:"#94a3b8",lineHeight:1.4}}>{ph.desc}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact}){
   // Behemoth "tug" style: one split bar per stage (blue=us | red=them),
   // sized by each side's share of that stage's total. Label row above.
   const [expanded,setExpanded]=useState(false);
@@ -3100,6 +3125,19 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver}){
   stages.forEach((s,i)=>{ if(s.ourPts>0||s.oppPts>0) liveIdx=i; });
   // stage title prefixed with its day ("Day 1: Forging Gear"); stage index i -> Day i+1
   const stageLabel=(s,i)=>`Stage ${i+1}: ${t[s.nameKey]||s.nameKey}`;
+  if(compact){
+    // condensed version for the persistent cross-tab bar: points line + the
+    // current live stage tug only (full stage list stays on the Prep tab).
+    return(<div>
+      <div style={{display:"flex",justifyContent:"space-between",marginBottom:8,fontSize:12}}>
+        <span><span style={{color:"#60a5fa"}}>{"■"}</span> Era 8: <strong>{totalOur}B</strong></span>
+        <span><span style={{color:"#f87171"}}>{"■"}</span> {oppLabel||"OPP"}: <strong>{totalOpp}B</strong></span>
+      </div>
+      {liveIdx>=0
+        ? <Tug label={stageLabel(stages[liveIdx],liveIdx)} our={stages[liveIdx].ourPts} opp={stages[liveIdx].oppPts} live/>
+        : <Tug label={t.colTotal} our={totalOur} opp={totalOpp} strong/>}
+    </div>);
+  }
   return(<div>
     {/* always-visible: current live stage */}
     {liveIdx>=0 && <Tug label={stageLabel(stages[liveIdx],liveIdx)} our={stages[liveIdx].ourPts} opp={stages[liveIdx].oppPts} live/>}
@@ -3283,9 +3321,8 @@ function TMECommandCenter(){
   const tlTimes=tlTimesCalc();
 
   const tabs=[
-    {id:"overview",label:t.tabOverview},{id:"map",label:t.tabMap},
-    {id:"timeline",label:t.tabTimeline},{id:"prep",label:t.tabPrep},
-    {id:"roles",label:t.tabRoles},
+    {id:"overview",label:t.tabOverview},{id:"scouting",label:t.tabScouting||"Scouting"},
+    {id:"map",label:t.tabMap},{id:"prep",label:t.tabPrep},
   ];
   const card={background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:16,marginBottom:12};
   // shared fixed column widths so Alliance Overview + Opponent Intel line up
@@ -3322,6 +3359,20 @@ function TMECommandCenter(){
         })}
       </div>
 
+      {/* Persistent status bar — visible on every tab: overall prep points +
+          current stage tug (compact). Mirrors Desolate's always-visible bar. */}
+      {config.prepStarted===true&&(
+        <div style={{maxWidth:960,margin:"0 auto",padding:"12px 16px 0"}}>
+          <div style={{background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:"12px 16px"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+              <span style={{fontSize:11,fontWeight:700,color:"#fbbf24",letterSpacing:0.5,textTransform:"uppercase"}}>{"📊"} {t.prepResults}</span>
+              <span style={{fontSize:9,color:"#64748b",fontFamily:"monospace"}}>Updated: {config.prepLastUpdated}</span>
+            </div>
+            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp} oppLabel={oppLabel} eventOver={config.eventOver} compact/>
+          </div>
+        </div>
+      )}
+
       <div style={{padding:12,maxWidth:960,margin:"0 auto"}}>
 
         {activeTab==="overview"&&(<>
@@ -3344,6 +3395,15 @@ function TMECommandCenter(){
             </div>
           </div>
 
+          {/* Invasion schedule — horizontal strip (moved from the Timeline tab) */}
+          <div style={card}>
+            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:12}}>{"⏱️"} {isDefense?t.defTimeline:t.offTimeline}</div>
+            <TimelineStrip phases={tlPhases} times={tlTimes} byRank={byRank}/>
+          </div>
+
+        </>)}
+
+        {activeTab==="scouting"&&(<>
           <div className="cmp-grid">
             <div className="cmp-card">
               <div className="cmp-head us">{"OUR ALLIANCES"}</div>
@@ -3466,27 +3526,6 @@ function TMECommandCenter(){
           </div>
         </>)}
 
-        {activeTab==="timeline"&&(
-          <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:12}}>{"\u23F1\uFE0F"} {isDefense?t.defTimeline:t.offTimeline}</div>
-            {tlPhases.map((ph,i)=>{
-              const tlColor=i>=1&&i<=4?byRank[i-1]?.color||PHASE_COLORS[i]:PHASE_COLORS[i]||"#94a3b8";
-              return(
-              <div key={i} style={{display:"flex",gap:12,marginBottom:16}}>
-                <div style={{display:"flex",flexDirection:"column",alignItems:"center",width:20,flexShrink:0}}>
-                  <div style={{width:10,height:10,borderRadius:"50%",background:tlColor,border:"2px solid #0f172a",boxShadow:`0 0 6px ${tlColor}`}}/>
-                  {i<tlPhases.length-1&&<div style={{width:2,flex:1,background:"#1e3a5f",marginTop:2}}/>}
-                </div>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:10,color:"#fbbf24",fontWeight:700,letterSpacing:1}}>{tlTimes[i]}</div>
-                  <div style={{fontSize:12,fontWeight:700,color:tlColor,margin:"2px 0"}}>{ph.phase}</div>
-                  <div style={{fontSize:11,color:"#94a3b8",lineHeight:1.5}}>{ph.desc}</div>
-                </div>
-              </div>);
-            })}
-          </div>
-        )}
-
         {activeTab==="prep"&&(<>
           <div style={card}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
@@ -3552,44 +3591,6 @@ function TMECommandCenter(){
                 <div style={{fontSize:10,color:a.server==="era8"?"#60a5fa":"#f87171",fontFamily:"monospace"}}>{a.teleportTime} (#{a.prepRank})</div>
               </div>
             ))}
-          </div>
-        </>)}
-
-        {activeTab==="roles"&&(<>
-          {computedAlliances.map(a=>(
-            <div key={a.tag} style={card}>
-              <div style={{fontSize:13,fontWeight:700,color:a.color,marginBottom:10,display:"flex",justifyContent:"space-between"}}>
-                <span>{a.tag} {"\u2014"} {t[a.roleKey]||a.roleKey}</span>
-                <span style={{fontSize:10,color:"#64748b"}}>{a.teleportTime}</span>
-              </div>
-              <div style={{marginBottom:10}}>
-                <div style={{fontSize:10,color:"#fbbf24",marginBottom:2,letterSpacing:1}}>{"\uD83D\uDCE3"} {t.rallyLead}</div>
-                <div style={{fontSize:9,color:"#64748b",marginBottom:4}}>{t.rallyLeadDesc}</div>
-                <div style={{fontSize:12,color:"#e2e8f0"}}>{config.roles[a.tag]?.rallyLead||"\u2014"}</div>
-              </div>
-              <div style={{marginBottom:10}}>
-                <div style={{fontSize:10,color:"#fbbf24",marginBottom:2,letterSpacing:1}}>{"\uD83D\uDE95"} {t.taxiRunners}</div>
-                <div style={{fontSize:9,color:"#64748b",marginBottom:4}}>{t.taxiRunnersDesc}</div>
-                <div style={{fontSize:12,color:"#e2e8f0"}}>{config.roles[a.tag]?.taxiRunners.filter(x=>x!=="TBD").join(", ")||"\u2014"}</div>
-              </div>
-              <div style={{marginBottom:10}}>
-                <div style={{fontSize:10,color:"#fbbf24",marginBottom:2,letterSpacing:1}}>{"\uD83C\uDFAF"} {t.siegeCoord}</div>
-                <div style={{fontSize:9,color:"#64748b",marginBottom:4}}>{t.siegeCoordDesc}</div>
-                <div style={{fontSize:12,color:"#e2e8f0"}}>{config.roles[a.tag]?.siegeCoord||"\u2014"}</div>
-              </div>
-              <div>
-                <div style={{fontSize:10,color:"#fbbf24",marginBottom:2,letterSpacing:1}}>{"\uD83D\uDD27"} {t.siegeHelpers}</div>
-                <div style={{fontSize:9,color:"#64748b",marginBottom:4}}>{t.siegeHelpersDesc}</div>
-                <div style={{fontSize:12,color:"#e2e8f0"}}>{config.roles[a.tag]?.siegeHelpers.filter(x=>x!=="TBD").join(", ")||"\u2014"}</div>
-              </div>
-            </div>
-          ))}
-          <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:8}}>{"\uD83D\uDE95"} {t.taxiProtocol}</div>
-            <ol style={{margin:0,paddingLeft:18,fontSize:11,color:"#cbd5e1",lineHeight:1.8}}>
-              <li>{t.taxiStep1}</li><li>{t.taxiStep2}</li><li>{t.taxiStep3}</li><li>{t.taxiStep4}</li><li>{t.taxiStep5}</li>
-            </ol>
-            <div style={{fontSize:10,color:"#f59e0b",marginTop:8}}>{"\u26A0\uFE0F"} {t.taxiWarn}</div>
           </div>
         </>)}
 
