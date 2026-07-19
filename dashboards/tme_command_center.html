@@ -3224,12 +3224,17 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact}){
       </div>
       {liveIdx>=0
         ? <Tug label={stageLabel(stages[liveIdx],liveIdx)} our={stages[liveIdx].ourPts} opp={stages[liveIdx].oppPts} live/>
-        : <Tug label={t.colTotal} our={totalOur} opp={totalOpp} strong/>}
+        : (stages.length>0
+            ? <Tug label={stageLabel(stages[0],0)} our={stages[0].ourPts} opp={stages[0].oppPts}/>
+            : <Tug label={t.colTotal} our={totalOur} opp={totalOpp} strong/>)}
     </div>);
   }
+  // before any stage has points, surface Stage 1 (greyed/tied "Not Started")
+  // instead of an empty slot, so the bar always shows the coming stage.
+  const topIdx=liveIdx>=0?liveIdx:0;
   return(<div>
-    {/* always-visible: current live stage */}
-    {liveIdx>=0 && <Tug label={stageLabel(stages[liveIdx],liveIdx)} our={stages[liveIdx].ourPts} opp={stages[liveIdx].oppPts} live/>}
+    {/* always-visible: current live stage, or Stage 1 greyed before start */}
+    {stages.length>0 && <Tug label={stageLabel(stages[topIdx],topIdx)} our={stages[topIdx].ourPts} opp={stages[topIdx].oppPts} live={liveIdx>=0}/>}
 
     {/* dropdown toggle */}
     <button onClick={()=>setExpanded(v=>!v)} style={{display:"flex",alignItems:"center",gap:6,width:"100%",justifyContent:"center",
@@ -3239,9 +3244,9 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact}){
       {expanded?"Hide all stages":`Show all ${stages.length} stages`}
     </button>
 
-    {/* collapsible: all stages in order; the live one is a placeholder row */}
+    {/* collapsible: all stages in order; the one shown above is a placeholder row */}
     {expanded && stages.map((s,i)=>(
-      i===liveIdx
+      i===topIdx
         ? <Tug key={i} label={stageLabel(s,i)} placeholder/>
         : <Tug key={i} label={stageLabel(s,i)} our={s.ourPts} opp={s.oppPts}/>
     ))}
