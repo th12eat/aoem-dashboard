@@ -2742,6 +2742,8 @@ function towerIcon(towerStr) {
 const DEFAULT_CONFIG = {
   oppServer: "Era 90",
   invasionTime: "11:00 UTC",
+  prepStart: "2026-07-20",       // Prep Stage 1 (Forging) opens — header left cell
+  invasionStart: "2026-07-25",   // Invasion day — header right cell
   weWonPrep: null,
   ourRank: 16,
   oppRank: 11,
@@ -3421,18 +3423,27 @@ function TMECommandCenter(){
   // Keep the header dropdown in sync if language changes from elsewhere.
   useEffect(()=>{ if(window.SiteHeader) window.SiteHeader.setCurrentLanguage(uiLang); },[uiLang]);
 
-  // Mount the standard event-meta block (invasion timer + ical stub). Only the
-  // invasion time is schedulable for TME, and it's TBD until a few days out.
+  // Mount the standard event-meta block — Desolate-Desert style: two date cells
+  // (Prep Start | Invasion Start) + Timezone, with a live countdown to the next
+  // milestone. Dates come from config (editable via JSON); a non-date value
+  // (e.g. "TBD") passes through as a label and is skipped for the countdown.
   useEffect(()=>{
     let tries=0;
+    const isDate=(d)=>typeof d==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&!isNaN(Date.parse(d+"T00:00:00Z"));
+    const fmt=(d)=>isDate(d)?new Date(d+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}):(d||"TBD");
     const mount=()=>{
       if(window.EventHeader && document.getElementById('evtMeta')){
         window.EventHeader.mount('#evtMeta', {
-          startLabel: config.invasionTime || 'TBD',
-          startLabelText: 'Invasion',
-          timezone: 'UTC',
-          pendingLabel: 'Invasion Time TBD',
+          startLabel: fmt(config.prepStart),
+          startLabelText: 'Prep Start',
+          endLabel: fmt(config.invasionStart),
+          endLabelText: 'Invasion Start',
+          timezone: 'UTC+0',
+          startISO: isDate(config.prepStart) ? config.prepStart+"T00:00:00Z" : null,
+          endISO: isDate(config.invasionStart) ? config.invasionStart+"T00:00:00Z" : null,
+          pendingLabel: 'Prep Not Started',
           liveLabel: 'Prep In Progress',
+          liveDot: true,
           forceComplete: config.eventOver === true,
           completeLabel: 'Event Complete',
           ical: { stub:true, label:'Add Invasion to Calendar' }
@@ -3440,7 +3451,7 @@ function TMECommandCenter(){
       } else if(tries++ < 50){ setTimeout(mount, 50); }
     };
     mount();
-  },[config.invasionTime, config.eventOver]);
+  },[config.prepStart, config.invasionStart, config.eventOver]);
 
   // Until prep is meaningfully underway, don't let an early/partial score flip attack-defense.
   const isDefense=config.prepStarted===false?false:(config.totalOur < config.totalOpp);
