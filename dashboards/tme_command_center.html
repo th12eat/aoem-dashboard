@@ -90,6 +90,7 @@ const EN = {
   mmDayTitle: "MATCHMAKING — PREP AHEAD",
   mmDayNote: "No scoring yet — use today to prepare for Stage 1.",
   prepNextHead: "Prep ahead for tomorrow",
+  prepAheadFor: "Prep ahead for",
   invDayTitle: "INVASION DAY",
   invDayNote: "Prep is over — today is the battle. Teleport in at your alliance's window, group up, and rally objectives. Each server's top 3 alliances (by prep points) may enter early.",
   invTimesHead: "Your alliance invasion windows (UTC)",
@@ -108,7 +109,7 @@ const EN = {
   stageColHead: "Stage & how to score",
   prepNone: "No prep needed",
   stageNoMethods: "No points this day",
-  prep0: "Farm Iron Meteorite for Stage 1",
+  prep0: "Farm Iron Meteorite and save Stamina for Stage 1",
   prep1: "Farm RSS & sign up for Chief Priest (Building) for Stage 2",
   prep2: "Sign up for Court Sage (Research) for Stage 3",
   prep3: "Sign up for Tactical Master (Unit Training) for Stage 4",
@@ -3327,21 +3328,22 @@ function DailyPlan({config,t,schedule,alliances,invasionTime,dayIdx,liveIdx}){
       {relBanner}
       <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"📋"} {heading}</div>
       {isMM?(
-        // matchmaking day → just the prep-ahead for Stage 1
+        // matchmaking day → prep-ahead for Stage 1 (this day's own row, prep0)
         <>
           <div style={{fontSize:12,color:"#94a3b8",marginBottom:10}}>{t.mmDayNote||"No scoring yet — use today to prepare for Stage 1."}</div>
-          {prepAheadCol(nextRow)}
+          {prepAheadCol(rowFor(0))}
         </>
       ):(
-        // stage day → today's how-to-score + footnote prepping the next stage
+        // stage day → today's how-to-score + footnote for what to prep TODAY to be
+        // ready for the coming stage (this day's own prepKey, not the next row's).
         <>
           <div style={{display:"grid",gridTemplateColumns:"1fr",gap:10}}>
             {scoreCol(todayRow)}
           </div>
-          {nextRow&&nextRow.prepKey&&(t[nextRow.prepKey]!==undefined)&&(
+          {todayRow&&todayRow.prepKey&&t[todayRow.prepKey]&&(
             <div style={{marginTop:12,paddingTop:10,borderTop:"1px dashed #1e3a5f"}}>
-              <div style={{fontSize:9,color:"#64748b",letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>{"↪"} {t.prepNextHead||`Prep ahead for ${t[nextRow.nameKey]}`}</div>
-              <div style={{fontSize:11,lineHeight:1.55,color:"#a7f3d0"}}>{t[nextRow.prepKey]||nextRow.prepKey}</div>
+              <div style={{fontSize:9,color:"#64748b",letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>{"↪"} {nextRow?`${t.prepAheadFor||"Prep ahead for"} ${t[nextRow.nameKey]}`:(t.prepNextHead||"Prep ahead")}</div>
+              <div style={{fontSize:11,lineHeight:1.55,color:"#a7f3d0"}}>{t[todayRow.prepKey]}</div>
             </div>
           )}
         </>
