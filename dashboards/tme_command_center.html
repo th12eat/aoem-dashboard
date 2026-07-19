@@ -3516,7 +3516,7 @@ function TMECommandCenter(){
 
   const tabs=[
     {id:"overview",label:t.tabOverview},{id:"scouting",label:t.tabScouting||"Scouting"},
-    {id:"map",label:t.tabMap},{id:"prep",label:t.tabPoints||"Points"},
+    {id:"map",label:t.tabMap},
   ];
   const card={background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:16,marginBottom:12};
   // shared fixed column widths so Alliance Overview + Opponent Intel line up
@@ -3570,8 +3570,9 @@ function TMECommandCenter(){
 
       {/* Persistent prep progress bars — the full tug system, visible on every
           tab (collapsed by default; 'show all stages' expander available).
-          Sits ABOVE the tabs. Same tug style as Behemoth / Desolate Desert. */}
-      {config.prepStarted===true&&(
+          Sits ABOVE the tabs. Same tug style as Behemoth / Desolate Desert.
+          Shown even before prep starts: all-zero data renders tied 50:50. */}
+      {(
         <div style={{maxWidth:960,margin:"0 auto",padding:"12px 16px 0"}}>
           <div style={{padding:"0 2px"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
@@ -3587,14 +3588,11 @@ function TMECommandCenter(){
         </div>
       )}
 
-      {/* Tabs — below the persistent bar. Prep tab pulses while prep is live */}
+      {/* Tabs — below the persistent bar. */}
       <div className="tabs" style={{marginTop:12}}>
-        {tabs.map(tb=>{
-          const isNow=tb.id==="prep"&&config.prepStarted===true&&!config.eventOver;
-          return(
-          <button key={tb.id} className={"tab"+(activeTab===tb.id?" active":"")+(isNow?" is-now":"")} onClick={()=>setActiveTab(tb.id)}>{tb.label}</button>
-          );
-        })}
+        {tabs.map(tb=>(
+          <button key={tb.id} className={"tab"+(activeTab===tb.id?" active":"")} onClick={()=>setActiveTab(tb.id)}>{tb.label}</button>
+        ))}
       </div>
 
       <div style={{padding:12,maxWidth:960,margin:"0 auto"}}>
@@ -3641,6 +3639,26 @@ function TMECommandCenter(){
               <DailyPlan config={config} t={t} schedule={STAGE_SCHEDULE} alliances={computedAlliances} invasionTime={config.invasionTime} dayIdx={shownDay} liveIdx={liveDay}/>
             </>);
           })()}
+
+          {/* TME alliance rankings (moved here from the retired Points tab) */}
+          <div style={card}>
+            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"🏆"} TME ALLIANCE RANKINGS</div>
+            <div style={{fontSize:9,color:"#64748b",marginBottom:8}}>Teleport offset: #1 per server = 30min early, #2 = 20min, #3 = 10min, #4 = event start</div>
+            <div style={{display:"flex",alignItems:"center",gap:10,padding:"2px 8px",marginBottom:4}}>
+              <div style={{width:20}}></div>
+              <div style={{fontSize:9,color:"#64748b",width:40}}>Tag</div>
+              <div style={{fontSize:9,color:"#64748b",flex:1}}>Prep Pts</div>
+              <div style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.invTimeLabel}</div>
+            </div>
+            {[...computedAlliances.map(a=>({...a,server:"era8"})),...computedOppAlliances.map(a=>({...a,server:"era38"}))].sort((a,b)=>parseNum(b.prepPoints)-parseNum(a.prepPoints)).map((a,i)=>(
+              <div key={`${a.tag}-${i}`} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:i%2===0?"#0f172a":"transparent",borderRadius:4,borderLeft:`3px solid ${a.server==="era8"?"#60a5fa":"#f87171"}`,marginBottom:2}}>
+                <div style={{fontSize:14,fontWeight:800,color:"#fbbf24",width:20,textAlign:"center"}}>#{i+1}</div>
+                <div style={{fontSize:12,fontWeight:700,color:a.server==="era8"?"#60a5fa":"#f87171",width:40}}>{a.tag}</div>
+                <div style={{fontSize:10,color:"#cbd5e1",flex:1}}>{fmt(a.prepPoints)}</div>
+                <div style={{fontSize:10,color:a.server==="era8"?"#60a5fa":"#f87171",fontFamily:"monospace"}}>{a.teleportTime} (#{a.prepRank})</div>
+              </div>
+            ))}
+          </div>
 
         </>)}
 
@@ -3764,27 +3782,6 @@ function TMECommandCenter(){
             <ul style={{margin:0,paddingLeft:18,fontSize:11,color:"#cbd5e1",lineHeight:1.8}}>
               <li>{t.icHoldRule1}</li><li>{t.icHoldRule2}</li><li>{t.icHoldRule3}</li>
             </ul>
-          </div>
-        </>)}
-
-        {activeTab==="prep"&&(<>
-          <div style={card}>
-            <div style={{fontSize:13,fontWeight:700,color:"#fbbf24",marginBottom:10}}>{"\uD83C\uDFC6"} TME ALLIANCE RANKINGS</div>
-            <div style={{fontSize:9,color:"#64748b",marginBottom:8}}>Teleport offset: #1 per server = 30min early, #2 = 20min, #3 = 10min, #4 = event start</div>
-            <div style={{display:"flex",alignItems:"center",gap:10,padding:"2px 8px",marginBottom:4}}>
-              <div style={{width:20}}></div>
-              <div style={{fontSize:9,color:"#64748b",width:40}}>Tag</div>
-              <div style={{fontSize:9,color:"#64748b",flex:1}}>Prep Pts</div>
-              <div style={{fontSize:9,color:"#64748b",textAlign:"right"}}>{t.invTimeLabel}</div>
-            </div>
-            {[...computedAlliances.map(a=>({...a,server:"era8"})),...computedOppAlliances.map(a=>({...a,server:"era38"}))].sort((a,b)=>parseNum(b.prepPoints)-parseNum(a.prepPoints)).map((a,i)=>(
-              <div key={`${a.tag}-${i}`} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 8px",background:i%2===0?"#0f172a":"transparent",borderRadius:4,borderLeft:`3px solid ${a.server==="era8"?"#60a5fa":"#f87171"}`,marginBottom:2}}>
-                <div style={{fontSize:14,fontWeight:800,color:"#fbbf24",width:20,textAlign:"center"}}>#{i+1}</div>
-                <div style={{fontSize:12,fontWeight:700,color:a.server==="era8"?"#60a5fa":"#f87171",width:40}}>{a.tag}</div>
-                <div style={{fontSize:10,color:"#cbd5e1",flex:1}}>{fmt(a.prepPoints)}</div>
-                <div style={{fontSize:10,color:a.server==="era8"?"#60a5fa":"#f87171",fontFamily:"monospace"}}>{a.teleportTime} (#{a.prepRank})</div>
-              </div>
-            ))}
           </div>
         </>)}
 
