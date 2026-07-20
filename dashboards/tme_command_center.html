@@ -3205,25 +3205,30 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact,liveSt
   // Behemoth "tug" style: one split bar per stage (blue=us | red=them),
   // sized by each side's share of that stage's total. Label row above.
   const [expanded,setExpanded]=useState(false);
-  const Tug=({label,our,opp,strong,live,placeholder,noPulse})=>{
+  const Tug=({label,our,opp,strong,live,placeholder})=>{
     const pending=(our===0&&opp===0);
     const sum=(our+opp)||1;
+    // 0-data shows a tied 50:50 split, but with the SAME red/blue fills as a live
+    // bar (never greyed) — matches the Behemoth tug style.
     const uPct=pending?50:(our/sum)*100, oPct=pending?50:(opp/sum)*100;
     const won=our>=opp;
     return(
-      <div style={{marginBottom:12,opacity:(pending&&!placeholder&&!live)?0.5:1}}>
+      <div style={{marginBottom:12}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:strong?800:700,marginBottom:4}}>
-          <span style={{color:(pending||placeholder)?"#64748b":"#5b8def"}}>{placeholder?"":our+"B "}<span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{placeholder?"":"US"}</span></span>
-          <span style={{fontSize:11,fontWeight:600,color:placeholder?"#fbbf24":live?"#fbbf24":pending?"#64748b":(won?"#4ade80":"#f87171"),letterSpacing:0.5,textTransform:"uppercase"}}>{label}{live?(eventOver?" · Final":" · Live Now"):pending?" · Not Started":""}</span>
-          <span style={{color:(pending||placeholder)?"#64748b":"#f87171"}}><span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{placeholder?"":oppLabel||"OPP"}</span> {placeholder?"":opp+"B"}</span>
+          <span style={{color:placeholder?"#64748b":"#5b8def"}}>{placeholder?"":our+"B "}<span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{placeholder?"":"US"}</span></span>
+          <span style={{fontSize:11,fontWeight:600,color:placeholder?"#fbbf24":live?"#fbbf24":pending?"#94a3b8":(won?"#4ade80":"#f87171"),letterSpacing:0.5,textTransform:"uppercase"}}>{label}{live?(eventOver?" · Final":" · Live Now"):""}</span>
+          <span style={{color:placeholder?"#64748b":"#f87171"}}><span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{placeholder?"":oppLabel||"OPP"}</span> {placeholder?"":opp+"B"}</span>
         </div>
         {placeholder?(
           <div style={{height:22,display:"flex",alignItems:"center",justifyContent:"center",border:"1px dashed #334155",borderRadius:6,
             fontFamily:"'Barlow Condensed',sans-serif",fontSize:10,letterSpacing:1,textTransform:"uppercase",color:"#64748b"}}>↑ Shown above</div>
         ):(
-          <div className={(live&&!eventOver&&!noPulse)?"live-pulse":""} style={{display:"flex",height:22,borderRadius:6,overflow:"hidden",border:(live&&!eventOver&&!noPulse)?undefined:(live?"1px solid #fbbf24":"1px solid #334155")}}>
-            <div style={{width:uPct+"%",background:pending?"#1e293b":"linear-gradient(90deg, rgba(61,124,196,0.55), rgba(91,141,239,0.85))"}}/>
-            <div style={{width:oPct+"%",background:pending?"#161c2b":"linear-gradient(90deg, rgba(196,61,61,0.85), rgba(196,61,61,0.55))"}}/>
+          // Behemoth ".tug-bar": red/blue gradient fills, subtle 1px border, no
+          // pulse and no accent ring. The pulsing "live" cue lives on the timeline
+          // dots (Desolate-Desert style), keeping the bars clean.
+          <div style={{display:"flex",height:22,borderRadius:6,overflow:"hidden",border:"1px solid #1e2435"}}>
+            <div style={{width:uPct+"%",background:"linear-gradient(90deg, rgba(61,124,196,0.55), rgba(91,141,239,0.85))"}}/>
+            <div style={{width:oPct+"%",background:"linear-gradient(90deg, rgba(196,61,61,0.85), rgba(196,61,61,0.55))"}}/>
           </div>
         )}
       </div>
@@ -3277,7 +3282,7 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact,liveSt
     {/* always-visible: total, below the divider — active once the event is under
         way (date- or data-driven), so it isn't dimmed as "Not Started". */}
     <div style={{borderTop:"1px solid #334155",marginTop:2,paddingTop:12}}>
-      <Tug label={t.colTotal} our={totalOur} opp={totalOpp} strong live={liveIdx>=0} noPulse/>
+      <Tug label={t.colTotal} our={totalOur} opp={totalOpp} strong live={liveIdx>=0}/>
     </div>
   </div>);
 }
