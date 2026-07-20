@@ -3124,24 +3124,43 @@ const TL_STAGE = {
   invasion:    { bright: "#ef4444", dark: "#5a2626", label: "INVASION" },
 };
 const TIMELINE = [
-  { key: "mm",  stage: "matchmaking", title: "Matchmaking", days: "Sat & Sun", date: "Sat–Sun, Jul 18–19" },
-  { key: "p1",  stage: "prep", titleKey: "prepStage1", title: "Forging Gear",           days: "Mon", date: "Mon, Jul 20", prepIdx: 0 },
-  { key: "p2",  stage: "prep", titleKey: "prepStage2", title: "Enhancing Buildings",    days: "Tue", date: "Tue, Jul 21", prepIdx: 1 },
-  { key: "p3",  stage: "prep", titleKey: "prepStage3", title: "Enhancing Technologies", days: "Wed", date: "Wed, Jul 22", prepIdx: 2 },
-  { key: "p4",  stage: "prep", titleKey: "prepStage4", title: "Unit Training",          days: "Thu", date: "Thu, Jul 23", prepIdx: 3 },
-  { key: "p5",  stage: "prep", titleKey: "prepStage5", title: "Power Boost",            days: "Fri & Sat", date: "Fri–Sat, Jul 24–25", prepIdx: 4 },
-  { key: "inv", stage: "invasion",    title: "Invasion",    days: "Sun", date: "Sun, Jul 26" },
+  { key: "mm",  stage: "matchmaking", title: "Matchmaking", days: "Sat & Sun", date: "Sat–Sun, Jul 18–19", dayOffset: -2, span: 2 },
+  { key: "p1",  stage: "prep", titleKey: "prepStage1", title: "Forging Gear",           days: "Mon", date: "Mon, Jul 20", prepIdx: 0, dayOffset: 0, span: 1 },
+  { key: "p2",  stage: "prep", titleKey: "prepStage2", title: "Enhancing Buildings",    days: "Tue", date: "Tue, Jul 21", prepIdx: 1, dayOffset: 1, span: 1 },
+  { key: "p3",  stage: "prep", titleKey: "prepStage3", title: "Enhancing Technologies", days: "Wed", date: "Wed, Jul 22", prepIdx: 2, dayOffset: 2, span: 1 },
+  { key: "p4",  stage: "prep", titleKey: "prepStage4", title: "Unit Training",          days: "Thu", date: "Thu, Jul 23", prepIdx: 3, dayOffset: 3, span: 1 },
+  { key: "p5",  stage: "prep", titleKey: "prepStage5", title: "Power Boost",            days: "Fri & Sat", date: "Fri–Sat, Jul 24–25", prepIdx: 4, dayOffset: 4, span: 2 },
+  { key: "inv", stage: "invasion",    title: "Invasion",    days: "Sun", date: "Sun, Jul 26", dayOffset: 6, span: 1 },
 ];
 
-// Current day-block index (0=matchmaking … 6=invasion), derived from prep data
-// (points/started/over), NOT wall-clock. Shared by the timeline + daily plan.
-function liveDayIdx(config){
+// Which day-block the WALL CLOCK is in right now, from config.prepStart (Prep
+// Stage 1 opens 00:00 UTC that date). Each TIMELINE entry has a dayOffset from
+// prepStart; the current node is the last one whose start (prepStart+offset) is
+// <= now. Returns -1 if prepStart isn't a valid date. So the dashboard advances
+// on its own even with no points entered yet.
+function dateDayIdx(config, now){
+  const ps = config.prepStart;
+  if(!(typeof ps==="string" && /^\d{4}-\d{2}-\d{2}$/.test(ps))) return -1;
+  const base = Date.parse(ps+"T00:00:00Z");
+  if(isNaN(base)) return -1;
+  const t = (now!==undefined?now:Date.now());
+  let idx=-1;
+  TIMELINE.forEach((n,i)=>{ if(t >= base + n.dayOffset*86400000) idx=i; });
+  return idx;
+}
+
+// Current day-block index (0=matchmaking … 6=invasion). Takes the FURTHEST of
+// two signals: the wall-clock (from prepStart dates) and the data (any stage
+// with points, or prepStarted). This way the timeline advances by date on its
+// own, but real scoring data can push it further if we're ahead of schedule.
+function liveDayIdx(config, now){
   if(config.eventOver) return TIMELINE.length-1;              // invasion / done
-  let live=-1;
-  (config.prepStages||[]).forEach((s,i)=>{ if(s.ourPts>0||s.oppPts>0) live=i; });
-  if(live>=0) return 1+live;                                  // prep #(live+1)
-  if(config.prepStarted===true) return 1;                     // prep started, no pts yet
-  return 0;                                                   // still matchmaking
+  let dataIdx=-1;
+  (config.prepStages||[]).forEach((s,i)=>{ if(s.ourPts>0||s.oppPts>0) dataIdx=1+i; });
+  if(dataIdx<0 && config.prepStarted===true) dataIdx=1;       // prep started, no pts yet
+  const byDate=dateDayIdx(config, now);
+  const idx=Math.max(dataIdx, byDate);
+  return idx<0 ? 0 : idx;                                     // default: matchmaking
 }
 
 // Interactive timeline: each node is a clickable tab. Past days are greyed,
@@ -3182,27 +3201,27 @@ function TimelineStrip({liveIdx, selectedIdx, onSelect, invasionTime, t}){
   );
 }
 
-function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact}){
+function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact,liveStageIdx}){
   // Behemoth "tug" style: one split bar per stage (blue=us | red=them),
   // sized by each side's share of that stage's total. Label row above.
   const [expanded,setExpanded]=useState(false);
-  const Tug=({label,our,opp,strong,live,placeholder})=>{
+  const Tug=({label,our,opp,strong,live,placeholder,noPulse})=>{
     const pending=(our===0&&opp===0);
     const sum=(our+opp)||1;
     const uPct=pending?50:(our/sum)*100, oPct=pending?50:(opp/sum)*100;
     const won=our>=opp;
     return(
-      <div style={{marginBottom:12,opacity:(pending&&!placeholder)?0.5:1}}>
+      <div style={{marginBottom:12,opacity:(pending&&!placeholder&&!live)?0.5:1}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:strong?800:700,marginBottom:4}}>
           <span style={{color:(pending||placeholder)?"#64748b":"#5b8def"}}>{placeholder?"":our+"B "}<span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{placeholder?"":"US"}</span></span>
-          <span style={{fontSize:11,fontWeight:600,color:placeholder?"#fbbf24":pending?"#64748b":(won?"#4ade80":"#f87171"),letterSpacing:0.5,textTransform:"uppercase"}}>{label}{pending?" · Not Started":live?(eventOver?" · Final":" · Live Now"):""}</span>
+          <span style={{fontSize:11,fontWeight:600,color:placeholder?"#fbbf24":live?"#fbbf24":pending?"#64748b":(won?"#4ade80":"#f87171"),letterSpacing:0.5,textTransform:"uppercase"}}>{label}{live?(eventOver?" · Final":" · Live Now"):pending?" · Not Started":""}</span>
           <span style={{color:(pending||placeholder)?"#64748b":"#f87171"}}><span style={{fontSize:11,fontWeight:600,color:"#64748b"}}>{placeholder?"":oppLabel||"OPP"}</span> {placeholder?"":opp+"B"}</span>
         </div>
         {placeholder?(
           <div style={{height:22,display:"flex",alignItems:"center",justifyContent:"center",border:"1px dashed #334155",borderRadius:6,
             fontFamily:"'Barlow Condensed',sans-serif",fontSize:10,letterSpacing:1,textTransform:"uppercase",color:"#64748b"}}>↑ Shown above</div>
         ):(
-          <div className={(live&&!eventOver)?"live-pulse":""} style={{display:"flex",height:22,borderRadius:6,overflow:"hidden",border:(live&&!eventOver)?undefined:(live?"1px solid #fbbf24":"1px solid #334155")}}>
+          <div className={(live&&!eventOver&&!noPulse)?"live-pulse":""} style={{display:"flex",height:22,borderRadius:6,overflow:"hidden",border:(live&&!eventOver&&!noPulse)?undefined:(live?"1px solid #fbbf24":"1px solid #334155")}}>
             <div style={{width:uPct+"%",background:pending?"#1e293b":"linear-gradient(90deg, rgba(61,124,196,0.55), rgba(91,141,239,0.85))"}}/>
             <div style={{width:oPct+"%",background:pending?"#161c2b":"linear-gradient(90deg, rgba(196,61,61,0.85), rgba(196,61,61,0.55))"}}/>
           </div>
@@ -3210,9 +3229,12 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact}){
       </div>
     );
   };
-  // current live stage = highest-index stage that has any points
+  // current live stage = highest-index stage with points, but at least the
+  // date-driven stage (liveStageIdx) so a stage goes live/pulses on its start
+  // date even before any points are entered.
   let liveIdx=-1;
   stages.forEach((s,i)=>{ if(s.ourPts>0||s.oppPts>0) liveIdx=i; });
+  if(typeof liveStageIdx==="number" && liveStageIdx>liveIdx && liveStageIdx<stages.length) liveIdx=liveStageIdx;
   // stage title prefixed with its day ("Day 1: Forging Gear"); stage index i -> Day i+1
   const stageLabel=(s,i)=>`Stage ${i+1}: ${t[s.nameKey]||s.nameKey}`;
   if(compact){
@@ -3252,9 +3274,10 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact}){
         : <Tug key={i} label={stageLabel(s,i)} our={s.ourPts} opp={s.oppPts}/>
     ))}
 
-    {/* always-visible: total, below the divider */}
+    {/* always-visible: total, below the divider — active once the event is under
+        way (date- or data-driven), so it isn't dimmed as "Not Started". */}
     <div style={{borderTop:"1px solid #334155",marginTop:2,paddingTop:12}}>
-      <Tug label={t.colTotal} our={totalOur} opp={totalOpp} strong/>
+      <Tug label={t.colTotal} our={totalOur} opp={totalOpp} strong live={liveIdx>=0} noPulse/>
     </div>
   </div>);
 }
@@ -3616,7 +3639,7 @@ function TMECommandCenter(){
               <span><span style={{color:"#60a5fa"}}>{"■"}</span> Era 8: <strong>{config.totalOur}B</strong></span>
               <span><span style={{color:"#f87171"}}>{"■"}</span> {config.oppServer}: <strong>{config.totalOpp}B</strong></span>
             </div>
-            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp} oppLabel={oppLabel} eventOver={config.eventOver}/>
+            <PrepChart stages={config.prepStages} t={t} totalOur={config.totalOur} totalOpp={config.totalOpp} oppLabel={oppLabel} eventOver={config.eventOver} liveStageIdx={Math.min(4, Math.max(-1, liveDayIdx(config)-1))}/>
             {/* update stamp: date/time only, below the bars, right-justified */}
             <div style={{textAlign:"right",fontSize:9,color:"#64748b",fontFamily:"monospace",marginTop:2}}>{String(config.prepLastUpdated||"").split("—")[0].trim()}</div>
           </div>
