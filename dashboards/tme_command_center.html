@@ -3259,6 +3259,15 @@ function PrepChart({stages,t,totalOur,totalOpp,oppLabel,eventOver,compact}){
   </div>);
 }
 
+// Shared section sub-header — exact Behemoth ".sh": Bebas Neue 24px, 2px
+// letter-spacing, gold. SECTION_TITLE_FONT is the text styling only; SECTION_RULE
+// adds the 1px full-width bottom border + spacing. Standalone headers use both
+// together (SECTION_TITLE); flex-row headers (title + a control) put SECTION_RULE
+// on the row and SECTION_TITLE_FONT on the text so the underline spans full width.
+const SECTION_TITLE_FONT={fontFamily:"'Bebas Neue', sans-serif",fontSize:"24px",fontWeight:400,color:"#fbbf24",letterSpacing:"2px"};
+const SECTION_RULE={paddingBottom:"6px",borderBottom:"1px solid #1e3a5f",marginBottom:"12px"};
+const SECTION_TITLE={...SECTION_TITLE_FONT,...SECTION_RULE};
+
 // "What to do today" — changes by the current day (derived from prep data),
 // reusing the two-column Prep Stage Schedule cells. Matchmaking shows the
 // prep-ahead for Stage 1; a stage day shows that day's how-to-score plus a
@@ -3344,7 +3353,7 @@ function DailyPlan({config,t,schedule,alliances,invasionTime,dayIdx,liveIdx,embe
   return(
     <div id="daily-plan" style={dayOuter}>
       {relBanner}
-      <div style={{fontSize:"14px",fontWeight:700,color:"#fbbf24",letterSpacing:"1px",marginBottom:"10px",textTransform:"uppercase"}}>{heading}</div>
+      <div style={SECTION_TITLE}>{heading}</div>
       {isMM?(
         // matchmaking day → prep-ahead for Stage 1 (this day's own row, prep0)
         <>
@@ -3546,8 +3555,7 @@ function TMECommandCenter(){
     {id:"map",label:t.tabMap},
   ];
   const card={background:"linear-gradient(135deg,#111827 0%,#1e293b 100%)",border:"1px solid #1e3a5f",borderRadius:10,padding:16,marginBottom:12};
-  // section sub-header — matches Desolate Desert / Behemoth (uppercase, no emoji)
-  const cardTitle={fontSize:"14px",fontWeight:700,color:"#fbbf24",letterSpacing:"1px",marginBottom:"12px",textTransform:"uppercase"};
+  const cardTitle=SECTION_TITLE;  // exact Behemoth ".sh" section-header treatment
   // shared fixed column widths so Alliance Overview + Opponent Intel line up
   // exactly: Tag | Name | Time | Allies | Power | Merits | M:P
   // M:P activity class for cmp-tbl (alliance %: hi>=8, mid>=4, lo<4)
@@ -3651,8 +3659,8 @@ function TMECommandCenter(){
             const shownDay=selectedDay===null?liveDay:selectedDay;
             return(
               <div style={card}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12,gap:8,flexWrap:"wrap"}}>
-                  <span style={{...cardTitle,marginBottom:0}}>{t.eventTimeline||"EVENT TIMELINE"}</span>
+                <div style={{...SECTION_RULE,display:"flex",justifyContent:"space-between",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+                  <span style={SECTION_TITLE_FONT}>{t.eventTimeline||"EVENT TIMELINE"}</span>
                   {selectedDay!==null&&selectedDay!==liveDay&&(
                     <button type="button" onClick={()=>setSelectedDay(null)} style={{background:"none",border:"1px solid #334155",borderRadius:6,color:"#94a3b8",fontSize:10,fontWeight:600,letterSpacing:0.5,textTransform:"uppercase",padding:"3px 8px",cursor:"pointer"}}>
                       {"↺"} {t.backToToday||"Back to live day"}
@@ -3769,8 +3777,8 @@ function TMECommandCenter(){
 
         {activeTab==="map"&&(<>
           <div id="tme-map" style={card}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-              <div style={{...cardTitle,marginBottom:0}}>{t.battlefield} {"\u2014"} {mapIsDefense?t.defPositions:t.offPositions}</div>
+            <div style={{...SECTION_RULE,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={SECTION_TITLE_FONT}>{t.battlefield} {"\u2014"} {mapIsDefense?t.defPositions:t.offPositions}</div>
               <button onClick={()=>setMapViewOverride(v=>v===null?!isDefense:v===isDefense?!isDefense:null)} style={{padding:"4px 12px",fontSize:10,background:mapViewOverride!==null?"#1e3a5f":"#0f172a",border:"1px solid #334155",borderRadius:4,color:mapViewOverride!==null?"#fbbf24":"#64748b",cursor:"pointer",fontFamily:"monospace"}}>{mapIsDefense?"\uD83D\uDEE1\uFE0F DEF":"\u2694\uFE0F ATK"}</button>
             </div>
             <div style={{fontSize:10,color:"#94a3b8",marginBottom:12}}>{t.mapDesc}</div>
