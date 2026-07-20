@@ -3163,36 +3163,58 @@ function liveDayIdx(config, now){
   return idx<0 ? 0 : idx;                                     // default: matchmaking
 }
 
-// Interactive timeline: each node is a clickable tab. Past days are greyed,
-// future days dimmed, the LIVE day pulses, and the SELECTED day gets a gold
-// ring. Clicking a node drives the Daily Plan below it (`onSelect`).
+// Interactive timeline, Desolate-Desert style: the three phase labels
+// (Matchmaking / Prep / Invasion) sit on top, centered over the dots they cover;
+// below, each day is a clickable node. Past days grey, future dim, LIVE pulses,
+// SELECTED gets a gold ring. Fits on one line (no horizontal scroll) on mobile.
 function TimelineStrip({liveIdx, selectedIdx, onSelect, invasionTime, t}){
   const reached=(i)=>i<=liveIdx;
+  const N=TIMELINE.length;
+  const dotPct=(i)=>((i+0.5)/N)*100;
+  // contiguous runs of the same phase (matchmaking / prep / invasion)
+  const runs=[];
+  TIMELINE.forEach((n,i)=>{
+    const last=runs[runs.length-1];
+    if(last&&last.stage===n.stage) last.lastIdx=i;
+    else runs.push({stage:n.stage,firstIdx:i,lastIdx:i});
+  });
   return(
-    <div style={{overflowX:"auto",paddingBottom:6}}>
-      <div style={{display:"flex",minWidth:TIMELINE.length*120,gap:0}}>
+    <div>
+      {/* phase labels — centered over the midpoint of the dots they span */}
+      <div style={{position:"relative",height:16,marginBottom:4}}>
+        {runs.map(r=>{
+          const z=TL_STAGE[r.stage];
+          const anyReached=liveIdx>=r.firstIdx;
+          const centerPct=(dotPct(r.firstIdx)+dotPct(r.lastIdx))/2;
+          return(
+            <span key={r.stage+r.firstIdx} style={{position:"absolute",left:centerPct+"%",transform:"translateX(-50%)",
+              fontFamily:"'Barlow Condensed', sans-serif",fontSize:11,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
+              whiteSpace:"nowrap",color:anyReached?z.bright:z.dark}}>{z.label}</span>
+          );
+        })}
+      </div>
+      {/* dots + connecting lines + clickable day nodes */}
+      <div style={{display:"flex",alignItems:"flex-start",gap:0}}>
         {TIMELINE.map((n,i)=>{
           const z=TL_STAGE[n.stage];
           const past=i<liveIdx, now=i===liveIdx, future=i>liveIdx;
           const sel=i===selectedIdx;
           const dotColor=past?z.dark:z.bright;               // past greyed; live+future keep stage colour
           const dotOpacity=future?0.55:1;
-          // the connecting line "belongs" to the segment it comes FROM, so it
-          // takes the previous node's stage colour (matchmaking→forging = grey).
+          // the connecting line "belongs" to the segment it comes FROM.
           const prevZ=i>0?TL_STAGE[TIMELINE[i-1].stage]:z;
           const lineColor=reached(i)?prevZ.bright:prevZ.dark;
           const label=(n.titleKey&&t&&t[n.titleKey])||n.title;
           const sub=n.stage==="invasion"?`${n.date} · ${invasionTime}`:n.date;
           return(
             <button key={n.key} type="button" onClick={()=>onSelect(i)} aria-pressed={sel}
-              style={{flex:1,minWidth:120,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",position:"relative",
-                padding:"6px 4px",font:"inherit",cursor:"pointer",borderRadius:8,
+              style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",position:"relative",
+                padding:"5px 2px",font:"inherit",cursor:"pointer",borderRadius:6,
                 background:sel?"rgba(251,191,36,0.08)":"transparent",border:sel?"1px solid #fbbf24":"1px solid transparent"}}>
-              {i>0&&<div style={{position:"absolute",top:13,right:"50%",width:"100%",height:3,background:lineColor,zIndex:1}}/>}
-              <div className={now?"live-pulse":""} style={{width:16,height:16,borderRadius:"50%",background:dotColor,opacity:dotOpacity,border:`2px solid ${now?"#fbbf24":"#0f172a"}`,boxShadow:past?"none":`0 0 6px ${z.bright}`,position:"relative",zIndex:2}}/>
-              <div style={{fontSize:8.5,fontWeight:700,letterSpacing:0.5,marginTop:6,color:past?z.dark:z.bright,textTransform:"uppercase",opacity:dotOpacity}}>{z.label}</div>
-              <div style={{fontSize:11,fontWeight:700,color:(sel||now)?"#fbbf24":(past?"#64748b":"#e8eaf0"),margin:"1px 0",lineHeight:1.2,opacity:(future&&!sel)?0.75:1}}>{label}</div>
-              {sub&&<div style={{fontSize:9.5,color:past?"#475569":"#94a3b8",lineHeight:1.3,fontFamily:"monospace"}}>{sub}</div>}
+              {i>0&&<div style={{position:"absolute",top:12,right:"50%",width:"100%",height:3,background:lineColor,zIndex:1}}/>}
+              <div className={now?"live-pulse":""} style={{width:15,height:15,borderRadius:"50%",background:dotColor,opacity:dotOpacity,border:`2px solid ${now?"#fbbf24":"#0f172a"}`,boxShadow:past?"none":`0 0 6px ${z.bright}`,position:"relative",zIndex:2}}/>
+              <div style={{fontSize:10,fontWeight:700,color:(sel||now)?"#fbbf24":(past?"#64748b":"#e8eaf0"),marginTop:6,lineHeight:1.2,opacity:(future&&!sel)?0.75:1}}>{label}</div>
+              {sub&&<div style={{fontSize:8.5,color:past?"#475569":"#94a3b8",marginTop:1,lineHeight:1.25,fontFamily:"monospace"}}>{sub}</div>}
             </button>
           );
         })}
