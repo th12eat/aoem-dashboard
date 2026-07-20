@@ -3123,14 +3123,17 @@ const TL_STAGE = {
   prep:        { bright: "#3b82f6", dark: "#1e3355", label: "PREP" },
   invasion:    { bright: "#ef4444", dark: "#5a2626", label: "INVASION" },
 };
+// `short` = the node label under the dot. Matchmaking/Invasion are left blank
+// (the phase label on top already names them); prep stages use compact names so
+// they don't overlap on mobile.
 const TIMELINE = [
-  { key: "mm",  stage: "matchmaking", title: "Matchmaking", days: "Sat & Sun", date: "Sat–Sun, Jul 18–19", dayOffset: -2, span: 2 },
-  { key: "p1",  stage: "prep", titleKey: "prepStage1", title: "Forging Gear",           days: "Mon", date: "Mon, Jul 20", prepIdx: 0, dayOffset: 0, span: 1 },
-  { key: "p2",  stage: "prep", titleKey: "prepStage2", title: "Enhancing Buildings",    days: "Tue", date: "Tue, Jul 21", prepIdx: 1, dayOffset: 1, span: 1 },
-  { key: "p3",  stage: "prep", titleKey: "prepStage3", title: "Enhancing Technologies", days: "Wed", date: "Wed, Jul 22", prepIdx: 2, dayOffset: 2, span: 1 },
-  { key: "p4",  stage: "prep", titleKey: "prepStage4", title: "Unit Training",          days: "Thu", date: "Thu, Jul 23", prepIdx: 3, dayOffset: 3, span: 1 },
-  { key: "p5",  stage: "prep", titleKey: "prepStage5", title: "Power Boost",            days: "Fri & Sat", date: "Fri–Sat, Jul 24–25", prepIdx: 4, dayOffset: 4, span: 2 },
-  { key: "inv", stage: "invasion",    title: "Invasion",    days: "Sun", date: "Sun, Jul 26", dayOffset: 6, span: 1 },
+  { key: "mm",  stage: "matchmaking", title: "Matchmaking", short: "", days: "Sat & Sun", dayOffset: -2, span: 2 },
+  { key: "p1",  stage: "prep", titleKey: "prepStage1", title: "Forging Gear",           short: "Forging",  days: "Mon", prepIdx: 0, dayOffset: 0, span: 1 },
+  { key: "p2",  stage: "prep", titleKey: "prepStage2", title: "Enhancing Buildings",    short: "Building", days: "Tue", prepIdx: 1, dayOffset: 1, span: 1 },
+  { key: "p3",  stage: "prep", titleKey: "prepStage3", title: "Enhancing Technologies", short: "Research", days: "Wed", prepIdx: 2, dayOffset: 2, span: 1 },
+  { key: "p4",  stage: "prep", titleKey: "prepStage4", title: "Unit Training",          short: "Training", days: "Thu", prepIdx: 3, dayOffset: 3, span: 1 },
+  { key: "p5",  stage: "prep", titleKey: "prepStage5", title: "Power Boost",            short: "Boost",    days: "Fri & Sat", prepIdx: 4, dayOffset: 4, span: 2 },
+  { key: "inv", stage: "invasion",    title: "Invasion",    short: "", days: "Sun", dayOffset: 6, span: 1 },
 ];
 
 // Which day-block the WALL CLOCK is in right now, from config.prepStart (Prep
@@ -3204,8 +3207,9 @@ function TimelineStrip({liveIdx, selectedIdx, onSelect, invasionTime, t}){
           // the connecting line "belongs" to the segment it comes FROM.
           const prevZ=i>0?TL_STAGE[TIMELINE[i-1].stage]:z;
           const lineColor=reached(i)?prevZ.bright:prevZ.dark;
-          const label=(n.titleKey&&t&&t[n.titleKey])||n.title;
-          const sub=n.stage==="invasion"?`${n.date} · ${invasionTime}`:n.date;
+          // node label: the compact `short` name (blank for Matchmaking/Invasion,
+          // already named by the phase label on top). No date sub-line.
+          const label=n.short!==undefined?n.short:((n.titleKey&&t&&t[n.titleKey])||n.title);
           return(
             <button key={n.key} type="button" onClick={()=>onSelect(i)} aria-pressed={sel}
               style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",position:"relative",
@@ -3213,8 +3217,7 @@ function TimelineStrip({liveIdx, selectedIdx, onSelect, invasionTime, t}){
                 background:sel?"rgba(251,191,36,0.08)":"transparent",border:sel?"1px solid #fbbf24":"1px solid transparent"}}>
               {i>0&&<div style={{position:"absolute",top:12,right:"50%",width:"100%",height:3,background:lineColor,zIndex:1}}/>}
               <div className={now?"live-pulse":""} style={{width:15,height:15,borderRadius:"50%",background:dotColor,opacity:dotOpacity,border:`2px solid ${now?"#fbbf24":"#0f172a"}`,boxShadow:past?"none":`0 0 6px ${z.bright}`,position:"relative",zIndex:2}}/>
-              <div style={{fontSize:10,fontWeight:700,color:(sel||now)?"#fbbf24":(past?"#64748b":"#e8eaf0"),marginTop:6,lineHeight:1.2,opacity:(future&&!sel)?0.75:1}}>{label}</div>
-              {sub&&<div style={{fontSize:8.5,color:past?"#475569":"#94a3b8",marginTop:1,lineHeight:1.25,fontFamily:"monospace"}}>{sub}</div>}
+              {label&&<div style={{fontSize:10,fontWeight:700,color:(sel||now)?"#fbbf24":(past?"#64748b":"#e8eaf0"),marginTop:6,lineHeight:1.2,opacity:(future&&!sel)?0.75:1}}>{label}</div>}
             </button>
           );
         })}
