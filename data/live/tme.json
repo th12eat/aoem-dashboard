@@ -7,7 +7,7 @@
   "weWonPrep": null,
   "ourRank": 16,
   "oppRank": 11,
-  "prepStarted": false,
+  "prepStarted": true,
   "eventOver": false,
   "alliances": [
     {
@@ -17,10 +17,10 @@
       "position": "NE-inner",
       "tower": "Swordsman (N) / Pikeman (W)",
       "color": "#3b82f6",
-      "allies": 169,
-      "power": "20,427,268,040",
-      "merits": "2,272,830,539",
-      "prepPoints": "TBD"
+      "allies": 168,
+      "power": "20,827,415,718",
+      "merits": "2,371,887,410",
+      "prepPoints": "157,166,800"
     },
     {
       "tag": "REU",
@@ -29,10 +29,10 @@
       "position": "SE-inner",
       "tower": "Archer (E)",
       "color": "#f59e0b",
-      "allies": 166,
-      "power": "13,020,851,767",
-      "merits": "912,406,343",
-      "prepPoints": "TBD"
+      "allies": 163,
+      "power": "13,053,184,859",
+      "merits": "906,771,349",
+      "prepPoints": "104,901,200"
     },
     {
       "tag": "MyT",
@@ -41,10 +41,10 @@
       "position": "SE-outer",
       "tower": "Cavalry (S)",
       "color": "#22c55e",
-      "allies": 138,
-      "power": "10,521,121,074",
-      "merits": "901,008,602",
-      "prepPoints": "TBD"
+      "allies": 130,
+      "power": "10,331,763,047",
+      "merits": "842,687,800",
+      "prepPoints": "51,631,200"
     },
     {
       "tag": "AGC",
@@ -53,18 +53,18 @@
       "position": "NE-outer",
       "tower": "Archer (E)",
       "color": "#ef4444",
-      "allies": 164,
-      "power": "11,814,085,114",
-      "merits": "186,806,499",
-      "prepPoints": "TBD"
+      "allies": 161,
+      "power": "11,717,361,838",
+      "merits": "197,923,475",
+      "prepPoints": "37,768,800"
     }
   ],
   "prepStages": [
     {
       "nameKey": "prepStage1",
-      "ourPts": 0,
-      "oppPts": 0,
-      "won": null
+      "ourPts": 0.36,
+      "oppPts": 0.46,
+      "won": false
     },
     {
       "nameKey": "prepStage2",
@@ -91,139 +91,139 @@
       "won": null
     }
   ],
-  "totalOur": 0,
-  "totalOpp": 0,
-  "prepLastUpdated": "2026-07-18 — Matchmaking (new matchup vs #090; prep opens Mon 00:00 UTC)",
+  "totalOur": 0.36,
+  "totalOpp": 0.46,
+  "prepLastUpdated": "2026-07-20 — Day 1 (Stage 1: Forging Gear in progress)",
   "oppAlliances": [
     {
       "tag": "RIP",
       "name": "靈車特戰隊",
-      "allies": 168,
-      "power": "20,212,765,060",
-      "merits": "2,541,548,484",
-      "prepPoints": "TBD"
+      "allies": 170,
+      "power": "21,445,169,944",
+      "merits": "3,027,969,569",
+      "prepPoints": "161,946,800"
     },
     {
       "tag": "INT",
       "name": "英特榮耀",
-      "allies": 166,
-      "power": "14,829,324,819",
-      "merits": "1,022,902,133",
-      "prepPoints": "TBD"
+      "allies": 158,
+      "power": "15,085,606,880",
+      "merits": "972,408,570",
+      "prepPoints": "125,792,400"
     },
     {
       "tag": "YFQ",
       "name": "月落楓橋",
-      "allies": 170,
-      "power": "10,405,496,654",
-      "merits": "190,589,970",
-      "prepPoints": "TBD"
+      "allies": 162,
+      "power": "10,742,715,107",
+      "merits": "229,037,062",
+      "prepPoints": "92,697,600"
     },
     {
       "tag": "OvO",
       "name": "大秦御貓軍",
-      "allies": 110,
-      "power": "6,265,770,680",
-      "merits": "95,788,191",
-      "prepPoints": "TBD"
+      "allies": 117,
+      "power": "6,413,997,041",
+      "merits": "62,050,519",
+      "prepPoints": "28,712,400"
     }
   ],
   "krakens": [
     {
       "rank": 1,
-      "name": "勾意狼",
+      "name": "三秒蕉",
       "alliance": "RIP",
-      "power": "419,247,749",
-      "merits": "279,231,815",
-      "ratio": "0.67"
+      "power": "448,177,572",
+      "merits": "305,247,667",
+      "ratio": ""
     },
     {
       "rank": 2,
-      "name": "Golden葛格",
+      "name": "UBoo+GiGi",
       "alliance": "RIP",
-      "power": "376,234,265",
-      "merits": "198,142,382",
-      "ratio": "0.53"
+      "power": "379,478,859",
+      "merits": "157,650,940",
+      "ratio": ""
     },
     {
       "rank": 3,
-      "name": "歐特",
-      "alliance": "INT",
-      "power": "353,231,814",
-      "merits": "174,948,678",
-      "ratio": "0.50"
+      "name": "Golden葛格",
+      "alliance": "RIP",
+      "power": "374,393,775",
+      "merits": "236,794,203",
+      "ratio": ""
     },
     {
       "rank": 4,
-      "name": "Uboo+GiGi",
+      "name": "韩陆彩",
       "alliance": "RIP",
-      "power": "351,010,656",
-      "merits": "141,838,087",
-      "ratio": "0.40"
+      "power": "349,818,819",
+      "merits": "331,394,910",
+      "ratio": ""
     },
     {
       "rank": 5,
-      "name": "韩陆彩",
-      "alliance": "RIP",
-      "power": "337,291,190",
-      "merits": "291,662,295",
-      "ratio": "0.86"
+      "name": "歐特",
+      "alliance": "INT",
+      "power": "345,510,048",
+      "merits": "181,804,792",
+      "ratio": ""
     },
     {
       "rank": 6,
       "name": "君奉天",
       "alliance": "RIP",
-      "power": "313,942,422",
-      "merits": "159,886,164",
-      "ratio": "0.51"
+      "power": "326,411,603",
+      "merits": "176,606,210",
+      "ratio": ""
     },
     {
       "rank": 7,
-      "name": "Ec狼",
-      "alliance": "OvO",
-      "power": "303,535,266",
-      "merits": "199,982,056",
-      "ratio": "0.66"
+      "name": "蕉你社會事",
+      "alliance": "RIP",
+      "power": "306,629,797",
+      "merits": "179,552,080",
+      "ratio": ""
     },
     {
       "rank": 8,
-      "name": "丹荼役者",
+      "name": "Ku78nN口蕉酒",
       "alliance": "RIP",
-      "power": "291,307,095",
-      "merits": "153,440,208",
-      "ratio": "0.53"
+      "power": "296,276,727",
+      "merits": "221,802,444",
+      "ratio": ""
     },
     {
       "rank": 9,
-      "name": "武士刀",
-      "alliance": "INT",
-      "power": "287,419,898",
-      "merits": "115,001,998",
-      "ratio": "0.40"
+      "name": "享蕉Pay",
+      "alliance": "RIP",
+      "power": "290,040,134",
+      "merits": "116,771,652",
+      "ratio": ""
     },
     {
       "rank": 10,
-      "name": "老爺²⁶⁹",
-      "alliance": "RIP",
-      "power": "283,084,939",
-      "merits": "17,650,961",
-      "ratio": "0.06"
+      "name": "武士刀",
+      "alliance": "INT",
+      "power": "288,291,217",
+      "merits": "115,001,998",
+      "ratio": ""
     },
     {
       "rank": 11,
-      "name": "免費的暱稱",
+      "name": "王子⁹⁰",
       "alliance": "RIP",
-      "power": "277,214,170",
-      "merits": "100,967,120",
-      "ratio": "0.36"
+      "power": "281,449,888",
+      "merits": "TBD",
+      "ratio": ""
     },
     {
       "rank": 12,
       "name": "好色的大叔",
       "alliance": "RIP",
-      "power": "252,681,150",
-      "merits": "187,716,159",
-      "ratio": "0.74"
+      "power": "277,307,949",
+      "merits": "193,253,787",
+      "ratio": ""
     }
   ],
   "ourTop": [
@@ -231,85 +231,85 @@
       "rank": 1,
       "name": "時宗",
       "alliance": "eRa",
-      "power": "438,952,874",
-      "merits": "323,905,649"
+      "power": "440,185,887",
+      "merits": "360,131,965"
     },
     {
       "rank": 2,
-      "name": "민트",
-      "alliance": "REU",
-      "power": "323,741,781",
-      "merits": "310,548,721"
+      "name": "Collin6666",
+      "alliance": "eRa",
+      "power": "337,511,847",
+      "merits": "68,839,382"
     },
     {
       "rank": 3,
-      "name": "Collin6666",
-      "alliance": "eRa",
-      "power": "316,151,431",
-      "merits": "65,767,405"
+      "name": "민트",
+      "alliance": "REU",
+      "power": "329,942,625",
+      "merits": "314,698,755"
     },
     {
       "rank": 4,
       "name": "XnJinX",
       "alliance": "eRa",
-      "power": "295,813,708",
-      "merits": "230,306,208"
+      "power": "297,732,462",
+      "merits": "237,162,002"
     },
     {
       "rank": 5,
-      "name": "Macklemore",
+      "name": "Lumberjack",
       "alliance": "eRa",
-      "power": "274,523,136",
-      "merits": "112,432,858"
+      "power": "286,961,536",
+      "merits": "290,297,894"
     },
     {
       "rank": 6,
-      "name": "Lumberjack",
+      "name": "Macklemore",
       "alliance": "eRa",
-      "power": "271,250,032",
-      "merits": "277,411,196"
+      "power": "280,354,358",
+      "merits": "114,614,480"
     },
     {
       "rank": 7,
       "name": "BloodYoda",
       "alliance": "eRa",
-      "power": "262,538,190",
-      "merits": "233,721,373"
+      "power": "265,543,369",
+      "merits": "235,681,063"
     },
     {
       "rank": 8,
       "name": "ibubu♣JP",
       "alliance": "eRa",
-      "power": "248,054,902",
-      "merits": "79,129,364"
+      "power": "257,317,747",
+      "merits": "85,169,895"
     },
     {
       "rank": 9,
       "name": "또라에몽",
       "alliance": "REU",
-      "power": "240,915,320",
-      "merits": "41,444,177"
+      "power": "246,603,863",
+      "merits": "TBD"
     },
     {
       "rank": 10,
-      "name": "TommyTorpedo",
+      "name": "MuRageᴷᵀ✕",
       "alliance": "eRa",
-      "power": "231,700,285",
-      "merits": "133,782,915"
+      "power": "233,782,723",
+      "merits": "162,544,762"
     },
     {
       "rank": 11,
-      "name": "MuRageKT✕",
+      "name": "TommyTorpedo",
       "alliance": "eRa",
-      "power": "230,807,185",
-      "merits": "161,519,425"
+      "power": "233,520,556",
+      "merits": "137,820,175"
     },
     {
       "rank": 12,
-      "name": "조은마난색기",
+      "name": "상승칠성",
       "alliance": "REU",
-      "power": "219,064,834",
-      "merits": "52,730,506"
+      "power": "233,441,983",
+      "merits": "59,186,446"
     }
   ],
   "roles": {
