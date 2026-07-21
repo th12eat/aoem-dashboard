@@ -3202,8 +3202,10 @@ function TimelineStrip({liveIdx, selectedIdx, onSelect, invasionTime, t}){
           const z=TL_STAGE[n.stage];
           const past=i<liveIdx, now=i===liveIdx, future=i>liveIdx;
           const sel=i===selectedIdx;
-          const dotColor=past?z.dark:z.bright;               // past greyed; live+future keep stage colour
-          const dotOpacity=future?0.55:1;
+          // Desolate-Desert dot logic: current = solid accent + pulse; past/current
+          // (reached) = solid bright stage colour; future = solid dark (like the
+          // lines) — never transparent. Border matches the fill.
+          const dotColor=now?"#fbbf24":(reached(i)?z.bright:z.dark);
           // the connecting line "belongs" to the segment it comes FROM.
           const prevZ=i>0?TL_STAGE[TIMELINE[i-1].stage]:z;
           const lineColor=reached(i)?prevZ.bright:prevZ.dark;
@@ -3216,8 +3218,8 @@ function TimelineStrip({liveIdx, selectedIdx, onSelect, invasionTime, t}){
                 padding:"5px 2px",font:"inherit",cursor:"pointer",borderRadius:6,
                 background:sel?"rgba(251,191,36,0.08)":"transparent",border:sel?"1px solid #fbbf24":"1px solid transparent"}}>
               {i>0&&<div style={{position:"absolute",top:12,right:"50%",width:"100%",height:3,background:lineColor,zIndex:1}}/>}
-              <div className={now?"live-pulse":""} style={{width:15,height:15,borderRadius:"50%",background:dotColor,opacity:dotOpacity,border:`2px solid ${now?"#fbbf24":"#0f172a"}`,boxShadow:past?"none":`0 0 6px ${z.bright}`,position:"relative",zIndex:2}}/>
-              {label&&<div style={{fontSize:10,fontWeight:700,color:(sel||now)?"#fbbf24":(past?"#64748b":"#e8eaf0"),marginTop:6,lineHeight:1.2,opacity:(future&&!sel)?0.75:1}}>{label}</div>}
+              <div className={now?"live-pulse":""} style={{width:15,height:15,borderRadius:"50%",background:dotColor,border:`2px solid ${dotColor}`,boxShadow:now?`0 0 6px ${dotColor}`:"none",position:"relative",zIndex:2}}/>
+              {label&&<div style={{fontSize:10,fontWeight:700,color:(sel||now)?"#fbbf24":(reached(i)?z.bright:z.dark),marginTop:6,lineHeight:1.2}}>{label}</div>}
             </button>
           );
         })}
