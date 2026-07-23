@@ -20,7 +20,7 @@
       "allies": 168,
       "power": "20,827,415,718",
       "merits": "2,371,887,410",
-      "prepPoints": "11,936,671,165"
+      "prepPoints": "29,481,064,638"
     },
     {
       "tag": "REU",
@@ -32,7 +32,7 @@
       "allies": 163,
       "power": "13,053,184,859",
       "merits": "906,771,349",
-      "prepPoints": "6,001,970,718"
+      "prepPoints": "8,817,092,767"
     },
     {
       "tag": "MyT",
@@ -44,7 +44,7 @@
       "allies": 130,
       "power": "10,331,763,047",
       "merits": "842,687,800",
-      "prepPoints": "3,484,722,716"
+      "prepPoints": "5,666,148,812"
     },
     {
       "tag": "AGC",
@@ -56,7 +56,7 @@
       "allies": 161,
       "power": "11,717,361,838",
       "merits": "197,923,475",
-      "prepPoints": "3,667,381,259"
+      "prepPoints": "6,262,135,982"
     }
   ],
   "prepStages": [
@@ -74,15 +74,15 @@
     },
     {
       "nameKey": "prepStage3",
-      "ourPts": 11.5,
-      "oppPts": 16.6,
+      "ourPts": 17.4,
+      "oppPts": 19.0,
       "won": false
     },
     {
       "nameKey": "prepStage4",
-      "ourPts": 0,
-      "oppPts": 0,
-      "won": null
+      "ourPts": 19.0,
+      "oppPts": 26.1,
+      "won": false
     },
     {
       "nameKey": "prepStage5",
@@ -91,9 +91,9 @@
       "won": null
     }
   ],
-  "totalOur": 24.7,
-  "totalOpp": 30.8,
-  "prepLastUpdated": "2026-07-22 — Day 3 (Stage 3: Enhancing Technologies in progress)",
+  "totalOur": 49.6,
+  "totalOpp": 59.3,
+  "prepLastUpdated": "2026-07-23 — Day 4 (Stage 4: Unit Training in progress)",
   "oppAlliances": [
     {
       "tag": "RIP",
@@ -101,7 +101,7 @@
       "allies": 170,
       "power": "21,445,169,944",
       "merits": "3,027,969,569",
-      "prepPoints": "12,739,997,135"
+      "prepPoints": "32,799,172,785"
     },
     {
       "tag": "INT",
@@ -109,7 +109,7 @@
       "allies": 158,
       "power": "15,085,606,880",
       "merits": "972,408,570",
-      "prepPoints": "9,769,225,603"
+      "prepPoints": "15,356,723,344"
     },
     {
       "tag": "YFQ",
@@ -117,7 +117,7 @@
       "allies": 162,
       "power": "10,742,715,107",
       "merits": "229,037,062",
-      "prepPoints": "6,310,194,333"
+      "prepPoints": "8,161,696,152"
     },
     {
       "tag": "OvO",
@@ -125,7 +125,7 @@
       "allies": 117,
       "power": "6,413,997,041",
       "merits": "62,050,519",
-      "prepPoints": "2,483,877,653"
+      "prepPoints": "3,347,332,802"
     }
   ],
   "krakens": [
