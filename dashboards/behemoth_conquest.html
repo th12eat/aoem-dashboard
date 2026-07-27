@@ -4135,7 +4135,8 @@ function buildICS(lang) {
     lines.push('END:VEVENT');
     seq++;
   }
-  // Trial of Scion: 4 windows, daily Jun 23->25 (3 occurrences, ends end of Thursday Jun 25 UTC).
+  // Trial of Scion: 4 windows/day, daily across Beast Taming (Days 2-4 = Jul 28->30 UTC,
+  // 3 occurrences). Each window is 30 min; server rotates 008/028 per window.
   var trials = [
     { h: 1,  srv: '008' }, { h: 4,  srv: '087' },
     { h: 11, srv: '008' }, { h: 19, srv: '087' }
@@ -4144,14 +4145,14 @@ function buildICS(lang) {
   trials.forEach(function (w, i) {
     var endH = w.h, endMi = 30;
     ev('scion-' + w.h + '-' + i,
-       icsStamp(2026, 6, 23, w.h, 0),
-       icsStamp(2026, 6, 23, endH, endMi),
+       icsStamp(2026, 7, 28, w.h, 0),
+       icsStamp(2026, 7, 28, endH, endMi),
        (w.srv === '008' ? T.scion008 : T.scion087),
        T.scionDesc, RRULE);
   });
-  // Invasions, Saturday Jun 27. Theirs 11:00, ours 19:00. 90-minute windows.
-  ev('inv-them', icsStamp(2026, 6, 27, 11, 0), icsStamp(2026, 6, 27, 12, 30), T.invThem, T.invThemDesc, null);
-  ev('inv-us',   icsStamp(2026, 6, 27, 19, 0), icsStamp(2026, 6, 27, 20, 30), T.invUs,   T.invUsDesc,   null);
+  // Our invasion: Sat Aug 1 (Day 6) 19:00 UTC, 90-min window.
+  // Their invasion time is not locked yet, so it's intentionally omitted for now.
+  ev('inv-us', icsStamp(2026, 8, 1, 19, 0), icsStamp(2026, 8, 1, 20, 30), T.invUs, T.invUsDesc, null);
   lines.push('END:VCALENDAR');
   // Fold per RFC isn't strictly required for these short lines; join with CRLF.
   return lines.join('\r\n');
