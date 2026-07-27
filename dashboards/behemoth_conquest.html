@@ -936,6 +936,21 @@
     <div id="stageLine"></div>
   </div>
 
+  <!-- DAILY OBJECTIVES (per player) — mirrors Desolate Desert; data from Beast Taming's runestone caps -->
+  <div class="section" id="daily-objectives">
+    <div class="sh"><span data-i18n="daily_obj_h">Daily Objectives (per player)</span></div>
+    <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px;" data-i18n="daily_obj_sub">Resets 00:00 UTC daily. Track your own progress toward each Awaken Runestone cap.</p>
+    <table class="mtable">
+      <tr><th data-i18n="rune_th_src">Source</th><th data-i18n="rune_th_cap">Daily cap</th><th data-i18n="rune_th_when">When</th></tr>
+      <tr><td class="name" data-i18n="rune_dmg">Scion damage</td><td class="tiers"><b>400</b></td><td data-i18n="rune_days234">Days 2&ndash;4</td></tr>
+      <tr><td class="name" data-i18n="rune_elim">Scion eliminations (nearby)</td><td class="tiers"><b>250</b></td><td data-i18n="rune_days234">Days 2&ndash;4</td></tr>
+      <tr><td class="name" data-i18n="rune_explore">Cultivation Exploration</td><td class="tiers"><b>162</b></td><td data-i18n="rune_explore_when">9&times;18 &middot; Days 2&ndash;4</td></tr>
+      <tr><td class="name" data-i18n="rune_rally">Rally vs Tribes</td><td class="tiers"><b>100</b></td><td data-i18n="rune_days24">Days 2 &amp; 4</td></tr>
+      <tr><td class="name" data-i18n="rune_arally">Alliance Rally vs Tribes</td><td class="tiers"><b>200</b></td><td data-i18n="rune_days24">Days 2 &amp; 4</td></tr>
+    </table>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:8px;" data-i18n="st2_income_note">Damage and eliminations are capped and mailed separately. Maxing everything across the 3 days = <strong>3,036 runestones</strong>.</p>
+  </div>
+
   <!-- DAILY SCHEDULE — TRIAL OF SCION (moved from Beast Taming) -->
   <div class="section" id="scion-schedule">
     <div class="sh"><span data-i18n="st2_sched_h">Daily Schedule &mdash; Trial of Scion</span></div>
@@ -1523,6 +1538,8 @@ const TRANSLATIONS = {
     "st2_cap1": "Prueba del Scion &mdash; toca la Élite \"Scion de Bégimo\", luego Atacar/Teletransportar",
     "st2_cap2": "Cultivo de Bégimo &mdash; acaricia / asea / entretén para ganar runas",
     "st2_income_h": "Ingreso de runas &mdash; topes diarios",
+    "daily_obj_h": "Objetivos Diarios (por jugador)",
+    "daily_obj_sub": "Se reinicia a las 00:00 UTC. Sigue tu propio progreso hacia cada tope de Runas de Despertar.",
     "st3_title": "Etapa 3 &mdash; Ataque-Defensa",
     "st3_days": "Días 5&ndash;6",
     "st3_h0": "El administrador de nuestro servidor fija la <strong>hora y ubicación de la invasión antes del Día 3, 12:00 UTC</strong>.",
@@ -1708,6 +1725,8 @@ const TRANSLATIONS = {
     "st2_cap1": "Épreuve du Scion &mdash; touche l'Élite \"Scion du Béhémoth\", puis Attaquer/Téléporter",
     "st2_cap2": "Culture du Béhémoth &mdash; caresse / toilette / divertis pour des runes",
     "st2_income_h": "Revenu de runes &mdash; plafonds quotidiens",
+    "daily_obj_h": "Objectifs Quotidiens (par joueur)",
+    "daily_obj_sub": "Réinitialisation à 00:00 UTC. Suis ta progression vers chaque plafond de Runes d'Éveil.",
     "st3_title": "Étape 3 &mdash; Attaque-Défense",
     "st3_days": "Jours 5&ndash;6",
     "st3_h0": "L'administrateur de notre serveur verrouille l'<strong>heure et le lieu de l'invasion avant le Jour 3, 12:00 UTC</strong>.",
@@ -1893,6 +1912,8 @@ const TRANSLATIONS = {
     "st2_cap1": "후손의 시험 &mdash; \"비헤모스 후손\" 정예를 탭한 뒤 공격/순간이동",
     "st2_cap2": "비헤모스 육성 &mdash; 쓰다듬기/단장/놀아주기로 룬석 획득",
     "st2_income_h": "룬석 수입 &mdash; 일일 상한",
+    "daily_obj_h": "일일 목표 (플레이어별)",
+    "daily_obj_sub": "매일 00:00 UTC에 초기화. 각 각성 룬석 상한까지 자신의 진행도를 추적하세요.",
     "st3_title": "3단계 &mdash; 공격-방어",
     "st3_days": "5&ndash;6일차",
     "st3_h0": "우리 서버 관리자가 <strong>3일차 12:00 UTC까지 침공 시간과 장소를 확정</strong>합니다.",
@@ -2123,6 +2144,8 @@ const TRANSLATIONS = {
     "st2_cap1": "末裔の試練 — 「ベヒモスの末裔」エリートをタップし攻撃/転移",
     "st2_cap2": "ベヒモス育成 — 撫でる/手入れ/遊んでルーン石獲得",
     "st2_income_h": "ルーン石収入 — 1日の上限",
+    "daily_obj_h": "デイリー目標（プレイヤーごと）",
+    "daily_obj_sub": "毎日00:00 UTCにリセット。各覚醒ルーン石の上限に向けて自分の進捗を管理。",
     "rune_th_src": "入手元",
     "rune_th_cap": "1日上限",
     "rune_th_when": "時期",
@@ -2308,6 +2331,8 @@ const TRANSLATIONS = {
     "st2_cap1": "后裔试炼 — 点击「巨兽后裔」精英，然后攻击/传送",
     "st2_cap2": "巨兽培养 — 抚摸/梳理/逗弄获取符文石",
     "st2_income_h": "符文石收入 — 每日上限",
+    "daily_obj_h": "每日目标（每位玩家）",
+    "daily_obj_sub": "每日00:00 UTC重置。追踪你自己朝各觉醒符文石上限的进度。",
     "rune_th_src": "来源",
     "rune_th_cap": "每日上限",
     "rune_th_when": "时间",
@@ -2493,6 +2518,8 @@ const TRANSLATIONS = {
     "st2_cap1": "محنة السليل — انقر نخبة «سليل البهيموث» ثم هجوم/انتقال",
     "st2_cap2": "تنمية البهيموث — داعب/هذّب/سلِّ للحصول على الأحجار",
     "st2_income_h": "دخل الأحجار — حدود يومية",
+    "daily_obj_h": "الأهداف اليومية (لكل لاعب)",
+    "daily_obj_sub": "يُعاد الضبط 00:00 UTC يومياً. تابع تقدّمك نحو كل حد من أحجار اليقظة.",
     "rune_th_src": "المصدر",
     "rune_th_cap": "الحد اليومي",
     "rune_th_when": "متى",
@@ -2678,6 +2705,8 @@ const TRANSLATIONS = {
     "st2_cap1": "Scion-prøven — tryk på »Behemoth Scion«-eliten, derefter Angrib/Teleportér",
     "st2_cap2": "Behemoth-dyrkning — kæl/plej/underhold for runesten",
     "st2_income_h": "Runesten-indtægt — daglige lofter",
+    "daily_obj_h": "Daglige Mål (pr. spiller)",
+    "daily_obj_sub": "Nulstilles 00:00 UTC dagligt. Følg din egen fremgang mod hvert Vække-runesten-loft.",
     "rune_th_src": "Kilde",
     "rune_th_cap": "Dagligt loft",
     "rune_th_when": "Hvornår",
@@ -2876,6 +2905,8 @@ const TRANSLATIONS = {
     "st2_cap1": "Scion-Prüfung — tippe die Elite „Behemoth-Scion“ an, dann Angreifen/Teleportieren",
     "st2_cap2": "Behemoth-Kultivierung — streicheln / pflegen / unterhalten für Runensteine",
     "st2_income_h": "Runenstein-Einkommen — Tageslimits",
+    "daily_obj_h": "Tägliche Ziele (pro Spieler)",
+    "daily_obj_sub": "Setzt täglich um 00:00 UTC zurück. Verfolge deinen Fortschritt zu jedem Erweckungs-Runenstein-Limit.",
     "rune_th_src": "Quelle",
     "rune_th_cap": "Tageslimit",
     "rune_th_when": "Wann",
@@ -3061,6 +3092,8 @@ const TRANSLATIONS = {
     "st2_cap1": "Испытание Отпрыска — нажми элиту «Отпрыск Бегемота», затем Атака/Телепорт",
     "st2_cap2": "Культивация Бегемота — гладь / ухаживай / развлекай ради рун",
     "st2_income_h": "Доход рун — суточные лимиты",
+    "daily_obj_h": "Ежедневные цели (на игрока)",
+    "daily_obj_sub": "Сброс в 00:00 UTC. Отслеживай свой прогресс к каждому лимиту рун пробуждения.",
     "rune_th_src": "Источник",
     "rune_th_cap": "Суточный лимит",
     "rune_th_when": "Когда",
@@ -3246,6 +3279,8 @@ const TRANSLATIONS = {
     "st2_cap1": "Prova del Rampollo — tocca l'Élite «Rampollo del Behemoth», poi Attacca/Teletrasporta",
     "st2_cap2": "Coltivazione del Behemoth — accarezza / cura / intrattieni per rune",
     "st2_income_h": "Entrate rune — limiti giornalieri",
+    "daily_obj_h": "Obiettivi Giornalieri (per giocatore)",
+    "daily_obj_sub": "Si azzera alle 00:00 UTC. Segui i tuoi progressi verso ogni limite di Rune del Risveglio.",
     "rune_th_src": "Fonte",
     "rune_th_cap": "Limite giorn.",
     "rune_th_when": "Quando",
@@ -3431,6 +3466,8 @@ const TRANSLATIONS = {
     "st2_cap1": "Provação do Descendente — toque na Elite «Descendente do Behemoth», depois Atacar/Teleportar",
     "st2_cap2": "Cultivo do Behemoth — acaricie / cuide / entretenha por runas",
     "st2_income_h": "Renda de runas — limites diários",
+    "daily_obj_h": "Objetivos Diários (por jogador)",
+    "daily_obj_sub": "Reinicia às 00:00 UTC. Acompanhe seu progresso rumo a cada limite de Runas do Despertar.",
     "rune_th_src": "Fonte",
     "rune_th_cap": "Limite diário",
     "rune_th_when": "Quando",
