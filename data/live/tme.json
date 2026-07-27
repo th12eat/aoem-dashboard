@@ -4,11 +4,11 @@
   "invasionTime": "TBD",
   "prepStart": "2026-07-20",
   "invasionStart": "2026-07-26",
-  "weWonPrep": null,
+  "weWonPrep": false,
   "ourRank": 16,
   "oppRank": 11,
   "prepStarted": true,
-  "eventOver": false,
+  "eventOver": true,
   "alliances": [
     {
       "tag": "WC1",
@@ -20,7 +20,7 @@
       "allies": 168,
       "power": "20,827,415,718",
       "merits": "2,371,887,410",
-      "prepPoints": "29,481,064,638"
+      "prepPoints": "39,098,062,108"
     },
     {
       "tag": "REU",
@@ -32,7 +32,7 @@
       "allies": 163,
       "power": "13,053,184,859",
       "merits": "906,771,349",
-      "prepPoints": "8,817,092,767"
+      "prepPoints": "12,425,363,747"
     },
     {
       "tag": "MyT",
@@ -44,7 +44,7 @@
       "allies": 130,
       "power": "10,331,763,047",
       "merits": "842,687,800",
-      "prepPoints": "5,666,148,812"
+      "prepPoints": "8,968,169,692"
     },
     {
       "tag": "AGC",
@@ -56,7 +56,7 @@
       "allies": 161,
       "power": "11,717,361,838",
       "merits": "197,923,475",
-      "prepPoints": "6,262,135,982"
+      "prepPoints": "9,448,944,572"
     }
   ],
   "prepStages": [
@@ -86,14 +86,14 @@
     },
     {
       "nameKey": "prepStage5",
-      "ourPts": 0,
-      "oppPts": 0,
-      "won": null
+      "ourPts": 17.8,
+      "oppPts": 18.1,
+      "won": false
     }
   ],
-  "totalOur": 49.6,
-  "totalOpp": 59.3,
-  "prepLastUpdated": "2026-07-23 — Day 4 (Stage 4: Unit Training in progress)",
+  "totalOur": 67.4,
+  "totalOpp": 77.4,
+  "prepLastUpdated": "2026-07-25 — Final (prep 67.4B vs 77.4B; invasion lost 142B vs 210B)",
   "oppAlliances": [
     {
       "tag": "RIP",
@@ -101,7 +101,7 @@
       "allies": 170,
       "power": "21,445,169,944",
       "merits": "3,027,969,569",
-      "prepPoints": "32,799,172,785"
+      "prepPoints": "41,129,009,975"
     },
     {
       "tag": "INT",
@@ -109,7 +109,7 @@
       "allies": 158,
       "power": "15,085,606,880",
       "merits": "972,408,570",
-      "prepPoints": "15,356,723,344"
+      "prepPoints": "21,987,891,354"
     },
     {
       "tag": "YFQ",
@@ -117,7 +117,7 @@
       "allies": 162,
       "power": "10,742,715,107",
       "merits": "229,037,062",
-      "prepPoints": "8,161,696,152"
+      "prepPoints": "12,829,543,782"
     },
     {
       "tag": "OvO",
@@ -125,7 +125,7 @@
       "allies": 117,
       "power": "6,413,997,041",
       "merits": "62,050,519",
-      "prepPoints": "3,347,332,802"
+      "prepPoints": "5,232,702,212"
     }
   ],
   "krakens": [
@@ -377,5 +377,11 @@
         "TBD"
       ]
     }
+  },
+  "result": "Loss",
+  "finalScore": {
+    "us": "142B",
+    "them": "210B",
+    "label": "Imperial City Domination — E#090"
   }
 }
