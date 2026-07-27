@@ -414,6 +414,57 @@
           62050519
         ]
       ]
+    },
+    {
+      "event": "Behemoth",
+      "date": "2026-07-27",
+      "opp": "Era #028",
+      "result": "Live",
+      "note": "In progress — top-4 alliance scouting figures (power, merits from whole-percent M:P). Result updates when Behemoth Conquest concludes.",
+      "ours": [
+        [
+          "WC1",
+          20700000000,
+          2277000000
+        ],
+        [
+          "REU",
+          12600000000,
+          882000000
+        ],
+        [
+          "AGC",
+          11700000000,
+          234000000
+        ],
+        [
+          "MyT",
+          10400000000,
+          832000000
+        ]
+      ],
+      "oppA": [
+        [
+          "τ28",
+          20100000000,
+          2010000000
+        ],
+        [
+          "Σ28",
+          9900000000,
+          198000000
+        ],
+        [
+          "H3K",
+          8100000000,
+          162000000
+        ],
+        [
+          "κ28",
+          1800000000,
+          0
+        ]
+      ]
     }
   ]
 }

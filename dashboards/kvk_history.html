@@ -40,6 +40,16 @@
   tbody tr:hover{background:rgba(255,255,255,.03);}
   .num{font-variant-numeric:tabular-nums;}
   .res-win{color:var(--green);font-weight:700;} .res-loss{color:var(--red);font-weight:700;} .res-tbd{color:var(--gold);font-weight:700;}
+  /* live (in-progress) result — pulsing blue pill until the event concludes */
+  .res-live{color:var(--accent-blue);font-weight:700;}
+  .live-pill{display:inline-flex;align-items:center;gap:5px;padding:1px 9px;border-radius:999px;
+    background:rgba(61,124,196,0.16);border:1px solid var(--accent-blue);color:#9dc0f0;
+    font-family:var(--font-ui);font-weight:700;font-size:var(--fs-tiny);letter-spacing:.06em;text-transform:uppercase;
+    animation:livePulse 1.6s ease-in-out infinite;}
+  .live-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--accent-blue);box-shadow:0 0 6px var(--accent-blue);}
+  @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(61,124,196,0.5);}50%{box-shadow:0 0 0 5px rgba(61,124,196,0);}}
+  @media (prefers-reduced-motion: reduce){.live-pill{animation:none;}}
+  tr.live-row{background:rgba(61,124,196,0.05);}
   .mp-hi{color:var(--green);} .mp-mid{color:var(--mut2);} .mp-lo{color:var(--mut);}
   .multi-note{font-size:11px;color:var(--mut);font-style:italic;}
   tr.multi-head{cursor:pointer;}
@@ -63,30 +73,30 @@
   <header class="kvk-header" style="--kvk-bg:url('../assets/kvk-bg/history.jpg')">
     <div class="kvk-tag">Age of Empires Mobile · Era 8 (E#008)</div>
     <h1 class="kvk-title">KVK <span>HISTORY</span> &amp; TRENDS</h1>
-    <div class="kvk-subtitle">Top-4 alliance power, merits &amp; M:P across cross-server events</div>
+    <div class="kvk-subtitle" data-i18n="h_subtitle">Top-4 alliance power, merits &amp; M:P across cross-server events</div>
   </header>
 
   <!-- W/L SUMMARY -->
   <div class="card">
-    <div class="card-h">⚔ Win / Loss Record</div>
+    <div class="card-h"><span data-i18n="h_wl">⚔ Win / Loss Record</span></div>
     <div class="summary" id="summary"></div>
   </div>
 
   <!-- LEDGER -->
   <div class="card">
-    <div class="card-h">📜 Event Ledger</div>
+    <div class="card-h"><span data-i18n="h_ledger">📜 Event Ledger</span></div>
     <div class="scroll">
       <table id="ledger">
         <thead>
           <tr>
-            <th class="l" rowspan="2">Event</th><th class="l" rowspan="2">Date</th><th class="l" rowspan="2">Opponent</th>
-            <th class="grp-us" colspan="3">Us · Top-4</th>
-            <th class="grp-opp" colspan="3">Opponent · Top-4</th>
-            <th rowspan="2">Result</th>
+            <th class="l" rowspan="2" data-i18n="h_event">Event</th><th class="l" rowspan="2" data-i18n="h_date">Date</th><th class="l" rowspan="2" data-i18n="h_opponent">Opponent</th>
+            <th class="grp-us" colspan="3" data-i18n="h_us_top4">Us · Top-4</th>
+            <th class="grp-opp" colspan="3" data-i18n="h_opp_top4">Opponent · Top-4</th>
+            <th rowspan="2" data-i18n="h_result">Result</th>
           </tr>
           <tr>
-            <th>Power</th><th>Merits</th><th>M:P</th>
-            <th>Power</th><th>Merits</th><th>M:P</th>
+            <th data-i18n="h_power">Power</th><th data-i18n="h_merits">Merits</th><th data-i18n="h_mp">M:P</th>
+            <th data-i18n="h_power">Power</th><th data-i18n="h_merits">Merits</th><th data-i18n="h_mp">M:P</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -97,21 +107,50 @@
 
   <!-- TRENDS -->
   <div class="card">
-    <div class="card-h">📈 Trends — Our Top-4 (combined)</div>
+    <div class="card-h"><span data-i18n="h_trends">📈 Trends — Our Top-4 (combined)</span></div>
     <div class="charts">
       <div><div id="chartMP"></div><div class="legend" id="legMP"></div></div>
       <div>
         <div class="pm-toggle" id="pmToggle">
-          <button data-mode="abs" class="on">Absolute (B)</button><button data-mode="pct">% Growth</button>
+          <button data-mode="abs" class="on" data-i18n="h_abs">Absolute (B)</button><button data-mode="pct" data-i18n="h_pct">% Growth</button>
         </div>
         <div id="chartPM"></div><div class="legend" id="legPM"></div>
       </div>
     </div>
-    <div class="note">M:P (merit ÷ power) is a proxy for combat activity — rising M:P means we're fighting more per unit of power, not just getting bigger. Any event with captured top-4 alliance data feeds these charts (multi-server brackets included). Past events without alliance figures show as win/loss only until data is added.</div>
+    <div class="note" data-i18n="h_trends_note">M:P (merit ÷ power) is a proxy for combat activity — rising M:P means we're fighting more per unit of power, not just getting bigger. Any event with captured top-4 alliance data feeds these charts (multi-server brackets included). Past events without alliance figures show as win/loss only until data is added.</div>
   </div>
 </div>
 
 <script>
+// ============ I18N (translate-by-source-string; persists via SiteHeader) ============
+var KVKH_T = {"es":{"h_subtitle":"Poder, méritos y M:P de las 4 mejores alianzas en eventos entre servidores","h_wl":"⚔ Registro de victorias / derrotas","h_ledger":"📜 Registro de eventos","h_event":"Evento","h_date":"Fecha","h_opponent":"Oponente","h_us_top4":"Nosotros · Top-4","h_opp_top4":"Oponente · Top-4","h_result":"Resultado","h_power":"Poder","h_merits":"Méritos","h_mp":"M:P","h_trends":"📈 Tendencias — Nuestro Top-4 (combinado)","h_abs":"Absoluto (B)","h_pct":"% Crecimiento","h_trends_note":"M:P (mérito ÷ poder) es un indicador de actividad de combate — un M:P creciente significa que luchamos más por unidad de poder, no solo que crecemos. Cualquier evento con datos de las 4 mejores alianzas alimenta estas gráficas (incluidos los brackets multiservidor). Los eventos pasados sin cifras de alianza aparecen solo como victoria/derrota hasta añadir datos.","Wins":"Victorias","Losses":"Derrotas","In progress":"En curso","Events tracked":"Eventos registrados","Win":"Victoria","Loss":"Derrota","TBD":"Pendiente","Live":"En vivo","alliance data not captured":"datos de alianza no capturados","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"Color M:P: verde ≥8% (activo en combate) · gris 4–8% · tenue <4% (mucho poder, poca actividad).","Opponent M:P":"M:P del oponente","combined top-4":"top-4 combinado","Power":"Poder","Merits":"Méritos","% growth vs":"% crecimiento vs","first":"primero","(top-4 combined)":"(top-4 combinado)","our combined top-4 (B)":"nuestro top-4 combinado (B)"},"fr":{"h_subtitle":"Puissance, mérites et M:P des 4 meilleures alliances sur les événements inter-serveurs","h_wl":"⚔ Bilan victoires / défaites","h_ledger":"📜 Registre des événements","h_event":"Événement","h_date":"Date","h_opponent":"Adversaire","h_us_top4":"Nous · Top-4","h_opp_top4":"Adversaire · Top-4","h_result":"Résultat","h_power":"Puissance","h_merits":"Mérites","h_mp":"M:P","h_trends":"📈 Tendances — Notre Top-4 (combiné)","h_abs":"Absolu (B)","h_pct":"% Croissance","h_trends_note":"Le M:P (mérite ÷ puissance) est un indicateur d'activité de combat — un M:P en hausse signifie qu'on combat davantage par unité de puissance, pas seulement qu'on grandit. Tout événement avec des données des 4 meilleures alliances alimente ces graphiques (brackets multi-serveurs inclus). Les événements passés sans chiffres d'alliance n'apparaissent qu'en victoire/défaite jusqu'à l'ajout des données.","Wins":"Victoires","Losses":"Défaites","In progress":"En cours","Events tracked":"Événements suivis","Win":"Victoire","Loss":"Défaite","TBD":"À venir","Live":"En direct","alliance data not captured":"données d'alliance non capturées","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"Couleur M:P : vert ≥8% (actif au combat) · gris 4–8% · atténué <4% (beaucoup de puissance, peu d'activité).","Opponent M:P":"M:P de l'adversaire","combined top-4":"top-4 combiné","Power":"Puissance","Merits":"Mérites","% growth vs":"% croissance vs","first":"premier","(top-4 combined)":"(top-4 combiné)","our combined top-4 (B)":"notre top-4 combiné (B)"},"de":{"h_subtitle":"Macht, Verdienste & M:P der Top-4-Allianzen über serverübergreifende Events","h_wl":"⚔ Sieg-/Niederlage-Bilanz","h_ledger":"📜 Ereignisverzeichnis","h_event":"Event","h_date":"Datum","h_opponent":"Gegner","h_us_top4":"Wir · Top-4","h_opp_top4":"Gegner · Top-4","h_result":"Ergebnis","h_power":"Macht","h_merits":"Verdienste","h_mp":"M:P","h_trends":"📈 Trends — Unser Top-4 (kombiniert)","h_abs":"Absolut (Mrd.)","h_pct":"% Wachstum","h_trends_note":"M:P (Verdienst ÷ Macht) ist ein Näherungswert für Kampfaktivität — steigendes M:P heißt, wir kämpfen mehr pro Machteinheit, statt nur zu wachsen. Jedes Event mit erfassten Top-4-Allianzdaten fließt in diese Diagramme ein (auch Mehrserver-Brackets). Frühere Events ohne Allianzzahlen erscheinen nur als Sieg/Niederlage, bis Daten ergänzt sind.","Wins":"Siege","Losses":"Niederlagen","In progress":"Laufend","Events tracked":"Erfasste Events","Win":"Sieg","Loss":"Niederlage","TBD":"Offen","Live":"Live","alliance data not captured":"Allianzdaten nicht erfasst","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P-Farbe: grün ≥8% (kampfaktiv) · grau 4–8% · gedimmt <4% (machtlastig, wenig Aktivität).","Opponent M:P":"Gegner-M:P","combined top-4":"Top-4 kombiniert","Power":"Macht","Merits":"Verdienste","% growth vs":"% Wachstum ggü.","first":"erstem","(top-4 combined)":"(Top-4 kombiniert)","our combined top-4 (B)":"unser kombiniertes Top-4 (Mrd.)"},"it":{"h_subtitle":"Potenza, meriti e M:P delle prime 4 alleanze negli eventi tra server","h_wl":"⚔ Bilancio vittorie / sconfitte","h_ledger":"📜 Registro eventi","h_event":"Evento","h_date":"Data","h_opponent":"Avversario","h_us_top4":"Noi · Top-4","h_opp_top4":"Avversario · Top-4","h_result":"Risultato","h_power":"Potenza","h_merits":"Meriti","h_mp":"M:P","h_trends":"📈 Tendenze — Il nostro Top-4 (combinato)","h_abs":"Assoluto (B)","h_pct":"% Crescita","h_trends_note":"M:P (merito ÷ potenza) è un indicatore di attività di combattimento — un M:P in aumento significa che combattiamo di più per unità di potenza, non solo che cresciamo. Ogni evento con dati delle prime 4 alleanze alimenta questi grafici (inclusi i bracket multi-server). Gli eventi passati senza cifre di alleanza appaiono solo come vittoria/sconfitta finché non si aggiungono i dati.","Wins":"Vittorie","Losses":"Sconfitte","In progress":"In corso","Events tracked":"Eventi registrati","Win":"Vittoria","Loss":"Sconfitta","TBD":"Da definire","Live":"In diretta","alliance data not captured":"dati alleanza non acquisiti","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"Colore M:P: verde ≥8% (attivo in combattimento) · grigio 4–8% · tenue <4% (molta potenza, poca attività).","Opponent M:P":"M:P avversario","combined top-4":"top-4 combinato","Power":"Potenza","Merits":"Meriti","% growth vs":"% crescita vs","first":"primo","(top-4 combined)":"(top-4 combinato)","our combined top-4 (B)":"il nostro top-4 combinato (B)"},"pt":{"h_subtitle":"Poder, méritos e M:P das 4 melhores alianças em eventos entre servidores","h_wl":"⚔ Registro de vitórias / derrotas","h_ledger":"📜 Registro de eventos","h_event":"Evento","h_date":"Data","h_opponent":"Oponente","h_us_top4":"Nós · Top-4","h_opp_top4":"Oponente · Top-4","h_result":"Resultado","h_power":"Poder","h_merits":"Méritos","h_mp":"M:P","h_trends":"📈 Tendências — Nosso Top-4 (combinado)","h_abs":"Absoluto (B)","h_pct":"% Crescimento","h_trends_note":"M:P (mérito ÷ poder) é um indicador de atividade de combate — M:P crescente significa que lutamos mais por unidade de poder, não apenas que crescemos. Qualquer evento com dados das 4 melhores alianças alimenta estes gráficos (incluindo brackets multi-servidor). Eventos passados sem números de aliança aparecem só como vitória/derrota até adicionar dados.","Wins":"Vitórias","Losses":"Derrotas","In progress":"Em andamento","Events tracked":"Eventos registrados","Win":"Vitória","Loss":"Derrota","TBD":"A definir","Live":"Ao vivo","alliance data not captured":"dados de aliança não capturados","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"Cor M:P: verde ≥8% (ativo em combate) · cinza 4–8% · fraco <4% (muito poder, pouca atividade).","Opponent M:P":"M:P do oponente","combined top-4":"top-4 combinado","Power":"Poder","Merits":"Méritos","% growth vs":"% crescimento vs","first":"primeiro","(top-4 combined)":"(top-4 combinado)","our combined top-4 (B)":"nosso top-4 combinado (B)"},"nl":{"h_subtitle":"Top-4 alliantiekracht, verdiensten & M:P over server-overschrijdende evenementen","h_wl":"⚔ Winst-/verliesrecord","h_ledger":"📜 Evenementenregister","h_event":"Evenement","h_date":"Datum","h_opponent":"Tegenstander","h_us_top4":"Wij · Top-4","h_opp_top4":"Tegenstander · Top-4","h_result":"Resultaat","h_power":"Kracht","h_merits":"Verdiensten","h_mp":"M:P","h_trends":"📈 Trends — Onze Top-4 (gecombineerd)","h_abs":"Absoluut (mld)","h_pct":"% Groei","h_trends_note":"M:P (verdienste ÷ kracht) is een indicator voor gevechtsactiviteit — stijgende M:P betekent dat we meer vechten per eenheid kracht, niet alleen groeien. Elk evenement met vastgelegde top-4 alliantiegegevens voedt deze grafieken (inclusief multi-server brackets). Eerdere evenementen zonder alliantiecijfers tonen alleen winst/verlies tot gegevens zijn toegevoegd.","Wins":"Overwinningen","Losses":"Verliezen","In progress":"Bezig","Events tracked":"Gevolgde evenementen","Win":"Winst","Loss":"Verlies","TBD":"Nog onbekend","Live":"Live","alliance data not captured":"alliantiegegevens niet vastgelegd","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P-kleur: groen ≥8% (gevechtsactief) · grijs 4–8% · gedimd <4% (veel kracht, weinig activiteit).","Opponent M:P":"M:P tegenstander","combined top-4":"gecombineerde top-4","Power":"Kracht","Merits":"Verdiensten","% growth vs":"% groei t.o.v.","first":"eerste","(top-4 combined)":"(top-4 gecombineerd)","our combined top-4 (B)":"onze gecombineerde top-4 (mld)"},"sv":{"h_subtitle":"Topp-4 alliansers styrka, meriter & M:P över serveröverskridande evenemang","h_wl":"⚔ Vinst-/förlustrekord","h_ledger":"📜 Evenemangslogg","h_event":"Evenemang","h_date":"Datum","h_opponent":"Motståndare","h_us_top4":"Vi · Topp-4","h_opp_top4":"Motståndare · Topp-4","h_result":"Resultat","h_power":"Styrka","h_merits":"Meriter","h_mp":"M:P","h_trends":"📈 Trender — Vårt Topp-4 (kombinerat)","h_abs":"Absolut (mdr)","h_pct":"% Tillväxt","h_trends_note":"M:P (meriter ÷ styrka) är ett mått på stridsaktivitet — stigande M:P betyder att vi strider mer per styrkeenhet, inte bara växer. Alla evenemang med registrerad topp-4 allians­data matar dessa diagram (inklusive fler-server-brackets). Tidigare evenemang utan alliansdata visas bara som vinst/förlust tills data läggs till.","Wins":"Vinster","Losses":"Förluster","In progress":"Pågår","Events tracked":"Spårade evenemang","Win":"Vinst","Loss":"Förlust","TBD":"Ej klart","Live":"Live","alliance data not captured":"alliansdata ej registrerad","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P-färg: grön ≥8% (stridsaktiv) · grå 4–8% · dämpad <4% (styrketung, låg aktivitet).","Opponent M:P":"Motståndarens M:P","combined top-4":"kombinerat topp-4","Power":"Styrka","Merits":"Meriter","% growth vs":"% tillväxt mot","first":"första","(top-4 combined)":"(topp-4 kombinerat)","our combined top-4 (B)":"vårt kombinerade topp-4 (mdr)"},"fi":{"h_subtitle":"Neljän parhaan liittouman voima, ansiot & M:P palvelinten välisissä tapahtumissa","h_wl":"⚔ Voitto-/tappioennätys","h_ledger":"📜 Tapahtumaloki","h_event":"Tapahtuma","h_date":"Päivä","h_opponent":"Vastustaja","h_us_top4":"Me · Top-4","h_opp_top4":"Vastustaja · Top-4","h_result":"Tulos","h_power":"Voima","h_merits":"Ansiot","h_mp":"M:P","h_trends":"📈 Trendit — Meidän Top-4 (yhdistetty)","h_abs":"Absoluuttinen (mrd)","h_pct":"% Kasvu","h_trends_note":"M:P (ansiot ÷ voima) mittaa taisteluaktiivisuutta — nouseva M:P tarkoittaa, että taistelemme enemmän voimayksikköä kohti, emme vain kasva. Jokainen tapahtuma, jossa on tallennetut neljän parhaan liittouman tiedot, syöttää näitä kaavioita (monipalvelinlohkot mukaan lukien). Aiemmat tapahtumat ilman liittoumalukuja näkyvät vain voittona/tappiona kunnes tiedot lisätään.","Wins":"Voitot","Losses":"Tappiot","In progress":"Käynnissä","Events tracked":"Seuratut tapahtumat","Win":"Voitto","Loss":"Tappio","TBD":"Avoin","Live":"Live","alliance data not captured":"liittoumatietoja ei tallennettu","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P-väri: vihreä ≥8% (taisteluaktiivinen) · harmaa 4–8% · himmeä <4% (paljon voimaa, vähän aktiivisuutta).","Opponent M:P":"Vastustajan M:P","combined top-4":"yhdistetty top-4","Power":"Voima","Merits":"Ansiot","% growth vs":"% kasvu vs","first":"ensimmäinen","(top-4 combined)":"(top-4 yhdistetty)","our combined top-4 (B)":"meidän yhdistetty top-4 (mrd)"},"nb":{"h_subtitle":"Topp-4 allianseres styrke, fortjeneste & M:P på tvers av server-arrangementer","h_wl":"⚔ Seier-/tap-rekord","h_ledger":"📜 Arrangementslogg","h_event":"Arrangement","h_date":"Dato","h_opponent":"Motstander","h_us_top4":"Oss · Topp-4","h_opp_top4":"Motstander · Topp-4","h_result":"Resultat","h_power":"Styrke","h_merits":"Fortjeneste","h_mp":"M:P","h_trends":"📈 Trender — Vårt Topp-4 (kombinert)","h_abs":"Absolutt (mrd)","h_pct":"% Vekst","h_trends_note":"M:P (fortjeneste ÷ styrke) er et mål på kampaktivitet — stigende M:P betyr at vi kjemper mer per styrkeenhet, ikke bare vokser. Alle arrangementer med registrerte topp-4 alliansedata mater disse diagrammene (inkludert fler-server-brackets). Tidligere arrangementer uten alliansetall vises bare som seier/tap til data legges til.","Wins":"Seire","Losses":"Tap","In progress":"Pågår","Events tracked":"Sporede arrangementer","Win":"Seier","Loss":"Tap","TBD":"Uavklart","Live":"Direkte","alliance data not captured":"alliansedata ikke registrert","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P-farge: grønn ≥8% (kampaktiv) · grå 4–8% · dempet <4% (styrketung, lav aktivitet).","Opponent M:P":"Motstanderens M:P","combined top-4":"kombinert topp-4","Power":"Styrke","Merits":"Fortjeneste","% growth vs":"% vekst mot","first":"første","(top-4 combined)":"(topp-4 kombinert)","our combined top-4 (B)":"vårt kombinerte topp-4 (mrd)"},"da":{"h_subtitle":"Top-4 alliancers styrke, fortjenester & M:P på tværs af server-begivenheder","h_wl":"⚔ Sejr-/nederlagsrekord","h_ledger":"📜 Begivenhedslog","h_event":"Begivenhed","h_date":"Dato","h_opponent":"Modstander","h_us_top4":"Os · Top-4","h_opp_top4":"Modstander · Top-4","h_result":"Resultat","h_power":"Styrke","h_merits":"Fortjenester","h_mp":"M:P","h_trends":"📈 Tendenser — Vores Top-4 (kombineret)","h_abs":"Absolut (mia.)","h_pct":"% Vækst","h_trends_note":"M:P (fortjeneste ÷ styrke) er et mål for kampaktivitet — stigende M:P betyder, at vi kæmper mere pr. styrkeenhed, ikke bare vokser. Enhver begivenhed med registrerede top-4 alliancedata føder disse diagrammer (inkl. fler-server-brackets). Tidligere begivenheder uden alliancetal vises kun som sejr/nederlag, indtil data tilføjes.","Wins":"Sejre","Losses":"Nederlag","In progress":"I gang","Events tracked":"Sporede begivenheder","Win":"Sejr","Loss":"Nederlag","TBD":"Uafklaret","Live":"Live","alliance data not captured":"alliancedata ikke registreret","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P-farve: grøn ≥8% (kampaktiv) · grå 4–8% · dæmpet <4% (styrketung, lav aktivitet).","Opponent M:P":"Modstanderens M:P","combined top-4":"kombineret top-4","Power":"Styrke","Merits":"Fortjenester","% growth vs":"% vækst mod","first":"første","(top-4 combined)":"(top-4 kombineret)","our combined top-4 (B)":"vores kombinerede top-4 (mia.)"},"ru":{"h_subtitle":"Мощь, заслуги и M:P топ-4 альянсов в межсерверных событиях","h_wl":"⚔ Статистика побед / поражений","h_ledger":"📜 Журнал событий","h_event":"Событие","h_date":"Дата","h_opponent":"Противник","h_us_top4":"Мы · Топ-4","h_opp_top4":"Противник · Топ-4","h_result":"Результат","h_power":"Мощь","h_merits":"Заслуги","h_mp":"M:P","h_trends":"📈 Тренды — Наш Топ-4 (совокупно)","h_abs":"Абсолют (млрд)","h_pct":"% Рост","h_trends_note":"M:P (заслуги ÷ мощь) — показатель боевой активности: растущий M:P значит, что мы больше воюем на единицу мощи, а не просто растём. Любое событие с записанными данными топ-4 альянсов питает эти графики (включая многосерверные сетки). Прошлые события без данных альянсов показаны только как победа/поражение, пока не добавлены данные.","Wins":"Победы","Losses":"Поражения","In progress":"Идёт","Events tracked":"Отслеживаемые события","Win":"Победа","Loss":"Поражение","TBD":"Ожидается","Live":"Вживую","alliance data not captured":"данные альянсов не собраны","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"Цвет M:P: зелёный ≥8% (боевая активность) · серый 4–8% · тусклый <4% (много мощи, мало активности).","Opponent M:P":"M:P противника","combined top-4":"совокупный топ-4","Power":"Мощь","Merits":"Заслуги","% growth vs":"% рост от","first":"первого","(top-4 combined)":"(топ-4 совокупно)","our combined top-4 (B)":"наш совокупный топ-4 (млрд)"},"ko":{"h_subtitle":"서버 간 이벤트의 상위 4개 연맹 전투력, 공적 및 M:P","h_wl":"⚔ 승/패 기록","h_ledger":"📜 이벤트 기록","h_event":"이벤트","h_date":"날짜","h_opponent":"상대","h_us_top4":"우리 · 상위 4","h_opp_top4":"상대 · 상위 4","h_result":"결과","h_power":"전투력","h_merits":"공적","h_mp":"M:P","h_trends":"📈 추세 — 우리 상위 4 (합산)","h_abs":"절대값 (B)","h_pct":"% 성장","h_trends_note":"M:P(공적 ÷ 전투력)는 전투 활동의 지표입니다 — M:P가 상승하면 단순히 커지는 게 아니라 전투력 단위당 더 많이 싸운다는 뜻입니다. 상위 4개 연맹 데이터가 기록된 모든 이벤트가 이 차트에 반영됩니다(멀티서버 대진 포함). 연맹 수치가 없는 과거 이벤트는 데이터 추가 전까지 승/패로만 표시됩니다.","Wins":"승","Losses":"패","In progress":"진행 중","Events tracked":"기록된 이벤트","Win":"승","Loss":"패","TBD":"미정","Live":"실시간","alliance data not captured":"연맹 데이터 미수집","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P 색상: 초록 ≥8% (전투 활발) · 회색 4–8% · 흐림 <4% (전투력 높고 활동 적음).","Opponent M:P":"상대 M:P","combined top-4":"합산 상위 4","Power":"전투력","Merits":"공적","% growth vs":"% 성장 대비","first":"처음","(top-4 combined)":"(상위 4 합산)","our combined top-4 (B)":"우리 합산 상위 4 (B)"},"ja":{"h_subtitle":"サーバー間イベントにおける上位4同盟の戦力・功績・M:P","h_wl":"⚔ 勝敗記録","h_ledger":"📜 イベント記録","h_event":"イベント","h_date":"日付","h_opponent":"相手","h_us_top4":"我々 · 上位4","h_opp_top4":"相手 · 上位4","h_result":"結果","h_power":"戦力","h_merits":"功績","h_mp":"M:P","h_trends":"📈 トレンド — 我々の上位4（合算）","h_abs":"絶対値 (B)","h_pct":"% 成長","h_trends_note":"M:P（功績 ÷ 戦力）は戦闘活動の指標です — M:Pの上昇は、単に大きくなるのではなく戦力あたりの戦闘量が増えていることを意味します。上位4同盟のデータが記録された全イベントがこのグラフに反映されます（マルチサーバー対戦を含む）。同盟数値のない過去のイベントは、データ追加まで勝敗のみ表示されます。","Wins":"勝利","Losses":"敗北","In progress":"進行中","Events tracked":"記録イベント数","Win":"勝利","Loss":"敗北","TBD":"未定","Live":"ライブ","alliance data not captured":"同盟データ未取得","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:Pの色: 緑 ≥8%（戦闘的）· 灰 4–8% · 暗 <4%（戦力偏重、活動少）。","Opponent M:P":"相手のM:P","combined top-4":"上位4合算","Power":"戦力","Merits":"功績","% growth vs":"% 成長（基準）","first":"最初","(top-4 combined)":"（上位4合算）","our combined top-4 (B)":"我々の上位4合算 (B)"},"zh_cn":{"h_subtitle":"跨服活动中前4联盟的战力、功绩与 M:P","h_wl":"⚔ 胜负记录","h_ledger":"📜 活动记录","h_event":"活动","h_date":"日期","h_opponent":"对手","h_us_top4":"我方 · 前4","h_opp_top4":"对手 · 前4","h_result":"结果","h_power":"战力","h_merits":"功绩","h_mp":"M:P","h_trends":"📈 趋势 — 我方前4（合计）","h_abs":"绝对值 (B)","h_pct":"% 增长","h_trends_note":"M:P（功绩 ÷ 战力）是战斗活跃度的指标 — M:P 上升意味着我们在每单位战力上战斗更多，而不只是变大。任何记录了前4联盟数据的活动都会进入这些图表（含多服对阵）。没有联盟数据的过往活动在补充数据前仅显示为胜/负。","Wins":"胜","Losses":"负","In progress":"进行中","Events tracked":"追踪活动数","Win":"胜","Loss":"负","TBD":"待定","Live":"实时","alliance data not captured":"联盟数据未采集","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P 颜色：绿 ≥8%（战斗活跃）· 灰 4–8% · 暗 <4%（战力高、活动少）。","Opponent M:P":"对手 M:P","combined top-4":"合计前4","Power":"战力","Merits":"功绩","% growth vs":"% 增长对比","first":"首次","(top-4 combined)":"（前4合计）","our combined top-4 (B)":"我方合计前4 (B)"},"zh_hk":{"h_subtitle":"跨服活動中前4聯盟的戰力、功績與 M:P","h_wl":"⚔ 勝負記錄","h_ledger":"📜 活動記錄","h_event":"活動","h_date":"日期","h_opponent":"對手","h_us_top4":"我方 · 前4","h_opp_top4":"對手 · 前4","h_result":"結果","h_power":"戰力","h_merits":"功績","h_mp":"M:P","h_trends":"📈 趨勢 — 我方前4（合計）","h_abs":"絕對值 (B)","h_pct":"% 增長","h_trends_note":"M:P（功績 ÷ 戰力）是戰鬥活躍度的指標 — M:P 上升意味着我們在每單位戰力上戰鬥更多，而不只是變大。任何記錄了前4聯盟數據的活動都會進入這些圖表（含多服對陣）。沒有聯盟數據的過往活動在補充數據前僅顯示為勝/負。","Wins":"勝","Losses":"負","In progress":"進行中","Events tracked":"追蹤活動數","Win":"勝","Loss":"負","TBD":"待定","Live":"實時","alliance data not captured":"聯盟數據未採集","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P 顏色：綠 ≥8%（戰鬥活躍）· 灰 4–8% · 暗 <4%（戰力高、活動少）。","Opponent M:P":"對手 M:P","combined top-4":"合計前4","Power":"戰力","Merits":"功績","% growth vs":"% 增長對比","first":"首次","(top-4 combined)":"（前4合計）","our combined top-4 (B)":"我方合計前4 (B)"},"ar":{"h_subtitle":"قوة ومناقب و M:P لأفضل 4 تحالفات عبر أحداث الخوادم","h_wl":"⚔ سجل الفوز / الخسارة","h_ledger":"📜 سجل الأحداث","h_event":"الحدث","h_date":"التاريخ","h_opponent":"الخصم","h_us_top4":"نحن · أفضل 4","h_opp_top4":"الخصم · أفضل 4","h_result":"النتيجة","h_power":"القوة","h_merits":"المناقب","h_mp":"M:P","h_trends":"📈 الاتجاهات — أفضل 4 لدينا (مجمّع)","h_abs":"مطلق (مليار)","h_pct":"% النمو","h_trends_note":"M:P (المناقب ÷ القوة) مؤشر على النشاط القتالي — ارتفاع M:P يعني أننا نقاتل أكثر لكل وحدة قوة، وليس مجرد النمو. أي حدث ببيانات أفضل 4 تحالفات يغذّي هذه الرسوم (بما في ذلك أقواس متعددة الخوادم). الأحداث السابقة بدون أرقام التحالف تظهر كفوز/خسارة فقط حتى تُضاف البيانات.","Wins":"انتصارات","Losses":"خسائر","In progress":"جارٍ","Events tracked":"الأحداث المتتبَّعة","Win":"فوز","Loss":"خسارة","TBD":"لاحقاً","Live":"مباشر","alliance data not captured":"بيانات التحالف غير مُسجَّلة","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"لون M:P: أخضر ≥8% (نشط قتالياً) · رمادي 4–8% · باهت <4% (قوة عالية، نشاط منخفض).","Opponent M:P":"M:P الخصم","combined top-4":"أفضل 4 مجمّع","Power":"القوة","Merits":"المناقب","% growth vs":"% نمو مقابل","first":"الأول","(top-4 combined)":"(أفضل 4 مجمّع)","our combined top-4 (B)":"أفضل 4 لدينا مجمّع (مليار)"},"si":{"h_subtitle":"සේවාදායක අතර සිදුවීම් හරහා ඉහළම සන්ධාන 4 හි බලය, කුසලතා සහ M:P","h_wl":"⚔ ජය / පරාජ වාර්තාව","h_ledger":"📜 සිදුවීම් ලේඛනය","h_event":"සිදුවීම","h_date":"දිනය","h_opponent":"විරුද්ධවාදියා","h_us_top4":"අපි · ඉහළම 4","h_opp_top4":"විරුද්ධවාදියා · ඉහළම 4","h_result":"ප්‍රතිඵලය","h_power":"බලය","h_merits":"කුසලතා","h_mp":"M:P","h_trends":"📈 ප්‍රවණතා — අපගේ ඉහළම 4 (එකතුව)","h_abs":"නිරපේක්ෂ (B)","h_pct":"% වර්ධනය","h_trends_note":"M:P (කුසලතා ÷ බලය) සටන් ක්‍රියාකාරකම්වල දර්ශකයකි — වැඩිවන M:P යනු අප හුදෙක් විශාල වීම නොව බල ඒකකයකට වැඩිපුර සටන් කරන බවයි. ඉහළම සන්ධාන 4 දත්ත ඇති ඕනෑම සිදුවීමක් මෙම ප්‍රස්ථාරවලට පෝෂණය කරයි (බහු-සේවාදායක වරහන් ඇතුළුව). සන්ධාන සංඛ්‍යා නොමැති පෙර සිදුවීම් දත්ත එකතු වන තෙක් ජය/පරාජය ලෙස පමණක් පෙන්වයි.","Wins":"ජයග්‍රහණ","Losses":"පරාජයන්","In progress":"ක්‍රියාත්මකයි","Events tracked":"නිරීක්ෂිත සිදුවීම්","Win":"ජය","Loss":"පරාජය","TBD":"නොතීරණිතයි","Live":"සජීවී","alliance data not captured":"සන්ධාන දත්ත ගොනු කර නැත","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P වර්ණය: කොළ ≥8% (සටන්-ක්‍රියාශීලී) · අළු 4–8% · අඳුරු <4% (බල-බර, අඩු ක්‍රියාකාරකම්).","Opponent M:P":"විරුද්ධවාදියාගේ M:P","combined top-4":"එකතු කළ ඉහළම 4","Power":"බලය","Merits":"කුසලතා","% growth vs":"% වර්ධනය එදිරිව","first":"පළමු","(top-4 combined)":"(ඉහළම 4 එකතුව)","our combined top-4 (B)":"අපගේ එකතු කළ ඉහළම 4 (B)"},"ta":{"h_subtitle":"சர்வர்-இடை நிகழ்வுகளில் முதல் 4 கூட்டணிகளின் வலிமை, தகுதிகள் & M:P","h_wl":"⚔ வெற்றி / தோல்வி பதிவு","h_ledger":"📜 நிகழ்வு பதிவேடு","h_event":"நிகழ்வு","h_date":"தேதி","h_opponent":"எதிரி","h_us_top4":"நாம் · முதல் 4","h_opp_top4":"எதிரி · முதல் 4","h_result":"முடிவு","h_power":"வலிமை","h_merits":"தகுதிகள்","h_mp":"M:P","h_trends":"📈 போக்குகள் — நமது முதல் 4 (ஒருங்கிணைந்த)","h_abs":"முழுமை (B)","h_pct":"% வளர்ச்சி","h_trends_note":"M:P (தகுதி ÷ வலிமை) என்பது போர் செயல்பாட்டின் அளவீடு — உயரும் M:P என்பது நாம் வெறுமனே பெரிதாவதல்ல, ஒரு வலிமை அலகுக்கு அதிகம் போரிடுகிறோம் என்பதைக் குறிக்கிறது. முதல் 4 கூட்டணி தரவு பதிவு செய்யப்பட்ட எந்த நிகழ்வும் இந்த விளக்கப்படங்களுக்கு உணவளிக்கிறது (பல-சர்வர் அடைப்புகள் உட்பட). கூட்டணி எண்கள் இல்லாத கடந்த நிகழ்வுகள் தரவு சேர்க்கப்படும் வரை வெற்றி/தோல்வியாக மட்டுமே காட்டப்படும்.","Wins":"வெற்றிகள்","Losses":"தோல்விகள்","In progress":"நடைபெறுகிறது","Events tracked":"கண்காணிக்கப்பட்ட நிகழ்வுகள்","Win":"வெற்றி","Loss":"தோல்வி","TBD":"நிர்ணயிக்கப்படவில்லை","Live":"நேரலை","alliance data not captured":"கூட்டணி தரவு பதிவு செய்யப்படவில்லை","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P நிறம்: பச்சை ≥8% (போர் சுறுசுறுப்பு) · சாம்பல் 4–8% · மங்கல் <4% (அதிக வலிமை, குறைந்த செயல்பாடு).","Opponent M:P":"எதிரியின் M:P","combined top-4":"ஒருங்கிணைந்த முதல் 4","Power":"வலிமை","Merits":"தகுதிகள்","% growth vs":"% வளர்ச்சி ஒப்பீடு","first":"முதல்","(top-4 combined)":"(முதல் 4 ஒருங்கிணைந்த)","our combined top-4 (B)":"நமது ஒருங்கிணைந்த முதல் 4 (B)"},"hi":{"h_subtitle":"सर्वर-पार आयोजनों में शीर्ष-4 गठबंधनों की शक्ति, अंक और M:P","h_wl":"⚔ जीत / हार रिकॉर्ड","h_ledger":"📜 आयोजन बही","h_event":"आयोजन","h_date":"तारीख","h_opponent":"प्रतिद्वंद्वी","h_us_top4":"हम · शीर्ष-4","h_opp_top4":"प्रतिद्वंद्वी · शीर्ष-4","h_result":"परिणाम","h_power":"शक्ति","h_merits":"अंक","h_mp":"M:P","h_trends":"📈 रुझान — हमारा शीर्ष-4 (संयुक्त)","h_abs":"निरपेक्ष (B)","h_pct":"% वृद्धि","h_trends_note":"M:P (अंक ÷ शक्ति) युद्ध सक्रियता का सूचक है — बढ़ता M:P यह दर्शाता है कि हम प्रति शक्ति-इकाई अधिक लड़ रहे हैं, केवल बड़े नहीं हो रहे। शीर्ष-4 गठबंधन डेटा वाला कोई भी आयोजन इन चार्टों को पोषित करता है (बहु-सर्वर ब्रैकेट सहित)। गठबंधन आंकड़ों के बिना पिछले आयोजन डेटा जोड़े जाने तक केवल जीत/हार के रूप में दिखते हैं।","Wins":"जीत","Losses":"हार","In progress":"जारी","Events tracked":"ट्रैक किए आयोजन","Win":"जीत","Loss":"हार","TBD":"अनिर्णीत","Live":"लाइव","alliance data not captured":"गठबंधन डेटा दर्ज नहीं","M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).":"M:P रंग: हरा ≥8% (युद्ध-सक्रिय) · ग्रे 4–8% · धुंधला <4% (शक्ति-भारी, कम सक्रियता)।","Opponent M:P":"प्रतिद्वंद्वी का M:P","combined top-4":"संयुक्त शीर्ष-4","Power":"शक्ति","Merits":"अंक","% growth vs":"% वृद्धि बनाम","first":"पहला","(top-4 combined)":"(शीर्ष-4 संयुक्त)","our combined top-4 (B)":"हमारा संयुक्त शीर्ष-4 (B)"}};
+var KVKH_CODES = ['en','es','fr','ko','ja','zh_hk','zh_cn','pt','sv','fi','nb','nl','de','ar','si','ta','hi','da','ru','it'];
+var KVKH_RTL = { ar: true };
+var CUR_LANG = 'en';
+var EN_HTML = {}; // English snapshot of every data-i18n element (captured on load)
+// T(src): translate a JS-built string by its English source (falls back to English).
+function T(src){
+  if(CUR_LANG==='en') return src;
+  var tbl=KVKH_T[CUR_LANG];
+  return (tbl && tbl[src]!==undefined) ? tbl[src] : src;
+}
+// apply data-i18n attributes (static HTML) for the current language
+function applyStaticI18n(){
+  var tbl = CUR_LANG==='en' ? null : KVKH_T[CUR_LANG];
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    var v = (CUR_LANG==='en') ? EN_HTML[k] : (tbl && tbl[k]!==undefined ? tbl[k] : EN_HTML[k]);
+    if(v!==undefined) el.innerHTML=v;
+  });
+}
+function setKvkhLang(code){
+  CUR_LANG=code;
+  document.documentElement.setAttribute('lang',code);
+  document.documentElement.setAttribute('dir', KVKH_RTL[code]?'rtl':'ltr');
+  applyStaticI18n();
+  renderAll(); // re-render summary/ledger/charts (all go through T())
+}
+
 // ============ DATA ============
 // Each event holds our & opponent top-4 alliances as [tag, power, merits] — M:P is derived.
 // Opponent servers use the padded "Era #0XX" style. Multi-server brackets list each server,
@@ -138,6 +177,10 @@ let EVENTS = [
     note:"Final 37.4B vs 57.8B. Alliance figures from the Behemoth flyer — power rounded to 0.1B, merits derived from whole-percent M:P (approx).",
     ours:[["WC1",20100000000,2211000000],["REU",12300000000,861000000],["AGC",11600000000,232000000],["MyT",10300000000,824000000]],
     oppA:[["JAN",15500000000,1705000000],["ACA",14100000000,1269000000],["WJD",9300000000,93000000],["GOX",8100000000,81000000]] },
+  { event:"Behemoth", date:"2026-07-27", opp:"Era #028", result:"Live",
+    note:"In progress — top-4 alliance scouting figures (power, merits from whole-percent M:P). Result updates when Behemoth Conquest concludes.",
+    ours:[["WC1",20700000000,2277000000],["REU",12600000000,882000000],["AGC",11700000000,234000000],["MyT",10400000000,832000000]],
+    oppA:[["τ28",20100000000,2010000000],["Σ28",9900000000,198000000],["H3K",8100000000,162000000],["κ28",1800000000,0]] },
 ];
 
 const fmtB = n => (n/1e9).toFixed(2)+"B";
@@ -166,14 +209,26 @@ const rankCell = n => `<td style="color:${RANK_COLOR[n]||'#94a3b8'};font-weight:
 // ---- W/L summary ----
 function renderSummary(){
   let w=0,l=0,t=0;
-  EVENTS.forEach(e=>{ if(e.result==="Win")w++; else if(e.result==="Loss")l++; else if(e.result==="TBD")t++; });
+  // "In progress" counts both live (playing now) and TBD (result pending).
+  EVENTS.forEach(e=>{ if(e.result==="Win")w++; else if(e.result==="Loss")l++; else if(e.result==="TBD"||e.result==="Live")t++; });
   const html=[
-    `<div class="chip win"><div class="big">${w}</div><div class="lbl">Wins</div></div>`,
-    `<div class="chip loss"><div class="big">${l}</div><div class="lbl">Losses</div></div>`,
-    `<div class="chip"><div class="big">${t}</div><div class="lbl">In progress</div></div>`,
-    `<div class="chip"><div class="big">${EVENTS.length}</div><div class="lbl">Events tracked</div></div>`,
+    `<div class="chip win"><div class="big">${w}</div><div class="lbl">${T("Wins")}</div></div>`,
+    `<div class="chip loss"><div class="big">${l}</div><div class="lbl">${T("Losses")}</div></div>`,
+    `<div class="chip"><div class="big">${t}</div><div class="lbl">${T("In progress")}</div></div>`,
+    `<div class="chip"><div class="big">${EVENTS.length}</div><div class="lbl">${T("Events tracked")}</div></div>`,
   ].join("");
   document.getElementById("summary").innerHTML=html;
+}
+
+// Localized result label + cell. "Live" renders a pulsing pill; others a colored word.
+function resultLabel(r){
+  return r==="Win"?T("Win"):r==="Loss"?T("Loss"):r==="TBD"?T("TBD"):r==="Live"?T("Live"):r;
+}
+function resultCellHTML(e){
+  if(e.result==="Live")
+    return `<td class="res-live"><span class="live-pill"><span class="dot"></span>${T("Live")}</span></td>`;
+  const rc = e.result==="Win"?"res-win":e.result==="Loss"?"res-loss":e.result==="TBD"?"res-tbd":"";
+  return `<td class="${rc}">${resultLabel(e.result)}</td>`;
 }
 
 // ---- ledger ----
@@ -181,7 +236,7 @@ function renderLedger(){
   const tb=document.querySelector("#ledger tbody");
   tb.innerHTML="";
   EVENTS.forEach(e=>{
-    const rc = e.result==="Win"?"res-win":e.result==="Loss"?"res-loss":e.result==="TBD"?"res-tbd":"";
+    const rc = e.result==="Win"?"res-win":e.result==="Loss"?"res-loss":e.result==="TBD"?"res-tbd":e.result==="Live"?"res-live":"";
     const tag = e.multi?` <span class="multi-note">(multi-server)</span>`:"";
     if(!e.ours){
       // Archived multi-server events store our side under `ourRoster` and each
@@ -204,7 +259,7 @@ function renderLedger(){
         // = our server's derived rank, else an explicit `placement`, else W/L.
         const ranks=serverRanks(e);
         const ourRank=ranks?ranks[OUR_SERVER]:(e.placement||null);
-        const resCell=ourRank?rankCell(ourRank):`<td class="${rc}">${e.result}</td>`;
+        const resCell=ourRank?rankCell(ourRank):resultCellHTML(e);
         const srvLabel=s=>s+(ranks&&ranks[s]?rankTag(ranks[s]):"");
         const basisNote=e.basis?` <span class="multi-note">· ${e.basis}</span>`:"";
         if(!isOpen){
@@ -237,23 +292,24 @@ function renderLedger(){
       }
       // no rosters captured — but an explicit `placement` still colors the result
       const extra = e.note?` <span class="multi-note">(${e.note})</span>`:tag;
-      const resCell = e.placement?rankCell(e.placement):`<td class="${rc}">${e.result}</td>`;
+      const resCell = e.placement?rankCell(e.placement):resultCellHTML(e);
       tb.insertAdjacentHTML("beforeend",
         `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${extra}</td>`+
-        `<td colspan="6" class="multi-note" style="text-align:center">alliance data not captured</td>`+
+        `<td colspan="6" class="multi-note" style="text-align:center">${T("alliance data not captured")}</td>`+
         `${resCell}</tr>`);
       return;
     }
     const oP=sum(e.ours,1),oM=sum(e.ours,2),pP=sum(e.oppA,1),pM=sum(e.oppA,2);
     const oMP=oM/oP*100, pMP=pM/pP*100;
+    const rowCls = e.result==="Live"?' class="live-row"':'';
     tb.insertAdjacentHTML("beforeend",
-      `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${tag}</td>`+
+      `<tr${rowCls}><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${tag}</td>`+
       `<td class="num">${fmtB(oP)}</td><td class="num">${fmtB(oM)}</td><td class="num ${mpClass(oMP)}">${oMP.toFixed(1)}%</td>`+
       `<td class="num">${fmtB(pP)}</td><td class="num">${fmtB(pM)}</td><td class="num ${mpClass(pMP)}">${pMP.toFixed(1)}%</td>`+
-      `<td class="${rc}">${e.result}</td></tr>`);
+      `${resultCellHTML(e)}</tr>`);
   });
   document.getElementById("ledgerNote").textContent =
-    "M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).";
+    T("M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).");
 }
 
 // ---- charts (SVG line) ----
@@ -317,7 +373,7 @@ function renderCharts(){
     [{name:"Era #008",color:"#3b82f6",vals:usMP},{name:"Opp",color:"#f87171",vals:oppMP}],
     {ymin:0,ymax:12,yfmt:v=>v.toFixed(0)+"%",xlabels});
   document.getElementById("legMP").innerHTML=
-    `<span style="color:#3b82f6"><b>■ Era #008 M:P</b></span> <span style="color:#f87171"><b>■ Opponent M:P</b></span> — combined top-4`;
+    `<span style="color:#3b82f6"><b>■ Era #008 M:P</b></span> <span style="color:#f87171"><b>■ ${T("Opponent M:P")}</b></span> — ${T("combined top-4")}`;
   // Power & Merits chart (us) — two modes via toggle:
   //   abs = billions; pct = % growth vs the first captured event (baseline 0%),
   //   with a third M:P-ratio %-growth track.
@@ -337,14 +393,14 @@ function renderCharts(){
     document.getElementById("chartPM").innerHTML=lineChart(series,
       {ymin:lo,ymax:hi,yfmt:v=>(v>0?"+":"")+v.toFixed(0)+"%",xlabels});
     document.getElementById("legPM").innerHTML=
-      `<span style="color:#fbbf24"><b>■ Power</b></span> <span style="color:#4ade80"><b>■ Merits</b></span> <span style="color:#38bdf8"><b>■ M:P</b></span> — % growth vs ${xlabels[0]||"first"} (top-4 combined)`;
+      `<span style="color:#fbbf24"><b>■ ${T("Power")}</b></span> <span style="color:#4ade80"><b>■ ${T("Merits")}</b></span> <span style="color:#38bdf8"><b>■ M:P</b></span> — ${T("% growth vs")} ${xlabels[0]||T("first")} ${T("(top-4 combined)")}`;
   } else {
     const usP=P.map((v,i)=>({x:i,y:v/1e9})), usM=M.map((v,i)=>({x:i,y:v/1e9}));
     document.getElementById("chartPM").innerHTML=lineChart(
       [{name:"Power",color:"#fbbf24",vals:usP},{name:"Merits",color:"#4ade80",vals:usM}],
       {ymin:0,ymax:60,yfmt:v=>v.toFixed(0)+"B",xlabels});
     document.getElementById("legPM").innerHTML=
-      `<span style="color:#fbbf24"><b>■ Power</b></span> <span style="color:#4ade80"><b>■ Merits</b></span> — our combined top-4 (B)`;
+      `<span style="color:#fbbf24"><b>■ ${T("Power")}</b></span> <span style="color:#4ade80"><b>■ ${T("Merits")}</b></span> — ${T("our combined top-4 (B)")}`;
   }
 }
 
@@ -378,12 +434,24 @@ function bindPmToggle(){
 
 function renderAll(){ sortEvents(); renderSummary(); renderLedger(); renderCharts(); bindLedgerToggle(); bindPmToggle(); }
 
+// Snapshot the English HTML of every data-i18n element (so 'en' can restore it),
+// then register the language switcher with the shared header (localStorage-persisted).
+function initI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(function(el){ EN_HTML[el.getAttribute('data-i18n')]=el.innerHTML; });
+  var tries=0;
+  (function reg(){
+    if(window.SiteHeader){ window.SiteHeader.setLanguages({ codes: KVKH_CODES, current:'en', onChange: setKvkhLang }); }
+    else if(tries++ < 50){ setTimeout(reg, 50); }
+  })();
+}
+
 // Load published history (../data/history.json) if present; else use in-code fallback.
 (async function(){
   try{
     const res=await fetch("../data/history.json");
     if(res.ok){ const j=await res.json(); if(j&&Array.isArray(j.events)) EVENTS=j.events; }
   }catch(e){ console.error("history load failed; using fallback",e); }
+  initI18n();
   renderAll();
 })();
 </script>
