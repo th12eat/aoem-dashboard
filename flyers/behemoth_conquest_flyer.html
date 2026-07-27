@@ -58,6 +58,10 @@
     position: relative;
     border-bottom: 2px solid var(--accent-gold-dim);
     margin-bottom: 28px;
+    /* full-bleed: cancel .flyer's 20px side padding so the header image spans
+       edge-to-edge on mobile, matching the other dashboards (no side buffer). */
+    margin-left: -20px;
+    margin-right: -20px;
   }
 
   .header::before {
