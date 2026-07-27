@@ -38,41 +38,63 @@
     <div class="brand">
       <div class="mark">◆</div>
       <h1>Era 8 Command</h1>
-      <div class="sub">Maintainer Sign-In</div>
+      <div class="sub" data-i18n="lg_sub">Maintainer Sign-In</div>
     </div>
 
-    <div class="banner">⚙ Preview build — sign-in activates when hosted.</div>
+    <div class="banner"><span data-i18n="lg_banner">⚙ Preview build — sign-in activates when hosted.</span></div>
 
     <form id="loginForm" autocomplete="off">
-      <label for="username">Username</label>
+      <label for="username" data-i18n="lg_user">Username</label>
       <input type="text" id="username" name="username" placeholder="commander" autocomplete="username">
 
-      <label for="password">Password</label>
+      <label for="password" data-i18n="lg_pass">Password</label>
       <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password">
 
-      <button type="submit" class="btn">Sign In</button>
+      <button type="submit" class="btn" data-i18n="lg_btn">Sign In</button>
       <div class="msg" id="msg"></div>
     </form>
 
-    <a class="back" href="../index.html">← Back to Era 8 Command</a>
+    <a class="back" href="../index.html" data-i18n="lg_back">← Back to Era 8 Command</a>
   </div>
 
   <script src="../assets/auth.js"></script>
+  <script src="../assets/site-header.js"></script>
   <script>
-    // PREVIEW BUILD: the submit handler is intentionally NOT wired to Auth.login().
-    // The real logic lives in Auth.login() (assets/auth.js) and is ready to attach
-    // at hosting time — at which point this listener simply calls it and redirects.
+    // i18n for the sign-in page (shares the persisted language via SiteHeader).
+    (function () {
+      var TR = {"es":{"lg_sub":"Acceso de mantenedor","lg_banner":"⚙ Compilación de vista previa — el inicio de sesión se activa al alojar.","lg_user":"Usuario","lg_pass":"Contraseña","lg_btn":"Iniciar sesión","lg_back":"← Volver a Era 8 Command","lg_msg":"El inicio de sesión está deshabilitado en esta versión de vista previa."},"fr":{"lg_sub":"Connexion mainteneur","lg_banner":"⚙ Version aperçu — la connexion s'active une fois hébergé.","lg_user":"Nom d'utilisateur","lg_pass":"Mot de passe","lg_btn":"Se connecter","lg_back":"← Retour à Era 8 Command","lg_msg":"La connexion est désactivée dans cette version aperçu."},"de":{"lg_sub":"Betreuer-Anmeldung","lg_banner":"⚙ Vorschau-Build — Anmeldung wird beim Hosting aktiviert.","lg_user":"Benutzername","lg_pass":"Passwort","lg_btn":"Anmelden","lg_back":"← Zurück zu Era 8 Command","lg_msg":"Die Anmeldung ist in diesem Vorschau-Build deaktiviert."},"it":{"lg_sub":"Accesso manutentore","lg_banner":"⚙ Build di anteprima — l'accesso si attiva con l'hosting.","lg_user":"Nome utente","lg_pass":"Password","lg_btn":"Accedi","lg_back":"← Torna a Era 8 Command","lg_msg":"L'accesso è disabilitato in questa build di anteprima."},"pt":{"lg_sub":"Login do mantenedor","lg_banner":"⚙ Compilação de prévia — o login ativa ao hospedar.","lg_user":"Usuário","lg_pass":"Senha","lg_btn":"Entrar","lg_back":"← Voltar ao Era 8 Command","lg_msg":"O login está desativado nesta compilação de prévia."},"nl":{"lg_sub":"Beheerder-aanmelding","lg_banner":"⚙ Voorbeeldversie — inloggen activeert bij hosting.","lg_user":"Gebruikersnaam","lg_pass":"Wachtwoord","lg_btn":"Inloggen","lg_back":"← Terug naar Era 8 Command","lg_msg":"Inloggen is uitgeschakeld in deze voorbeeldversie."},"sv":{"lg_sub":"Underhållarinloggning","lg_banner":"⚙ Förhandsversion — inloggning aktiveras vid hosting.","lg_user":"Användarnamn","lg_pass":"Lösenord","lg_btn":"Logga in","lg_back":"← Tillbaka till Era 8 Command","lg_msg":"Inloggning är inaktiverad i denna förhandsversion."},"fi":{"lg_sub":"Ylläpitäjän kirjautuminen","lg_banner":"⚙ Esikatseluversio — kirjautuminen aktivoituu isännöitäessä.","lg_user":"Käyttäjänimi","lg_pass":"Salasana","lg_btn":"Kirjaudu sisään","lg_back":"← Takaisin Era 8 Commandiin","lg_msg":"Kirjautuminen on poistettu käytöstä tässä esikatseluversiossa."},"nb":{"lg_sub":"Vedlikeholder-innlogging","lg_banner":"⚙ Forhåndsversjon — innlogging aktiveres ved hosting.","lg_user":"Brukernavn","lg_pass":"Passord","lg_btn":"Logg inn","lg_back":"← Tilbake til Era 8 Command","lg_msg":"Innlogging er deaktivert i denne forhåndsversjonen."},"da":{"lg_sub":"Vedligeholder-login","lg_banner":"⚙ Forhåndsversion — login aktiveres ved hosting.","lg_user":"Brugernavn","lg_pass":"Adgangskode","lg_btn":"Log ind","lg_back":"← Tilbage til Era 8 Command","lg_msg":"Login er deaktiveret i denne forhåndsversion."},"ru":{"lg_sub":"Вход для сопровождающего","lg_banner":"⚙ Предварительная сборка — вход активируется при размещении.","lg_user":"Имя пользователя","lg_pass":"Пароль","lg_btn":"Войти","lg_back":"← Назад в Era 8 Command","lg_msg":"Вход отключён в этой предварительной сборке."},"ko":{"lg_sub":"관리자 로그인","lg_banner":"⚙ 미리보기 빌드 — 로그인은 호스팅 시 활성화됩니다.","lg_user":"사용자 이름","lg_pass":"비밀번호","lg_btn":"로그인","lg_back":"← Era 8 Command로 돌아가기","lg_msg":"이 미리보기 빌드에서는 로그인이 비활성화되어 있습니다."},"ja":{"lg_sub":"メンテナーサインイン","lg_banner":"⚙ プレビュー版 — サインインはホスティング時に有効化。","lg_user":"ユーザー名","lg_pass":"パスワード","lg_btn":"サインイン","lg_back":"← Era 8 Command に戻る","lg_msg":"このプレビュー版ではサインインは無効です。"},"zh_cn":{"lg_sub":"维护者登录","lg_banner":"⚙ 预览版本 — 登录将于托管后启用。","lg_user":"用户名","lg_pass":"密码","lg_btn":"登录","lg_back":"← 返回 Era 8 Command","lg_msg":"此预览版本已禁用登录。"},"ar":{"lg_sub":"تسجيل دخول القائم بالصيانة","lg_banner":"⚙ إصدار معاينة — تسجيل الدخول يُفعّل عند الاستضافة.","lg_user":"اسم المستخدم","lg_pass":"كلمة المرور","lg_btn":"تسجيل الدخول","lg_back":"← العودة إلى Era 8 Command","lg_msg":"تسجيل الدخول معطّل في إصدار المعاينة هذا."},"si":{"lg_sub":"නඩත්තුකරු පිවිසුම","lg_banner":"⚙ පෙරදසුන් අනුවාදය — පිවිසීම සත්කාරකත්වයේදී සක්‍රිය වේ.","lg_user":"පරිශීලක නාමය","lg_pass":"මුරපදය","lg_btn":"පිවිසෙන්න","lg_back":"← Era 8 Command වෙත ආපසු","lg_msg":"මෙම පෙරදසුන් අනුවාදයේ පිවිසීම අක්‍රියයි."},"ta":{"lg_sub":"பராமரிப்பாளர் உள்நுழைவு","lg_banner":"⚙ முன்னோட்ட பதிப்பு — உள்நுழைவு ஹோஸ்ட் செய்யும்போது செயல்படும்.","lg_user":"பயனர்பெயர்","lg_pass":"கடவுச்சொல்","lg_btn":"உள்நுழை","lg_back":"← Era 8 Command க்குத் திரும்பு","lg_msg":"இந்த முன்னோட்ட பதிப்பில் உள்நுழைவு முடக்கப்பட்டுள்ளது."},"hi":{"lg_sub":"अनुरक्षक साइन-इन","lg_banner":"⚙ पूर्वावलोकन बिल्ड — साइन-इन होस्ट होने पर सक्रिय होता है।","lg_user":"उपयोगकर्ता नाम","lg_pass":"पासवर्ड","lg_btn":"साइन इन","lg_back":"← Era 8 Command पर वापस","lg_msg":"इस पूर्वावलोकन बिल्ड में साइन-इन अक्षम है।"},"zh_hk":{"lg_sub":"維護者登錄","lg_banner":"⚙ 預覽版本 — 登錄將於託管後啓用。","lg_user":"用户名","lg_pass":"密碼","lg_btn":"登錄","lg_back":"← 返回 Era 8 Command","lg_msg":"此預覽版本已禁用登錄。"}};
+      var CODES = ['en','es','fr','ko','ja','zh_hk','zh_cn','pt','sv','fi','nb','nl','de','ar','si','ta','hi','da','ru','it'];
+      var RTL = { ar: true };
+      var EN = {}, curLang = 'en';
+      document.querySelectorAll('[data-i18n]').forEach(function (el) { EN[el.getAttribute('data-i18n')] = el.innerHTML; });
+      function apply(lang) {
+        curLang = lang;
+        var t = (lang === 'en') ? EN : (TR[lang] || {});
+        document.documentElement.setAttribute('lang', lang);
+        document.documentElement.setAttribute('dir', RTL[lang] ? 'rtl' : 'ltr');
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+          var k = el.getAttribute('data-i18n');
+          var v = (Object.prototype.hasOwnProperty.call(t, k)) ? t[k] : EN[k];
+          if (v !== undefined) el.innerHTML = v;
+        });
+      }
+      window.__loginMsg = function () {
+        var t = (curLang === 'en') ? null : (TR[curLang] || {});
+        return (t && t.lg_msg) ? t.lg_msg : 'Sign-in is disabled in this preview build.';
+      };
+      function register() {
+        if (window.SiteHeader) { window.SiteHeader.setLanguages({ codes: CODES, current: 'en', onChange: apply }); }
+        else { setTimeout(register, 50); }
+      }
+      register();
+    })();
+    // PREVIEW BUILD: submit handler intentionally NOT wired to Auth.login().
     (function () {
       var form = document.getElementById('loginForm');
       var msg = document.getElementById('msg');
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        // --- WIRE LATER (go-live): ---
-        // var u = document.getElementById('username').value;
-        // var p = document.getElementById('password').value;
-        // var r = Auth.login(u, p);
-        // if (r.ok) { location.href = 'index.html'; } else { msg.textContent = r.reason; }
-        msg.textContent = 'Sign-in is disabled in this preview build.';
+        msg.textContent = window.__loginMsg ? window.__loginMsg() : 'Sign-in is disabled in this preview build.';
       });
     })();
   </script>

@@ -54,6 +54,36 @@
     try { window.localStorage.setItem(LANG_STORE_KEY, code); } catch (e) {}
   }
 
+  // ---- header's own UI strings (profile dropdown + Guest chip), translated ----
+  // Keyed by the current language; falls back to English for any missing entry.
+  var HDR_STR = {
+    en: { adminPortal:'Admin Portal', preview:'preview', profile:'Profile', logout:'Log out', signin:'Sign in', guest:'Guest', note:'Preview build — editing & sign-in activate when hosted.' },
+    es: { adminPortal:'Portal de administración', preview:'vista previa', profile:'Perfil', logout:'Cerrar sesión', signin:'Iniciar sesión', guest:'Invitado', note:'Compilación de vista previa — la edición y el inicio de sesión se activan al alojar.' },
+    fr: { adminPortal:"Portail d'administration", preview:'aperçu', profile:'Profil', logout:'Se déconnecter', signin:'Se connecter', guest:'Invité', note:"Version aperçu — l'édition et la connexion s'activent une fois hébergé." },
+    ko: { adminPortal:'관리자 포털', preview:'미리보기', profile:'프로필', logout:'로그아웃', signin:'로그인', guest:'게스트', note:'미리보기 빌드 — 편집 및 로그인은 호스팅 시 활성화됩니다.' },
+    ja: { adminPortal:'管理ポータル', preview:'プレビュー', profile:'プロフィール', logout:'ログアウト', signin:'サインイン', guest:'ゲスト', note:'プレビュー版 — 編集とサインインはホスティング時に有効化。' },
+    zh_hk: { adminPortal:'管理入口', preview:'預覽', profile:'個人檔案', logout:'登出', signin:'登入', guest:'訪客', note:'預覽版本 — 編輯與登入將於託管後啟用。' },
+    zh_cn: { adminPortal:'管理入口', preview:'预览', profile:'个人资料', logout:'登出', signin:'登录', guest:'访客', note:'预览版本 — 编辑与登录将于托管后启用。' },
+    pt: { adminPortal:'Portal de administração', preview:'prévia', profile:'Perfil', logout:'Sair', signin:'Entrar', guest:'Convidado', note:'Compilação de prévia — edição e login ativam ao hospedar.' },
+    sv: { adminPortal:'Adminportal', preview:'förhandsvisning', profile:'Profil', logout:'Logga ut', signin:'Logga in', guest:'Gäst', note:'Förhandsversion — redigering och inloggning aktiveras vid hosting.' },
+    fi: { adminPortal:'Ylläpitoportaali', preview:'esikatselu', profile:'Profiili', logout:'Kirjaudu ulos', signin:'Kirjaudu sisään', guest:'Vieras', note:'Esikatseluversio — muokkaus ja kirjautuminen aktivoituvat isännöitäessä.' },
+    nb: { adminPortal:'Adminportal', preview:'forhåndsvisning', profile:'Profil', logout:'Logg ut', signin:'Logg inn', guest:'Gjest', note:'Forhåndsversjon — redigering og innlogging aktiveres ved hosting.' },
+    nl: { adminPortal:'Beheerportaal', preview:'voorbeeld', profile:'Profiel', logout:'Uitloggen', signin:'Inloggen', guest:'Gast', note:'Voorbeeldversie — bewerken en inloggen activeren bij hosting.' },
+    de: { adminPortal:'Admin-Portal', preview:'Vorschau', profile:'Profil', logout:'Abmelden', signin:'Anmelden', guest:'Gast', note:'Vorschau-Build — Bearbeiten und Anmelden werden beim Hosting aktiviert.' },
+    ar: { adminPortal:'بوابة الإدارة', preview:'معاينة', profile:'الملف الشخصي', logout:'تسجيل الخروج', signin:'تسجيل الدخول', guest:'زائر', note:'إصدار معاينة — التحرير وتسجيل الدخول يُفعّلان عند الاستضافة.' },
+    si: { adminPortal:'පරිපාලක ද්වාරය', preview:'පෙරදසුන', profile:'පැතිකඩ', logout:'පිටවීම', signin:'පිවිසෙන්න', guest:'අමුත්තා', note:'පෙරදසුන් අනුවාදය — සංස්කරණය සහ පිවිසීම සත්කාරකත්වයේදී සක්‍රිය වේ.' },
+    ta: { adminPortal:'நிர்வாக போர்டல்', preview:'முன்னோட்டம்', profile:'சுயவிவரம்', logout:'வெளியேறு', signin:'உள்நுழை', guest:'விருந்தினர்', note:'முன்னோட்ட பதிப்பு — திருத்தம் மற்றும் உள்நுழைவு ஹோஸ்ட் செய்யும்போது செயல்படும்.' },
+    hi: { adminPortal:'व्यवस्थापक पोर्टल', preview:'पूर्वावलोकन', profile:'प्रोफ़ाइल', logout:'लॉग आउट', signin:'साइन इन', guest:'अतिथि', note:'पूर्वावलोकन बिल्ड — संपादन और साइन-इन होस्ट होने पर सक्रिय होते हैं।' },
+    da: { adminPortal:'Adminportal', preview:'forhåndsvisning', profile:'Profil', logout:'Log ud', signin:'Log ind', guest:'Gæst', note:'Forhåndsversion — redigering og login aktiveres ved hosting.' },
+    ru: { adminPortal:'Портал администратора', preview:'предпросмотр', profile:'Профиль', logout:'Выйти', signin:'Войти', guest:'Гость', note:'Предварительная сборка — редактирование и вход активируются при размещении.' },
+    it: { adminPortal:'Portale di amministrazione', preview:'anteprima', profile:'Profilo', logout:'Esci', signin:'Accedi', guest:'Ospite', note:'Build di anteprima — modifica e accesso si attivano con l\'hosting.' }
+  };
+  function ht(key) {
+    var lang = (langCfg && langCfg.current) || savedLang() || 'en';
+    var tbl = HDR_STR[lang] || HDR_STR.en;
+    return (tbl && tbl[key] !== undefined) ? tbl[key] : HDR_STR.en[key];
+  }
+
   // ---- breadcrumb page names, keyed by filename ----
   // The brand renders "◆ ERA 8 COMMAND › <page>". Home (index.html) shows no crumb.
   // A page can override with <body data-page-name="…"> or SiteHeader.setPageName().
@@ -161,21 +191,21 @@
   function buildMenu() {
     var isAuthed = authed();
     var items = [];
-    items.push('<a class="ehdr-mi" href="' + href('admin/index.html') + '">🛠️ <span>Admin Portal</span><span class="ehdr-badge">preview</span></a>');
-    items.push('<a class="ehdr-mi" href="' + href('admin/profile.html') + '">👤 <span>Profile</span></a>');
+    items.push('<a class="ehdr-mi" href="' + href('admin/index.html') + '">🛠️ <span>' + escapeHTML(ht('adminPortal')) + '</span><span class="ehdr-badge">' + escapeHTML(ht('preview')) + '</span></a>');
+    items.push('<a class="ehdr-mi" href="' + href('admin/profile.html') + '">👤 <span>' + escapeHTML(ht('profile')) + '</span></a>');
     items.push('<div class="ehdr-sep"></div>');
     if (isAuthed) {
-      items.push('<div class="ehdr-mi" data-ehdr-action="logout">🚪 <span>Log out</span></div>');
+      items.push('<div class="ehdr-mi" data-ehdr-action="logout">🚪 <span>' + escapeHTML(ht('logout')) + '</span></div>');
     } else {
-      items.push('<a class="ehdr-mi" href="' + href('admin/login.html') + '">🔑 <span>Sign in</span></a>');
+      items.push('<a class="ehdr-mi" href="' + href('admin/login.html') + '">🔑 <span>' + escapeHTML(ht('signin')) + '</span></a>');
     }
-    items.push('<div class="ehdr-note">Preview build — editing & sign-in activate when hosted.</div>');
+    items.push('<div class="ehdr-note">' + escapeHTML(ht('note')) + '</div>');
     return items.join('');
   }
 
   function render() {
     var u = user();
-    var name = authed() ? (u.displayName || u.username || 'Commander') : 'Guest';
+    var name = authed() ? (u.displayName || u.username || 'Commander') : ht('guest');
     var avatar = (u && u.avatar) ? u.avatar : '👤';
 
     var pageName = currentPageName();
@@ -213,6 +243,7 @@
       saveLang(langSel.value); // remember across pages/visits
       if (langCfg && typeof langCfg.onChange === 'function') langCfg.onChange(langSel.value);
       if (langCfg) langCfg.current = langSel.value;
+      refreshHeaderStrings(); // re-translate the header's own labels
     });
     renderLang(); // reflect any config registered before the header mounted
 
@@ -229,6 +260,23 @@
       if (window.Auth) window.Auth.logout();
       location.reload();
     });
+  }
+
+  // Re-translate the header's own labels (profile menu + Guest chip) in place.
+  function refreshHeaderStrings() {
+    var menu = document.getElementById('ehdrMenu');
+    if (menu) {
+      menu.innerHTML = buildMenu();
+      var logout = menu.querySelector('[data-ehdr-action="logout"]');
+      if (logout) logout.addEventListener('click', function () {
+        if (window.Auth) window.Auth.logout();
+        location.reload();
+      });
+    }
+    if (!authed()) {
+      var nameEl = document.querySelector('.ehdr-name');
+      if (nameEl) nameEl.textContent = ht('guest');
+    }
   }
 
   // (re)build the language dropdown from langCfg; hides it when none registered
@@ -270,6 +318,7 @@
       if (applySaved) current = saved;
       langCfg = { codes: cfg.codes.slice(), current: current, onChange: cfg.onChange };
       renderLang();
+      refreshHeaderStrings(); // translate the header's own labels to the active language
       // Tell the page to actually switch into the restored language on load.
       if (applySaved && typeof cfg.onChange === 'function') cfg.onChange(current);
     },
@@ -278,6 +327,7 @@
       langCfg.current = code;
       var sel = document.getElementById('ehdrLangSel');
       if (sel) sel.value = code;
+      refreshHeaderStrings();
     },
     // Override the breadcrumb page name (else it's derived from the URL/PAGE_NAMES).
     setPageName: function (name) {
