@@ -24,6 +24,21 @@
         .inv-badge .ib-ico { font-size: 16px; line-height: 1; }
         .inv-badge .ib-lbl { font-size: 13px; }
         @keyframes invBadgePulse { 0%,100%{ box-shadow:0 0 0 0 rgba(239,68,68,0.5);} 50%{ box-shadow:0 0 0 6px rgba(239,68,68,0);} }
+        /* idle (invasion not live): greyed, no pulse — mirrors DD Tower / Behemoth Scion */
+        .inv-badge.is-idle { background: rgba(148,163,184,0.12); border-color: #475569; color: #94a3b8; animation: none; }
+        .inv-badge.is-idle:hover { background: rgba(148,163,184,0.20); }
+        .inv-badge.is-idle .ib-ico { filter: grayscale(1); opacity: 0.7; }
+        @media (prefers-reduced-motion: reduce){ .inv-badge{ animation:none; } }
+        /* invasion live modal (mirrors DD .tor-modal) */
+        .inv-modal { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.82); }
+        .inv-modal-card { position: relative; max-width: 400px; width: 100%; background: #11141f; border: 1px solid #ef4444; border-radius: 14px; padding: 26px 22px 22px; text-align: center; box-shadow: 0 0 40px rgba(239,68,68,0.22); }
+        .inv-modal-ico { font-size: 40px; line-height: 1; }
+        .inv-modal-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1.5px; color: #ef4444; margin: 8px 0 12px; }
+        .inv-modal-card p { font-size: 13px; color: #cbd5e1; line-height: 1.55; margin: 0 0 14px; }
+        .inv-modal-close { position: absolute; top: 8px; right: 14px; font-size: 24px; line-height: 1; color: #64748b; cursor: pointer; font-family: sans-serif; }
+        .inv-modal-close:hover { color: #e8eaf0; }
+        .inv-modal-cd { font-variant-numeric: tabular-nums; font-size: 22px; font-weight: 700; color: #ef4444; }
+        .inv-modal-btn { margin-top: 16px; padding: 9px 22px; border: none; border-radius: 8px; cursor: pointer; background: #ef4444; color: #fff; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
         /* help / info modal (Desolate Desert style) */
         .tme-modal { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.82); }
         .tme-modal-card { position: relative; max-width: 560px; width: 100%; background: #11141f; border: 1px solid #3b82f6; border-radius: 14px; padding: 26px 22px 22px; text-align: left; box-shadow: 0 0 40px rgba(59,130,246,0.2); max-height: 86vh; overflow-y: auto; }
@@ -90,6 +105,10 @@ const EN = {
   helpInvB: "The two servers fight on a shared battlefield — alliances teleport in and rally objectives. Each server's top 3 alliances by prep points teleport in early (30 / 20 / 10 min before start) to seize position. Holding objectives scores the points that decide the war.",
   helpFoot: "Use Overview for what to do today, Scouting to compare rosters, and Map for battlefield positions.",
   invBadgeTitle: "Invasion time — open the Map",
+  invLiveShort: "Invasion LIVE",
+  invLiveTitle: "Invasion is LIVE",
+  invLiveBody: "Teleport in at your alliance's window, group up, and rally objectives. Holding objectives scores the points that decide the war.",
+  invLiveEnds: "Ends in",
   invasionWord: "Invasion",
   // daily plan section
   todayWord: "TODAY",
@@ -417,6 +436,10 @@ const FR = {
   helpInvB: "Les deux serveurs s'affrontent sur un champ de bataille partagé — les alliances se téléportent et rallient les objectifs. Les 3 meilleures alliances de chaque serveur (par points de prép) se téléportent tôt (30 / 20 / 10 min avant le début) pour prendre position. Tenir les objectifs rapporte les points qui décident de la guerre.",
   helpFoot: "Utilise Aperçu pour ce qu'il faut faire aujourd'hui, Reconnaissance pour comparer les effectifs, et Carte pour les positions du champ de bataille.",
   invBadgeTitle: "Heure d'invasion — ouvre la Carte",
+  invLiveShort: "Invasion EN COURS",
+  invLiveTitle: "L'invasion est EN COURS",
+  invLiveBody: "Téléporte-toi à la fenêtre de ton alliance, regroupe-toi et rallie les objectifs. Tenir les objectifs rapporte les points qui décident de la guerre.",
+  invLiveEnds: "Se termine dans",
   invasionWord: "Invasion",
   todayWord: "AUJOURD'HUI",
   mmDayTitle: "APPARIEMENT — PRÉPARER À L'AVANCE",
@@ -601,6 +624,10 @@ const ES = {
   helpInvB: "Los dos servidores luchan en un campo de batalla compartido — las alianzas se teletransportan y reúnen en los objetivos. Las 3 mejores alianzas de cada servidor (por puntos de preparación) se teletransportan antes (30 / 20 / 10 min antes del inicio) para tomar posición. Mantener objetivos otorga los puntos que deciden la guerra.",
   helpFoot: "Usa Resumen para saber qué hacer hoy, Exploración para comparar plantillas y Mapa para las posiciones del campo de batalla.",
   invBadgeTitle: "Hora de invasión — abre el Mapa",
+  invLiveShort: "Invasión EN CURSO",
+  invLiveTitle: "La invasión está EN CURSO",
+  invLiveBody: "Teletranspórtate en la ventana de tu alianza, agrúpate y reúne en los objetivos. Mantener objetivos otorga los puntos que deciden la guerra.",
+  invLiveEnds: "Termina en",
   invasionWord: "Invasión",
   todayWord: "HOY",
   mmDayTitle: "EMPAREJAMIENTO — PREPARAR CON ANTELACIÓN",
@@ -785,6 +812,10 @@ const KO = {
   helpInvB: "두 서버가 공유 전장에서 싸웁니다 — 연맹이 순간이동해 목표를 집결합니다. 각 서버의 준비 점수 상위 3개 연맹은 일찍(시작 30 / 20 / 10분 전) 순간이동해 자리를 선점합니다. 목표 점령이 전쟁을 결정하는 점수를 줍니다.",
   helpFoot: "오늘 할 일은 개요, 로스터 비교는 정찰, 전장 위치는 지도를 사용하세요.",
   invBadgeTitle: "침공 시간 — 지도 열기",
+  invLiveShort: "침공 진행 중",
+  invLiveTitle: "침공이 진행 중입니다",
+  invLiveBody: "연맹 시간대에 순간이동해 모이고 목표를 집결하세요. 목표 점령이 전쟁을 결정하는 점수를 줍니다.",
+  invLiveEnds: "종료까지",
   invasionWord: "침공",
   todayWord: "오늘",
   mmDayTitle: "매칭 — 미리 준비",
@@ -969,6 +1000,10 @@ const JA = {
   helpInvB: "2つのサーバーが共有戦場で戦う — 同盟がテレポートして目標を集結。各サーバーの準備ポイント上位3同盟は早く（開始30 / 20 / 10分前）テレポートして陣取りする。目標の確保が戦争を決する得点を生む。",
   helpFoot: "今日やることは概要、編成比較は偵察、戦場配置はマップを使用。",
   invBadgeTitle: "侵攻時刻 — マップを開く",
+  invLiveShort: "侵攻 進行中",
+  invLiveTitle: "侵攻が進行中",
+  invLiveBody: "同盟の枠でテレポートし、集合して目標を集結せよ。目標の確保が戦争を決する得点を生む。",
+  invLiveEnds: "終了まで",
   invasionWord: "侵攻",
   todayWord: "本日",
   mmDayTitle: "マッチング — 事前準備",
@@ -1153,6 +1188,10 @@ const ZH_HK = {
   helpInvB: "兩個伺服器在共享戰場作戰 — 聯盟傳送並集結目標。各伺服器準備分數前三名聯盟提早（開始前 30 / 20 / 10 分鐘）傳送搶佔位置。守住目標賺取決定戰爭的分數。",
   helpFoot: "用「概覽」看今日該做甚麼，用「偵察」比較陣容，用「地圖」看戰場位置。",
   invBadgeTitle: "入侵時間 — 開啟地圖",
+  invLiveShort: "入侵進行中",
+  invLiveTitle: "入侵進行中",
+  invLiveBody: "在你聯盟的時段傳送、集合並集結目標。守住目標賺取決定戰爭的分數。",
+  invLiveEnds: "結束於",
   invasionWord: "入侵",
   todayWord: "今日",
   mmDayTitle: "配對 — 提前準備",
@@ -1337,6 +1376,10 @@ const ZH_CN = {
   helpInvB: "两个服务器在共享战场作战 — 联盟传送并集结目标。各服务器准备分数前三名联盟提前（开始前 30 / 20 / 10 分钟）传送抢占位置。守住目标赚取决定战争的分数。",
   helpFoot: "用「概览」看今日该做什么，用「侦察」比较阵容，用「地图」看战场位置。",
   invBadgeTitle: "入侵时间 — 打开地图",
+  invLiveShort: "入侵进行中",
+  invLiveTitle: "入侵进行中",
+  invLiveBody: "在你联盟的时段传送、集合并集结目标。守住目标赚取决定战争的分数。",
+  invLiveEnds: "结束于",
   invasionWord: "入侵",
   todayWord: "今日",
   mmDayTitle: "匹配 — 提前准备",
@@ -1521,6 +1564,10 @@ const PT = {
   helpInvB: "Os dois servidores lutam num campo de batalha partilhado — as alianças teletransportam-se e reúnem nos objetivos. As 3 melhores alianças de cada servidor (por pontos de preparação) teletransportam-se cedo (30 / 20 / 10 min antes do início) para tomar posição. Manter objetivos rende os pontos que decidem a guerra.",
   helpFoot: "Use Visão Geral para o que fazer hoje, Reconhecimento para comparar elencos e Mapa para posições do campo de batalha.",
   invBadgeTitle: "Hora da invasão — abra o Mapa",
+  invLiveShort: "Invasão AO VIVO",
+  invLiveTitle: "A invasão está AO VIVO",
+  invLiveBody: "Teletransporte-se na janela da sua aliança, agrupe-se e reúna nos objetivos. Manter objetivos rende os pontos que decidem a guerra.",
+  invLiveEnds: "Termina em",
   invasionWord: "Invasão",
   todayWord: "HOJE",
   mmDayTitle: "PAREAMENTO — PREPARAR ANTES",
@@ -1705,6 +1752,10 @@ const SV = {
   helpInvB: "De två servrarna strider på ett gemensamt slagfält — allianser teleporterar in och samlas vid mål. Varje servers tre bästa allianser (efter förberedelsepoäng) teleporterar in tidigt (30 / 20 / 10 min före start) för att ta position. Att hålla mål ger poängen som avgör kriget.",
   helpFoot: "Använd Översikt för vad du ska göra idag, Spaning för att jämföra trupper och Karta för slagfältspositioner.",
   invBadgeTitle: "Invasionstid — öppna Kartan",
+  invLiveShort: "Invasion LIVE",
+  invLiveTitle: "Invasionen är LIVE",
+  invLiveBody: "Teleportera in i din allians fönster, gruppera och samlas vid mål. Att hålla mål ger poängen som avgör kriget.",
+  invLiveEnds: "Slutar om",
   invasionWord: "Invasion",
   todayWord: "IDAG",
   mmDayTitle: "MATCHNING — FÖRBERED I FÖRVÄG",
@@ -1889,6 +1940,10 @@ const FI = {
   helpInvB: "Kaksi palvelinta taistelee jaetulla taistelukentällä — liittoumat teleporttaavat ja kokoontuvat tavoitteisiin. Kunkin palvelimen kolme parasta liittoumaa (valmistelupisteiden mukaan) teleporttaavat aikaisin (30 / 20 / 10 min ennen alkua) ottamaan aseman. Tavoitteiden pitäminen tuottaa pisteet, jotka ratkaisevat sodan.",
   helpFoot: "Käytä Yleiskatsausta nähdäksesi mitä tehdä tänään, Tiedustelua kokoonpanojen vertailuun ja Karttaa taistelukentän sijainteihin.",
   invBadgeTitle: "Hyökkäysaika — avaa Kartta",
+  invLiveShort: "Hyökkäys KÄYNNISSÄ",
+  invLiveTitle: "Hyökkäys on KÄYNNISSÄ",
+  invLiveBody: "Teleporttaa liittoumasi ikkunassa, ryhmity ja kokoonnu tavoitteisiin. Tavoitteiden pitäminen tuottaa pisteet, jotka ratkaisevat sodan.",
+  invLiveEnds: "Päättyy",
   invasionWord: "Hyökkäys",
   todayWord: "TÄNÄÄN",
   mmDayTitle: "OTTELUNMUODOSTUS — VALMISTAUDU ETUKÄTEEN",
@@ -2073,6 +2128,10 @@ const NB = {
   helpInvB: "De to serverne kjemper på et delt slagmark — allianser teleporterer inn og samles ved mål. Hver servers tre beste allianser (etter forberedelsespoeng) teleporterer inn tidlig (30 / 20 / 10 min før start) for å ta posisjon. Å holde mål gir poengene som avgjør krigen.",
   helpFoot: "Bruk Oversikt for hva du skal gjøre i dag, Speiding for å sammenligne tropper og Kart for slagmarksposisjoner.",
   invBadgeTitle: "Invasjonstid — åpne Kartet",
+  invLiveShort: "Invasjon LIVE",
+  invLiveTitle: "Invasjonen er LIVE",
+  invLiveBody: "Teleporter inn i alliansens vindu, grupper deg og samles ved mål. Å holde mål gir poengene som avgjør krigen.",
+  invLiveEnds: "Slutter om",
   invasionWord: "Invasjon",
   todayWord: "I DAG",
   mmDayTitle: "MATCHING — FORBERED PÅ FORHÅND",
@@ -2257,6 +2316,10 @@ const NL = {
   helpInvB: "De twee servers vechten op een gedeeld slagveld — allianties teleporteren en verzamelen bij doelen. De top 3 allianties van elke server (op voorbereidingspunten) teleporteren vroeg (30 / 20 / 10 min voor de start) om positie te grijpen. Doelen vasthouden levert de punten op die de oorlog beslissen.",
   helpFoot: "Gebruik Overzicht voor wat je vandaag moet doen, Verkenning om rosters te vergelijken en Kaart voor slagveldposities.",
   invBadgeTitle: "Invasietijd — open de Kaart",
+  invLiveShort: "Invasie LIVE",
+  invLiveTitle: "De invasie is LIVE",
+  invLiveBody: "Teleporteer in het venster van je alliantie, groepeer en verzamel bij doelen. Doelen vasthouden levert de punten op die de oorlog beslissen.",
+  invLiveEnds: "Eindigt over",
   invasionWord: "Invasie",
   todayWord: "VANDAAG",
   mmDayTitle: "MATCHMAKING — BEREID JE VOOR",
@@ -2441,6 +2504,10 @@ const DE = {
   helpInvB: "Die beiden Server kämpfen auf einem gemeinsamen Schlachtfeld — Allianzen teleportieren hinein und sammeln an Zielen. Die Top-3-Allianzen jedes Servers (nach Vorbereitungspunkten) teleportieren früh (30 / 20 / 10 min vor Beginn), um Position zu beziehen. Das Halten von Zielen bringt die Punkte, die den Krieg entscheiden.",
   helpFoot: "Nutze Übersicht für die heutigen Aufgaben, Aufklärung zum Vergleich der Aufstellungen und Karte für Schlachtfeldpositionen.",
   invBadgeTitle: "Invasionszeit — Karte öffnen",
+  invLiveShort: "Invasion LIVE",
+  invLiveTitle: "Die Invasion ist LIVE",
+  invLiveBody: "Teleportiere im Fenster deiner Allianz, gruppiere dich und sammle an Zielen. Das Halten von Zielen bringt die Punkte, die den Krieg entscheiden.",
+  invLiveEnds: "Endet in",
   invasionWord: "Invasion",
   todayWord: "HEUTE",
   mmDayTitle: "ZUORDNUNG — IM VORAUS VORBEREITEN",
@@ -2625,6 +2692,10 @@ const AR = {
   helpInvB: "يتقاتل الخادمان في ساحة معركة مشتركة — تنتقل التحالفات وتتجمع عند الأهداف. أفضل 3 تحالفات لكل خادم (حسب نقاط التحضير) تنتقل مبكراً (30 / 20 / 10 دقائق قبل البدء) للاستحواذ على المواقع. الاحتفاظ بالأهداف يمنح النقاط التي تحسم الحرب.",
   helpFoot: "استخدم نظرة عامة لما تفعله اليوم، والاستطلاع لمقارنة القوائم، والخريطة لمواقع ساحة المعركة.",
   invBadgeTitle: "وقت الغزو — افتح الخريطة",
+  invLiveShort: "الغزو مباشر",
+  invLiveTitle: "الغزو جارٍ الآن",
+  invLiveBody: "انتقل في نافذة تحالفك، وتجمّع، واحتشد عند الأهداف. الاحتفاظ بالأهداف يمنح النقاط التي تحسم الحرب.",
+  invLiveEnds: "ينتهي خلال",
   invasionWord: "غزو",
   todayWord: "اليوم",
   mmDayTitle: "المطابقة — التحضير مسبقاً",
@@ -2809,6 +2880,10 @@ const SI = {
   helpInvB: "සේවාදායක දෙක බෙදාගත් සටන් බිමක සටන් කරයි — සන්ධාන ටෙලිපෝට් වී ඉලක්ක වෙත රැස් වේ. සෑම සේවාදායකයකම ඉහළම සන්ධාන 3 (සූදානම් ලකුණු අනුව) කලින් (ආරම්භයට මිනිත්තු 30 / 20 / 10 පෙර) ටෙලිපෝට් වී ස්ථානය අල්ලා ගනී. ඉලක්ක තබාගැනීම යුද්ධය තීරණය කරන ලකුණු ලබා දෙයි.",
   helpFoot: "අද කළ යුත්ත සඳහා දළ විශ්ලේෂණය, කණ්ඩායම් සැසඳීමට ගවේෂණය, සටන් බිම් ස්ථාන සඳහා සිතියම භාවිතා කරන්න.",
   invBadgeTitle: "ආක්‍රමණ වේලාව — සිතියම විවෘත කරන්න",
+  invLiveShort: "ආක්‍රමණය සජීවී",
+  invLiveTitle: "ආක්‍රමණය සජීවීයි",
+  invLiveBody: "ඔබේ සන්ධානයේ කවුළුවේදී ටෙලිපෝට් වී, කණ්ඩායම් වී, ඉලක්ක වෙත රැස් වන්න. ඉලක්ක තබාගැනීම යුද්ධය තීරණය කරන ලකුණු ලබා දෙයි.",
+  invLiveEnds: "අවසන් වන්නේ",
   invasionWord: "ආක්‍රමණය",
   todayWord: "අද",
   mmDayTitle: "ගැළපීම — කලින් සූදානම් වන්න",
@@ -2993,6 +3068,10 @@ const TA = {
   helpInvB: "இரு சர்வர்களும் பகிர்ந்த போர்க்களத்தில் போரிடுகின்றன — கூட்டணிகள் டெலிபோர்ட் செய்து இலக்குகளில் திரள்கின்றன. ஒவ்வொரு சர்வரின் முதல் 3 கூட்டணிகள் (தயாரிப்பு புள்ளிகளின்படி) முன்னதாக (தொடக்கத்திற்கு 30 / 20 / 10 நிமிடங்கள் முன்) டெலிபோர்ட் செய்து இடத்தைப் பிடிக்கின்றன. இலக்குகளைத் தக்கவைப்பது போரை முடிவு செய்யும் புள்ளிகளைத் தரும்.",
   helpFoot: "இன்று என்ன செய்வது என்பதற்கு கண்ணோட்டம், அணிகளை ஒப்பிட உளவு, போர்க்கள நிலைகளுக்கு வரைபடம் பயன்படுத்தவும்.",
   invBadgeTitle: "படையெடுப்பு நேரம் — வரைபடத்தைத் திற",
+  invLiveShort: "படையெடுப்பு நேரலை",
+  invLiveTitle: "படையெடுப்பு நேரலையில்",
+  invLiveBody: "உங்கள் கூட்டணியின் சாளரத்தில் டெலிபோர்ட் செய்து, குழுவாகி, இலக்குகளில் திரளுங்கள். இலக்குகளைத் தக்கவைப்பது போரை முடிவு செய்யும் புள்ளிகளைத் தரும்.",
+  invLiveEnds: "முடிவடையும்",
   invasionWord: "படையெடுப்பு",
   todayWord: "இன்று",
   mmDayTitle: "பொருத்தம் — முன்கூட்டியே தயாராகு",
@@ -3177,6 +3256,10 @@ const HI = {
   helpInvB: "दोनों सर्वर एक साझा युद्धभूमि पर लड़ते हैं — गठबंधन टेलीपोर्ट कर लक्ष्यों पर एकत्र होते हैं। हर सर्वर के शीर्ष 3 गठबंधन (तैयारी अंकों के अनुसार) जल्दी (शुरू से 30 / 20 / 10 मिनट पहले) टेलीपोर्ट कर स्थान लेते हैं। लक्ष्य बनाए रखना वे अंक देता है जो युद्ध का फैसला करते हैं।",
   helpFoot: "आज क्या करना है इसके लिए अवलोकन, रोस्टर तुलना के लिए टोह, और युद्धभूमि स्थितियों के लिए मानचित्र का उपयोग करें।",
   invBadgeTitle: "आक्रमण समय — मानचित्र खोलें",
+  invLiveShort: "आक्रमण लाइव",
+  invLiveTitle: "आक्रमण लाइव है",
+  invLiveBody: "अपने गठबंधन की विंडो में टेलीपोर्ट करें, समूह बनाएँ और लक्ष्यों पर एकत्र हों। लक्ष्य बनाए रखना वे अंक देता है जो युद्ध का फैसला करते हैं।",
+  invLiveEnds: "समाप्त होगा",
   invasionWord: "आक्रमण",
   todayWord: "आज",
   mmDayTitle: "मैचमेकिंग — पहले से तैयारी करें",
@@ -3219,6 +3302,10 @@ const DA = {
   helpInvB: "De to servere kæmper på et delt slagmark — alliancer teleporterer ind og samles ved mål. Hver servers tre bedste alliancer efter forberedelsespoint teleporterer ind tidligt (30 / 20 / 10 min før start) for at tage position. At holde mål giver de point, der afgør krigen.",
   helpFoot: "Brug Oversigt til hvad du skal gøre i dag, Spejdning til at sammenligne tropper og Kort til slagmarkspositioner.",
   invBadgeTitle: "Invasionstid — åbn Kortet",
+  invLiveShort: "Invasion LIVE",
+  invLiveTitle: "Invasionen er LIVE",
+  invLiveBody: "Teleporter ind i alliancens vindue, saml jer, og saml ved mål. At holde mål giver de point, der afgør krigen.",
+  invLiveEnds: "Slutter om",
   invasionWord: "Invasion",
   todayWord: "I DAG",
   mmDayTitle: "MATCHNING — FORBERED I FORVEJEN",
@@ -3403,6 +3490,10 @@ const RU = {
   helpInvB: "Два сервера сражаются на общем поле боя — альянсы телепортируются и собираются у целей. Топ-3 альянса каждого сервера по очкам подготовки телепортируются раньше (за 30 / 20 / 10 мин до старта), чтобы занять позиции. Удержание целей даёт очки, решающие войну.",
   helpFoot: "Используй Обзор для действий на сегодня, Разведку для сравнения составов и Карту для позиций на поле боя.",
   invBadgeTitle: "Время вторжения — открой Карту",
+  invLiveShort: "Вторжение ИДЁТ",
+  invLiveTitle: "Вторжение ИДЁТ",
+  invLiveBody: "Телепортируйся в окно своего альянса, собирайся и штурмуй цели. Удержание целей даёт очки, решающие войну.",
+  invLiveEnds: "Закончится через",
   invasionWord: "Вторжение",
   todayWord: "СЕГОДНЯ",
   mmDayTitle: "ПОДБОР — ГОТОВЬСЯ ЗАРАНЕЕ",
@@ -3587,6 +3678,10 @@ const IT = {
   helpInvB: "I due server combattono su un campo di battaglia condiviso — le alleanze si teletrasportano e si radunano sugli obiettivi. Le prime 3 alleanze di ogni server per punti preparazione si teletrasportano in anticipo (30 / 20 / 10 min prima dell'inizio) per prendere posizione. Mantenere gli obiettivi assegna i punti che decidono la guerra.",
   helpFoot: "Usa Panoramica per cosa fare oggi, Ricognizione per confrontare le rose e Mappa per le posizioni sul campo.",
   invBadgeTitle: "Ora dell'invasione — apri la Mappa",
+  invLiveShort: "Invasione LIVE",
+  invLiveTitle: "L'invasione è LIVE",
+  invLiveBody: "Teletrasportati nella finestra della tua alleanza, raggruppati e raduna gli obiettivi. Mantenere gli obiettivi assegna i punti che decidono la guerra.",
+  invLiveEnds: "Termina tra",
   invasionWord: "Invasione",
   todayWord: "OGGI",
   mmDayTitle: "ABBINAMENTO — PREPARATI IN ANTICIPO",
@@ -4188,6 +4283,51 @@ function liveDayIdx(config, now){
   return idx<0 ? 0 : idx;                                     // default: matchmaking
 }
 
+// Is the invasion window live right now? The fight runs from invasionTime on
+// invasionStart (UTC) to the end of that UTC day. Mirrors DD's torStatus() so
+// the header badge can grey/pulse and pop a modal identically.
+//   live: within the window · msToEnd: ms until it closes (for the countdown)
+function invasionStatus(config, now){
+  const start=config.invasionStart;
+  if(!(typeof start==="string" && /^\d{4}-\d{2}-\d{2}$/.test(start))) return {live:false, msToEnd:0};
+  const m=String(config.invasionTime||"").match(/(\d{1,2}):(\d{2})/);
+  const h=m?parseInt(m[1],10):11, mn=m?parseInt(m[2],10):0;
+  const winStart=new Date(start+"T00:00:00Z").getTime()+((h*60+mn)*60000);
+  const dayEnd=new Date(start+"T00:00:00Z").getTime()+24*3600000;   // invasion day rolls over at 00:00 UTC
+  const live=now>=winStart && now<dayEnd;
+  return {live, msToEnd: live?Math.max(0,dayEnd-now):0, winStart};
+}
+
+// Popup that fires once when the invasion window goes live (edge-detected), and
+// on first load if it's already live. Mirrors DD's TowerLiveModal.
+function InvasionLiveModal({config, t}){
+  const [now, setNow] = useState(() => Date.now());
+  const [open, setOpen] = useState(false);
+  const wasLive = useRef(false);
+  useEffect(() => { const id=setInterval(()=>setNow(Date.now()),1000); return ()=>clearInterval(id); }, []);
+  const st = invasionStatus(config, now);
+  useEffect(() => {
+    if(st.live && !wasLive.current) setOpen(true);   // just went live → pop
+    if(!st.live) setOpen(false);                     // window ended → dismiss
+    wasLive.current = st.live;
+  }, [st.live]);
+  if(!open || !st.live) return null;
+  const s=Math.floor(st.msToEnd/1000);
+  const cd=String(Math.floor(s/3600)).padStart(2,"0")+":"+String(Math.floor((s%3600)/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+  return (
+    <div className="inv-modal" onClick={()=>setOpen(false)}>
+      <div className="inv-modal-card" onClick={e=>e.stopPropagation()}>
+        <span className="inv-modal-close" onClick={()=>setOpen(false)}>×</span>
+        <div className="inv-modal-ico">{"⚔️"}</div>
+        <h3>{t.invLiveTitle||"Invasion is LIVE"}</h3>
+        <p>{t.invLiveBody||"Teleport in at your alliance's window, group up, and rally objectives. Holding objectives scores the points that decide the war."}</p>
+        <div style={{fontSize:"11px",color:"#64748b",margin:"6px 0 2px",letterSpacing:"0.5px",textTransform:"uppercase"}}>{t.invLiveEnds||"Ends in"}</div>
+        <div className="inv-modal-cd">{cd}</div>
+      </div>
+    </div>
+  );
+}
+
 // Interactive timeline, Desolate-Desert style: the three phase labels
 // (Matchmaking / Prep / Invasion) sit on top, centered over the dots they cover;
 // below, each day is a clickable node. Past days grey, future dim, LIVE pulses,
@@ -4494,6 +4634,9 @@ function TMECommandCenter(){
   const[config,setConfig]=useState(DEFAULT_CONFIG);
   const[activeTab,setActiveTab]=useState("overview");
   const[helpOpen,setHelpOpen]=useState(false);
+  // ticking clock so the invasion badge greys/pulses in real time
+  const[nowTs,setNowTs]=useState(()=>Date.now());
+  useEffect(()=>{ const id=setInterval(()=>setNowTs(Date.now()),15000); return ()=>clearInterval(id); },[]);
   // jump to a section on Overview (used by the header scroll + invasion badge)
   const jumpTo=useCallback((tab,id)=>{setActiveTab(tab);setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth",block:"center"});},60);},[]);
   const[uiLang,setUiLang]=useState("en");
@@ -4652,6 +4795,7 @@ function TMECommandCenter(){
 
   return(
     <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'Barlow',system-ui,sans-serif"}}>
+      <InvasionLiveModal config={config} t={t} />
       {helpOpen&&(
         <div className="tme-modal" onClick={()=>setHelpOpen(false)}>
           <div className="tme-modal-card" onClick={e=>e.stopPropagation()}>
@@ -4681,11 +4825,14 @@ function TMECommandCenter(){
           <span style={{color:isDefense?"#f59e0b":"#4ade80"}}>{isDefense?`\uD83D\uDEE1\uFE0F ${t.defending}`:`\u2694\uFE0F ${t.attacking}`}</span>
         </div>
         <div id="evtMeta"></div>
-        {/* bottom-right: invasion-time badge \u2192 jumps to Map tab */}
+        {/* bottom-right: invasion-time badge \u2192 jumps to Map tab. Greyed until the
+            invasion window is live, then pulses (mirrors DD Tower / Behemoth Scion). */}
         <div className="hdr-pills">
-          <a href="#tme-map" className="inv-badge" title={t.invBadgeTitle||"Invasion time \u2014 open the Map"} onClick={(e)=>{e.preventDefault();jumpTo("map","tme-map");}}>
-            <span className="ib-ico">{"\u2694\uFE0F"}</span><span className="ib-lbl">{(t.invasionWord||"Invasion")+" \u00B7 "+config.invasionTime}</span>
+          {(()=>{ const invLive=invasionStatus(config,nowTs).live; return (
+          <a href="#tme-map" className={"inv-badge"+(invLive?"":" is-idle")} title={t.invBadgeTitle||"Invasion time \u2014 open the Map"} onClick={(e)=>{e.preventDefault();jumpTo("map","tme-map");}}>
+            <span className="ib-ico">{"\u2694\uFE0F"}</span><span className="ib-lbl">{(invLive?(t.invLiveShort||"Invasion LIVE"):(t.invasionWord||"Invasion"))+" \u00B7 "+config.invasionTime}</span>
           </a>
+          ); })()}
         </div>
       </div>
 
