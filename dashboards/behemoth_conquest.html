@@ -231,13 +231,22 @@
     text-align: center;
   }
 
-  .section { margin-bottom: 26px; }
+  /* Section = boxed card (mirrors Desolate Desert's S.card). */
+  .section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
 
+  /* Sub-header = card title (mirrors DD's S.cardTitle): accent Bebas, underlined. */
   .sh {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 24px;
+    font-weight: 400;
     letter-spacing: 2px;
-    color: var(--text-primary);
+    color: var(--kvk-accent);
     padding-bottom: 6px;
     border-bottom: 1px solid var(--border);
     margin-bottom: 12px;
@@ -246,17 +255,13 @@
     gap: 10px;
   }
 
-  .sh .n {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px; height: 28px;
-    border-radius: 6px;
-    background: var(--accent-gold);
-    color: var(--bg-deep);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 16px;
-    flex-shrink: 0;
+  /* Sections nested inside a stage card stay flat (the .stage is already a card). */
+  .stage-body .section {
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 0;
   }
 
   .blurb {
@@ -778,12 +783,7 @@
   /* -- Always-on top band (Score Race + Current Behemoth, sit above the tabs) -- */
   .topband { margin-bottom: 16px; }
   .behe-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-  .sh-inline { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: var(--text-primary); display: inline-flex; align-items: center; gap: 8px; }
-  .sh-inline .n {
-    display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px;
-    border-radius: 6px; background: var(--accent-gold); color: var(--bg-deep);
-    font-family: 'Bebas Neue', sans-serif; font-size: 14px; flex-shrink: 0;
-  }
+  .sh-inline { font-family: 'Bebas Neue', sans-serif; font-size: 22px; font-weight: 400; letter-spacing: 2px; color: var(--kvk-accent); display: inline-flex; align-items: center; gap: 8px; }
   .behe-toggle { display: inline-flex; gap: 4px; }
   .behe-btn {
     padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-card);
@@ -907,7 +907,7 @@
   <section class="tab-panel active" data-tab="overview" role="tabpanel">
   <!-- THE BIG PICTURE -->
   <div class="section">
-    <div class="sh"><span class="n">!</span> <span data-i18n="bp_h">The Big Picture</span></div>
+    <div class="sh"><span data-i18n="bp_h">The Big Picture</span></div>
     <p class="blurb" data-i18n="bp_blurb">Two servers clash, Behemoth vs Behemoth. Earn <em>Awaken Runestones</em> to grow ours, then invade the enemy while defending our own. <span class="gold">Highest total score wins</span> &mdash; but both sides earn Behemoth Crystals, so play even from behind.</p>
     <div class="co gold" data-i18n="bp_callout"><strong>Three ways to score:</strong> <strong>cultivate</strong> ours, <strong>defend</strong> ours, <strong>attack</strong> theirs. Spend Behemoth Crystals before the event ends &mdash; during <strong>Stellar Dynasty</strong>, trade them for Conquest Points instead.</div>
   </div>
@@ -915,7 +915,7 @@
   <!-- CURRENT BEHEMOTH (moved into Overview; Our/Enemy toggle) -->
   <div class="section" id="behemothCard" data-side="us">
     <div class="behe-head">
-      <span class="sh-inline"><span class="n">&#129704;</span> <span data-i18n="ref_h">Current Behemoth</span></span>
+      <span class="sh-inline"><span data-i18n="ref_h">Current Behemoth</span></span>
       <div class="behe-toggle" role="tablist" aria-label="Behemoth side">
         <button type="button" class="behe-btn active" data-side="us" role="tab" data-i18n="behe_ours">Our Behemoth</button>
         <button type="button" class="behe-btn" data-side="them" role="tab" data-i18n="behe_enemy">Enemy Behemoth</button>
@@ -932,14 +932,13 @@
 
   <!-- EVENT TIMELINE (DD-style followable schedule) -->
   <div class="section">
-    <div class="sh"><span class="n">&#128197;</span> <span data-i18n="timeline_h">Event Timeline</span></div>
+    <div class="sh"><span data-i18n="timeline_h">Event Timeline</span></div>
     <div id="stageLine"></div>
-    <p style="font-size:12px;color:var(--text-muted);margin-top:8px;" data-i18n="stages_note">Trial windows are fixed daily; only the <strong>invasion time &amp; location</strong> are admin-set &mdash; watch alliance chat.</p>
   </div>
 
   <!-- DAILY SCHEDULE — TRIAL OF SCION (moved from Beast Taming) -->
   <div class="section" id="scion-schedule">
-    <div class="sh"><span class="n">&#129704;</span> <span data-i18n="st2_sched_h">Daily Schedule &mdash; Trial of Scion</span></div>
+    <div class="sh"><span data-i18n="st2_sched_h">Daily Schedule &mdash; Trial of Scion</span></div>
     <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:6px;" data-i18n="st2_sched_p">Four fixed 30-min windows daily (UTC+0). <span style="color:#5b8def;font-weight:700;">Blue = on #008 (ours)</span>, <span style="color:#c43d3d;font-weight:700;">red = on #028</span>. Cross-border tiles open during our windows &mdash; zeroing risk. Runs during Beast Taming (Days 2&ndash;4).</p>
     <div class="sched scion-sched" id="scionSched">
       <span class="slot scion-slot" data-start="60"  data-end="90"  data-server="008"><b>01:00</b>&ndash;01:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
@@ -954,10 +953,10 @@
   <section class="tab-panel" data-tab="s1" role="tabpanel">
   <!-- STAGE 1 — SCOUTING / MATCHING -->
   <div class="stage">
-    <div class="stage-head"><span class="sicon">&#128270;</span><span class="stitle" data-i18n="st1_title">Scouting</span><span class="sdays" data-i18n="st1_days">Day 1</span></div>
+    <div class="stage-head"><span class="stitle" data-i18n="st1_title">Scouting</span><span class="sdays" data-i18n="st1_days">Day 1</span></div>
     <div class="stage-body">
   <div class="section">
-    <div class="sh"><span class="n">&#128270;</span> <span data-i18n="sc_h">Scouting the Match &mdash; Us vs #028</span></div>
+    <div class="sh"><span data-i18n="sc_h">Scouting the Match &mdash; Us vs #028</span></div>
     <div class="co info" style="margin-bottom:14px;" data-i18n="sc_intro">We face <strong>#028</strong> &mdash; ranked <strong>17th</strong> in Stellar Dynasty to our <strong>18th</strong>, a near-even match. Their top alliance <strong>[&tau;28] Titans of 28</strong> rivals WorldClass in power. Watch the <strong>M:P</strong> column (merit&divide;power): high = punches above their size. We win if we keep cultivation ahead and rally on time.</div>
 
     <!-- standings stat row -->
@@ -1060,7 +1059,7 @@
   <section class="tab-panel" data-tab="s2" role="tabpanel">
   <!-- STAGE 2 — BEAST TAMING -->
   <div class="stage">
-    <div class="stage-head"><span class="sicon">&#129704;</span><span class="stitle" data-i18n="st2_title">Beast Taming</span><span class="sdays" data-i18n="st2_days">Days 2&ndash;4</span></div>
+    <div class="stage-head"><span class="stitle" data-i18n="st2_title">Beast Taming</span><span class="sdays" data-i18n="st2_days">Days 2&ndash;4</span></div>
     <div class="stage-body">
       <h4 data-i18n="st2_goal_h">Goal</h4>
       <ul>
@@ -1070,7 +1069,7 @@
 
       <p style="font-size:12px;color:var(--text-muted);margin:2px 0 4px;" data-i18n="st2_sched_ptr">&#128197; The daily <strong>Trial of Scion</strong> schedule is on the <strong>Overview</strong> tab (also reachable via the &#129704; badge in the header).</p>
 
-      <h4 data-i18n="st2_purity_h">&#9878; Bloodline Purity race</h4>
+      <h4 data-i18n="st2_purity_h">Bloodline Purity race</h4>
       <div class="tug-wrap">
         <div class="tug-row">
           <span class="tug-us">0 <span class="tug-name" data-i18n="tug_us">US &middot; #008</span></span>
@@ -1186,7 +1185,7 @@
         </figure>
       </div>
 
-      <h4 data-i18n="st2_income_h">&#128176; Runestone income &mdash; daily caps</h4>
+      <h4 data-i18n="st2_income_h">Runestone income &mdash; daily caps</h4>
       <table class="mtable">
         <tr><th data-i18n="rune_th_src">Source</th><th data-i18n="rune_th_cap">Daily cap</th><th data-i18n="rune_th_when">When</th></tr>
         <tr><td class="name" data-i18n="rune_dmg">Scion damage</td><td class="tiers"><b>400</b></td><td data-i18n="rune_days234">Days 2&ndash;4</td></tr>
@@ -1205,7 +1204,7 @@
   <section class="tab-panel" data-tab="s3" role="tabpanel">
   <!-- STAGE 3 — ATTACK-DEFENSE -->
   <div class="stage">
-    <div class="stage-head"><span class="sicon">&#128165;</span><span class="stitle" data-i18n="st3_title">Attack-Defense</span><span class="sdays" data-i18n="st3_days">Days 5&ndash;6</span></div>
+    <div class="stage-head"><span class="stitle" data-i18n="st3_title">Attack-Defense</span><span class="sdays" data-i18n="st3_days">Days 5&ndash;6</span></div>
     <div class="stage-body">
       <h4 data-i18n="happens_h">What happens</h4>
       <ul>
@@ -1215,7 +1214,7 @@
         <li data-i18n="st3_h3"><strong>Be online for the window</strong> &mdash; this is where the bulk of the score (and personal points) is won.</li>
       </ul>
 
-      <h4 data-i18n="st3_map_h">&#128506; Battlefield Map</h4>
+      <h4 data-i18n="st3_map_h">Battlefield Map</h4>
       <div class="map-toggle" role="tablist" aria-label="Choose battlefield">
         <button type="button" class="mt-btn active" data-map="008" role="tab" aria-selected="true"><span data-i18n="map_btn008">Behemoth on #008</span> <span class="mt-sub" data-i18n="map_btn008_sub">our server</span></button>
         <button type="button" class="mt-btn" data-map="087" role="tab" aria-selected="false"><span data-i18n="map_btn087">Behemoth on #028</span> <span class="mt-sub" data-i18n="map_btn087_sub">enemy server</span></button>
@@ -1408,14 +1407,14 @@
       </div>
       <p style="font-size:12px;color:var(--text-muted);margin:0 0 10px;" data-i18n="map_desc">Each map shows one server as home with the invading Behemoth at its spawn. <strong>Unlimited range, ignores shields</strong> &mdash; no city is safe (orange = under fire). Home rallies it down; visitors counter-rally to keep it scoring. Toggle to flip between <strong>#008</strong> and <strong>#028</strong>.</p>
       <div class="spawn-box" data-map="008">
-        <h4 style="margin-top:0;" data-i18n="spawn008_h">&#128205; Where the Behemoth spawns on #008</h4>
+        <h4 style="margin-top:0;" data-i18n="spawn008_h">Where the Behemoth spawns on #008</h4>
         <figure style="margin:0;">
           <img class="zoomable" data-cap="Behemoth spawn on #008 — locked location at coordinates (1212,1182)" src="../assets/behemoth/behemoth_spawn_era8.jpg" alt="Behemoth spawn location on server #008 (1212,1182)" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
           <figcaption style="font-size:11px;color:var(--text-muted);margin-top:3px;text-align:center;" data-i18n="spawn008_cap">#028 chose this spot for their Behemoth on our server &mdash; coordinates <strong>(1212,1182)</strong>. Tap to enlarge.</figcaption>
         </figure>
       </div>
       <div class="spawn-box" data-map="087" hidden>
-        <h4 style="margin-top:0;" data-i18n="spawn087_h">&#128205; Where our Behemoth spawns on #028</h4>
+        <h4 style="margin-top:0;" data-i18n="spawn087_h">Where our Behemoth spawns on #028</h4>
         <figure style="margin:0;">
           <img class="zoomable" data-cap="Our Behemoth's spawn on #028 — locked target at coordinates (1351,1281)" src="../assets/behemoth/behemoth_spawn_era87.jpg" alt="Our Behemoth spawn location on server #028 (1351,1281)" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
           <figcaption style="font-size:11px;color:var(--text-muted);margin-top:3px;text-align:center;" data-i18n="spawn087_cap">Our locked spawn on #028 (deep in [JAN] territory) &mdash; coordinates <strong>(1351,1281)</strong>. Relocate near it for the 19:00 window. Tap to enlarge.</figcaption>
@@ -1423,21 +1422,21 @@
       </div>
       </div>
 
-      <h4 data-i18n="st3_atk_h">&#9876; Attacking the enemy Behemoth</h4>
+      <h4 data-i18n="st3_atk_h">Attacking the enemy Behemoth</h4>
       <ul>
         <li data-i18n="st3_a1"><strong>Only rallies damage it</strong> (1,000/sec each &mdash; per rally, not per march). More separate rallies = more damage; keep as many on it as possible.</li>
         <li data-i18n="st3_a2"><strong>Hold rallies long</strong> &mdash; after 5 min, damage ramps +500 every 15s. Don't let them disband.</li>
         <li data-i18n="st3_a3"><strong>Relocate to the enemy server</strong> to join the offense.</li>
       </ul>
 
-      <h4 data-i18n="st3_stun_h">&#10084; The stun / Undying Force cycle</h4>
+      <h4 data-i18n="st3_stun_h">The stun / Undying Force cycle</h4>
       <ul>
         <li data-i18n="st3_s1">At <strong>0 HP</strong> it burns 1 Undying Force stack, disbands all rallies, <strong>dazes for 30s</strong> (can't attack), then revives full. Dies only when all stacks are gone.</li>
         <li data-i18n="st3_s2"><strong>3 stacks</strong> &rarr; ~4 zeroes to kill. Coordinate fresh waves to re-zero the moment it revives.</li>
         <li data-i18n="st3_s3"><strong>Defenders:</strong> zeroing theirs scatters their rallies and stops their scoring.</li>
       </ul>
 
-      <h4 data-i18n="st3_pts_h">&#127919; How points are scored</h4>
+      <h4 data-i18n="st3_pts_h">How points are scored</h4>
       <table class="mtable">
         <tr><th data-i18n="th_action">Action</th><th data-i18n="th_points">Points</th></tr>
         <tr><td class="name" data-i18n="pt1_a">Our Behemoth: per 1K durability dmg to a citadel</td><td class="tiers" data-i18n="pt1_v"><b>300</b> kingdom</td></tr>
@@ -1523,14 +1522,14 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Dona sobre la marcha</strong> &mdash; no acumules.",
     "st2_cap1": "Prueba del Scion &mdash; toca la Élite \"Scion de Bégimo\", luego Atacar/Teletransportar",
     "st2_cap2": "Cultivo de Bégimo &mdash; acaricia / asea / entretén para ganar runas",
-    "st2_income_h": "&#128176; Ingreso de runas &mdash; topes diarios",
+    "st2_income_h": "Ingreso de runas &mdash; topes diarios",
     "st3_title": "Etapa 3 &mdash; Ataque-Defensa",
     "st3_days": "Días 5&ndash;6",
     "st3_h0": "El administrador de nuestro servidor fija la <strong>hora y ubicación de la invasión antes del Día 3, 12:00 UTC</strong>.",
     "st3_h1": "Cada Bégimo <strong>invade el otro servidor</strong> a la hora y ubicación fijadas. <strong>Cada invasión dura 90 minutos.</strong>",
     "st3_h2": "El Bégimo invasor destroza ciudadelas y edificios de alianza. <strong>Alcance ilimitado, ignora escudos</strong> &mdash; la burbuja no protege tu ciudad.",
     "st3_h3": "<strong>Conéctate durante la ventana</strong> &mdash; aquí se gana el grueso del puntaje (y de los puntos personales).",
-    "st3_map_h": "&#128506; Mapa del Campo de Batalla",
+    "st3_map_h": "Mapa del Campo de Batalla",
     "map_btn008": "Bégimo en #008",
     "map_btn008_sub": "nuestro servidor",
     "map_btn087": "Bégimo en #028",
@@ -1539,18 +1538,18 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">&#9632;</b> Ciudadelas enemigas &middot; portales enemigos &#9670;",
     "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> Recibiendo daño de Bégimo",
     "map_desc": "Cada mapa muestra un servidor como local con el Bégimo invasor en su aparición. <strong>Alcance ilimitado, ignora escudos</strong> &mdash; ninguna ciudad está a salvo (naranja = bajo fuego). El local lo reúne para bajarlo; los visitantes contra-reúnen para mantenerlo sumando. Alterna entre <strong>#008</strong> y <strong>#028</strong>.",
-    "spawn008_h": "&#128205; Dónde aparece el Bégimo en #008",
+    "spawn008_h": "Dónde aparece el Bégimo en #008",
     "spawn008_cap": "#028 eligió este punto para su Bégimo en nuestro servidor &mdash; coordenadas <strong>(1212,1182)</strong>. Toca para ampliar.",
-    "spawn087_h": "&#128205; Dónde aparece nuestro Bégimo en #028",
-    "st3_atk_h": "&#9876; Atacar al Bégimo enemigo",
+    "spawn087_h": "Dónde aparece nuestro Bégimo en #028",
+    "st3_atk_h": "Atacar al Bégimo enemigo",
     "st3_a1": "<strong>Solo las reuniones lo dañan</strong> (1.000/seg cada una &mdash; por reunión, no por marcha). Más reuniones separadas = más daño; manténgan tantas como puedan.",
     "st3_a2": "<strong>Mantén las reuniones</strong> &mdash; tras 5 min, el daño sube +500 cada 15s. No las dejes disolverse.",
     "st3_a3": "<strong>Reubícate al servidor enemigo</strong> para unirte a la ofensiva.",
-    "st3_stun_h": "&#10084; El ciclo de aturdimiento / Fuerza Imperecedera",
+    "st3_stun_h": "El ciclo de aturdimiento / Fuerza Imperecedera",
     "st3_s1": "A <strong>0 de vida</strong> consume 1 pila de Fuerza Imperecedera, disuelve todas las reuniones, <strong>queda aturdido 30s</strong> (no puede atacar) y revive a tope. Solo muere al agotar todas las pilas.",
     "st3_s2": "<strong>3 pilas</strong> &rarr; ~4 ceros para matarlo. Coordina oleadas frescas para volver a cero apenas reviva.",
     "st3_s3": "<strong>Defensores:</strong> bajar el suyo a cero dispersa sus reuniones y frena sus puntos.",
-    "st3_pts_h": "&#127919; Cómo se puntúa",
+    "st3_pts_h": "Cómo se puntúa",
     "th_action": "Acción",
     "th_points": "Puntos",
     "pt1_a": "Nuestro Bégimo: por cada 1K de daño de durabilidad a una ciudadela",
@@ -1639,7 +1638,7 @@ const TRANSLATIONS = {
     "tab_s2": "Etapa 2",
     "tab_s3": "Etapa 3",
     "tab_s4": "Etapa 4",
-    "st2_purity_h": "&#9878; Carrera de Pureza del Linaje",
+    "st2_purity_h": "Carrera de Pureza del Linaje",
     "behe_ours": "Nuestro Bégimo",
     "behe_enemy": "Bégimo enemigo",
     "ref_stage_us": "Adulto",
@@ -1708,14 +1707,14 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Donne au fur et à mesure</strong> &mdash; n'accumule pas.",
     "st2_cap1": "Épreuve du Scion &mdash; touche l'Élite \"Scion du Béhémoth\", puis Attaquer/Téléporter",
     "st2_cap2": "Culture du Béhémoth &mdash; caresse / toilette / divertis pour des runes",
-    "st2_income_h": "&#128176; Revenu de runes &mdash; plafonds quotidiens",
+    "st2_income_h": "Revenu de runes &mdash; plafonds quotidiens",
     "st3_title": "Étape 3 &mdash; Attaque-Défense",
     "st3_days": "Jours 5&ndash;6",
     "st3_h0": "L'administrateur de notre serveur verrouille l'<strong>heure et le lieu de l'invasion avant le Jour 3, 12:00 UTC</strong>.",
     "st3_h1": "Chaque Béhémoth <strong>envahit l'autre serveur</strong> à l'heure et au lieu verrouillés. <strong>Chaque invasion dure 90 minutes.</strong>",
     "st3_h2": "Le Béhémoth envahisseur détruit citadelles et bâtiments d'alliance. <strong>Portée illimitée, ignore les boucliers</strong> &mdash; le bouclier ne protège pas ta ville.",
     "st3_h3": "<strong>Sois en ligne pour la fenêtre</strong> &mdash; c'est là que se gagne l'essentiel du score (et des points personnels).",
-    "st3_map_h": "&#128506; Carte du Champ de Bataille",
+    "st3_map_h": "Carte du Champ de Bataille",
     "map_btn008": "Béhémoth sur #008",
     "map_btn008_sub": "notre serveur",
     "map_btn087": "Béhémoth sur #028",
@@ -1724,18 +1723,18 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">&#9632;</b> Citadelles ennemies &middot; portails ennemis &#9670;",
     "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> Subit les dégâts du Béhémoth",
     "map_desc": "Chaque carte montre un serveur comme hôte avec le Béhémoth envahisseur à son apparition. <strong>Portée illimitée, ignore les boucliers</strong> &mdash; aucune ville n'est à l'abri (orange = sous le feu). L'hôte le rallie ; les visiteurs contre-rallient pour le garder en jeu. Bascule entre <strong>#008</strong> et <strong>#028</strong>.",
-    "spawn008_h": "&#128205; Où le Béhémoth apparaît sur #008",
+    "spawn008_h": "Où le Béhémoth apparaît sur #008",
     "spawn008_cap": "#028 a choisi cet endroit pour leur Béhémoth sur notre serveur &mdash; coordonnées <strong>(1212,1182)</strong>. Touche pour agrandir.",
-    "spawn087_h": "&#128205; Où notre Béhémoth apparaît sur #028",
-    "st3_atk_h": "&#9876; Attaquer le Béhémoth ennemi",
+    "spawn087_h": "Où notre Béhémoth apparaît sur #028",
+    "st3_atk_h": "Attaquer le Béhémoth ennemi",
     "st3_a1": "<strong>Seuls les ralliements le blessent</strong> (1 000/sec chacun &mdash; par ralliement, pas par marche). Plus de ralliements distincts = plus de dégâts ; garde-en autant que possible.",
     "st3_a2": "<strong>Tiens les ralliements</strong> &mdash; après 5 min, les dégâts montent de +500 toutes les 15s. Ne les laisse pas se dissoudre.",
     "st3_a3": "<strong>Relocalise-toi sur le serveur ennemi</strong> pour rejoindre l'offensive.",
-    "st3_stun_h": "&#10084; Le cycle d'étourdissement / Force Immortelle",
+    "st3_stun_h": "Le cycle d'étourdissement / Force Immortelle",
     "st3_s1": "À <strong>0 PV</strong> il consomme 1 pile de Force Immortelle, dissout tous les ralliements, <strong>est étourdi 30s</strong> (ne peut pas attaquer), puis ressuscite. Meurt seulement quand toutes les piles sont épuisées.",
     "st3_s2": "<strong>3 piles</strong> &rarr; ~4 zéros pour le tuer. Coordonne des vagues fraîches pour le remettre à zéro dès qu'il ressuscite.",
     "st3_s3": "<strong>Défenseurs :</strong> mettre le leur à zéro disperse leurs ralliements et stoppe leur score.",
-    "st3_pts_h": "&#127919; Comment on marque les points",
+    "st3_pts_h": "Comment on marque les points",
     "th_action": "Action",
     "th_points": "Points",
     "pt1_a": "Notre Béhémoth : par 1K de dégâts de durabilité à une citadelle",
@@ -1824,7 +1823,7 @@ const TRANSLATIONS = {
     "tab_s2": "Étape 2",
     "tab_s3": "Étape 3",
     "tab_s4": "Étape 4",
-    "st2_purity_h": "&#9878; Course à la Pureté de la Lignée",
+    "st2_purity_h": "Course à la Pureté de la Lignée",
     "behe_ours": "Notre Béhémoth",
     "behe_enemy": "Béhémoth ennemi",
     "ref_stage_us": "Adulte",
@@ -1893,14 +1892,14 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>모이는 대로 기부</strong> &mdash; 쌓아두지 마세요.",
     "st2_cap1": "후손의 시험 &mdash; \"비헤모스 후손\" 정예를 탭한 뒤 공격/순간이동",
     "st2_cap2": "비헤모스 육성 &mdash; 쓰다듬기/단장/놀아주기로 룬석 획득",
-    "st2_income_h": "&#128176; 룬석 수입 &mdash; 일일 상한",
+    "st2_income_h": "룬석 수입 &mdash; 일일 상한",
     "st3_title": "3단계 &mdash; 공격-방어",
     "st3_days": "5&ndash;6일차",
     "st3_h0": "우리 서버 관리자가 <strong>3일차 12:00 UTC까지 침공 시간과 장소를 확정</strong>합니다.",
     "st3_h1": "각 비헤모스가 확정된 시간과 장소에 <strong>상대 서버를 침공</strong>합니다. <strong>각 침공은 90분간 지속</strong>됩니다.",
     "st3_h2": "침공 비헤모스는 성채와 연맹 건물을 파괴. <strong>무제한 사거리, 보호막 무시</strong> &mdash; 버블로도 도시를 못 지킴.",
     "st3_h3": "<strong>창 동안 접속해 있으세요</strong> &mdash; 점수(및 개인 포인트)의 대부분이 여기서 결정됩니다.",
-    "st3_map_h": "&#128506; 전장 지도",
+    "st3_map_h": "전장 지도",
     "map_btn008": "#008의 비헤모스",
     "map_btn008_sub": "우리 서버",
     "map_btn087": "#028의 비헤모스",
@@ -1909,18 +1908,18 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">&#9632;</b> 적 성채 &middot; 적 포털 &#9670;",
     "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> 비헤모스 피해를 받는 중",
     "map_desc": "각 지도는 한 서버를 홈으로, 침공 비헤모스는 등장 지점에 표시. <strong>무제한 사거리, 보호막 무시</strong> &mdash; 안전한 도시 없음(주황 = 피격 중). 홈은 깎아내리고, 원정은 역집결해 점수 유지. <strong>#008</strong>과 <strong>#028</strong> 전환.",
-    "spawn008_h": "&#128205; #008에서 비헤모스 등장 위치",
+    "spawn008_h": "#008에서 비헤모스 등장 위치",
     "spawn008_cap": "#028이 우리 서버에 자기 비헤모스를 둘 자리로 이곳을 골랐습니다 &mdash; 좌표 <strong>(1212,1182)</strong>. 탭하면 확대됩니다.",
-    "spawn087_h": "&#128205; #028에서 우리 비헤모스 등장 위치",
-    "st3_atk_h": "&#9876; 적 비헤모스 공격",
+    "spawn087_h": "#028에서 우리 비헤모스 등장 위치",
+    "st3_atk_h": "적 비헤모스 공격",
     "st3_a1": "<strong>집결만 피해를 줌</strong>(각 초당 1,000 &mdash; 행군이 아니라 집결 단위). 개별 집결이 많을수록 피해 증가; 최대한 많이 붙이세요.",
     "st3_a2": "<strong>집결을 오래 유지</strong> &mdash; 5분 후 피해가 15초마다 +500 상승. 해산되지 않게 하세요.",
     "st3_a3": "<strong>적 서버로 이전</strong>해 공세에 합류.",
-    "st3_stun_h": "&#10084; 기절 / 불멸의 힘 주기",
+    "st3_stun_h": "기절 / 불멸의 힘 주기",
     "st3_s1": "<strong>체력 0</strong>에서 불멸의 힘 1스택 소모, 모든 집결 해산, <strong>30초간 기절</strong>(공격 불가) 후 완전 부활. 모든 스택이 소진돼야 사망.",
     "st3_s2": "<strong>3스택</strong> &rarr; 처치까지 약 0회 4번. 부활 즉시 다시 0으로 만들 새 물결을 조율.",
     "st3_s3": "<strong>방어자:</strong> 그들 것을 0으로 만들면 집결이 흩어지고 점수를 막음.",
-    "st3_pts_h": "&#127919; 점수 산정 방식",
+    "st3_pts_h": "점수 산정 방식",
     "th_action": "행동",
     "th_points": "포인트",
     "pt1_a": "우리 비헤모스: 성채에 내구 피해 1K당",
@@ -2009,7 +2008,7 @@ const TRANSLATIONS = {
     "tab_s2": "2단계",
     "tab_s3": "3단계",
     "tab_s4": "4단계",
-    "st2_purity_h": "&#9878; 혈통 순도 경쟁",
+    "st2_purity_h": "혈통 순도 경쟁",
     "behe_ours": "우리 비헤모스",
     "behe_enemy": "적 비헤모스",
     "ref_stage_us": "성체",
@@ -2123,7 +2122,7 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>溜めずに随時寄付</strong>。",
     "st2_cap1": "末裔の試練 — 「ベヒモスの末裔」エリートをタップし攻撃/転移",
     "st2_cap2": "ベヒモス育成 — 撫でる/手入れ/遊んでルーン石獲得",
-    "st2_income_h": "💰 ルーン石収入 — 1日の上限",
+    "st2_income_h": "ルーン石収入 — 1日の上限",
     "rune_th_src": "入手元",
     "rune_th_cap": "1日上限",
     "rune_th_when": "時期",
@@ -2142,7 +2141,7 @@ const TRANSLATIONS = {
     "st3_h1": "各ベヒモスが確定した時間と場所で<strong>相手サーバーに侵攻</strong>。<strong>各侵攻は90分間。</strong>",
     "st3_h2": "侵攻ベヒモスは城塞と同盟建物を破壊。<strong>射程無制限、シールド無視</strong> — バブルでは都市を守れない。",
     "st3_h3": "<strong>枠の間はオンラインで</strong> — 得点（と個人ポイント）の大半はここで決まる。",
-    "st3_map_h": "🗺 戦場マップ",
+    "st3_map_h": "戦場マップ",
     "map_btn008": "#008のベヒモス",
     "map_btn008_sub": "自軍サーバー",
     "map_btn087": "#028のベヒモス",
@@ -2151,19 +2150,19 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">■</b> 敵城塞 · 敵ポータル ◆",
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> ベヒモス被害中",
     "map_desc": "各マップは一方のサーバーをホームとし、侵攻ベヒモスは出現地点に配置。<strong>射程無制限、シールド無視</strong> — どの都市も安全でない（橙=被弾中）。ホームは集結で削り、来訪側は逆集結で得点を維持。<strong>#008</strong>と<strong>#028</strong>を切替。",
-    "spawn008_h": "📍 #008でのベヒモス出現地点",
+    "spawn008_h": "#008でのベヒモス出現地点",
     "spawn008_cap": "#028が自軍サーバーに置いた出現地点 — 座標 <strong>(1212,1182)</strong>。タップで拡大。",
-    "spawn087_h": "📍 #028での自軍ベヒモス出現地点",
+    "spawn087_h": "#028での自軍ベヒモス出現地点",
     "spawn087_cap": "#028での確定出現地点（[JAN]領内）— 座標 <strong>(1351,1281)</strong>。19:00枠に向け近くへ転移。タップで拡大。",
-    "st3_atk_h": "⚔ 敵ベヒモスへの攻撃",
+    "st3_atk_h": "敵ベヒモスへの攻撃",
     "st3_a1": "<strong>集結のみダメージ</strong>（各毎秒1,000 — 行軍ごとでなく集結ごと）。別々の集結が多いほどダメージ増; できるだけ多く維持。",
     "st3_a2": "<strong>集結を長く維持</strong> — 5分後、ダメージが15秒ごとに+500。解散させるな。",
     "st3_a3": "<strong>敵サーバーへ転移</strong>して攻勢に加わる。",
-    "st3_stun_h": "❤ スタン / 不死の力サイクル",
+    "st3_stun_h": "スタン / 不死の力サイクル",
     "st3_s1": "<strong>HP0</strong>で不死の力を1スタック消費し、全集結を解散、<strong>30秒スタン</strong>（攻撃不可）後に全回復。全スタック消滅でのみ死亡。",
     "st3_s2": "<strong>3スタック</strong> → 撃破に約4回のゼロ。復活直後に再ゼロする新たな波を調整。",
     "st3_s3": "<strong>防衛側:</strong> 敵をゼロにすると集結が散り得点を止める。",
-    "st3_pts_h": "🎯 得点の仕組み",
+    "st3_pts_h": "得点の仕組み",
     "th_action": "行動",
     "th_points": "ポイント",
     "pt1_a": "自軍ベヒモス: 城塞への耐久ダメージ1Kごと",
@@ -2191,7 +2190,7 @@ const TRANSLATIONS = {
     "tab_s2": "段階2",
     "tab_s3": "段階3",
     "tab_s4": "段階4",
-    "st2_purity_h": "&#9878; 血統純度レース",
+    "st2_purity_h": "血統純度レース",
     "behe_ours": "自軍ベヒモス",
     "behe_enemy": "敵ベヒモス",
     "ref_stage_us": "成体",
@@ -2308,7 +2307,7 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>随得随捐</strong> — 别囤积。",
     "st2_cap1": "后裔试炼 — 点击「巨兽后裔」精英，然后攻击/传送",
     "st2_cap2": "巨兽培养 — 抚摸/梳理/逗弄获取符文石",
-    "st2_income_h": "💰 符文石收入 — 每日上限",
+    "st2_income_h": "符文石收入 — 每日上限",
     "rune_th_src": "来源",
     "rune_th_cap": "每日上限",
     "rune_th_when": "时间",
@@ -2327,7 +2326,7 @@ const TRANSLATIONS = {
     "st3_h1": "各巨兽在锁定的时间与地点<strong>入侵对方服务器</strong>。<strong>每次入侵持续90分钟。</strong>",
     "st3_h2": "入侵的巨兽摧毁城塞与联盟建筑。<strong>射程无限、无视护盾</strong> — 护盾保护不了你的城市。",
     "st3_h3": "<strong>时段内保持在线</strong> — 大部分得分（与个人积分）在此决出。",
-    "st3_map_h": "🗺 战场地图",
+    "st3_map_h": "战场地图",
     "map_btn008": "#008的巨兽",
     "map_btn008_sub": "我方服务器",
     "map_btn087": "#028的巨兽",
@@ -2336,19 +2335,19 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">■</b> 敌方城塞 · 敌方传送门 ◆",
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> 正受巨兽伤害",
     "map_desc": "每张地图以一方服务器为主场，入侵巨兽位于出生点。<strong>射程无限、无视护盾</strong> — 没有城市安全（橙=正受攻击）。主场集结削减它; 客场逆集结维持其得分。在<strong>#008</strong>与<strong>#028</strong>间切换。",
-    "spawn008_h": "📍 巨兽在#008的出生点",
+    "spawn008_h": "巨兽在#008的出生点",
     "spawn008_cap": "#028为其巨兽在我方服务器选定的出生点 — 坐标 <strong>(1212,1182)</strong>。点击放大。",
-    "spawn087_h": "📍 我方巨兽在#028的出生点",
+    "spawn087_h": "我方巨兽在#028的出生点",
     "spawn087_cap": "我方在#028的锁定出生点（深入[JAN]领地）— 坐标 <strong>(1351,1281)</strong>。19:00时段前转移至附近。点击放大。",
-    "st3_atk_h": "⚔ 攻击敌方巨兽",
+    "st3_atk_h": "攻击敌方巨兽",
     "st3_a1": "<strong>只有集结能造成伤害</strong>（每个每秒1,000 — 按集结计，非按行军）。独立集结越多伤害越高; 尽量多保持。",
     "st3_a2": "<strong>长时间维持集结</strong> — 5分钟后，伤害每15秒+500。别让它们解散。",
     "st3_a3": "<strong>转移到敌方服务器</strong>加入攻势。",
-    "st3_stun_h": "❤ 眩晕 / 不死之力循环",
+    "st3_stun_h": "眩晕 / 不死之力循环",
     "st3_s1": "<strong>0血</strong>时消耗1层不死之力，解散所有集结，<strong>眩晕30秒</strong>（无法攻击），随后满血复活。所有层数耗尽才会死亡。",
     "st3_s2": "<strong>3层</strong> → 约需归零4次击杀。协调新一波在其复活瞬间再次归零。",
     "st3_s3": "<strong>防守方:</strong> 将敌方归零会冲散其集结并阻止得分。",
-    "st3_pts_h": "🎯 计分方式",
+    "st3_pts_h": "计分方式",
     "th_action": "行动",
     "th_points": "积分",
     "pt1_a": "我方巨兽: 对城塞每1K耐久伤害",
@@ -2376,7 +2375,7 @@ const TRANSLATIONS = {
     "tab_s2": "阶段2",
     "tab_s3": "阶段3",
     "tab_s4": "阶段4",
-    "st2_purity_h": "&#9878; 血脉纯度竞赛",
+    "st2_purity_h": "血脉纯度竞赛",
     "behe_ours": "我方巨兽",
     "behe_enemy": "敌方巨兽",
     "ref_stage_us": "成年",
@@ -2493,7 +2492,7 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>تبرع أولاً بأول</strong> — لا تكدّس.",
     "st2_cap1": "محنة السليل — انقر نخبة «سليل البهيموث» ثم هجوم/انتقال",
     "st2_cap2": "تنمية البهيموث — داعب/هذّب/سلِّ للحصول على الأحجار",
-    "st2_income_h": "💰 دخل الأحجار — حدود يومية",
+    "st2_income_h": "دخل الأحجار — حدود يومية",
     "rune_th_src": "المصدر",
     "rune_th_cap": "الحد اليومي",
     "rune_th_when": "متى",
@@ -2512,7 +2511,7 @@ const TRANSLATIONS = {
     "st3_h1": "كل بهيموث <strong>يغزو الخادم الآخر</strong> في الوقت والمكان المقفلين. <strong>كل غزو يستمر 90 دقيقة.</strong>",
     "st3_h2": "البهيموث الغازي يحطم القلاع ومباني التحالف. <strong>مدى لا محدود، يتجاهل الدروع</strong> — الفقاعة لن تحمي مدينتك.",
     "st3_h3": "<strong>كن متصلاً خلال النافذة</strong> — هنا يُحسم معظم النقاط (والنقاط الشخصية).",
-    "st3_map_h": "🗺 خريطة المعركة",
+    "st3_map_h": "خريطة المعركة",
     "map_btn008": "البهيموث على #008",
     "map_btn008_sub": "خادمنا",
     "map_btn087": "البهيموث على #028",
@@ -2521,19 +2520,19 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">■</b> قلاع العدو · بوابات العدو ◆",
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> يتلقى ضرر البهيموث",
     "map_desc": "كل خريطة تُظهر خادماً كأرض له مع البهيموث الغازي عند نقطة ظهوره. <strong>مدى لا محدود، يتجاهل الدروع</strong> — لا مدينة آمنة (برتقالي = تحت النار). الأرض تحشد لإسقاطه؛ الزائرون يحشدون مضاداً لإبقائه يسجل. بدّل بين <strong>#008</strong> و<strong>#028</strong>.",
-    "spawn008_h": "📍 مكان ظهور البهيموث على #008",
+    "spawn008_h": "مكان ظهور البهيموث على #008",
     "spawn008_cap": "#028 اختار هذا المكان لبهيموثهم على خادمنا — الإحداثيات <strong>(1212,1182)</strong>. انقر للتكبير.",
-    "spawn087_h": "📍 مكان ظهور بهيموثنا على #028",
+    "spawn087_h": "مكان ظهور بهيموثنا على #028",
     "spawn087_cap": "نقطة ظهورنا المقفلة على #028 (عميقاً في أرض [JAN]) — الإحداثيات <strong>(1351,1281)</strong>. انتقل قربها لنافذة 19:00. انقر للتكبير.",
-    "st3_atk_h": "⚔ مهاجمة بهيموث العدو",
+    "st3_atk_h": "مهاجمة بهيموث العدو",
     "st3_a1": "<strong>الحشود فقط تُلحق الضرر</strong> (1,000/ث لكل حشد — لكل حشد لا لكل زحف). حشود منفصلة أكثر = ضرر أكبر؛ أبقِ أكبر عدد ممكن عليه.",
     "st3_a2": "<strong>أبقِ الحشود طويلاً</strong> — بعد 5 دقائق، يتصاعد الضرر +500 كل 15 ث. لا تدعها تتفكك.",
     "st3_a3": "<strong>انتقل إلى خادم العدو</strong> للانضمام للهجوم.",
-    "st3_stun_h": "❤ دورة الصعق / القوة الخالدة",
+    "st3_stun_h": "دورة الصعق / القوة الخالدة",
     "st3_s1": "عند <strong>0 صحة</strong> يستهلك طبقة قوة خالدة، يفكك كل الحشود، <strong>يُصعق 30 ثانية</strong> (لا يستطيع الهجوم)، ثم يُحيا بالكامل. لا يموت إلا بنفاد كل الطبقات.",
     "st3_s2": "<strong>3 طبقات</strong> → نحو 4 تصفيرات للقتل. نسّق موجات جديدة لإعادة التصفير لحظة إحيائه.",
     "st3_s3": "<strong>المدافعون:</strong> تصفير بهيموثهم يبعثر حشودهم ويوقف تسجيلهم.",
-    "st3_pts_h": "🎯 كيفية حساب النقاط",
+    "st3_pts_h": "كيفية حساب النقاط",
     "th_action": "الإجراء",
     "th_points": "النقاط",
     "pt1_a": "بهيموثنا: لكل 1K ضرر متانة لقلعة",
@@ -2561,7 +2560,7 @@ const TRANSLATIONS = {
     "tab_s2": "المرحلة 2",
     "tab_s3": "المرحلة 3",
     "tab_s4": "المرحلة 4",
-    "st2_purity_h": "&#9878; سباق نقاء السلالة",
+    "st2_purity_h": "سباق نقاء السلالة",
     "behe_ours": "بهيموثنا",
     "behe_enemy": "بهيموث العدو",
     "ref_stage_us": "بالغ",
@@ -2678,7 +2677,7 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Donér løbende</strong> — hamstr ikke.",
     "st2_cap1": "Scion-prøven — tryk på »Behemoth Scion«-eliten, derefter Angrib/Teleportér",
     "st2_cap2": "Behemoth-dyrkning — kæl/plej/underhold for runesten",
-    "st2_income_h": "💰 Runesten-indtægt — daglige lofter",
+    "st2_income_h": "Runesten-indtægt — daglige lofter",
     "rune_th_src": "Kilde",
     "rune_th_cap": "Dagligt loft",
     "rune_th_when": "Hvornår",
@@ -2697,7 +2696,7 @@ const TRANSLATIONS = {
     "st3_h1": "Hver Behemoth <strong>invaderer den anden server</strong> på det låste tidspunkt & sted. <strong>Hver invasion varer 90 minutter.</strong>",
     "st3_h2": "Den invaderende Behemoth knuser citadeller og alliancebygninger. <strong>Ubegrænset rækkevidde, ignorerer skjolde</strong> — boble beskytter ikke din by.",
     "st3_h3": "<strong>Vær online i vinduet</strong> — her vindes hovedparten af scoren (og personlige point).",
-    "st3_map_h": "🗺 Slagmarkskort",
+    "st3_map_h": "Slagmarkskort",
     "map_btn008": "Behemoth på #008",
     "map_btn008_sub": "vores server",
     "map_btn087": "Behemoth på #028",
@@ -2706,19 +2705,19 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">■</b> Fjendens citadeller · fjendeportaler ◆",
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Tager Behemoth-skade",
     "map_desc": "Hvert kort viser én server som hjemme med den invaderende Behemoth ved dens spawn. <strong>Ubegrænset rækkevidde, ignorerer skjolde</strong> — ingen by er sikker (orange = under beskydning). Hjemme samler den ned; gæster modsamler for at holde den scorende. Skift mellem <strong>#008</strong> og <strong>#028</strong>.",
-    "spawn008_h": "📍 Hvor Behemoth spawner på #008",
+    "spawn008_h": "Hvor Behemoth spawner på #008",
     "spawn008_cap": "#028 valgte dette sted til deres Behemoth på vores server — koordinater <strong>(1212,1182)</strong>. Tryk for at forstørre.",
-    "spawn087_h": "📍 Hvor vores Behemoth spawner på #028",
+    "spawn087_h": "Hvor vores Behemoth spawner på #028",
     "spawn087_cap": "Vores låste spawn på #028 (dybt i [JAN]-territorium) — koordinater <strong>(1351,1281)</strong>. Flyt nær det til 19:00-vinduet. Tryk for at forstørre.",
-    "st3_atk_h": "⚔ Angreb på fjendens Behemoth",
+    "st3_atk_h": "Angreb på fjendens Behemoth",
     "st3_a1": "<strong>Kun samlinger skader den</strong> (1.000/sek hver — pr. samling, ikke pr. march). Flere separate samlinger = mere skade; hold så mange som muligt på den.",
     "st3_a2": "<strong>Hold samlinger længe</strong> — efter 5 min stiger skaden +500 hver 15. sek. Lad dem ikke opløses.",
     "st3_a3": "<strong>Flyt til fjendeserveren</strong> for at deltage i offensiven.",
-    "st3_stun_h": "❤ Bedøvelse / Udødelig Kraft-cyklus",
+    "st3_stun_h": "Bedøvelse / Udødelig Kraft-cyklus",
     "st3_s1": "Ved <strong>0 HP</strong> brænder den 1 Udødelig Kraft-stak, opløser alle samlinger, <strong>bedøves i 30s</strong> (kan ikke angribe) og genoplives fuldt. Dør kun, når alle stakke er væk.",
     "st3_s2": "<strong>3 stakke</strong> → ~4 nulstillinger for at dræbe. Koordinér friske bølger for at nulstille igen i det øjeblik den genoplives.",
     "st3_s3": "<strong>Forsvarere:</strong> at nulstille deres spreder deres samlinger og stopper deres scoring.",
-    "st3_pts_h": "🎯 Sådan scores point",
+    "st3_pts_h": "Sådan scores point",
     "th_action": "Handling",
     "th_points": "Point",
     "pt1_a": "Vores Behemoth: pr. 1K holdbarhedsskade på et citadel",
@@ -2746,7 +2745,7 @@ const TRANSLATIONS = {
     "tab_s2": "Fase 2",
     "tab_s3": "Fase 3",
     "tab_s4": "Fase 4",
-    "st2_purity_h": "&#9878; Blodlinjerenheds-ræs",
+    "st2_purity_h": "Blodlinjerenheds-ræs",
     "behe_ours": "Vores Behemoth",
     "behe_enemy": "Fjendens Behemoth",
     "ref_stage_us": "Voksen",
@@ -2830,7 +2829,7 @@ const TRANSLATIONS = {
     "st2_sched_p": "Vier feste 30-Min-Fenster täglich (UTC+0). <span style=\"color:#5b8def;font-weight:700;\">Blau = auf #008 (unser)</span>, <span style=\"color:#c43d3d;font-weight:700;\">rot = auf #028</span>. Grenzüberschreitende Felder öffnen während unserer Fenster — Null-Risiko.",
     "srv008": "#008",
     "srv087": "#028",
-    "st2_purity_h": "⚖ Blutlinien-Reinheit-Rennen",
+    "st2_purity_h": "Blutlinien-Reinheit-Rennen",
     "tug_purity_lbl": "Blutlinien-Reinheit (gespendete Runensteine)",
     "tug_purity_cap": "Wir liegen bei Spenden ~200K zurück — sie sind eine Stufe weiter bei Buffs. Aber wir führen das Punkterennen, das den Sieg entscheidet, also weiter spenden und am Invasionstag alles geben.",
     "bless_h": "Blutlinien-Segnungen — freigeschaltete Buffs (alle Einheitentypen)",
@@ -2876,7 +2875,7 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Laufend spenden</strong> — nicht horten.",
     "st2_cap1": "Scion-Prüfung — tippe die Elite „Behemoth-Scion“ an, dann Angreifen/Teleportieren",
     "st2_cap2": "Behemoth-Kultivierung — streicheln / pflegen / unterhalten für Runensteine",
-    "st2_income_h": "💰 Runenstein-Einkommen — Tageslimits",
+    "st2_income_h": "Runenstein-Einkommen — Tageslimits",
     "rune_th_src": "Quelle",
     "rune_th_cap": "Tageslimit",
     "rune_th_when": "Wann",
@@ -2896,7 +2895,7 @@ const TRANSLATIONS = {
     "st3_h1": "Jeder Behemoth <strong>fällt in den anderen Server ein</strong> zur festgelegten Zeit & Ort. <strong>Jede Invasion dauert 90 Minuten.</strong>",
     "st3_h2": "Der einfallende Behemoth zerstört Zitadellen und Allianzgebäude. <strong>Unbegrenzte Reichweite, ignoriert Schilde</strong> — Blasen schützen deine Stadt nicht.",
     "st3_h3": "<strong>Sei im Fenster online</strong> — hier wird der Großteil des Scores (und persönlicher Punkte) erkämpft.",
-    "st3_map_h": "🗺 Schlachtfeldkarte",
+    "st3_map_h": "Schlachtfeldkarte",
     "map_btn008": "Behemoth auf #008",
     "map_btn008_sub": "unser Server",
     "map_btn087": "Behemoth auf #028",
@@ -2905,19 +2904,19 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">■</b> Feindzitadellen · Feindportale ◆",
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Erleidet Behemoth-Schaden",
     "map_desc": "Jede Karte zeigt einen Server als Heimat mit dem einfallenden Behemoth am Spawn. <strong>Unbegrenzte Reichweite, ignoriert Schilde</strong> — keine Stadt ist sicher (orange = unter Beschuss). Heimat sammelt ihn nieder; Besucher kontern-sammeln, um ihn punktend zu halten. Wechsle zwischen <strong>#008</strong> und <strong>#028</strong>.",
-    "spawn008_h": "📍 Wo der Behemoth auf #008 spawnt",
+    "spawn008_h": "Wo der Behemoth auf #008 spawnt",
     "spawn008_cap": "#028 wählte diesen Ort für ihren Behemoth auf unserem Server — Koordinaten <strong>(1212,1182)</strong>. Zum Vergrößern tippen.",
-    "spawn087_h": "📍 Wo unser Behemoth auf #028 spawnt",
+    "spawn087_h": "Wo unser Behemoth auf #028 spawnt",
     "spawn087_cap": "Unser festgelegter Spawn auf #028 (tief im [JAN]-Gebiet) — Koordinaten <strong>(1351,1281)</strong>. Ziehe für das 19:00-Fenster in die Nähe. Zum Vergrößern tippen.",
-    "st3_atk_h": "⚔ Den Feind-Behemoth angreifen",
+    "st3_atk_h": "Den Feind-Behemoth angreifen",
     "st3_a1": "<strong>Nur Sammlungen schaden ihm</strong> (je 1.000/Sek — pro Sammlung, nicht pro Marsch). Mehr getrennte Sammlungen = mehr Schaden; halte so viele wie möglich darauf.",
     "st3_a2": "<strong>Sammlungen lang halten</strong> — nach 5 Min steigt der Schaden alle 15 Sek um +500. Lass sie nicht auflösen.",
     "st3_a3": "<strong>Ziehe auf den Feindserver um</strong>, um an der Offensive teilzunehmen.",
-    "st3_stun_h": "❤ Der Betäubungs- / Unsterbliche-Kraft-Zyklus",
+    "st3_stun_h": "Der Betäubungs- / Unsterbliche-Kraft-Zyklus",
     "st3_s1": "Bei <strong>0 LP</strong> verbraucht er 1 Stapel Unsterbliche Kraft, löst alle Sammlungen auf, ist <strong>30 Sek betäubt</strong> (kann nicht angreifen) und belebt sich voll wieder. Stirbt erst, wenn alle Stapel weg sind.",
     "st3_s2": "<strong>3 Stapel</strong> → ~4 Nullungen zum Töten. Koordiniere frische Wellen, um ihn sofort nach Wiederbelebung erneut zu nullen.",
     "st3_s3": "<strong>Verteidiger:</strong> ihren zu nullen zerstreut ihre Sammlungen und stoppt ihr Punkten.",
-    "st3_pts_h": "🎯 Wie Punkte erzielt werden",
+    "st3_pts_h": "Wie Punkte erzielt werden",
     "th_action": "Aktion",
     "th_points": "Punkte",
     "pt1_a": "Unser Behemoth: pro 1K Haltbarkeitsschaden an einer Zitadelle",
@@ -3015,7 +3014,7 @@ const TRANSLATIONS = {
     "st2_sched_p": "Четыре фиксированных 30-мин окна в день (UTC+0). <span style=\"color:#5b8def;font-weight:700;\">Синий = на #008 (наш)</span>, <span style=\"color:#c43d3d;font-weight:700;\">красный = на #028</span>. В наши окна открываются приграничные тайлы — риск обнуления.",
     "srv008": "#008",
     "srv087": "#028",
-    "st2_purity_h": "⚖ Гонка Чистоты родословной",
+    "st2_purity_h": "Гонка Чистоты родословной",
     "tug_purity_lbl": "Чистота родословной (пожертвовано рун)",
     "tug_purity_cap": "Мы отстаём по пожертвованиям на ~200K — они на уровень впереди по баффам. Но мы ведём в гонке очков, решающей победу, так что продолжай жертвовать и выложись в день вторжения.",
     "bless_h": "Благословения родословной — открытые баффы (все типы войск)",
@@ -3061,7 +3060,7 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Жертвуй по ходу</strong> — не копи.",
     "st2_cap1": "Испытание Отпрыска — нажми элиту «Отпрыск Бегемота», затем Атака/Телепорт",
     "st2_cap2": "Культивация Бегемота — гладь / ухаживай / развлекай ради рун",
-    "st2_income_h": "💰 Доход рун — суточные лимиты",
+    "st2_income_h": "Доход рун — суточные лимиты",
     "rune_th_src": "Источник",
     "rune_th_cap": "Суточный лимит",
     "rune_th_when": "Когда",
@@ -3081,7 +3080,7 @@ const TRANSLATIONS = {
     "st3_h1": "Каждый Бегемот <strong>вторгается на другой сервер</strong> в зафиксированное время и место. <strong>Каждое вторжение длится 90 минут.</strong>",
     "st3_h2": "Вторгающийся Бегемот сносит цитадели и здания альянса. <strong>Неограниченная дальность, игнорирует щиты</strong> — пузырь не защитит твой город.",
     "st3_h3": "<strong>Будь онлайн в окне</strong> — здесь добывается основная часть счёта (и личных очков).",
-    "st3_map_h": "🗺 Карта поля боя",
+    "st3_map_h": "Карта поля боя",
     "map_btn008": "Бегемот на #008",
     "map_btn008_sub": "наш сервер",
     "map_btn087": "Бегемот на #028",
@@ -3090,19 +3089,19 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">■</b> Цитадели врага · порталы врага ◆",
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Получает урон Бегемота",
     "map_desc": "Каждая карта показывает один сервер как домашний со вторгающимся Бегемотом в точке появления. <strong>Неограниченная дальность, игнорирует щиты</strong> — ни один город не в безопасности (оранжевый = под ударом). Хозяева сбивают его сборами; гости контр-сбором держат его в счёте. Переключайся между <strong>#008</strong> и <strong>#028</strong>.",
-    "spawn008_h": "📍 Где Бегемот появляется на #008",
+    "spawn008_h": "Где Бегемот появляется на #008",
     "spawn008_cap": "#028 выбрали это место для своего Бегемота на нашем сервере — координаты <strong>(1212,1182)</strong>. Нажми, чтобы увеличить.",
-    "spawn087_h": "📍 Где наш Бегемот появляется на #028",
+    "spawn087_h": "Где наш Бегемот появляется на #028",
     "spawn087_cap": "Наша зафиксированная точка на #028 (глубоко в землях [JAN]) — координаты <strong>(1351,1281)</strong>. Переместись поближе к окну 19:00. Нажми, чтобы увеличить.",
-    "st3_atk_h": "⚔ Атака вражеского Бегемота",
+    "st3_atk_h": "Атака вражеского Бегемота",
     "st3_a1": "<strong>Урон наносят только сборы</strong> (по 1 000/сек — за сбор, не за марш). Больше отдельных сборов = больше урона; держи на нём как можно больше.",
     "st3_a2": "<strong>Держи сборы долго</strong> — через 5 мин урон растёт на +500 каждые 15 сек. Не давай им распускаться.",
     "st3_a3": "<strong>Переместись на сервер врага</strong>, чтобы присоединиться к наступлению.",
-    "st3_stun_h": "❤ Цикл оглушения / Бессмертной силы",
+    "st3_stun_h": "Цикл оглушения / Бессмертной силы",
     "st3_s1": "При <strong>0 HP</strong> он тратит 1 стак Бессмертной силы, распускает все сборы, <strong>оглушён на 30 сек</strong> (не может атаковать), затем полностью воскресает. Умирает только когда все стаки исчерпаны.",
     "st3_s2": "<strong>3 стака</strong> → ~4 обнуления для убийства. Координируй свежие волны, чтобы обнулять сразу после воскрешения.",
     "st3_s3": "<strong>Защитники:</strong> обнуление их Бегемота рассеивает их сборы и останавливает их очки.",
-    "st3_pts_h": "🎯 Как начисляются очки",
+    "st3_pts_h": "Как начисляются очки",
     "th_action": "Действие",
     "th_points": "Очки",
     "pt1_a": "Наш Бегемот: за 1K урона прочности цитадели",
@@ -3200,7 +3199,7 @@ const TRANSLATIONS = {
     "st2_sched_p": "Quattro finestre fisse da 30 min al giorno (UTC+0). <span style=\"color:#5b8def;font-weight:700;\">Blu = su #008 (nostro)</span>, <span style=\"color:#c43d3d;font-weight:700;\">rosso = su #028</span>. Caselle transfrontaliere si aprono nelle nostre finestre — rischio di azzeramento.",
     "srv008": "#008",
     "srv087": "#028",
-    "st2_purity_h": "⚖ Gara di Purezza della Stirpe",
+    "st2_purity_h": "Gara di Purezza della Stirpe",
     "tug_purity_lbl": "Purezza della Stirpe (rune donate)",
     "tug_purity_cap": "Siamo indietro di ~200K rune sulle donazioni — sono un livello avanti sui buff. Ma guidiamo la gara di punteggio che decide la vittoria, quindi continua a donare e dai tutto nel giorno dell'invasione.",
     "bless_h": "Benedizioni della Stirpe — buff sbloccati (tutti i tipi di unità)",
@@ -3246,7 +3245,7 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Dona man mano</strong> — non accumulare.",
     "st2_cap1": "Prova del Rampollo — tocca l'Élite «Rampollo del Behemoth», poi Attacca/Teletrasporta",
     "st2_cap2": "Coltivazione del Behemoth — accarezza / cura / intrattieni per rune",
-    "st2_income_h": "💰 Entrate rune — limiti giornalieri",
+    "st2_income_h": "Entrate rune — limiti giornalieri",
     "rune_th_src": "Fonte",
     "rune_th_cap": "Limite giorn.",
     "rune_th_when": "Quando",
@@ -3266,7 +3265,7 @@ const TRANSLATIONS = {
     "st3_h1": "Ogni Behemoth <strong>invade l'altro server</strong> all'ora e luogo fissati. <strong>Ogni invasione dura 90 minuti.</strong>",
     "st3_h2": "Il Behemoth invasore distrugge cittadelle ed edifici di alleanza. <strong>Raggio illimitato, ignora gli scudi</strong> — la bolla non protegge la tua città.",
     "st3_h3": "<strong>Sii online nella finestra</strong> — qui si vince la maggior parte del punteggio (e dei punti personali).",
-    "st3_map_h": "🗺 Mappa del campo di battaglia",
+    "st3_map_h": "Mappa del campo di battaglia",
     "map_btn008": "Behemoth su #008",
     "map_btn008_sub": "nostro server",
     "map_btn087": "Behemoth su #028",
@@ -3275,19 +3274,19 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">■</b> Cittadelle nemiche · portali nemici ◆",
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Subisce danno dal Behemoth",
     "map_desc": "Ogni mappa mostra un server come casa col Behemoth invasore al suo spawn. <strong>Raggio illimitato, ignora gli scudi</strong> — nessuna città è al sicuro (arancione = sotto attacco). La casa lo abbatte coi raduni; gli ospiti contro-radunano per tenerlo a far punti. Alterna tra <strong>#008</strong> e <strong>#028</strong>.",
-    "spawn008_h": "📍 Dove appare il Behemoth su #008",
+    "spawn008_h": "Dove appare il Behemoth su #008",
     "spawn008_cap": "#028 ha scelto questo punto per il loro Behemoth sul nostro server — coordinate <strong>(1212,1182)</strong>. Tocca per ingrandire.",
-    "spawn087_h": "📍 Dove appare il nostro Behemoth su #028",
+    "spawn087_h": "Dove appare il nostro Behemoth su #028",
     "spawn087_cap": "Il nostro spawn fissato su #028 (in profondità nel territorio [JAN]) — coordinate <strong>(1351,1281)</strong>. Rilocati vicino per la finestra delle 19:00. Tocca per ingrandire.",
-    "st3_atk_h": "⚔ Attaccare il Behemoth nemico",
+    "st3_atk_h": "Attaccare il Behemoth nemico",
     "st3_a1": "<strong>Solo i raduni gli fanno danno</strong> (1.000/sec ciascuno — per raduno, non per marcia). Più raduni separati = più danno; tienine il più possibile su di lui.",
     "st3_a2": "<strong>Mantieni i raduni a lungo</strong> — dopo 5 min il danno sale di +500 ogni 15 sec. Non lasciarli sciogliere.",
     "st3_a3": "<strong>Rilocati sul server nemico</strong> per unirti all'offensiva.",
-    "st3_stun_h": "❤ Il ciclo stordimento / Forza Immortale",
+    "st3_stun_h": "Il ciclo stordimento / Forza Immortale",
     "st3_s1": "A <strong>0 HP</strong> consuma 1 carica di Forza Immortale, scioglie tutti i raduni, <strong>è stordito per 30s</strong> (non può attaccare), poi rinasce pieno. Muore solo quando tutte le cariche sono finite.",
     "st3_s2": "<strong>3 cariche</strong> → ~4 azzeramenti per ucciderlo. Coordina ondate fresche per riazzerarlo appena rinasce.",
     "st3_s3": "<strong>Difensori:</strong> azzerare il loro disperde i loro raduni e ferma i loro punti.",
-    "st3_pts_h": "🎯 Come si segnano i punti",
+    "st3_pts_h": "Come si segnano i punti",
     "th_action": "Azione",
     "th_points": "Punti",
     "pt1_a": "Nostro Behemoth: per 1K di danno durabilità a una cittadella",
@@ -3385,7 +3384,7 @@ const TRANSLATIONS = {
     "st2_sched_p": "Quatro janelas fixas de 30 min por dia (UTC+0). <span style=\"color:#5b8def;font-weight:700;\">Azul = em #008 (nosso)</span>, <span style=\"color:#c43d3d;font-weight:700;\">vermelho = em #028</span>. Casas transfronteiriças abrem nas nossas janelas — risco de zeramento.",
     "srv008": "#008",
     "srv087": "#028",
-    "st2_purity_h": "⚖ Corrida de Pureza da Linhagem",
+    "st2_purity_h": "Corrida de Pureza da Linhagem",
     "tug_purity_lbl": "Pureza da Linhagem (runas doadas)",
     "tug_purity_cap": "Estamos ~200K runas atrás nas doações — eles estão um nível à frente em buffs. Mas lideramos a corrida de pontos que decide a vitória, então continue doando e dê tudo no dia da invasão.",
     "bless_h": "Bênçãos da Linhagem — buffs desbloqueados (todos os tipos de unidade)",
@@ -3431,7 +3430,7 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Doe conforme ganha</strong> — não acumule.",
     "st2_cap1": "Provação do Descendente — toque na Elite «Descendente do Behemoth», depois Atacar/Teleportar",
     "st2_cap2": "Cultivo do Behemoth — acaricie / cuide / entretenha por runas",
-    "st2_income_h": "💰 Renda de runas — limites diários",
+    "st2_income_h": "Renda de runas — limites diários",
     "rune_th_src": "Fonte",
     "rune_th_cap": "Limite diário",
     "rune_th_when": "Quando",
@@ -3451,7 +3450,7 @@ const TRANSLATIONS = {
     "st3_h1": "Cada Behemoth <strong>invade o outro servidor</strong> na hora e local fixados. <strong>Cada invasão dura 90 minutos.</strong>",
     "st3_h2": "O Behemoth invasor destrói cidadelas e edifícios de aliança. <strong>Alcance ilimitado, ignora escudos</strong> — a bolha não protege sua cidade.",
     "st3_h3": "<strong>Esteja online na janela</strong> — é aqui que se ganha a maior parte da pontuação (e dos pontos pessoais).",
-    "st3_map_h": "🗺 Mapa do campo de batalha",
+    "st3_map_h": "Mapa do campo de batalha",
     "map_btn008": "Behemoth em #008",
     "map_btn008_sub": "nosso servidor",
     "map_btn087": "Behemoth em #028",
@@ -3460,19 +3459,19 @@ const TRANSLATIONS = {
     "leg_enemy": "<b style=\"color:#c43d3d;\">■</b> Cidadelas inimigas · portais inimigos ◆",
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Recebendo dano do Behemoth",
     "map_desc": "Cada mapa mostra um servidor como casa com o Behemoth invasor no seu spawn. <strong>Alcance ilimitado, ignora escudos</strong> — nenhuma cidade está segura (laranja = sob fogo). A casa o derruba com reuniões; os visitantes contra-reúnem para mantê-lo pontuando. Alterne entre <strong>#008</strong> e <strong>#028</strong>.",
-    "spawn008_h": "📍 Onde o Behemoth aparece em #008",
+    "spawn008_h": "Onde o Behemoth aparece em #008",
     "spawn008_cap": "#028 escolheu este ponto para o Behemoth deles no nosso servidor — coordenadas <strong>(1212,1182)</strong>. Toque para ampliar.",
-    "spawn087_h": "📍 Onde nosso Behemoth aparece em #028",
+    "spawn087_h": "Onde nosso Behemoth aparece em #028",
     "spawn087_cap": "Nosso spawn fixado em #028 (fundo no território [JAN]) — coordenadas <strong>(1351,1281)</strong>. Realoque perto para a janela das 19:00. Toque para ampliar.",
-    "st3_atk_h": "⚔ Atacando o Behemoth inimigo",
+    "st3_atk_h": "Atacando o Behemoth inimigo",
     "st3_a1": "<strong>Só reuniões causam dano</strong> (1.000/seg cada — por reunião, não por marcha). Mais reuniões separadas = mais dano; mantenha o máximo possível sobre ele.",
     "st3_a2": "<strong>Mantenha as reuniões por muito tempo</strong> — após 5 min o dano sobe +500 a cada 15s. Não deixe se dissolverem.",
     "st3_a3": "<strong>Realoque para o servidor inimigo</strong> para se juntar à ofensiva.",
-    "st3_stun_h": "❤ O ciclo de atordoamento / Força Imortal",
+    "st3_stun_h": "O ciclo de atordoamento / Força Imortal",
     "st3_s1": "Com <strong>0 HP</strong> consome 1 pilha de Força Imortal, dissolve todas as reuniões, <strong>fica atordoado por 30s</strong> (não pode atacar), depois revive cheio. Só morre quando todas as pilhas acabam.",
     "st3_s2": "<strong>3 pilhas</strong> → ~4 zeramentos para matar. Coordene ondas novas para zerá-lo de novo assim que reviver.",
     "st3_s3": "<strong>Defensores:</strong> zerar o deles dispersa as reuniões deles e interrompe a pontuação.",
-    "st3_pts_h": "🎯 Como os pontos são marcados",
+    "st3_pts_h": "Como os pontos são marcados",
     "th_action": "Ação",
     "th_points": "Pontos",
     "pt1_a": "Nosso Behemoth: por 1K de dano de durabilidade a uma cidadela",
@@ -3645,7 +3644,7 @@ function update() {
 var STAGE_COLORS = {
   mm:    { bright: '#94a3b8', dark: '#3a4256', label: 'MATCHMAKING' },     // grey
   tame:  { bright: '#8a2d54', dark: '#4a1f30', label: 'BEAST TAMING' },    // accent wine
-  atk:   { bright: '#c23b6d', dark: '#5c2338', label: 'ATTACK-DEFENSE' }   // brighter accent
+  atk:   { bright: '#ff4d8f', dark: '#5c2338', label: 'ATTACK-DEFENSE' }   // much brighter accent
 };
 var STAGE_NAMES = {
   en: { mm: 'Matchmaking', tame: 'Beast Taming', atk: 'Attack-Defense' },
@@ -3887,18 +3886,20 @@ function updateScionSchedule(now) {
       if (tag) tag.textContent = Ldone.passed;
     });
     _scionWasLive = false;
-    updateScionBadge(now, 'done');
+    updateScionBadge(now, 'inactive');
     return;
   }
-  // Before the Trial opens: show the daily windows as upcoming (no live, no modal).
+  // Before the Trial opens (before Day 2 00:00 UTC): grey the whole schedule out,
+  // no live/next, no modal — same muted look as after it closes.
   if (todayStr < SCION_FIRST_DATE) {
     els.forEach(function (el) {
-      el.classList.remove('is-live', 'is-next', 'is-passed');
+      el.classList.remove('is-live', 'is-next');
+      el.classList.add('is-passed');
       var tag = el.querySelector('.slot-state');
       if (tag) tag.textContent = '';
     });
     _scionWasLive = false;
-    updateScionBadge(now, 'upcoming');
+    updateScionBadge(now, 'inactive');
     return;
   }
   var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
@@ -3943,22 +3944,23 @@ function updateScionBadge(now, mode) {
   if (!badge || !lbl) return;
   var d = new Date(now);
   var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
-  var msIntoMin = (d.getUTCSeconds() * 1000 + d.getUTCMilliseconds());
-  // Trial done for the event → static idle "Scion" with no pulse.
-  if (mode === 'done') { badge.classList.add('is-idle'); lbl.textContent = 'Scion'; return; }
+  // Outside the Trial's active days (before Day 2 / after Day 5) → n/a, no pulse.
+  if (mode === 'inactive') { badge.classList.add('is-idle'); lbl.textContent = 'n/a'; return; }
   // Live: pulse + show remaining time in the current window.
   var liveWin = SCION_WINDOWS.find(function (w) { return nowMin >= w[0] && nowMin < w[1]; });
   if (liveWin) {
     badge.classList.remove('is-idle');
-    var msLeft = (liveWin[1] - nowMin) * 60000;
-    lbl.textContent = fmtDur(msLeft);
+    lbl.textContent = fmtDur((liveWin[1] - nowMin) * 60000);
     return;
   }
-  // Idle: show the next window's start clock (UTC).
+  // Idle on an active day: show the next window today, if any remain.
   badge.classList.add('is-idle');
   var next = SCION_WINDOWS.find(function (w) { return nowMin < w[0]; });
-  if (next) lbl.textContent = fmtClock(next[0]);
-  else lbl.textContent = fmtClock(SCION_WINDOWS[0][0]); // tomorrow's first
+  if (next) { lbl.textContent = fmtClock(next[0]); return; }
+  // No more windows today — the next is tomorrow's first, but only if tomorrow is
+  // still an active Trial day; otherwise there is no next → n/a.
+  var tomorrow = utcDateStr(now + 86400000);
+  lbl.textContent = (tomorrow <= SCION_LAST_DATE) ? fmtClock(SCION_WINDOWS[0][0]) : 'n/a';
 }
 
 function openScionModal() {
