@@ -145,7 +145,7 @@
     font-weight:700; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
   .stageline-dots { display:flex; align-items:flex-start; }
   .stageline-node { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; }
-  .stageline-node .sl-line { position:absolute; top:7px; width:100%; height:3px; }
+  .stageline-node .sl-line { position:absolute; top:7px; left:50%; width:100%; height:3px; }
   .stageline-node .sl-dot { width:16px; height:16px; border-radius:50%; border:2px solid; position:relative; z-index:2; }
   .stageline-node.now .sl-dot { animation:slPulse 1.4s ease-in-out infinite; }
   @keyframes slPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(var(--kvk-accent-rgb),0.55);} 50%{ box-shadow:0 0 0 7px rgba(var(--kvk-accent-rgb),0);} }
@@ -3640,10 +3640,12 @@ function update() {
 // Phases: Matchmaking (grey) · Beast Taming (accent) · Attack-Defense (bright accent).
 // Recovery is intentionally excluded. The current phase is derived from the stage
 // boundary dates; its dot pulses and drives the .tab-btn.is-now highlight.
+// bright = reached/current spans · dark = not-yet-reached (SOLID colors, never
+// translucent, so the connecting line never shows through a dot).
 var STAGE_COLORS = {
-  mm:    { bright: '#94a3b8', dark: '#3a4256', label: 'MATCHMAKING' },
-  tame:  { bright: 'var(--kvk-accent)', dark: 'rgba(var(--kvk-accent-rgb),0.28)', label: 'BEAST TAMING' },
-  atk:   { bright: '#e05a8a', dark: 'rgba(224,90,138,0.30)', label: 'ATTACK-DEFENSE' } // brighter accent
+  mm:    { bright: '#94a3b8', dark: '#3a4256', label: 'MATCHMAKING' },     // grey
+  tame:  { bright: '#8a2d54', dark: '#4a1f30', label: 'BEAST TAMING' },    // accent wine
+  atk:   { bright: '#c23b6d', dark: '#5c2338', label: 'ATTACK-DEFENSE' }   // brighter accent
 };
 var STAGE_NAMES = {
   en: { mm: 'Matchmaking', tame: 'Beast Taming', atk: 'Attack-Defense' },
@@ -3659,6 +3661,7 @@ var STAGE_NAMES = {
   it: { mm: 'Abbinamento', tame: 'Addestramento', atk: 'Attacco-Difesa' },
   pt: { mm: 'Emparelhamento', tame: 'Domação', atk: 'Ataque-Defesa' }
 };
+var DAY_WORD = { en:'Day', es:'Día', fr:'Jour', ko:'일차', ja:'日目', zh:'第', ar:'يوم', da:'Dag', de:'Tag', ru:'День', it:'Giorno', pt:'Dia' };
 function behStageIndex(now) {
   // 0=matchmaking, 1=beast taming, 2=attack-defense (>=). -1 before event.
   if (now < EVENT_START) return -1;
@@ -3669,49 +3672,83 @@ function behStageIndex(now) {
 function utcDateStr(ms) { var d = new Date(ms); return d.getUTCFullYear() + '-' + String(d.getUTCMonth()+1).padStart(2,'0') + '-' + String(d.getUTCDate()).padStart(2,'0'); }
 function utcShort(ms) { return new Date(ms).toLocaleDateString('en-US', { month:'short', day:'numeric', timeZone:'UTC' }); }
 
+var DAY = 86400000;
+// One dot PER DAY, grouped into phases (mirrors Desolate Desert's per-day StageLine).
+// Matchmaking = the days before Beast Taming · Beast Taming = TAMING_START→ATKDEF_START
+// · Attack-Defense = ATKDEF_START→EVENT_END. Built from the milestone dates so it
+// always reflects the real schedule (1 MM / 3 tame / 2 atk for #028).
+function behStageDays() {
+  var days = [];
+  function addRange(fromMs, toMs, zone, tab) {
+    for (var t = fromMs; t < toMs - 1; t += DAY) {
+      days.push({ zone: zone, tab: tab, startMs: t });
+    }
+  }
+  addRange(EVENT_START,  TAMING_START, 'mm',   's1');
+  addRange(TAMING_START, ATKDEF_START, 'tame', 's2');
+  addRange(ATKDEF_START, EVENT_END,    'atk',  's3');
+  return days;
+}
+// Index of the day-dot that "now" falls on; -1 before the event, last dot once done.
+function behDayIndex(now, days) {
+  if (now < EVENT_START) return -1;
+  if (now >= EVENT_END) return days.length - 1;
+  for (var i = days.length - 1; i >= 0; i--) {
+    if (now >= days[i].startMs) return i;
+  }
+  return -1;
+}
 function renderStageLine(now) {
   var host = document.getElementById('stageLine');
   if (!host) return;
   var names = STAGE_NAMES[currentLang] || STAGE_NAMES.en;
-  var cur = behStageIndex(now);
-  var eventDone = now >= EVENT_END;
-  var liveIdx = eventDone ? 2 : (cur < 0 ? -1 : cur); // before start: nothing lit
-  var nodes = [
-    { key:'mm',   name:names.mm,   sub:utcShort(EVENT_START),  tab:'s1' },
-    { key:'tame', name:names.tame, sub:utcShort(TAMING_START), tab:'s2' },
-    { key:'atk',  name:names.atk,  sub:utcShort(ATKDEF_START), tab:'s3' }
-  ];
-  var N = nodes.length;
-  // phase labels centered over each dot
-  var labelsHtml = nodes.map(function(n, i){
-    var z = STAGE_COLORS[n.key];
-    var reached = liveIdx >= i;
-    var pct = ((i + 0.5) / N) * 100;
-    return '<span style="left:' + pct + '%;color:' + (reached ? z.bright : z.dark) + '">' + z.label + '</span>';
+  var days = behStageDays();
+  var N = days.length;
+  var cur = behDayIndex(now, days);
+  var reached = function (i) { return cur >= 0 && i <= cur; };
+  var dotPct = function (i) { return ((i + 0.5) / N) * 100; };
+
+  // Contiguous phase runs, so each phase label centers over its span of dots.
+  var runs = [];
+  days.forEach(function (d, i) {
+    var last = runs[runs.length - 1];
+    if (last && last.zone === d.zone) last.lastIdx = i;
+    else runs.push({ zone: d.zone, firstIdx: i, lastIdx: i });
+  });
+  var labelsHtml = runs.map(function (r) {
+    var z = STAGE_COLORS[r.zone];
+    var anyReached = cur >= r.firstIdx;
+    var centerPct = (dotPct(r.firstIdx) + dotPct(Math.min(r.lastIdx + 1, N - 1))) / 2;
+    return '<span style="left:' + centerPct + '%;color:' + (anyReached ? z.bright : z.dark) + '">' + z.label + '</span>';
   }).join('');
-  var dotsHtml = nodes.map(function(n, i){
-    var z = STAGE_COLORS[n.key];
-    var past = i < liveIdx, nowNode = i === liveIdx, future = i > liveIdx;
-    var dotColor = (liveIdx >= i) ? z.bright : z.dark;      // reached = bright, else dark (solid, not transparent)
-    var prevZ = i > 0 ? STAGE_COLORS[nodes[i-1].key] : z;
-    var lineColor = (liveIdx >= i) ? prevZ.bright : prevZ.dark;
-    var lineHtml = i > 0 ? '<div class="sl-line" style="right:50%;background:' + lineColor + '"></div>' : '';
-    var nameCol = nowNode ? 'var(--kvk-accent)' : (past ? '#64748b' : (future ? '#8a90a5' : '#e8eaf0'));
-    return '<button type="button" class="stageline-node' + (nowNode ? ' now' : '') + '" data-tab="' + n.tab + '" ' +
-             'style="font:inherit;cursor:pointer;background:none;border:none;padding:5px 2px;">' +
+
+  var dayWord = (DAY_WORD[currentLang] || DAY_WORD.en);
+  var dotsHtml = days.map(function (d, i) {
+    var z = STAGE_COLORS[d.zone];
+    var nowNode = i === cur;
+    var dotOn = reached(i);
+    var dotColor = dotOn ? z.bright : z.dark;    // solid; current dot pulses via .now
+    var lineOn = cur >= i;                       // line to the NEXT dot; bright once reached
+    var lineColor = lineOn ? z.bright : z.dark;
+    var lineHtml = i < N - 1 ? '<div class="sl-line" style="background:' + lineColor + '"></div>' : '';
+    var dayLbl = dayWord + ' ' + (i + 1);        // event-day progression
+    var dateLbl = utcShort(d.startMs);
+    var nameCol = dotOn ? z.bright : '#64748b';
+    return '<button type="button" class="stageline-node' + (nowNode ? ' now' : '') + '" data-tab="' + d.tab + '" ' +
+             'style="font:inherit;cursor:pointer;background:none;border:none;padding:0;">' +
              lineHtml +
              '<div class="sl-dot" style="background:' + dotColor + ';border-color:' + dotColor + '"></div>' +
-             '<div class="sl-day" style="color:' + (liveIdx>=i ? z.bright : z.dark) + '">' + n.sub + '</div>' +
-             '<div class="sl-name" style="color:' + nameCol + '">' + n.name + '</div>' +
+             '<div class="sl-day" style="color:' + nameCol + '">' + dayLbl + '</div>' +
+             '<div class="sl-name" style="color:' + (dotOn ? '#94a3b8' : '#64748b') + '">' + dateLbl + '</div>' +
            '</button>';
   }).join('');
+
   host.innerHTML = '<div class="stageline-labels">' + labelsHtml + '</div><div class="stageline-dots">' + dotsHtml + '</div>';
-  // clicking a node jumps to its stage tab
-  host.querySelectorAll('.stageline-node').forEach(function(btn){
-    btn.onclick = function(){ if (window.behSwitchTab) window.behSwitchTab(btn.getAttribute('data-tab')); };
+  host.querySelectorAll('.stageline-node').forEach(function (btn) {
+    btn.onclick = function () { if (window.behSwitchTab) window.behSwitchTab(btn.getAttribute('data-tab')); };
   });
-  // mark the live stage's tab as .is-now
-  var nowTab = liveIdx >= 0 && !eventDone ? nodes[liveIdx].tab : null;
+  // mark the live phase's tab as .is-now
+  var nowTab = (cur >= 0 && now < EVENT_END) ? days[cur].tab : null;
   document.querySelectorAll('.tab-btn').forEach(function (b) {
     b.classList.toggle('is-now', b.getAttribute('data-tab') === nowTab);
   });
