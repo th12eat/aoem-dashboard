@@ -55,7 +55,7 @@
     'primordial_conflict_dashboard.html': 'Primordial Conflict',
     'kvk_history.html': 'KvK History',
     'horse_breeding.html': 'Horse Breeding',
-    'behemoth_conquest_flyer.html': 'Behemoth Conquest',
+    'behemoth_conquest.html': 'Behemoth Conquest',
     'day6_showdown_flyer.html': 'Day 6 Showdown',
     'order_workshop_flyer.html': 'Order Workshop',
     'golden_expedition_flyer.html': 'Golden Expedition',
