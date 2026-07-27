@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "opponent": "#087",
-  "startLabel": "Jun 22",
-  "endLabel": "Jun 30",
+  "opponent": "#028",
+  "startLabel": "Jul 27",
+  "endLabel": "Aug 4",
   "timezone": "UTC+0",
-  "eventStartISO": "2026-06-22T00:00:00Z",
-  "eventEndISO": "2026-06-30T00:00:00Z",
-  "scoreUs": "37.4B",
-  "scoreThem": "57.8B",
-  "result": "Loss"
+  "eventStartISO": "2026-07-27T00:00:00Z",
+  "eventEndISO": "2026-08-04T00:00:00Z",
+  "scoreUs": "0",
+  "scoreThem": "0",
+  "result": "TBD"
 }
