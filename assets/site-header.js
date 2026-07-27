@@ -45,6 +45,15 @@
   // language config registered by the current page (null = no switcher shown)
   var langCfg = null; // { codes:[...], current, onChange }
 
+  // ---- persisted language preference (shared across all Era 8 pages) ----
+  var LANG_STORE_KEY = 'era8_lang';
+  function savedLang() {
+    try { return window.localStorage.getItem(LANG_STORE_KEY); } catch (e) { return null; }
+  }
+  function saveLang(code) {
+    try { window.localStorage.setItem(LANG_STORE_KEY, code); } catch (e) {}
+  }
+
   // ---- breadcrumb page names, keyed by filename ----
   // The brand renders "◆ ERA 8 COMMAND › <page>". Home (index.html) shows no crumb.
   // A page can override with <body data-page-name="…"> or SiteHeader.setPageName().
@@ -201,6 +210,7 @@
     // language dropdown: change fires the page's registered handler
     var langSel = bar.querySelector('#ehdrLangSel');
     langSel.addEventListener('change', function () {
+      saveLang(langSel.value); // remember across pages/visits
       if (langCfg && typeof langCfg.onChange === 'function') langCfg.onChange(langSel.value);
       if (langCfg) langCfg.current = langSel.value;
     });
@@ -252,8 +262,16 @@
   window.SiteHeader = {
     setLanguages: function (cfg) {
       if (!cfg || !cfg.codes) { langCfg = null; renderLang(); return; }
-      langCfg = { codes: cfg.codes.slice(), current: cfg.current || cfg.codes[0], onChange: cfg.onChange };
+      var current = cfg.current || cfg.codes[0];
+      // Restore a previously chosen language (if this page supports it) so the
+      // preference persists across pages and return visits.
+      var saved = savedLang();
+      var applySaved = saved && saved !== current && cfg.codes.indexOf(saved) !== -1;
+      if (applySaved) current = saved;
+      langCfg = { codes: cfg.codes.slice(), current: current, onChange: cfg.onChange };
       renderLang();
+      // Tell the page to actually switch into the restored language on load.
+      if (applySaved && typeof cfg.onChange === 'function') cfg.onChange(current);
     },
     setCurrentLanguage: function (code) {
       if (!langCfg) return;
