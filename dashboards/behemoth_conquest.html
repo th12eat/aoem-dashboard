@@ -834,7 +834,7 @@
     <!-- bottom-right: Trial of Scion badge -->
     <div class="hdr-pills">
       <a href="#scion-schedule" class="scion-badge is-idle" id="scionBadge" title="Trial of Scion — jump to schedule">
-        <span class="tb-ico">&#129704;</span><span class="tb-lvl" id="scionBadgeLbl">Scion</span>
+        <span class="tb-ico">&#129704;</span><span class="tb-lvl" id="scionBadgeLbl">Next Trial: n/a</span>
       </a>
     </div>
     <!-- LANG SWITCHER moved to the shared header (see registration at end of body) -->
@@ -3938,29 +3938,45 @@ function fmtClock(min) {
   var h = Math.floor(min / 60), m = min % 60;
   return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
 }
+// Badge label prefixes: "Next Trial: <time|n/a>" idle · "Trial Live: <countdown>" live.
+var SCION_BADGE_LABELS = {
+  en: { next: 'Next Trial', live: 'Trial Live' },
+  es: { next: 'Próxima Prueba', live: 'Prueba en Curso' },
+  fr: { next: 'Prochaine Épreuve', live: 'Épreuve en Cours' },
+  ko: { next: '다음 시험', live: '시험 진행 중' },
+  ja: { next: '次の試練', live: '試練 進行中' },
+  zh: { next: '下次试炼', live: '试炼进行中' },
+  ar: { next: 'التجربة التالية', live: 'التجربة جارية' },
+  da: { next: 'Næste Prøve', live: 'Prøve I Gang' },
+  de: { next: 'Nächste Prüfung', live: 'Prüfung Läuft' },
+  ru: { next: 'След. Испытание', live: 'Испытание Идёт' },
+  it: { next: 'Prossima Prova', live: 'Prova in Corso' },
+  pt: { next: 'Próxima Prova', live: 'Prova ao Vivo' }
+};
 function updateScionBadge(now, mode) {
   var badge = document.getElementById('scionBadge');
   var lbl = document.getElementById('scionBadgeLbl');
   if (!badge || !lbl) return;
+  var B = SCION_BADGE_LABELS[currentLang] || SCION_BADGE_LABELS.en;
   var d = new Date(now);
   var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
   // Outside the Trial's active days (before Day 2 / after Day 5) → n/a, no pulse.
-  if (mode === 'inactive') { badge.classList.add('is-idle'); lbl.textContent = 'n/a'; return; }
+  if (mode === 'inactive') { badge.classList.add('is-idle'); lbl.textContent = B.next + ': n/a'; return; }
   // Live: pulse + show remaining time in the current window.
   var liveWin = SCION_WINDOWS.find(function (w) { return nowMin >= w[0] && nowMin < w[1]; });
   if (liveWin) {
     badge.classList.remove('is-idle');
-    lbl.textContent = fmtDur((liveWin[1] - nowMin) * 60000);
+    lbl.textContent = B.live + ': ' + fmtDur((liveWin[1] - nowMin) * 60000);
     return;
   }
   // Idle on an active day: show the next window today, if any remain.
   badge.classList.add('is-idle');
   var next = SCION_WINDOWS.find(function (w) { return nowMin < w[0]; });
-  if (next) { lbl.textContent = fmtClock(next[0]); return; }
+  if (next) { lbl.textContent = B.next + ': ' + fmtClock(next[0]); return; }
   // No more windows today — the next is tomorrow's first, but only if tomorrow is
   // still an active Trial day; otherwise there is no next → n/a.
   var tomorrow = utcDateStr(now + 86400000);
-  lbl.textContent = (tomorrow <= SCION_LAST_DATE) ? fmtClock(SCION_WINDOWS[0][0]) : 'n/a';
+  lbl.textContent = B.next + ': ' + ((tomorrow <= SCION_LAST_DATE) ? fmtClock(SCION_WINDOWS[0][0]) : 'n/a');
 }
 
 function openScionModal() {
