@@ -886,12 +886,12 @@
       </div>
     </div>
     <div class="stat-row">
-      <div class="stat-box"><div class="val behe-val" data-uskey="ref_stage_us" data-themkey="ref_stage_them" data-us-en="Adult" data-them-en="Adult">Adult</div><div class="lbl" data-i18n="ref_s1_l">Stage</div></div>
-      <div class="stat-box"><div class="val behe-val" data-us="9,375/s" data-them="9,375/s">9,375/s</div><div class="lbl" data-i18n="ref_s2_l">Siege</div></div>
-      <div class="stat-box"><div class="val behe-val" data-us="3.75M" data-them="3.75M">3.75M</div><div class="lbl" data-i18n="ref_s3_l">Health</div></div>
-      <div class="stat-box"><div class="val behe-val" data-us="3&times;" data-them="3&times;">3&times;</div><div class="lbl" data-i18n="ref_s4_l">Undying Stacks</div></div>
+      <div class="stat-box"><div class="val behe-val" data-uskey="ref_stage_us" data-themkey="ref_stage_them" data-us-en="Juvenile" data-them-en="Juvenile">Juvenile</div><div class="lbl" data-i18n="ref_s1_l">Stage</div></div>
+      <div class="stat-box"><div class="val behe-val" data-us="&mdash;" data-them="&mdash;">&mdash;</div><div class="lbl" data-i18n="ref_s2_l">Siege</div></div>
+      <div class="stat-box"><div class="val behe-val" data-us="&mdash;" data-them="&mdash;">&mdash;</div><div class="lbl" data-i18n="ref_s3_l">Health</div></div>
+      <div class="stat-box"><div class="val behe-val" data-us="0&times;" data-them="0&times;">0&times;</div><div class="lbl" data-i18n="ref_s4_l">Undying Stacks</div></div>
     </div>
-    <p style="font-size:12px;color:var(--text-muted);" data-i18n="ref_note">Siege scores <strong>~0.3 kingdom pts per durability</strong> &mdash; <strong>2,812,500 pts per attack</strong> at the Adult rate. Grew Juvenile &rarr; Adolescent &rarr; Adult as the Behemoth was cultivated.</p>
+    <p style="font-size:12px;color:var(--text-muted);" data-i18n="ref_note">Both Behemoths start <strong>Juvenile</strong> &mdash; they grow Juvenile &rarr; Adolescent &rarr; Adult through Beast Taming (Days 2&ndash;4). Siege durability &amp; Undying Stacks build as each side cultivates; stats update as the event progresses.</p>
   </div>
 
   <!-- TAB BAR -->
@@ -3656,8 +3656,8 @@ function updatePhase(now) {
 //   6: hoof1 fort1   7: atk2 def2   8: hp2   9: hoof2 fort2   10: dmg2
 // (Defaults Undying Force / Wild Healing are always owned and need no entry.)
 var BLESS_OWNED = {
-  us:   ['dmg1', 'atk1', 'def1', 'hp1', 'ratk', 'rdef', 'wrally', 'hoof1', 'fort1'],                       // have Iron Hoof I / Mobile Fortress I; filling Wild Attack/Defense II (step 7)
-  them: ['dmg1', 'atk1', 'def1', 'hp1', 'ratk', 'rdef', 'wrally', 'hoof1', 'fort1', 'atk2', 'def2', 'hp2'] // have Wild Health II; filling Iron Hoof/Mobile Fortress II (step 9)
+  us:   [], // event start: only the 2 defaults (Undying Force + Wild Healing); Wild Damage I (step 1) is next to donate
+  them: [] // same — both servers start with just the 2 defaults
 };
 // Ordered list of steps -> the node IDs that compose each step.
 var BLESS_STEPS = [
