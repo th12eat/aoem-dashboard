@@ -101,6 +101,28 @@
 const { useState, useCallback, useMemo, useEffect, useRef } = React;
 
 /* ═══════════════════════════════════════════════════
+   I18N — translate-by-source-string
+   Each non-English table maps an English source string → its translation.
+   t(en) returns the current language's translation, or the English source
+   itself when missing (so untranslated strings always render readably).
+   Module-level CUR_LANG lets data-const strings translate at render time via
+   t(...) at their use site. App re-renders on language change.
+   ═══════════════════════════════════════════════════ */
+const DD_LANGUAGES = [
+  "en","es","fr","ko","ja","zh_hk","zh_cn","pt","sv","fi","nb","nl","de","ar","si","ta","hi","da","ru","it"
+];
+const DD_RTL = { ar: true };
+let DD_T = {};                 // { lang: { "English": "translation", ... } }
+let CUR_LANG = "en";
+// Global translate helper. Named T (capital) to avoid colliding with the many
+// local `t` loop/index bindings elsewhere in this file.
+function T(en) {
+  if (CUR_LANG === "en") return en;
+  const tbl = DD_T[CUR_LANG];
+  return (tbl && tbl[en] !== undefined) ? tbl[en] : en;
+}
+
+/* ═══════════════════════════════════════════════════
    EVENT DATA
    ═══════════════════════════════════════════════════ */
 let EVENT_CONFIG = {
@@ -173,20 +195,20 @@ const ZONES = [
 // the stage covers; `startISO` = when it opens (drives the live indicator).
 // zone key drives the connecting-line + dot color for each stage.
 const STAGES = [
-  { key: "d1", label: "Strongholds in Z1",              days: [1],       startISO: "2026-07-06T00:00:00Z", zone: "z1" },
-  { key: "d2", label: "Z2 Gates Open & Pillar Cities",  days: [2],       startISO: "2026-07-07T00:00:00Z", zone: "z2" },
-  { key: "d345", label: "L/R Eye Gates Open & Tower of Rotation", days: [3,4,5], startISO: "2026-07-08T00:00:00Z", zone: "z2" },
-  { key: "d6", label: "Z3 Gates Open",                  days: [6],       startISO: "2026-07-11T00:00:00Z", zone: "z3" },
-  { key: "d7", label: "Aaru Fight",                     days: [7],       startISO: "2026-07-12T00:00:00Z", zone: "z3" },
+  { key: "d1", label: T("Strongholds in Z1"),              days: [1],       startISO: "2026-07-06T00:00:00Z", zone: "z1" },
+  { key: "d2", label: T("Z2 Gates Open & Pillar Cities"),  days: [2],       startISO: "2026-07-07T00:00:00Z", zone: "z2" },
+  { key: "d345", label: T("L/R Eye Gates Open & Tower of Rotation"), days: [3,4,5], startISO: "2026-07-08T00:00:00Z", zone: "z2" },
+  { key: "d6", label: T("Z3 Gates Open"),                  days: [6],       startISO: "2026-07-11T00:00:00Z", zone: "z3" },
+  { key: "d7", label: T("Aaru Fight"),                     days: [7],       startISO: "2026-07-12T00:00:00Z", zone: "z3" },
 ];
 // stage zone colors: Z1 purple, Z2 teal, Z3 pink (placeholder palette — easy to retune).
 // `bright` = reached/current spans; `dark` = not-yet-reached spans; `label` = legend text.
 // Zone palette matches the PvE Glossary: Z1 beige, Z2 bright purple, Z3 bright orange.
 const STAGE_ZONE_COLOR = { z1: "#d4a574", z2: "#7c3aed", z3: "#f59e0b" };
 const STAGE_ZONE = {
-  z1: { bright: "#d4a574", dark: "#5a4630", label: "Zone 1" },
-  z2: { bright: "#7c3aed", dark: "#3a2160", label: "Zone 2" },
-  z3: { bright: "#f59e0b", dark: "#654206", label: "Zone 3" },
+  z1: { bright: "#d4a574", dark: "#5a4630", label: T("Zone 1") },
+  z2: { bright: "#7c3aed", dark: "#3a2160", label: T("Zone 2") },
+  z3: { bright: "#f59e0b", dark: "#654206", label: T("Zone 3") },
 };
 
 // Rules of Engagement — per opposing server, whether we FIGHT (true) or leave alone
@@ -194,11 +216,11 @@ const STAGE_ZONE = {
 //   0 = grey (retaliate only) · all = red (fight everywhere) · >=half = orange ·
 //   <half but >0 = yellow · full ally intent (explicit) = green.
 const ROE_COLUMNS = [
-  { key: "openField", label: "Open Field" },
-  { key: "riverland", label: "Peaceful Riverland" },
-  { key: "farms", label: "Farms" },
-  { key: "citadels", label: "Citadels" },
-  { key: "citiesGates", label: "Cities / Gates" },
+  { key: "openField", label: T("Open Field") },
+  { key: "riverland", label: T("Peaceful Riverland") },
+  { key: "farms", label: T("Farms") },
+  { key: "citadels", label: T("Citadels") },
+  { key: "citiesGates", label: T("Cities / Gates") },
 ];
 // fight: map of column->bool. ally:true means green regardless (we side with them).
 const DIPLOMACY_ROE = [
@@ -349,7 +371,7 @@ function KingdomBar({ compact }) {
   const ptsFor = (srv) => { const row = (KINGDOM_SCOREBOARD || []).find(k => k.server === srv); return row ? Number(String(row.points).replace(/,/g, "")) : 0; };
   const segs = ORDER.map(srv => ({ srv, g: GRAD[srv], pts: ptsFor(srv), us: srv === "Era 8" }));
   const total = segs.reduce((s, x) => s + x.pts, 0);
-  if (!total) return <div style={{ fontSize: "12px", color: "#64748b" }}>Awaiting scoreboard data.</div>;
+  if (!total) return <div style={{ fontSize: "12px", color: "#64748b" }}>{T("Awaiting scoreboard data.")}</div>;
   const fmt = (n) => n >= 1e9 ? (n/1e9).toFixed(2) + "B" : n >= 1e6 ? (n/1e6).toFixed(0) + "M" : n.toLocaleString();
   return (
     <div>
@@ -433,23 +455,23 @@ function DiplomacyStatus() {
   // bright, high-visibility palette
   const GREEN = "#22c55e", RED = "#ef4444", GREY = "#9ca3af", ORANGE = "#f97316", YELLOW = "#facc15";
   const stance = (row) => {
-    if (row.ally) return { color: GREEN, label: "Ally", desc: "Side with them everywhere" };
+    if (row.ally) return { color: GREEN, label: T("Ally"), desc: "Side with them everywhere" };
     const n = ROE_COLUMNS.filter(c => row.fight[c.key]).length;
     const total = ROE_COLUMNS.length;
-    if (n === 0) return { color: GREY, label: "Retaliate only", desc: "Don't initiate — hit back only" };
-    if (n === total) return { color: RED, label: "Hostile", desc: "Fight on all fronts" };
-    if (n >= total / 2) return { color: ORANGE, label: "Aggressive", desc: `Fight ${n}/${total} fronts` };
-    return { color: YELLOW, label: "Cautious", desc: `Fight ${n}/${total} fronts` };
+    if (n === 0) return { color: GREY, label: T("Retaliate only"), desc: "Don't initiate — hit back only" };
+    if (n === total) return { color: RED, label: T("Hostile"), desc: "Fight on all fronts" };
+    if (n >= total / 2) return { color: ORANGE, label: T("Aggressive"), desc: `Fight ${n}/${total} fronts` };
+    return { color: YELLOW, label: T("Cautious"), desc: `Fight ${n}/${total} fronts` };
   };
   return (
     <div style={S.card}>
-      <div style={S.cardTitle}>Rules of Engagement — Opposing Servers</div>
+      <div style={S.cardTitle}>{T("Rules of Engagement — Opposing Servers")}</div>
       <div style={{ overflowX: "auto" }}>
         <table style={{ ...S.table, minWidth: "620px" }}>
           <thead>
             <tr>
-              <th style={S.th}>Server</th>
-              <th style={{ ...S.th, textAlign: "center" }}>Stance</th>
+              <th style={S.th}>{T("Server")}</th>
+              <th style={{ ...S.th, textAlign: "center" }}>{T("Stance")}</th>
               {ROE_COLUMNS.map(c => <th key={c.key} style={{ ...S.th, textAlign: "center" }}>{c.label}</th>)}
             </tr>
           </thead>
@@ -531,13 +553,13 @@ const MAP_NODES = {
   city_leopard: { x: 34.6, y: 27.8, type: "city", label: "City of Leopard", info: "Health +5%" },
   city_jackal: { x: 42.9, y: 29.7, type: "city", label: "City of Jackal", info: "Attack +10%" },
   // towers of rotation
-  tower_1: { x: 70.3, y: 53.1, type: "tower", label: "Tower of Rotation", info: "Dmg Reduction +5%" },
-  tower_2: { x: 66.2, y: 69.1, type: "tower", label: "Tower of Rotation", info: "Dmg Reduction +5%" },
-  tower_3: { x: 51.2, y: 72.6, type: "tower", label: "Tower of Rotation", info: "Damage +6%" },
-  tower_4: { x: 28.8, y: 50.8, type: "tower", label: "Tower of Rotation", info: "Dmg Reduction +5%" },
-  tower_5: { x: 32.6, y: 33.2, type: "tower", label: "Tower of Rotation", info: "Dmg Reduction +5%" },
-  tower_6: { x: 48.5, y: 30.0, type: "tower", label: "Tower of Rotation", info: "Damage +6%" },
-  aaru: { x: 49.8, y: 49.9, type: "aaru", label: "Aaru Palace", info: "" },
+  tower_1: { x: 70.3, y: 53.1, type: "tower", label: T("Tower of Rotation"), info: "Dmg Reduction +5%" },
+  tower_2: { x: 66.2, y: 69.1, type: "tower", label: T("Tower of Rotation"), info: "Dmg Reduction +5%" },
+  tower_3: { x: 51.2, y: 72.6, type: "tower", label: T("Tower of Rotation"), info: "Damage +6%" },
+  tower_4: { x: 28.8, y: 50.8, type: "tower", label: T("Tower of Rotation"), info: "Dmg Reduction +5%" },
+  tower_5: { x: 32.6, y: 33.2, type: "tower", label: T("Tower of Rotation"), info: "Dmg Reduction +5%" },
+  tower_6: { x: 48.5, y: 30.0, type: "tower", label: T("Tower of Rotation"), info: "Damage +6%" },
+  aaru: { x: 49.8, y: 49.9, type: "aaru", label: T("Aaru Palace"), info: "" },
   // Invisible diamond corners around Aaru — pure path anchors (no dot, no occupation,
   // no line drawn to Aaru itself). Denote the tile path to/around the Palace.
   aaru_n: { x: 49.8, y: 44.5, type: "aaru_corner", label: "Aaru — North" },
@@ -729,7 +751,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
 
   return (
     <div ref={wrapRef} style={{ position: "relative", width: "100%", maxWidth: "520px", margin: "0 auto", lineHeight: 0 }}>
-      <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
+      <img src="../assets/kvk-bg/dd_minimap.jpg" alt={T("Desolate Desert map — four kingdom corners around a central Aaru Palace")}
         style={{ width: "100%", display: "block", borderRadius: "10px", border: "1px solid #334155" }} />
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
         {/* routes: solid=connected · dimmed=disconnected · dashed=partial (building) · plan=solid */}
@@ -839,12 +861,12 @@ function NodeControlTable({ hl, setHl, pinned, setPinned }) {
         <thead>
           <tr>
             <th style={{ ...S.th, borderBottom: "none" }}></th>
-            <th colSpan={3} style={{ ...S.th, textAlign: "center", color: "#f5731f", borderBottom: "2px solid #f5731f" }}>Pillar City</th>
-            <th colSpan={2} style={{ ...S.th, textAlign: "center", color: "#7c3aed", borderBottom: "2px solid #7c3aed" }}>Tower</th>
+            <th colSpan={3} style={{ ...S.th, textAlign: "center", color: "#f5731f", borderBottom: "2px solid #f5731f" }}>{T("Pillar City")}</th>
+            <th colSpan={2} style={{ ...S.th, textAlign: "center", color: "#7c3aed", borderBottom: "2px solid #7c3aed" }}>{T("Tower")}</th>
             <th style={{ ...S.th, borderBottom: "none" }}></th>
           </tr>
           <tr>
-            <th style={S.th}>Alliance</th>
+            <th style={S.th}>{T("Alliance")}</th>
             {BUFF_DEFS.map(bd => <th key={bd.key} style={{ ...S.th, textAlign: "center" }}>{bd.short}</th>)}
             <th style={{ ...S.th, textAlign: "right" }}>Placer /h</th>
           </tr>
@@ -862,7 +884,7 @@ function NodeControlTable({ hl, setHl, pinned, setPinned }) {
               else { setPinned(true); setHl(tag); }                          // pin this alliance
             };
             return (
-              <tr key={tag} onClick={toggle} title="Click to pin/unpin this alliance's map highlight"
+              <tr key={tag} onClick={toggle} title={T("Click to pin/unpin this alliance's map highlight")}
                 onMouseEnter={() => { if (!pinned) setHl(tag); }} onMouseLeave={() => { if (!pinned) setHl(null); }}
                 style={{ background: rowHot ? "rgba(" + c.rgb + ",0.28)" : "rgba(" + c.rgb + ",0.10)", cursor: "pointer", opacity: rowFade ? 0.5 : 1, boxShadow: rowHot ? "inset 0 0 0 1px " + c.hex : undefined }}>
                 <td style={{ ...S.td, fontWeight: 700, color: c.hex, whiteSpace: "nowrap" }}>{tag} <span style={{ fontSize: "10px", color: "#64748b" }}>{srv === "Era 8" ? "#008" : srv.replace("Era ","")}</span></td>
@@ -882,7 +904,7 @@ function NodeControlTable({ hl, setHl, pinned, setPinned }) {
           })}
         </tbody>
       </table>
-      <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>Derived from map node control. A buff lights only if the alliance holds a <em>connected</em> node granting it (same buff doesn't stack). Placer /h counts all occupied gates/docks &amp; Pillar Cities.</div>
+      <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>Derived from map node control. A buff lights only if the alliance holds a <em>{T("connected")}</em> node granting it (same buff doesn't stack). Placer /h counts all occupied gates/docks &amp; Pillar Cities.</div>
     </div>
   );
 }
@@ -908,7 +930,7 @@ function OverviewTab({ state, setState }) {
       {/* The Map — minimap with per-alliance connection overlay */}
       <div style={S.card}>
         <div style={{ ...S.cardTitle, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px", marginBottom: "12px" }}>
-          <span>The Map</span>
+          <span>{T("The Map")}</span>
           <div style={{ display: "inline-flex", border: "1px solid #334155", borderRadius: "999px", overflow: "hidden" }}>
             {["live","plan"].map(m => (
               <button key={m} onClick={() => setMapMode(m)} style={{ border: "none", cursor: "pointer", padding: "4px 12px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", fontFamily: "'Barlow Condensed', sans-serif", background: mapMode === m ? "#f5731f" : "transparent", color: mapMode === m ? "#0a0c14" : "#94a3b8" }}>{m === "live" ? "Live" : "Plan"}</button>
@@ -984,19 +1006,19 @@ function OverviewTab({ state, setState }) {
 
       {/* Event Timeline — condensed horizontal schedule only */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Event Timeline</div>
+        <div style={S.cardTitle}>{T("Event Timeline")}</div>
         <StageLine />
       </div>
 
       {/* Daily objectives — per player */}
       <div id="daily-objectives" style={S.card}>
         <div style={S.cardTitle}>Daily Objectives (per player)</div>
-        <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>Resets 00:00 UTC daily. Track your own progress toward each target.</div>
+        <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>{T("Resets 00:00 UTC daily. Track your own progress toward each target.")}</div>
         <table style={S.table}>
           <thead><tr>
-            <th style={S.th}>Objective</th>
-            <th style={{ ...S.th, textAlign: "right" }}>Daily Target</th>
-            <th style={S.th}>Notes</th>
+            <th style={S.th}>{T("Objective")}</th>
+            <th style={{ ...S.th, textAlign: "right" }}>{T("Daily Target")}</th>
+            <th style={S.th}>{T("Notes")}</th>
           </tr></thead>
           <tbody>
             {DAILY_OBJECTIVES.map(o => {
@@ -1085,12 +1107,12 @@ function MapTab({ state, setState }) {
       {/* Zoomable Stitched Map */}
       <div style={S.card}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-          <div style={S.cardTitle}>Desolate Desert Map</div>
+          <div style={S.cardTitle}>{T("Desolate Desert Map")}</div>
           <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
             <button onClick={() => setMapZoom(z => Math.max(0.5, z * 0.8))} style={{ ...S.select, cursor: "pointer", padding: "4px 10px" }}>-</button>
             <span style={{ fontSize: "12px", color: "#94a3b8", minWidth: "45px", textAlign: "center" }}>{Math.round(mapZoom * 100)}%</span>
             <button onClick={() => setMapZoom(z => Math.min(5, z * 1.25))} style={{ ...S.select, cursor: "pointer", padding: "4px 10px" }}>+</button>
-            <button onClick={() => { setMapZoom(1); setMapPos({ x: 0, y: 0 }); }} style={{ ...S.select, cursor: "pointer", padding: "4px 10px", fontSize: "11px" }}>Reset</button>
+            <button onClick={() => { setMapZoom(1); setMapPos({ x: 0, y: 0 }); }} style={{ ...S.select, cursor: "pointer", padding: "4px 10px", fontSize: "11px" }}>{T("Reset")}</button>
           </div>
         </div>
         <div
@@ -1111,7 +1133,7 @@ function MapTab({ state, setState }) {
         >
           <img
             src="dd_map_stitched_v2.jpg"
-            alt="Desolate Desert Map"
+            alt={T("Desolate Desert Map")}
             draggable={false}
             style={{
               position: "absolute",
@@ -1161,7 +1183,7 @@ function MapTab({ state, setState }) {
 
       {/* Legend */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Assignment Legend</div>
+        <div style={S.cardTitle}>{T("Assignment Legend")}</div>
         <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
           {EVENT_CONFIG.ourAlliances.map((a, i) => {
             const colors = ["#ef4444", "#3b82f6", "#22c55e", "#f59e0b"];
@@ -1260,15 +1282,15 @@ function PointsTab() {
       {/* Desert Points Sources — collapsible, at top */}
       <div style={S.card}>
         <div onClick={() => setSrcOpen(o => !o)} style={{ ...S.cardTitle, marginBottom: srcOpen ? "12px" : 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span>Desert Points Sources</span>
+          <span>{T("Desert Points Sources")}</span>
           <span style={{ fontSize: "16px", color: "#94a3b8", transform: srcOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }}>▾</span>
         </div>
         {srcOpen ? (
           <table style={S.table}>
             <thead>
               <tr>
-                <th style={S.th}>Activity</th>
-                <th style={S.th}>Points Earned</th>
+                <th style={S.th}>{T("Activity")}</th>
+                <th style={S.th}>{T("Points Earned")}</th>
               </tr>
             </thead>
             <tbody>
@@ -1283,13 +1305,13 @@ function PointsTab() {
 
       {/* Era 8 Alliance Desert Points + held node-buff columns (Behemoth blessings style) */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Era 8 Alliance Desert Points</div>
+        <div style={S.cardTitle}>{T("Era 8 Alliance Desert Points")}</div>
         <div style={{ overflowX: "auto" }}>
         <table style={S.table}>
           <thead>
             <tr>
-              <th style={S.th}>Alliance</th>
-              <th style={{ ...S.th, textAlign: "right" }}>Desert Points</th>
+              <th style={S.th}>{T("Alliance")}</th>
+              <th style={{ ...S.th, textAlign: "right" }}>{T("Desert Points")}</th>
             </tr>
           </thead>
           <tbody>
@@ -1308,15 +1330,15 @@ function PointsTab() {
       {PLACER_GOLD && PLACER_GOLD.nodes && PLACER_GOLD.nodes.length ? (
         <div style={S.card}>
           <div onClick={() => setYieldOpen(o => !o)} style={{ ...S.cardTitle, marginBottom: yieldOpen ? "12px" : 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span>Placer Gold — Node Capture Yields</span>
+            <span>{T("Placer Gold — Node Capture Yields")}</span>
             <span style={{ fontSize: "16px", color: "#94a3b8", transform: yieldOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }}>▾</span>
           </div>
           {yieldOpen ? (
             <table style={S.table}>
               <thead>
                 <tr>
-                  <th style={S.th}>Node</th>
-                  <th style={{ ...S.th, textAlign: "right" }}>First-capture bonus</th>
+                  <th style={S.th}>{T("Node")}</th>
+                  <th style={{ ...S.th, textAlign: "right" }}>{T("First-capture bonus")}</th>
                   <th style={{ ...S.th, textAlign: "right" }}>Generation /h</th>
                 </tr>
               </thead>
@@ -1339,17 +1361,17 @@ function PointsTab() {
       {/* Placer Gold estimator */}
       {PLACER_GOLD && PLACER_GOLD.alliances && PLACER_GOLD.alliances.length ? (
         <div style={S.card}>
-          <div style={S.cardTitle}>Placer Gold — Estimated Balances</div>
+          <div style={S.cardTitle}>{T("Placer Gold — Estimated Balances")}</div>
           <div style={{ overflowX: "auto" }}>
           <table style={S.table}>
             <thead>
               <tr>
-                <th style={S.th}>Alliance</th>
-                <th style={{ ...S.th, minWidth: "160px" }}>Placer Gold</th>
+                <th style={S.th}>{T("Alliance")}</th>
+                <th style={{ ...S.th, minWidth: "160px" }}>{T("Placer Gold")}</th>
                 <th style={{ ...S.th, textAlign: "right" }}>Gen /h</th>
-                <th style={{ ...S.th, textAlign: "center" }}>Gates</th>
-                <th style={{ ...S.th, textAlign: "center" }}>Pillars</th>
-                <th style={{ ...S.th, textAlign: "center" }}>Flags</th>
+                <th style={{ ...S.th, textAlign: "center" }}>{T("Gates")}</th>
+                <th style={{ ...S.th, textAlign: "center" }}>{T("Pillars")}</th>
+                <th style={{ ...S.th, textAlign: "center" }}>{T("Flags")}</th>
               </tr>
             </thead>
             <tbody>
@@ -1390,15 +1412,15 @@ function PointsTab() {
         </div>
         {costOpen ? (
           <div>
-            <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>Placer Gold cost per flag, by how many an alliance has already built. Cost rises every 10 flags.</div>
+            <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>{T("Placer Gold cost per flag, by how many an alliance has already built. Cost rises every 10 flags.")}</div>
             <div style={{ overflowX: "auto" }}>
             <table style={S.table}>
               <thead>
                 <tr>
-                  <th style={S.th}>Flags built</th>
-                  <th style={{ ...S.th, textAlign: "right", color: "#d4a574" }}>Zone 1</th>
-                  <th style={{ ...S.th, textAlign: "right", color: "#2dd4bf" }}>Zone 2</th>
-                  <th style={{ ...S.th, textAlign: "right", color: "#f472b6" }}>Zone 3</th>
+                  <th style={S.th}>{T("Flags built")}</th>
+                  <th style={{ ...S.th, textAlign: "right", color: "#d4a574" }}>{T("Zone 1")}</th>
+                  <th style={{ ...S.th, textAlign: "right", color: "#2dd4bf" }}>{T("Zone 2")}</th>
+                  <th style={{ ...S.th, textAlign: "right", color: "#f472b6" }}>{T("Zone 3")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -1423,7 +1445,7 @@ function PointsTab() {
 
       {/* Achievements — per-alliance progress */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Conquest Achievements — Alliance Progress</div>
+        <div style={S.cardTitle}>{T("Conquest Achievements — Alliance Progress")}</div>
         <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>
           Progress toward each alliance-level achievement. <span style={{ color: "#3daa6d" }}>✓</span> = met.
           Personal requirements (met individually, not tracked here) shown at right. Point-based rows for REU/MyT/AGC pending scouting.
@@ -1432,10 +1454,10 @@ function PointsTab() {
         <table style={S.table}>
           <thead>
             <tr>
-              <th style={S.th}>Achievement</th>
-              <th style={S.th}>Requirement</th>
+              <th style={S.th}>{T("Achievement")}</th>
+              <th style={S.th}>{T("Requirement")}</th>
               {["WC1","REU","MyT","AGC"].map(tag => <th key={tag} style={{ ...S.th, textAlign: "center" }}>{tag}</th>)}
-              <th style={S.th}>Personal</th>
+              <th style={S.th}>{T("Personal")}</th>
             </tr>
           </thead>
           <tbody>
@@ -1497,7 +1519,7 @@ function DiplomacyTab({ state, setState }) {
     <div>
       <div style={S.card}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-          <div style={S.cardTitle}>Diplomacy Tracker</div>
+          <div style={S.cardTitle}>{T("Diplomacy Tracker")}</div>
           <button style={S.btn("#7c3aed")} onClick={addEntry}>+ Add</button>
         </div>
         <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "12px" }}>
@@ -1512,13 +1534,13 @@ function DiplomacyTab({ state, setState }) {
           <div key={d.id} style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "8px", padding: "10px", background: "#0f172a", borderRadius: "8px", flexWrap: "wrap" }}>
             <input
               style={{ ...S.input, width: "100px" }}
-              placeholder="Server"
+              placeholder={T("Server")}
               value={d.server}
               onChange={e => updateEntry(d.id, "server", e.target.value)}
             />
             <input
               style={{ ...S.input, width: "80px" }}
-              placeholder="Alliance"
+              placeholder={T("Alliance")}
               value={d.alliance}
               onChange={e => updateEntry(d.id, "alliance", e.target.value)}
             />
@@ -1527,15 +1549,15 @@ function DiplomacyTab({ state, setState }) {
               value={d.relation}
               onChange={e => updateEntry(d.id, "relation", e.target.value)}
             >
-              <option value="ally">Ally</option>
-              <option value="nap">NAP</option>
-              <option value="neutral">Neutral</option>
-              <option value="hostile">Hostile</option>
+              <option value="ally">{T("Ally")}</option>
+              <option value="nap">{T("NAP")}</option>
+              <option value="neutral">{T("Neutral")}</option>
+              <option value="hostile">{T("Hostile")}</option>
             </select>
             <span style={{ ...S.badge(relationColors[d.relation]), textTransform: "uppercase" }}>{d.relation}</span>
             <input
               style={{ ...S.input, flex: 1, minWidth: "120px" }}
-              placeholder="Notes..."
+              placeholder={T("Notes...")}
               value={d.notes}
               onChange={e => updateEntry(d.id, "notes", e.target.value)}
             />
@@ -1546,7 +1568,7 @@ function DiplomacyTab({ state, setState }) {
 
       {/* Contacts */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Key Contacts</div>
+        <div style={S.cardTitle}>{T("Key Contacts")}</div>
         {CONTACTS.map(c => (
           <div key={c.name} style={{ display: "flex", gap: "12px", alignItems: "center", padding: "10px", background: "#0f172a", borderRadius: "8px", marginBottom: "6px" }}>
             <span style={S.badge("#a855f7")}>{c.server}</span>
@@ -1558,7 +1580,7 @@ function DiplomacyTab({ state, setState }) {
 
       {/* Diplomacy Rules */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Rules of Engagement</div>
+        <div style={S.cardTitle}>{T("Rules of Engagement")}</div>
         <div style={{ display: "grid", gap: "8px" }}>
           <div style={{ padding: "10px", background: "#22c55e11", border: "1px solid #22c55e44", borderRadius: "8px" }}>
             <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (Era #014)</div>
@@ -1577,7 +1599,7 @@ function DiplomacyTab({ state, setState }) {
 
       {/* Aaru Palace Time Preference */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Aaru Palace Time Vote</div>
+        <div style={S.cardTitle}>{T("Aaru Palace Time Vote")}</div>
         <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "12px" }}>
           Top 300 power-ranked players vote. Kingdom with most Desert Points picks the time. <strong style={{ color: "#f472b6" }}>Result: Era #019 won and set {AARU_OFFICIAL_TIME}.</strong>
         </div>
@@ -1627,7 +1649,7 @@ function RoutePlannerTab({ state, setState }) {
     <div>
       <div style={S.card}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-          <div style={S.cardTitle}>Route Planning</div>
+          <div style={S.cardTitle}>{T("Route Planning")}</div>
           <button style={S.btn("#7c3aed")} onClick={addRoute}>+ Add Route</button>
         </div>
         <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "12px" }}>
@@ -1645,22 +1667,22 @@ function RoutePlannerTab({ state, setState }) {
                 {EVENT_CONFIG.ourAlliances.map(a => <option key={a} value={a}>{a}</option>)}
               </select>
               <select style={S.select} value={r.priority} onChange={e => updateRoute(r.id, "priority", e.target.value)}>
-                <option value="high">High Priority</option>
-                <option value="normal">Normal</option>
-                <option value="low">Low Priority</option>
+                <option value="high">{T("High Priority")}</option>
+                <option value="normal">{T("Normal")}</option>
+                <option value="low">{T("Low Priority")}</option>
               </select>
               <span style={S.badge(priorityColors[r.priority])}>{r.priority}</span>
-              <button style={{ ...S.btnSmall("#ef4444"), marginLeft: "auto" }} onClick={() => removeRoute(r.id)}>Remove</button>
+              <button style={{ ...S.btnSmall("#ef4444"), marginLeft: "auto" }} onClick={() => removeRoute(r.id)}>{T("Remove")}</button>
             </div>
             <input
               style={{ ...S.input, marginBottom: "6px" }}
-              placeholder="Waypoints: Stronghold → Node A → Node B → Target"
+              placeholder={T("Waypoints: Stronghold → Node A → Node B → Target")}
               value={r.waypoints}
               onChange={e => updateRoute(r.id, "waypoints", e.target.value)}
             />
             <input
               style={S.input}
-              placeholder="Notes (flag count needed, blockers, timing...)"
+              placeholder={T("Notes (flag count needed, blockers, timing...)")}
               value={r.notes}
               onChange={e => updateRoute(r.id, "notes", e.target.value)}
             />
@@ -1670,34 +1692,34 @@ function RoutePlannerTab({ state, setState }) {
 
       {/* Quick Reference: Flag Costs */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Flag Cost Reference</div>
+        <div style={S.cardTitle}>{T("Flag Cost Reference")}</div>
         <table style={S.table}>
           <thead>
             <tr>
-              <th style={S.th}>Zone</th>
-              <th style={S.th}>Placer Gold Cost</th>
-              <th style={S.th}>Durability</th>
-              <th style={S.th}>Notes</th>
+              <th style={S.th}>{T("Zone")}</th>
+              <th style={S.th}>{T("Placer Gold Cost")}</th>
+              <th style={S.th}>{T("Durability")}</th>
+              <th style={S.th}>{T("Notes")}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style={S.td}><span style={{ color: "#d4a574", fontWeight: 600 }}>Waste Land</span></td>
-              <td style={S.td}>Base cost</td>
-              <td style={S.td}>Standard</td>
-              <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>Cheapest flags, lowest HP</td>
+              <td style={S.td}><span style={{ color: "#d4a574", fontWeight: 600 }}>{T("Waste Land")}</span></td>
+              <td style={S.td}>{T("Base cost")}</td>
+              <td style={S.td}>{T("Standard")}</td>
+              <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{T("Cheapest flags, lowest HP")}</td>
             </tr>
             <tr>
-              <td style={S.td}><span style={{ color: "#7c3aed", fontWeight: 600 }}>Forbidden Zone</span></td>
-              <td style={S.td}>Higher</td>
-              <td style={S.td}>Higher</td>
-              <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>More expensive but harder to destroy</td>
+              <td style={S.td}><span style={{ color: "#7c3aed", fontWeight: 600 }}>{T("Forbidden Zone")}</span></td>
+              <td style={S.td}>{T("Higher")}</td>
+              <td style={S.td}>{T("Higher")}</td>
+              <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{T("More expensive but harder to destroy")}</td>
             </tr>
             <tr>
-              <td style={S.td}><span style={{ color: "#f59e0b", fontWeight: 600 }}>Eternal Realm</span></td>
-              <td style={S.td}>Highest</td>
-              <td style={S.td}>Highest</td>
-              <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>Premium cost, very durable</td>
+              <td style={S.td}><span style={{ color: "#f59e0b", fontWeight: 600 }}>{T("Eternal Realm")}</span></td>
+              <td style={S.td}>{T("Highest")}</td>
+              <td style={S.td}>{T("Highest")}</td>
+              <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{T("Premium cost, very durable")}</td>
             </tr>
           </tbody>
         </table>
@@ -1790,9 +1812,9 @@ function TowerLiveModal() {
       <div className="tor-modal-card" onClick={e => e.stopPropagation()}>
         <span className="tor-modal-close" onClick={() => setOpen(false)}>×</span>
         <div className="tor-modal-ico">🗼</div>
-        <h3>Tower of Rotation is Live!</h3>
+        <h3>{T("Tower of Rotation is Live!")}</h3>
         <div className="tor-modal-lvl">Level {st.level} / {TOR_LEVELS}</div>
-        <div style={{ fontSize: "11px", color: "#64748b", margin: "10px 0 2px", letterSpacing: "0.5px", textTransform: "uppercase" }}>Ends in</div>
+        <div style={{ fontSize: "11px", color: "#64748b", margin: "10px 0 2px", letterSpacing: "0.5px", textTransform: "uppercase" }}>{T("Ends in")}</div>
         <div className="tor-modal-cd">{cd}</div>
       </div>
     </div>
@@ -1821,7 +1843,7 @@ function TowerSchedule() {
     <div id="tower-schedule" style={{ ...S.card, position: "relative" }}>
       {/* section header stays at normal contrast even when locked, so the
           "This event…" overlay text isn't ambiguous without a readable title */}
-      <div style={{ ...S.cardTitle, position: "relative", zIndex: 4 }}>Tower of Rotation — Awakening Schedule</div>
+      <div style={{ ...S.cardTitle, position: "relative", zIndex: 4 }}>{T("Tower of Rotation — Awakening Schedule")}</div>
       {lock ? (
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 3, borderRadius: "10px", background: "rgba(10,12,20,0.72)", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "16px" }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
@@ -1857,7 +1879,7 @@ function TowerSchedule() {
             {[10,20,30].map(m => <div key={m} style={{ position: "absolute", top: 0, bottom: 0, left: (m/TOR_LEVELS*100) + "%", width: "1px", background: "rgba(255,255,255,0.25)" }} />)}
           </div>
         </div>
-        <div title="Pick up chests — up to 10/day" style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "6px 12px", borderRadius: "8px", background: "#0f172a", border: "1px solid " + (st.live ? "#facc1566" : "#1e2435") }}>
+        <div title={T("Pick up chests — up to 10/day")} style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "6px 12px", borderRadius: "8px", background: "#0f172a", border: "1px solid " + (st.live ? "#facc1566" : "#1e2435") }}>
           <ChestIcon size={18} color={st.live ? "#facc15" : "#7b8496"} />
           <span style={{ fontVariantNumeric: "tabular-nums", fontWeight: 700, fontSize: "14px", color: st.live ? "#facc15" : "#94a3b8" }}>0<span style={{ color: "#64748b", fontWeight: 500 }}>/10</span></span>
         </div>
@@ -1872,7 +1894,7 @@ function PveTab() {
     <div>
       {/* PvE Contribution */}
       <div style={S.card}>
-        <div style={S.cardTitle}>How PvE Players Help Win</div>
+        <div style={S.cardTitle}>{T("How PvE Players Help Win")}</div>
         <div style={{ fontSize: "13px", color: "#e2e8f0", marginBottom: "12px", lineHeight: "1.6" }}>
           PvE players are incredibly valuable to the kingdom's success. You don't need to fight other players to make a big impact. As long as you're doing the following, you are being productive for the server:
         </div>
@@ -1897,13 +1919,13 @@ function PveTab() {
 
       {/* ═══ GLOSSARY / reference material ═══ */}
       <div style={{ margin: "28px 0 12px", paddingBottom: "8px", borderBottom: "2px solid #334155", display: "flex", alignItems: "center", gap: "10px" }}>
-        <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "24px", letterSpacing: "2px", color: "#f5731f" }}>Glossary</span>
+        <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "24px", letterSpacing: "2px", color: "#f5731f" }}>{T("Glossary")}</span>
         <span style={{ fontSize: "11px", color: "#64748b" }}>Reference — zones, mechanics &amp; alliance buildings</span>
       </div>
 
       {/* Zones */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Zones</div>
+        <div style={S.cardTitle}>{T("Zones")}</div>
         {ZONES.map(z => (
           <div key={z.id} style={S.zoneBar(z.color)}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -1919,19 +1941,19 @@ function PveTab() {
 
       {/* Key Mechanics */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Key Mechanics</div>
+        <div style={S.cardTitle}>{T("Key Mechanics")}</div>
         <div style={S.grid2}>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f5731f", marginBottom: "4px" }}>Placer Gold</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Earned from holding Pillar Cities + lump sum from first capture of gates and Pillar Cities. Spent on building flags and structures in higher zones. Key resource for expansion.</div>
+            <div style={{ fontWeight: 700, color: "#f5731f", marginBottom: "4px" }}>{T("Placer Gold")}</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>{T("Earned from holding Pillar Cities + lump sum from first capture of gates and Pillar Cities. Spent on building flags and structures in higher zones. Key resource for expansion.")}</div>
           </div>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Desert Points</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Victory currency. Earned from holding nodes, PvE events, Aaru Palace. Kingdom with more points wins + picks Aaru time.</div>
+            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>{T("Desert Points")}</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>{T("Victory currency. Earned from holding nodes, PvE events, Aaru Palace. Kingdom with more points wins + picks Aaru time.")}</div>
           </div>
           <div style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>Territory Control</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8" }}>Flags must maintain an active connection back to a Stronghold or Substronghold. Disconnected flags become inactive. Higher zone flags cost more Placer Gold but are more durable.</div>
+            <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: "4px" }}>{T("Territory Control")}</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8" }}>{T("Flags must maintain an active connection back to a Stronghold or Substronghold. Disconnected flags become inactive. Higher zone flags cost more Placer Gold but are more durable.")}</div>
           </div>
         </div>
       </div>
@@ -1955,12 +1977,12 @@ function PveTab() {
             </div>
           ))}
         </div>
-        <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>Live schedule + level meter on the Overview tab.</div>
+        <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>{T("Live schedule + level meter on the Overview tab.")}</div>
       </div>
 
       {/* Alliance Buildings */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Alliance Buildings</div>
+        <div style={S.cardTitle}>{T("Alliance Buildings")}</div>
         <div style={S.grid3}>
           {BUILDINGS.map(b => (
             <div key={b.name} style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
@@ -2013,7 +2035,7 @@ function ServerTable({ server, sdRank, priority, rows, kind }) {
       </div>
       {rows && rows.length ? (
         <table className="cmp-tbl cmp-tbl-wrap">
-          <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">Power</th><th className="c-mp">M:P</th></tr></thead>
+          <thead><tr><th className="c-rk">#</th><th className="c-nm"></th><th className="c-p">{T("Power")}</th><th className="c-mp">M:P</th></tr></thead>
           <tbody>
           {rows.map((r, i) => { const has = r.merits !== "" && r.merits != null; const pct = rmp(r.merits, r.power);
             const nm = kind === "players"
@@ -2029,7 +2051,7 @@ function ServerTable({ server, sdRank, priority, rows, kind }) {
           ); })}
           </tbody>
         </table>
-      ) : <div style={{ padding: "14px 12px", fontSize: 12, color: "#64748b", fontStyle: "italic" }}>Awaiting scouting data.</div>}
+      ) : <div style={{ padding: "14px 12px", fontSize: 12, color: "#64748b", fontStyle: "italic" }}>{T("Awaiting scouting data.")}</div>}
     </div>
   );
 }
@@ -2045,7 +2067,7 @@ function ResearchTab() {
     <div>
       {/* ALLIANCES */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Top Alliances</div>
+        <div style={S.cardTitle}>{T("Top Alliances")}</div>
         <div className="cmp-grid">
           {servers.map((s, i) => <ServerTable key={i} server={s.server} sdRank={s.sdRank} priority={s.priority} rows={s.alliances} kind="alliances" />)}
         </div>
@@ -2053,7 +2075,7 @@ function ResearchTab() {
 
       {/* PLAYERS */}
       <div style={S.card}>
-        <div style={S.cardTitle}>Top Players</div>
+        <div style={S.cardTitle}>{T("Top Players")}</div>
         <div className="cmp-grid">
           {servers.map((s, i) => <ServerTable key={i} server={s.server} sdRank={s.sdRank} priority={s.priority} rows={s.players} kind="players" />)}
         </div>
@@ -2068,6 +2090,26 @@ function ResearchTab() {
 function App() {
   const [state, setStateRaw] = useState(() => loadState());
   const [tab, setTab] = useState("overview");
+
+  // ---- i18n: language state drives CUR_LANG (module-level, read by T()) ----
+  const [uiLang, setUiLang] = useState("en");
+  const handleLang = useCallback((code) => {
+    CUR_LANG = code;
+    document.documentElement.setAttribute("lang", code);
+    document.documentElement.setAttribute("dir", DD_RTL[code] ? "rtl" : "ltr");
+    setUiLang(code); // force re-render so every T(...) re-evaluates
+  }, []);
+  // Register languages with the shared header dropdown (retry until SiteHeader mounts).
+  useEffect(() => {
+    let tries = 0;
+    const reg = () => {
+      if (window.SiteHeader) {
+        window.SiteHeader.setLanguages({ codes: DD_LANGUAGES, current: uiLang, onChange: handleLang });
+      } else if (tries++ < 50) { setTimeout(reg, 50); }
+    };
+    reg();
+  }, []);
+  useEffect(() => { if (window.SiteHeader) window.SiteHeader.setCurrentLanguage(uiLang); }, [uiLang]);
 
   const setState = useCallback((updater) => {
     setStateRaw(prev => {
@@ -2113,10 +2155,10 @@ function App() {
   }, []);
 
   const TABS = [
-    { id: "overview", label: "Overview" },
-    { id: "research", label: "Scouting" },
-    { id: "points", label: "Points" },
-    { id: "pve", label: "PvE Guide" },
+    { id: "overview", label: T("Overview") },
+    { id: "research", label: T("Scouting") },
+    { id: "points", label: T("Points") },
+    { id: "pve", label: T("PvE Guide") },
   ];
 
   return (
@@ -2126,11 +2168,11 @@ function App() {
         <div className="tor-modal" onClick={() => setHelpOpen(false)}>
           <div className="tor-modal-card" style={{ maxWidth: "560px", textAlign: "left", borderColor: "#f5731f" }} onClick={e => e.stopPropagation()}>
             <span className="tor-modal-close" onClick={() => setHelpOpen(false)}>×</span>
-            <h3 style={{ color: "#f5731f", textAlign: "center" }}>What is Desolate Desert?</h3>
-            <img src="../assets/kvk-bg/dd_minimap.jpg" alt="Desolate Desert map — four kingdom corners around a central Aaru Palace"
+            <h3 style={{ color: "#f5731f", textAlign: "center" }}>{T("What is Desolate Desert?")}</h3>
+            <img src="../assets/kvk-bg/dd_minimap.jpg" alt={T("Desolate Desert map — four kingdom corners around a central Aaru Palace")}
               style={{ width: "100%", maxWidth: "460px", display: "block", margin: "0 auto 14px", borderRadius: "10px", border: "1px solid #334155" }} />
             <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6 }}>
-              <strong style={{ color: "#f5731f" }}>Desolate Desert</strong> is a 7-day, four-kingdom land grab on a shared desert map. Alliances build a Stronghold and expand outward with connected flags, capturing <strong>gates/docks</strong> and <strong>Pillar Cities</strong> for Placer Gold and Desert Points. The map opens zone by zone (Waste Land → Forbidden Zone → Eternal Realm), climaxing in the <strong>Aaru Palace</strong> fight on Day 7. Most points wins — and PvE contribution (gathering, tribes, explorations, Tower damage) matters as much as PvP. This is the <strong>final event of the season</strong>.
+              <strong style={{ color: "#f5731f" }}>{T("Desolate Desert")}</strong> is a 7-day, four-kingdom land grab on a shared desert map. Alliances build a Stronghold and expand outward with connected flags, capturing <strong>gates/docks</strong> and <strong>{T("Pillar Cities")}</strong> for Placer Gold and Desert Points. The map opens zone by zone (Waste Land → Forbidden Zone → Eternal Realm), climaxing in the <strong>{T("Aaru Palace")}</strong> fight on Day 7. Most points wins — and PvE contribution (gathering, tribes, explorations, Tower damage) matters as much as PvP. This is the <strong>{T("final event of the season")}</strong>.
             </div>
           </div>
         </div>
@@ -2138,9 +2180,9 @@ function App() {
       <div className="dd-header" style={S.header}>
         {/* top-right: quest + help icon buttons */}
         <div className="hdr-pills-top">
-          <a href="#daily-objectives" className="hdr-icobtn" title="Jump to Daily Objectives"
+          <a href="#daily-objectives" className="hdr-icobtn" title={T("Jump to Daily Objectives")}
             onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("daily-objectives"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>📜</a>
-          <button type="button" className="hdr-icobtn" title="What is Desolate Desert?" onClick={() => setHelpOpen(true)}>❓</button>
+          <button type="button" className="hdr-icobtn" title={T("What is Desolate Desert?")} onClick={() => setHelpOpen(true)}>❓</button>
         </div>
         {/* bottom-right: Tower badge */}
         <div className="hdr-pills">
@@ -2150,8 +2192,8 @@ function App() {
             <span className="tb-ico">🗼</span><span className="tb-lvl">Tower · {tor.live ? tor.level : 1}/{TOR_LEVELS}</span>
           </a>
         </div>
-        <div style={S.headerSub}>Season Finale · Four-Kingdom Land War</div>
-        <h1 style={S.headerTitle}>DESOLATE DESERT</h1>
+        <div style={S.headerSub}>{T("Season Finale · Four-Kingdom Land War")}</div>
+        <h1 style={S.headerTitle}>{T("DESOLATE DESERT")}</h1>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", justifyContent: "center", marginTop: "8px" }}>
           {EVENT_CONFIG.servers.map((srv, i) => {
             const disp = srv === "Era 8" ? "Era #008" : srv;
@@ -2169,12 +2211,12 @@ function App() {
         <div id="evtMeta"></div>
         <div style={{ marginTop: "14px", display: "flex", flexWrap: "wrap", gap: "10px 18px", alignItems: "center", justifyContent: "center" }}>
           <div style={{ fontSize: "13px", color: "#cbd5e1" }}>
-            <span style={{ color: "#94a3b8" }}>Aaru Palace Fight:</span>{" "}
+            <span style={{ color: "#94a3b8" }}>{T("Aaru Palace Fight:")}</span>{" "}
             <strong style={{ color: "#f472b6" }}>{AARU_OFFICIAL_TIME}</strong>
           </div>
-          <button type="button" title="Calendar export coming soon" disabled style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 16px", background: "#11141f", border: "1px solid #a1573f", borderRadius: "999px", cursor: "default", opacity: 0.75 }}>
+          <button type="button" title={T("Calendar export coming soon")} disabled style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 16px", background: "#11141f", border: "1px solid #a1573f", borderRadius: "999px", cursor: "default", opacity: 0.75 }}>
             <span style={{ fontSize: "16px", lineHeight: 1 }}>📅</span>
-            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.5px", color: "#f5731f" }}>Add to Calendar</span>
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.5px", color: "#f5731f" }}>{T("Add to Calendar")}</span>
           </button>
         </div>
       </div>
