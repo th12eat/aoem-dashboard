@@ -828,7 +828,7 @@
   <div class="header" style="--kvk-bg:url('../assets/kvk-bg/behemoth.jpg')">
     <!-- top-right: help + scroll icon buttons -->
     <div class="hdr-pills-top">
-      <button type="button" class="hdr-icobtn" id="scrollBtn" title="Jump to the current stage tab">&#128220;</button>
+      <button type="button" class="hdr-icobtn" id="scrollBtn" title="Jump to Daily Objectives">&#128220;</button>
       <button type="button" class="hdr-icobtn" id="helpBtn" title="What is Behemoth Conquest?">&#10067;</button>
     </div>
     <!-- bottom-right: Trial of Scion badge -->
@@ -868,7 +868,7 @@
     <div class="cd-label" id="cd-label">Until Beast Taming</div>
     <button type="button" id="icalBtn" class="ical-btn">
       <span class="ical-ico" aria-hidden="true">&#128197;</span>
-      <span class="ical-label" data-i18n="ical_btn">Add the Trials of Scion and Behemoth Invasions to your Calendar!</span>
+      <span class="ical-label" data-i18n="ical_btn">Add to Calendar</span>
     </button>
   </div>
 
@@ -1200,17 +1200,6 @@
         </figure>
       </div>
 
-      <h4 data-i18n="st2_income_h">Runestone income &mdash; daily caps</h4>
-      <table class="mtable">
-        <tr><th data-i18n="rune_th_src">Source</th><th data-i18n="rune_th_cap">Daily cap</th><th data-i18n="rune_th_when">When</th></tr>
-        <tr><td class="name" data-i18n="rune_dmg">Scion damage</td><td class="tiers"><b>400</b></td><td data-i18n="rune_days234">Days 2&ndash;4</td></tr>
-        <tr><td class="name" data-i18n="rune_elim">Scion eliminations (nearby)</td><td class="tiers"><b>250</b></td><td data-i18n="rune_days234">Days 2&ndash;4</td></tr>
-        <tr><td class="name" data-i18n="rune_explore">Cultivation Exploration</td><td class="tiers"><b>162</b></td><td data-i18n="rune_explore_when">9&times;18 &middot; Days 2&ndash;4</td></tr>
-        <tr><td class="name" data-i18n="rune_rally">Rally vs Tribes</td><td class="tiers"><b>100</b></td><td data-i18n="rune_days24">Days 2 &amp; 4</td></tr>
-        <tr><td class="name" data-i18n="rune_arally">Alliance Rally vs Tribes</td><td class="tiers"><b>200</b></td><td data-i18n="rune_days24">Days 2 &amp; 4</td></tr>
-      </table>
-      <p style="font-size:12px;color:var(--text-muted);" data-i18n="st2_income_note">Damage and eliminations are capped and mailed separately. Maxing everything across the 3 days = <strong>3,036 runestones</strong>.</p>
-
     </div>
   </div>
 
@@ -1537,7 +1526,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Dona sobre la marcha</strong> &mdash; no acumules.",
     "st2_cap1": "Prueba del Scion &mdash; toca la Élite \"Scion de Bégimo\", luego Atacar/Teletransportar",
     "st2_cap2": "Cultivo de Bégimo &mdash; acaricia / asea / entretén para ganar runas",
-    "st2_income_h": "Ingreso de runas &mdash; topes diarios",
     "daily_obj_h": "Objetivos Diarios (por jugador)",
     "daily_obj_sub": "Se reinicia a las 00:00 UTC. Sigue tu propio progreso hacia cada tope de Runas de Despertar.",
     "st3_title": "Etapa 3 &mdash; Ataque-Defensa",
@@ -1612,7 +1600,7 @@ const TRANSLATIONS = {
     "scion_modal_title": "La Prueba del Scion está EN CURSO",
     "scion_modal_body": "Una ventana de la Prueba del Scion está abierta (30 min). Farmea Scions por runas y eliminaciones &mdash; cuidado con las casillas transfronterizas (riesgo de quedar a cero en nuestro servidor).",
     "scion_modal_btn": "Entendido",
-    "ical_btn": "¡Añade las Pruebas del Scion y las Invasiones de Bégimo a tu calendario\!",
+    "ical_btn": "Añadir al calendario",
     "bless_h": "Bendiciones de Linaje &mdash; buffs desbloqueados (todos los tipos de unidad)",
     "bless_note": "Los nodos se desbloquean en <strong>orden fijo</strong> &mdash; no puedes saltar a II antes. <span style=\"color:var(--accent-gold);\">Celdas doradas</span> = la próxima donación de cada servidor; lo posterior está bloqueado. Coste: <strong>50.000</strong> runas por nodo en los primeros 3, luego <strong>60.000</strong> (sube más adelante). Los valores de II son acumulados.",
     "bless_th_name": "Bendición",
@@ -1724,7 +1712,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Donne au fur et à mesure</strong> &mdash; n'accumule pas.",
     "st2_cap1": "Épreuve du Scion &mdash; touche l'Élite \"Scion du Béhémoth\", puis Attaquer/Téléporter",
     "st2_cap2": "Culture du Béhémoth &mdash; caresse / toilette / divertis pour des runes",
-    "st2_income_h": "Revenu de runes &mdash; plafonds quotidiens",
     "daily_obj_h": "Objectifs Quotidiens (par joueur)",
     "daily_obj_sub": "Réinitialisation à 00:00 UTC. Suis ta progression vers chaque plafond de Runes d'Éveil.",
     "st3_title": "Étape 3 &mdash; Attaque-Défense",
@@ -1799,7 +1786,7 @@ const TRANSLATIONS = {
     "scion_modal_title": "L'Épreuve du Scion est EN COURS",
     "scion_modal_body": "Une fenêtre de l'Épreuve du Scion est ouverte (30 min). Farme les Scions pour runes et éliminations &mdash; attention aux cases transfrontalières (risque de mise à zéro sur notre serveur).",
     "scion_modal_btn": "Compris",
-    "ical_btn": "Ajoute les Épreuves du Scion et les Invasions de Béhémoth à ton calendrier \!",
+    "ical_btn": "Ajouter au calendrier",
     "bless_h": "Bénédictions de Lignée &mdash; buffs débloqués (tous types d'unité)",
     "bless_note": "Les nœuds se débloquent dans un <strong>ordre fixe</strong> &mdash; pas de saut en II en avance. <span style=\"color:var(--accent-gold);\">Cases dorées</span> = le prochain don de chaque serveur ; au-delà c'est verrouillé. Coût : <strong>50 000</strong> runes par nœud pour les 3 premiers, puis <strong>60 000</strong> (augmente ensuite). Les valeurs de II sont cumulées.",
     "bless_th_name": "Bénédiction",
@@ -1911,7 +1898,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>모이는 대로 기부</strong> &mdash; 쌓아두지 마세요.",
     "st2_cap1": "후손의 시험 &mdash; \"비헤모스 후손\" 정예를 탭한 뒤 공격/순간이동",
     "st2_cap2": "비헤모스 육성 &mdash; 쓰다듬기/단장/놀아주기로 룬석 획득",
-    "st2_income_h": "룬석 수입 &mdash; 일일 상한",
     "daily_obj_h": "일일 목표 (플레이어별)",
     "daily_obj_sub": "매일 00:00 UTC에 초기화. 각 각성 룬석 상한까지 자신의 진행도를 추적하세요.",
     "st3_title": "3단계 &mdash; 공격-방어",
@@ -1986,7 +1972,7 @@ const TRANSLATIONS = {
     "scion_modal_title": "후손의 시험 진행 중",
     "scion_modal_body": "후손의 시험 창이 열렸습니다(30분). 후손을 잡아 룬석과 처치 파밍 &mdash; 국경 너머 타일 주의(우리 서버에서 제로 위험).",
     "scion_modal_btn": "확인",
-    "ical_btn": "후손의 시험과 비헤모스 침공을 캘린더에 추가하세요\!",
+    "ical_btn": "캘린더에 추가",
     "bless_h": "혈통 축복 &mdash; 해금한 버프 (모든 병종)",
     "bless_note": "노드는 <strong>고정 순서</strong>로 해금 &mdash; 미리 II로 못 감. <span style=\"color:var(--accent-gold);\">금색 칸</span> = 각 서버의 다음 기부처; 그 이후는 잠김. 비용: 처음 3개는 노드당 <strong>50,000</strong> 룬석, 이후 <strong>60,000</strong>(나중에 더 오름). II 수치는 누적.",
     "bless_th_name": "축복",
@@ -2047,7 +2033,7 @@ const TRANSLATIONS = {
     "cd_hours": "時",
     "cd_min": "分",
     "cd_sec": "秒",
-    "ical_btn": "末裔の試練とベヒモス侵攻をカレンダーに追加！",
+    "ical_btn": "カレンダーに追加",
     "bp_h": "全体像",
     "bp_blurb": "2つのサーバーがベヒモス対ベヒモスで激突。<em>覚醒ルーン石</em>を集めて自軍を育て、自軍を守りつつ敵サーバーへ侵攻する。<span class=\"gold\">合計得点が高い帝国が勝利</span> — ただし両陣営ともベヒモスクリスタルを獲得できるので、劣勢でもプレイする価値がある。",
     "bp_callout": "<strong>得点の3つの方法:</strong> 自軍を<strong>育成</strong>、自軍を<strong>防衛</strong>、敵を<strong>攻撃</strong>。イベント終了前にベヒモスクリスタルを使う — <strong>Stellar Dynasty</strong>中はクリスタルを征服ポイントに交換する。",
@@ -2143,7 +2129,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>溜めずに随時寄付</strong>。",
     "st2_cap1": "末裔の試練 — 「ベヒモスの末裔」エリートをタップし攻撃/転移",
     "st2_cap2": "ベヒモス育成 — 撫でる/手入れ/遊んでルーン石獲得",
-    "st2_income_h": "ルーン石収入 — 1日の上限",
     "daily_obj_h": "デイリー目標（プレイヤーごと）",
     "daily_obj_sub": "毎日00:00 UTCにリセット。各覚醒ルーン石の上限に向けて自分の進捗を管理。",
     "rune_th_src": "入手元",
@@ -2234,7 +2219,7 @@ const TRANSLATIONS = {
     "cd_hours": "时",
     "cd_min": "分",
     "cd_sec": "秒",
-    "ical_btn": "将后裔试炼与巨兽入侵添加到日历！",
+    "ical_btn": "添加到日历",
     "bp_h": "全局概览",
     "bp_blurb": "两个服务器以巨兽对巨兽激战。收集<em>觉醒符文石</em>培养我方巨兽，在防守自身的同时入侵敌服。<span class=\"gold\">总分最高的帝国获胜</span> — 但双方都能获得巨兽水晶，落后时也值得参与。",
     "bp_callout": "<strong>三种得分方式:</strong> <strong>培养</strong>我方、<strong>防守</strong>我方、<strong>攻击</strong>敌方。活动结束前花掉巨兽水晶 — <strong>Stellar Dynasty</strong>期间改为将水晶兑换征服点。",
@@ -2330,7 +2315,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>随得随捐</strong> — 别囤积。",
     "st2_cap1": "后裔试炼 — 点击「巨兽后裔」精英，然后攻击/传送",
     "st2_cap2": "巨兽培养 — 抚摸/梳理/逗弄获取符文石",
-    "st2_income_h": "符文石收入 — 每日上限",
     "daily_obj_h": "每日目标（每位玩家）",
     "daily_obj_sub": "每日00:00 UTC重置。追踪你自己朝各觉醒符文石上限的进度。",
     "rune_th_src": "来源",
@@ -2421,7 +2405,7 @@ const TRANSLATIONS = {
     "cd_hours": "ساعات",
     "cd_min": "دقائق",
     "cd_sec": "ثوانٍ",
-    "ical_btn": "أضف محن السليل وغزوات البهيموث إلى تقويمك\!",
+    "ical_btn": "أضف إلى التقويم",
     "bp_h": "الصورة الكاملة",
     "bp_blurb": "خادمان يتصارعان، بهيموث ضد بهيموث. اجمع <em>أحجار الإيقاظ الرونية</em> لتنمية بهيموثنا، ثم اغزُ العدو مع الدفاع عن خادمنا. <span class=\"gold\">الإمبراطورية صاحبة أعلى مجموع نقاط تفوز</span> — لكن الطرفين يكسبان بلورات البهيموث، فاللعب مجدٍ حتى من الخلف.",
     "bp_callout": "<strong>ثلاث طرق للنقاط:</strong> <strong>نمِّ</strong> بهيموثنا، <strong>دافع</strong> عنه، <strong>اهجم</strong> على عدوهم. أنفق بلورات البهيموث قبل نهاية الحدث — خلال <strong>Stellar Dynasty</strong> بدّلها بنقاط الفتح.",
@@ -2517,7 +2501,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>تبرع أولاً بأول</strong> — لا تكدّس.",
     "st2_cap1": "محنة السليل — انقر نخبة «سليل البهيموث» ثم هجوم/انتقال",
     "st2_cap2": "تنمية البهيموث — داعب/هذّب/سلِّ للحصول على الأحجار",
-    "st2_income_h": "دخل الأحجار — حدود يومية",
     "daily_obj_h": "الأهداف اليومية (لكل لاعب)",
     "daily_obj_sub": "يُعاد الضبط 00:00 UTC يومياً. تابع تقدّمك نحو كل حد من أحجار اليقظة.",
     "rune_th_src": "المصدر",
@@ -2608,7 +2591,7 @@ const TRANSLATIONS = {
     "cd_hours": "Timer",
     "cd_min": "Min",
     "cd_sec": "Sek",
-    "ical_btn": "Føj Scion-prøverne og Behemoth-invasionerne til din kalender\!",
+    "ical_btn": "Føj til kalender",
     "bp_h": "Det store billede",
     "bp_blurb": "To servere tørner sammen, Behemoth mod Behemoth. Tjen <em>Vække-runesten</em> for at opbygge vores, og invadér så fjenden mens du forsvarer din egen. <span class=\"gold\">Imperiet med højest samlet score vinder</span> — men begge sider tjener Behemoth-krystaller, så det betaler sig at spille selv bagud.",
     "bp_callout": "<strong>Tre måder at score:</strong> <strong>dyrk</strong> vores, <strong>forsvar</strong> vores, <strong>angrib</strong> deres. Brug Behemoth-krystaller før eventet slutter — under <strong>Stellar Dynasty</strong> byttes de i stedet til Conquest-point.",
@@ -2704,7 +2687,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Donér løbende</strong> — hamstr ikke.",
     "st2_cap1": "Scion-prøven — tryk på »Behemoth Scion«-eliten, derefter Angrib/Teleportér",
     "st2_cap2": "Behemoth-dyrkning — kæl/plej/underhold for runesten",
-    "st2_income_h": "Runesten-indtægt — daglige lofter",
     "daily_obj_h": "Daglige Mål (pr. spiller)",
     "daily_obj_sub": "Nulstilles 00:00 UTC dagligt. Følg din egen fremgang mod hvert Vække-runesten-loft.",
     "rune_th_src": "Kilde",
@@ -2795,7 +2777,7 @@ const TRANSLATIONS = {
     "cd_hours": "Std",
     "cd_min": "Min",
     "cd_sec": "Sek",
-    "ical_btn": "Füge die Scion-Prüfungen und Behemoth-Invasionen zu deinem Kalender hinzu!",
+    "ical_btn": "Zum Kalender hinzufügen",
     "tug_us": "WIR · #008",
     "tug_points_lbl": "Behemoth-Punkte",
     "tug_them": "#028",
@@ -2904,7 +2886,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Laufend spenden</strong> — nicht horten.",
     "st2_cap1": "Scion-Prüfung — tippe die Elite „Behemoth-Scion“ an, dann Angreifen/Teleportieren",
     "st2_cap2": "Behemoth-Kultivierung — streicheln / pflegen / unterhalten für Runensteine",
-    "st2_income_h": "Runenstein-Einkommen — Tageslimits",
     "daily_obj_h": "Tägliche Ziele (pro Spieler)",
     "daily_obj_sub": "Setzt täglich um 00:00 UTC zurück. Verfolge deinen Fortschritt zu jedem Erweckungs-Runenstein-Limit.",
     "rune_th_src": "Quelle",
@@ -2982,7 +2963,7 @@ const TRANSLATIONS = {
     "cd_hours": "ч",
     "cd_min": "мин",
     "cd_sec": "сек",
-    "ical_btn": "Добавьте Испытания Отпрыска и Вторжения Бегемота в свой календарь!",
+    "ical_btn": "Добавить в календарь",
     "tug_us": "МЫ · #008",
     "tug_points_lbl": "Очки Бегемота",
     "tug_them": "#028",
@@ -3091,7 +3072,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Жертвуй по ходу</strong> — не копи.",
     "st2_cap1": "Испытание Отпрыска — нажми элиту «Отпрыск Бегемота», затем Атака/Телепорт",
     "st2_cap2": "Культивация Бегемота — гладь / ухаживай / развлекай ради рун",
-    "st2_income_h": "Доход рун — суточные лимиты",
     "daily_obj_h": "Ежедневные цели (на игрока)",
     "daily_obj_sub": "Сброс в 00:00 UTC. Отслеживай свой прогресс к каждому лимиту рун пробуждения.",
     "rune_th_src": "Источник",
@@ -3169,7 +3149,7 @@ const TRANSLATIONS = {
     "cd_hours": "Ore",
     "cd_min": "Min",
     "cd_sec": "Sec",
-    "ical_btn": "Aggiungi le Prove del Rampollo e le Invasioni del Behemoth al tuo calendario!",
+    "ical_btn": "Aggiungi al calendario",
     "tug_us": "NOI · #008",
     "tug_points_lbl": "Punti Behemoth",
     "tug_them": "#028",
@@ -3278,7 +3258,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Dona man mano</strong> — non accumulare.",
     "st2_cap1": "Prova del Rampollo — tocca l'Élite «Rampollo del Behemoth», poi Attacca/Teletrasporta",
     "st2_cap2": "Coltivazione del Behemoth — accarezza / cura / intrattieni per rune",
-    "st2_income_h": "Entrate rune — limiti giornalieri",
     "daily_obj_h": "Obiettivi Giornalieri (per giocatore)",
     "daily_obj_sub": "Si azzera alle 00:00 UTC. Segui i tuoi progressi verso ogni limite di Rune del Risveglio.",
     "rune_th_src": "Fonte",
@@ -3356,7 +3335,7 @@ const TRANSLATIONS = {
     "cd_hours": "Horas",
     "cd_min": "Min",
     "cd_sec": "Seg",
-    "ical_btn": "Adicione as Provações do Descendente e as Invasões do Behemoth ao seu calendário!",
+    "ical_btn": "Adicionar ao calendário",
     "tug_us": "NÓS · #008",
     "tug_points_lbl": "Pontos do Behemoth",
     "tug_them": "#028",
@@ -3465,7 +3444,6 @@ const TRANSLATIONS = {
     "st2_d4": "<strong>Doe conforme ganha</strong> — não acumule.",
     "st2_cap1": "Provação do Descendente — toque na Elite «Descendente do Behemoth», depois Atacar/Teleportar",
     "st2_cap2": "Cultivo do Behemoth — acaricie / cuide / entretenha por runas",
-    "st2_income_h": "Renda de runas — limites diários",
     "daily_obj_h": "Objetivos Diários (por jogador)",
     "daily_obj_sub": "Reinicia às 00:00 UTC. Acompanhe seu progresso rumo a cada limite de Runas do Despertar.",
     "rune_th_src": "Fonte",
@@ -4346,13 +4324,12 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // --- Header scroll button → jump to the current stage tab ---
-  // Before/during Beast Taming → Beast Taming tab; on/after Attack-Defense → Attack-Defense tab.
+  // --- Header scroll button → jump to the Overview's Daily Objectives section ---
   var scrollBtn = document.getElementById('scrollBtn');
   if (scrollBtn) scrollBtn.addEventListener('click', function () {
-    var now = Date.now();
-    var tab = now >= ATKDEF_START ? 's3' : 's2';
-    if (window.behSwitchTab) window.behSwitchTab(tab);
+    if (window.behSwitchTab) window.behSwitchTab('overview');
+    var obj = document.getElementById('daily-objectives');
+    if (obj && obj.scrollIntoView) obj.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 </script>
