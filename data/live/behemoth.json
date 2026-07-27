@@ -5,8 +5,12 @@
   "endLabel": "Aug 4",
   "timezone": "UTC+0",
   "eventStartISO": "2026-07-27T00:00:00Z",
-  "eventEndISO": "2026-08-04T00:00:00Z",
+  "eventEndISO": "2026-08-02T00:00:00Z",
   "scoreUs": "0",
   "scoreThem": "0",
-  "result": "TBD"
+  "result": "TBD",
+  "tamingStartISO": "2026-07-28T00:00:00Z",
+  "atkDefStartISO": "2026-07-31T00:00:00Z",
+  "tamingLabel": "Jul 28",
+  "atkDefLabel": "Jul 31"
 }

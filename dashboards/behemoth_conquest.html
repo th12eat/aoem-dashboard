@@ -107,6 +107,52 @@
   .event-tag { color: var(--kvk-accent); }
   .header h1 span { color: var(--kvk-accent); }
 
+  /* header pill buttons (mirror Desolate Desert) */
+  .hdr-pills-top { position:absolute; right:16px; top:14px; z-index:12; display:inline-flex; align-items:center; gap:6px; }
+  .hdr-pills { position:absolute; right:16px; bottom:14px; z-index:12; display:inline-flex; align-items:center; gap:6px; }
+  .hdr-icobtn { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:8px;
+    background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--text-secondary); font-size:15px; cursor:pointer;
+    text-decoration:none; line-height:1; transition:background .15s,color .15s; }
+  .hdr-icobtn:hover { background:rgba(255,255,255,0.12); color:var(--text-primary); }
+  /* Trial of Scion badge: accent + pulse when live, greyed when idle */
+  .scion-badge { display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:999px; text-decoration:none;
+    background:rgba(var(--kvk-accent-rgb),0.16); border:1px solid var(--kvk-accent-dim); color:var(--kvk-accent);
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:0.5px; cursor:pointer;
+    animation:scionBadgePulse 1.6s ease-in-out infinite; }
+  .scion-badge:hover { background:rgba(var(--kvk-accent-rgb),0.24); }
+  .scion-badge.is-idle { background:rgba(148,163,184,0.14); border-color:#3a4256; color:var(--text-secondary); animation:none; }
+  .scion-badge.is-idle:hover { background:rgba(148,163,184,0.20); }
+  .scion-badge.is-idle .tb-ico { filter:grayscale(1); opacity:0.7; }
+  .scion-badge .tb-ico { font-size:16px; line-height:1; }
+  .scion-badge .tb-lvl { font-size:12.5px; }
+  @keyframes scionBadgePulse { 0%,100%{ box-shadow:0 0 0 0 rgba(var(--kvk-accent-rgb),0.5);} 50%{ box-shadow:0 0 0 6px rgba(var(--kvk-accent-rgb),0);} }
+  @media (max-width:560px){ .hdr-pills-top{ right:10px; top:10px; } .hdr-pills{ right:10px; bottom:10px; } .scion-badge .tb-lvl{ font-size:11.5px; } }
+  @media (prefers-reduced-motion: reduce){ .scion-badge{ animation:none; } }
+
+  /* help modal */
+  .beh-modal { display:none; position:fixed; inset:0; z-index:200; background:rgba(6,8,14,0.72); align-items:center; justify-content:center; padding:20px; }
+  .beh-modal.open { display:flex; }
+  .beh-modal-card { position:relative; max-width:420px; width:100%; max-height:88vh; overflow-y:auto; background:var(--bg-card);
+    border:1px solid var(--kvk-accent-dim); border-radius:14px; padding:22px 20px; box-shadow:0 0 40px rgba(var(--kvk-accent-rgb),0.2); }
+  .beh-modal-card h3 { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:1.5px; color:var(--kvk-accent); text-align:center; margin-bottom:4px; }
+  .beh-modal-card p { font-size:13px; line-height:1.6; color:var(--text-secondary); margin-bottom:10px; }
+  .beh-modal-x { position:absolute; top:8px; right:12px; background:none; border:none; color:var(--text-muted); font-size:26px; line-height:1; cursor:pointer; }
+  .beh-modal-x:hover { color:var(--text-primary); }
+
+  /* Event Timeline (Desolate-Desert StageLine style) */
+  .stageline-labels { position:relative; height:16px; margin-bottom:6px; }
+  .stageline-labels span { position:absolute; transform:translateX(-50%); font-family:'Barlow Condensed',sans-serif; font-size:12px;
+    font-weight:700; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
+  .stageline-dots { display:flex; align-items:flex-start; }
+  .stageline-node { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; }
+  .stageline-node .sl-line { position:absolute; top:7px; width:100%; height:3px; }
+  .stageline-node .sl-dot { width:16px; height:16px; border-radius:50%; border:2px solid; position:relative; z-index:2; }
+  .stageline-node.now .sl-dot { animation:slPulse 1.4s ease-in-out infinite; }
+  @keyframes slPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(var(--kvk-accent-rgb),0.55);} 50%{ box-shadow:0 0 0 7px rgba(var(--kvk-accent-rgb),0);} }
+  .stageline-node .sl-day { font-size:10px; font-weight:700; margin-top:6px; text-transform:uppercase; letter-spacing:0.5px; }
+  .stageline-node .sl-name { font-size:11px; margin-top:2px; line-height:1.25; padding:0 4px; }
+  @media (prefers-reduced-motion: reduce){ .stageline-node.now .sl-dot{ animation:none; } }
+
   .header .subtitle {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 17px;
@@ -222,55 +268,6 @@
   .blurb strong { color: var(--text-primary); font-weight: 600; }
   .blurb .gold { color: var(--accent-gold); font-weight: 600; }
   .blurb em { color: var(--accent-gold); font-style: normal; }
-
-  /* -- PHASE TRACKER -- */
-  .phase-track {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-  @media (max-width: 560px) { .phase-track { grid-template-columns: repeat(2, 1fr); } }
-
-  .phase {
-    border-radius: 8px;
-    padding: 14px 10px;
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    text-align: center;
-    position: relative;
-  }
-  .phase .pnum {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-  .phase .picon { font-size: 26px; line-height: 1; margin: 4px 0; }
-  .phase .pname {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px;
-    letter-spacing: 1px;
-    color: var(--text-primary);
-  }
-  .phase .pdesc {
-    font-size: 11.5px;
-    color: var(--text-secondary);
-    margin-top: 3px;
-    line-height: 1.4;
-  }
-  .phase.active { border-color: var(--accent-gold); background: rgba(var(--kvk-accent-rgb),0.08); }
-  .phase.active .pname { color: var(--accent-gold); }
-  .phase.active::after {
-    content: attr(data-nowlabel);
-    position: absolute;
-    top: -9px; left: 50%; transform: translateX(-50%);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 10px; letter-spacing: 1px;
-    background: var(--accent-gold); color: var(--bg-deep);
-    padding: 2px 8px; border-radius: 4px;
-  }
 
   /* -- STAT BOXES -- */
   .stat-row {
@@ -829,19 +826,30 @@
 
   <!-- HEADER -->
   <div class="header" style="--kvk-bg:url('../assets/kvk-bg/behemoth.jpg')">
+    <!-- top-right: help + scroll icon buttons -->
+    <div class="hdr-pills-top">
+      <button type="button" class="hdr-icobtn" id="scrollBtn" title="Jump to the current stage tab">&#128220;</button>
+      <button type="button" class="hdr-icobtn" id="helpBtn" title="What is Behemoth Conquest?">&#10067;</button>
+    </div>
+    <!-- bottom-right: Trial of Scion badge -->
+    <div class="hdr-pills">
+      <a href="#scion-schedule" class="scion-badge is-idle" id="scionBadge" title="Trial of Scion — jump to schedule">
+        <span class="tb-ico">&#129704;</span><span class="tb-lvl" id="scionBadgeLbl">Scion</span>
+      </a>
+    </div>
     <!-- LANG SWITCHER moved to the shared header (see registration at end of body) -->
     <div class="event-tag" data-i18n="event_tag">New Game Mode &middot; Era 8</div>
     <h1>BEHEMOTH <span>CONQUEST</span></h1>
     <div class="subtitle" data-i18n="subtitle">Awaken the bloodline &middot; March into enemy empires &middot; Cross-server war</div>
     <div class="time-row">
       <div>
-        <div class="label" data-i18n="lbl_starts">Starts</div>
-        <div class="time" id="beh-start">Jun 22</div>
+        <div class="label" data-i18n="lbl_taming">Beast Taming</div>
+        <div class="time" id="beh-start">Jul 28</div>
       </div>
       <div class="divider"></div>
       <div>
-        <div class="label" data-i18n="lbl_ends">Ends</div>
-        <div class="time" id="beh-end">Jun 30</div>
+        <div class="label" data-i18n="lbl_atkdef">Attack-Defense</div>
+        <div class="time" id="beh-end">Jul 31</div>
       </div>
       <div class="divider"></div>
       <div>
@@ -857,11 +865,22 @@
       <div class="cd-block"><div class="val" id="cd-m">--</div><div class="unit" data-i18n="cd_min">Min</div></div>
       <div class="cd-block"><div class="val" id="cd-s">--</div><div class="unit" data-i18n="cd_sec">Sec</div></div>
     </div>
-    <div class="cd-label" id="cd-label">Until Event Ends</div>
+    <div class="cd-label" id="cd-label">Until Beast Taming</div>
     <button type="button" id="icalBtn" class="ical-btn">
       <span class="ical-ico" aria-hidden="true">&#128197;</span>
       <span class="ical-label" data-i18n="ical_btn">Add the Trials of Scion and Behemoth Invasions to your Calendar!</span>
     </button>
+  </div>
+
+  <!-- HELP MODAL -->
+  <div class="beh-modal" id="helpModal">
+    <div class="beh-modal-card">
+      <button type="button" class="beh-modal-x" id="helpClose" aria-label="Close">&times;</button>
+      <h3 data-i18n="help_h">What is Behemoth Conquest?</h3>
+      <img src="../assets/behemoth/behemoth_cultivation_overview.jpg" alt="Behemoth cultivation — feed, pet, play" style="width:100%;border-radius:8px;border:1px solid var(--border);margin:6px 0 12px;display:block;">
+      <p data-i18n="help_p1">Two servers each raise a <strong>Behemoth</strong>. During <strong>Beast Taming</strong> you farm <em>Awaken Runestones</em> (Trial of Scion + Cultivation) and donate them to grow yours from Juvenile &rarr; Adult &mdash; donations also give <strong>10 personal points each</strong>.</p>
+      <p data-i18n="help_p2">Then in <strong>Attack-Defense</strong>, cross-server rallies attack the enemy Behemoth while defending your own. <span class="gold">Highest total score wins.</span> Milestones (stacks, the kill) dwarf chip damage &mdash; be online for the invasion windows.</p>
+    </div>
   </div>
 
   <!-- ALWAYS-ON: SCORE RACE -->
@@ -877,8 +896,24 @@
     </div>
   </div>
 
-  <!-- ALWAYS-ON: CURRENT BEHEMOTH (with Our/Enemy toggle) -->
-  <div class="section topband" id="behemothCard" data-side="us">
+  <!-- TAB BAR -->
+  <div class="tab-bar" id="tabBar" role="tablist">
+    <button class="tab-btn active" data-tab="overview" role="tab" data-i18n="tab_overview">Overview</button>
+    <button class="tab-btn" data-tab="s1" role="tab" data-i18n="tab_s1">Scouting</button>
+    <button class="tab-btn" data-tab="s2" role="tab" data-i18n="tab_s2">Beast Taming</button>
+    <button class="tab-btn" data-tab="s3" role="tab" data-i18n="tab_s3">Attack-Defense</button>
+  </div>
+
+  <section class="tab-panel active" data-tab="overview" role="tabpanel">
+  <!-- THE BIG PICTURE -->
+  <div class="section">
+    <div class="sh"><span class="n">!</span> <span data-i18n="bp_h">The Big Picture</span></div>
+    <p class="blurb" data-i18n="bp_blurb">Two servers clash, Behemoth vs Behemoth. Earn <em>Awaken Runestones</em> to grow ours, then invade the enemy while defending our own. <span class="gold">Highest total score wins</span> &mdash; but both sides earn Behemoth Crystals, so play even from behind.</p>
+    <div class="co gold" data-i18n="bp_callout"><strong>Three ways to score:</strong> <strong>cultivate</strong> ours, <strong>defend</strong> ours, <strong>attack</strong> theirs. Spend Behemoth Crystals before the event ends &mdash; during <strong>Stellar Dynasty</strong>, trade them for Conquest Points instead.</div>
+  </div>
+
+  <!-- CURRENT BEHEMOTH (moved into Overview; Our/Enemy toggle) -->
+  <div class="section" id="behemothCard" data-side="us">
     <div class="behe-head">
       <span class="sh-inline"><span class="n">&#129704;</span> <span data-i18n="ref_h">Current Behemoth</span></span>
       <div class="behe-toggle" role="tablist" aria-label="Behemoth side">
@@ -895,45 +930,23 @@
     <p style="font-size:12px;color:var(--text-muted);" data-i18n="ref_note">Both Behemoths start <strong>Juvenile</strong> (8,750/s siege, 3.5M health, 3&times; Undying) &mdash; they grow Juvenile &rarr; Adolescent &rarr; Adult through Beast Taming (Days 2&ndash;4). Siege durability climbs as each side cultivates; stats update as the event progresses.</p>
   </div>
 
-  <!-- TAB BAR -->
-  <div class="tab-bar" id="tabBar" role="tablist">
-    <button class="tab-btn active" data-tab="overview" role="tab" data-i18n="tab_overview">Overview</button>
-    <button class="tab-btn" data-tab="s1" role="tab" data-i18n="tab_s1">Stage 1</button>
-    <button class="tab-btn" data-tab="s2" role="tab" data-i18n="tab_s2">Stage 2</button>
-    <button class="tab-btn" data-tab="s3" role="tab" data-i18n="tab_s3">Stage 3</button>
-    <button class="tab-btn" data-tab="s4" role="tab" data-i18n="tab_s4">Stage 4</button>
+  <!-- EVENT TIMELINE (DD-style followable schedule) -->
+  <div class="section">
+    <div class="sh"><span class="n">&#128197;</span> <span data-i18n="timeline_h">Event Timeline</span></div>
+    <div id="stageLine"></div>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:8px;" data-i18n="stages_note">Trial windows are fixed daily; only the <strong>invasion time &amp; location</strong> are admin-set &mdash; watch alliance chat.</p>
   </div>
 
-  <section class="tab-panel active" data-tab="overview" role="tabpanel">
-  <!-- THE BIG PICTURE -->
-  <div class="section">
-    <div class="sh"><span class="n">!</span> <span data-i18n="bp_h">The Big Picture</span></div>
-    <p class="blurb" data-i18n="bp_blurb">Two servers clash, Behemoth vs Behemoth. Earn <em>Awaken Runestones</em> to grow ours, then invade the enemy while defending our own. <span class="gold">Highest total score wins</span> &mdash; but both sides earn Behemoth Crystals, so play even from behind.</p>
-    <div class="co gold" data-i18n="bp_callout"><strong>Three ways to score:</strong> <strong>cultivate</strong> ours, <strong>defend</strong> ours, <strong>attack</strong> theirs. Spend Behemoth Crystals before the event ends &mdash; during <strong>Stellar Dynasty</strong>, trade them for Conquest Points instead.</div>
-  </div>
-
-  <!-- STAGE TIMELINE STRIP -->
-  <div class="section">
-    <div class="sh"><span class="n">&#128197;</span> <span data-i18n="stages_h">The Four Stages (Jun 22&ndash;30)</span></div>
-    <div class="phase-track" id="phaseTrack">
-      <div class="phase" data-from="2026-06-22" data-to="2026-06-22" data-stagetab="s1">
-        <div class="pnum" data-i18n="ph1_day">Day 1</div><div class="picon">&#9876;</div>
-        <div class="pname" data-i18n="ph1_name">Matching</div><div class="pdesc" data-i18n="ph1_desc">Servers paired, scout &amp; plan</div>
-      </div>
-      <div class="phase" data-from="2026-06-23" data-to="2026-06-25" data-stagetab="s2">
-        <div class="pnum" data-i18n="ph2_day">Days 2&ndash;4</div><div class="picon">&#129704;</div>
-        <div class="pname" data-i18n="ph2_name">Beast Taming</div><div class="pdesc" data-i18n="ph2_desc">Cultivate the Behemoth via daily grind</div>
-      </div>
-      <div class="phase" data-from="2026-06-26" data-to="2026-06-27" data-stagetab="s3">
-        <div class="pnum" data-i18n="ph3_day">Days 5&ndash;6</div><div class="picon">&#128165;</div>
-        <div class="pname" data-i18n="ph3_name">Attack-Defense</div><div class="pdesc" data-i18n="ph3_desc">90-min cross-server Behemoth invasions</div>
-      </div>
-      <div class="phase" data-from="2026-06-28" data-to="2026-06-30" data-stagetab="s4">
-        <div class="pnum" data-i18n="ph4_day">Day 7+</div><div class="picon">&#10010;</div>
-        <div class="pname" data-i18n="ph4_name">Recovery</div><div class="pdesc" data-i18n="ph4_desc">Claim back lost units</div>
-      </div>
+  <!-- DAILY SCHEDULE — TRIAL OF SCION (moved from Beast Taming) -->
+  <div class="section" id="scion-schedule">
+    <div class="sh"><span class="n">&#129704;</span> <span data-i18n="st2_sched_h">Daily Schedule &mdash; Trial of Scion</span></div>
+    <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:6px;" data-i18n="st2_sched_p">Four fixed 30-min windows daily (UTC+0). <span style="color:#5b8def;font-weight:700;">Blue = on #008 (ours)</span>, <span style="color:#c43d3d;font-weight:700;">red = on #028</span>. Cross-border tiles open during our windows &mdash; zeroing risk. Runs during Beast Taming (Days 2&ndash;4).</p>
+    <div class="sched scion-sched" id="scionSched">
+      <span class="slot scion-slot" data-start="60"  data-end="90"  data-server="008"><b>01:00</b>&ndash;01:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
+      <span class="slot scion-slot" data-start="240" data-end="270" data-server="028"><b>04:00</b>&ndash;04:30 <span class="srv" data-i18n="srv087">#028</span><span class="slot-state"></span></span>
+      <span class="slot scion-slot" data-start="660" data-end="690" data-server="008"><b>11:00</b>&ndash;11:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
+      <span class="slot scion-slot" data-start="1140" data-end="1170" data-server="028"><b>19:00</b>&ndash;19:30 <span class="srv" data-i18n="srv087">#028</span><span class="slot-state"></span></span>
     </div>
-    <p style="font-size:12px;color:var(--text-muted);margin-top:4px;" data-i18n="stages_note">Trial windows are fixed daily; only the <strong>invasion time &amp; location</strong> are admin-set &mdash; watch alliance chat.</p>
   </div>
 
   </section>
@@ -941,7 +954,7 @@
   <section class="tab-panel" data-tab="s1" role="tabpanel">
   <!-- STAGE 1 — SCOUTING / MATCHING -->
   <div class="stage">
-    <div class="stage-head"><span class="sicon">&#128270;</span><span class="stitle" data-i18n="st1_title">Stage 1 &mdash; Matching</span><span class="sdays" data-i18n="st1_days">Day 1</span></div>
+    <div class="stage-head"><span class="sicon">&#128270;</span><span class="stitle" data-i18n="st1_title">Scouting</span><span class="sdays" data-i18n="st1_days">Day 1</span></div>
     <div class="stage-body">
   <div class="section">
     <div class="sh"><span class="n">&#128270;</span> <span data-i18n="sc_h">Scouting the Match &mdash; Us vs #028</span></div>
@@ -1047,7 +1060,7 @@
   <section class="tab-panel" data-tab="s2" role="tabpanel">
   <!-- STAGE 2 — BEAST TAMING -->
   <div class="stage">
-    <div class="stage-head"><span class="sicon">&#129704;</span><span class="stitle" data-i18n="st2_title">Stage 2 &mdash; Beast Taming</span><span class="sdays" data-i18n="st2_days">Days 2&ndash;4</span></div>
+    <div class="stage-head"><span class="sicon">&#129704;</span><span class="stitle" data-i18n="st2_title">Beast Taming</span><span class="sdays" data-i18n="st2_days">Days 2&ndash;4</span></div>
     <div class="stage-body">
       <h4 data-i18n="st2_goal_h">Goal</h4>
       <ul>
@@ -1055,15 +1068,7 @@
         <li data-i18n="st2_g2">Donating tips <strong>Bloodline Purity</strong> our way and earns <strong>10 personal points per runestone</strong>.</li>
       </ul>
 
-      <h4 data-i18n="st2_sched_h">&#128197; Daily schedule &mdash; Trial of Scion</h4>
-      <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:6px;" data-i18n="st2_sched_p">Four fixed 30-min windows daily (UTC+0). <span style="color:#5b8def;font-weight:700;">Blue = on #008 (ours)</span>, <span style="color:#c43d3d;font-weight:700;">red = on #028</span>. Cross-border tiles open during our windows &mdash; zeroing risk.</p>
-      <div class="sched scion-sched" id="scionSched">
-        <span class="slot scion-slot" data-start="60"  data-end="90"  data-server="008"><b>01:00</b>&ndash;01:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
-        <span class="slot scion-slot" data-start="240" data-end="270" data-server="028"><b>04:00</b>&ndash;04:30 <span class="srv" data-i18n="srv087">#028</span><span class="slot-state"></span></span>
-        <span class="slot scion-slot" data-start="660" data-end="690" data-server="008"><b>11:00</b>&ndash;11:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
-        <span class="slot scion-slot" data-start="1140" data-end="1170" data-server="028"><b>19:00</b>&ndash;19:30 <span class="srv" data-i18n="srv087">#028</span><span class="slot-state"></span></span>
-      </div>
-
+      <p style="font-size:12px;color:var(--text-muted);margin:2px 0 4px;" data-i18n="st2_sched_ptr">&#128197; The daily <strong>Trial of Scion</strong> schedule is on the <strong>Overview</strong> tab (also reachable via the &#129704; badge in the header).</p>
 
       <h4 data-i18n="st2_purity_h">&#9878; Bloodline Purity race</h4>
       <div class="tug-wrap">
@@ -1200,7 +1205,7 @@
   <section class="tab-panel" data-tab="s3" role="tabpanel">
   <!-- STAGE 3 — ATTACK-DEFENSE -->
   <div class="stage">
-    <div class="stage-head"><span class="sicon">&#128165;</span><span class="stitle" data-i18n="st3_title">Stage 3 &mdash; Attack-Defense</span><span class="sdays" data-i18n="st3_days">Days 5&ndash;6</span></div>
+    <div class="stage-head"><span class="sicon">&#128165;</span><span class="stitle" data-i18n="st3_title">Attack-Defense</span><span class="sdays" data-i18n="st3_days">Days 5&ndash;6</span></div>
     <div class="stage-body">
       <h4 data-i18n="happens_h">What happens</h4>
       <ul>
@@ -1442,22 +1447,6 @@
         <tr><td class="name" data-i18n="pt5_a">Invasion end: per 1K of <em>our</em> Behemoth's remaining HP</td><td class="tiers"><b>2,000,000</b></td></tr>
       </table>
       <div class="co gold" data-i18n="st3_pts_note"><strong>Milestones dwarf chip damage:</strong> a stack (1B) and the kill (5B) are the big swings. Keeping ours alive pays 2M per 1K HP left &mdash; defense matters as much as offense.</div>
-    </div>
-  </div>
-
-  </section>
-
-  <section class="tab-panel" data-tab="s4" role="tabpanel">
-  <!-- STAGE 4 — RECOVERY -->
-  <div class="stage">
-    <div class="stage-head"><span class="sicon">&#10010;</span><span class="stitle" data-i18n="st4_title">Stage 4 &mdash; Recovery</span><span class="sdays" data-i18n="st4_days">Day 7+</span></div>
-    <div class="stage-body">
-      <h4 data-i18n="st4_h">Do this before the window closes</h4>
-      <ul>
-        <li data-i18n="st4_1"><strong>CLICK CLAIM</strong> &mdash; get 35% of lost units back, but only if you claim. People forget and lose it all.</li>
-        <li data-i18n="st4_2">Reach the <strong>65% cap</strong> with Recovery Tickets (max 20) and allies spending recovery tokens on you (ask in alliance chat).</li>
-        <li data-i18n="st4_3">No recovery after this stage. Spend leftover Behemoth Crystals first.</li>
-      </ul>
     </div>
   </div>
 
@@ -3561,11 +3550,28 @@ var CD_LABELS = {
   it: { start: "All'inizio", end: 'Alla fine', done: 'Evento concluso' },
   pt: { start: 'Até o início', end: 'Até o fim', done: 'Evento encerrado' }
 };
+// Milestone-specific countdown labels (Beast Taming / Attack-Defense start).
+var CD_TARGET_LABELS = {
+  en: { taming: 'Until Beast Taming', atkdef: 'Until Attack-Defense' },
+  es: { taming: 'Hasta Doma de Bestias', atkdef: 'Hasta Ataque-Defensa' },
+  fr: { taming: "Avant l'Apprivoisement", atkdef: 'Avant Attaque-Défense' },
+  ko: { taming: '야수 조련까지', atkdef: '공격-방어까지' },
+  ja: { taming: '獣馴らしまで', atkdef: '攻防戦まで' },
+  zh: { taming: '距驯兽', atkdef: '距攻防战' },
+  ar: { taming: 'حتى ترويض الوحش', atkdef: 'حتى الهجوم والدفاع' },
+  da: { taming: 'Til Bæsttæmning', atkdef: 'Til Angreb-Forsvar' },
+  de: { taming: 'Bis zur Zähmung', atkdef: 'Bis Angriff-Verteidigung' },
+  ru: { taming: 'До приручения', atkdef: 'До атаки-обороны' },
+  it: { taming: "All'Addestramento", atkdef: 'Ad Attacco-Difesa' },
+  pt: { taming: 'Até a Domação', atkdef: 'Até Ataque-Defesa' }
+};
 
-// Event window (UTC+0). Start of day Jun 22 → end of day Jun 30.
-// Fallback values; overridden by ../data/live/behemoth.json when present (see loader below).
-var EVENT_START = new Date('2026-06-22T00:00:00Z').getTime();
-var EVENT_END   = new Date('2026-06-30T00:00:00Z').getTime();
+// Event window (UTC+0). Countdown targets the next major milestone: Beast Taming
+// start, then Attack-Defense start, then event end. Fallbacks overridden by JSON.
+var EVENT_START  = new Date('2026-07-27T00:00:00Z').getTime();   // matchmaking / event open
+var EVENT_END    = new Date('2026-08-02T00:00:00Z').getTime();   // after attack-defense
+var TAMING_START = new Date('2026-07-28T00:00:00Z').getTime();   // Beast Taming begins
+var ATKDEF_START = new Date('2026-07-31T00:00:00Z').getTime();   // Attack-Defense begins
 
 // Load published behemoth fields and apply before the countdown starts.
 function applyBehemothLive() {
@@ -3573,10 +3579,13 @@ function applyBehemothLive() {
     if(!res.ok) return;
     return res.json().then(function(j){
       if(!j) return;
-      if(j.eventStartISO) EVENT_START = new Date(j.eventStartISO).getTime();
-      if(j.eventEndISO)   EVENT_END   = new Date(j.eventEndISO).getTime();
+      if(j.eventStartISO)  EVENT_START  = new Date(j.eventStartISO).getTime();
+      if(j.eventEndISO)    EVENT_END    = new Date(j.eventEndISO).getTime();
+      if(j.tamingStartISO) TAMING_START = new Date(j.tamingStartISO).getTime();
+      if(j.atkDefStartISO) ATKDEF_START = new Date(j.atkDefStartISO).getTime();
       var set=function(id,v){ var el=document.getElementById(id); if(el&&v!=null) el.textContent=v; };
-      set('beh-start', j.startLabel); set('beh-end', j.endLabel); set('beh-tz', j.timezone);
+      // header date cells now show the Beast Taming / Attack-Defense start dates
+      set('beh-start', j.tamingLabel || j.startLabel); set('beh-end', j.atkDefLabel || j.endLabel); set('beh-tz', j.timezone);
       set('beh-score-us', j.scoreUs); set('beh-score-them', j.scoreThem);
     });
   }).catch(function(e){ console.error('behemoth live load failed; using fallback', e); });
@@ -3596,12 +3605,13 @@ function update() {
   var L = CD_LABELS[currentLang] || CD_LABELS.en;
   var target;
 
-  if (now < EVENT_START) {
-    target = EVENT_START;
-    label.textContent = L.start;
+  // Countdown to the next milestone: Beast Taming → Attack-Defense → event end.
+  if (now < TAMING_START) {
+    target = TAMING_START; label.textContent = CD_TARGET_LABELS[currentLang] ? CD_TARGET_LABELS[currentLang].taming : CD_TARGET_LABELS.en.taming;
+  } else if (now < ATKDEF_START) {
+    target = ATKDEF_START; label.textContent = CD_TARGET_LABELS[currentLang] ? CD_TARGET_LABELS[currentLang].atkdef : CD_TARGET_LABELS.en.atkdef;
   } else if (now < EVENT_END) {
-    target = EVENT_END;
-    label.textContent = L.end;
+    target = EVENT_END; label.textContent = L.end;
   } else {
     document.getElementById('cd-d').textContent = '0';
     document.getElementById('cd-h').textContent = '00';
@@ -3626,27 +3636,87 @@ function update() {
   updatePhase(now);
 }
 
-// Which of the four stages is current, by UTC date. Highlights dynamically; no manual updates.
-var NOW_LABELS = { en: 'NOW', es: 'AHORA', fr: 'EN COURS', ko: '현재', ja: '現在', zh: '当前', ar: 'الآن', da: 'NU', de: 'JETZT', ru: 'СЕЙЧАС', it: 'ORA', pt: 'AGORA' };
-function updatePhase(now) {
-  var track = document.getElementById('phaseTrack');
-  if (!track) return;
-  var d = new Date(now);
-  // today's UTC date as YYYY-MM-DD for plain string compare (ISO dates sort lexically)
-  var today = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
-  var label = NOW_LABELS[currentLang] || NOW_LABELS.en;
-  var nowTab = null;
-  track.querySelectorAll('.phase').forEach(function (el) {
-    var from = el.getAttribute('data-from'), to = el.getAttribute('data-to');
-    var on = from && to && today >= from && today <= to;
-    el.classList.toggle('active', on);
-    if (on) { el.setAttribute('data-nowlabel', label); nowTab = el.getAttribute('data-stagetab'); }
+// --- Event Timeline (Desolate-Desert StageLine style) ------------------------
+// Phases: Matchmaking (grey) · Beast Taming (accent) · Attack-Defense (bright accent).
+// Recovery is intentionally excluded. The current phase is derived from the stage
+// boundary dates; its dot pulses and drives the .tab-btn.is-now highlight.
+var STAGE_COLORS = {
+  mm:    { bright: '#94a3b8', dark: '#3a4256', label: 'MATCHMAKING' },
+  tame:  { bright: 'var(--kvk-accent)', dark: 'rgba(var(--kvk-accent-rgb),0.28)', label: 'BEAST TAMING' },
+  atk:   { bright: '#e05a8a', dark: 'rgba(224,90,138,0.30)', label: 'ATTACK-DEFENSE' } // brighter accent
+};
+var STAGE_NAMES = {
+  en: { mm: 'Matchmaking', tame: 'Beast Taming', atk: 'Attack-Defense' },
+  es: { mm: 'Emparejamiento', tame: 'Doma de Bestias', atk: 'Ataque-Defensa' },
+  fr: { mm: 'Appariement', tame: 'Apprivoisement', atk: 'Attaque-Défense' },
+  ko: { mm: '매칭', tame: '야수 조련', atk: '공격-방어' },
+  ja: { mm: 'マッチング', tame: '獣馴らし', atk: '攻防戦' },
+  zh: { mm: '匹配', tame: '驯兽', atk: '攻防战' },
+  ar: { mm: 'المطابقة', tame: 'ترويض الوحش', atk: 'الهجوم والدفاع' },
+  da: { mm: 'Matchning', tame: 'Bæsttæmning', atk: 'Angreb-Forsvar' },
+  de: { mm: 'Zuordnung', tame: 'Zähmung', atk: 'Angriff-Verteidigung' },
+  ru: { mm: 'Подбор', tame: 'Приручение', atk: 'Атака-Оборона' },
+  it: { mm: 'Abbinamento', tame: 'Addestramento', atk: 'Attacco-Difesa' },
+  pt: { mm: 'Emparelhamento', tame: 'Domação', atk: 'Ataque-Defesa' }
+};
+function behStageIndex(now) {
+  // 0=matchmaking, 1=beast taming, 2=attack-defense (>=). -1 before event.
+  if (now < EVENT_START) return -1;
+  if (now < TAMING_START) return 0;
+  if (now < ATKDEF_START) return 1;
+  return 2;
+}
+function utcDateStr(ms) { var d = new Date(ms); return d.getUTCFullYear() + '-' + String(d.getUTCMonth()+1).padStart(2,'0') + '-' + String(d.getUTCDate()).padStart(2,'0'); }
+function utcShort(ms) { return new Date(ms).toLocaleDateString('en-US', { month:'short', day:'numeric', timeZone:'UTC' }); }
+
+function renderStageLine(now) {
+  var host = document.getElementById('stageLine');
+  if (!host) return;
+  var names = STAGE_NAMES[currentLang] || STAGE_NAMES.en;
+  var cur = behStageIndex(now);
+  var eventDone = now >= EVENT_END;
+  var liveIdx = eventDone ? 2 : (cur < 0 ? -1 : cur); // before start: nothing lit
+  var nodes = [
+    { key:'mm',   name:names.mm,   sub:utcShort(EVENT_START),  tab:'s1' },
+    { key:'tame', name:names.tame, sub:utcShort(TAMING_START), tab:'s2' },
+    { key:'atk',  name:names.atk,  sub:utcShort(ATKDEF_START), tab:'s3' }
+  ];
+  var N = nodes.length;
+  // phase labels centered over each dot
+  var labelsHtml = nodes.map(function(n, i){
+    var z = STAGE_COLORS[n.key];
+    var reached = liveIdx >= i;
+    var pct = ((i + 0.5) / N) * 100;
+    return '<span style="left:' + pct + '%;color:' + (reached ? z.bright : z.dark) + '">' + z.label + '</span>';
+  }).join('');
+  var dotsHtml = nodes.map(function(n, i){
+    var z = STAGE_COLORS[n.key];
+    var past = i < liveIdx, nowNode = i === liveIdx, future = i > liveIdx;
+    var dotColor = (liveIdx >= i) ? z.bright : z.dark;      // reached = bright, else dark (solid, not transparent)
+    var prevZ = i > 0 ? STAGE_COLORS[nodes[i-1].key] : z;
+    var lineColor = (liveIdx >= i) ? prevZ.bright : prevZ.dark;
+    var lineHtml = i > 0 ? '<div class="sl-line" style="right:50%;background:' + lineColor + '"></div>' : '';
+    var nameCol = nowNode ? 'var(--kvk-accent)' : (past ? '#64748b' : (future ? '#8a90a5' : '#e8eaf0'));
+    return '<button type="button" class="stageline-node' + (nowNode ? ' now' : '') + '" data-tab="' + n.tab + '" ' +
+             'style="font:inherit;cursor:pointer;background:none;border:none;padding:5px 2px;">' +
+             lineHtml +
+             '<div class="sl-dot" style="background:' + dotColor + ';border-color:' + dotColor + '"></div>' +
+             '<div class="sl-day" style="color:' + (liveIdx>=i ? z.bright : z.dark) + '">' + n.sub + '</div>' +
+             '<div class="sl-name" style="color:' + nameCol + '">' + n.name + '</div>' +
+           '</button>';
+  }).join('');
+  host.innerHTML = '<div class="stageline-labels">' + labelsHtml + '</div><div class="stageline-dots">' + dotsHtml + '</div>';
+  // clicking a node jumps to its stage tab
+  host.querySelectorAll('.stageline-node').forEach(function(btn){
+    btn.onclick = function(){ if (window.behSwitchTab) window.behSwitchTab(btn.getAttribute('data-tab')); };
   });
-  // Mark the matching stage tab as the current stage (distinct from the .active "viewing" state).
-  document.querySelectorAll('.tab-btn').forEach(function (btn) {
-    btn.classList.toggle('is-now', btn.getAttribute('data-tab') === nowTab);
+  // mark the live stage's tab as .is-now
+  var nowTab = liveIdx >= 0 && !eventDone ? nodes[liveIdx].tab : null;
+  document.querySelectorAll('.tab-btn').forEach(function (b) {
+    b.classList.toggle('is-now', b.getAttribute('data-tab') === nowTab);
   });
 }
+function updatePhase(now) { renderStageLine(now); }
 
 // --- Bloodline Blessings: highlight each server's owned / next-to-donate nodes ---
 // Nodes are donated in step order; BOTH nodes in a step must be owned before the next step opens,
@@ -3761,8 +3831,9 @@ function classifyScionSlots(nowMin, slots) {
   });
 }
 
-// Trial of Scion only runs Days 2-4 (through Jun 25 UTC). After that, all windows are done.
-var SCION_LAST_DATE = '2026-06-25';
+// Trial of Scion only runs during Beast Taming (Days 2-4). For #028: Jul 28-30 UTC.
+var SCION_FIRST_DATE = '2026-07-28';
+var SCION_LAST_DATE  = '2026-07-30';
 function updateScionSchedule(now) {
   var sched = document.getElementById('scionSched');
   if (!sched) return;
@@ -3779,6 +3850,18 @@ function updateScionSchedule(now) {
       if (tag) tag.textContent = Ldone.passed;
     });
     _scionWasLive = false;
+    updateScionBadge(now, 'done');
+    return;
+  }
+  // Before the Trial opens: show the daily windows as upcoming (no live, no modal).
+  if (todayStr < SCION_FIRST_DATE) {
+    els.forEach(function (el) {
+      el.classList.remove('is-live', 'is-next', 'is-passed');
+      var tag = el.querySelector('.slot-state');
+      if (tag) tag.textContent = '';
+    });
+    _scionWasLive = false;
+    updateScionBadge(now, 'upcoming');
     return;
   }
   var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
@@ -3801,6 +3884,44 @@ function updateScionSchedule(now) {
   // Auto-open the modal at the moment a window flips live (not on every tick).
   if (anyLive && !_scionWasLive) openScionModal();
   _scionWasLive = anyLive;
+  updateScionBadge(now, anyLive ? 'live' : 'active');
+}
+
+// --- Header Scion badge (DD Tower-of-Rotation style) ------------------------
+// Lit + countdown while a Trial window is open; idle showing "next" time otherwise.
+var SCION_WINDOWS = [[60,90],[240,270],[660,690],[1140,1170]]; // minutes-of-day
+function fmtDur(ms) {
+  var s = Math.max(0, Math.floor(ms / 1000));
+  var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = s % 60;
+  if (h > 0) return h + ':' + String(m).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
+  return m + ':' + String(ss).padStart(2, '0');
+}
+function fmtClock(min) {
+  var h = Math.floor(min / 60), m = min % 60;
+  return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+}
+function updateScionBadge(now, mode) {
+  var badge = document.getElementById('scionBadge');
+  var lbl = document.getElementById('scionBadgeLbl');
+  if (!badge || !lbl) return;
+  var d = new Date(now);
+  var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
+  var msIntoMin = (d.getUTCSeconds() * 1000 + d.getUTCMilliseconds());
+  // Trial done for the event → static idle "Scion" with no pulse.
+  if (mode === 'done') { badge.classList.add('is-idle'); lbl.textContent = 'Scion'; return; }
+  // Live: pulse + show remaining time in the current window.
+  var liveWin = SCION_WINDOWS.find(function (w) { return nowMin >= w[0] && nowMin < w[1]; });
+  if (liveWin) {
+    badge.classList.remove('is-idle');
+    var msLeft = (liveWin[1] - nowMin) * 60000;
+    lbl.textContent = fmtDur(msLeft);
+    return;
+  }
+  // Idle: show the next window's start clock (UTC).
+  badge.classList.add('is-idle');
+  var next = SCION_WINDOWS.find(function (w) { return nowMin < w[0]; });
+  if (next) lbl.textContent = fmtClock(next[0]);
+  else lbl.textContent = fmtClock(SCION_WINDOWS[0][0]); // tomorrow's first
 }
 
 function openScionModal() {
@@ -4073,6 +4194,12 @@ window.addEventListener('DOMContentLoaded', function () {
     tabBtns.forEach(function (btn) {
       btn.addEventListener('click', function () { showTab(btn.getAttribute('data-tab')); });
     });
+    // expose for the StageLine nodes + header scroll button
+    window.behSwitchTab = function (name) {
+      showTab(name);
+      var tb = document.getElementById('tabBar');
+      if (tb && tb.scrollIntoView) tb.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
   }
 
   // --- Current Behemoth: Our/Enemy toggle (renders real per-side stats; identical for now) ---
@@ -4105,11 +4232,35 @@ window.addEventListener('DOMContentLoaded', function () {
     var d = new Date(Date.now());
     var todayStr = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
     var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
-    var live = todayStr <= SCION_LAST_DATE && [[60,90],[240,270],[660,690],[1140,1170]].some(function (s) {
+    var live = todayStr >= SCION_FIRST_DATE && todayStr <= SCION_LAST_DATE && [[60,90],[240,270],[660,690],[1140,1170]].some(function (s) {
       return nowMin >= s[0] && nowMin < s[1];
     });
     if (live) { scionModal.classList.add('open'); _scionWasLive = true; }
   }
+
+  // --- Help modal (event overview) ---
+  var helpModal = document.getElementById('helpModal');
+  var helpBtn = document.getElementById('helpBtn');
+  var helpClose = document.getElementById('helpClose');
+  if (helpModal) {
+    var openHelp = function () { helpModal.classList.add('open'); };
+    var closeHelp = function () { helpModal.classList.remove('open'); };
+    if (helpBtn) helpBtn.addEventListener('click', openHelp);
+    if (helpClose) helpClose.addEventListener('click', closeHelp);
+    helpModal.addEventListener('click', function (e) { if (e.target === helpModal) closeHelp(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && helpModal.classList.contains('open')) closeHelp();
+    });
+  }
+
+  // --- Header scroll button → jump to the current stage tab ---
+  // Before/during Beast Taming → Beast Taming tab; on/after Attack-Defense → Attack-Defense tab.
+  var scrollBtn = document.getElementById('scrollBtn');
+  if (scrollBtn) scrollBtn.addEventListener('click', function () {
+    var now = Date.now();
+    var tab = now >= ATKDEF_START ? 's3' : 's2';
+    if (window.behSwitchTab) window.behSwitchTab(tab);
+  });
 });
 </script>
 
