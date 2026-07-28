@@ -957,8 +957,8 @@
     <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:6px;" data-i18n="st2_sched_p">Four fixed 30-min windows daily (UTC+0). <span style="color:#5b8def;font-weight:700;">Blue = on #008 (ours)</span>, <span style="color:#c43d3d;font-weight:700;">red = on #028</span>. Cross-border tiles open during our windows &mdash; zeroing risk. Runs during Beast Taming (Days 2&ndash;4).</p>
     <div class="sched scion-sched" id="scionSched">
       <span class="slot scion-slot" data-start="60"  data-end="90"  data-server="008"><b>01:00</b>&ndash;01:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
-      <span class="slot scion-slot" data-start="240" data-end="270" data-server="028"><b>04:00</b>&ndash;04:30 <span class="srv" data-i18n="srv087">#028</span><span class="slot-state"></span></span>
-      <span class="slot scion-slot" data-start="660" data-end="690" data-server="008"><b>11:00</b>&ndash;11:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
+      <span class="slot scion-slot" data-start="420" data-end="450" data-server="028"><b>07:00</b>&ndash;07:30 <span class="srv" data-i18n="srv087">#028</span><span class="slot-state"></span></span>
+      <span class="slot scion-slot" data-start="780" data-end="810" data-server="008"><b>13:00</b>&ndash;13:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
       <span class="slot scion-slot" data-start="1140" data-end="1170" data-server="028"><b>19:00</b>&ndash;19:30 <span class="srv" data-i18n="srv087">#028</span><span class="slot-state"></span></span>
     </div>
   </div>
@@ -5092,7 +5092,7 @@ function updateScionSchedule(now) {
 
 // --- Header Scion badge (DD Tower-of-Rotation style) ------------------------
 // Lit + countdown while a Trial window is open; idle showing "next" time otherwise.
-var SCION_WINDOWS = [[60,90],[240,270],[660,690],[1140,1170]]; // minutes-of-day
+var SCION_WINDOWS = [[60,90],[420,450],[780,810],[1140,1170]]; // minutes-of-day
 function fmtDur(ms) {
   var s = Math.max(0, Math.floor(ms / 1000));
   var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = s % 60;
@@ -5314,8 +5314,8 @@ function buildICS(lang) {
   // Trial of Scion: 4 windows/day, daily across Beast Taming (Days 2-4 = Jul 28->30 UTC,
   // 3 occurrences). Each window is 30 min; server rotates 008/028 per window.
   var trials = [
-    { h: 1,  srv: '008' }, { h: 4,  srv: '087' },
-    { h: 11, srv: '008' }, { h: 19, srv: '087' }
+    { h: 1,  srv: '008' }, { h: 7,  srv: '087' },
+    { h: 13, srv: '008' }, { h: 19, srv: '087' }
   ];
   var RRULE = 'FREQ=DAILY;COUNT=3';
   trials.forEach(function (w, i) {
@@ -5464,7 +5464,7 @@ window.addEventListener('DOMContentLoaded', function () {
     var d = new Date(Date.now());
     var todayStr = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
     var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
-    var live = todayStr >= SCION_FIRST_DATE && todayStr <= SCION_LAST_DATE && [[60,90],[240,270],[660,690],[1140,1170]].some(function (s) {
+    var live = todayStr >= SCION_FIRST_DATE && todayStr <= SCION_LAST_DATE && SCION_WINDOWS.some(function (s) {
       return nowMin >= s[0] && nowMin < s[1];
     });
     if (live) { scionModal.classList.add('open'); _scionWasLive = true; }
