@@ -976,9 +976,9 @@
     </div>
     <div class="stat-row">
       <div class="stat-box"><div class="val behe-val" data-uskey="ref_stage_us" data-themkey="ref_stage_them" data-us-en="Adolescent" data-them-en="Adolescent">Adolescent</div><div class="lbl" data-i18n="ref_s1_l">Stage</div></div>
-      <div class="stat-box"><div class="val behe-val" data-us="8,750/s" data-them="8,750/s">8,750/s</div><div class="lbl" data-i18n="ref_s2_l">Siege</div></div>
-      <div class="stat-box"><div class="val behe-val" data-us="3.5M" data-them="3.5M">3.5M</div><div class="lbl" data-i18n="ref_s3_l">Health</div></div>
-      <div class="stat-box"><div class="val behe-val" data-us="3&times;" data-them="3&times;">3&times;</div><div class="lbl" data-i18n="ref_s4_l">Undying Stacks</div></div>
+      <div class="stat-box"><div class="val" id="beheSiege">8,750/s</div><div class="lbl" data-i18n="ref_s2_l">Siege</div></div>
+      <div class="stat-box"><div class="val" id="beheHealth">3.5M</div><div class="lbl" data-i18n="ref_s3_l">Health</div></div>
+      <div class="stat-box"><div class="val" data-us="3&times;" data-them="3&times;">3&times;</div><div class="lbl" data-i18n="ref_s4_l">Undying Stacks</div></div>
     </div>
     <p style="font-size:12px;color:var(--text-muted);" data-i18n="ref_note">Both Behemoths are now <strong>Adolescent</strong> &mdash; they grow Juvenile &rarr; Adolescent &rarr; Adult as each side cultivates. A server reaches <strong>Adult</strong> once it hits <strong>530,000,000 Bloodline Purity</strong>. Siege durability climbs with each stage; stats update as the event progresses.</p>
   </div>
@@ -1507,13 +1507,8 @@
       <div class="co gold" data-i18n="st3_pts_note"><strong>Milestones dwarf chip damage:</strong> a stack (1B) and the kill (5B) are the big swings. Keeping ours alive pays 2M per 1K HP left &mdash; defense matters as much as offense.</div>
 
       <h4 data-i18n="calc_h">Score projector</h4>
-      <p style="font-size:12px;color:var(--text-muted);margin:2px 0 6px;" data-i18n="calc_sub">Drag each Behemoth's <strong>health</strong> (how far it's been beaten down) and <strong>time alive</strong> to project invasion points. Ticks on the health bar mark each <strong>Undying Force stack</strong>. Set max HP &amp; siege rate for the current stage below.</p>
+      <p style="font-size:12px;color:var(--text-muted);margin:2px 0 6px;" data-i18n="calc_sub">Drag each Behemoth's <strong>health</strong> (how far it's been beaten down) and <strong>time alive</strong> to project invasion points. Ticks on the health bar mark each <strong>Undying Force stack</strong>. Max HP &amp; siege come from each server's Bloodline Blessings above.</p>
       <div class="calc-wrap" id="scoreCalc">
-        <div class="calc-cfg">
-          <label><span data-i18n="calc_cfg_hp">Max HP (per revive): </span><input type="number" id="cfgHP" value="3500000" min="1" step="100000"></label>
-          <label><span data-i18n="calc_cfg_siege">Siege/sec: </span><input type="number" id="cfgSiege" value="8750" min="0" step="250"></label>
-          <label><span data-i18n="calc_cfg_stacks">Undying stacks: </span><input type="number" id="cfgStacks" value="3" min="1" max="5" step="1"></label>
-        </div>
         <div class="calc-grid">
           <!-- OURS (blue) -->
           <div class="calc-side us">
@@ -1574,14 +1569,11 @@
 const TRANSLATIONS = {
   "es": {
     "calc_h": "Proyector de puntaje",
-    "calc_sub": "Arrastra la <strong>salud</strong> de cada Bégimo (cuánto ha sido reducido) y el <strong>tiempo con vida</strong> para proyectar puntos de invasión. Las marcas en la barra de salud señalan cada <strong>pila de Fuerza Imperecedera</strong>. Configura la vida máx. y el asedio de la etapa actual abajo.",
+    "calc_sub": "Arrastra la <strong>salud</strong> de cada Bégimo (cuánto ha sido reducido) y el <strong>tiempo con vida</strong> para proyectar puntos de invasión. Las marcas en la barra de salud señalan cada <strong>pila de Fuerza Imperecedera</strong>. La vida máx. y el asedio provienen de las Bendiciones del Linaje de cada servidor arriba.",
     "calc_ours": "Nuestro Bégimo &middot; #008",
     "calc_theirs": "Bégimo enemigo &middot; #028",
     "calc_hp": "Salud restante",
     "calc_time": "Tiempo con vida",
-    "calc_cfg_hp": "Vida máx. (por reaparición): ",
-    "calc_cfg_siege": "Asedio/seg: ",
-    "calc_cfg_stacks": "Pilas Imperecederas: ",
     "calc_diff_even": "Empate &mdash; arrastra los controles para proyectar",
     "calc_note": "Solo proyección &mdash; modela daño menor, pilas Imperecederas consumidas, el bono por matar y el puntaje por vida restante. El puntaje real también incluye daño a ciudadelas de otras fuentes.",
     "inv_modal_title": "La invasión está EN VIVO &mdash; Ataca y Defiende",
@@ -1759,14 +1751,11 @@ const TRANSLATIONS = {
   },
   "zh_hk": {
     "calc_h": "得分推算器",
-    "calc_sub": "拖曳各巨獸的<strong>血量</strong>（被削減程度）與<strong>存活時間</strong>以推算入侵得分。血條上的刻度標示每一層<strong>不死之力</strong>。於下方設定當前階段的最大血量與攻城值。",
+    "calc_sub": "拖曳各巨獸的<strong>血量</strong>（被削減程度）與<strong>存活時間</strong>以推算入侵得分。血條上的刻度標示每一層<strong>不死之力</strong>。最大血量與攻城值來自上方各伺服器的血脈祝福。",
     "calc_ours": "我方巨獸 &middot; #008",
     "calc_theirs": "敵方巨獸 &middot; #028",
     "calc_hp": "剩餘血量",
     "calc_time": "存活時間",
-    "calc_cfg_hp": "最大血量（每次復活）：",
-    "calc_cfg_siege": "攻城/秒：",
-    "calc_cfg_stacks": "不死層數：",
     "calc_diff_even": "平局 &mdash; 拖曳滑桿以推算",
     "calc_note": "僅為推算 &mdash; 模擬小額傷害、消耗的不死層數、擊殺獎勵與剩餘血量得分。實際得分亦包含其他來源的城塞傷害。",
     "inv_modal_title": "入侵進行中 &mdash; 攻擊與防守",
@@ -1944,14 +1933,11 @@ const TRANSLATIONS = {
   },
   "sv": {
     "calc_h": "Poängprojektor",
-    "calc_sub": "Dra varje Behemoths <strong>hälsa</strong> (hur nedslagen den är) och <strong>tid vid liv</strong> för att projicera invasionspoäng. Markeringarna på hälsobalken visar varje <strong>Odödlig kraft-stack</strong>. Ställ in max-HP och belägring för nuvarande steg nedan.",
+    "calc_sub": "Dra varje Behemoths <strong>hälsa</strong> (hur nedslagen den är) och <strong>tid vid liv</strong> för att projicera invasionspoäng. Markeringarna på hälsobalken visar varje <strong>Odödlig kraft-stack</strong>. Max-HP och belägring kommer från varje servers Blodslinjevälsignelser ovan.",
     "calc_ours": "Vår Behemoth &middot; #008",
     "calc_theirs": "Fiendens Behemoth &middot; #028",
     "calc_hp": "Återstående hälsa",
     "calc_time": "Tid vid liv",
-    "calc_cfg_hp": "Max-HP (per återuppståndelse): ",
-    "calc_cfg_siege": "Belägring/sek: ",
-    "calc_cfg_stacks": "Odödlighetsstackar: ",
     "calc_diff_even": "Oavgjort &mdash; dra reglagen för att projicera",
     "calc_note": "Endast projektion &mdash; modellerar småskada, förbrukade Odödlighetsstackar, dödsbonus och återstående-HP-poäng. Faktisk poäng inkluderar även citadellskada från andra källor.",
     "inv_modal_title": "Invasionen är LIVE &mdash; Anfall och Försvara",
@@ -2129,14 +2115,11 @@ const TRANSLATIONS = {
   },
   "fi": {
     "calc_h": "Pisteprojektori",
-    "calc_sub": "Vedä kunkin Behemothin <strong>terveyttä</strong> (kuinka alas lyöty) ja <strong>elossaoloaikaa</strong> projisoidaksesi hyökkäyspisteet. Terveyspalkin merkit osoittavat kunkin <strong>Kuolemattoman voiman pinon</strong>. Aseta nykyisen vaiheen maksimi-HP ja piiritys alle.",
+    "calc_sub": "Vedä kunkin Behemothin <strong>terveyttä</strong> (kuinka alas lyöty) ja <strong>elossaoloaikaa</strong> projisoidaksesi hyökkäyspisteet. Terveyspalkin merkit osoittavat kunkin <strong>Kuolemattoman voiman pinon</strong>. Maksimi-HP ja piiritys tulevat kunkin palvelimen Verilinjan siunauksista yllä.",
     "calc_ours": "Behemothimme &middot; #008",
     "calc_theirs": "Vihollisen Behemoth &middot; #028",
     "calc_hp": "Jäljellä oleva terveys",
     "calc_time": "Elossaoloaika",
-    "calc_cfg_hp": "Maksimi-HP (per herätys): ",
-    "calc_cfg_siege": "Piiritys/s: ",
-    "calc_cfg_stacks": "Kuolemattomuuspinot: ",
     "calc_diff_even": "Tasan &mdash; vedä liukusäätimiä projisoidaksesi",
     "calc_note": "Vain arvio &mdash; mallintaa pienvahingon, käytetyt Kuolemattomuuspinot, tappobonuksen ja jäljellä olevan HP:n pisteet. Todellinen pistemäärä sisältää myös muista lähteistä tulevan linnoitusvahingon.",
     "inv_modal_title": "Hyökkäys on KÄYNNISSÄ &mdash; Hyökkää ja Puolusta",
@@ -2314,14 +2297,11 @@ const TRANSLATIONS = {
   },
   "nb": {
     "calc_h": "Poengprojektor",
-    "calc_sub": "Dra hver Behemoths <strong>helse</strong> (hvor nedslått den er) og <strong>tid i live</strong> for å projisere invasjonspoeng. Merkene på helselinjen viser hver <strong>Udødelig kraft-stabel</strong>. Still inn maks-HP og beleiring for gjeldende trinn nedenfor.",
+    "calc_sub": "Dra hver Behemoths <strong>helse</strong> (hvor nedslått den er) og <strong>tid i live</strong> for å projisere invasjonspoeng. Merkene på helselinjen viser hver <strong>Udødelig kraft-stabel</strong>. Maks-HP og beleiring kommer fra hver servers Blodslinjevelsignelser ovenfor.",
     "calc_ours": "Vår Behemoth &middot; #008",
     "calc_theirs": "Fiendens Behemoth &middot; #028",
     "calc_hp": "Gjenværende helse",
     "calc_time": "Tid i live",
-    "calc_cfg_hp": "Maks-HP (per gjenoppstandelse): ",
-    "calc_cfg_siege": "Beleiring/sek: ",
-    "calc_cfg_stacks": "Udødelighetsstabler: ",
     "calc_diff_even": "Uavgjort &mdash; dra glidebryterne for å projisere",
     "calc_note": "Kun projeksjon &mdash; modellerer småskade, brukte Udødelighetsstabler, drapsbonus og gjenværende-HP-poeng. Faktisk poeng inkluderer også citadellskade fra andre kilder.",
     "inv_modal_title": "Invasjonen er LIVE &mdash; Angrip og Forsvar",
@@ -2499,14 +2479,11 @@ const TRANSLATIONS = {
   },
   "nl": {
     "calc_h": "Scoreprojector",
-    "calc_sub": "Sleep de <strong>gezondheid</strong> van elke Behemoth (hoe ver neergeslagen) en <strong>tijd in leven</strong> om invasiepunten te projecteren. De streepjes op de gezondheidsbalk markeren elke <strong>Onsterfelijke Kracht-stapel</strong>. Stel hieronder de max HP en belegering voor de huidige fase in.",
+    "calc_sub": "Sleep de <strong>gezondheid</strong> van elke Behemoth (hoe ver neergeslagen) en <strong>tijd in leven</strong> om invasiepunten te projecteren. De streepjes op de gezondheidsbalk markeren elke <strong>Onsterfelijke Kracht-stapel</strong>. Max HP en belegering komen uit de Bloedlijnzegeningen van elke server hierboven.",
     "calc_ours": "Onze Behemoth &middot; #008",
     "calc_theirs": "Vijandelijke Behemoth &middot; #028",
     "calc_hp": "Resterende gezondheid",
     "calc_time": "Tijd in leven",
-    "calc_cfg_hp": "Max HP (per herrijzing): ",
-    "calc_cfg_siege": "Belegering/sec: ",
-    "calc_cfg_stacks": "Onsterfelijkheidsstapels: ",
     "calc_diff_even": "Gelijk &mdash; sleep de schuifregelaars om te projecteren",
     "calc_note": "Alleen projectie &mdash; modelleert kleine schade, verbruikte Onsterfelijkheidsstapels, de doodsbonus en resterende-HP-score. Werkelijke score omvat ook citadelschade uit andere bronnen.",
     "inv_modal_title": "De invasie is LIVE &mdash; Aanvallen en Verdedigen",
@@ -2684,14 +2661,11 @@ const TRANSLATIONS = {
   },
   "si": {
     "calc_h": "ලකුණු පුරෝකථනය",
-    "calc_sub": "ආක්‍රමණ ලකුණු පුරෝකථනය කිරීමට එක් එක් Behemoth එකේ <strong>සෞඛ්‍යය</strong> (කොපමණ පහර වැදුණාද) සහ <strong>ජීවත් වූ කාලය</strong> අදින්න. සෞඛ්‍ය තීරුවේ සලකුණු එක් එක් <strong>අමරණීය බලය තට්ටුව</strong> දක්වයි. පහත වත්මන් අදියරේ උපරිම HP සහ වටලෑම සකසන්න.",
+    "calc_sub": "ආක්‍රමණ ලකුණු පුරෝකථනය කිරීමට එක් එක් Behemoth එකේ <strong>සෞඛ්‍යය</strong> (කොපමණ පහර වැදුණාද) සහ <strong>ජීවත් වූ කාලය</strong> අදින්න. සෞඛ්‍ය තීරුවේ සලකුණු එක් එක් <strong>අමරණීය බලය තට්ටුව</strong> දක්වයි. උපරිම HP සහ වටලෑම ඉහත එක් එක් සේවාදායකයේ රුධිර වංශ ආශිර්වාදවලින් ලැබේ.",
     "calc_ours": "අපගේ Behemoth &middot; #008",
     "calc_theirs": "සතුරු Behemoth &middot; #028",
     "calc_hp": "ඉතිරි සෞඛ්‍යය",
     "calc_time": "ජීවත් වූ කාලය",
-    "calc_cfg_hp": "උපරිම HP (නැවත උපත): ",
-    "calc_cfg_siege": "වටලෑම/තත්: ",
-    "calc_cfg_stacks": "අමරණීය තට්ටු: ",
     "calc_diff_even": "සමයි &mdash; පුරෝකථනයට ස්ලයිඩර අදින්න",
     "calc_note": "පුරෝකථනය පමණි &mdash; සුළු හානිය, භාවිත කළ අමරණීය තට්ටු, ඝාතන ප්‍රසාදය සහ ඉතිරි HP ලකුණු ආදර්ශනය කරයි. සැබෑ ලකුණුවලට වෙනත් මූලාශ්‍රවලින් වූ බලකොටු හානිද ඇතුළත් වේ.",
     "inv_modal_title": "ආක්‍රමණය සජීවීයි &mdash; පහර දෙන්න සහ ආරක්ෂා කරන්න",
@@ -2869,14 +2843,11 @@ const TRANSLATIONS = {
   },
   "ta": {
     "calc_h": "மதிப்பெண் கணிப்பான்",
-    "calc_sub": "படையெடுப்பு புள்ளிகளை கணிக்க ஒவ்வொரு Behemoth-இன் <strong>உயிர்நிலை</strong> (எவ்வளவு தாக்கப்பட்டது) மற்றும் <strong>உயிருடன் இருந்த நேரம்</strong> இழுக்கவும். உயிர்ப்பட்டையின் குறிகள் ஒவ்வொரு <strong>அழியாத சக்தி அடுக்கையும்</strong> குறிக்கின்றன. கீழே தற்போதைய நிலையின் அதிகபட்ச HP மற்றும் முற்றுகையை அமைக்கவும்.",
+    "calc_sub": "படையெடுப்பு புள்ளிகளை கணிக்க ஒவ்வொரு Behemoth-இன் <strong>உயிர்நிலை</strong> (எவ்வளவு தாக்கப்பட்டது) மற்றும் <strong>உயிருடன் இருந்த நேரம்</strong> இழுக்கவும். உயிர்ப்பட்டையின் குறிகள் ஒவ்வொரு <strong>அழியாத சக்தி அடுக்கையும்</strong> குறிக்கின்றன. அதிகபட்ச HP மற்றும் முற்றுகை மேலே உள்ள ஒவ்வொரு சர்வரின் இரத்தவழி ஆசீர்வாதங்களிலிருந்து வருகிறது.",
     "calc_ours": "நமது Behemoth &middot; #008",
     "calc_theirs": "எதிரி Behemoth &middot; #028",
     "calc_hp": "மீதமுள்ள உயிர்நிலை",
     "calc_time": "உயிருடன் இருந்த நேரம்",
-    "calc_cfg_hp": "அதிகபட்ச HP (மறுபிறப்புக்கு): ",
-    "calc_cfg_siege": "முற்றுகை/வி: ",
-    "calc_cfg_stacks": "அழியாத அடுக்குகள்: ",
     "calc_diff_even": "சமநிலை &mdash; கணிக்க ஸ்லைடர்களை இழுக்கவும்",
     "calc_note": "கணிப்பு மட்டுமே &mdash; சிறு சேதம், பயன்படுத்திய அழியாத அடுக்குகள், கொல்லல் போனஸ் மற்றும் மீதமுள்ள HP புள்ளிகளை மாதிரியாக்குகிறது. உண்மையான மதிப்பெண்ணில் பிற மூலங்களிலிருந்து கோட்டை சேதமும் அடங்கும்.",
     "inv_modal_title": "படையெடுப்பு நேரலையில் &mdash; தாக்கு மற்றும் காக்க",
@@ -3054,14 +3025,11 @@ const TRANSLATIONS = {
   },
   "hi": {
     "calc_h": "स्कोर प्रोजेक्टर",
-    "calc_sub": "आक्रमण अंक प्रक्षेपित करने के लिए प्रत्येक बेहेमोथ का <strong>स्वास्थ्य</strong> (कितना कम हुआ) और <strong>जीवित समय</strong> खींचें। स्वास्थ्य बार पर निशान प्रत्येक <strong>अमर शक्ति स्टैक</strong> को दर्शाते हैं। नीचे वर्तमान चरण के लिए अधिकतम HP और घेराबंदी सेट करें।",
+    "calc_sub": "आक्रमण अंक प्रक्षेपित करने के लिए प्रत्येक बेहेमोथ का <strong>स्वास्थ्य</strong> (कितना कम हुआ) और <strong>जीवित समय</strong> खींचें। स्वास्थ्य बार पर निशान प्रत्येक <strong>अमर शक्ति स्टैक</strong> को दर्शाते हैं। अधिकतम HP और घेराबंदी ऊपर प्रत्येक सर्वर के रक्तरेखा आशीर्वादों से आते हैं।",
     "calc_ours": "हमारा बेहेमोथ &middot; #008",
     "calc_theirs": "शत्रु बेहेमोथ &middot; #028",
     "calc_hp": "शेष स्वास्थ्य",
     "calc_time": "जीवित समय",
-    "calc_cfg_hp": "अधिकतम HP (प्रति पुनर्जीवन): ",
-    "calc_cfg_siege": "घेराबंदी/से: ",
-    "calc_cfg_stacks": "अमर स्टैक: ",
     "calc_diff_even": "बराबरी &mdash; प्रक्षेपण हेतु स्लाइडर खींचें",
     "calc_note": "केवल प्रक्षेपण &mdash; छोटी क्षति, उपयोग किए गए अमर स्टैक, वध बोनस और शेष-HP स्कोर का मॉडल बनाता है। वास्तविक स्कोर में अन्य स्रोतों से गढ़ क्षति भी शामिल है।",
     "inv_modal_title": "आक्रमण लाइव है &mdash; आक्रमण और रक्षा करें",
@@ -3239,14 +3207,11 @@ const TRANSLATIONS = {
   },
   "fr": {
     "calc_h": "Projecteur de score",
-    "calc_sub": "Fais glisser la <strong>santé</strong> de chaque Béhémoth (à quel point il est réduit) et le <strong>temps en vie</strong> pour projeter les points d'invasion. Les repères sur la barre de santé marquent chaque <strong>pile de Force Immortelle</strong>. Règle les PV max et le siège de l'étape actuelle ci-dessous.",
+    "calc_sub": "Fais glisser la <strong>santé</strong> de chaque Béhémoth (à quel point il est réduit) et le <strong>temps en vie</strong> pour projeter les points d'invasion. Les repères sur la barre de santé marquent chaque <strong>pile de Force Immortelle</strong>. Les PV max et le siège proviennent des Bénédictions de la Lignée de chaque serveur ci-dessus.",
     "calc_ours": "Notre Béhémoth &middot; #008",
     "calc_theirs": "Béhémoth ennemi &middot; #028",
     "calc_hp": "Santé restante",
     "calc_time": "Temps en vie",
-    "calc_cfg_hp": "PV max (par réapparition) : ",
-    "calc_cfg_siege": "Siège/sec : ",
-    "calc_cfg_stacks": "Piles Immortelles : ",
     "calc_diff_even": "Égalité &mdash; fais glisser les curseurs pour projeter",
     "calc_note": "Projection seulement &mdash; modélise les petits dégâts, les piles Immortelles consommées, le bonus de mise à mort et le score de PV restants. Le score réel inclut aussi les dégâts aux citadelles d'autres sources.",
     "inv_modal_title": "L'invasion est EN DIRECT &mdash; Attaque et Défends",
@@ -3424,14 +3389,11 @@ const TRANSLATIONS = {
   },
   "ko": {
     "calc_h": "점수 계산기",
-    "calc_sub": "각 비헤모스의 <strong>체력</strong>(얼마나 깎였는지)과 <strong>생존 시간</strong>을 드래그해 침공 점수를 예측하세요. 체력 바의 눈금은 각 <strong>불멸의 힘 스택</strong>을 나타냅니다. 아래에서 현재 단계의 최대 HP와 공성 수치를 설정하세요.",
+    "calc_sub": "각 비헤모스의 <strong>체력</strong>(얼마나 깎였는지)과 <strong>생존 시간</strong>을 드래그해 침공 점수를 예측하세요. 체력 바의 눈금은 각 <strong>불멸의 힘 스택</strong>을 나타냅니다. 최대 HP와 공성 수치는 위의 각 서버 혈통 축복에서 가져옵니다.",
     "calc_ours": "우리 비헤모스 &middot; #008",
     "calc_theirs": "적 비헤모스 &middot; #028",
     "calc_hp": "남은 체력",
     "calc_time": "생존 시간",
-    "calc_cfg_hp": "최대 HP (부활당): ",
-    "calc_cfg_siege": "공성/초: ",
-    "calc_cfg_stacks": "불멸 스택: ",
     "calc_diff_even": "동점 &mdash; 슬라이더를 드래그해 예측",
     "calc_note": "예측 전용 &mdash; 소량 피해, 소모된 불멸 스택, 처치 보너스, 잔여 체력 점수를 모델링합니다. 실제 점수에는 다른 출처의 성채 피해도 포함됩니다.",
     "inv_modal_title": "침공이 진행 중 &mdash; 공격과 방어",
@@ -3609,14 +3571,11 @@ const TRANSLATIONS = {
   },
   "ja": {
     "calc_h": "スコア予測ツール",
-    "calc_sub": "各ベヒモスの<strong>体力</strong>（どれだけ削られたか）と<strong>生存時間</strong>をドラッグして侵攻得点を予測。体力バーの目盛りは各<strong>不死の力スタック</strong>を示す。下で現ステージの最大HPと攻城値を設定。",
+    "calc_sub": "各ベヒモスの<strong>体力</strong>（どれだけ削られたか）と<strong>生存時間</strong>をドラッグして侵攻得点を予測。体力バーの目盛りは各<strong>不死の力スタック</strong>を示す。最大HPと攻城値は上の各サーバーの血統の祝福に由来する。",
     "calc_ours": "自軍ベヒモス &middot; #008",
     "calc_theirs": "敵ベヒモス &middot; #028",
     "calc_hp": "残り体力",
     "calc_time": "生存時間",
-    "calc_cfg_hp": "最大HP（復活ごと）：",
-    "calc_cfg_siege": "攻城/秒：",
-    "calc_cfg_stacks": "不死スタック：",
     "calc_diff_even": "互角 &mdash; スライダーを動かして予測",
     "calc_note": "予測のみ &mdash; 小ダメージ、消費した不死スタック、撃破ボーナス、残HP得点をモデル化。実際の得点には他の要因によるシタデル被害も含まれる。",
     "inv_modal_title": "侵攻進行中 &mdash; 攻撃と防衛",
@@ -3794,14 +3753,11 @@ const TRANSLATIONS = {
   },
   "zh_cn": {
     "calc_h": "得分推算器",
-    "calc_sub": "拖动各巨兽的<strong>血量</strong>（被削减程度）与<strong>存活时间</strong>以推算入侵得分。血条上的刻度标示每一层<strong>不死之力</strong>。在下方设置当前阶段的最大血量与攻城值。",
+    "calc_sub": "拖动各巨兽的<strong>血量</strong>（被削减程度）与<strong>存活时间</strong>以推算入侵得分。血条上的刻度标示每一层<strong>不死之力</strong>。最大血量与攻城值来自上方各服务器的血脉祝福。",
     "calc_ours": "我方巨兽 &middot; #008",
     "calc_theirs": "敌方巨兽 &middot; #028",
     "calc_hp": "剩余血量",
     "calc_time": "存活时间",
-    "calc_cfg_hp": "最大血量（每次复活）：",
-    "calc_cfg_siege": "攻城/秒：",
-    "calc_cfg_stacks": "不死层数：",
     "calc_diff_even": "平局 &mdash; 拖动滑块以推算",
     "calc_note": "仅为推算 &mdash; 模拟小额伤害、消耗的不死层数、击杀奖励与剩余血量得分。实际得分还包含其他来源的城塞伤害。",
     "inv_modal_title": "入侵进行中 &mdash; 攻击与防守",
@@ -3979,14 +3935,11 @@ const TRANSLATIONS = {
   },
   "ar": {
     "calc_h": "مُسقِط النقاط",
-    "calc_sub": "اسحب <strong>صحة</strong> كل بهيموث (مدى ما تلقّاه من ضرب) و<strong>وقت البقاء حياً</strong> لإسقاط نقاط الغزو. تشير العلامات على شريط الصحة إلى كل <strong>طبقة قوة خالدة</strong>. اضبط الصحة القصوى والحصار للمرحلة الحالية أدناه.",
+    "calc_sub": "اسحب <strong>صحة</strong> كل بهيموث (مدى ما تلقّاه من ضرب) و<strong>وقت البقاء حياً</strong> لإسقاط نقاط الغزو. تشير العلامات على شريط الصحة إلى كل <strong>طبقة قوة خالدة</strong>. الصحة القصوى والحصار مأخوذان من بركات السلالة لكل خادم أعلاه.",
     "calc_ours": "بهيموثنا &middot; #008",
     "calc_theirs": "بهيموث العدو &middot; #028",
     "calc_hp": "الصحة المتبقية",
     "calc_time": "وقت البقاء حياً",
-    "calc_cfg_hp": "الصحة القصوى (لكل إحياء): ",
-    "calc_cfg_siege": "حصار/ث: ",
-    "calc_cfg_stacks": "طبقات الخلود: ",
     "calc_diff_even": "تعادل &mdash; اسحب المؤشرات للإسقاط",
     "calc_note": "إسقاط فقط &mdash; يحاكي الضرر الطفيف، طبقات الخلود المستهلكة، مكافأة القتل، ونقاط الصحة المتبقية. تشمل النقاط الفعلية أيضاً ضرر القلاع من مصادر أخرى.",
     "inv_modal_title": "الغزو مباشر &mdash; هاجم ودافع",
@@ -4164,14 +4117,11 @@ const TRANSLATIONS = {
   },
   "da": {
     "calc_h": "Score-projektor",
-    "calc_sub": "Træk hver Behemoths <strong>helbred</strong> (hvor nedslået den er) og <strong>tid i live</strong> for at projicere invasionspoint. Mærkerne på helbredsbjælken viser hver <strong>Udødelig kraft-stak</strong>. Indstil maks-HP og belejring for det nuværende trin nedenfor.",
+    "calc_sub": "Træk hver Behemoths <strong>helbred</strong> (hvor nedslået den er) og <strong>tid i live</strong> for at projicere invasionspoint. Mærkerne på helbredsbjælken viser hver <strong>Udødelig kraft-stak</strong>. Maks-HP og belejring kommer fra hver servers Blodlinjevelsignelser ovenfor.",
     "calc_ours": "Vores Behemoth &middot; #008",
     "calc_theirs": "Fjendens Behemoth &middot; #028",
     "calc_hp": "Resterende helbred",
     "calc_time": "Tid i live",
-    "calc_cfg_hp": "Maks-HP (per genoplivning): ",
-    "calc_cfg_siege": "Belejring/sek: ",
-    "calc_cfg_stacks": "Udødeligheds-stakke: ",
     "calc_diff_even": "Uafgjort &mdash; træk skyderne for at projicere",
     "calc_note": "Kun projektion &mdash; modellerer småskade, brugte Udødeligheds-stakke, drabsbonus og resterende-HP-point. Faktisk score inkluderer også citadelskade fra andre kilder.",
     "inv_modal_title": "Invasionen er LIVE &mdash; Angrib og Forsvar",
@@ -4349,14 +4299,11 @@ const TRANSLATIONS = {
   },
   "de": {
     "calc_h": "Punkte-Projektor",
-    "calc_sub": "Ziehe die <strong>Gesundheit</strong> jedes Behemoths (wie weit heruntergeprügelt) und die <strong>Überlebenszeit</strong>, um Invasionspunkte zu projizieren. Die Markierungen auf der Gesundheitsleiste zeigen jeden <strong>Unsterbliche-Kraft-Stapel</strong>. Stelle unten Max-LP und Belagerung für die aktuelle Stufe ein.",
+    "calc_sub": "Ziehe die <strong>Gesundheit</strong> jedes Behemoths (wie weit heruntergeprügelt) und die <strong>Überlebenszeit</strong>, um Invasionspunkte zu projizieren. Die Markierungen auf der Gesundheitsleiste zeigen jeden <strong>Unsterbliche-Kraft-Stapel</strong>. Max-LP und Belagerung stammen aus den Blutlinien-Segen jedes Servers oben.",
     "calc_ours": "Unser Behemoth &middot; #008",
     "calc_theirs": "Feindlicher Behemoth &middot; #028",
     "calc_hp": "Verbleibende Gesundheit",
     "calc_time": "Überlebenszeit",
-    "calc_cfg_hp": "Max-LP (pro Wiederbelebung): ",
-    "calc_cfg_siege": "Belagerung/Sek: ",
-    "calc_cfg_stacks": "Unsterblichkeits-Stapel: ",
     "calc_diff_even": "Gleichstand &mdash; ziehe die Regler zum Projizieren",
     "calc_note": "Nur Projektion &mdash; modelliert Kleinschaden, verbrauchte Unsterblichkeits-Stapel, Tötungsbonus und Rest-LP-Punkte. Die tatsächliche Punktzahl enthält auch Zitadellenschaden aus anderen Quellen.",
     "inv_modal_title": "Die Invasion ist LIVE &mdash; Angreifen und Verteidigen",
@@ -4534,14 +4481,11 @@ const TRANSLATIONS = {
   },
   "ru": {
     "calc_h": "Проектор очков",
-    "calc_sub": "Перетаскивай <strong>здоровье</strong> каждого Бегемота (насколько он избит) и <strong>время жизни</strong>, чтобы спрогнозировать очки вторжения. Метки на полосе здоровья отмечают каждый <strong>стак Бессмертной силы</strong>. Задай макс. HP и осаду текущей стадии ниже.",
+    "calc_sub": "Перетаскивай <strong>здоровье</strong> каждого Бегемота (насколько он избит) и <strong>время жизни</strong>, чтобы спрогнозировать очки вторжения. Метки на полосе здоровья отмечают каждый <strong>стак Бессмертной силы</strong>. Макс. HP и осада берутся из Благословений родословной каждого сервера выше.",
     "calc_ours": "Наш Бегемот &middot; #008",
     "calc_theirs": "Вражеский Бегемот &middot; #028",
     "calc_hp": "Оставшееся здоровье",
     "calc_time": "Время жизни",
-    "calc_cfg_hp": "Макс. HP (за возрождение): ",
-    "calc_cfg_siege": "Осада/сек: ",
-    "calc_cfg_stacks": "Стаки бессмертия: ",
     "calc_diff_even": "Ничья &mdash; двигай ползунки для прогноза",
     "calc_note": "Только прогноз &mdash; моделирует мелкий урон, сожжённые стаки бессмертия, бонус за убийство и очки за остаток HP. Реальный счёт также включает урон цитаделям из других источников.",
     "inv_modal_title": "Вторжение ИДЁТ &mdash; Атакуй и Защищай",
@@ -4719,14 +4663,11 @@ const TRANSLATIONS = {
   },
   "it": {
     "calc_h": "Proiettore di punteggio",
-    "calc_sub": "Trascina la <strong>salute</strong> di ogni Behemoth (quanto è stato abbattuto) e il <strong>tempo in vita</strong> per proiettare i punti d'invasione. Le tacche sulla barra della salute segnano ogni <strong>carica di Forza Immortale</strong>. Imposta gli HP max e l'assedio dello stadio attuale qui sotto.",
+    "calc_sub": "Trascina la <strong>salute</strong> di ogni Behemoth (quanto è stato abbattuto) e il <strong>tempo in vita</strong> per proiettare i punti d'invasione. Le tacche sulla barra della salute segnano ogni <strong>carica di Forza Immortale</strong>. Gli HP max e l'assedio provengono dalle Benedizioni della Stirpe di ogni server qui sopra.",
     "calc_ours": "Il nostro Behemoth &middot; #008",
     "calc_theirs": "Behemoth nemico &middot; #028",
     "calc_hp": "Salute rimanente",
     "calc_time": "Tempo in vita",
-    "calc_cfg_hp": "HP max (per rinascita): ",
-    "calc_cfg_siege": "Assedio/sec: ",
-    "calc_cfg_stacks": "Cariche Immortali: ",
     "calc_diff_even": "Pari &mdash; trascina i cursori per proiettare",
     "calc_note": "Solo proiezione &mdash; modella il danno minore, le cariche Immortali consumate, il bonus uccisione e il punteggio HP rimanenti. Il punteggio reale include anche il danno alle cittadelle da altre fonti.",
     "inv_modal_title": "L'invasione è LIVE &mdash; Attacca e Difendi",
@@ -4904,14 +4845,11 @@ const TRANSLATIONS = {
   },
   "pt": {
     "calc_h": "Projetor de pontuação",
-    "calc_sub": "Arraste a <strong>saúde</strong> de cada Behemoth (o quanto foi abatido) e o <strong>tempo vivo</strong> para projetar pontos de invasão. As marcas na barra de saúde indicam cada <strong>pilha de Força Imortal</strong>. Defina o HP máx. e o cerco do estágio atual abaixo.",
+    "calc_sub": "Arraste a <strong>saúde</strong> de cada Behemoth (o quanto foi abatido) e o <strong>tempo vivo</strong> para projetar pontos de invasão. As marcas na barra de saúde indicam cada <strong>pilha de Força Imortal</strong>. O HP máx. e o cerco vêm das Bênçãos da Linhagem de cada servidor acima.",
     "calc_ours": "Nosso Behemoth &middot; #008",
     "calc_theirs": "Behemoth inimigo &middot; #028",
     "calc_hp": "Saúde restante",
     "calc_time": "Tempo vivo",
-    "calc_cfg_hp": "HP máx. (por ressurreição): ",
-    "calc_cfg_siege": "Cerco/seg: ",
-    "calc_cfg_stacks": "Pilhas Imortais: ",
     "calc_diff_even": "Empate &mdash; arraste os controles para projetar",
     "calc_note": "Apenas projeção &mdash; modela dano leve, pilhas Imortais consumidas, o bônus de abate e a pontuação de HP restante. A pontuação real também inclui dano a cidadelas de outras fontes.",
     "inv_modal_title": "A invasão está AO VIVO &mdash; Ataque e Defenda",
@@ -5097,8 +5035,18 @@ document.addEventListener('DOMContentLoaded', function() {
     enSnapshot[el.getAttribute('data-i18n')] = el.innerHTML;
   });
   applyBehemothLive().then(startCountdown);
-  updateBlessings();
+  refreshBehemothData();
 });
+
+// One entry point so a Bloodline Blessings change cascades to everything that
+// depends on it: the blessing table highlights, the Current Behemoth stat card
+// (siege/health derived from buffs), and the Score Projector (HP/siege per side).
+function refreshBehemothData() {
+  updateBlessings();
+  var bc = document.getElementById('behemothCard');
+  if (bc) renderBehemoth(bc.getAttribute('data-side') || 'us');
+  if (document.getElementById('scoreCalc')) renderScoreCalc();
+}
 
 var RTL_LANGS = { ar: true };
 function switchLang(lang) {
@@ -5382,6 +5330,32 @@ function blessOpenNodes(owned) {
   }
   return open;
 }
+// --- Behemoth combat stats, derived from Bloodline Blessings owned ----------
+// Every Behemoth starts at the Juvenile base; two blessings raise its own stats:
+//   Mobile Fortress (health): fort1 +250K, fort2 +500K  (cumulative)
+//   Iron Hoof (durability dmg / siege-per-sec): hoof1 +625, hoof2 +1,250 (cumulative)
+// Undying stacks are always 3, regardless of blessings. HP here = per-revive max.
+var BEHE_BASE = { hp: 3500000, siege: 8750, stacks: 3 };
+var BLESS_STAT_BONUS = {
+  fort1: { hp: 250000 }, fort2: { hp: 500000 },
+  hoof1: { siege: 625 }, hoof2: { siege: 1250 }
+};
+function beheStats(side) {
+  var owned = BLESS_OWNED[side] || [];
+  var hp = BEHE_BASE.hp, siege = BEHE_BASE.siege;
+  owned.forEach(function (n) {
+    var b = BLESS_STAT_BONUS[n];
+    if (b) { hp += (b.hp || 0); siege += (b.siege || 0); }
+  });
+  return { hp: hp, siege: siege, stacks: BEHE_BASE.stacks };
+}
+// Compact HP formatter for the stat card: 3.75M, 4.0M, etc.
+function fmtHP(n) {
+  if (n >= 1e6) return (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M';
+  if (n >= 1e3) return (n / 1e3).toFixed(0) + 'K';
+  return String(n);
+}
+
 // Current Behemoth card: render the chosen side's stats.
 // Numeric stats are language-neutral literals in data-us/data-them.
 // The translated Stage value uses data-us-en/data-them-en for English and TRANSLATIONS keys
@@ -5407,6 +5381,11 @@ function renderBehemoth(side) {
       el.innerHTML = el.getAttribute(valAttr);
     }
   });
+  // Siege + Health are computed live from the side's Bloodline Blessings.
+  var st = beheStats(side);
+  var siegeEl = document.getElementById('beheSiege'), hpEl = document.getElementById('beheHealth');
+  if (siegeEl) siegeEl.textContent = st.siege.toLocaleString('en-US') + '/s';
+  if (hpEl) hpEl.textContent = fmtHP(st.hp);
 }
 
 function updateBlessings() {
@@ -5780,14 +5759,11 @@ function calcBehemoth(hpPct, timeMin, maxHP, siege, stacks) {
 function renderScoreCalc() {
   var wrap = document.getElementById('scoreCalc');
   if (!wrap) return;
-  var cfgHP = document.getElementById('cfgHP'), cfgSiege = document.getElementById('cfgSiege'), cfgStacks = document.getElementById('cfgStacks');
-  if (!cfgHP || !cfgSiege || !cfgStacks) return;
   var L = CALC_LABELS[currentLang] || CALC_LABELS.en;
-  var maxHP = Math.max(1, +cfgHP.value || 0);
-  var siege = Math.max(0, +cfgSiege.value || 0);
-  var stacks = Math.max(1, Math.min(5, +cfgStacks.value || 3));
+  // Per-side HP & siege come from each server's Bloodline Blessings; stacks always 3.
+  var usStats = beheStats('us'), thStats = beheStats('them');
   // --- render the Undying-stack ticks on each HP bar (between the segments) ---
-  function drawTicks(el) {
+  function drawTicks(el, stacks) {
     var lives = stacks + 1, seg = 100 / lives, html = '';
     for (var i = 1; i < lives; i++) {
       var pct = 100 - i * seg; // ticks read left→right as HP decreases; place by HP value
@@ -5795,16 +5771,16 @@ function renderScoreCalc() {
     }
     el.innerHTML = html;
   }
-  drawTicks(document.getElementById('usTicks'));
-  drawTicks(document.getElementById('themTicks'));
+  drawTicks(document.getElementById('usTicks'), usStats.stacks);
+  drawTicks(document.getElementById('themTicks'), thStats.stacks);
   var usHp = +document.getElementById('usHp').value, usTime = +document.getElementById('usTime').value;
   var thHp = +document.getElementById('themHp').value, thTime = +document.getElementById('themTime').value;
   document.getElementById('usHpVal').textContent = usHp + '%';
   document.getElementById('themHpVal').textContent = thHp + '%';
   document.getElementById('usTimeVal').textContent = usTime + 'm';
   document.getElementById('themTimeVal').textContent = thTime + 'm';
-  var us = calcBehemoth(usHp, usTime, maxHP, siege, stacks);   // OUR behemoth
-  var th = calcBehemoth(thHp, thTime, maxHP, siege, stacks);   // THEIR behemoth
+  var us = calcBehemoth(usHp, usTime, usStats.hp, usStats.siege, usStats.stacks);   // OUR behemoth
+  var th = calcBehemoth(thHp, thTime, thStats.hp, thStats.siege, thStats.stacks);   // THEIR behemoth
   // A side's grand total = owner points from ITS OWN behemoth (citadel + remaining HP)
   //                       + offense it deals to the OTHER behemoth (chip + stacks + kill).
   var ourTotal   = us.ownerEarns + th.enemyEarns;
@@ -6205,7 +6181,7 @@ window.addEventListener('DOMContentLoaded', function () {
   // --- Invasion score projector ---
   var calc = document.getElementById('scoreCalc');
   if (calc) {
-    ['usHp', 'usTime', 'themHp', 'themTime', 'cfgHP', 'cfgSiege', 'cfgStacks'].forEach(function (id) {
+    ['usHp', 'usTime', 'themHp', 'themTime'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.addEventListener('input', renderScoreCalc);
     });
