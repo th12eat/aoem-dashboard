@@ -746,9 +746,9 @@
   .map-box[hidden], .spawn-box[hidden] { display: none; }
   /* -- Traced-diamond minimap overlaid on the spawn photo (in-game style) -- */
   .spawn-fig { position:relative; }
-  .loc-mini { position:absolute; top:8px; right:8px; width:14%; max-width:78px; aspect-ratio:1/1;
+  .loc-mini { position:absolute; top:8px; right:8px; width:16.8%; max-width:94px; aspect-ratio:1/1;
     background:rgba(13,15,24,0.5); border:1px solid rgba(58,71,99,0.6); border-radius:6px;
-    box-shadow:0 1px 6px rgba(0,0,0,0.4); padding:2px; opacity:0.68; z-index:2; pointer-events:none; }
+    box-shadow:0 1px 6px rgba(0,0,0,0.4); padding:2px; opacity:0.75; z-index:2; pointer-events:none; }
   .loc-mini svg { width:100%; height:100%; display:block; }
   .loc-diamond { fill:#1e2434; stroke:#3a4763; stroke-width:1.4; }
   .loc-lines { fill:none; stroke:#5a7a8c; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; opacity:0.85; }
@@ -771,7 +771,7 @@
   .calc-row .cval { color:var(--text-primary); }
   /* HP track: 4 quarters split by 3 Undying-stack ticks */
   .hp-track { position:relative; height:20px; }
-  .hp-track input[type=range] { width:100%; margin:0; }
+  .calc-row input[type=range] { width:100%; margin:0; display:block; box-sizing:border-box; }
   .hp-ticks { position:relative; height:12px; margin-top:1px; }
   .hp-ticks span { position:absolute; transform:translateX(-50%); font-size:8.5px; color:var(--text-muted); font-weight:700; letter-spacing:0.3px; white-space:nowrap; }
   .hp-ticks span::before { content:''; position:absolute; top:-13px; left:50%; width:1px; height:11px; background:var(--border); }
