@@ -5448,14 +5448,19 @@ var SCION_LABELS = {
 };
 var _scionWasLive = false; // edge-detect to auto-open the modal when a window starts
 
-// Pure helper: given minutes-into-UTC-day, classify every slot. Loops daily (resets at 00:00).
-function classifyScionSlots(nowMin, slots) {
-  // find the next slot that hasn't started yet today; if none, the next is tomorrow's first.
+// Pure helper: given minutes-into-UTC-day, classify every slot. Loops daily (resets
+// at 00:00) unless allowWrap is false (the last Trial day), where after the final
+// window there is no "next" — nothing should be highlighted.
+function classifyScionSlots(nowMin, slots, allowWrap) {
+  if (allowWrap === undefined) allowWrap = true;
+  // find the next slot that hasn't started yet today
   var nextIdx = -1;
   for (var i = 0; i < slots.length; i++) {
     if (nowMin < slots[i].start) { nextIdx = i; break; }
   }
-  if (nextIdx === -1) nextIdx = 0; // all passed today -> first slot tomorrow is "next"
+  // all passed today: the next is tomorrow's first slot — but only if there IS a
+  // tomorrow Trial (allowWrap). On the last day, leave nextIdx = -1 (no highlight).
+  if (nextIdx === -1 && allowWrap) nextIdx = 0;
   return slots.map(function (sl, i) {
     if (nowMin >= sl.start && nowMin < sl.end) return 'live';
     if (i === nextIdx) return 'next';
@@ -5467,14 +5472,27 @@ function classifyScionSlots(nowMin, slots) {
 // Trial of Scion only runs during Beast Taming (Days 2-4). For #028: Jul 28-30 UTC.
 var SCION_FIRST_DATE = '2026-07-28';
 var SCION_LAST_DATE  = '2026-07-30';
+// The Trial is fully over when we're past the last date, OR it's the last date and
+// every window has already ended (no more Trials will ever run). Used to stop the
+// schedule highlighting a phantom "next" and to hand the header badge to invasions.
+function scionIsOver(now) {
+  var today = utcDateStr(now);
+  if (today > SCION_LAST_DATE) return true;
+  if (today < SCION_LAST_DATE) return false;
+  var d = new Date(now);
+  var nowMin = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
+  var lastWin = SCION_WINDOWS[SCION_WINDOWS.length - 1];
+  return nowMin >= lastWin[1]; // past the end of the final window on the last day
+}
 function updateScionSchedule(now) {
   var sched = document.getElementById('scionSched');
   if (!sched) return;
   var d = new Date(now);
   var todayStr = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
   var els = sched.querySelectorAll('.scion-slot');
-  // Past the Trial window entirely: grey everything as "done", no live/next, no modal.
-  if (todayStr > SCION_LAST_DATE) {
+  // Trial fully over (past the last date, or the last date's final window has ended):
+  // grey every slot as "done", no live/next, no modal.
+  if (scionIsOver(now)) {
     var Ldone = SCION_LABELS[currentLang] || SCION_LABELS.en;
     els.forEach(function (el) {
       el.classList.remove('is-live', 'is-next');
@@ -5483,8 +5501,8 @@ function updateScionSchedule(now) {
       if (tag) tag.textContent = Ldone.passed;
     });
     _scionWasLive = false;
-    // After the last Trial day the header badge is owned by updateHeaderBadge()
-    // (invasion countdown) — don't set the Scion "n/a" label here.
+    // The header badge is now owned by updateHeaderBadge() (invasion countdown) —
+    // don't set the Scion "n/a" label here.
     return;
   }
   // Before the Trial opens (before Day 2 00:00 UTC): grey the whole schedule out,
@@ -5505,7 +5523,8 @@ function updateScionSchedule(now) {
   els.forEach(function (el) {
     slots.push({ start: +el.getAttribute('data-start'), end: +el.getAttribute('data-end') });
   });
-  var states = classifyScionSlots(nowMin, slots);
+  // On the last Trial day, don't wrap "next" to tomorrow's 01:00 — there is no tomorrow Trial.
+  var states = classifyScionSlots(nowMin, slots, todayStr < SCION_LAST_DATE);
   var L = SCION_LABELS[currentLang] || SCION_LABELS.en;
   var anyLive = false;
   els.forEach(function (el, i) {
@@ -5667,9 +5686,10 @@ function openInvasionModal() {
 // Decide whether the header badge shows Trial of Scion (Beast Taming days) or the
 // Invasion countdown (from the end of the last Trial day onward). Called each tick.
 function updateHeaderBadge(now) {
-  var today = utcDateStr(now);
-  if (today > SCION_LAST_DATE) { updateInvasionBadge(now); return true; }
-  return false; // let updateScionSchedule drive the Scion badge
+  // Once the Trial is fully over (incl. the last day's final window ending), the
+  // header badge belongs to the invasion ATK/DEF countdown.
+  if (scionIsOver(now)) { updateInvasionBadge(now); return true; }
+  return false; // still in Trial days → let updateScionSchedule drive the Scion badge
 }
 
 // --- Invasion score projector -----------------------------------------------
