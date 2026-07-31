@@ -146,20 +146,10 @@
   .stageline-dots { display:flex; align-items:flex-start; }
   .stageline-node { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; }
   .stageline-node .sl-line { position:absolute; top:7px; left:50%; width:100%; height:3px; }
-  /* active span (current day → next): a scrolling barber-pole / progress stripe */
-  .stageline-node .sl-line.sl-line-active {
-    background-color: var(--seg, #94a3b8);
-    background-image: repeating-linear-gradient(-45deg,
-      rgba(255,255,255,0.55) 0, rgba(255,255,255,0.55) 5px,
-      rgba(255,255,255,0) 5px, rgba(255,255,255,0) 10px);
-    background-size:14.14px 100%; animation:slBarber 2s linear infinite; }
-  @keyframes slBarber { to { background-position:14.14px 0; } }
+  /* .sl-line-active (barber-pole) + .sl-dot-pulse live in kvk-theme.css, shared across timelines */
   .stageline-node .sl-dot { width:16px; height:16px; border-radius:50%; border:2px solid; position:relative; z-index:2; }
-  .stageline-node.now .sl-dot { animation:slPulse 2.4s ease-in-out infinite; }
-  @keyframes slPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(250,204,21,0.55);} 50%{ box-shadow:0 0 0 7px rgba(250,204,21,0);} }
   .stageline-node .sl-day { font-size:10px; font-weight:700; margin-top:6px; text-transform:uppercase; letter-spacing:0.5px; }
   .stageline-node .sl-name { font-size:11px; margin-top:2px; line-height:1.25; padding:0 4px; }
-  @media (prefers-reduced-motion: reduce){ .stageline-node.now .sl-dot{ animation:none; } .stageline-node .sl-line.sl-line-active{ animation:none; } }
 
   .header .subtitle {
     font-family: 'Barlow Condensed', sans-serif;
@@ -5251,6 +5241,7 @@ function behDayIndex(now, days) {
   }
   return -1;
 }
+var _stageLineSig = null;
 function renderStageLine(now) {
   var host = document.getElementById('stageLine');
   if (!host) return;
@@ -5258,6 +5249,12 @@ function renderStageLine(now) {
   var days = behStageDays();
   var N = days.length;
   var cur = behDayIndex(now, days);
+  // Only rebuild the DOM when something visible actually changes (current day or
+  // language). renderStageLine is called every 1s tick; rebuilding each time would
+  // restart the dot-pulse + barber-pole animations mid-cycle (the visible stutter).
+  var sig = cur + '|' + currentLang + '|' + N;
+  if (sig === _stageLineSig) return;
+  _stageLineSig = sig;
   var reached = function (i) { return cur >= 0 && i <= cur; };
   var dotPct = function (i) { return ((i + 0.5) / N) * 100; };
 
@@ -5296,7 +5293,7 @@ function renderStageLine(now) {
     return '<button type="button" class="stageline-node' + (nowNode ? ' now' : '') + '" data-tab="' + d.tab + '" ' +
              'style="font:inherit;cursor:pointer;background:none;border:none;padding:0;">' +
              lineHtml +
-             '<div class="sl-dot" style="background:' + dotColor + ';border-color:' + dotColor + '"></div>' +
+             '<div class="sl-dot' + (nowNode ? ' sl-dot-pulse' : '') + '" style="background:' + dotColor + ';border-color:' + dotColor + '"></div>' +
              '<div class="sl-day" style="color:' + nameCol + '">' + dayLbl + '</div>' +
              '<div class="sl-name" style="color:' + (dotOn ? '#94a3b8' : '#64748b') + '">' + dateLbl + '</div>' +
            '</button>';

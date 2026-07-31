@@ -4371,6 +4371,9 @@ function TimelineStrip({liveIdx, selectedIdx, onSelect, invasionTime, t}){
           // the connecting line "belongs" to the segment it comes FROM.
           const prevZ=i>0?TL_STAGE[TIMELINE[i-1].stage]:z;
           const lineColor=reached(i)?prevZ.bright:prevZ.dark;
+          // the segment from the CURRENT day to the NEXT (the line entering dot liveIdx+1)
+          // animates as a barber-pole progress bar, in the current stage's colour.
+          const lineActive=liveIdx>=0 && i===liveIdx+1;
           // node label: the compact `short` name (blank for Matchmaking/Invasion,
           // already named by the phase label on top). No date sub-line.
           const label=n.short!==undefined?n.short:((n.titleKey&&t&&t[n.titleKey])||n.title);
@@ -4379,8 +4382,10 @@ function TimelineStrip({liveIdx, selectedIdx, onSelect, invasionTime, t}){
               style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",position:"relative",
                 padding:"5px 2px",font:"inherit",cursor:"pointer",borderRadius:6,
                 background:sel?"rgba(251,191,36,0.08)":"transparent",border:sel?"1px solid #fbbf24":"1px solid transparent"}}>
-              {i>0&&<div style={{position:"absolute",top:12,right:"50%",width:"100%",height:3,background:lineColor,zIndex:1}}/>}
-              <div className={now?"live-pulse":""} style={{width:15,height:15,borderRadius:"50%",background:dotColor,border:`2px solid ${dotColor}`,boxShadow:now?`0 0 6px ${dotColor}`:"none",position:"relative",zIndex:2}}/>
+              {i>0&&(lineActive
+                ? <div className="sl-line-active" style={{position:"absolute",top:12,right:"50%",width:"100%",height:3,zIndex:1,"--seg":prevZ.bright}}/>
+                : <div style={{position:"absolute",top:12,right:"50%",width:"100%",height:3,background:lineColor,zIndex:1}}/>)}
+              <div className={now?"sl-dot-pulse":""} style={{width:15,height:15,borderRadius:"50%",background:dotColor,border:`2px solid ${dotColor}`,boxShadow:now?`0 0 6px ${dotColor}`:"none",position:"relative",zIndex:2}}/>
               {label&&<div style={{fontSize:10,fontWeight:700,color:(sel||now)?"#fbbf24":(reached(i)?z.bright:z.dark),marginTop:6,lineHeight:1.2}}>{label}</div>}
             </button>
           );

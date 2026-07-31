@@ -370,4 +370,26 @@ body { font-size: var(--fs-body); }
   0%,100% { box-shadow: 0 0 3px 0 rgba(251,191,36,0.45); border-color: rgba(251,191,36,0.5); }
   50%     { box-shadow: 0 0 14px 4px rgba(251,191,36,0.85); border-color: rgba(253,224,71,1); }
 }
-.live-pulse { animation: livePulse 1.25s ease-in-out infinite; border-radius: 6px; border: 2px solid rgba(251,191,36,0.7); }
+.live-pulse { animation: livePulse 1.8s ease-in-out infinite; border-radius: 6px; border: 2px solid rgba(251,191,36,0.7); }
+
+/* ── Shared Event-Timeline animations (Behemoth / Desolate Desert / TME) ── */
+/* Current-day dot pulse — one standard speed across all timelines. */
+@keyframes slDotPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(250,204,21,0.55); } 50% { box-shadow: 0 0 0 7px rgba(250,204,21,0); } }
+.sl-dot-pulse { animation: slDotPulse 1.8s ease-in-out infinite; }
+/* Active connecting segment (current day → next): scrolling barber-pole progress.
+   The stripe pattern repeats every 10px along the gradient axis; at -45° that is a
+   horizontal period of 10·√2 = 14.1421356px. We DON'T set background-size (let the
+   gradient tile natively) and scroll background-position by exactly one full period,
+   so the loop is seamless — no visible reset. */
+.sl-line-active {
+  background-color: var(--seg, #94a3b8);
+  background-image: repeating-linear-gradient(-45deg,
+    rgba(255,255,255,0.5) 0, rgba(255,255,255,0.5) 5px,
+    rgba(255,255,255,0) 5px, rgba(255,255,255,0) 10px);
+  animation: slBarber 1.6s linear infinite;
+}
+@keyframes slBarber { from { background-position: 0 0; } to { background-position: 14.1421356px 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .sl-dot-pulse { animation: none; }
+  .sl-line-active { animation: none; }
+}
