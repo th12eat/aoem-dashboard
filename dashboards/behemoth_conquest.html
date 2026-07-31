@@ -146,12 +146,20 @@
   .stageline-dots { display:flex; align-items:flex-start; }
   .stageline-node { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; }
   .stageline-node .sl-line { position:absolute; top:7px; left:50%; width:100%; height:3px; }
+  /* active span (current day → next): a scrolling barber-pole / progress stripe */
+  .stageline-node .sl-line.sl-line-active {
+    background-color: var(--seg, #94a3b8);
+    background-image: repeating-linear-gradient(-45deg,
+      rgba(255,255,255,0.55) 0, rgba(255,255,255,0.55) 5px,
+      rgba(255,255,255,0) 5px, rgba(255,255,255,0) 10px);
+    background-size:14.14px 100%; animation:slBarber 0.7s linear infinite; }
+  @keyframes slBarber { to { background-position:14.14px 0; } }
   .stageline-node .sl-dot { width:16px; height:16px; border-radius:50%; border:2px solid; position:relative; z-index:2; }
   .stageline-node.now .sl-dot { animation:slPulse 1.4s ease-in-out infinite; }
   @keyframes slPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(250,204,21,0.55);} 50%{ box-shadow:0 0 0 7px rgba(250,204,21,0);} }
   .stageline-node .sl-day { font-size:10px; font-weight:700; margin-top:6px; text-transform:uppercase; letter-spacing:0.5px; }
   .stageline-node .sl-name { font-size:11px; margin-top:2px; line-height:1.25; padding:0 4px; }
-  @media (prefers-reduced-motion: reduce){ .stageline-node.now .sl-dot{ animation:none; } }
+  @media (prefers-reduced-motion: reduce){ .stageline-node.now .sl-dot{ animation:none; } .stageline-node .sl-line.sl-line-active{ animation:none; } }
 
   .header .subtitle {
     font-family: 'Barlow Condensed', sans-serif;
@@ -5273,7 +5281,13 @@ function renderStageLine(now) {
     var dotColor = dotOn ? z.bright : z.dark;    // solid; current dot pulses via .now
     var lineOn = cur >= i;                       // line to the NEXT dot; bright once reached
     var lineColor = lineOn ? z.bright : z.dark;
-    var lineHtml = i < N - 1 ? '<div class="sl-line" style="background:' + lineColor + '"></div>' : '';
+    // the segment leaving the CURRENT day (→ next) animates as a barber-pole progress bar
+    var lineActive = i === cur && i < N - 1;
+    var lineHtml = i < N - 1
+      ? (lineActive
+          ? '<div class="sl-line sl-line-active" style="--seg:' + z.bright + '"></div>'
+          : '<div class="sl-line" style="background:' + lineColor + '"></div>')
+      : '';
     var dayLbl = dayWord + ' ' + (i + 1);        // event-day progression
     var dateLbl = utcShort(d.startMs);
     var nameCol = dotOn ? z.bright : '#64748b';
