@@ -749,8 +749,10 @@
   }
   .map-toggle .mt-btn .mt-sub { display: block; font-family: 'Barlow', sans-serif; font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; text-transform: uppercase; }
   .map-toggle .mt-btn:hover { background: rgba(var(--kvk-accent-rgb),0.06); color: var(--text-primary); }
-  .map-toggle .mt-btn.active { border-color: var(--accent-gold-dim); background: rgba(var(--kvk-accent-rgb),0.10); color: var(--accent-gold); }
-  .map-toggle .mt-btn.active .mt-sub { color: var(--accent-gold-dim); }
+  .map-toggle .mt-btn.active[data-map="008"] { color: #9dc0f0; border-color: var(--accent-blue-dim); background: rgba(61,124,196,0.14); }
+  .map-toggle .mt-btn.active[data-map="087"] { color: #e89a9a; border-color: var(--accent-red-dim); background: rgba(196,61,61,0.14); }
+  .map-toggle .mt-btn.active[data-map="008"] .mt-sub { color: var(--accent-blue-dim); }
+  .map-toggle .mt-btn.active[data-map="087"] .mt-sub { color: var(--accent-red-dim); }
   .map-box[hidden], .spawn-box[hidden] { display: none; }
   /* -- Traced-diamond minimap overlaid on the spawn photo (in-game style) -- */
   .spawn-fig { position:relative; }
