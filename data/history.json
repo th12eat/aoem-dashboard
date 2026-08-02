@@ -419,8 +419,8 @@
       "event": "Behemoth",
       "date": "2026-07-27",
       "opp": "Era #028",
-      "result": "Live",
-      "note": "In progress — top-4 alliance scouting figures (power, merits from whole-percent M:P). Result updates when Behemoth Conquest concludes.",
+      "result": "Win",
+      "note": "Won Behemoth Conquest 40.1B vs 37.9B. Top-4 figures are the final scouting snapshot (power, merits from whole-percent M:P).",
       "ours": [
         [
           "WC1",
@@ -462,6 +462,57 @@
         [
           "κ28",
           1800000000,
+          0
+        ]
+      ]
+    },
+    {
+      "event": "TME",
+      "date": "2026-08-01",
+      "opp": "Era #073",
+      "result": "Live",
+      "note": "In progress vs Era #073. Prep starts Aug 3, invasion Aug 9, ends Aug 10. Stellar Dynasty: we're 13th, they're 8th. Opponent top-4 power captured; opponent alliance merits pending reset.",
+      "ours": [
+        [
+          "WC1",
+          21489877181,
+          2581858394
+        ],
+        [
+          "AGC",
+          12113782971,
+          209424283
+        ],
+        [
+          "REU",
+          11714414786,
+          850504806
+        ],
+        [
+          "MyT",
+          10638513575,
+          874216312
+        ]
+      ],
+      "oppA": [
+        [
+          "I⁷³",
+          21722403071,
+          0
+        ],
+        [
+          "ORD",
+          15855542686,
+          0
+        ],
+        [
+          "BOT",
+          1459291972,
+          0
+        ],
+        [
+          "∠孔丅",
+          73897980,
           0
         ]
       ]
