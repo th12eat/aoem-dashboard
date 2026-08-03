@@ -7,7 +7,7 @@
   "weWonPrep": null,
   "ourRank": 13,
   "oppRank": 8,
-  "prepStarted": false,
+  "prepStarted": true,
   "eventOver": false,
   "alliances": [
     {
@@ -20,7 +20,7 @@
       "allies": 166,
       "power": "21,489,877,181",
       "merits": "2,581,858,394",
-      "prepPoints": "TBD"
+      "prepPoints": "364,764,400"
     },
     {
       "tag": "REU",
@@ -32,7 +32,7 @@
       "allies": 138,
       "power": "11,714,414,786",
       "merits": "850,504,806",
-      "prepPoints": "TBD"
+      "prepPoints": "172,750,800"
     },
     {
       "tag": "MyT",
@@ -44,7 +44,7 @@
       "allies": 132,
       "power": "10,638,513,575",
       "merits": "874,216,312",
-      "prepPoints": "TBD"
+      "prepPoints": "152,037,200"
     },
     {
       "tag": "AGC",
@@ -56,15 +56,15 @@
       "allies": 166,
       "power": "12,113,782,971",
       "merits": "209,424,283",
-      "prepPoints": "TBD"
+      "prepPoints": "136,247,200"
     }
   ],
   "prepStages": [
     {
       "nameKey": "prepStage1",
-      "ourPts": 0,
-      "oppPts": 0,
-      "won": null
+      "ourPts": 0.82,
+      "oppPts": 1.17,
+      "won": false
     },
     {
       "nameKey": "prepStage2",
@@ -91,9 +91,9 @@
       "won": null
     }
   ],
-  "totalOur": 0,
-  "totalOpp": 0,
-  "prepLastUpdated": "2026-08-02 — Rankings loaded; prep starts Aug 3",
+  "totalOur": 0.82,
+  "totalOpp": 1.17,
+  "prepLastUpdated": "2026-08-03 — Prep Stage 1 (824M vs 1.17B; stage & total identical on day 1)",
   "oppAlliances": [
     {
       "tag": "I⁷³",
@@ -101,7 +101,7 @@
       "allies": 166,
       "power": "21,722,403,071",
       "merits": "3,085,607,834",
-      "prepPoints": "TBD"
+      "prepPoints": "629,419,200"
     },
     {
       "tag": "ORD",
@@ -109,7 +109,7 @@
       "allies": 158,
       "power": "15,855,542,686",
       "merits": "940,881,723",
-      "prepPoints": "TBD"
+      "prepPoints": "355,676,000"
     },
     {
       "tag": "ORW",
@@ -117,7 +117,7 @@
       "allies": 156,
       "power": "8,866,611,111",
       "merits": "73,317,200",
-      "prepPoints": "TBD"
+      "prepPoints": "172,622,800"
     },
     {
       "tag": "HòE",
@@ -125,7 +125,7 @@
       "allies": 97,
       "power": "2,935,075,321",
       "merits": "23,214,567",
-      "prepPoints": "TBD"
+      "prepPoints": "29,911,200"
     }
   ],
   "krakens": [
@@ -222,7 +222,7 @@
       "name": "CPALyfe",
       "alliance": "I⁷³",
       "power": "265,999,446",
-      "merits": "TBD",
+      "merits": "67,131,562",
       "ratio": ""
     }
   ],
