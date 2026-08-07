@@ -20,7 +20,7 @@
       "allies": 166,
       "power": "21,489,877,181",
       "merits": "2,581,858,394",
-      "prepPoints": "9,781,800,286"
+      "prepPoints": "32,522,397,062"
     },
     {
       "tag": "REU",
@@ -32,7 +32,7 @@
       "allies": 138,
       "power": "11,714,414,786",
       "merits": "850,504,806",
-      "prepPoints": "3,491,802,345"
+      "prepPoints": "7,371,025,084"
     },
     {
       "tag": "MyT",
@@ -44,7 +44,7 @@
       "allies": 132,
       "power": "10,638,513,575",
       "merits": "874,216,312",
-      "prepPoints": "3,849,700,943"
+      "prepPoints": "7,473,984,132"
     },
     {
       "tag": "AGC",
@@ -56,7 +56,7 @@
       "allies": 166,
       "power": "12,113,782,971",
       "merits": "209,424,283",
-      "prepPoints": "3,561,444,157"
+      "prepPoints": "7,431,889,064"
     }
   ],
   "prepStages": [
@@ -80,20 +80,20 @@
     },
     {
       "nameKey": "prepStage4",
-      "ourPts": 0,
-      "oppPts": 0,
-      "won": null
+      "ourPts": 38.02,
+      "oppPts": 42.53,
+      "won": false
     },
     {
       "nameKey": "prepStage5",
-      "ourPts": 0,
-      "oppPts": 0,
+      "ourPts": 5.18,
+      "oppPts": 7.27,
       "won": null
     }
   ],
-  "totalOur": 20.6,
-  "totalOpp": 25.7,
-  "prepLastUpdated": "2026-08-05 — Prep Stage 3 (stage 10.2B vs 13.4B; total 20.6B vs 25.7B). Stage 2 back-filled by subtraction.",
+  "totalOur": 63.8,
+  "totalOpp": 75.5,
+  "prepLastUpdated": "2026-08-07 — Prep Stage 5 in progress (stage 5.18B vs 7.27B, runs through Day 6; total 63.8B vs 75.5B). Stage 4 back-filled by subtraction.",
   "oppAlliances": [
     {
       "tag": "I⁷³",
@@ -101,7 +101,7 @@
       "allies": 166,
       "power": "21,722,403,071",
       "merits": "3,085,607,834",
-      "prepPoints": "14,542,124,737"
+      "prepPoints": "52,120,343,843"
     },
     {
       "tag": "ORD",
@@ -109,7 +109,7 @@
       "allies": 158,
       "power": "15,855,542,686",
       "merits": "940,881,723",
-      "prepPoints": "7,627,153,792"
+      "prepPoints": "17,038,725,828"
     },
     {
       "tag": "ORW",
@@ -117,7 +117,7 @@
       "allies": 156,
       "power": "8,866,611,111",
       "merits": "73,317,200",
-      "prepPoints": "3,002,183,968"
+      "prepPoints": "6,122,382,444"
     },
     {
       "tag": "HòE",
@@ -125,7 +125,7 @@
       "allies": 97,
       "power": "2,935,075,321",
       "merits": "23,214,567",
-      "prepPoints": "900,492,689"
+      "prepPoints": "1,692,372,489"
     }
   ],
   "krakens": [
