@@ -516,6 +516,15 @@
           23214567
         ]
       ]
+    },
+    {
+      "event": "Desolate Desert",
+      "date": "2026-08-10",
+      "opp": "Era #042 / #039 / #038",
+      "result": "Live",
+      "multi": true,
+      "season": "Stellar Dynasty",
+      "note": "In progress — matchmaking Aug 8, map opens Aug 10, Aaru ~Aug 16. Opponent rosters pending scouting."
     }
   ]
 }

@@ -146,10 +146,10 @@ function T(en) {
    EVENT DATA
    ═══════════════════════════════════════════════════ */
 let EVENT_CONFIG = {
-  eventStart: "2026-07-06",
-  eventEnd: "2026-07-13",
-  matchingStart: "2026-07-03",
-  servers: ["Era 8", "Era #023", "Era #014", "Era #019"],
+  eventStart: "2026-08-10",
+  eventEnd: "2026-08-17",
+  matchingStart: "2026-08-08",
+  servers: ["Era 8", "Era #042", "Era #039", "Era #038"],
   ourServer: "Era 8",
   ourAlliances: ["WC1", "MyT", "REU", "AGC"],
 };
@@ -179,30 +179,33 @@ function allianceColor(tag, mode) {
 // server color; when a server badge is focused on the map, that server's
 // alliances break out into these distinct shades (the way our Era 8 four do).
 // Key order = display order in the map key. Era 8 mirrors ALLIANCE_COLORS.
+// This DD our server sits at the NORTH/Blue corner, so our four render in the
+// blue family; the three opponents take their corner-color families. Opponent
+// alliance tags are unknown until scouting — filled in when that data lands.
 const SERVER_ALLIANCE_SHADES = {
-  "Era 8":    { WC1: "#a855f7", MyT: "#f472b6", REU: "#ec4899", AGC: "#c4b5fd" },
-  "Era #019": { XIX: "#4a7fc0", KNY: "#8ab4e8", PBJ: "#2f5a8f", DXR: "#b3d1f2" },
-  "Era #014": { X14: "#d4934a", "Ȼ14": "#ecb673", GnG: "#a3691f", L14: "#f5d3a6" },
-  "Era #023": { LOD: "#4f9d70", boi: "#82c99e", R65: "#327c53", ILF: "#aadcc0" },
+  "Era 8":    { WC1: "#4a7fc0", MyT: "#8ab4e8", REU: "#2f5a8f", AGC: "#b3d1f2" },  // blue (N)
+  "Era #042": {},   // orange (W) — opponent shades TBD
+  "Era #039": {},   // purple (E) — opponent shades TBD
+  "Era #038": {},   // green (S)  — opponent shades TBD
 };
 // Server badge hit-areas — positions match the four crests baked into the
 // minimap background (N/W/E/S corners of the diamond). Clicking focuses that
 // server's alliances. Live mode only (plan has no opponents).
 const SERVER_BADGES = [
-  { srv: "Era #019", x: 48.5, y: 10.5 },  // north — blue snake
-  { srv: "Era #014", x: 10.5, y: 49.5 },  // west  — orange lion
-  { srv: "Era 8",    x: 89.0, y: 49.5 },  // east  — purple phoenix
-  { srv: "Era #023", x: 48.5, y: 89.0 },  // south — teal
+  { srv: "Era 8",    x: 48.5, y: 10.5 },  // north — blue   (US this event)
+  { srv: "Era #042", x: 10.5, y: 49.5 },  // west  — orange
+  { srv: "Era #039", x: 89.0, y: 49.5 },  // east  — purple
+  { srv: "Era #038", x: 48.5, y: 89.0 },  // south — green
 ];
 
 const SCHEDULE = [
-  { day: 1, date: "2026-07-06", title: "Map Opens", desc: "Relocate to Waste Land. Construct alliance buildings (Stronghold, flags, gathering center, supply depot).", zone: "Waste Land" },
-  { day: 2, date: "2026-07-07", title: "Mountain Forts & Pillar Cities", desc: "Waste Land Mountain Forts/Docks and Pillar Cities accessible. Occupy Forts to enter Forbidden Zone. Pillar Cities earn Placer Gold + Desert Points/min.", zone: "Waste Land → Forbidden Zone" },
-  { day: 3, date: "2026-07-08", title: "Tower of Rotation Opens", desc: "Tower of Rotation and Forbidden Zone Mountain Fort now open. Tower awakens daily, spawning Silent Guardians & Echoing Phantoms for 2hrs. Must be adjacent to alliance land.", zone: "Forbidden Zone" },
-  { day: 4, date: "2026-07-09", title: "Contest Continues", desc: "Continue territory expansion. Tower of Rotation daily spawn. Peaceful Riverland events.", zone: "Forbidden Zone" },
-  { day: 5, date: "2026-07-10", title: "Contest Continues", desc: "Push toward Eternal Realm Mountain Forts. Accumulate Placer Gold for Z3 flags.", zone: "Forbidden Zone" },
-  { day: 6, date: "2026-07-11", title: "Eternal Realm Opens", desc: "Eternal Realm Mountain Forts open. Alliances occupying these can enter the Eternal Realm. Flags cost more but have higher durability.", zone: "Eternal Realm" },
-  { day: 7, date: "2026-07-12", title: "Aaru Palace", desc: "Aaru Palace opens. War declarations begin at voted time. Holding palace = massive Desert Points/sec. Longest hold or 1hr consecutive = huge point influx. Guardians spawn for bonus points + kingdom buffs.", zone: "Eternal Realm" },
+  { day: 1, date: "2026-08-10", title: "Map Opens", desc: "Relocate to Waste Land. Construct alliance buildings (Stronghold, flags, gathering center, supply depot).", zone: "Waste Land" },
+  { day: 2, date: "2026-08-11", title: "Mountain Forts & Pillar Cities", desc: "Waste Land Mountain Forts/Docks and Pillar Cities accessible. Occupy Forts to enter Forbidden Zone. Pillar Cities earn Placer Gold + Desert Points/min.", zone: "Waste Land → Forbidden Zone" },
+  { day: 3, date: "2026-08-12", title: "Tower of Rotation Opens", desc: "Tower of Rotation and Forbidden Zone Mountain Fort now open. Tower awakens daily, spawning Silent Guardians & Echoing Phantoms for 2hrs. Must be adjacent to alliance land.", zone: "Forbidden Zone" },
+  { day: 4, date: "2026-08-13", title: "Contest Continues", desc: "Continue territory expansion. Tower of Rotation daily spawn. Peaceful Riverland events.", zone: "Forbidden Zone" },
+  { day: 5, date: "2026-08-14", title: "Contest Continues", desc: "Push toward Eternal Realm Mountain Forts. Accumulate Placer Gold for Z3 flags.", zone: "Forbidden Zone" },
+  { day: 6, date: "2026-08-15", title: "Eternal Realm Opens", desc: "Eternal Realm Mountain Forts open. Alliances occupying these can enter the Eternal Realm. Flags cost more but have higher durability.", zone: "Eternal Realm" },
+  { day: 7, date: "2026-08-16", title: "Aaru Palace", desc: "Aaru Palace opens. War declarations begin at voted time. Holding palace = massive Desert Points/sec. Longest hold or 1hr consecutive = huge point influx. Guardians spawn for bonus points + kingdom buffs.", zone: "Eternal Realm" },
 ];
 
 const ZONES = [
@@ -215,11 +218,11 @@ const ZONES = [
 // the stage covers; `startISO` = when it opens (drives the live indicator).
 // zone key drives the connecting-line + dot color for each stage.
 const STAGES = [
-  { key: "d1", label: T("Strongholds in Z1"),              days: [1],       startISO: "2026-07-06T00:00:00Z", zone: "z1" },
-  { key: "d2", label: T("Z2 Gates Open & Pillar Cities"),  days: [2],       startISO: "2026-07-07T00:00:00Z", zone: "z2" },
-  { key: "d345", label: T("L/R Eye Gates Open & Tower of Rotation"), days: [3,4,5], startISO: "2026-07-08T00:00:00Z", zone: "z2" },
-  { key: "d6", label: T("Z3 Gates Open"),                  days: [6],       startISO: "2026-07-11T00:00:00Z", zone: "z3" },
-  { key: "d7", label: T("Aaru Fight"),                     days: [7],       startISO: "2026-07-12T00:00:00Z", zone: "z3" },
+  { key: "d1", label: T("Strongholds in Z1"),              days: [1],       startISO: "2026-08-10T00:00:00Z", zone: "z1" },
+  { key: "d2", label: T("Z2 Gates Open & Pillar Cities"),  days: [2],       startISO: "2026-08-11T00:00:00Z", zone: "z2" },
+  { key: "d345", label: T("L/R Eye Gates Open & Tower of Rotation"), days: [3,4,5], startISO: "2026-08-12T00:00:00Z", zone: "z2" },
+  { key: "d6", label: T("Z3 Gates Open"),                  days: [6],       startISO: "2026-08-15T00:00:00Z", zone: "z3" },
+  { key: "d7", label: T("Aaru Fight"),                     days: [7],       startISO: "2026-08-16T00:00:00Z", zone: "z3" },
 ];
 // stage zone colors: Z1 purple, Z2 teal, Z3 pink (placeholder palette — easy to retune).
 // `bright` = reached/current spans; `dark` = not-yet-reached spans; `label` = legend text.
@@ -244,9 +247,9 @@ const ROE_COLUMNS = [
 ];
 // fight: map of column->bool. ally:true means green regardless (we side with them).
 const DIPLOMACY_ROE = [
-  { server: "Era #019", ally: false, fight: { openField: true,  riverland: true,  farms: true,  citadels: true,  citiesGates: true  } },
-  { server: "Era #014", ally: true,  fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
-  { server: "Era #023", ally: false, fight: { openField: true,  riverland: true,  farms: true,  citadels: true,  citiesGates: true  } },
+  { server: "Era #042", ally: false, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #039", ally: false, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #038", ally: false, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
 ];
 
 // Per-player daily objectives (reset 00:00 UTC). `opensDay` = greyed until then.
@@ -310,9 +313,9 @@ const AARU_TIME_SLOTS = [
   { label: "11:00 - 15:00 UTC", start: "11:00", end: "15:00" },
   { label: "19:00 - 23:00 UTC", start: "19:00", end: "23:00" },
 ];
-// Official, settled Aaru fight window (Era #019 won the vote). Authoritative —
-// shown regardless of any per-device saved time-vote preference.
-const AARU_OFFICIAL_TIME = "19:00 - 23:00 UTC";
+// Official, settled Aaru fight window — set once the Day-7 vote concludes in-game.
+// TBD until then (new event just started).
+const AARU_OFFICIAL_TIME = "TBD";
 
 const BUILDINGS = [
   { name: "Desert Stronghold", desc: "Foundation of alliance lands. Built in Waste Land. All flags must connect back to a Stronghold or Substronghold to remain active.", icon: "🏰" },
@@ -381,12 +384,12 @@ function currentStageIndex() {
 
 // Reusable Kingdom Desert-Star proportional bar (Orange>Blue>Purple>Green).
 function KingdomBar({ compact }) {
-  const ORDER = ["Era #019", "Era #023", "Era 8", "Era #014"];
+  const ORDER = ["Era 8", "Era #042", "Era #039", "Era #038"];
   const GRAD = {
-    "Era #019": { grad: "linear-gradient(90deg, #b4500f, #f5731f)", top: "#f5731f" },
-    "Era #023": { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" },
-    "Era 8":    { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" },
-    "Era #014": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" },
+    "Era 8":    { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" },  // blue (us)
+    "Era #042": { grad: "linear-gradient(90deg, #b4500f, #f5731f)", top: "#f5731f" },  // orange
+    "Era #039": { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" },  // purple
+    "Era #038": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" },  // green
   };
   const ptsFor = (srv) => { const row = (KINGDOM_SCOREBOARD || []).find(k => k.server === srv); return row ? Number(String(row.points).replace(/,/g, "")) : 0; };
   const segs = ORDER.map(srv => ({ srv, g: GRAD[srv], pts: ptsFor(srv), us: srv === "Era 8" }));
@@ -594,9 +597,7 @@ const MAP_NODES = {
 // Which server each alliance belongs to (for map/table coloring).
 const ALLIANCE_SERVER = {
   WC1: "Era 8", REU: "Era 8", AGC: "Era 8", MyT: "Era 8",
-  LOD: "Era #023", boi: "Era #023", R65: "Era #023", ILF: "Era #023",
-  X14: "Era #014", "Ȼ14": "Era #014", GnG: "Era #014", L14: "Era #014",
-  XIX: "Era #019", KNY: "Era #019", PBJ: "Era #019", DXR: "Era #019",
+  // Opponent alliance→server mappings added when #042/#039/#038 scouting arrives.
 };
 const OUR_ALLIANCES = ["WC1", "REU", "AGC", "MyT"];
 // Owner → line/dot color. Our 4 alliances get distinct colors (per mode); every
@@ -876,7 +877,7 @@ function NodeControlTable({ hl, setHl, pinned, setPinned }) {
     { key: "damage", short: "Damage", grp: "tower" },
   ];
   const buffVal = { health: "+5%", attack: "+10%", defense: "+10%", dmgReduction: "+5%", damage: "+6%" };
-  const order = ["Era 8", "Era #019", "Era #014", "Era #023"];
+  const order = ["Era 8", "Era #042", "Era #039", "Era #038"];
   const tags = Object.keys(ALLIANCE_SERVER).sort((a,b) => order.indexOf(ALLIANCE_SERVER[a]) - order.indexOf(ALLIANCE_SERVER[b]));
   const fmt = (n) => n >= 1e6 ? (n/1e6) + "M" : n >= 1e3 ? (n/1e3) + "k" : String(n);
   return (
@@ -999,7 +1000,7 @@ function OverviewTab({ state, setState }) {
         {/* Opponent server color key — live only (plan map has no opponents) */}
         {mapMode === "live" ? (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "8px", paddingTop: "8px", borderTop: "1px solid #1e2435" }}>
-          {[["Era #019","#019"],["Era #014","#014"],["Era #023","#023"]].map(([srv,lbl]) => (
+          {[["Era #042","#042"],["Era #039","#039"],["Era #038","#038"]].map(([srv,lbl]) => (
             <div key={srv} onClick={() => setFocus(srv)} title={"Click to break out " + srv + "'s alliances"} style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
               <span style={{ width: "14px", height: "14px", borderRadius: "3px", background: serverColor(srv).hex, display: "inline-block" }} />
               <span style={{ fontSize: "12px", fontWeight: 600, color: "#94a3b8" }}>{lbl}</span>
@@ -1171,7 +1172,7 @@ function MapTab({ state, setState }) {
           />
         </div>
         <div style={{ fontSize: "11px", color: "#94a3b8", textAlign: "center", marginTop: "8px" }}>
-          Scroll to zoom, drag to pan. Server positions: Era #008 (Purple) | Era #023 (Green) | Era #014 (Orange) | Era #019 (Blue)
+          Scroll to zoom, drag to pan. Server positions: Era #008 (Blue) | Era #042 (Orange) | Era #039 (Purple) | Era #038 (Green)
         </div>
       </div>
 
@@ -1229,9 +1230,9 @@ function MapTab({ state, setState }) {
 
 let KINGDOM_POINTS = {
   era8: "—",
-  era023: "—",
-  era014: "—",
-  era019: "—",
+  era042: "—",
+  era039: "—",
+  era038: "—",
   lastUpdated: "Awaiting event start",
 };
 
@@ -1512,9 +1513,9 @@ function PointsTab() {
 }
 
 let DEFAULT_DIPLOMACY = [
-  { id: 1, server: "Era #023", alliance: "TBD", relation: "ally", notes: "Shared half (left/right eyes) — highest-priority peace. Beat us in TME invasion recently; SD rank 13." },
-  { id: 2, server: "Era #019", alliance: "TBD", relation: "ally", notes: "SD rank 2 — must-win for their top-3 season reward. Appease/feed to survive." },
-  { id: 3, server: "Era #014", alliance: "TBD", relation: "ally", notes: "SD rank 11. Maintain peace." },
+  { id: 1, server: "Era #042", alliance: "TBD", relation: "pending", notes: "" },
+  { id: 2, server: "Era #039", alliance: "TBD", relation: "pending", notes: "" },
+  { id: 3, server: "Era #038", alliance: "TBD", relation: "pending", notes: "" },
 ];
 
 let CONTACTS = [];
@@ -1607,16 +1608,16 @@ function DiplomacyTab({ state, setState }) {
         <div style={S.cardTitle}>{T("Rules of Engagement")}</div>
         <div style={{ display: "grid", gap: "8px" }}>
           <div style={{ padding: "10px", background: "#22c55e11", border: "1px solid #22c55e44", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (Era #014)</div>
+            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (TBD)</div>
             <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>No zeroing citadels. No killing farmers. Coordinate and support each other. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
           </div>
           <div style={{ padding: "10px", background: "#94a3b811", border: "1px solid #94a3b844", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (Era #023)</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Shared half (left/right eyes). Keep the peace — if they don't mess with us, we don't mess with them. If they do, respond in kind.</div>
+            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (TBD)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Keep the peace — if they don't mess with us, we don't mess with them. If they do, respond in kind.</div>
           </div>
           <div style={{ padding: "10px", background: "#ef444411", border: "1px solid #ef444444", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemy (Era #019)</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>SD rank 2, must-win for their top-3 season reward — heavily outmatched. Avoid feeding kills; bubble/dodge bad trades. Survive rather than trade blows head-on.</div>
+            <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemy (TBD)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Stances assigned once we scout #042 / #039 / #038 and diplomacy is set. Avoid feeding kills; bubble/dodge bad trades against stronger kingdoms.</div>
           </div>
         </div>
       </div>
@@ -1625,7 +1626,7 @@ function DiplomacyTab({ state, setState }) {
       <div style={S.card}>
         <div style={S.cardTitle}>{T("Aaru Palace Time Vote")}</div>
         <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "12px" }}>
-          Top 300 power-ranked players vote. Kingdom with most Desert Points picks the time. <strong style={{ color: "#f472b6" }}>Result: Era #019 won and set {AARU_OFFICIAL_TIME}.</strong>
+          Top 300 power-ranked players vote. Kingdom with most Desert Points picks the time. <strong style={{ color: "#f472b6" }}>Result: {AARU_OFFICIAL_TIME} (vote concludes on Day 7).</strong>
         </div>
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
           {AARU_TIME_SLOTS.map(slot => {
@@ -2038,10 +2039,10 @@ const playerMpCls = (pct) => pct>=65?"hi":pct>=35?"mid":"lo";
 // Per-server map-position colors (muted): us purple, and the three opponents
 // matched to their map positions. rgb triplets so we can tint bar/border.
 const SERVER_COLORS = {
-  "Era 8":    { rgb: "154,109,212", hex: "#9a6dd4" },  // purple
-  "Era #023": { rgb: "90,168,122",  hex: "#5aa87a" },  // green
-  "Era #014": { rgb: "212,147,74",  hex: "#d4934a" },  // orange
-  "Era #019": { rgb: "91,139,196",  hex: "#5b8bc4" }   // blue
+  "Era 8":    { rgb: "91,139,196",  hex: "#5b8bc4" },  // blue   (N — us)
+  "Era #042": { rgb: "212,147,74",  hex: "#d4934a" },  // orange (W)
+  "Era #039": { rgb: "154,109,212", hex: "#9a6dd4" },  // purple (E)
+  "Era #038": { rgb: "90,168,122",  hex: "#5aa87a" }   // green  (S)
 };
 const serverColor = (srv) => SERVER_COLORS[srv] || { rgb: "138,144,165", hex: "#8a90a5" };
 
