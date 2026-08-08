@@ -288,24 +288,354 @@
         "sdRank": null,
         "priority": "TBD",
         "note": "",
-        "alliances": [],
-        "players": []
+        "alliances": [
+          {
+            "tag": "EGK",
+            "name": "EagleOfTheKing",
+            "power": "23,134,778,876",
+            "merits": "3,688,247,989"
+          },
+          {
+            "tag": "EC",
+            "name": "SL¥CareBears",
+            "power": "23,107,092,747",
+            "merits": "1,645,741,652"
+          },
+          {
+            "tag": "ZCH",
+            "name": "NexusHeroes",
+            "power": "13,866,504,218",
+            "merits": "255,100,939"
+          },
+          {
+            "tag": "WoK",
+            "name": "WolfOfTheKing",
+            "power": "2,923,726,765",
+            "merits": "31,035,555"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "AnyMousey",
+            "alliance": "EC",
+            "power": "390,366,960",
+            "merits": "506,728,304"
+          },
+          {
+            "rank": 2,
+            "name": "Lucii",
+            "alliance": "EC",
+            "power": "388,856,824",
+            "merits": "294,617,468"
+          },
+          {
+            "rank": 3,
+            "name": "Thanatore",
+            "alliance": "EGK",
+            "power": "365,648,766",
+            "merits": "407,885,218"
+          },
+          {
+            "rank": 4,
+            "name": "Formetokno",
+            "alliance": "EC",
+            "power": "363,180,860",
+            "merits": "227,233,751"
+          },
+          {
+            "rank": 5,
+            "name": "TR||CΣvΛhir",
+            "alliance": "EGK",
+            "power": "333,530,683",
+            "merits": "335,312,180"
+          },
+          {
+            "rank": 6,
+            "name": "ArabianLord",
+            "alliance": "EGK",
+            "power": "327,037,252",
+            "merits": "TBD"
+          },
+          {
+            "rank": 7,
+            "name": "Karagus",
+            "alliance": "EGK",
+            "power": "312,966,714",
+            "merits": "216,564,161"
+          },
+          {
+            "rank": 8,
+            "name": "Primal187",
+            "alliance": "EC",
+            "power": "292,773,743",
+            "merits": "TBD"
+          },
+          {
+            "rank": 9,
+            "name": "Otıs",
+            "alliance": "EGK",
+            "power": "290,901,551",
+            "merits": "458,094,684"
+          },
+          {
+            "rank": 10,
+            "name": "Babayagaˢᴸ¥",
+            "alliance": "EC",
+            "power": "285,635,592",
+            "merits": "TBD"
+          },
+          {
+            "rank": 11,
+            "name": "M1125",
+            "alliance": "EC",
+            "power": "273,663,945",
+            "merits": "TBD"
+          },
+          {
+            "rank": 12,
+            "name": "Bustterr",
+            "alliance": "EGK",
+            "power": "273,063,574",
+            "merits": "267,807,792"
+          }
+        ]
       },
       {
         "server": "Era #039",
         "sdRank": null,
         "priority": "TBD",
         "note": "",
-        "alliances": [],
-        "players": []
+        "alliances": [
+          {
+            "tag": "③★⑨",
+            "name": "BestOfEmpire",
+            "power": "22,566,048,087",
+            "merits": "5,112,367,587"
+          },
+          {
+            "tag": "AoA",
+            "name": "AgeofAllies",
+            "power": "17,839,196,971",
+            "merits": "1,870,160,532"
+          },
+          {
+            "tag": "③✝⑨",
+            "name": "AegisVanguard",
+            "power": "10,599,918,409",
+            "merits": "140,373,186"
+          },
+          {
+            "tag": "T✝P",
+            "name": "templars",
+            "power": "954,887,493",
+            "merits": "16,465,670"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "127대장",
+            "alliance": "③★⑨",
+            "power": "422,047,912",
+            "merits": "925,356,266"
+          },
+          {
+            "rank": 2,
+            "name": "DarthVader",
+            "alliance": "③★⑨",
+            "power": "397,568,707",
+            "merits": "545,131,569"
+          },
+          {
+            "rank": 3,
+            "name": "AZD다크애플",
+            "alliance": "AoA",
+            "power": "330,176,808",
+            "merits": "152,510,525"
+          },
+          {
+            "rank": 4,
+            "name": "예진월드유주공주",
+            "alliance": "③★⑨",
+            "power": "320,157,942",
+            "merits": "556,601,913"
+          },
+          {
+            "rank": 5,
+            "name": "Ecthelíon",
+            "alliance": "AoA",
+            "power": "296,571,850",
+            "merits": "TBD"
+          },
+          {
+            "rank": 6,
+            "name": "방철",
+            "alliance": "③★⑨",
+            "power": "291,957,087",
+            "merits": "TBD"
+          },
+          {
+            "rank": 7,
+            "name": "Ting⁷",
+            "alliance": "③★⑨",
+            "power": "281,235,277",
+            "merits": "107,738,444"
+          },
+          {
+            "rank": 8,
+            "name": "DatGuyMo",
+            "alliance": "AoA",
+            "power": "281,101,730",
+            "merits": "286,448,740"
+          },
+          {
+            "rank": 9,
+            "name": "이재경ㅋㅋ",
+            "alliance": "③★⑨",
+            "power": "279,621,697",
+            "merits": "225,281,724"
+          },
+          {
+            "rank": 10,
+            "name": "KOR꼬꼬",
+            "alliance": "③★⑨",
+            "power": "278,540,050",
+            "merits": "TBD"
+          },
+          {
+            "rank": 11,
+            "name": "K£raz",
+            "alliance": "AoA",
+            "power": "278,127,337",
+            "merits": "163,130,387"
+          },
+          {
+            "rank": 12,
+            "name": "닥치거라ㅋㅋ",
+            "alliance": "③★⑨",
+            "power": "277,373,995",
+            "merits": "214,144,619"
+          }
+        ]
       },
       {
         "server": "Era #038",
         "sdRank": null,
         "priority": "TBD",
         "note": "",
-        "alliances": [],
-        "players": []
+        "alliances": [
+          {
+            "tag": "E38",
+            "name": "TheLastWolf",
+            "power": "20,498,778,374",
+            "merits": "1,920,883,425"
+          },
+          {
+            "tag": "K38",
+            "name": "Republic한국",
+            "power": "17,836,969,677",
+            "merits": "1,693,174,608"
+          },
+          {
+            "tag": "S38",
+            "name": "ShadowsOfWar",
+            "power": "11,080,393,467",
+            "merits": "131,982,763"
+          },
+          {
+            "tag": "NAS",
+            "name": "NewAllieSparta",
+            "power": "4,356,201,943",
+            "merits": "39,195,720"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "Arcaneaura",
+            "alliance": "E38",
+            "power": "346,491,429",
+            "merits": "459,216,709"
+          },
+          {
+            "rank": 2,
+            "name": "HungryJoker",
+            "alliance": "--",
+            "power": "329,925,158",
+            "merits": "546,778,565"
+          },
+          {
+            "rank": 3,
+            "name": "SAITAMAsun",
+            "alliance": "K38",
+            "power": "318,305,127",
+            "merits": "104,030,440"
+          },
+          {
+            "rank": 4,
+            "name": "Kaspar~|~",
+            "alliance": "K38",
+            "power": "316,089,984",
+            "merits": "380,780,326"
+          },
+          {
+            "rank": 5,
+            "name": "Patatan",
+            "alliance": "E38",
+            "power": "307,144,209",
+            "merits": "85,270,013"
+          },
+          {
+            "rank": 6,
+            "name": "SlickWhiskey",
+            "alliance": "E38",
+            "power": "288,843,491",
+            "merits": "TBD"
+          },
+          {
+            "rank": 7,
+            "name": "❀RiverHorseM",
+            "alliance": "E38",
+            "power": "275,295,313",
+            "merits": "76,077,947"
+          },
+          {
+            "rank": 8,
+            "name": "Harissssssss",
+            "alliance": "K38",
+            "power": "273,458,582",
+            "merits": "281,246,885"
+          },
+          {
+            "rank": 9,
+            "name": "BàTriệu",
+            "alliance": "E38",
+            "power": "273,002,863",
+            "merits": "318,789,922"
+          },
+          {
+            "rank": 10,
+            "name": "Bongosです",
+            "alliance": "E38",
+            "power": "264,278,029",
+            "merits": "TBD"
+          },
+          {
+            "rank": 11,
+            "name": "THEGREAT¹³⁸⁹",
+            "alliance": "K38",
+            "power": "253,523,581",
+            "merits": "263,210,044"
+          },
+          {
+            "rank": 12,
+            "name": "Benson¹ˢᵗ",
+            "alliance": "K38",
+            "power": "248,715,919",
+            "merits": "133,938,972"
+          }
+        ]
       }
     ]
   },

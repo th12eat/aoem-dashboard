@@ -524,7 +524,33 @@
       "result": "Live",
       "multi": true,
       "season": "Stellar Dynasty",
-      "note": "In progress — matchmaking Aug 8, map opens Aug 10, Aaru ~Aug 16. Opponent rosters pending scouting."
+      "note": "In progress — matchmaking Aug 8, map opens Aug 10, Aaru ~Aug 16. Top-4 alliance rosters from pre-event scouting; kingdom points pending.",
+      "ourRoster": [
+        ["WC1", 22235542241, 2584974141],
+        ["AGC", 11806831829, 206662105],
+        ["REU", 11677205818, 548990042],
+        ["MyT", 10826001791, 875152631]
+      ],
+      "oppRosters": {
+        "Era #042": [
+          ["EGK", 23134778876, 3688247989],
+          ["EC", 23107092747, 1645741652],
+          ["ZCH", 13866504218, 255100939],
+          ["WoK", 2923726765, 31035555]
+        ],
+        "Era #039": [
+          ["③★⑨", 22566048087, 5112367587],
+          ["AoA", 17839196971, 1870160532],
+          ["③✝⑨", 10599918409, 140373186],
+          ["T✝P", 954887493, 16465670]
+        ],
+        "Era #038": [
+          ["E38", 20498778374, 1920883425],
+          ["K38", 17836969677, 1693174608],
+          ["S38", 11080393467, 131982763],
+          ["NAS", 4356201943, 39195720]
+        ]
+      }
     }
   ]
 }
