@@ -837,6 +837,81 @@
   },
   "mapRoutes": {
     "actual": [],
-    "planned": []
+    "planned": [
+      {
+        "owner": "MyT",
+        "path": [
+          "jade_eye_fort",
+          "city_leopard",
+          "tower_5"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "MyT",
+        "path": [
+          "city_leopard",
+          "gate_chaos"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "majesty_dock",
+          "city_jackal",
+          "tower_6"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "city_jackal",
+          "gate_chaos"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "kingsguard_dock",
+          "city_ibis",
+          "tower_6"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "city_ibis",
+          "gate_death"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "city_ibis",
+          "gate_moonfall"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "crown_fort"
+        ],
+        "ssh": false,
+        "connected": true
+      }
+    ]
   }
 }

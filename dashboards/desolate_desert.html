@@ -157,11 +157,11 @@ let EVENT_CONFIG = {
 // Per-alliance colors for our 4 (Era 8). LIVE uses a purple family (distinct from
 // opponent server hues on the shared board); PLAN uses the original TME palette
 // (no opponents on the plan map, so no clash).
-const ALLIANCE_COLORS = {        // live (purple family)
-  WC1: "#a855f7", // violet
-  REU: "#ec4899", // magenta
-  MyT: "#f472b6", // pink
-  AGC: "#c4b5fd", // lavender
+const ALLIANCE_COLORS = {        // live (blue family — our NORTH/Blue corner this DD)
+  WC1: "#4a7fc0", // blue
+  REU: "#2f5a8f", // deep blue
+  MyT: "#8ab4e8", // light blue
+  AGC: "#b3d1f2", // pale blue
 };
 const ALLIANCE_COLORS_PLAN = {   // plan (TME palette)
   WC1: "#3b82f6", // blue
@@ -677,9 +677,8 @@ let MAP_ROUTES = { planned: [], actual: [] };
 // down the intended split where routes overlap or a claim should be narrowed:
 //   AGC owns nothing; REU owns Vengeance Fort + Tower 1 (but not city_crocodile).
 const PLAN_OWNER_OVERRIDE = {
-  ruler_fort: "WC1", city_bull: "WC1", tower_2: "WC1",   // WC1+AGC overlap → WC1
-  city_crocodile: "WC1",                                  // WC1+REU overlap → WC1
-  vengeance_fort: "REU", tower_1: "REU",                  // REU: Vengeance Fort + Tower 1
+  tower_6: "REU",   // WC1 (from City of Ibis) + REU (from City of Jackal) both route
+                    // into Tower 6 — REU is the one taking it, WC1's line supports.
 };
 function planOwners() {
   const owners = {};
