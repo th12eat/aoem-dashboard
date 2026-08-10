@@ -247,9 +247,9 @@ const ROE_COLUMNS = [
 ];
 // fight: map of column->bool. ally:true means green regardless (we side with them).
 const DIPLOMACY_ROE = [
-  { server: "Era #042", ally: false, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
-  { server: "Era #039", ally: false, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
-  { server: "Era #038", ally: false, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #042", ally: false, fight: { openField: true,  riverland: true,  farms: true,  citadels: true,  citiesGates: true  } },
+  { server: "Era #039", ally: false, fight: { openField: true,  riverland: true,  farms: true,  citadels: true,  citiesGates: true  } },
+  { server: "Era #038", ally: true,  fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
 ];
 
 // Per-player daily objectives (reset 00:00 UTC). `opensDay` = greyed until then.
@@ -1522,9 +1522,9 @@ function PointsTab() {
 }
 
 let DEFAULT_DIPLOMACY = [
-  { id: 1, server: "Era #042", alliance: "TBD", relation: "pending", notes: "" },
-  { id: 2, server: "Era #039", alliance: "TBD", relation: "pending", notes: "" },
-  { id: 3, server: "Era #038", alliance: "TBD", relation: "pending", notes: "" },
+  { id: 1, server: "Era #042", alliance: "TBD", relation: "hostile", notes: "Enemy — engage everywhere." },
+  { id: 2, server: "Era #039", alliance: "TBD", relation: "hostile", notes: "Enemy — engage everywhere." },
+  { id: 3, server: "Era #038", alliance: "TBD", relation: "ally", notes: "Ally — coordinate, no zeroing/farming." },
 ];
 
 let CONTACTS = [];
@@ -1617,16 +1617,12 @@ function DiplomacyTab({ state, setState }) {
         <div style={S.cardTitle}>{T("Rules of Engagement")}</div>
         <div style={{ display: "grid", gap: "8px" }}>
           <div style={{ padding: "10px", background: "#22c55e11", border: "1px solid #22c55e44", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (TBD)</div>
+            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (Era #038)</div>
             <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>No zeroing citadels. No killing farmers. Coordinate and support each other. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
           </div>
-          <div style={{ padding: "10px", background: "#94a3b811", border: "1px solid #94a3b844", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (TBD)</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Keep the peace — if they don't mess with us, we don't mess with them. If they do, respond in kind.</div>
-          </div>
           <div style={{ padding: "10px", background: "#ef444411", border: "1px solid #ef444444", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemy (TBD)</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Stances assigned once we scout #042 / #039 / #038 and diplomacy is set. Avoid feeding kills; bubble/dodge bad trades against stronger kingdoms.</div>
+            <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemies (Era #039 &amp; Era #042)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Engage everywhere — open field, riverland, farms, citadels, cities/gates. Prioritize targets of opportunity and deny them Placer Gold / Desert Points.</div>
           </div>
         </div>
       </div>
