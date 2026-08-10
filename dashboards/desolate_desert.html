@@ -677,8 +677,8 @@ let MAP_ROUTES = { planned: [], actual: [] };
 // down the intended split where routes overlap or a claim should be narrowed:
 //   AGC owns nothing; REU owns Vengeance Fort + Tower 1 (but not city_crocodile).
 const PLAN_OWNER_OVERRIDE = {
-  tower_6: "REU",   // WC1 (from City of Ibis) + REU (from City of Jackal) both route
-                    // into Tower 6 — REU is the one taking it, WC1's line supports.
+  // No overrides needed: shared nodes resolve to their first (real) owner, and
+  // AGC (connecting lines only) is auto-dropped from ownership below.
 };
 function planOwners() {
   const owners = {};

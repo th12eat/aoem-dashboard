@@ -862,7 +862,7 @@
         "path": [
           "majesty_dock",
           "city_jackal",
-          "tower_6"
+          "tower_5"
         ],
         "ssh": false,
         "connected": true
@@ -908,6 +908,24 @@
         "owner": "WC1",
         "path": [
           "crown_fort"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "AGC",
+        "path": [
+          "kingsguard_dock",
+          "tower_6"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "AGC",
+        "path": [
+          "tower_6",
+          "city_jackal"
         ],
         "ssh": false,
         "connected": true
