@@ -677,8 +677,8 @@ let MAP_ROUTES = { planned: [], actual: [] };
 // down the intended split where routes overlap or a claim should be narrowed:
 //   AGC owns nothing; REU owns Vengeance Fort + Tower 1 (but not city_crocodile).
 const PLAN_OWNER_OVERRIDE = {
-  // No overrides needed: shared nodes resolve to their first (real) owner, and
-  // AGC (connecting lines only) is auto-dropped from ownership below.
+  tower_6: "WC1",   // REU (from Jackal) + WC1 (from Ibis) both route into Tower 6;
+                    // WC1 is the one occupying it. (AGC lines pass through, own nothing.)
 };
 function planOwners() {
   const owners = {};
@@ -729,36 +729,34 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
   const NEUTRAL = "#d9dde6";
   const routes = (mode === "plan" ? MAP_ROUTES.planned : MAP_ROUTES.actual) || [];
 
-  // Parallel-offset: routes sharing an undirected edge fan out so they don't overlap.
-  // Assign each route a slot per edge; offset the whole route by its max slot.
+  // Per-EDGE rendering: decompose routes into undirected segments so that where
+  // two (or more) alliances plan the same segment we draw ONE line candy-striped
+  // in each owner's color, rather than fanning parallel lines. Single-owner edges
+  // render solid. Each edge carries the owners that use it (in first-seen order)
+  // and the "worst" per-owner render state (building/partial/disconnected) so a
+  // live building route still animates.
   const edgeKey = (a, b) => a < b ? a + "|" + b : b + "|" + a;
-  const edgeSlots = {};           // edgeKey -> [routeIdx,...]
-  routes.forEach((r, ri) => {
+  const edges = {};   // edgeKey -> { a, b, owners: [tag,...], state: {tag: {...}} }
+  routes.forEach((r) => {
+    if (outOfFocus(r.owner)) return;
     for (let k = 0; k < r.path.length - 1; k++) {
-      const ek = edgeKey(r.path[k], r.path[k+1]);
-      (edgeSlots[ek] = edgeSlots[ek] || []).push(ri);
+      const a = r.path[k], b = r.path[k+1];
+      if (!MAP_NODES[a] || !MAP_NODES[b]) continue;
+      const ek = edgeKey(a, b);
+      const e = edges[ek] || (edges[ek] = { a, b, owners: [], state: {} });
+      if (!e.owners.includes(r.owner)) e.owners.push(r.owner);
+      // merge render state for this owner on this edge (prefer building > partial > disconnected)
+      const cur = e.state[r.owner] || {};
+      e.state[r.owner] = {
+        building: cur.building || !!r.building,
+        partial: cur.partial || !!r.partial,
+        disconnected: (cur.disconnected === undefined ? (r.connected === false) : (cur.disconnected || r.connected === false)),
+      };
     }
   });
-  // per-route offset index = its position among routes sharing its busiest edge
-  const routeOffset = routes.map((r, ri) => {
-    let slot = 0, total = 1;
-    for (let k = 0; k < r.path.length - 1; k++) {
-      const arr = edgeSlots[edgeKey(r.path[k], r.path[k+1])];
-      if (arr && arr.length > total) { total = arr.length; slot = arr.indexOf(ri); }
-    }
-    return (slot - (total - 1) / 2) * 0.9;   // centered spread, ~0.9% units apart
-  });
-  // build an offset polyline: shift each segment perpendicular by `off`
-  const offsetLine = (path, off) => {
-    const p = path.map(pt).filter(Boolean);
-    if (p.length < 2 || !off) return p.map(q => q.x + "," + q.y).join(" ");
-    return p.map((q, i) => {
-      const a = p[Math.max(0, i-1)], b = p[Math.min(p.length-1, i+1)];
-      let dx = b.x - a.x, dy = b.y - a.y; const len = Math.hypot(dx, dy) || 1;
-      const nx = -dy/len, ny = dx/len;    // unit normal
-      return (q.x + nx*off) + "," + (q.y + ny*off);
-    }).join(" ");
-  };
+  // routeOffset kept (all zero) so SSH markers sit on the (un-offset) line centers.
+  const routeOffset = routes.map(() => 0);
+  const offsetLine = (path, off) => path.map(pt).filter(Boolean).map(q => q.x + "," + q.y).join(" ");
   const sshPoint = (r, off) => {
     const p = r.path.map(pt).filter(Boolean); if (!p.length) return null;
     let a, b;
@@ -783,21 +781,36 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
       <img src="../assets/kvk-bg/dd_minimap.jpg" alt={T("Desolate Desert map — four kingdom corners around a central Aaru Palace")}
         style={{ width: "100%", display: "block", borderRadius: "10px", border: "1px solid #334155" }} />
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        {/* routes: solid=connected · dimmed=disconnected · dashed=partial (building) · plan=solid */}
-        {routes.map((r, i) => {
-          if (outOfFocus(r.owner)) return null;             // focus: show only the focused server's lines
-          const off = routeOffset[i];
-          const base = col(r.owner);
-          let stroke = base, opacity = 0.95, dash = null, w = 0.8, building = false;
-          if (mode !== "plan") {
-            if (r.building) { building = true; opacity = 0.95; }               // growing toward connection (animated)
-            else if (r.partial) { dash = "1.4 1.2"; opacity = 0.9; }           // planned-partial (static dashed)
-            else if (r.connected === false) { stroke = dimHex(base, 0.45); opacity = 0.6; } // disconnected — dimmed
-          }
-          if (hl && r.owner !== hl) opacity *= 0.15;         // fade non-highlighted alliance
-          const hot = hl && r.owner === hl;
-          return <polyline key={i} className={building ? "route-building" : undefined} points={offsetLine(r.path, off)} fill="none" stroke={stroke} strokeWidth={hot ? w + 0.5 : w} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={dash || undefined} opacity={opacity} style={{ cursor: "pointer" }}
-            onMouseEnter={(e) => hoverOn(r.owner, e)} onMouseMove={(e) => hoverOn(r.owner, e)} onMouseLeave={hoverOff} />;
+        {/* routes: solid=connected · dimmed=disconnected · dashed=partial (building) · plan=solid.
+            Overlapping segments candy-stripe each owner's color (dash-phase overlay). */}
+        {Object.entries(edges).map(([ek, e]) => {
+          const A = pt(e.a), B = pt(e.b); if (!A || !B) return null;
+          const owners = e.owners;
+          const n = owners.length;
+          const DASH = 2.2;                                  // candy-stripe segment length (%units)
+          return owners.map((owner, oi) => {
+            const st = e.state[owner] || {};
+            let stroke = col(owner), opacity = 0.95, dash = null, w = 0.8, building = false;
+            if (mode !== "plan") {
+              if (st.building) { building = true; }
+              else if (st.partial) { dash = "1.4 1.2"; opacity = 0.9; }
+              else if (st.disconnected) { stroke = dimHex(stroke, 0.45); opacity = 0.6; }
+            }
+            if (hl && owner !== hl) opacity *= 0.15;
+            const hot = hl && owner === hl;
+            // candy-stripe: when >1 owner shares this edge, each draws dashed with a
+            // gap for the others and a phase offset so colors interleave. A building
+            // route keeps its animated dash (handled by CSS class) — skip striping it.
+            let dashArr = dash, dashOff;
+            if (n > 1 && !building) { dashArr = `${DASH} ${DASH * (n - 1)}`; dashOff = -oi * DASH; }
+            return <line key={ek + "|" + owner} className={building ? "route-building" : undefined}
+              x1={A.x} y1={A.y} x2={B.x} y2={B.y} fill="none" stroke={stroke}
+              strokeWidth={hot ? w + 0.5 : w} strokeLinecap={n > 1 ? "butt" : "round"}
+              strokeDasharray={dashArr || undefined} strokeDashoffset={dashOff}
+              opacity={opacity} style={{ cursor: "pointer" }}
+              onMouseEnter={(ev) => hoverOn(owner, ev)} onMouseMove={(ev) => hoverOn(owner, ev)} onMouseLeave={hoverOff}>
+              <title>{owner}{n > 1 ? " (shared)" : ""}</title></line>;
+          });
         })}
         {/* SSH markers (diamond; pulsing red ring when under siege) */}
         {routes.map((r, i) => { if (!r.ssh || outOfFocus(r.owner)) return null; const s = sshPoint(r, routeOffset[i]); if (!s) return null;
