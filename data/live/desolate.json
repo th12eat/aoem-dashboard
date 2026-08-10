@@ -24,30 +24,51 @@
     "aaruResult": "TBD (vote concludes Day 7)"
   },
   "kingdomPoints": {
-    "era8": "—",
-    "era042": "—",
-    "era039": "—",
-    "era038": "—",
-    "lastUpdated": "2026-08-08 — Matchmaking; event opens Aug 10"
+    "era8": "1.54B",
+    "era042": "1.67B",
+    "era039": "1.61B",
+    "era038": "1.5B",
+    "lastUpdated": "2026-08-10 — Day 1 · kingdom scores #042 1.67B · #039 1.61B · #008 1.54B · #038 1.5B"
   },
-  "kingdomScoreboard": [],
+  "kingdomScoreboard": [
+    {
+      "rank": 1,
+      "server": "Era #042",
+      "points": "1,670,000,000"
+    },
+    {
+      "rank": 2,
+      "server": "Era #039",
+      "points": "1,610,000,000"
+    },
+    {
+      "rank": 3,
+      "server": "Era 8",
+      "points": "1,540,000,000"
+    },
+    {
+      "rank": 4,
+      "server": "Era #038",
+      "points": "1,500,000,000"
+    }
+  ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
       "tag": "WC1",
-      "points": "—"
+      "points": "679,134,040"
     },
     {
       "tag": "REU",
-      "points": "—"
+      "points": "308,001,315"
     },
     {
       "tag": "MyT",
-      "points": "—"
+      "points": "298,721,860"
     },
     {
       "tag": "AGC",
-      "points": "—"
+      "points": "255,488,725"
     }
   ],
   "placerGold": {
@@ -96,7 +117,7 @@
       {
         "tag": "WC1",
         "current": null,
-        "perHour": 3000,
+        "perHour": 0,
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
@@ -107,7 +128,7 @@
       {
         "tag": "REU",
         "current": null,
-        "perHour": 3000,
+        "perHour": 0,
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
@@ -118,7 +139,7 @@
       {
         "tag": "MyT",
         "current": null,
-        "perHour": 3000,
+        "perHour": 0,
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
@@ -129,7 +150,7 @@
       {
         "tag": "AGC",
         "current": null,
-        "perHour": 3000,
+        "perHour": 0,
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
