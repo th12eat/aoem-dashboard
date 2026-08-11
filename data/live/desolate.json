@@ -24,51 +24,51 @@
     "aaruResult": "TBD (vote concludes Day 7)"
   },
   "kingdomPoints": {
-    "era8": "1.54B",
-    "era042": "1.67B",
-    "era039": "1.61B",
-    "era038": "1.5B",
-    "lastUpdated": "2026-08-10 — Day 1 · kingdom scores #042 1.67B · #039 1.61B · #008 1.54B · #038 1.5B"
+    "era8": "2.96B",
+    "era042": "3.18B",
+    "era039": "3.36B",
+    "era038": "3.2B",
+    "lastUpdated": "2026-08-10 — #039 3.36B · #038 3.2B · #042 3.18B · #008 2.96B"
   },
   "kingdomScoreboard": [
     {
       "rank": 1,
-      "server": "Era #042",
-      "points": "1,670,000,000"
+      "server": "Era #039",
+      "points": "3,360,000,000"
     },
     {
       "rank": 2,
-      "server": "Era #039",
-      "points": "1,610,000,000"
+      "server": "Era #038",
+      "points": "3,200,000,000"
     },
     {
       "rank": 3,
-      "server": "Era 8",
-      "points": "1,540,000,000"
+      "server": "Era #042",
+      "points": "3,180,000,000"
     },
     {
       "rank": 4,
-      "server": "Era #038",
-      "points": "1,500,000,000"
+      "server": "Era 8",
+      "points": "2,960,000,000"
     }
   ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
       "tag": "WC1",
-      "points": "679,134,040"
+      "points": "1,487,223,219"
     },
     {
       "tag": "REU",
-      "points": "308,001,315"
+      "points": "598,944,012"
     },
     {
       "tag": "MyT",
-      "points": "298,721,860"
+      "points": "561,513,466"
     },
     {
       "tag": "AGC",
-      "points": "255,488,725"
+      "points": "444,057,620"
     }
   ],
   "placerGold": {
@@ -121,8 +121,8 @@
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 0,
-        "flagsBuilding": 0,
+        "flags": 4,
+        "flagsBuilding": 1,
         "confirmed": false
       },
       {
@@ -132,8 +132,8 @@
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 0,
-        "flagsBuilding": 0,
+        "flags": 2,
+        "flagsBuilding": 1,
         "confirmed": false
       },
       {
@@ -143,8 +143,8 @@
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 0,
-        "flagsBuilding": 0,
+        "flags": 1,
+        "flagsBuilding": 1,
         "confirmed": false
       },
       {
