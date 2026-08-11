@@ -1053,6 +1053,14 @@
         ],
         "ssh": false,
         "connected": true
+      },
+      {
+        "owner": "WC1",
+        "path": [
+          "kingsguard_dock"
+        ],
+        "ssh": false,
+        "connected": true
       }
     ]
   }
