@@ -435,8 +435,8 @@
             "merits": "5,112,367,587"
           },
           {
-            "tag": "AoA",
-            "name": "AgeofAllies",
+            "tag": "③∧⑨",
+            "name": "AgeofSpartans",
             "power": "17,839,196,971",
             "merits": "1,870,160,532"
           },
@@ -471,7 +471,7 @@
           {
             "rank": 3,
             "name": "AZD다크애플",
-            "alliance": "AoA",
+            "alliance": "③∧⑨",
             "power": "330,176,808",
             "merits": "152,510,525"
           },
@@ -485,7 +485,7 @@
           {
             "rank": 5,
             "name": "Ecthelíon",
-            "alliance": "AoA",
+            "alliance": "③∧⑨",
             "power": "296,571,850",
             "merits": "56,798,671"
           },
@@ -506,7 +506,7 @@
           {
             "rank": 8,
             "name": "DatGuyMo",
-            "alliance": "AoA",
+            "alliance": "③∧⑨",
             "power": "281,101,730",
             "merits": "286,448,740"
           },
@@ -527,7 +527,7 @@
           {
             "rank": 11,
             "name": "K£raz",
-            "alliance": "AoA",
+            "alliance": "③∧⑨",
             "power": "278,127,337",
             "merits": "163,130,387"
           },
@@ -680,7 +680,7 @@
       "connected": true
     },
     "ruler_fort": {
-      "occupant": "AoA",
+      "occupant": "③∧⑨",
       "connected": true
     },
     "gate_moonfall": {
@@ -958,7 +958,7 @@
         "connected": true
       },
       {
-        "owner": "AoA",
+        "owner": "③∧⑨",
         "path": [
           "ruler_fort",
           "city_bull"
