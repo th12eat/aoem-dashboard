@@ -668,11 +668,11 @@
   },
   "mapState": {
     "north_wind_fort": {
-      "occupant": "",
+      "occupant": "③★⑨",
       "connected": true
     },
     "soaring_fort": {
-      "occupant": "",
+      "occupant": "③✝⑨",
       "connected": true
     },
     "vengeance_fort": {
@@ -680,7 +680,7 @@
       "connected": true
     },
     "ruler_fort": {
-      "occupant": "",
+      "occupant": "AoA",
       "connected": true
     },
     "gate_moonfall": {
@@ -724,19 +724,19 @@
       "connected": true
     },
     "dawn_fort": {
-      "occupant": "",
+      "occupant": "S38",
       "connected": true
     },
     "duskfire_dock": {
-      "occupant": "",
+      "occupant": "E38",
       "connected": true
     },
     "lightbearer_dock": {
-      "occupant": "",
+      "occupant": "K38",
       "connected": true
     },
     "blazing_fort": {
-      "occupant": "",
+      "occupant": "K38",
       "connected": true
     },
     "city_scorpion": {
@@ -752,19 +752,19 @@
       "connected": true
     },
     "mourning_fort": {
-      "occupant": "",
+      "occupant": "EC",
       "connected": true
     },
     "balance_fort": {
-      "occupant": "",
+      "occupant": "EC",
       "connected": true
     },
     "immortality_fort": {
-      "occupant": "",
+      "occupant": "ZCH",
       "connected": true
     },
     "judgement_fort": {
-      "occupant": "",
+      "occupant": "EGK",
       "connected": true
     },
     "city_vulture": {
@@ -792,7 +792,7 @@
       "connected": true
     },
     "jade_eye_fort": {
-      "occupant": "",
+      "occupant": "MyT",
       "connected": true
     },
     "city_jackal": {
@@ -800,7 +800,7 @@
       "connected": true
     },
     "majesty_dock": {
-      "occupant": "",
+      "occupant": "REU",
       "connected": true
     },
     "tower_6": {
@@ -812,11 +812,11 @@
       "connected": true
     },
     "kingsguard_dock": {
-      "occupant": "",
+      "occupant": "WC1",
       "connected": true
     },
     "crown_fort": {
-      "occupant": "",
+      "occupant": "WC1",
       "connected": true
     },
     "gate_death": {
@@ -857,7 +857,116 @@
     }
   },
   "mapRoutes": {
-    "actual": [],
+    "actual": [
+      {
+        "owner": "WC1",
+        "path": [
+          "kingsguard_dock",
+          "city_ibis"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "majesty_dock",
+          "city_jackal"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "MyT",
+        "path": [
+          "jade_eye_fort",
+          "city_leopard"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "EGK",
+        "path": [
+          "judgement_fort",
+          "city_ram"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "ZCH",
+        "path": [
+          "immortality_fort",
+          "city_goose"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "EC",
+        "path": [
+          "balance_fort",
+          "city_vulture"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "K38",
+        "path": [
+          "blazing_fort",
+          "city_scorpion"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "E38",
+        "path": [
+          "duskfire_dock",
+          "city_cat"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "S38",
+        "path": [
+          "dawn_fort",
+          "city_lion"
+        ],
+        "ssh": true,
+        "connected": true
+      },
+      {
+        "owner": "③★⑨",
+        "path": [
+          "north_wind_fort",
+          "city_hippo"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "③✝⑨",
+        "path": [
+          "soaring_fort",
+          "tower_1"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "AoA",
+        "path": [
+          "ruler_fort",
+          "city_bull"
+        ],
+        "ssh": false,
+        "connected": true
+      }
+    ],
     "planned": [
       {
         "owner": "MyT",
@@ -900,7 +1009,7 @@
       {
         "owner": "WC1",
         "path": [
-          "kingsguard_dock",
+          "crown_fort",
           "city_ibis",
           "tower_6"
         ],
@@ -929,24 +1038,6 @@
         "owner": "WC1",
         "path": [
           "crown_fort"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "AGC",
-        "path": [
-          "kingsguard_dock",
-          "tower_6"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "AGC",
-        "path": [
-          "tower_6",
-          "city_jackal"
         ],
         "ssh": false,
         "connected": true
