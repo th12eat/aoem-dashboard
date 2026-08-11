@@ -2168,33 +2168,72 @@ function App() {
   useEffect(() => { const id = setInterval(() => setNowTs(Date.now()), 15000); return () => clearInterval(id); }, []);
   const tor = torStatus(nowTs);
 
-  // Standard event-meta block (Start|End|TZ + countdown + stage + ical stub).
+  // Standard event-meta block, but the two header cells + countdown are STAGE-AWARE:
+  //   • matchmaking (pre-event): Starts / Ends, counting down to the event opening
+  //   • Day 1 (Z1 open):   Zone 1 / Zone 2      → next: Z2 gates (Aug 11)
+  //   • Day 2 (Z2 gates):  Zone 2 / Tower Open  → next: Tower of Rotation (Aug 12)
+  //   • Day 3–5 (Tower):   Tower Open / Zone 3  → next: Z3 gates (Aug 15)
+  //   • Day 6 (Z3 open):   Zone 3 / Aaru Open   → next: Aaru (Aug 16)
+  //   • Day 7 (Aaru):      Aaru Open / Ends     → next: event end (Aug 17)
+  // The active phase's window drives EventHeader's built-in countdown (to the next
+  // boundary). A 1s watcher re-mounts when the phase changes.
   useEffect(() => {
-    let tries = 0;
-    // only treat a value as a real date if it parses as YYYY-MM-DD; otherwise
-    // pass it through as a label (e.g. "TBD") and skip the countdown ISO.
+    let tries = 0, timer = null, lastKey = null;
+    const ec = EVENT_CONFIG;
     const isDate = (d) => typeof d === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d) && !isNaN(Date.parse(d + "T00:00:00Z"));
+    const startISO = isDate(ec.eventStart) ? ec.eventStart + "T00:00:00Z" : null;
+    const endISO = isDate(ec.eventEnd) ? ec.eventEnd + "T00:00:00Z" : null;
     const fmt = (d) => isDate(d) ? new Date(d + "T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}) : (d || "TBD");
+    // ordered phase boundaries (open time → the pair of labels to show while active)
+    const PH = [
+      { from: "2026-08-10T00:00:00Z", left: "Zone 1",     right: "Zone 2",     next: "2026-08-11T00:00:00Z" },
+      { from: "2026-08-11T00:00:00Z", left: "Zone 2",     right: "Tower Open", next: "2026-08-12T00:00:00Z" },
+      { from: "2026-08-12T00:00:00Z", left: "Tower Open", right: "Zone 3",     next: "2026-08-15T00:00:00Z" },
+      { from: "2026-08-15T00:00:00Z", left: "Zone 3",     right: "Aaru Open",  next: "2026-08-16T00:00:00Z" },
+      { from: "2026-08-16T00:00:00Z", left: "Aaru Open",  right: "Ends",       next: endISO },
+    ];
+    const buildCfg = () => {
+      const now = Date.now();
+      // find the active phase (last whose `from` <= now)
+      let ph = null;
+      for (const p of PH) { if (now >= Date.parse(p.from)) ph = p; }
+      if (startISO && now < Date.parse(startISO)) {
+        // matchmaking — original Starts/Ends, countdown to event open
+        return { key: "pre", startLabelText: "Starts", startLabel: fmt(ec.eventStart),
+                 endLabelText: "Ends", endLabel: fmt(ec.eventEnd), startISO, endISO,
+                 pendingLabel: "Matchmaking" };
+      }
+      if (endISO && now >= Date.parse(endISO)) {
+        return { key: "done", startLabelText: "Starts", startLabel: fmt(ec.eventStart),
+                 endLabelText: "Ends", endLabel: fmt(ec.eventEnd), startISO, endISO,
+                 forceComplete: true };
+      }
+      if (!ph) ph = PH[0];
+      // active stage: the two cells become the stage labels; countdown targets the
+      // next boundary (endISO=ph.next, startISO=null so EventHeader counts to it).
+      return { key: ph.from, startLabelText: "Now", startLabel: ph.left,
+               endLabelText: "Next", endLabel: ph.right, startISO: null,
+               endISO: ph.next || endISO };
+    };
+    const commonCfg = () => ({ timezone: "UTC+0", liveLabel: "Contest Live", liveDot: true,
+      completeLabel: "Event Complete",
+      stages: STAGES.map(s => ({ fromISO: s.startISO,
+        label: "Contest Live | " + (s.days.length > 1 ? "Day " + s.days[0] + "–" + s.days[s.days.length-1] : "Day " + s.days[0]) })) });
+    const apply = () => {
+      const cfg = buildCfg();
+      if (cfg.key === lastKey) return;   // only re-render on phase change
+      lastKey = cfg.key;
+      window.EventHeader.mount("#evtMeta", Object.assign(commonCfg(), cfg,
+        { ical: { stub: true, label: T("Add to Calendar") } }));
+    };
     const mount = () => {
       if (window.EventHeader && document.getElementById("evtMeta")) {
-        const ec = EVENT_CONFIG;
-        window.EventHeader.mount("#evtMeta", {
-          startLabel: fmt(ec.eventStart),
-          endLabel: fmt(ec.eventEnd),
-          timezone: "UTC+0",
-          startISO: isDate(ec.eventStart) ? ec.eventStart + "T00:00:00Z" : null,
-          endISO: isDate(ec.eventEnd) ? ec.eventEnd + "T00:00:00Z" : null,
-          liveLabel: "Contest Live",
-          liveDot: true,
-          stages: STAGES.map(s => ({
-            fromISO: s.startISO,
-            // "Main | Sub" → Sub renders white; shorthand day range next to CONTEST LIVE
-            label: "Contest Live | " + (s.days.length > 1 ? "Day " + s.days[0] + "–" + s.days[s.days.length-1] : "Day " + s.days[0])
-          }))
-        });
+        apply();
+        timer = setInterval(apply, 500);   // re-mount promptly on a stage rollover
       } else if (tries++ < 50) { setTimeout(mount, 50); }
     };
     mount();
+    return () => { if (timer) clearInterval(timer); };
   }, []);
 
   const TABS = [

@@ -894,8 +894,7 @@
           "city_leopard"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
         "owner": "MyT",
