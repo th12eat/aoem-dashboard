@@ -861,11 +861,12 @@
       {
         "owner": "WC1",
         "path": [
-          "kingsguard_dock",
+          "crown_fort",
           "city_ibis"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "REU",
@@ -874,7 +875,8 @@
           "city_jackal"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "MyT",
@@ -883,7 +885,8 @@
           "city_leopard"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "EGK",
@@ -892,7 +895,8 @@
           "city_ram"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "ZCH",
@@ -901,7 +905,8 @@
           "city_goose"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "EC",
@@ -910,7 +915,8 @@
           "city_vulture"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "K38",
@@ -919,7 +925,8 @@
           "city_scorpion"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "E38",
@@ -928,7 +935,8 @@
           "city_cat"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "S38",
@@ -937,7 +945,8 @@
           "city_lion"
         ],
         "ssh": true,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "③★⑨",
@@ -946,7 +955,8 @@
           "city_hippo"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "③✝⑨",
@@ -955,7 +965,8 @@
           "tower_1"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       },
       {
         "owner": "③∧⑨",
@@ -964,7 +975,8 @@
           "city_bull"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "building": true
       }
     ],
     "planned": [
