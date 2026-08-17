@@ -276,11 +276,11 @@ const ACHIEVEMENTS = [
   { name: "Siege and Plunder I", req: "Occupy 1 Lv.7 city (Pillar City)", target: 1, personal: "500K Desert Points",
     cur: { WC1: 1, REU: 1, MyT: 0, AGC: 0 } },
   { name: "Desert Treasure I", req: "Alliance Desert Points", target: 160000000, personal: "5M Desert Points",
-    cur: { WC1: 3134030901, REU: 1632842995, MyT: 960622194, AGC: 625204080 } },
+    cur: { WC1: 26302316974, REU: 6306297694, MyT: 4462578152, AGC: 2218166683 } },
   { name: "Desert Treasure II", req: "Alliance Desert Points", target: 320000000, personal: "10M Desert Points",
-    cur: { WC1: 3134030901, REU: 1632842995, MyT: 960622194, AGC: 625204080 } },
+    cur: { WC1: 26302316974, REU: 6306297694, MyT: 4462578152, AGC: 2218166683 } },
   { name: "Desert Treasure III", req: "Alliance Desert Points", target: 640000000, personal: "20M Desert Points",
-    cur: { WC1: 3134030901, REU: 1632842995, MyT: 960622194, AGC: 676525955 } },
+    cur: { WC1: 26302316974, REU: 6306297694, MyT: 4462578152, AGC: 2218166683 } },
   { name: "Tower Master I", req: "Occupy Tower + Peaceful Riverland pts", target: 4000000, personal: "10M Desert Points",
     cur: { WC1: 0, REU: 0, MyT: 0, AGC: 0 } },
   { name: "Crowned in Aaru", req: "Occupy Aaru Palace + occupation pts", target: 8000000, personal: "20M Desert Points",
@@ -295,7 +295,7 @@ const AARU_TIME_SLOTS = [
 ];
 // Official, settled Aaru fight window — set once the Day-7 vote concludes in-game.
 // TBD until then (new event just started).
-const AARU_OFFICIAL_TIME = "TBD";
+const AARU_OFFICIAL_TIME = "19:00 UTC";
 
 const BUILDINGS = [
   { name: "Desert Stronghold", desc: "Foundation of alliance lands. Built in Waste Land. All flags must connect back to a Stronghold or Substronghold to remain active.", icon: "🏰" },
@@ -2180,6 +2180,7 @@ function App() {
           endLabel: fmt(endISO || "2026-08-17T00:00:00Z"), endLabelText: T("Ends"),
           pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete"),
           liveLabel: "Contest Live", liveDot: true,
+          forceComplete: EVENT_CONFIG.eventOver === true,
           phases,
           stages: STAGES.map(s => ({ fromISO: s.startISO,
             label: "Contest Live | " + (s.days.length > 1 ? "Day " + s.days[0] + "–" + s.days[s.days.length-1] : "Day " + s.days[0]) })),
