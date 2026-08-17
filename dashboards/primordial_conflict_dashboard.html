@@ -117,11 +117,12 @@ const { useState, useEffect } = React;
 const T = s => s;
 
 // ── Event config ──
-// Matchmaking began Mon 2026-08-16 00:00 UTC. Seven-day arc: matching, three
-// battle days (round-robin), battlefield selection, showdown, recovery.
+// Matchmaking began Mon 2026-08-17 00:00 UTC. Seven-day arc: matching, three
+// battle days (round-robin), battlefield selection, showdown, recovery. Each
+// game day is a UTC calendar day; Day 2 (first battle) starts Tue Aug 18 00:00.
 const EVENT = {
-  startISO: "2026-08-16T00:00:00Z",
-  endISO:   "2026-08-22T23:59:59Z",
+  startISO: "2026-08-17T00:00:00Z",
+  endISO:   "2026-08-23T23:59:59Z",
   ourTime:  "19:00 UTC",           // our server's workshop / showdown window
 };
 
@@ -137,23 +138,24 @@ const srvColor = code => SERVERS.find(s => s.code === code) || { hex: "#94a3b8",
 
 // ── Schedule stages (the "line"). Each: key, label, day range, ISO start. ──
 const STAGES = [
-  { key: "match",    label: "Matchmaking & scouting",  days: [1],    startISO: "2026-08-16T00:00:00Z" },
-  { key: "battle1",  label: "Battle Day 1 (1v1)",      days: [2],    startISO: "2026-08-17T00:00:00Z" },
-  { key: "battle2",  label: "Battle Day 2 (1v1)",      days: [3],    startISO: "2026-08-18T00:00:00Z" },
-  { key: "battle3",  label: "Battle Day 3 (1v1)",      days: [4],    startISO: "2026-08-19T00:00:00Z" },
-  { key: "select",   label: "Battlefield selection",   days: [5],    startISO: "2026-08-20T00:00:00Z" },
-  { key: "showdown", label: "4-way showdown",          days: [6],    startISO: "2026-08-21T00:00:00Z" },
-  { key: "recovery", label: "Troop recovery",          days: [7],    startISO: "2026-08-22T00:00:00Z" },
+  { key: "match",    label: "Matchmaking & scouting",  days: [1],    startISO: "2026-08-17T00:00:00Z" },
+  { key: "battle1",  label: "Battle Day 1 (1v1)",      days: [2],    startISO: "2026-08-18T00:00:00Z" },
+  { key: "battle2",  label: "Battle Day 2 (1v1)",      days: [3],    startISO: "2026-08-19T00:00:00Z" },
+  { key: "battle3",  label: "Battle Day 3 (1v1)",      days: [4],    startISO: "2026-08-20T00:00:00Z" },
+  { key: "select",   label: "Battlefield selection",   days: [5],    startISO: "2026-08-21T00:00:00Z" },
+  { key: "showdown", label: "4-way showdown",          days: [6],    startISO: "2026-08-22T00:00:00Z" },
+  { key: "recovery", label: "Troop recovery",          days: [7],    startISO: "2026-08-23T00:00:00Z" },
 ];
-// Phase tint per stage group (matching / battle / select / showdown / recovery).
+// Phase tint per stage group. Purple family: matching blue → battle lavender →
+// selection neon purple → showdown deep purple → recovery light pink.
 const STAGE_TINT = {
   match:    { bright: "#5b8def", dark: "#2b3a55" },
-  battle1:  { bright: "#e74c5e", dark: "#5a2b30" },
-  battle2:  { bright: "#e74c5e", dark: "#5a2b30" },
-  battle3:  { bright: "#e74c5e", dark: "#5a2b30" },
-  select:   { bright: "#d4a843", dark: "#5a4c20" },
+  battle1:  { bright: "#c4a7f0", dark: "#4a3d63" },
+  battle2:  { bright: "#c4a7f0", dark: "#4a3d63" },
+  battle3:  { bright: "#c4a7f0", dark: "#4a3d63" },
+  select:   { bright: "#bf5fff", dark: "#4e2a63" },
   showdown: { bright: "#9b6dff", dark: "#453064" },
-  recovery: { bright: "#3daa6d", dark: "#234a35" },
+  recovery: { bright: "#f7a8c8", dark: "#5e3648" },
 };
 
 // ── Research data (overlaid from ../data/live/primordial.json) ──
@@ -289,7 +291,7 @@ function OverviewTab() {
       <div className="pc-card">
         <h2>{T("Event Timeline")}</h2>
         <StageLine />
-        <p className="sl-note">{T("Seven-day, four-kingdom round-robin. Matchmaking opened Mon Aug 16 (00:00 UTC). Three 1v1 battle days, then the leading kingdom picks the showdown battlefield & time, a 4-way showdown, and a recovery day.")}</p>
+        <p className="sl-note">{T("Seven-day, four-kingdom round-robin. Matchmaking opened Mon Aug 17 (00:00 UTC). Three 1v1 battle days (Day 2 starts Tue Aug 18), then the leading kingdom picks the showdown battlefield & time, a 4-way showdown, and a recovery day.")}</p>
       </div>
 
       <div className="pc-card">
@@ -448,7 +450,7 @@ function ScoringTab() {
 // {live, next} so the header badge can pulse during the window and grey out
 // otherwise — dynamic to when the event is on, like DD's Tower badge.
 function workshopStatus(now) {
-  const days = ["2026-08-17", "2026-08-18", "2026-08-19"]; // battle days
+  const days = ["2026-08-18", "2026-08-19", "2026-08-20"]; // battle days (Days 2–4)
   for (const d of days) {
     const start = Date.parse(d + "T19:00:00Z");
     const end = Date.parse(d + "T20:00:00Z");
@@ -578,19 +580,19 @@ const S = {
   // Shared EventHeader — phase-aware stage indicator + countdown.
   EventHeader.mount('#evtMeta', {
     timezone: 'UTC+0',
-    startISO: '2026-08-16T00:00:00Z', endISO: '2026-08-22T23:59:59Z',
-    startLabel: 'Aug 16', startLabelText: 'Starts',
-    endLabel: 'Aug 22', endLabelText: 'Ends',
+    startISO: '2026-08-17T00:00:00Z', endISO: '2026-08-23T23:59:59Z',
+    startLabel: 'Aug 17', startLabelText: 'Starts',
+    endLabel: 'Aug 23', endLabelText: 'Ends',
     pendingLabel: 'Matchmaking', completeLabel: 'Event Complete',
     liveLabel: 'Contest Live', liveDot: true,
     phases: [
-      { fromISO: '2026-08-16T00:00:00Z', leftLabel: 'Matchmaking',  leftValue: 'Aug 16', rightLabel: 'Battle Day 1', rightValue: 'Aug 17', countdownISO: '2026-08-17T00:00:00Z', stageLabel: 'Contest Live | Matchmaking' },
-      { fromISO: '2026-08-17T00:00:00Z', leftLabel: 'Battle Day 1', leftValue: 'Aug 17', rightLabel: 'Battle Day 2', rightValue: 'Aug 18', countdownISO: '2026-08-18T00:00:00Z', stageLabel: 'Contest Live | Battle Day 1' },
-      { fromISO: '2026-08-18T00:00:00Z', leftLabel: 'Battle Day 2', leftValue: 'Aug 18', rightLabel: 'Battle Day 3', rightValue: 'Aug 19', countdownISO: '2026-08-19T00:00:00Z', stageLabel: 'Contest Live | Battle Day 2' },
-      { fromISO: '2026-08-19T00:00:00Z', leftLabel: 'Battle Day 3', leftValue: 'Aug 19', rightLabel: 'Selection',    rightValue: 'Aug 20', countdownISO: '2026-08-20T00:00:00Z', stageLabel: 'Contest Live | Battle Day 3' },
-      { fromISO: '2026-08-20T00:00:00Z', leftLabel: 'Selection',    leftValue: 'Aug 20', rightLabel: 'Showdown',     rightValue: 'Aug 21', countdownISO: '2026-08-21T00:00:00Z', stageLabel: 'Contest Live | Battlefield Selection' },
-      { fromISO: '2026-08-21T00:00:00Z', leftLabel: 'Showdown',     leftValue: 'Aug 21', rightLabel: 'Recovery',     rightValue: 'Aug 22', countdownISO: '2026-08-22T00:00:00Z', stageLabel: 'Contest Live | Showdown' },
-      { fromISO: '2026-08-22T00:00:00Z', leftLabel: 'Recovery',     leftValue: 'Aug 22', rightLabel: 'Ends',         rightValue: 'Aug 22', countdownISO: '2026-08-22T23:59:59Z', stageLabel: 'Contest Live | Recovery' },
+      { fromISO: '2026-08-17T00:00:00Z', leftLabel: 'Matchmaking',  leftValue: 'Aug 17', rightLabel: 'Battle Day 1', rightValue: 'Aug 18', countdownISO: '2026-08-18T00:00:00Z', stageLabel: 'Contest Live | Matchmaking' },
+      { fromISO: '2026-08-18T00:00:00Z', leftLabel: 'Battle Day 1', leftValue: 'Aug 18', rightLabel: 'Battle Day 2', rightValue: 'Aug 19', countdownISO: '2026-08-19T00:00:00Z', stageLabel: 'Contest Live | Battle Day 1' },
+      { fromISO: '2026-08-19T00:00:00Z', leftLabel: 'Battle Day 2', leftValue: 'Aug 19', rightLabel: 'Battle Day 3', rightValue: 'Aug 20', countdownISO: '2026-08-20T00:00:00Z', stageLabel: 'Contest Live | Battle Day 2' },
+      { fromISO: '2026-08-20T00:00:00Z', leftLabel: 'Battle Day 3', leftValue: 'Aug 20', rightLabel: 'Selection',    rightValue: 'Aug 21', countdownISO: '2026-08-21T00:00:00Z', stageLabel: 'Contest Live | Battle Day 3' },
+      { fromISO: '2026-08-21T00:00:00Z', leftLabel: 'Selection',    leftValue: 'Aug 21', rightLabel: 'Showdown',     rightValue: 'Aug 22', countdownISO: '2026-08-22T00:00:00Z', stageLabel: 'Contest Live | Battlefield Selection' },
+      { fromISO: '2026-08-22T00:00:00Z', leftLabel: 'Showdown',     leftValue: 'Aug 22', rightLabel: 'Recovery',     rightValue: 'Aug 23', countdownISO: '2026-08-23T00:00:00Z', stageLabel: 'Contest Live | Showdown' },
+      { fromISO: '2026-08-23T00:00:00Z', leftLabel: 'Recovery',     leftValue: 'Aug 23', rightLabel: 'Ends',         rightValue: 'Aug 23', countdownISO: '2026-08-23T23:59:59Z', stageLabel: 'Contest Live | Recovery' },
     ],
   });
 </script>
