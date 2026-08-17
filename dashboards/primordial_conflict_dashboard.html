@@ -101,6 +101,26 @@
   /* Anchor offset so in-header jump links don't hide section titles under nothing */
   .anchor-target { scroll-margin-top: 16px; }
 
+  /* ── Workshop schedule slots (mirrors DD's Tower schedule) ── */
+  .ws-slot { display:flex; flex-direction:column; gap:4px; padding:11px 10px; border-radius:9px;
+    border:1px solid rgba(155,109,255,0.28); background:rgba(155,109,255,0.06); }
+  .ws-slot.is-live { border-color:var(--kvk-accent,#9b6dff); background:rgba(155,109,255,0.16); box-shadow:0 0 16px rgba(155,109,255,0.22); }
+  .ws-slot.is-next { border-color:#7c5bb0; }
+  .ws-slot.is-passed { opacity:0.6; }
+  .ws-slot .ws-day { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; letter-spacing:.5px; color:#e2e8f0; }
+  .ws-slot .ws-state { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
+  .ws-live-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--kvk-accent,#9b6dff);
+    box-shadow:0 0 6px var(--kvk-accent,#9b6dff); margin-right:5px; vertical-align:middle; animation:wsDot 1.2s ease-in-out infinite; }
+  @keyframes wsDot { 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+  @media (prefers-reduced-motion: reduce){ .ws-live-dot{ animation:none; } }
+  /* Workshop live popup modal */
+  .ws-modal { position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,0.82); }
+  .ws-modal-card { position:relative; max-width:400px; width:100%; background:#11141f; border:1px solid var(--kvk-accent,#9b6dff); border-radius:14px; padding:26px 22px 22px; text-align:center; box-shadow:0 0 40px rgba(155,109,255,0.22); }
+  .ws-modal-card h3 { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:1.5px; color:var(--kvk-accent,#9b6dff); margin:8px 0 6px; }
+  .ws-modal-close { position:absolute; top:8px; right:14px; font-size:24px; line-height:1; color:#64748b; cursor:pointer; font-family:sans-serif; }
+  .ws-modal-close:hover { color:#e8eaf0; }
+  .ws-modal-cd { font-variant-numeric:tabular-nums; font-size:22px; font-weight:700; color:var(--kvk-accent,#9b6dff); }
+
   @media (max-width: 640px) {
     .table-scroll .pc-table { min-width: 420px; }
   }
@@ -353,6 +373,8 @@ function OverviewTab() {
         <h3>{T("Core Loop")}</h3>
         <p>{T("During battle days you earn Primordial Dew by gathering at Alchemy Pools and fighting over Order Workshops. Each day's 1v1 has two workshop events — one on each server (3 workshops each). Dew converts to Primordial Points for scoring. On the showdown day, Essence Refineries appear around the chosen Imperial City; holding them generates Primordial Essence and massive Kingdom Points.")}</p>
       </div>
+
+      <WorkshopSchedule />
     </div>
   );
 }
@@ -486,21 +508,153 @@ function ScoringTab() {
   );
 }
 
-// Our workshop event runs 19:00–20:00 UTC each battle day (Days 2–4). Returns
-// {live, next} so the header badge can pulse during the window and grey out
-// otherwise — dynamic to when the event is on, like DD's Tower badge.
+// Our server's Order Workshop event runs 19:00–20:00 UTC on each of the three
+// battle days (Day 2 = Aug 18 … Day 4 = Aug 20). Results are overlaid from
+// primordial.json (workshopResults[]) — each row is our fight that day.
+const WORKSHOP_DAYS = [
+  { day: 2, date: "2026-08-18" },
+  { day: 3, date: "2026-08-19" },
+  { day: 4, date: "2026-08-20" },
+];
+let WORKSHOP_RESULTS = [];  // [{day, opponent, ourCaps, theirCaps, theirTime, note}]
+
+// Full status, modeled on DD's torStatus. Lifecycle: "locked" during matchmaking
+// (before Day 2 opens) and after Day 4 closes; otherwise per-day states
+// passed/live/next/upcoming, plus msToEnd for the live countdown.
 function workshopStatus(now) {
-  const days = ["2026-08-18", "2026-08-19", "2026-08-20"]; // battle days (Days 2–4)
-  for (const d of days) {
-    const start = Date.parse(d + "T19:00:00Z");
-    const end = Date.parse(d + "T20:00:00Z");
-    if (now >= start && now < end) return { live: true, next: null };
-  }
-  for (const d of days) {
-    const start = Date.parse(d + "T19:00:00Z");
-    if (now < start) return { live: false, next: start };
-  }
-  return { live: false, next: null };
+  const firstOpen = Date.parse(WORKSHOP_DAYS[0].date + "T19:00:00Z");
+  const lastClose = Date.parse(WORKSHOP_DAYS[WORKSHOP_DAYS.length - 1].date + "T20:00:00Z");
+  const beforeStart = now < Date.parse(WORKSHOP_DAYS[0].date + "T00:00:00Z"); // matchmaking / pre-battle
+  const afterEnd = now >= lastClose;
+  let liveIdx = -1, nextIdx = -1;
+  WORKSHOP_DAYS.forEach((w, i) => {
+    const s = Date.parse(w.date + "T19:00:00Z"), e = Date.parse(w.date + "T20:00:00Z");
+    if (now >= s && now < e) liveIdx = i;
+    if (nextIdx === -1 && now < s) nextIdx = i;
+  });
+  const live = liveIdx !== -1;
+  const states = WORKSHOP_DAYS.map((w, i) => {
+    const s = Date.parse(w.date + "T19:00:00Z"), e = Date.parse(w.date + "T20:00:00Z");
+    if (i === liveIdx) return "live";
+    if (i === nextIdx) return "next";
+    if (now >= e) return "passed";
+    return "upcoming";
+  });
+  let msToEnd = 0;
+  if (live) msToEnd = Math.max(0, Date.parse(WORKSHOP_DAYS[liveIdx].date + "T20:00:00Z") - now);
+  const lock = beforeStart ? "The Order Workshop event opens on Battle Day 1 (Tue Aug 18, 19:00 UTC)"
+             : (afterEnd ? "The Battle Stage is complete — Order Workshops have closed" : null);
+  return { live, liveIdx, nextIdx, states, msToEnd, lock, beforeStart, afterEnd };
+}
+
+const wsResultFor = day => WORKSHOP_RESULTS.find(r => r.day === day) || null;
+// "X / 3" cap string for a result cell; blank if not captured yet.
+const capStr = n => (n == null || n === "") ? "—" : n + " / 3";
+
+// Popup that fires once each time the workshop window goes live (edge-detected),
+// mirroring DD's TowerLiveModal.
+function WorkshopLiveModal() {
+  const [now, setNow] = useState(() => Date.now());
+  const [open, setOpen] = useState(false);
+  const wasLive = React.useRef(false);
+  useEffect(() => { const id = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(id); }, []);
+  const st = workshopStatus(now);
+  useEffect(() => {
+    if (st.live && !wasLive.current) setOpen(true);
+    if (!st.live) setOpen(false);
+    wasLive.current = st.live;
+  }, [st.live]);
+  if (!open || !st.live) return null;
+  const w = WORKSHOP_DAYS[st.liveIdx];
+  const s = Math.floor(st.msToEnd / 1000);
+  const cd = String(Math.floor(s / 3600)).padStart(2, "0") + ":" + String(Math.floor((s % 3600) / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+  const res = wsResultFor(w.day);
+  return (
+    <div className="ws-modal" onClick={() => setOpen(false)}>
+      <div className="ws-modal-card" onClick={e => e.stopPropagation()}>
+        <span className="ws-modal-close" onClick={() => setOpen(false)}>×</span>
+        <div style={{ fontSize: "40px", lineHeight: 1 }}>🔧</div>
+        <h3>{T("Order Workshop is Live!")}</h3>
+        <div style={{ fontSize: "14px", color: "#e2e8f0" }}>{T("Battle Day")} {w.day - 1}{res && res.opponent ? " · vs " + res.opponent : ""}</div>
+        <div style={{ fontSize: "11px", color: "#64748b", margin: "12px 0 2px", letterSpacing: "0.5px", textTransform: "uppercase" }}>{T("Our event (19:00 UTC) ends in")}</div>
+        <div className="ws-modal-cd">{cd}</div>
+      </div>
+    </div>
+  );
+}
+
+// Full Order Workshop schedule + results tracker (Overview, id anchor for the
+// header badge jump). Greyed/locked during matchmaking and after Day 4 closes.
+function WorkshopSchedule() {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => { const id = setInterval(() => setNow(Date.now()), 15000); return () => clearInterval(id); }, []);
+  const st = workshopStatus(now);
+  const stateLabel = { live: "Live now", next: "Next up", passed: "Done", upcoming: "" };
+  const lock = st.lock;
+  return (
+    <div id="workshop-schedule" className="pc-card anchor-target" style={{ position: "relative" }}>
+      <h2 style={{ position: "relative", zIndex: 4 }}>🔧 {T("Order Workshop — Schedule & Results")}</h2>
+      {lock ? (
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 3, borderRadius: "10px", background: "rgba(10,12,20,0.72)", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "16px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+            <span style={{ fontSize: "26px", filter: "grayscale(1)", opacity: 0.7 }}>🔧🔒</span>
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.5px", color: "#94a3b8", maxWidth: "340px" }}>{T(lock)}</span>
+          </div>
+        </div>
+      ) : null}
+      <div style={lock ? { filter: "grayscale(1)", opacity: 0.4, pointerEvents: "none" } : null}>
+        <p className="sl-note" style={{ marginTop: 0, marginBottom: 10 }}>{T("Two workshop events per battle day (3 workshops each): the opponent's on their server at their voted time, ours on our server at 19:00 UTC. Our daily result is tracked below.")}</p>
+        {/* three day slots */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px", marginBottom: 12 }}>
+          {WORKSHOP_DAYS.map((w, i) => {
+            const s = st.states[i];
+            const res = wsResultFor(w.day);
+            const stCol = s === "live" ? "var(--kvk-accent)" : s === "next" ? "#a78bfa" : "#64748b";
+            const dateLabel = new Date(w.date + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+            return (
+              <div key={w.day} className={"ws-slot" + (s === "live" ? " is-live" : s === "next" ? " is-next" : s === "passed" ? " is-passed" : "")}>
+                <span className="ws-day">{T("Day")} {w.day} · {dateLabel}</span>
+                {stateLabel[s] ? <span className="ws-state" style={{ color: stCol }}>{s === "live" ? <span className="ws-live-dot" /> : null}{T(stateLabel[s])}</span> : <span className="ws-state" style={{ color: "#475569" }}>19:00 UTC</span>}
+                <span style={{ fontSize: "11px", color: "#94a3b8" }}>{res && res.opponent ? "vs " + res.opponent : T("opponent TBD")}</span>
+              </div>
+            );
+          })}
+        </div>
+        {/* results table */}
+        <div className="table-scroll">
+          <table className="pc-table">
+            <thead>
+              <tr>
+                <th>{T("Day")}</th>
+                <th style={{ textAlign: "left" }}>{T("Matchup")}</th>
+                <th>{T("Their event")}</th>
+                <th>{T("Our event (19:00)")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {WORKSHOP_DAYS.map(w => {
+                const r = wsResultFor(w.day);
+                const done = r && (r.ourCaps != null || r.theirCaps != null);
+                const green = { color: "#3daa6d" };
+                return (
+                  <tr key={w.day}>
+                    <td>{T("Day")} {w.day}</td>
+                    <td style={{ textAlign: "left" }}>{r && r.opponent ? "vs " + r.opponent : <span style={{ color: "#64748b" }}>{T("TBD")}</span>}</td>
+                    <td style={done && r.theirCaps != null ? green : { color: "#64748b" }}>
+                      {r && r.theirCaps != null ? capStr(r.theirCaps) : "—"}
+                      {r && r.theirTime ? <span style={{ color: "#64748b" }}> ({r.theirTime})</span> : null}
+                    </td>
+                    <td style={done && r.ourCaps != null ? green : { color: "#64748b" }}>{r && r.ourCaps != null ? capStr(r.ourCaps) : "—"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="sl-note">{T("“X / 3” = workshops our side captured in that event. The in-game vote display for the opponent's time has been unreliable — confirm it in-client each day.")}</p>
+      </div>
+    </div>
+  );
 }
 
 function App() {
@@ -562,6 +716,8 @@ function App() {
 
   return (
     <div>
+      {/* Order Workshop live popup — fires when the 19:00 window opens */}
+      <WorkshopLiveModal />
       {/* ── Popup modals ── */}
       {modal === "about" ? (
         <div className="pc-modal" onClick={() => setModal(null)}>
@@ -582,12 +738,13 @@ function App() {
           <button type="button" className="hdr-icobtn" title={T("Jump to Day-by-Day")} onClick={() => jumpTo("schedule", "day-by-day")}>📅</button>
           <button type="button" className="hdr-icobtn" title={T("What is Primordial Conflict?")} onClick={() => setModal("about")}>❓</button>
         </div>
-        {/* bottom-right: Order Workshop badge — pulses purple while the 19:00 window is live */}
+        {/* bottom-right: Order Workshop badge — pulses purple while the 19:00 window is
+            live, greyed during matchmaking and after Day 4. Jumps to the schedule/results. */}
         <div className="hdr-pills">
-          <a href="#order-workshop" className={"ws-badge" + (ws.live ? "" : " is-idle")}
-            title={ws.live ? T("Order Workshop event is LIVE — jump to section") : T("Order Workshop — jump to section")}
-            onClick={(e) => { e.preventDefault(); jumpTo("schedule", "order-workshop"); }}>
-            <span className="ws-ico">🔧</span><span className="ws-txt">{ws.live ? T("Workshop · LIVE") : T("Workshop · 19:00")}</span>
+          <a href="#workshop-schedule" className={"ws-badge" + (ws.live ? "" : " is-idle")}
+            title={ws.live ? T("Order Workshop event is LIVE — jump to schedule") : T("Order Workshop — jump to schedule & results")}
+            onClick={(e) => { e.preventDefault(); jumpTo("overview", "workshop-schedule"); }}>
+            <span className="ws-ico">🔧</span><span className="ws-txt">{ws.live ? T("Workshop · LIVE") : ws.afterEnd ? T("Workshop · Done") : T("Workshop · 19:00")}</span>
           </a>
         </div>
         <div style={S.headerSub}>{T("Four-Kingdom Round-Robin · Special KvK (No Troop Loss)")}</div>
@@ -662,6 +819,7 @@ const S = {
       if (j && j.research) RESEARCH = j.research;
       if (j && Array.isArray(j.kingdomScoreboard)) KINGDOM_SCOREBOARD = j.kingdomScoreboard;
       if (j && j.scoreUpdated) SCORE_UPDATED = j.scoreUpdated;
+      if (j && Array.isArray(j.workshopResults)) WORKSHOP_RESULTS = j.workshopResults;
     }
   } catch (e) { console.error("primordial roster load failed", e); }
   ReactDOM.createRoot(document.getElementById("root")).render(<App />);

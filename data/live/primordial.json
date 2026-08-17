@@ -466,5 +466,28 @@
       "server": "E#059",
       "points": 0
     }
+  ],
+  "workshopResults": [
+    {
+      "day": 2,
+      "opponent": "",
+      "theirTime": "",
+      "theirCaps": null,
+      "ourCaps": null
+    },
+    {
+      "day": 3,
+      "opponent": "",
+      "theirTime": "",
+      "theirCaps": null,
+      "ourCaps": null
+    },
+    {
+      "day": 4,
+      "opponent": "",
+      "theirTime": "",
+      "theirCaps": null,
+      "ourCaps": null
+    }
   ]
 }
