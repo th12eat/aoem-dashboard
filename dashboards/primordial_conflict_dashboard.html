@@ -845,9 +845,9 @@ function App() {
 
       {/* Header */}
       <div style={S.header}>
-        {/* top-right: PVE Guide + About buttons */}
+        {/* top-right: Daily Objectives + About buttons */}
         <div className="hdr-pills-top">
-          <button type="button" className="hdr-icobtn" title={T("Jump to PVE Guide")} onClick={() => jumpTo("guide", "guide-top")}>📖</button>
+          <button type="button" className="hdr-icobtn" title={T("Jump to Daily Objectives")} onClick={() => jumpTo("overview", "daily-objectives")}>📜</button>
           <button type="button" className="hdr-icobtn" title={T("What is Primordial Conflict?")} onClick={() => setModal("about")}>❓</button>
         </div>
         {/* bottom-right: Order Workshop badge — pulses purple while the 19:00 window is
