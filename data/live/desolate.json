@@ -705,7 +705,7 @@
       "connected": true
     },
     "city_bull": {
-      "occupant": "",
+      "occupant": "③∧⑨",
       "connected": true
     },
     "tower_2": {
@@ -793,7 +793,7 @@
       "connected": true
     },
     "jade_eye_fort": {
-      "occupant": "MyT",
+      "occupant": "WC1",
       "connected": true
     },
     "city_jackal": {
@@ -813,7 +813,7 @@
       "connected": true
     },
     "kingsguard_dock": {
-      "occupant": "WC1",
+      "occupant": "MyT",
       "connected": true
     },
     "crown_fort": {
@@ -1062,6 +1062,15 @@
         "owner": "③∧⑨",
         "path": [
           "ruler_fort",
+          "city_bull"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "③∧⑨",
+        "path": [
+          "city_bull",
           "tower_2"
         ],
         "ssh": false,
