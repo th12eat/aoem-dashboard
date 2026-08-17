@@ -894,30 +894,9 @@
     <div class="event-tag" data-i18n="event_tag">New Game Mode &middot; Era 8</div>
     <h1>BEHEMOTH <span>CONQUEST</span></h1>
     <div class="subtitle" data-i18n="subtitle">Awaken the bloodline &middot; March into enemy empires &middot; Cross-server war</div>
-    <div class="time-row">
-      <div>
-        <div class="label" data-i18n="lbl_taming">Beast Taming</div>
-        <div class="time" id="beh-start">Jul 28</div>
-      </div>
-      <div class="divider"></div>
-      <div>
-        <div class="label" data-i18n="lbl_atkdef">Attack-Defense</div>
-        <div class="time" id="beh-end">Jul 31</div>
-      </div>
-      <div class="divider"></div>
-      <div>
-        <div class="label" data-i18n="lbl_tz">Timezone</div>
-        <div class="time" id="beh-tz">UTC+0</div>
-      </div>
-    </div>
-
-    <!-- COUNTDOWN -->
-    <div class="countdown-bar" id="countdown">
-      <div class="cd-block"><div class="val" id="cd-d">--</div><div class="unit" data-i18n="cd_days">Days</div></div>
-      <div class="cd-block"><div class="val" id="cd-h">--</div><div class="unit" data-i18n="cd_hours">Hours</div></div>
-      <div class="cd-block"><div class="val" id="cd-m">--</div><div class="unit" data-i18n="cd_min">Min</div></div>
-      <div class="cd-block"><div class="val" id="cd-s">--</div><div class="unit" data-i18n="cd_sec">Sec</div></div>
-    </div>
+    <!-- stage-advancing event-meta header (shared EventHeader; phases below) -->
+    <div id="evtMeta"></div>
+    <!-- localized "Until <milestone>" countdown caption (EventHeader shows the timer) -->
     <div class="cd-label" id="cd-label">Until Beast Taming</div>
     <button type="button" id="icalBtn" class="ical-btn">
       <span class="ical-ico" aria-hidden="true">&#128197;</span>
@@ -5034,7 +5013,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     enSnapshot[el.getAttribute('data-i18n')] = el.innerHTML;
   });
-  applyBehemothLive().then(startCountdown);
+  applyBehemothLive().then(function () { mountBehemothHeader(); startCountdown(); });
   refreshBehemothData();
 });
 
@@ -5069,6 +5048,7 @@ function switchLang(lang) {
     });
   }
   update(); // refresh the dynamic countdown label in the new language
+  mountBehemothHeader(); // relocalize the header cells (Beast Taming / Attack-Defense / …)
   var bc = document.getElementById('behemothCard');
   if (bc) renderBehemoth(bc.getAttribute('data-side') || 'us'); // re-resolve translated Stage label
   if (document.getElementById('scoreCalc')) renderScoreCalc(); // re-render calc's dynamic labels
@@ -5125,8 +5105,8 @@ function applyBehemothLive() {
       if(j.tamingStartISO) TAMING_START = new Date(j.tamingStartISO).getTime();
       if(j.atkDefStartISO) ATKDEF_START = new Date(j.atkDefStartISO).getTime();
       var set=function(id,v){ var el=document.getElementById(id); if(el&&v!=null) el.textContent=v; };
-      // header date cells now show the Beast Taming / Attack-Defense start dates
-      set('beh-start', j.tamingLabel || j.startLabel); set('beh-end', j.atkDefLabel || j.endLabel); set('beh-tz', j.timezone);
+      // header date cells are now rendered by the shared EventHeader (mountBehemothHeader);
+      // only the tug-of-war scores remain as direct sets here.
       set('beh-score-us', j.scoreUs); set('beh-score-them', j.scoreThem);
     });
   }).catch(function(e){ console.error('behemoth live load failed; using fallback', e); });
@@ -5142,40 +5122,54 @@ function startCountdown() {
 
 function update() {
   var now = Date.now();
+  // The countdown DIGITS are now rendered by the shared EventHeader (#evtMeta);
+  // we keep only the localized "Until <milestone>" CAPTION (#cd-label) in sync,
+  // plus the Scion schedule / header badge / stage-line updates.
   var label = document.getElementById('cd-label');
-  var L = CD_LABELS[currentLang] || CD_LABELS.en;
-  var target;
-
-  // Countdown to the next milestone: Beast Taming → Attack-Defense → event end.
-  if (now < TAMING_START) {
-    target = TAMING_START; label.textContent = CD_TARGET_LABELS[currentLang] ? CD_TARGET_LABELS[currentLang].taming : CD_TARGET_LABELS.en.taming;
-  } else if (now < ATKDEF_START) {
-    target = ATKDEF_START; label.textContent = CD_TARGET_LABELS[currentLang] ? CD_TARGET_LABELS[currentLang].atkdef : CD_TARGET_LABELS.en.atkdef;
-  } else if (now < EVENT_END) {
-    target = EVENT_END; label.textContent = L.end;
-  } else {
-    document.getElementById('cd-d').textContent = '0';
-    document.getElementById('cd-h').textContent = '00';
-    document.getElementById('cd-m').textContent = '00';
-    document.getElementById('cd-s').textContent = '00';
-    label.textContent = L.done;
-    return;
+  if (label) {
+    var L = CD_LABELS[currentLang] || CD_LABELS.en;
+    if (now < TAMING_START) {
+      label.textContent = CD_TARGET_LABELS[currentLang] ? CD_TARGET_LABELS[currentLang].taming : CD_TARGET_LABELS.en.taming;
+    } else if (now < ATKDEF_START) {
+      label.textContent = CD_TARGET_LABELS[currentLang] ? CD_TARGET_LABELS[currentLang].atkdef : CD_TARGET_LABELS.en.atkdef;
+    } else if (now < EVENT_END) {
+      label.textContent = L.end;
+    } else {
+      label.textContent = L.done;
+    }
   }
-
-  var diff = target - now;
-  var days = Math.floor(diff / 86400000);
-  var hours = Math.floor((diff % 86400000) / 3600000);
-  var mins = Math.floor((diff % 3600000) / 60000);
-  var secs = Math.floor((diff % 60000) / 1000);
-
-  document.getElementById('cd-d').textContent = String(days);
-  document.getElementById('cd-h').textContent = String(hours).padStart(2, '0');
-  document.getElementById('cd-m').textContent = String(mins).padStart(2, '0');
-  document.getElementById('cd-s').textContent = String(secs).padStart(2, '0');
-
   updateScionSchedule(now);
   updateHeaderBadge(now);
   updatePhase(now);
+}
+
+// Mount the shared stage-advancing header (Matchmaking → Beast Taming →
+// Attack-Defense → end). Called after applyBehemothLive() so JSON ISO overrides
+// land first; re-called on language change to relocalize the cell labels.
+function mountBehemothHeader() {
+  if (!window.EventHeader || !document.getElementById('evtMeta')) return;
+  var iso = function (ms) { return new Date(ms).toISOString(); };
+  var fmt = function (ms) { return new Date(ms).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }); };
+  var S = (STAGE_NAMES[currentLang] || STAGE_NAMES.en);
+  var L = (CD_LABELS[currentLang] || CD_LABELS.en);
+  var taming = S.tame || 'Beast Taming';
+  var atkdef = S.atk || 'Attack-Defense';
+  var mm = S.mm || 'Matchmaking';
+  window.EventHeader.mount('#evtMeta', {
+    timezone: 'UTC+0',
+    startISO: iso(EVENT_START), endISO: iso(EVENT_END),
+    startLabel: fmt(TAMING_START), startLabelText: taming,
+    endLabel: fmt(ATKDEF_START), endLabelText: atkdef,
+    pendingLabel: mm,
+    completeLabel: L.done || 'Event Complete',
+    liveLabel: taming, liveDot: true,
+    phases: [
+      { fromISO: iso(TAMING_START), leftLabel: taming, leftValue: fmt(TAMING_START),
+        rightLabel: atkdef, rightValue: fmt(ATKDEF_START), countdownISO: iso(ATKDEF_START) },
+      { fromISO: iso(ATKDEF_START), leftLabel: atkdef, leftValue: fmt(ATKDEF_START),
+        rightLabel: 'Ends', rightValue: fmt(EVENT_END), countdownISO: iso(EVENT_END) },
+    ],
+  });
 }
 
 // --- Event Timeline (Desolate-Desert StageLine style) ------------------------
@@ -6252,6 +6246,7 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 <script src="../assets/auth.js"></script>
+<script src="../assets/event-header.js"></script>
 <script src="../assets/site-header.js"></script>
 <script src="../assets/tab-scroll-hint.js" defer></script>
 <script>

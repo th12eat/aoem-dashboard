@@ -4690,14 +4690,25 @@ function TMECommandCenter(){
     const fmt=(d)=>isDate(d)?new Date(d+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}):(d||"TBD");
     const mount=()=>{
       if(window.EventHeader && document.getElementById('evtMeta')){
+        const pISO = isDate(config.prepStart) ? config.prepStart+"T00:00:00Z" : null;
+        const iISO = isDate(config.invasionStart) ? config.invasionStart+"T00:00:00Z" : null;
+        // stage-advancing cells: Prep (→ invasion) then Invasion (→ end). Only
+        // meaningful for a live matchup; when eventOver, forceComplete overrides.
+        const phases = (pISO && iISO) ? [
+          { fromISO: pISO, leftLabel: 'Prep', leftValue: fmt(config.prepStart),
+            rightLabel: 'Invasion', rightValue: fmt(config.invasionStart), countdownISO: iISO },
+          { fromISO: iISO, leftLabel: 'Invasion', leftValue: fmt(config.invasionStart),
+            rightLabel: 'Ends', rightValue: fmt(config.invasionStart), countdownISO: iISO },
+        ] : undefined;
         window.EventHeader.mount('#evtMeta', {
           startLabel: fmt(config.prepStart),
           startLabelText: 'Prep Start',
           endLabel: fmt(config.invasionStart),
           endLabelText: 'Invasion Start',
           timezone: 'UTC+0',
-          startISO: isDate(config.prepStart) ? config.prepStart+"T00:00:00Z" : null,
-          endISO: isDate(config.invasionStart) ? config.invasionStart+"T00:00:00Z" : null,
+          startISO: pISO,
+          endISO: iISO,
+          phases,
           pendingLabel: 'Prep Not Started',
           liveLabel: 'Prep In Progress',
           liveDot: true,

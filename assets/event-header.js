@@ -86,11 +86,29 @@
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
+  // The active phase (last whose fromISO <= now), or null when pre-event, over,
+  // forced-complete, or before the first phase boundary. `phases` are optional —
+  // when absent the component behaves exactly as before (classic Start/End cells).
+  function activePhase(cfg, now) {
+    if (!Array.isArray(cfg.phases) || !cfg.phases.length) return null;
+    if (cfg.forceComplete) return null;
+    if (cfg.startISO && now < Date.parse(cfg.startISO)) return null;
+    if (cfg.endISO && now >= Date.parse(cfg.endISO)) return null;
+    var cur = null;
+    for (var i = 0; i < cfg.phases.length; i++) {
+      var f = Date.parse(cfg.phases[i].fromISO);
+      if (!isNaN(f) && now >= f) cur = cfg.phases[i];
+    }
+    return cur;
+  }
+
   // current stage label, or "Event Complete" past endISO
   function stageLabel(cfg, now) {
     if (cfg.forceComplete) return cfg.completeLabel || 'Event Complete';
     if (cfg.endISO && now >= Date.parse(cfg.endISO)) return cfg.completeLabel || 'Event Complete';
     if (cfg.startISO && now < Date.parse(cfg.startISO)) return cfg.pendingLabel || 'Event Not Started';
+    var ap = activePhase(cfg, now);
+    if (ap && ap.stageLabel) return ap.stageLabel;
     if (cfg.stages && cfg.stages.length) {
       var cur = null;
       for (var i = 0; i < cfg.stages.length; i++) {
@@ -108,9 +126,34 @@
     if (!cfg || !root) return;
     var now = Date.now();
 
-    // countdown target: start (if not begun) else end
+    var hasPhases = Array.isArray(cfg.phases) && cfg.phases.length;
+    var ph = hasPhases ? activePhase(cfg, now) : null;
+
+    // For phase configs, refill the two data cells each tick so they advance with
+    // the stage (label = sub-header, value = string). Pre-event / over → classic
+    // Starts/Ends fallback text so the cells never go blank.
+    if (hasPhases) {
+      if (ph) {
+        setText(root, '.evt-cell-left .evt-label',  ph.leftLabel  || '');
+        setText(root, '.evt-cell-left .evt-val',    ph.leftValue  || '');
+        setText(root, '.evt-cell-right .evt-label', ph.rightLabel || '');
+        setText(root, '.evt-cell-right .evt-val',   ph.rightValue || '');
+      } else {
+        setText(root, '.evt-cell-left .evt-label',  cfg.startLabelText || 'Starts');
+        setText(root, '.evt-cell-left .evt-val',    cfg.startLabel || '');
+        setText(root, '.evt-cell-right .evt-label', cfg.endLabelText || 'Ends');
+        setText(root, '.evt-cell-right .evt-val',   cfg.endLabel || '');
+      }
+    }
+
+    // countdown target: for phases → the active phase's countdownISO (else, before
+    // start, the event start); classic → start (if not begun) else end.
     var target = null, prefix = '';
-    if (cfg.startISO && now < Date.parse(cfg.startISO)) { target = Date.parse(cfg.startISO); }
+    if (hasPhases) {
+      if (ph && ph.countdownISO) { target = Date.parse(ph.countdownISO); }
+      else if (cfg.startISO && now < Date.parse(cfg.startISO)) { target = Date.parse(cfg.startISO); }
+    }
+    else if (cfg.startISO && now < Date.parse(cfg.startISO)) { target = Date.parse(cfg.startISO); }
     else if (cfg.endISO && now < Date.parse(cfg.endISO)) { target = Date.parse(cfg.endISO); }
 
     var cd = root.querySelector('.evt-countdown');
@@ -148,13 +191,28 @@
     injectCSS();
     root.classList.add('evt-meta');
 
-    var hasDates = cfg.startLabel || cfg.endLabel || cfg.timezone;
+    var hasPhases = Array.isArray(cfg.phases) && cfg.phases.length;
+    var hasDates = hasPhases || cfg.startLabel || cfg.endLabel || cfg.timezone;
     var box = '';
     if (hasDates) {
       var cells = [];
-      if (cfg.startLabel) cells.push('<div class="evt-cell"><div class="evt-label">' + escapeHTML(cfg.startLabelText || 'Starts') + '</div><div class="evt-val">' + escapeHTML(cfg.startLabel) + '</div></div>');
-      if (cfg.endLabel)   cells.push('<div class="evt-cell"><div class="evt-label">' + escapeHTML(cfg.endLabelText || 'Ends') + '</div><div class="evt-val">' + escapeHTML(cfg.endLabel) + '</div></div>');
-      if (cfg.timezone)   cells.push('<div class="evt-cell"><div class="evt-label">' + escapeHTML(cfg.timezoneLabelText || 'Timezone') + '</div><div class="evt-val">' + escapeHTML(cfg.timezone) + '</div></div>');
+      if (hasPhases) {
+        // Two data cells whose label(sub-header)+value are refilled per phase in
+        // tick(); seed from the current phase (or Starts/Ends pre-event). Stable
+        // .evt-cell-left / .evt-cell-right classes let tick() target them.
+        var ap0 = activePhase(cfg, Date.now());
+        var lLab = ap0 ? (ap0.leftLabel || '')  : (cfg.startLabelText || 'Starts');
+        var lVal = ap0 ? (ap0.leftValue || '')  : (cfg.startLabel || '');
+        var rLab = ap0 ? (ap0.rightLabel || '') : (cfg.endLabelText || 'Ends');
+        var rVal = ap0 ? (ap0.rightValue || '') : (cfg.endLabel || '');
+        cells.push('<div class="evt-cell evt-cell-left"><div class="evt-label">' + escapeHTML(lLab) + '</div><div class="evt-val">' + escapeHTML(lVal) + '</div></div>');
+        cells.push('<div class="evt-cell evt-cell-right"><div class="evt-label">' + escapeHTML(rLab) + '</div><div class="evt-val">' + escapeHTML(rVal) + '</div></div>');
+        if (cfg.timezone) cells.push('<div class="evt-cell"><div class="evt-label">' + escapeHTML(cfg.timezoneLabelText || 'Timezone') + '</div><div class="evt-val">' + escapeHTML(cfg.timezone) + '</div></div>');
+      } else {
+        if (cfg.startLabel) cells.push('<div class="evt-cell"><div class="evt-label">' + escapeHTML(cfg.startLabelText || 'Starts') + '</div><div class="evt-val">' + escapeHTML(cfg.startLabel) + '</div></div>');
+        if (cfg.endLabel)   cells.push('<div class="evt-cell"><div class="evt-label">' + escapeHTML(cfg.endLabelText || 'Ends') + '</div><div class="evt-val">' + escapeHTML(cfg.endLabel) + '</div></div>');
+        if (cfg.timezone)   cells.push('<div class="evt-cell"><div class="evt-label">' + escapeHTML(cfg.timezoneLabelText || 'Timezone') + '</div><div class="evt-val">' + escapeHTML(cfg.timezone) + '</div></div>');
+      }
       box = '<div class="evt-timerow">' + cells.join('<div class="evt-div"></div>') + '</div>';
     }
 

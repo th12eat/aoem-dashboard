@@ -24,32 +24,32 @@
     "aaruResult": "TBD (vote concludes Day 7)"
   },
   "kingdomPoints": {
-    "era8": "6.03B",
-    "era042": "6.91B",
-    "era039": "6.13B",
-    "era038": "5.77B",
-    "lastUpdated": "2026-08-11 — #042 6.91B · #039 6.13B · #008 6.03B · #038 5.77B"
+    "era8": "7.6B",
+    "era042": "8.37B",
+    "era039": "7.01B",
+    "era038": "6.4B",
+    "lastUpdated": "2026-08-11 — #042 8.37B · #008 7.6B · #039 7.01B · #038 6.4B"
   },
   "kingdomScoreboard": [
     {
       "rank": 1,
       "server": "Era #042",
-      "points": "6,910,000,000"
+      "points": "8,370,000,000"
     },
     {
       "rank": 2,
-      "server": "Era #039",
-      "points": "6,130,000,000"
+      "server": "Era 8",
+      "points": "7,600,000,000"
     },
     {
       "rank": 3,
-      "server": "Era 8",
-      "points": "6,030,000,000"
+      "server": "Era #039",
+      "points": "7,010,000,000"
     },
     {
       "rank": 4,
       "server": "Era #038",
-      "points": "5,770,000,000"
+      "points": "6,400,000,000"
     }
   ],
   "allianceScoreboard": [],
@@ -68,7 +68,7 @@
     },
     {
       "tag": "AGC",
-      "points": "625,204,080"
+      "points": "676,525,955"
     }
   ],
   "placerGold": {
