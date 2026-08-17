@@ -205,12 +205,16 @@ const rfmt = v => {
   return String(v);
 };
 const rmp = (m, p) => (m == null || m === "" || !p) ? null : (m / p) * 100;
-const mpCls = pct => pct == null ? "" : (pct >= 60 ? "hi" : pct >= 30 ? "mid" : "lo");
+// Match Desolate Desert: alliance M:P runs single-digit %, players run tens of %,
+// so each kind gets its own thresholds (green over-performs, dim is parked power).
+const allianceMpCls = pct => pct >= 8 ? "hi" : pct >= 4 ? "mid" : "lo";
+const playerMpCls   = pct => pct >= 65 ? "hi" : pct >= 35 ? "mid" : "lo";
 
 function ServerTable({ code, rows, kind }) {
   const c = srvColor(code);
   const s = SERVERS.find(x => x.code === code) || {};
   const title = s.label + (s.us ? " · Us" : "") + (s.name ? " " + s.name : "");
+  const mpCls = kind === "players" ? playerMpCls : allianceMpCls;
   return (
     <div className="cmp-card" style={{ borderColor: "rgba(" + c.rgb + ",0.4)" }}>
       <div className="cmp-head" style={{ background: "rgba(" + c.rgb + ",0.12)", borderBottomColor: "rgba(" + c.rgb + ",0.4)", color: c.hex }}>
