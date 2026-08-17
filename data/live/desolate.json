@@ -685,11 +685,11 @@
       "connected": true
     },
     "gate_moonfall": {
-      "occupant": "",
+      "occupant": "③★⑨",
       "connected": true
     },
     "gate_sunshine": {
-      "occupant": "",
+      "occupant": "EGK",
       "connected": true
     },
     "city_hippo": {
@@ -697,31 +697,31 @@
       "connected": true
     },
     "tower_1": {
-      "occupant": "",
+      "occupant": "③✝⑨",
       "connected": true
     },
     "city_crocodile": {
-      "occupant": "",
+      "occupant": "③✝⑨",
       "connected": true
     },
     "city_bull": {
-      "occupant": "③∧⑨",
+      "occupant": "",
       "connected": true
     },
     "tower_2": {
-      "occupant": "",
+      "occupant": "③∧⑨",
       "connected": true
     },
     "city_lion": {
-      "occupant": "",
+      "occupant": "③∧⑨",
       "connected": true
     },
     "city_cat": {
-      "occupant": "E38",
+      "occupant": "EC",
       "connected": true
     },
     "tower_3": {
-      "occupant": "",
+      "occupant": "EC",
       "connected": true
     },
     "dawn_fort": {
@@ -733,7 +733,7 @@
       "connected": true
     },
     "lightbearer_dock": {
-      "occupant": "K38",
+      "occupant": "",
       "connected": true
     },
     "blazing_fort": {
@@ -741,11 +741,11 @@
       "connected": true
     },
     "city_scorpion": {
-      "occupant": "K38",
+      "occupant": "EC",
       "connected": true
     },
     "gate_grace": {
-      "occupant": "",
+      "occupant": "EC",
       "connected": true
     },
     "gate_fury": {
@@ -773,11 +773,11 @@
       "connected": true
     },
     "tower_4": {
-      "occupant": "",
+      "occupant": "ZCH",
       "connected": true
     },
     "city_goose": {
-      "occupant": "",
+      "occupant": "ZCH",
       "connected": true
     },
     "city_ram": {
@@ -785,63 +785,63 @@
       "connected": true
     },
     "tower_5": {
-      "occupant": "",
+      "occupant": "EGK",
       "connected": true
     },
     "city_leopard": {
-      "occupant": "",
+      "occupant": "EGK",
       "connected": true
     },
     "jade_eye_fort": {
-      "occupant": "MyT",
+      "occupant": "EGK",
       "connected": true
     },
     "city_jackal": {
-      "occupant": "REU",
+      "occupant": "EGK",
       "connected": true
     },
     "majesty_dock": {
-      "occupant": "REU",
+      "occupant": "",
       "connected": true
     },
     "tower_6": {
-      "occupant": "",
+      "occupant": "EGK",
       "connected": true
     },
     "city_ibis": {
-      "occupant": "WC1",
+      "occupant": "EGK",
       "connected": true
     },
     "kingsguard_dock": {
-      "occupant": "WC1",
+      "occupant": "",
       "connected": true
     },
     "crown_fort": {
-      "occupant": "WC1",
+      "occupant": "",
       "connected": true
     },
     "gate_death": {
-      "occupant": "",
+      "occupant": "EGK",
       "connected": true
     },
     "gate_chaos": {
-      "occupant": "",
+      "occupant": "EGK",
       "connected": true
     },
     "gate_windrest": {
-      "occupant": "",
+      "occupant": "③★⑨",
       "connected": true
     },
     "gate_primal_water": {
-      "occupant": "",
+      "occupant": "EC",
       "connected": true
     },
     "gate_dawn_earth": {
-      "occupant": "",
+      "occupant": "③✝⑨",
       "connected": true
     },
     "gate_abundance": {
-      "occupant": "",
+      "occupant": "ZCH",
       "connected": true
     },
     "gate_life": {
@@ -849,98 +849,66 @@
       "connected": true
     },
     "aaru": {
-      "occupant": "",
+      "occupant": "EGK",
       "connected": true
     },
     "gate_azure_sky": {
-      "occupant": "",
+      "occupant": "K38",
       "connected": true
     }
   },
   "mapRoutes": {
     "actual": [
       {
-        "owner": "REU",
+        "owner": "EGK",
         "path": [
-          "majesty_dock",
-          "city_jackal"
+          "city_ram",
+          "tower_5"
         ],
-        "ssh": true,
+        "ssh": false,
         "connected": true
       },
       {
-        "owner": "REU",
+        "owner": "EGK",
         "path": [
-          "city_jackal",
-          "gate_chaos"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "REU",
-        "path": [
-          "city_jackal",
-          "tower_6"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "MyT",
-        "path": [
-          "jade_eye_fort",
+          "tower_5",
           "city_leopard"
         ],
         "ssh": false,
         "connected": true
       },
       {
-        "owner": "MyT",
+        "owner": "EGK",
         "path": [
           "city_leopard",
-          "gate_chaos"
+          "city_jackal"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "WC1",
-        "path": [
-          "crown_fort",
-          "city_ibis"
-        ],
-        "ssh": true,
         "connected": true
       },
       {
-        "owner": "WC1",
+        "owner": "EGK",
         "path": [
-          "city_ibis",
+          "city_jackal",
           "tower_6"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
-        "owner": "WC1",
+        "owner": "EGK",
+        "path": [
+          "tower_6",
+          "city_ibis"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "EGK",
         "path": [
           "city_ibis",
-          "gate_moonfall"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "EGK",
-        "path": [
-          "judgement_fort",
-          "city_ram"
+          "gate_sunshine"
         ],
         "ssh": false,
         "connected": true
@@ -948,40 +916,74 @@
       {
         "owner": "EGK",
         "path": [
-          "city_ram",
-          "tower_5"
+          "city_jackal",
+          "gate_chaos"
         ],
-        "ssh": true,
+        "ssh": false,
         "connected": true
       },
       {
         "owner": "EGK",
         "path": [
-          "city_ram",
+          "city_ibis",
+          "gate_death"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "EGK",
+        "path": [
+          "city_leopard",
+          "jade_eye_fort"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "EGK",
+        "path": [
+          "gate_death",
+          "aaru_n"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "ZCH",
+        "path": [
+          "immortality_fort",
           "city_goose"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
-        "owner": "EC",
+        "owner": "ZCH",
         "path": [
-          "balance_fort",
-          "city_vulture"
+          "city_goose",
+          "tower_4"
         ],
         "ssh": false,
         "connected": true
       },
       {
-        "owner": "EC",
+        "owner": "ZCH",
         "path": [
-          "city_vulture",
-          "tower_4"
+          "city_goose",
+          "gate_abundance"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
+      },
+      {
+        "owner": "ZCH",
+        "path": [
+          "gate_abundance",
+          "aaru_w"
+        ],
+        "ssh": false,
+        "connected": true
       },
       {
         "owner": "EC",
@@ -990,72 +992,77 @@
           "gate_grace"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
-        "owner": "K38",
+        "owner": "EC",
         "path": [
-          "blazing_fort",
+          "gate_grace",
           "city_scorpion"
         ],
         "ssh": false,
         "connected": true
       },
       {
-        "owner": "K38",
+        "owner": "EC",
         "path": [
           "city_scorpion",
           "tower_3"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
-        "owner": "K38",
+        "owner": "EC",
         "path": [
-          "city_scorpion",
-          "gate_grace"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "E38",
-        "path": [
-          "duskfire_dock",
+          "tower_3",
           "city_cat"
         ],
         "ssh": false,
         "connected": true
       },
       {
-        "owner": "E38",
+        "owner": "EC",
         "path": [
-          "city_cat",
-          "tower_3"
+          "city_scorpion",
+          "gate_primal_water"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
-        "owner": "E38",
+        "owner": "EC",
         "path": [
-          "city_cat",
-          "city_lion"
+          "gate_primal_water",
+          "aaru_s"
         ],
         "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "K38",
+        "path": [
+          "blazing_fort",
+          "gate_azure_sky"
+        ],
+        "ssh": true,
         "connected": true,
-        "building": true
+        "sshOutward": true
+      },
+      {
+        "owner": "K38",
+        "path": [
+          "gate_azure_sky",
+          "aaru_s"
+        ],
+        "ssh": false,
+        "connected": true
       },
       {
         "owner": "③∧⑨",
         "path": [
           "ruler_fort",
-          "city_bull"
+          "tower_2"
         ],
         "ssh": false,
         "connected": true
@@ -1063,51 +1070,11 @@
       {
         "owner": "③∧⑨",
         "path": [
-          "city_bull",
-          "tower_2"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "③★⑨",
-        "path": [
-          "north_wind_fort",
-          "city_hippo"
-        ],
-        "ssh": true,
-        "connected": true
-      },
-      {
-        "owner": "③★⑨",
-        "path": [
-          "city_hippo",
-          "tower_1"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "③★⑨",
-        "path": [
-          "city_hippo",
-          "gate_moonfall"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "S38",
-        "path": [
-          "dawn_fort",
+          "tower_2",
           "city_lion"
         ],
-        "ssh": true,
-        "connected": true,
-        "building": true
+        "ssh": false,
+        "connected": true
       },
       {
         "owner": "③✝⑨",
@@ -1116,8 +1083,61 @@
           "tower_1"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
+      },
+      {
+        "owner": "③✝⑨",
+        "path": [
+          "tower_1",
+          "city_crocodile"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "③✝⑨",
+        "path": [
+          "tower_1",
+          "gate_dawn_earth"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "③✝⑨",
+        "path": [
+          "gate_dawn_earth",
+          "aaru_e"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "③★⑨",
+        "path": [
+          "city_hippo",
+          "gate_moonfall"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "③★⑨",
+        "path": [
+          "city_hippo",
+          "gate_windrest"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "③★⑨",
+        "path": [
+          "gate_windrest",
+          "aaru_e"
+        ],
+        "ssh": false,
+        "connected": true
       }
     ],
     "planned": [
