@@ -124,6 +124,32 @@
   @media (max-width: 640px) {
     .table-scroll .pc-table { min-width: 420px; }
   }
+
+  /* ── PVE Guide: mechanic layout (graphic beside condensed facts) ── */
+  .mech { display:grid; grid-template-columns: minmax(190px, 240px) 1fr; gap:18px; align-items:start; }
+  @media (max-width: 620px) { .mech { grid-template-columns: 1fr; } }
+  .mech .fig { display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .mech .figcap { font-size:11px; color:#64748b; text-align:center; line-height:1.4; }
+  .facts { list-style:none; padding:0; margin:0; }
+  .facts li { position:relative; padding:5px 0 5px 22px; font-size:13px; line-height:1.5; color:#c3c9d4; border-bottom:1px solid rgba(42,42,58,0.5); }
+  .facts li:last-child { border-bottom:none; }
+  .facts li .ic { position:absolute; left:0; top:4px; font-size:14px; line-height:1; }
+  .facts b { color:#e8eaf0; }
+  .facts .big { color:var(--kvk-accent); font-weight:700; }
+
+  /* Order Workshop capture-zone diagram (ported from the flyer) */
+  .sq-diagram { position:relative; width:188px; height:188px; margin:4px auto; }
+  .sq-outer { position:absolute; inset:0; border:2px dashed rgba(155,109,255,0.4); background:rgba(155,109,255,0.05); border-radius:4px; }
+  .sq-label-outer { position:absolute; top:-16px; left:50%; transform:translateX(-50%); font-size:9px; letter-spacing:1px; text-transform:uppercase; color:#7c5bb0; white-space:nowrap; }
+  .sq-ws { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:44px; height:44px; background:rgba(155,109,255,0.14); border:2px solid var(--kvk-accent); border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:22px; z-index:3; }
+  .sq-march { position:absolute; width:20px; height:20px; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:11px; z-index:4; }
+  .march-friendly { background:rgba(61,170,109,0.2); border:1px solid rgba(61,170,109,0.5); }
+  .march-t1 { background:rgba(91,141,239,0.2); border:1px solid rgba(91,141,239,0.45); }
+  .march-kraken { background:rgba(155,109,255,0.15); border:1px solid rgba(155,109,255,0.45); }
+  .march-enemy { background:rgba(196,61,61,0.2); border:1px solid rgba(196,61,61,0.5); }
+  .legend-row { display:flex; flex-wrap:wrap; gap:10px 14px; justify-content:center; font-size:11px; color:#94a3b8; margin-top:2px; }
+  .legend-row span { display:inline-flex; align-items:center; gap:5px; }
+  .legend-row .sw { width:11px; height:11px; border-radius:3px; display:inline-block; }
 </style>
 </head>
 <body data-kvk="primordial">
@@ -361,8 +387,8 @@ function ResearchTab() {
 const TABS = [
   { id: "overview", label: T("Overview") },
   { id: "scouting", label: T("Scouting") },
-  { id: "schedule", label: T("Day-by-Day") },
-  { id: "scoring",  label: T("Scoring") },
+  { id: "points",   label: T("Points") },
+  { id: "guide",    label: T("PVE Guide") },
 ];
 
 function OverviewTab() {
@@ -400,100 +426,129 @@ function OverviewTab() {
   );
 }
 
-function ScheduleTab() {
+// Refinery-grid graphic: 8 refineries (R1–R8) in a fixed diamond around the
+// Imperial City. Geometry is universal; corner/host assignments are TBD until the
+// Day-5 pick, so we don't label kingdoms here.
+function RefineryMap() {
+  const R = [
+    [260,117],[331,187],[401,260],[331,331],[260,401],[189,331],[119,260],[189,187],
+  ];
   return (
-    <div>
-      <div id="day-by-day" className="pc-card anchor-target">
-        <h2>{T("Day-by-Day")}</h2>
-        <StageLine />
-        <p className="sl-note">{T("The seven-day arc at a glance. Section detail below; the Order Workshop and Day 6 Showdown playbooks are folded in.")}</p>
-      </div>
+    <svg viewBox="60 60 400 400" style={{ width: "100%", maxWidth: 300 }} xmlns="http://www.w3.org/2000/svg">
+      <polygon points="260,40 480,260 260,480 40,260" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+      <polygon points="260,119 401,260 260,401 119,260" fill="rgba(155,109,255,0.05)" stroke="rgba(155,109,255,0.2)" strokeWidth="1" />
+      <circle cx="260" cy="260" r="46" fill="rgba(155,109,255,0.12)" />
+      <circle cx="260" cy="260" r="30" fill="none" stroke="rgba(212,168,67,0.55)" strokeWidth="2" strokeDasharray="4,3" />
+      <text x="260" y="255" textAnchor="middle" fill="#d4a843" fontFamily="'Bebas Neue',sans-serif" fontSize="11" letterSpacing="1">IMPERIAL</text>
+      <text x="260" y="270" textAnchor="middle" fill="#d4a843" fontFamily="'Bebas Neue',sans-serif" fontSize="11" letterSpacing="1">CITY</text>
+      {R.map(([x, y], i) => (
+        <g key={i}>
+          <polygon points={`${x},${y-20} ${x+20},${y} ${x},${y+20} ${x-20},${y}`} fill="rgba(91,141,239,0.25)" stroke="#5b8def" strokeWidth="1.5" />
+          <text x={x} y={y+4} textAnchor="middle" fill="#e8eaf0" fontFamily="'Barlow Condensed',sans-serif" fontSize="12" fontWeight="700">{"R" + (i + 1)}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
 
+// Order Workshop capture-zone diagram (ported from the Order Workshop flyer):
+// swarm the square from the friendly side, T1 support on the far edge, Krakens
+// blocking the enemy's single entry lane.
+function WorkshopZone() {
+  return (
+    <div className="sq-diagram">
+      <div className="sq-outer"><div className="sq-label-outer">{T("Capture zone")}</div></div>
+      <div className="sq-ws">🏭</div>
+      <div className="sq-march march-friendly" style={{ top: "18%", left: "30%" }}>⚔</div>
+      <div className="sq-march march-friendly" style={{ top: "25%", left: "55%" }}>⚔</div>
+      <div className="sq-march march-friendly" style={{ top: "55%", left: "60%" }}>⚔</div>
+      <div className="sq-march march-friendly" style={{ top: "62%", left: "28%" }}>⚔</div>
+      <div className="sq-march march-t1" style={{ top: "8%", right: "4%" }}>🛡</div>
+      <div className="sq-march march-t1" style={{ top: "28%", right: "4%" }}>🛡</div>
+      <div className="sq-march march-t1" style={{ top: "48%", right: "4%" }}>🛡</div>
+      <div className="sq-march march-t1" style={{ top: "68%", right: "4%" }}>🛡</div>
+      <div className="sq-march march-kraken" style={{ top: "18%", left: "4%" }}>🐙</div>
+      <div className="sq-march march-kraken" style={{ top: "42%", left: "4%" }}>🐙</div>
+      <div className="sq-march march-kraken" style={{ top: "66%", left: "4%" }}>🐙</div>
+      <div className="sq-march march-enemy" style={{ top: "38%", left: "-26px" }}>😡</div>
+      <div style={{ position: "absolute", top: "43%", left: "-8px", fontSize: "11px", color: "rgba(196,61,61,0.6)" }}>→</div>
+    </div>
+  );
+}
+
+// PVE Guide — the 3 distinct mechanics, condensed with graphics doing the work.
+function GuideTab() {
+  return (
+    <div id="guide-top">
       <div className="pc-card">
-        <h2>{T("Day 1 — Matchmaking & Display")}</h2>
-        <p>{T("View event rules, participating kingdoms, schedule and rewards. No combat or gathering yet. Scout opponent servers (see the Scouting tab) and coordinate assignments.")}</p>
+        <h2>📖 {T("PVE Guide")}</h2>
+        <p className="sl-note" style={{ marginTop: 0 }}>{T("The three mechanics that win Primordial Conflict — Alchemy Pool / Essence gathering, Order Workshops (Battle Days 2–4), and the Day-6 Refinery showdown around the Imperial City. No troop loss this cycle, so contest everything.")}</p>
       </div>
 
+      {/* ── 1. Gathering: Dew (battle days) + Essence (Day 6) ── */}
       <div className="pc-card">
-        <h2>{T("Days 2–4 — Battle Stage (Round Robin)")}</h2>
-        <p>{T("Each day your kingdom is paired 1v1 against a different opponent. Two activities run across the three battle days: Alchemy Pool gathering (passive Dew) and Order Workshop contests (twice-daily PvP objectives).")}</p>
+        <h2>💧 {T("Gathering — Dew & Essence")}</h2>
+        <div className="mech">
+          <div className="fig">
+            <div style={{ fontSize: 64, lineHeight: 1 }}>💧</div>
+            <div className="figcap">{T("1 march on a Lv.4 pool + the rest on Lv.3 is the optimal spread.")}</div>
+          </div>
+          <ul className="facts">
+            <li><span className="ic">🔄</span> <b>{T("Primordial Dew")}</b> — {T("gather at Alchemy Pools (Lv.1–4). ")}<span className="big">{T("100 Dew → 10K points")}</span>.</li>
+            <li><span className="ic">🏆</span> {T("Lv.4 pools sit near the IC (only 3), refresh every 12h — huge yield, up to 40 gatherers.")}</li>
+            <li><span className="ic">🐆</span> {T("Lv.4 pools are guarded by a Corrupted Hyena — land the ")}<b>{T("killing blow")}</b> {T("for +10% gather speed at that pool (tagging doesn't count).")}</li>
+            <li><span className="ic">📏</span> {T("Min 50,000 units per march to gather.")}</li>
+            <li><span className="ic">✨</span> <b>{T("Primordial Essence")}</b> — {T("Day-6 only. Garrison a refinery (50K+ units) for ")}<span className="big">{T("1/sec")}</span>{T(", plus 1 per 500 combat pts (max 70K). Premium currency — does NOT convert to points.")}</li>
+          </ul>
+        </div>
       </div>
 
-      {/* ── Order Workshop (folds in the Order Workshop flyer) ── */}
+      {/* ── 2. Order Workshop ── */}
       <div id="order-workshop" className="pc-card anchor-target">
-        <h2>🔧 {T("Order Workshop")}</h2>
-        <p>{T("Two workshop events run every battle day — one on each paired server, 3 workshops each (6 total). Each server votes its own time; ours is locked at")} <strong style={{ color: "var(--kvk-accent)" }}>19:00 UTC</strong> {T("and held all phase. You also fight the opponent's event at their time. Each contest lasts 1 hour.")}</p>
-        <h3>{T("What Spawns")}</h3>
-        <ul>
-          <li>{T("3 workshops per contest — 1 per Zone 2 region, randomly placed each round.")}</li>
-          <li>{T("Large square capture zone, no player cap — flood it. More bodies = faster capture timer.")}</li>
-          <li>{T("Timer → 0 = captured (permanent). Teleport nearby, then walk in on foot.")}</li>
-        </ul>
-        <h3>{T("Rewards")}</h3>
-        <ul>
-          <li>{T("600M points on capture (400M cap + 200M if leading at contest end).")}</li>
-          <li>{T("+500 pts/sec per person inside — every tier counts equally (T1 = T8 for pts/sec).")}</li>
-        </ul>
-        <div className="callout important">
-          <strong>{T("Stay Inside Until Fully Capped")}</strong>
-          {T("Do not leave to farm or PvP — every person counts toward the timer. If you lose a workshop, retreat to one you already hold: every second inside a held workshop earns points, and retreating pulls the enemy off their own workshop.")}
+        <h2>🔧 {T("Order Workshop")} <span className="no-troop">{T("Battle Days 2–4")}</span></h2>
+        <div className="mech">
+          <div className="fig">
+            <WorkshopZone />
+            <div className="legend-row">
+              <span><span className="sw" style={{ background: "rgba(61,170,109,0.5)" }}></span>{T("Fighters")}</span>
+              <span><span className="sw" style={{ background: "rgba(155,109,255,0.5)" }}></span>{T("Krakens")}</span>
+              <span><span className="sw" style={{ background: "rgba(91,141,239,0.5)" }}></span>{T("T1 support")}</span>
+              <span><span className="sw" style={{ background: "rgba(196,61,61,0.5)" }}></span>{T("Enemy")}</span>
+            </div>
+          </div>
+          <ul className="facts">
+            <li><span className="ic">🕐</span> {T("2 events/day — ours ")}<span className="big">{T("19:00 UTC")}</span>{T(" (fixed) + the opponent's. 3 workshops each, 1-hour contest.")}</li>
+            <li><span className="ic">👥</span> {T("No player cap — flood the zone. ")}<b>{T("More bodies = faster capture")}</b>{T("; teleport near, walk in on foot.")}</li>
+            <li><span className="ic">💰</span> {T("Capture = ")}<span className="big">{T("600M")}</span>{T(", +200M if held at end, +500 pts/sec per person inside (T1 = T8).")}</li>
+            <li><span className="ic">🔒</span> <b>{T("Stay inside until fully capped")}</b> — {T("don't leave to farm or PvP. Lost one? Retreat to a held workshop — that pulls the enemy off theirs.")}</li>
+            <li><span className="ic">🎯</span> <b>{T("Target 2, not 3")}</b> — {T("dominate two rather than spread thin across all three.")}</li>
+            <li><span className="ic">🐙</span> {T("Krakens block the enemy's entry lane; T1 support sits on the far edge for free pts/sec.")}</li>
+          </ul>
         </div>
-        <h3>{T("Roles")}</h3>
-        <ul>
-          <li><strong>{T("Fighter")}</strong> — {T("get inside, fight, displace enemy marches, contest the zone.")}</li>
-          <li><strong>{T("Kraken")}</strong> — {T("block enemy entry; position between the enemy and the workshop to cut off their flow.")}</li>
-          <li><strong>{T("Non-Fighter / Support")}</strong> — {T("Tier-1 marches only, placed on the far edge away from enemy flow — adds presence & pts/sec without risk.")}</li>
-        </ul>
-        <div className="callout strategy">
-          <strong>{T("Target 2, Not 3")}</strong>
-          {T("Three workshops spreads forces thin — slower caps, fewer people soaking pts/sec in each. Pick 2 and dominate them; chase the 3rd only if leadership calls it. Every minute away from a held workshop costs 500 pts/s/person plus free PvP points to the enemy.")}
-        </div>
-        <div className="callout warning">
+        <div className="callout warning" style={{ marginTop: 12 }}>
           <strong>{T("Citadel Watch")}</strong>
-          {T("This is a 1-hour PvP window. If your citadel is vulnerable or threatened during the event, bubble up immediately — don't assume someone else has seen it.")}
+          {T("It's a 1-hour PvP window — if your citadel is threatened, bubble up immediately. Don't assume someone else saw it.")}
         </div>
       </div>
 
-      <div className="pc-card">
-        <h2>{T("Day 5 — Battlefield Selection")}</h2>
-        <p>{T("The kingdom ranked first in Battle Stage points chooses the showdown location and time. Pick a window that maximizes your active players; picking your own map means you're already positioned. Deadline: 12:00 UTC. If the winning kingdom has no king, the R5 of its highest-power alliance chooses.")}</p>
-      </div>
-
-      {/* ── Day 6 Showdown (folds in the Day 6 Showdown flyer) ── */}
+      {/* ── 3. Refineries around the IC (Day 6) ── */}
       <div id="day6-showdown" className="pc-card anchor-target">
-        <h2>🔥 {T("Day 6 — The Showdown")}</h2>
-        <p>{T("All four kingdoms converge on the chosen battlefield. 8 Essence Refineries appear in a fixed grid around that kingdom's Imperial City. Each server teleports into one corner of the IC map via cross-border faction camps. The kingdom with the most Kingdom Points at event end wins — points carry over from the Battle Stage.")}</p>
-        <h3>{T("Schedule (relative to the chosen contest time)")}</h3>
-        <ul>
-          <li><strong>{T("−2h30")}</strong> — {T("Cross-border Invasion Camp opens; players from all kingdoms can relocate to the showdown map.")}</li>
-          <li><strong>{T("−2h00")}</strong> — {T("Cross-border Faction Camp opens; relocate to your own faction's camp.")}</li>
-          <li><strong>{T("−30m")}</strong> — {T("Top-6 alliance early teleport (tiered −30 / −20 / −10). Camps open 30 min before contest; refineries not yet active.")}</li>
-          <li><strong>{T("Contest start")}</strong> — {T("Refineries open. Occupy to earn Kingdom Points; fight for Primordial Essence.")}</li>
-          <li><strong>{T("+2h00")}</strong> — {T("Battlefield clears: refineries enter protection (no longer contestable), final holder gets the end bonus. Open-field Essence gathering continues ~2–4h more.")}</li>
-        </ul>
-        <h3>{T("Scoring")}</h3>
-        <ul>
-          <li>{T("1M Kingdom Points per second per refinery held.")}</li>
-          <li>{T("800M Kingdom Points per refinery to the last holder at contest end — 8 × 800M = 6.4B end-bonus alone.")}</li>
-          <li>{T("Primordial Essence (Day-6-only personal currency): 1/sec per player garrisoned at a refinery (min 50K units), plus 1 per 500 combat points on IC plots (max 70K). Essence does not convert to Kingdom Points.")}</li>
-        </ul>
-        <h3>{T("Rules")}</h3>
-        <ul>
-          <li>{T("Refineries can ONLY be attacked via rally — no solo marches, no war machines.")}</li>
-          <li>{T("Combat marches must be max-tier, full capacity. Essence-farming marches can be any tier with 50K+ units (low-risk only).")}</li>
-          <li>{T("Only one troop per player per refinery earns Essence.")}</li>
-          <li>{T("Do NOT abandon a refinery near the end — 800M only pays the holder at contest end; even a last-second flip is worth 800M.")}</li>
-        </ul>
-        <div className="callout strategy">
-          <strong>{T("4-Way Politics")}</strong>
-          {T("Unlike a clean 1v1, this is a 4-way fight over 8 refineries: temporary truces, target prioritization and refinery splits are all in play. Lock your home-corner cluster first, then push the flanks. Taxi rallies (an R4+ rally at the enemy citadel, then kick/disband to dump players at refineries) get the rest of the roster positioned fast after contest start.")}
+        <h2>🔥 {T("Refineries around the IC")} <span className="no-troop">{T("Day 6 Showdown")}</span></h2>
+        <div className="mech">
+          <div className="fig">
+            <RefineryMap />
+            <div className="figcap">{T("8 refineries (R1–R8) ring the Imperial City. Each server enters from one corner — assignments set at the Day-5 pick.")}</div>
+          </div>
+          <ul className="facts">
+            <li><span className="ic">👑</span> {T("All 4 kingdoms converge on one IC. ")}<b>{T("Most Kingdom Points at end wins")}</b>{T(" (carries from the Battle Stage).")}</li>
+            <li><span className="ic">💠</span> {T("Hold a refinery: ")}<span className="big">{T("1M pts/sec")}</span>{T(". Each pays ")}<span className="big">{T("800M")}</span>{T(" to its last holder at end — 8 × 800M = 6.4B.")}</li>
+            <li><span className="ic">⚔️</span> {T("Refineries are ")}<b>{T("rally-only")}</b>{T(" — no solo marches, no war machines. Combat marches max-tier, full capacity.")}</li>
+            <li><span className="ic">🚕</span> {T("Taxi rallies (R4+ rally at the enemy citadel, then kick/disband) dump the roster onto refineries fast after start.")}</li>
+            <li><span className="ic">⏳</span> {T("Camps open −30m (top-6 tiered −30/−20/−10). At +2h refineries lock — even a last-second flip banks the 800M.")}</li>
+            <li><span className="ic">🎯</span> {T("Lock your home-corner cluster first, then push the flanks. Aim for 3–4 refineries.")}</li>
+          </ul>
         </div>
-        <p className="sl-note">{T("Battlefield host, corner assignments and exact teleport tiers depend on who wins the Battle Stage pick — confirm in-client once Day 5 resolves.")}</p>
-      </div>
-
-      <div className="pc-card">
-        <h2>{T("Day 7 — Recovery")}</h2>
-        <p>{T("Partial recovery of units lost in battle. In this special no-troop-loss cycle, wounded units are restored — contest freely.")}</p>
+        <p className="sl-note">{T("Battlefield host, corner assignments and exact teleport tiers depend on who wins the Day-5 pick — confirm in-client once it resolves.")}</p>
       </div>
     </div>
   );
@@ -790,9 +845,9 @@ function App() {
 
       {/* Header */}
       <div style={S.header}>
-        {/* top-right: Day-by-Day + About buttons */}
+        {/* top-right: PVE Guide + About buttons */}
         <div className="hdr-pills-top">
-          <button type="button" className="hdr-icobtn" title={T("Jump to Day-by-Day")} onClick={() => jumpTo("schedule", "day-by-day")}>📅</button>
+          <button type="button" className="hdr-icobtn" title={T("Jump to PVE Guide")} onClick={() => jumpTo("guide", "guide-top")}>📖</button>
           <button type="button" className="hdr-icobtn" title={T("What is Primordial Conflict?")} onClick={() => setModal("about")}>❓</button>
         </div>
         {/* bottom-right: Order Workshop badge — pulses purple while the 19:00 window is
@@ -839,8 +894,8 @@ function App() {
         <div style={{ marginTop: 16 }}>
           {tab === "overview" && <OverviewTab />}
           {tab === "scouting" && <ResearchTab />}
-          {tab === "schedule" && <ScheduleTab />}
-          {tab === "scoring"  && <ScoringTab />}
+          {tab === "points"   && <ScoringTab />}
+          {tab === "guide"    && <GuideTab />}
         </div>
 
         <div style={{ textAlign: "center", padding: "24px 0", borderTop: "1px solid var(--border,#2a2a3a)", marginTop: 24, fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#64748b", letterSpacing: ".5px" }}>
