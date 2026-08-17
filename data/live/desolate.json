@@ -733,7 +733,7 @@
       "connected": true
     },
     "lightbearer_dock": {
-      "occupant": "",
+      "occupant": "K38",
       "connected": true
     },
     "blazing_fort": {
@@ -793,7 +793,7 @@
       "connected": true
     },
     "jade_eye_fort": {
-      "occupant": "EGK",
+      "occupant": "MyT",
       "connected": true
     },
     "city_jackal": {
@@ -801,7 +801,7 @@
       "connected": true
     },
     "majesty_dock": {
-      "occupant": "",
+      "occupant": "REU",
       "connected": true
     },
     "tower_6": {
@@ -813,11 +813,11 @@
       "connected": true
     },
     "kingsguard_dock": {
-      "occupant": "",
+      "occupant": "WC1",
       "connected": true
     },
     "crown_fort": {
-      "occupant": "",
+      "occupant": "WC1",
       "connected": true
     },
     "gate_death": {
