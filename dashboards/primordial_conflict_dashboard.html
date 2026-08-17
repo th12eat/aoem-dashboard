@@ -222,27 +222,28 @@ function KingdomBar() {
   );
 }
 
-// ── Schedule stages (the "line"). Each: key, label, day range, ISO start. ──
+// ── Schedule stages (the "line"). Each: key, label, day range, ISO start,
+//    `group` (consecutive same-group stages get one label above the timeline). ──
 const STAGES = [
-  { key: "match",    label: "Matchmaking & scouting",  days: [1],    startISO: "2026-08-17T00:00:00Z" },
-  { key: "battle1",  label: "Battle Day 1 (1v1)",      days: [2],    startISO: "2026-08-18T00:00:00Z" },
-  { key: "battle2",  label: "Battle Day 2 (1v1)",      days: [3],    startISO: "2026-08-19T00:00:00Z" },
-  { key: "battle3",  label: "Battle Day 3 (1v1)",      days: [4],    startISO: "2026-08-20T00:00:00Z" },
-  { key: "select",   label: "Battlefield selection",   days: [5],    startISO: "2026-08-21T00:00:00Z" },
-  { key: "showdown", label: "4-way showdown",          days: [6],    startISO: "2026-08-22T00:00:00Z" },
-  { key: "recovery", label: "Troop recovery",          days: [7],    startISO: "2026-08-23T00:00:00Z" },
+  { key: "match",    group: "match",    label: "Matchmaking & scouting",  days: [1],    startISO: "2026-08-17T00:00:00Z" },
+  { key: "battle1",  group: "battle",   label: "Battle Day 1 (1v1)",      days: [2],    startISO: "2026-08-18T00:00:00Z" },
+  { key: "battle2",  group: "battle",   label: "Battle Day 2 (1v1)",      days: [3],    startISO: "2026-08-19T00:00:00Z" },
+  { key: "battle3",  group: "battle",   label: "Battle Day 3 (1v1)",      days: [4],    startISO: "2026-08-20T00:00:00Z" },
+  { key: "select",   group: "select",   label: "Battlefield selection",   days: [5],    startISO: "2026-08-21T00:00:00Z" },
+  { key: "showdown", group: "showdown", label: "4-way showdown",          days: [6],    startISO: "2026-08-22T00:00:00Z" },
+  { key: "recovery", group: "recovery", label: "Troop recovery",          days: [7],    startISO: "2026-08-23T00:00:00Z" },
 ];
-// Phase tint per stage group. Purple family: matching blue → battle lavender →
-// selection neon purple → showdown deep purple → recovery light pink.
-const STAGE_TINT = {
-  match:    { bright: "#5b8def", dark: "#2b3a55" },
-  battle1:  { bright: "#c4a7f0", dark: "#4a3d63" },
-  battle2:  { bright: "#c4a7f0", dark: "#4a3d63" },
-  battle3:  { bright: "#c4a7f0", dark: "#4a3d63" },
-  select:   { bright: "#bf5fff", dark: "#4e2a63" },
-  showdown: { bright: "#9b6dff", dark: "#453064" },
-  recovery: { bright: "#f7a8c8", dark: "#5e3648" },
+// Phase groups: label shown above the timeline + bright/dim colors. Purple family:
+// matching blue → battle lavender → selection neon purple → showdown deep purple
+// → recovery light pink.
+const STAGE_GROUPS = {
+  match:    { label: "Matchmaking", bright: "#5b8def", dark: "#2b3a55" },
+  battle:   { label: "Battle Stage", bright: "#c4a7f0", dark: "#4a3d63" },
+  select:   { label: "Selection",   bright: "#bf5fff", dark: "#4e2a63" },
+  showdown: { label: "Showdown",    bright: "#9b6dff", dark: "#453064" },
+  recovery: { label: "Recovery",    bright: "#f7a8c8", dark: "#5e3648" },
 };
+const STAGE_TINT = Object.fromEntries(STAGES.map(s => [s.key, STAGE_GROUPS[s.group]]));
 
 // Current event day (1–7) from today's UTC date; 0 before it starts, capped at 7.
 function currentEventDay(now) {
@@ -276,8 +277,30 @@ function StageLine() {
   STAGES.forEach((s, i) => { if (now >= Date.parse(s.startISO)) cur = i; });
   const reached = i => cur >= i;
 
+  // Consecutive same-group stages → one label above the timeline, centered over
+  // that run and colored to the group (mirrors Desolate Desert's zone labels).
+  const runs = [];
+  STAGES.forEach((s, i) => {
+    const last = runs[runs.length - 1];
+    if (last && last.group === s.group) { last.lastIdx = i; }
+    else runs.push({ group: s.group, firstIdx: i, lastIdx: i });
+  });
+  const N = STAGES.length;
+  const dotPct = i => ((i + 0.5) / N) * 100; // center of stage i's column
+
   return (
     <div>
+      {/* grouped phase labels, centered over each run */}
+      <div style={{ position: "relative", height: "16px", marginBottom: "4px" }}>
+        {runs.map(r => {
+          const g = STAGE_GROUPS[r.group] || {};
+          const reachedRun = cur >= r.firstIdx;
+          const centerPct = (dotPct(r.firstIdx) + dotPct(r.lastIdx)) / 2;
+          return (
+            <span key={r.group + r.firstIdx} style={{ position: "absolute", left: centerPct + "%", transform: "translateX(-50%)", fontFamily: "'Barlow Condensed', sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", whiteSpace: "nowrap", color: reachedRun ? g.bright : g.dark }}>{g.label}</span>
+          );
+        })}
+      </div>
       <div style={{ display: "flex", alignItems: "flex-start", gap: 0 }}>
         {STAGES.map((s, i) => {
           const isNow = i === cur;
