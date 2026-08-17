@@ -401,27 +401,94 @@ function OverviewTab() {
       </div>
 
       <div className="pc-card">
-        <h2>{T("This Cycle")}</h2>
-        <p>{T("Primordial Conflict pairs four kingdoms — us (Era #008) against Era #028, Era #088, and Era #059 — in a round-robin. Scout tabs carry each server's top alliances and players.")}</p>
-        <div className="callout important">
-          <strong>{T("No Troop Loss — Special KvK")}</strong>
-          {T("This is a special Primordial Conflict where no troop loss occurs. Units \"wounded\" in PvP are recovered, so there is no lasting attrition — a strong reason to PvP freely and contest every objective aggressively.")}
-        </div>
-        <div className="callout info">
-          <strong>{T("Our Workshop / Showdown Window")}</strong>
-          {T("Our server's workshop event runs at")} <strong style={{ color: "var(--kvk-accent)" }}>{EVENT.ourTime}</strong> {T("the whole phase (afternoon US, evening EU — our prime time). The opponent's event runs at their server's voted time each battle day; confirm it in-client, the vote display has been unreliable.")}
-        </div>
-      </div>
-
-      <div className="pc-card">
         <h2>{T("Event Structure")}</h2>
         <p>{T("A 4-server round-robin KvK. Three days of 1v1 battles (Days 2–4) where you face each opponent once, then a battlefield selection by the leading kingdom (Day 5), a 4-way showdown (Day 6), and partial troop recovery (Day 7).")}</p>
         <h3>{T("Core Loop")}</h3>
         <p>{T("During battle days you earn Primordial Dew by gathering at Alchemy Pools and fighting over Order Workshops. Each day's 1v1 has two workshop events — one on each server (3 workshops each). Dew converts to Primordial Points for scoring. On the showdown day, Essence Refineries appear around the chosen Imperial City; holding them generates Primordial Essence and massive Kingdom Points.")}</p>
       </div>
 
+      <div className="pc-card">
+        <h2>🗺️ {T("The Map")}</h2>
+        <div className="callout warning" style={{ marginTop: 0 }}>
+          <strong>{T("Sample Layout — Positions TBD")}</strong>
+          {T("The showdown host server and each kingdom's corner aren't decided until the Day-5 battlefield pick. Corners below are a SAMPLE only — the 8-refinery ring around the Imperial City is the real, fixed geometry.")}
+        </div>
+        <SampleBattleMap />
+        <div className="legend-row" style={{ marginTop: 4 }}>
+          <span><span className="sw" style={{ background: "#5b8def" }}></span>{T("E#008 (Us)")}</span>
+          <span><span className="sw" style={{ background: "#3daa6d" }}></span>{T("E#028")}</span>
+          <span><span className="sw" style={{ background: "#e8944a" }}></span>{T("E#088")}</span>
+          <span><span className="sw" style={{ background: "#9b6dff" }}></span>{T("E#059")}</span>
+        </div>
+      </div>
+
       <DailyObjectives />
       <WorkshopSchedule />
+    </div>
+  );
+}
+
+// Sample showdown battlefield (ported from the Day-6 flyer). Four kingdom corners
+// around the IC + the 8-refinery ring. Corner assignments are a SAMPLE (real
+// positions unknown until the Day-5 pick), so no host/siege markers — just our
+// four servers colored, us highlighted in the South.
+function SampleBattleMap() {
+  // corner → {code, hex, rgb}. Sample layout: us South, others clockwise.
+  const N = { code: "E#028", hex: "#3daa6d", rgb: "61,170,109" };
+  const E = { code: "E#088", hex: "#e8944a", rgb: "232,148,74" };
+  const S = { code: "E#008", hex: "#5b8def", rgb: "91,141,239" }; // us
+  const W = { code: "E#059", hex: "#9b6dff", rgb: "155,109,255" };
+  const refs = [
+    [260,117,"R1"],[331,187,"R2"],[401,260,"R3"],[331,331,"R4"],
+    [260,401,"R5"],[189,331,"R6"],[119,260,"R7"],[189,187,"R8"],
+  ];
+  return (
+    <div style={{ maxWidth: 520, margin: "0 auto" }}>
+      <svg viewBox="-190 -150 900 900" style={{ width: "100%" }} xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="pcglow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="rgba(212,168,67,0.15)" /><stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+          <symbol id="pccastle" viewBox="0 0 20 20">
+            <rect x="2" y="14" width="16" height="4" fill="white" /><rect x="4" y="8" width="12" height="6" fill="white" />
+            <rect x="8" y="12" width="4" height="6" rx="2" fill="#1a3a6a" />
+          </symbol>
+        </defs>
+        {/* outer + inner diamonds */}
+        <polygon points="260,-50 570,260 260,570 -50,260" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+        {/* corner chunks */}
+        <polygon points="105,105 260,-50 415,105 375,145 260,30 145,145" fill={"rgba(" + N.rgb + ",0.12)"} stroke={"rgba(" + N.rgb + ",0.4)"} strokeWidth="1.5" />
+        <polygon points="415,105 570,260 415,415 375,375 490,260 375,145" fill={"rgba(" + E.rgb + ",0.12)"} stroke={"rgba(" + E.rgb + ",0.4)"} strokeWidth="1.5" />
+        <polygon points="415,415 260,570 105,415 145,375 260,490 375,375" fill={"rgba(" + S.rgb + ",0.18)"} stroke={"rgba(" + S.rgb + ",0.55)"} strokeWidth="2" />
+        <polygon points="105,415 -50,260 105,105 145,145 30,260 145,375" fill={"rgba(" + W.rgb + ",0.12)"} stroke={"rgba(" + W.rgb + ",0.4)"} strokeWidth="1.5" />
+        <polygon points="260,30 490,260 260,490 30,260" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+        {/* IC */}
+        <circle cx="260" cy="260" r="80" fill="url(#pcglow)" />
+        <circle cx="260" cy="260" r="36" fill="none" stroke="rgba(212,168,67,0.5)" strokeWidth="2" strokeDasharray="4,3" />
+        <circle cx="260" cy="260" r="6" fill="#d4a843" />
+        <text x="260" y="242" textAnchor="middle" fill="#d4a843" fontFamily="'Bebas Neue',sans-serif" fontSize="13" letterSpacing="2">IMPERIAL CITY</text>
+        {/* SAMPLE watermark */}
+        <text x="260" y="285" textAnchor="middle" fill="rgba(232,148,74,0.5)" fontFamily="'Bebas Neue',sans-serif" fontSize="16" letterSpacing="4">SAMPLE</text>
+        {/* refineries */}
+        {refs.map(([x, y, id]) => (
+          <g key={id}>
+            <polygon points={`${x},${y-26} ${x+26},${y} ${x},${y+26} ${x-26},${y}`} fill="#1a3a6a" stroke="#3d7cc4" strokeWidth="1.5" />
+            <use href="#pccastle" x={x-10} y={y-10} width="20" height="20" />
+            <text x={x} y={y+42} textAnchor="middle" fill="#d4a843" fontFamily="'Barlow Condensed',sans-serif" fontSize="18" fontWeight="600">{id}</text>
+          </g>
+        ))}
+        {/* corner labels */}
+        <text x="260" y="-92" textAnchor="middle" fill={N.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="24" fontWeight="700" letterSpacing="1">{N.code}</text>
+        <text x="626" y="266" textAnchor="middle" fill={E.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="24" fontWeight="700" letterSpacing="1">{E.code}</text>
+        <text x="260" y="642" textAnchor="middle" fill={S.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="26" fontWeight="700" letterSpacing="1">{S.code} (US)</text>
+        <text x="-106" y="266" textAnchor="middle" fill={W.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="24" fontWeight="700" letterSpacing="1">{W.code}</text>
+        {/* "you are here" pulse on our South corner */}
+        <circle cx="260" cy="570" r="12" fill="none" stroke={S.hex} strokeWidth="2" strokeDasharray="3,2">
+          <animate attributeName="r" values="12;18;12" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="260" cy="570" r="5" fill={S.hex} />
+      </svg>
     </div>
   );
 }
