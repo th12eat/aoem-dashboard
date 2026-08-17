@@ -451,10 +451,10 @@ function OverviewTab() {
   );
 }
 
-// Sample showdown battlefield (ported from the Day-6 flyer). Four kingdom corners
-// around the IC + the 8-refinery ring. Corner assignments are a SAMPLE (real
-// positions unknown until the Day-5 pick), so no host/siege markers — just our
-// four servers colored, us highlighted in the South.
+// Sample showdown battlefield (ported from the Day-6 flyer): four kingdom corners
+// with bulky corner caps, the 8-refinery ring, and siege arrows curving into our
+// corner. Corner assignments + host are a SAMPLE (unknown until the Day-5 pick),
+// so the siege is labeled generically — our four servers colored, us South.
 function SampleBattleMap() {
   // corner → {code, hex, rgb}. Sample layout: us South, others clockwise.
   const N = { code: "E#028", hex: "#3daa6d", rgb: "61,170,109" };
@@ -466,8 +466,8 @@ function SampleBattleMap() {
     [260,401,"R5"],[189,331,"R6"],[119,260,"R7"],[189,187,"R8"],
   ];
   return (
-    <div style={{ maxWidth: 520, margin: "0 auto" }}>
-      <svg viewBox="-190 -150 900 900" style={{ width: "100%" }} xmlns="http://www.w3.org/2000/svg">
+    <div style={{ maxWidth: 560, margin: "0 auto" }}>
+      <svg viewBox="-200 -175 920 945" style={{ width: "100%" }} xmlns="http://www.w3.org/2000/svg">
         <defs>
           <radialGradient id="pcglow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="rgba(212,168,67,0.15)" /><stop offset="100%" stopColor="transparent" />
@@ -475,6 +475,10 @@ function SampleBattleMap() {
           <symbol id="pccastle" viewBox="0 0 20 20">
             <rect x="2" y="14" width="16" height="4" fill="white" /><rect x="4" y="8" width="12" height="6" fill="white" />
             <rect x="8" y="12" width="4" height="6" rx="2" fill="#1a3a6a" />
+          </symbol>
+          <symbol id="pcsiegewarn" viewBox="0 0 24 24">
+            <polygon points="12,2 22,20 2,20" fill="none" stroke="rgba(255,200,50,0.9)" strokeWidth="2" strokeLinejoin="round" />
+            <text x="12" y="18" textAnchor="middle" fill="rgba(255,200,50,0.9)" fontFamily="Barlow,sans-serif" fontSize="14" fontWeight="700">!</text>
           </symbol>
         </defs>
         {/* outer + inner diamonds */}
@@ -484,6 +488,11 @@ function SampleBattleMap() {
         <polygon points="415,105 570,260 415,415 375,375 490,260 375,145" fill={"rgba(" + E.rgb + ",0.12)"} stroke={"rgba(" + E.rgb + ",0.4)"} strokeWidth="1.5" />
         <polygon points="415,415 260,570 105,415 145,375 260,490 375,375" fill={"rgba(" + S.rgb + ",0.18)"} stroke={"rgba(" + S.rgb + ",0.55)"} strokeWidth="2" />
         <polygon points="105,415 -50,260 105,105 145,145 30,260 145,375" fill={"rgba(" + W.rgb + ",0.12)"} stroke={"rgba(" + W.rgb + ",0.4)"} strokeWidth="1.5" />
+        {/* bulkier corner caps (the diamond bump-outs beyond each corner) */}
+        <polygon points="210,-100 260,-150 310,-100 360,-50 310,0 260,-50 210,0 160,-50" fill={"rgba(" + N.rgb + ",0.18)"} stroke={"rgba(" + N.rgb + ",0.5)"} strokeWidth="1.5" />
+        <polygon points="620,210 670,260 620,310 570,360 520,310 570,260 520,210 570,160" fill={"rgba(" + E.rgb + ",0.18)"} stroke={"rgba(" + E.rgb + ",0.5)"} strokeWidth="1.5" />
+        <polygon points="310,620 260,670 210,620 160,570 210,520 260,570 310,520 360,570" fill={"rgba(" + S.rgb + ",0.28)"} stroke={"rgba(" + S.rgb + ",0.7)"} strokeWidth="2" />
+        <polygon points="-100,310 -150,260 -100,210 -50,160 0,210 -50,260 0,310 -50,360" fill={"rgba(" + W.rgb + ",0.18)"} stroke={"rgba(" + W.rgb + ",0.5)"} strokeWidth="1.5" />
         <polygon points="260,30 490,260 260,490 30,260" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
         {/* IC */}
         <circle cx="260" cy="260" r="80" fill="url(#pcglow)" />
@@ -511,6 +520,23 @@ function SampleBattleMap() {
           <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" />
         </circle>
         <circle cx="260" cy="570" r="5" fill={S.hex} />
+        {/* Siege pressure toward our corner (sample). On the host's home map the
+            enemy war machines stage close and curve in from the flanks (SE + SW),
+            not head-on — each arrow flagged DEFEND. Host TBD, so labeled generic. */}
+        {/* SE flank */}
+        <text x="470" y="628" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="15" fontWeight="600" letterSpacing="0.5">SIEGE</text>
+        <circle cx="470" cy="604" r="4" fill="rgba(255,200,50,0.75)" />
+        <path d="M 462,601 C 420,579 360,559 318,552" stroke="rgba(255,200,50,0.6)" strokeWidth="2.5" fill="none" strokeDasharray="5,4" strokeLinecap="round" />
+        <polygon points="306,550 320,546 316,558" fill="rgba(255,200,50,0.75)" />
+        <use href="#pcsiegewarn" x="372" y="502" width="44" height="44" />
+        <text x="394" y="560" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="600">DEFEND</text>
+        {/* SW flank */}
+        <text x="50" y="628" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="15" fontWeight="600" letterSpacing="0.5">SIEGE</text>
+        <circle cx="50" cy="604" r="4" fill="rgba(255,200,50,0.75)" />
+        <path d="M 58,601 C 100,579 160,559 202,552" stroke="rgba(255,200,50,0.6)" strokeWidth="2.5" fill="none" strokeDasharray="5,4" strokeLinecap="round" />
+        <polygon points="214,550 200,546 204,558" fill="rgba(255,200,50,0.75)" />
+        <use href="#pcsiegewarn" x="104" y="502" width="44" height="44" />
+        <text x="126" y="560" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="600">DEFEND</text>
       </svg>
     </div>
   );
