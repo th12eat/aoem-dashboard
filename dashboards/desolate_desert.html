@@ -719,6 +719,7 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
   const edges = {};   // edgeKey -> { a, b, owners: [tag,...], state: {tag: {...}} }
   routes.forEach((r) => {
     if (outOfFocus(r.owner)) return;
+    if (r.noLine) return;   // SSH-only marker (disconnected capture) — no connecting line
     for (let k = 0; k < r.path.length - 1; k++) {
       const a = r.path[k], b = r.path[k+1];
       if (!MAP_NODES[a] || !MAP_NODES[b]) continue;

@@ -1040,25 +1040,6 @@
         "connected": true
       },
       {
-        "owner": "K38",
-        "path": [
-          "blazing_fort",
-          "gate_azure_sky"
-        ],
-        "ssh": true,
-        "connected": true,
-        "sshOutward": true
-      },
-      {
-        "owner": "K38",
-        "path": [
-          "gate_azure_sky",
-          "aaru_s"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
         "owner": "③∧⑨",
         "path": [
           "ruler_fort",
@@ -1146,6 +1127,18 @@
           "aaru_e"
         ],
         "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "K38",
+        "path": [
+          "gate_azure_sky",
+          "aaru_s"
+        ],
+        "ssh": true,
+        "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true,
         "connected": true
       }
     ],
