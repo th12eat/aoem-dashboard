@@ -469,6 +469,37 @@ function App() {
   const [, force] = useState(0);
   useEffect(() => { const id = setInterval(() => force(x => x + 1), 1000); return () => clearInterval(id); }, []);
 
+  // Stage-advancing event-meta header (shared EventHeader `phases`) — mounted
+  // inside a useEffect so #evtMeta exists in the DOM first, mirroring DD/TME.
+  // Each cell's sub-header is a stage name; value = the date it opens; countdown
+  // targets the next stage. Retry loop covers event-header.js still loading.
+  useEffect(() => {
+    let tries = 0;
+    const mount = () => {
+      if (window.EventHeader && document.getElementById("evtMeta")) {
+        window.EventHeader.mount("#evtMeta", {
+          timezone: "UTC+0",
+          startISO: "2026-08-17T00:00:00Z", endISO: "2026-08-23T23:59:59Z",
+          startLabel: "Aug 17", startLabelText: T("Starts"),
+          endLabel: "Aug 23", endLabelText: T("Ends"),
+          pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete"),
+          liveLabel: "Contest Live", liveDot: true,
+          ical: { stub: true, label: T("Add to Calendar") },
+          phases: [
+            { fromISO: "2026-08-17T00:00:00Z", leftLabel: T("Matchmaking"),  leftValue: "Aug 17", rightLabel: T("Battle Day 1"), rightValue: "Aug 18", countdownISO: "2026-08-18T00:00:00Z", stageLabel: "Contest Live | Matchmaking" },
+            { fromISO: "2026-08-18T00:00:00Z", leftLabel: T("Battle Day 1"), leftValue: "Aug 18", rightLabel: T("Battle Day 2"), rightValue: "Aug 19", countdownISO: "2026-08-19T00:00:00Z", stageLabel: "Contest Live | Battle Day 1" },
+            { fromISO: "2026-08-19T00:00:00Z", leftLabel: T("Battle Day 2"), leftValue: "Aug 19", rightLabel: T("Battle Day 3"), rightValue: "Aug 20", countdownISO: "2026-08-20T00:00:00Z", stageLabel: "Contest Live | Battle Day 2" },
+            { fromISO: "2026-08-20T00:00:00Z", leftLabel: T("Battle Day 3"), leftValue: "Aug 20", rightLabel: T("Selection"),    rightValue: "Aug 21", countdownISO: "2026-08-21T00:00:00Z", stageLabel: "Contest Live | Battle Day 3" },
+            { fromISO: "2026-08-21T00:00:00Z", leftLabel: T("Selection"),    leftValue: "Aug 21", rightLabel: T("Showdown"),     rightValue: "Aug 22", countdownISO: "2026-08-22T00:00:00Z", stageLabel: "Contest Live | Battlefield Selection" },
+            { fromISO: "2026-08-22T00:00:00Z", leftLabel: T("Showdown"),     leftValue: "Aug 22", rightLabel: T("Recovery"),     rightValue: "Aug 23", countdownISO: "2026-08-23T00:00:00Z", stageLabel: "Contest Live | Showdown" },
+            { fromISO: "2026-08-23T00:00:00Z", leftLabel: T("Recovery"),     leftValue: "Aug 23", rightLabel: T("Ends"),         rightValue: "Aug 23", countdownISO: "2026-08-23T23:59:59Z", stageLabel: "Contest Live | Recovery" },
+          ],
+        });
+      } else if (tries++ < 50) { setTimeout(mount, 50); }
+    };
+    mount();
+  }, []);
+
   const ws = workshopStatus(Date.now());
 
   // Jump to a section: switch to its tab, then smooth-scroll to the anchor id.
@@ -576,26 +607,6 @@ const S = {
 </script>
 
 <script src="../assets/event-header.js"></script>
-<script>
-  // Shared EventHeader — phase-aware stage indicator + countdown.
-  EventHeader.mount('#evtMeta', {
-    timezone: 'UTC+0',
-    startISO: '2026-08-17T00:00:00Z', endISO: '2026-08-23T23:59:59Z',
-    startLabel: 'Aug 17', startLabelText: 'Starts',
-    endLabel: 'Aug 23', endLabelText: 'Ends',
-    pendingLabel: 'Matchmaking', completeLabel: 'Event Complete',
-    liveLabel: 'Contest Live', liveDot: true,
-    phases: [
-      { fromISO: '2026-08-17T00:00:00Z', leftLabel: 'Matchmaking',  leftValue: 'Aug 17', rightLabel: 'Battle Day 1', rightValue: 'Aug 18', countdownISO: '2026-08-18T00:00:00Z', stageLabel: 'Contest Live | Matchmaking' },
-      { fromISO: '2026-08-18T00:00:00Z', leftLabel: 'Battle Day 1', leftValue: 'Aug 18', rightLabel: 'Battle Day 2', rightValue: 'Aug 19', countdownISO: '2026-08-19T00:00:00Z', stageLabel: 'Contest Live | Battle Day 1' },
-      { fromISO: '2026-08-19T00:00:00Z', leftLabel: 'Battle Day 2', leftValue: 'Aug 19', rightLabel: 'Battle Day 3', rightValue: 'Aug 20', countdownISO: '2026-08-20T00:00:00Z', stageLabel: 'Contest Live | Battle Day 2' },
-      { fromISO: '2026-08-20T00:00:00Z', leftLabel: 'Battle Day 3', leftValue: 'Aug 20', rightLabel: 'Selection',    rightValue: 'Aug 21', countdownISO: '2026-08-21T00:00:00Z', stageLabel: 'Contest Live | Battle Day 3' },
-      { fromISO: '2026-08-21T00:00:00Z', leftLabel: 'Selection',    leftValue: 'Aug 21', rightLabel: 'Showdown',     rightValue: 'Aug 22', countdownISO: '2026-08-22T00:00:00Z', stageLabel: 'Contest Live | Battlefield Selection' },
-      { fromISO: '2026-08-22T00:00:00Z', leftLabel: 'Showdown',     leftValue: 'Aug 22', rightLabel: 'Recovery',     rightValue: 'Aug 23', countdownISO: '2026-08-23T00:00:00Z', stageLabel: 'Contest Live | Showdown' },
-      { fromISO: '2026-08-23T00:00:00Z', leftLabel: 'Recovery',     leftValue: 'Aug 23', rightLabel: 'Ends',         rightValue: 'Aug 23', countdownISO: '2026-08-23T23:59:59Z', stageLabel: 'Contest Live | Recovery' },
-    ],
-  });
-</script>
 <script src="../assets/auth.js"></script>
 <script src="../assets/site-header.js"></script>
 <script src="../assets/tab-scroll-hint.js" defer></script>
