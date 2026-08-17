@@ -136,6 +136,46 @@ const SERVERS = [
 ];
 const srvColor = code => SERVERS.find(s => s.code === code) || { hex: "#94a3b8", rgb: "148,163,184" };
 
+// Kingdom Points standings, overlaid from ../data/live/primordial.json
+// (kingdomScoreboard: [{server, points}]). Empty/0 until battle scores come in.
+let KINGDOM_SCOREBOARD = [];
+let SCORE_UPDATED = "";
+
+// Persistent Kingdom Standings bar (mirrors Desolate Desert's KingdomBar): a
+// single stacked bar, one segment per kingdom, colored per our assignment. When
+// there are no points yet (like now), it still shows — split equally at 0.
+function KingdomBar() {
+  const GRAD = {
+    "E#008": { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" }, // blue (us)
+    "E#028": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" }, // green
+    "E#088": { grad: "linear-gradient(90deg, #b4500f, #e8944a)", top: "#f0a860" }, // orange
+    "E#059": { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" }, // purple
+  };
+  const ptsFor = code => { const row = (KINGDOM_SCOREBOARD || []).find(k => k.server === code); return row ? Number(String(row.points).replace(/,/g, "")) : 0; };
+  const segs = SERVERS.map(s => ({ code: s.code, label: s.label, us: s.us, g: GRAD[s.code], pts: ptsFor(s.code) }));
+  const total = segs.reduce((a, x) => a + x.pts, 0);
+  const awaiting = !total; // no scores yet → split equally, still render the bar
+  const widthPct = s => awaiting ? (100 / segs.length) : (s.pts / total) * 100;
+  const fmt = n => n >= 1e9 ? (n / 1e9).toFixed(2) + "B" : n >= 1e6 ? (n / 1e6).toFixed(0) + "M" : n.toLocaleString();
+  return (
+    <div>
+      <div style={{ display: "flex", width: "100%", marginBottom: "6px" }}>
+        {segs.map(s => { const pct = widthPct(s); return (
+          <div key={s.code} style={{ width: pct + "%", textAlign: "center", padding: "0 2px", overflow: "hidden" }}>
+            {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 700, color: s.g.top, lineHeight: 1.2, whiteSpace: "nowrap" }}>{s.label}{s.us ? " (Us)" : ""}</div> : null}
+            {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 600, color: "#cbd5e1", lineHeight: 1.2, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{awaiting ? "0" : fmt(s.pts)}</div> : null}
+          </div>
+        ); })}
+      </div>
+      <div style={{ display: "flex", width: "100%", height: "22px", borderRadius: "6px", overflow: "hidden", border: "1px solid #334155" }}>
+        {segs.map(s => { const pct = widthPct(s); return (
+          <div key={s.code} title={s.label + ": " + s.pts.toLocaleString() + (awaiting ? " (awaiting data)" : " (" + pct.toFixed(1) + "%)")} style={{ width: pct + "%", background: s.g.grad, borderRight: "1px solid rgba(0,0,0,0.3)" }} />
+        ); })}
+      </div>
+    </div>
+  );
+}
+
 // ── Schedule stages (the "line"). Each: key, label, day range, ISO start. ──
 const STAGES = [
   { key: "match",    label: "Matchmaking & scouting",  days: [1],    startISO: "2026-08-17T00:00:00Z" },
@@ -467,38 +507,50 @@ function App() {
   const [tab, setTab] = useState("overview");
   const [modal, setModal] = useState(null); // null | "about" | "workshop"
   const [, force] = useState(0);
-  useEffect(() => { const id = setInterval(() => force(x => x + 1), 1000); return () => clearInterval(id); }, []);
+  // 30s tick is enough to flip the workshop badge on minute boundaries — a 1s
+  // whole-App re-render just churns the DOM around the imperatively-mounted header.
+  useEffect(() => { const id = setInterval(() => force(x => x + 1), 30000); return () => clearInterval(id); }, []);
 
-  // Stage-advancing event-meta header (shared EventHeader `phases`) — mounted
-  // inside a useEffect so #evtMeta exists in the DOM first, mirroring DD/TME.
-  // Each cell's sub-header is a stage name; value = the date it opens; countdown
-  // targets the next stage. Retry loop covers event-header.js still loading.
+  // Stage-advancing event-meta header (shared EventHeader `phases`), mirroring
+  // DD/TME. The EventHeader injects into #evtMeta imperatively; because #evtMeta
+  // lives in the React tree, this effect runs after EVERY render and re-injects
+  // whenever the node is empty (self-healing if React ever recreates it) — so the
+  // header can never silently blank out. Config is built once and reused.
+  const evtCfg = React.useRef(null);
+  if (!evtCfg.current) {
+    evtCfg.current = {
+      timezone: "UTC+0",
+      startISO: "2026-08-17T00:00:00Z", endISO: "2026-08-23T23:59:59Z",
+      startLabel: "Aug 17", startLabelText: T("Starts"),
+      endLabel: "Aug 23", endLabelText: T("Ends"),
+      pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete"),
+      liveLabel: "Contest Live", liveDot: true,
+      ical: { stub: true, label: T("Add to Calendar") },
+      phases: [
+        { fromISO: "2026-08-17T00:00:00Z", leftLabel: T("Matchmaking"),  leftValue: "Aug 17", rightLabel: T("Battle Day 1"), rightValue: "Aug 18", countdownISO: "2026-08-18T00:00:00Z", stageLabel: "Contest Live | Matchmaking" },
+        { fromISO: "2026-08-18T00:00:00Z", leftLabel: T("Battle Day 1"), leftValue: "Aug 18", rightLabel: T("Battle Day 2"), rightValue: "Aug 19", countdownISO: "2026-08-19T00:00:00Z", stageLabel: "Contest Live | Battle Day 1" },
+        { fromISO: "2026-08-19T00:00:00Z", leftLabel: T("Battle Day 2"), leftValue: "Aug 19", rightLabel: T("Battle Day 3"), rightValue: "Aug 20", countdownISO: "2026-08-20T00:00:00Z", stageLabel: "Contest Live | Battle Day 2" },
+        { fromISO: "2026-08-20T00:00:00Z", leftLabel: T("Battle Day 3"), leftValue: "Aug 20", rightLabel: T("Selection"),    rightValue: "Aug 21", countdownISO: "2026-08-21T00:00:00Z", stageLabel: "Contest Live | Battle Day 3" },
+        { fromISO: "2026-08-21T00:00:00Z", leftLabel: T("Selection"),    leftValue: "Aug 21", rightLabel: T("Showdown"),     rightValue: "Aug 22", countdownISO: "2026-08-22T00:00:00Z", stageLabel: "Contest Live | Battlefield Selection" },
+        { fromISO: "2026-08-22T00:00:00Z", leftLabel: T("Showdown"),     leftValue: "Aug 22", rightLabel: T("Recovery"),     rightValue: "Aug 23", countdownISO: "2026-08-23T00:00:00Z", stageLabel: "Contest Live | Showdown" },
+        { fromISO: "2026-08-23T00:00:00Z", leftLabel: T("Recovery"),     leftValue: "Aug 23", rightLabel: T("Ends"),         rightValue: "Aug 23", countdownISO: "2026-08-23T23:59:59Z", stageLabel: "Contest Live | Recovery" },
+      ],
+    };
+  }
   useEffect(() => {
-    let tries = 0;
+    let tries = 0, cancelled = false;
     const mount = () => {
-      if (window.EventHeader && document.getElementById("evtMeta")) {
-        window.EventHeader.mount("#evtMeta", {
-          timezone: "UTC+0",
-          startISO: "2026-08-17T00:00:00Z", endISO: "2026-08-23T23:59:59Z",
-          startLabel: "Aug 17", startLabelText: T("Starts"),
-          endLabel: "Aug 23", endLabelText: T("Ends"),
-          pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete"),
-          liveLabel: "Contest Live", liveDot: true,
-          ical: { stub: true, label: T("Add to Calendar") },
-          phases: [
-            { fromISO: "2026-08-17T00:00:00Z", leftLabel: T("Matchmaking"),  leftValue: "Aug 17", rightLabel: T("Battle Day 1"), rightValue: "Aug 18", countdownISO: "2026-08-18T00:00:00Z", stageLabel: "Contest Live | Matchmaking" },
-            { fromISO: "2026-08-18T00:00:00Z", leftLabel: T("Battle Day 1"), leftValue: "Aug 18", rightLabel: T("Battle Day 2"), rightValue: "Aug 19", countdownISO: "2026-08-19T00:00:00Z", stageLabel: "Contest Live | Battle Day 1" },
-            { fromISO: "2026-08-19T00:00:00Z", leftLabel: T("Battle Day 2"), leftValue: "Aug 19", rightLabel: T("Battle Day 3"), rightValue: "Aug 20", countdownISO: "2026-08-20T00:00:00Z", stageLabel: "Contest Live | Battle Day 2" },
-            { fromISO: "2026-08-20T00:00:00Z", leftLabel: T("Battle Day 3"), leftValue: "Aug 20", rightLabel: T("Selection"),    rightValue: "Aug 21", countdownISO: "2026-08-21T00:00:00Z", stageLabel: "Contest Live | Battle Day 3" },
-            { fromISO: "2026-08-21T00:00:00Z", leftLabel: T("Selection"),    leftValue: "Aug 21", rightLabel: T("Showdown"),     rightValue: "Aug 22", countdownISO: "2026-08-22T00:00:00Z", stageLabel: "Contest Live | Battlefield Selection" },
-            { fromISO: "2026-08-22T00:00:00Z", leftLabel: T("Showdown"),     leftValue: "Aug 22", rightLabel: T("Recovery"),     rightValue: "Aug 23", countdownISO: "2026-08-23T00:00:00Z", stageLabel: "Contest Live | Showdown" },
-            { fromISO: "2026-08-23T00:00:00Z", leftLabel: T("Recovery"),     leftValue: "Aug 23", rightLabel: T("Ends"),         rightValue: "Aug 23", countdownISO: "2026-08-23T23:59:59Z", stageLabel: "Contest Live | Recovery" },
-          ],
-        });
-      } else if (tries++ < 50) { setTimeout(mount, 50); }
+      if (cancelled) return;
+      const el = document.getElementById("evtMeta");
+      if (window.EventHeader && el) {
+        // Only (re)mount when empty — avoids tearing down EventHeader's own 1s
+        // countdown timer on every App render.
+        if (!el.querySelector(".evt-stage")) window.EventHeader.mount("#evtMeta", evtCfg.current);
+      } else if (tries++ < 100) { setTimeout(mount, 50); }
     };
     mount();
-  }, []);
+    return () => { cancelled = true; };
+  });
 
   const ws = workshopStatus(Date.now());
 
@@ -556,6 +608,14 @@ function App() {
         <div id="evtMeta"></div>
       </div>
 
+      {/* Persistent Kingdom Standings bar — above the tabs on every tab */}
+      <div style={{ maxWidth: "960px", margin: "0 auto", padding: "14px 16px 0" }}>
+        <KingdomBar />
+        <div style={{ marginTop: "8px", fontSize: "11px", color: "#64748b", textAlign: "right" }}>
+          {SCORE_UPDATED ? T("Last updated: ") + SCORE_UPDATED : T("Kingdom Points — awaiting first battle-day scores")}
+        </div>
+      </div>
+
       <div className="pc-wrap">
         <div className="tabs">
           {TABS.map(t => (
@@ -600,6 +660,8 @@ const S = {
     if (res.ok) {
       const j = await res.json();
       if (j && j.research) RESEARCH = j.research;
+      if (j && Array.isArray(j.kingdomScoreboard)) KINGDOM_SCOREBOARD = j.kingdomScoreboard;
+      if (j && j.scoreUpdated) SCORE_UPDATED = j.scoreUpdated;
     }
   } catch (e) { console.error("primordial roster load failed", e); }
   ReactDOM.createRoot(document.getElementById("root")).render(<App />);

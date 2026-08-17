@@ -448,5 +448,23 @@
         ]
       ]
     }
-  }
+  },
+  "kingdomScoreboard": [
+    {
+      "server": "E#008",
+      "points": 0
+    },
+    {
+      "server": "E#028",
+      "points": 0
+    },
+    {
+      "server": "E#088",
+      "points": 0
+    },
+    {
+      "server": "E#059",
+      "points": 0
+    }
+  ]
 }
