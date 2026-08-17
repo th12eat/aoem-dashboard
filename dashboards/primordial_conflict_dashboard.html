@@ -52,6 +52,55 @@
   .pc-table tr:hover td { background: var(--bg-card2, #1a1a2a); }
   .table-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
 
+  /* Normalize scouting-table row height across scripts. Without an explicit
+     line-height, CJK-only names (Era #088) fall back to a taller intrinsic
+     "normal" metric and that whole table's rows grow. A fixed unitless value
+     keeps all four server tables identical. */
+  .cmp-tbl td, .cmp-tbl th { line-height: 1.3; }
+  .cmp-tbl.cmp-tbl-wrap .c-nm { line-height: 1.3; }
+
+  /* ── Header pill cluster + icon buttons (mirrors Desolate Desert) ── */
+  .hdr-pills-top { position:absolute; right:16px; top:14px; z-index:12; display:inline-flex; align-items:center; gap:6px; }
+  .hdr-pills { position:absolute; right:16px; bottom:14px; z-index:12; display:inline-flex; align-items:center; gap:6px; }
+  .hdr-icobtn {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:32px; height:32px; border-radius:999px; cursor:pointer;
+    background:rgba(148,163,184,0.10); border:1px solid #475569; color:#cbd5e1;
+    font-size:15px; line-height:1; text-decoration:none; transition:background .15s, border-color .15s;
+  }
+  .hdr-icobtn:hover { background:rgba(148,163,184,0.22); border-color:#7b8496; }
+  /* Workshop badge — pulses purple when the event window is live, greyed idle otherwise */
+  .ws-badge {
+    display:inline-flex; align-items:center; gap:7px; padding:6px 12px 6px 10px; border-radius:999px;
+    cursor:pointer; text-decoration:none; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:.5px;
+    background:rgba(155,109,255,0.14); border:1px solid var(--kvk-accent,#9b6dff); color:var(--kvk-accent,#9b6dff);
+    animation:wsPulse 1.6s ease-in-out infinite;
+  }
+  .ws-badge:hover { background:rgba(155,109,255,0.24); }
+  .ws-badge.is-idle { background:rgba(148,163,184,0.10); border-color:#475569; color:#94a3b8; animation:none; }
+  .ws-badge.is-idle:hover { background:rgba(148,163,184,0.20); }
+  .ws-badge.is-idle .ws-ico { filter:grayscale(1); opacity:.7; }
+  .ws-badge .ws-ico { font-size:16px; line-height:1; }
+  .ws-badge .ws-txt { font-size:13px; }
+  @keyframes wsPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(155,109,255,0.5);} 50%{ box-shadow:0 0 0 6px rgba(155,109,255,0);} }
+  @media (prefers-reduced-motion: reduce){ .ws-badge{ animation:none; } }
+  @media (max-width: 520px){
+    .hdr-pills-top{ right:10px; top:10px; }
+    .hdr-pills{ right:10px; bottom:10px; }
+    .ws-badge .ws-txt{ font-size:12px; }
+  }
+
+  /* ── Help / info popup modal ── */
+  .pc-modal { position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(0,0,0,0.82); }
+  .pc-modal-card { position:relative; max-width:560px; width:100%; background:#11141f; border:1px solid var(--kvk-accent,#9b6dff); border-radius:14px; padding:26px 22px 22px; text-align:left; box-shadow:0 0 40px rgba(155,109,255,0.2); max-height:86vh; overflow-y:auto; }
+  .pc-modal-card h3 { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:1.5px; color:var(--kvk-accent,#9b6dff); margin:0 0 14px; text-align:center; }
+  .pc-modal-card p, .pc-modal-card li { font-size:13px; color:#e2e8f0; line-height:1.6; }
+  .pc-modal-close { position:absolute; top:8px; right:14px; font-size:24px; line-height:1; color:#64748b; cursor:pointer; font-family:sans-serif; }
+  .pc-modal-close:hover { color:#e8eaf0; }
+
+  /* Anchor offset so in-header jump links don't hide section titles under nothing */
+  .anchor-target { scroll-margin-top: 16px; }
+
   @media (max-width: 640px) {
     .table-scroll .pc-table { min-width: 420px; }
   }
@@ -265,33 +314,94 @@ function OverviewTab() {
 function ScheduleTab() {
   return (
     <div>
+      <div id="day-by-day" className="pc-card anchor-target">
+        <h2>{T("Day-by-Day")}</h2>
+        <StageLine />
+        <p className="sl-note">{T("The seven-day arc at a glance. Section detail below; the Order Workshop and Day 6 Showdown playbooks are folded in.")}</p>
+      </div>
+
       <div className="pc-card">
         <h2>{T("Day 1 — Matchmaking & Display")}</h2>
         <p>{T("View event rules, participating kingdoms, schedule and rewards. No combat or gathering yet. Scout opponent servers (see the Scouting tab) and coordinate assignments.")}</p>
       </div>
+
       <div className="pc-card">
         <h2>{T("Days 2–4 — Battle Stage (Round Robin)")}</h2>
         <p>{T("Each day your kingdom is paired 1v1 against a different opponent. Two activities run across the three battle days: Alchemy Pool gathering (passive Dew) and Order Workshop contests (twice-daily PvP objectives).")}</p>
-        <h3>{T("Order Workshops")}</h3>
+      </div>
+
+      {/* ── Order Workshop (folds in the Order Workshop flyer) ── */}
+      <div id="order-workshop" className="pc-card anchor-target">
+        <h2>🔧 {T("Order Workshop")}</h2>
+        <p>{T("Two workshop events run every battle day — one on each paired server, 3 workshops each (6 total). Each server votes its own time; ours is locked at")} <strong style={{ color: "var(--kvk-accent)" }}>19:00 UTC</strong> {T("and held all phase. You also fight the opponent's event at their time. Each contest lasts 1 hour.")}</p>
+        <h3>{T("What Spawns")}</h3>
         <ul>
-          <li>{T("Two workshop events per day — one on each paired server, 3 workshops each.")}</li>
-          <li>{T("Our server's event is at 19:00 UTC (held all phase); the opponent's is at their voted time.")}</li>
-          <li>{T("Fully capturing a workshop: 600M Kingdom Points; occupying at contest end: +200M.")}</li>
-          <li>{T("No player cap inside — swarm; once captured a workshop can't be un-captured.")}</li>
+          <li>{T("3 workshops per contest — 1 per Zone 2 region, randomly placed each round.")}</li>
+          <li>{T("Large square capture zone, no player cap — flood it. More bodies = faster capture timer.")}</li>
+          <li>{T("Timer → 0 = captured (permanent). Teleport nearby, then walk in on foot.")}</li>
         </ul>
-      </div>
-      <div className="pc-card">
-        <h2>{T("Day 5 — Battlefield Selection")}</h2>
-        <p>{T("The kingdom ranked first in Battle Stage points chooses the showdown location and time. Pick a window that maximizes your active players; picking your own map means you're already positioned.")}</p>
-      </div>
-      <div className="pc-card">
-        <h2>{T("Day 6 — The Showdown")}</h2>
-        <p>{T("All four kingdoms converge on the chosen battlefield. 8 Essence Refineries appear around that kingdom's Imperial City — occupying kingdom earns 1M Kingdom Points/sec, and each refinery grants 800M to the last holder at contest end.")}</p>
+        <h3>{T("Rewards")}</h3>
+        <ul>
+          <li>{T("600M points on capture (400M cap + 200M if leading at contest end).")}</li>
+          <li>{T("+500 pts/sec per person inside — every tier counts equally (T1 = T8 for pts/sec).")}</li>
+        </ul>
+        <div className="callout important">
+          <strong>{T("Stay Inside Until Fully Capped")}</strong>
+          {T("Do not leave to farm or PvP — every person counts toward the timer. If you lose a workshop, retreat to one you already hold: every second inside a held workshop earns points, and retreating pulls the enemy off their own workshop.")}
+        </div>
+        <h3>{T("Roles")}</h3>
+        <ul>
+          <li><strong>{T("Fighter")}</strong> — {T("get inside, fight, displace enemy marches, contest the zone.")}</li>
+          <li><strong>{T("Kraken")}</strong> — {T("block enemy entry; position between the enemy and the workshop to cut off their flow.")}</li>
+          <li><strong>{T("Non-Fighter / Support")}</strong> — {T("Tier-1 marches only, placed on the far edge away from enemy flow — adds presence & pts/sec without risk.")}</li>
+        </ul>
         <div className="callout strategy">
-          <strong>{T("4-Way Politics")}</strong>
-          {T("Unlike a clean 1v1, this is a 4-way fight over 8 refineries: temporary truces, target prioritization and refinery splits are all in play.")}
+          <strong>{T("Target 2, Not 3")}</strong>
+          {T("Three workshops spreads forces thin — slower caps, fewer people soaking pts/sec in each. Pick 2 and dominate them; chase the 3rd only if leadership calls it. Every minute away from a held workshop costs 500 pts/s/person plus free PvP points to the enemy.")}
+        </div>
+        <div className="callout warning">
+          <strong>{T("Citadel Watch")}</strong>
+          {T("This is a 1-hour PvP window. If your citadel is vulnerable or threatened during the event, bubble up immediately — don't assume someone else has seen it.")}
         </div>
       </div>
+
+      <div className="pc-card">
+        <h2>{T("Day 5 — Battlefield Selection")}</h2>
+        <p>{T("The kingdom ranked first in Battle Stage points chooses the showdown location and time. Pick a window that maximizes your active players; picking your own map means you're already positioned. Deadline: 12:00 UTC. If the winning kingdom has no king, the R5 of its highest-power alliance chooses.")}</p>
+      </div>
+
+      {/* ── Day 6 Showdown (folds in the Day 6 Showdown flyer) ── */}
+      <div id="day6-showdown" className="pc-card anchor-target">
+        <h2>🔥 {T("Day 6 — The Showdown")}</h2>
+        <p>{T("All four kingdoms converge on the chosen battlefield. 8 Essence Refineries appear in a fixed grid around that kingdom's Imperial City. Each server teleports into one corner of the IC map via cross-border faction camps. The kingdom with the most Kingdom Points at event end wins — points carry over from the Battle Stage.")}</p>
+        <h3>{T("Schedule (relative to the chosen contest time)")}</h3>
+        <ul>
+          <li><strong>{T("−2h30")}</strong> — {T("Cross-border Invasion Camp opens; players from all kingdoms can relocate to the showdown map.")}</li>
+          <li><strong>{T("−2h00")}</strong> — {T("Cross-border Faction Camp opens; relocate to your own faction's camp.")}</li>
+          <li><strong>{T("−30m")}</strong> — {T("Top-6 alliance early teleport (tiered −30 / −20 / −10). Camps open 30 min before contest; refineries not yet active.")}</li>
+          <li><strong>{T("Contest start")}</strong> — {T("Refineries open. Occupy to earn Kingdom Points; fight for Primordial Essence.")}</li>
+          <li><strong>{T("+2h00")}</strong> — {T("Battlefield clears: refineries enter protection (no longer contestable), final holder gets the end bonus. Open-field Essence gathering continues ~2–4h more.")}</li>
+        </ul>
+        <h3>{T("Scoring")}</h3>
+        <ul>
+          <li>{T("1M Kingdom Points per second per refinery held.")}</li>
+          <li>{T("800M Kingdom Points per refinery to the last holder at contest end — 8 × 800M = 6.4B end-bonus alone.")}</li>
+          <li>{T("Primordial Essence (Day-6-only personal currency): 1/sec per player garrisoned at a refinery (min 50K units), plus 1 per 500 combat points on IC plots (max 70K). Essence does not convert to Kingdom Points.")}</li>
+        </ul>
+        <h3>{T("Rules")}</h3>
+        <ul>
+          <li>{T("Refineries can ONLY be attacked via rally — no solo marches, no war machines.")}</li>
+          <li>{T("Combat marches must be max-tier, full capacity. Essence-farming marches can be any tier with 50K+ units (low-risk only).")}</li>
+          <li>{T("Only one troop per player per refinery earns Essence.")}</li>
+          <li>{T("Do NOT abandon a refinery near the end — 800M only pays the holder at contest end; even a last-second flip is worth 800M.")}</li>
+        </ul>
+        <div className="callout strategy">
+          <strong>{T("4-Way Politics")}</strong>
+          {T("Unlike a clean 1v1, this is a 4-way fight over 8 refineries: temporary truces, target prioritization and refinery splits are all in play. Lock your home-corner cluster first, then push the flanks. Taxi rallies (an R4+ rally at the enemy citadel, then kick/disband to dump players at refineries) get the rest of the roster positioned fast after contest start.")}
+        </div>
+        <p className="sl-note">{T("Battlefield host, corner assignments and exact teleport tiers depend on who wins the Battle Stage pick — confirm in-client once Day 5 resolves.")}</p>
+      </div>
+
       <div className="pc-card">
         <h2>{T("Day 7 — Recovery")}</h2>
         <p>{T("Partial recovery of units lost in battle. In this special no-troop-loss cycle, wounded units are restored — contest freely.")}</p>
@@ -330,15 +440,67 @@ function ScoringTab() {
   );
 }
 
+// Our workshop event runs 19:00–20:00 UTC each battle day (Days 2–4). Returns
+// {live, next} so the header badge can pulse during the window and grey out
+// otherwise — dynamic to when the event is on, like DD's Tower badge.
+function workshopStatus(now) {
+  const days = ["2026-08-17", "2026-08-18", "2026-08-19"]; // battle days
+  for (const d of days) {
+    const start = Date.parse(d + "T19:00:00Z");
+    const end = Date.parse(d + "T20:00:00Z");
+    if (now >= start && now < end) return { live: true, next: null };
+  }
+  for (const d of days) {
+    const start = Date.parse(d + "T19:00:00Z");
+    if (now < start) return { live: false, next: start };
+  }
+  return { live: false, next: null };
+}
+
 function App() {
   const [tab, setTab] = useState("overview");
+  const [modal, setModal] = useState(null); // null | "about" | "workshop"
   const [, force] = useState(0);
-  useEffect(() => { const id = setInterval(() => force(x => x + 1), 30000); return () => clearInterval(id); }, []);
+  useEffect(() => { const id = setInterval(() => force(x => x + 1), 1000); return () => clearInterval(id); }, []);
+
+  const ws = workshopStatus(Date.now());
+
+  // Jump to a section: switch to its tab, then smooth-scroll to the anchor id.
+  const jumpTo = (tabId, anchorId) => {
+    setTab(tabId);
+    setTimeout(() => { const el = document.getElementById(anchorId); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
+  };
 
   return (
     <div>
+      {/* ── Popup modals ── */}
+      {modal === "about" ? (
+        <div className="pc-modal" onClick={() => setModal(null)}>
+          <div className="pc-modal-card" onClick={e => e.stopPropagation()}>
+            <span className="pc-modal-close" onClick={() => setModal(null)}>×</span>
+            <h3>{T("What is Primordial Conflict?")}</h3>
+            <p><strong style={{ color: "var(--kvk-accent)" }}>{T("Primordial Conflict")}</strong> {T("is a 7-day, four-kingdom round-robin KvK. After a matchmaking day, your kingdom fights each of the other three 1v1 across three battle days (Days 2–4), earning Primordial Points by gathering Dew at Alchemy Pools and contesting Order Workshops. The kingdom leading on points then picks the showdown battlefield & time (Day 5), all four converge for a 4-way fight over 8 Essence Refineries (Day 6), and Day 7 recovers losses.")}</p>
+            <p style={{ marginTop: 10 }}><strong style={{ color: "#3daa6d" }}>{T("This is a special KvK where no troop loss occurs")}</strong> — {T("units wounded in PvP are recovered, so there's no lasting attrition. Contest every objective aggressively and PvP freely.")}</p>
+            <p style={{ marginTop: 10 }}>{T("We are Era #008 (ERAEMPIRE), facing Era #028, Era #088 and Era #059. Our server's workshop and showdown window is")} <strong style={{ color: "var(--kvk-accent)" }}>{EVENT.ourTime}</strong>.</p>
+          </div>
+        </div>
+      ) : null}
+
       {/* Header */}
       <div style={S.header}>
+        {/* top-right: Day-by-Day + About buttons */}
+        <div className="hdr-pills-top">
+          <button type="button" className="hdr-icobtn" title={T("Jump to Day-by-Day")} onClick={() => jumpTo("schedule", "day-by-day")}>📅</button>
+          <button type="button" className="hdr-icobtn" title={T("What is Primordial Conflict?")} onClick={() => setModal("about")}>❓</button>
+        </div>
+        {/* bottom-right: Order Workshop badge — pulses purple while the 19:00 window is live */}
+        <div className="hdr-pills">
+          <a href="#order-workshop" className={"ws-badge" + (ws.live ? "" : " is-idle")}
+            title={ws.live ? T("Order Workshop event is LIVE — jump to section") : T("Order Workshop — jump to section")}
+            onClick={(e) => { e.preventDefault(); jumpTo("schedule", "order-workshop"); }}>
+            <span className="ws-ico">🔧</span><span className="ws-txt">{ws.live ? T("Workshop · LIVE") : T("Workshop · 19:00")}</span>
+          </a>
+        </div>
         <div style={S.headerSub}>{T("Four-Kingdom Round-Robin · Special KvK (No Troop Loss)")}</div>
         <h1 style={S.headerTitle}>{T("PRIMORDIAL CONFLICT")}</h1>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", justifyContent: "center", marginTop: "8px" }}>
