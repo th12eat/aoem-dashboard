@@ -218,6 +218,26 @@ const STAGE_TINT = {
   recovery: { bright: "#f7a8c8", dark: "#5e3648" },
 };
 
+// Current event day (1–7) from today's UTC date; 0 before it starts, capped at 7.
+function currentEventDay(now) {
+  const startDay = Date.parse("2026-08-17T00:00:00Z");
+  if (now < startDay) return 0;
+  const d = Math.floor((now - startDay) / 86400000) + 1;
+  return Math.min(7, d);
+}
+
+// Daily objectives (per player), modeled on Desolate Desert's list — drawn from
+// the Primordial mechanics on this dashboard + the Order Workshop / Day 6 flyers.
+// `opensDay` locks a row until that game day; `target` null = unlimited/scaling.
+const DAILY_OBJECTIVES = [
+  { name: "Gather Primordial Dew", target: null, note: "Alchemy Pools (Lv.1–4). 100 Dew → 10K points. Run 1 march on a Lv.4 pool + the rest on Lv.3." },
+  { name: "Lv.4 Pool Hyena Kills", target: null, opensDay: 2, note: "Land the killing blow on a Corrupted Hyena for +10% gather speed at that pool (only 3 near the IC, refresh 12h)." },
+  { name: "Order Workshop Caps", target: null, opensDay: 2, note: "Capture workshops in our 19:00 event + the opponent's. 600M on capture, +200M if held at end." },
+  { name: "Workshop Stationing", target: null, opensDay: 2, note: "Stay inside a held workshop — +500 pts/sec per person. Every tier counts equally." },
+  { name: "Combat Eliminations", target: null, opensDay: 2, note: "Score PvP within tier gap ≤ 2. No troop loss this cycle — fight freely." },
+  { name: "Primordial Essence", target: null, opensDay: 6, note: "Day 6 only — garrison a refinery (50K+ units) for 1/sec, plus 1 per 500 combat pts (max 70K)." },
+];
+
 // ── Research data (overlaid from ../data/live/primordial.json) ──
 let RESEARCH = null;
 
@@ -374,6 +394,7 @@ function OverviewTab() {
         <p>{T("During battle days you earn Primordial Dew by gathering at Alchemy Pools and fighting over Order Workshops. Each day's 1v1 has two workshop events — one on each server (3 workshops each). Dew converts to Primordial Points for scoring. On the showdown day, Essence Refineries appear around the chosen Imperial City; holding them generates Primordial Essence and massive Kingdom Points.")}</p>
       </div>
 
+      <DailyObjectives />
       <WorkshopSchedule />
     </div>
   );
@@ -578,6 +599,42 @@ function WorkshopLiveModal() {
         <div style={{ fontSize: "14px", color: "#e2e8f0" }}>{T("Battle Day")} {w.day - 1}{res && res.opponent ? " · vs " + res.opponent : ""}</div>
         <div style={{ fontSize: "11px", color: "#64748b", margin: "12px 0 2px", letterSpacing: "0.5px", textTransform: "uppercase" }}>{T("Our event (19:00 UTC) ends in")}</div>
         <div className="ws-modal-cd">{cd}</div>
+      </div>
+    </div>
+  );
+}
+
+// Daily Objectives (per player) — mirrors Desolate Desert's list. Rows with an
+// opensDay lock (greyed) until that game day. Resets 00:00 UTC daily.
+function DailyObjectives() {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => { const id = setInterval(() => setNow(Date.now()), 60000); return () => clearInterval(id); }, []);
+  const day = currentEventDay(now);
+  return (
+    <div id="daily-objectives" className="pc-card anchor-target">
+      <h2>📜 {T("Daily Objectives (per player)")}</h2>
+      <div style={{ fontSize: "11px", color: "#64748b", marginBottom: "10px" }}>{T("Resets 00:00 UTC daily. Contest freely — no troop loss this cycle. Track your own progress toward each target.")}</div>
+      <div className="table-scroll">
+        <table className="pc-table">
+          <thead><tr>
+            <th style={{ textAlign: "left" }}>{T("Objective")}</th>
+            <th style={{ textAlign: "right" }}>{T("Daily Target")}</th>
+            <th style={{ textAlign: "left" }}>{T("Notes")}</th>
+          </tr></thead>
+          <tbody>
+            {DAILY_OBJECTIVES.map(o => {
+              const locked = o.opensDay && day < o.opensDay;
+              const targetTxt = o.target == null ? "Unlimited" : (o.target >= 1e6 ? (o.target / 1e6) + "M" : (o.target / 1e3) + "K");
+              return (
+                <tr key={o.name} style={locked ? { opacity: 0.45 } : null}>
+                  <td style={{ textAlign: "left", fontWeight: 600, color: locked ? "#64748b" : "#e8eaf0" }}>{o.name}{locked ? " 🔒" : ""}</td>
+                  <td style={{ textAlign: "right", fontVariantNumeric: "tabular-nums", fontWeight: 700, color: o.target == null ? "#94a3b8" : (locked ? "#64748b" : "var(--kvk-accent)") }}>{o.target == null ? T("Unlimited") : "0 / " + targetTxt}</td>
+                  <td style={{ textAlign: "left", fontSize: "11px", color: "#94a3b8" }}>{locked ? T("Opens Day ") + o.opensDay + " · " + o.note : o.note}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );
