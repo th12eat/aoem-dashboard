@@ -65,6 +65,7 @@
   .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;margin-top:8px;color:var(--mut2);}
   .legend b{font-weight:700;}
   .note{font-size:11px;color:var(--mut);margin-top:10px;line-height:1.6;}
+  .star-note{color:var(--gold);font-weight:800;cursor:help;}
   svg{width:100%;height:auto;display:block;}
 </style>
 </head>
@@ -181,6 +182,12 @@ let EVENTS = [
     note:"In progress — top-4 alliance scouting figures (power, merits from whole-percent M:P). Result updates when Behemoth Conquest concludes.",
     ours:[["WC1",20700000000,2277000000],["REU",12600000000,882000000],["AGC",11700000000,234000000],["MyT",10400000000,832000000]],
     oppA:[["τ28",20100000000,2010000000],["Σ28",9900000000,198000000],["H3K",8100000000,162000000],["κ28",1800000000,0]] },
+  { event:"Primordial Conflict", date:"2026-08-16", opp:"Era #028 / Era #088 / Era #059", result:"Live", multi:true, star:true, basis:"top-4 alliances (scouting)",
+    note:"Special KvK — no troop loss occurs. Matchmaking-stage top-4 alliance power + total merits per server, from the Primordial Conflict dashboard Scouting tab.",
+    ourRoster:[["eRa",22715954194,2860752081],["REU",12548141110,585656964],["Myt",10711498679,818268663],["eRà",10146819890,140718820]],
+    oppRosters:{"Era #028":[["τ28",21924713400,2221129135],["Σ28",10262413886,194224085],["H3K",6546560073,129723367],["κ28",1736291537,7683039]],
+      "Era #088":[["YSD",29527079136,3639520625],["YSM",15121443376,348834670],["KöS",13125986833,316964333],["WAN",9167324782,108876588]],
+      "Era #059":[["59X",15457161199,1418495593],["IMP",9358679955,383572622],["AOW",4387298226,210346792],["USB",621112299,5349235]]} },
 ];
 
 const fmtB = n => (n/1e9).toFixed(2)+"B";
@@ -232,9 +239,14 @@ function resultCellHTML(e){
 }
 
 // ---- ledger ----
+// A `star:true` event (special KvK — e.g. no troop loss) gets a gold asterisk
+// after its name, explained by the footnote below the table.
+const evName = e => e.event + (e.star ? ` <span class="star-note" title="${T('Special KvK — no troop loss')}">*</span>` : "");
+let anyStar = false;
 function renderLedger(){
   const tb=document.querySelector("#ledger tbody");
   tb.innerHTML="";
+  anyStar = EVENTS.some(e=>e.star);
   EVENTS.forEach(e=>{
     const rc = e.result==="Win"?"res-win":e.result==="Loss"?"res-loss":e.result==="TBD"?"res-tbd":e.result==="Live"?"res-live":"";
     const tag = e.multi?` <span class="multi-note">(multi-server)</span>`:"";
@@ -268,7 +280,7 @@ function renderLedger(){
           const nS=servers.length;
           const avg=[["avg",sum(allRows,1)/nS,sum(allRows,2)/nS]];
           tb.insertAdjacentHTML("beforeend",
-            `<tr class="multi-head" data-key="${multiKey(e)}"><td class="l">${caret}${e.event}</td><td class="l num">${e.date}</td>`+
+            `<tr class="multi-head" data-key="${multiKey(e)}"><td class="l">${caret}${evName(e)}</td><td class="l num">${e.date}</td>`+
             `<td class="l">${e.opp}<span class="multi-note"> (multi-server)</span>${basisNote}</td>`+
             `${usCells}${oppCells(avg)}${resCell}</tr>`);
         } else {
@@ -279,7 +291,7 @@ function renderLedger(){
           ranked.forEach((s,idx)=>{
             if(idx===0){
               tb.insertAdjacentHTML("beforeend",
-                `<tr class="multi-head" data-key="${multiKey(e)}"><td class="l">${caret}${e.event}</td><td class="l num">${e.date}</td>`+
+                `<tr class="multi-head" data-key="${multiKey(e)}"><td class="l">${caret}${evName(e)}</td><td class="l num">${e.date}</td>`+
                 `<td class="l">${srvLabel(s)}</td>${usCells}${oppCells(e.oppRosters[s])}${resCell}</tr>`);
             } else {
               tb.insertAdjacentHTML("beforeend",
@@ -294,7 +306,7 @@ function renderLedger(){
       const extra = e.note?` <span class="multi-note">(${e.note})</span>`:tag;
       const resCell = e.placement?rankCell(e.placement):resultCellHTML(e);
       tb.insertAdjacentHTML("beforeend",
-        `<tr><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${extra}</td>`+
+        `<tr><td class="l">${evName(e)}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${extra}</td>`+
         `<td colspan="6" class="multi-note" style="text-align:center">${T("alliance data not captured")}</td>`+
         `${resCell}</tr>`);
       return;
@@ -303,13 +315,14 @@ function renderLedger(){
     const oMP=oM/oP*100, pMP=pM/pP*100;
     const rowCls = e.result==="Live"?' class="live-row"':'';
     tb.insertAdjacentHTML("beforeend",
-      `<tr${rowCls}><td class="l">${e.event}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${tag}</td>`+
+      `<tr${rowCls}><td class="l">${evName(e)}</td><td class="l num">${e.date}</td><td class="l">${e.opp}${tag}</td>`+
       `<td class="num">${fmtB(oP)}</td><td class="num">${fmtB(oM)}</td><td class="num ${mpClass(oMP)}">${oMP.toFixed(1)}%</td>`+
       `<td class="num">${fmtB(pP)}</td><td class="num">${fmtB(pM)}</td><td class="num ${mpClass(pMP)}">${pMP.toFixed(1)}%</td>`+
       `${resultCellHTML(e)}</tr>`);
   });
-  document.getElementById("ledgerNote").textContent =
-    T("M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).");
+  document.getElementById("ledgerNote").innerHTML =
+    T("M:P color: green ≥8% (combat-active) · grey 4–8% · dim <4% (power-heavy, low activity).")
+    + (anyStar ? " <span class=\"star-note\">*</span> " + T("Special KvK — no troop loss occurs (units wounded in PvP are recovered).") : "");
 }
 
 // ---- charts (SVG line) ----
