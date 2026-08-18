@@ -197,12 +197,15 @@ function KingdomBar() {
     "E#088": { grad: "linear-gradient(90deg, #b4500f, #e8944a)", top: "#f0a860" }, // orange
     "E#059": { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" }, // purple
   };
-  const ptsFor = code => { const row = (KINGDOM_SCOREBOARD || []).find(k => k.server === code); return row ? Number(String(row.points).replace(/,/g, "")) : 0; };
-  const segs = SERVERS.map(s => ({ code: s.code, label: s.label, us: s.us, g: GRAD[s.code], pts: ptsFor(s.code) }));
+  const rowFor = code => (KINGDOM_SCOREBOARD || []).find(k => k.server === code) || {};
+  const num = v => Number(String(v ?? 0).replace(/,/g, "")) || 0;
+  const segs = SERVERS.map(s => { const r = rowFor(s.code); return { code: s.code, label: s.label, us: s.us, g: GRAD[s.code], pts: num(r.points), dew: num(r.dew) }; });
   const total = segs.reduce((a, x) => a + x.pts, 0);
   const awaiting = !total; // no scores yet → split equally, still render the bar
   const widthPct = s => awaiting ? (100 / segs.length) : (s.pts / total) * 100;
-  const fmt = n => n >= 1e9 ? (n / 1e9).toFixed(2) + "B" : n >= 1e6 ? (n / 1e6).toFixed(0) + "M" : n.toLocaleString();
+  const fmt = n => n >= 1e9 ? (n / 1e9).toFixed(2) + "B" : n >= 1e6 ? (n / 1e6).toFixed(1) + "M" : n.toLocaleString();
+  // ranked standings (most points first) for the points + Kingdom Dew line below the bar
+  const ranked = segs.slice().sort((a, b) => b.pts - a.pts);
   return (
     <div>
       <div style={{ display: "flex", width: "100%", marginBottom: "6px" }}>
@@ -218,6 +221,20 @@ function KingdomBar() {
           <div key={s.code} title={s.label + ": " + s.pts.toLocaleString() + (awaiting ? " (awaiting data)" : " (" + pct.toFixed(1) + "%)")} style={{ width: pct + "%", background: s.g.grad, borderRight: "1px solid rgba(0,0,0,0.3)" }} />
         ); })}
       </div>
+      {/* ranked points + Kingdom Dew line (shows once scores are in) */}
+      {!awaiting ? (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 14px", justifyContent: "center", marginTop: "10px", fontSize: "12px", fontVariantNumeric: "tabular-nums" }}>
+          {ranked.map((s, i) => (
+            <span key={s.code} style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+              <span style={{ color: "#64748b", fontWeight: 700 }}>{i + 1}.</span>
+              <span style={{ width: "8px", height: "8px", borderRadius: "2px", background: s.g.top, display: "inline-block" }} />
+              <span style={{ color: s.us ? s.g.top : "#cbd5e1", fontWeight: s.us ? 700 : 600 }}>{s.label}{s.us ? " (Us)" : ""}</span>
+              <span style={{ color: "#e8eaf0", fontWeight: 700 }}>{fmt(s.pts)}</span>
+              <span style={{ color: "#7aa7d8" }}>💧 {fmt(s.dew)}</span>
+            </span>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

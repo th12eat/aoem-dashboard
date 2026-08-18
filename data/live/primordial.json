@@ -452,19 +452,23 @@
   "kingdomScoreboard": [
     {
       "server": "E#008",
-      "points": 0
+      "points": 7400000000,
+      "dew": 13900000
     },
     {
       "server": "E#028",
-      "points": 0
+      "points": 4980000000,
+      "dew": 7790000
     },
     {
       "server": "E#088",
-      "points": 0
+      "points": 7690000000,
+      "dew": 22600000
     },
     {
       "server": "E#059",
-      "points": 0
+      "points": 2650000000,
+      "dew": 7020000
     }
   ],
   "workshopResults": [
@@ -489,5 +493,6 @@
       "theirCaps": null,
       "ourCaps": null
     }
-  ]
+  ],
+  "scoreUpdated": "Aug 18 · Battle Day 1"
 }
