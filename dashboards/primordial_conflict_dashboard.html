@@ -205,36 +205,21 @@ function KingdomBar() {
   const widthPct = s => awaiting ? (100 / segs.length) : (s.pts / total) * 100;
   const fmt = n => n >= 1e9 ? (n / 1e9).toFixed(2) + "B" : n >= 1e6 ? (n / 1e6).toFixed(1) + "M" : n.toLocaleString();
   // ranked standings (most points first) for the points + Kingdom Dew line below the bar
-  const ranked = segs.slice().sort((a, b) => b.pts - a.pts);
   return (
     <div>
       <div style={{ display: "flex", width: "100%", marginBottom: "6px" }}>
         {segs.map(s => { const pct = widthPct(s); return (
           <div key={s.code} style={{ width: pct + "%", textAlign: "center", padding: "0 2px", overflow: "hidden" }}>
             {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 700, color: s.g.top, lineHeight: 1.2, whiteSpace: "nowrap" }}>{s.label}{s.us ? " (Us)" : ""}</div> : null}
-            {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 600, color: "#cbd5e1", lineHeight: 1.2, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{awaiting ? "0" : fmt(s.pts)}</div> : null}
+            {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 600, color: "#cbd5e1", lineHeight: 1.2, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{awaiting ? "0" : (<React.Fragment>{fmt(s.pts)} <span style={{ color: "#7aa7d8" }}>💧 {fmt(s.dew)}</span></React.Fragment>)}</div> : null}
           </div>
         ); })}
       </div>
       <div style={{ display: "flex", width: "100%", height: "22px", borderRadius: "6px", overflow: "hidden", border: "1px solid #334155" }}>
         {segs.map(s => { const pct = widthPct(s); return (
-          <div key={s.code} title={s.label + ": " + s.pts.toLocaleString() + (awaiting ? " (awaiting data)" : " (" + pct.toFixed(1) + "%)")} style={{ width: pct + "%", background: s.g.grad, borderRight: "1px solid rgba(0,0,0,0.3)" }} />
+          <div key={s.code} title={s.label + ": " + s.pts.toLocaleString() + " pts · " + s.dew.toLocaleString() + " Kingdom Dew" + (awaiting ? " (awaiting data)" : " (" + pct.toFixed(1) + "%)")} style={{ width: pct + "%", background: s.g.grad, borderRight: "1px solid rgba(0,0,0,0.3)" }} />
         ); })}
       </div>
-      {/* ranked points + Kingdom Dew line (shows once scores are in) */}
-      {!awaiting ? (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 14px", justifyContent: "center", marginTop: "10px", fontSize: "12px", fontVariantNumeric: "tabular-nums" }}>
-          {ranked.map((s, i) => (
-            <span key={s.code} style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
-              <span style={{ color: "#64748b", fontWeight: 700 }}>{i + 1}.</span>
-              <span style={{ width: "8px", height: "8px", borderRadius: "2px", background: s.g.top, display: "inline-block" }} />
-              <span style={{ color: s.us ? s.g.top : "#cbd5e1", fontWeight: s.us ? 700 : 600 }}>{s.label}{s.us ? " (Us)" : ""}</span>
-              <span style={{ color: "#e8eaf0", fontWeight: 700 }}>{fmt(s.pts)}</span>
-              <span style={{ color: "#7aa7d8" }}>💧 {fmt(s.dew)}</span>
-            </span>
-          ))}
-        </div>
-      ) : null}
     </div>
   );
 }

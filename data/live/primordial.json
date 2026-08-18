@@ -476,8 +476,8 @@
       "day": 2,
       "opponent": "Era #059",
       "theirTime": "19:00",
-      "theirCaps": null,
-      "ourCaps": null
+      "theirCaps": 3,
+      "ourCaps": 3
     },
     {
       "day": 3,
