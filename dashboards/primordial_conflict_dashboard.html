@@ -907,8 +907,9 @@ function App() {
       startISO: "2026-08-17T00:00:00Z", endISO: "2026-08-23T23:59:59Z",
       startLabel: "Aug 17", startLabelText: T("Starts"),
       endLabel: "Aug 23", endLabelText: T("Ends"),
-      pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete"),
+      pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete — Loss"),
       liveLabel: "Contest Live", liveDot: true,
+      forceComplete: true,
       ical: { stub: true, label: T("Add to Calendar") },
       phases: [
         { fromISO: "2026-08-17T00:00:00Z", leftLabel: T("Matchmaking"),  leftValue: "Aug 17", rightLabel: T("Battle Day 1"), rightValue: "Aug 18", countdownISO: "2026-08-18T00:00:00Z", stageLabel: "Contest Live | Matchmaking" },
