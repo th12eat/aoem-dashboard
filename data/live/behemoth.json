@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "opponent": "#028",
-  "startLabel": "Jul 27",
-  "endLabel": "Aug 4",
+  "opponent": "#057",
+  "startLabel": "Aug 31",
+  "endLabel": "Sep 6",
   "timezone": "UTC+0",
-  "eventStartISO": "2026-07-27T00:00:00Z",
-  "eventEndISO": "2026-08-02T00:00:00Z",
-  "scoreUs": "40.1B",
-  "scoreThem": "37.9B",
-  "result": "Win",
-  "tamingStartISO": "2026-07-28T00:00:00Z",
-  "atkDefStartISO": "2026-07-31T00:00:00Z",
-  "tamingLabel": "Jul 28",
-  "atkDefLabel": "Jul 31"
+  "eventStartISO": "2026-08-31T00:00:00Z",
+  "eventEndISO": "2026-09-06T00:00:00Z",
+  "scoreUs": "0",
+  "scoreThem": "0",
+  "result": "Live",
+  "tamingStartISO": "2026-09-01T00:00:00Z",
+  "atkDefStartISO": "2026-09-04T00:00:00Z",
+  "tamingLabel": "Sep 1",
+  "atkDefLabel": "Sep 4"
 }
