@@ -15,6 +15,7 @@
               display:flex; align-items:center; gap:9px; margin-bottom:14px; border-bottom:1px solid var(--border); padding-bottom:9px; }
     .card-h .n { color:var(--kvk-accent); font-size:13px; }
     .hint { color:var(--text-muted); font-size:12.5px; line-height:1.5; }
+    b.hl { color:var(--kvk-accent); }
 
     /* form grid */
     .form-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px 14px; }
@@ -33,21 +34,31 @@
     .drop b { color:var(--kvk-accent); }
     .thumbs { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
     .thumb { position:relative; width:150px; border:1px solid var(--border); border-radius:8px; overflow:hidden; background:var(--bg-deep); }
-    .thumb img { width:100%; display:block; cursor:zoom-in; }
+    .thumb.sel { border-color:var(--kvk-accent); box-shadow:0 0 0 1px var(--kvk-accent); }
+    .thumb img { width:100%; display:block; cursor:pointer; }
     .thumb .rm { position:absolute; top:4px; right:4px; background:rgba(10,12,20,.8); color:var(--accent-red);
                  border:1px solid var(--border); border-radius:6px; width:22px; height:22px; cursor:pointer; font-weight:700; line-height:1; }
     .thumb .cap { font-size:11px; color:var(--text-muted); padding:4px 6px; text-align:center; word-break:break-all; }
+
+    /* guide / calibration */
+    .guidewrap { position:relative; display:inline-block; max-width:100%; margin-top:6px; }
+    #guide { display:block; max-width:100%; border:1px solid var(--border); border-radius:8px; touch-action:none; }
+    .glegend { display:flex; gap:16px; flex-wrap:wrap; margin:8px 0 2px; font-size:12px; }
+    .glegend span::before { content:''; display:inline-block; width:11px; height:11px; border-radius:2px; margin-right:6px; vertical-align:-1px; }
+    .glegend .name::before { background:rgba(61,124,196,.9); }
+    .glegend .pts::before  { background:rgba(212,168,67,.95); }
+    .glegend .row::before  { background:rgba(61,170,109,.9); }
 
     /* roster table */
     .tbl-wrap { overflow-x:auto; }
     table { width:100%; border-collapse:collapse; font-size:14px; }
     th, td { padding:6px 8px; border-bottom:1px solid var(--border); text-align:left; }
-    th { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase;
-         color:var(--text-muted); }
+    th { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-muted); }
     td input { padding:6px 8px; }
-    td.rank { width:64px; } td.pts { width:150px; } td.act { width:40px; text-align:center; }
-    .row-dupe input { border-color:var(--accent-red-dim); }
+    td.rank { width:56px; color:var(--text-muted); font-family:'Barlow Condensed',sans-serif; font-weight:700; }
+    td.pts { width:150px; } td.src { width:120px; color:var(--text-muted); font-size:11px; } td.act { width:40px; text-align:center; }
     .row-zero td.pts input { color:var(--text-muted); }
+    .row-flag input.r-name { border-color:var(--accent-gold-dim); }
     .del { background:none; border:none; color:var(--accent-red); cursor:pointer; font-size:16px; line-height:1; }
 
     .btn { padding:8px 14px; border-radius:8px; cursor:pointer; border:1px solid var(--border);
@@ -57,6 +68,11 @@
     .btn.primary { background:var(--kvk-accent); color:var(--bg-deep); border-color:var(--kvk-accent); }
     .btn:disabled { opacity:.45; cursor:not-allowed; }
     .btnrow { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:14px; }
+
+    .progress { height:6px; background:var(--bg-deep); border-radius:4px; overflow:hidden; margin-top:12px; display:none; }
+    .progress.on { display:block; }
+    .progress > i { display:block; height:100%; width:0; background:var(--kvk-accent); transition:width .2s; }
+    #ocrStatus { font-size:12.5px; color:var(--text-secondary); margin-top:6px; min-height:16px; }
 
     /* verify panel */
     .checks { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:7px; }
@@ -68,7 +84,6 @@
     pre.preview { background:var(--bg-deep); border:1px solid var(--border); border-radius:8px; padding:12px;
                   font-size:12px; color:var(--text-secondary); overflow-x:auto; white-space:pre; max-height:280px; }
 
-    /* lightbox */
     .lb { position:fixed; inset:0; background:rgba(6,8,14,.92); display:none; align-items:center; justify-content:center; z-index:50; }
     .lb.on { display:flex; }
     .lb img { max-width:94vw; max-height:92vh; border-radius:8px; }
@@ -79,6 +94,8 @@
     .badge { display:inline-block; font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700;
              letter-spacing:.5px; text-transform:uppercase; padding:1px 7px; border-radius:4px;
              background:rgba(154,109,212,.16); color:var(--accent-purple); margin-left:8px; vertical-align:middle; }
+    .note-box { background:rgba(61,124,196,.08); border:1px solid rgba(61,124,196,.25); border-radius:8px;
+                padding:10px 13px; font-size:12.5px; color:var(--text-secondary); line-height:1.55; }
   </style>
 </head>
 <body data-kvk="generic">
@@ -118,18 +135,39 @@
           <option value="eu">European — 1.234,56 (dot thousands)</option>
         </select></div>
     </div>
-    <div class="hint" style="margin-top:10px" data-i18n="s_event_hint">The banner "team total" (next to the sword icon) is recorded as-shown — in these events it is <b>not</b> the sum of member Faith Points. Attendance can only be inferred from members whose Faith Points are 0.</div>
+    <div class="hint" style="margin-top:10px" data-i18n="s_event_hint">The banner "team total" (next to the sword icon) is recorded as-shown — in these events it is <b>not</b> the sum of member Faith Points. Attendance is inferred from members whose Faith Points are 0.</div>
   </div>
 
-  <!-- 2 · SCREENSHOTS -->
+  <!-- 2 · SCREENSHOTS + OCR -->
   <div class="card">
-    <div class="card-h"><span class="n">2</span> <span data-i18n="s_h_shots">Screenshots</span></div>
-    <div class="drop" id="drop">
-      <div data-i18n="s_drop">Drop the 5–6 screenshots here, or <b>click to choose</b>. They stack to cover ranks 1–30 (or 1–50).</div>
+    <div class="card-h"><span class="n">2</span> <span data-i18n="s_h_shots">Screenshots &amp; auto-read</span></div>
+    <div class="note-box" data-i18n="s_ocr_about">Reads the roster on your device with free, offline OCR — <b class="hl">no AI tokens, no cost, nothing uploaded</b>. <b class="hl">Faith Points</b> read reliably; <b class="hl">names</b> are best-effort (fix the odd misread and any superscript suffixes below). <b class="hl">Rank is derived</b> by sorting on points, so upload shots covering the whole list — order doesn't matter. Set everyone's game language to English before capturing for best results.</div>
+
+    <div class="drop" id="drop" style="margin-top:12px">
+      <div data-i18n="s_drop">Drop the 5–6 screenshots here, or <b>click to choose</b>. Together they should cover every rank.</div>
       <input type="file" id="file" accept="image/*" multiple hidden>
     </div>
     <div class="thumbs" id="thumbs"></div>
-    <div class="hint" style="margin-top:10px" data-i18n="s_shots_hint">Screenshots stay on your device — nothing is uploaded. Click a thumbnail to enlarge it while you transcribe rows below.</div>
+
+    <!-- calibration -->
+    <div id="calib" style="display:none; margin-top:16px">
+      <div class="hint" style="text-transform:uppercase;letter-spacing:1px;margin-bottom:4px" data-i18n="s_calib">Column guides — drag the edges so <b style="color:var(--accent-blue)">names</b> and <b style="color:var(--accent-gold)">points</b> sit inside their bands</div>
+      <div class="guidewrap"><canvas id="guide"></canvas></div>
+      <div class="glegend">
+        <span class="name" data-i18n="s_leg_name">Name column</span>
+        <span class="pts" data-i18n="s_leg_pts">Points column</span>
+        <span class="row" data-i18n="s_leg_row">Detected rows</span>
+      </div>
+      <div class="hint" data-i18n="s_calib_hint">Guides apply to every screenshot. If names come out clipped, widen the blue band and re-read.</div>
+    </div>
+
+    <div class="btnrow">
+      <button class="btn primary" id="extract" disabled data-i18n="s_extract">Read screenshots</button>
+      <button class="btn" id="reExtract" style="display:none" data-i18n="s_reextract">Re-read with current guides</button>
+      <span class="hint" id="ocrHint" data-i18n="s_shots_hint">Screenshots stay on your device. Click a thumbnail to enlarge, or to pick the one shown in the guide.</span>
+    </div>
+    <div class="progress" id="progress"><i id="progbar"></i></div>
+    <div id="ocrStatus"></div>
   </div>
 
   <!-- 3 · ROSTER -->
@@ -141,6 +179,7 @@
           <th class="rank" data-i18n="s_rank">Rank</th>
           <th data-i18n="s_player">Player name</th>
           <th class="pts" data-i18n="s_faith">Faith Points</th>
+          <th class="src" data-i18n="s_src">From</th>
           <th class="act"></th>
         </tr></thead>
         <tbody id="rows"></tbody>
@@ -148,13 +187,11 @@
     </div>
     <div class="btnrow">
       <button class="btn" id="addRow" data-i18n="s_add">+ Add row</button>
-      <button class="btn" id="fill30" data-i18n="s_fill30">Fill to 30</button>
-      <button class="btn" id="fill50" data-i18n="s_fill50">Fill to 50</button>
-      <button class="btn" id="sortRank" data-i18n="s_sort">Sort by rank</button>
-      <button class="btn" id="clearRows" data-i18n="s_clear">Clear</button>
+      <button class="btn" id="sortPts" data-i18n="s_sortpts">Sort by points</button>
+      <button class="btn" id="clearRows" data-i18n="s_clear">Clear all</button>
       <span class="hint" id="rosterCount"></span>
     </div>
-    <div class="hint" style="margin-top:8px" data-i18n="s_roster_hint">Type names exactly as shown, including Unicode superscript suffixes (e.g. KATHᶠᵘⁿ, Ahmednhoᴷᵀ). Enter 0 for members who scored no points.</div>
+    <div class="hint" style="margin-top:8px" data-i18n="s_roster_hint">Rank is computed from points (highest = 1). Fix names as needed, including Unicode superscript suffixes (e.g. KATHᶠᵘⁿ, Ahmednhoᴷᵀ). Enter 0 for members who scored nothing.</div>
   </div>
 
   <!-- 4 · VERIFY + EXPORT -->
@@ -180,38 +217,51 @@
 
 <div class="lb" id="lb"><span class="x" id="lbx">×</span><img id="lbimg" alt=""></div>
 
+<script src="https://unpkg.com/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
 <script src="../assets/site-header.js"></script>
 <script>
 (function(){
   'use strict';
   var $ = function(id){ return document.getElementById(id); };
 
-  /* ---------- screenshots (client-only) ---------- */
+  /* ================= screenshots ================= */
   var drop=$('drop'), fileInput=$('file'), thumbs=$('thumbs');
-  var shots=[];
+  var shots=[];        // {name, url, img(HTMLImageElement)}
+  var guideIdx=0;      // which shot is shown in the calibration canvas
+
   drop.addEventListener('click', function(){ fileInput.click(); });
   ['dragenter','dragover'].forEach(function(e){ drop.addEventListener(e,function(ev){ ev.preventDefault(); drop.classList.add('hover'); }); });
   ['dragleave','drop'].forEach(function(e){ drop.addEventListener(e,function(ev){ ev.preventDefault(); drop.classList.remove('hover'); }); });
   drop.addEventListener('drop', function(ev){ addFiles(ev.dataTransfer.files); });
   fileInput.addEventListener('change', function(){ addFiles(fileInput.files); fileInput.value=''; });
+
   function addFiles(list){
+    var pending=0;
     Array.prototype.forEach.call(list, function(f){
-      if(!f.type.indexOf || f.type.indexOf('image')!==0) return;
+      if(!f.type || f.type.indexOf('image')!==0) return;
+      pending++;
       var url=URL.createObjectURL(f);
-      shots.push({name:f.name, url:url});
+      var img=new Image();
+      img.onload=function(){ pending--; if(pending===0) afterLoad(); };
+      img.onerror=function(){ pending--; if(pending===0) afterLoad(); };
+      img.src=url;
+      shots.push({name:f.name, url:url, img:img});
     });
     renderThumbs();
+    function afterLoad(){ $('extract').disabled = shots.length===0; showGuide(); }
   }
   function renderThumbs(){
     thumbs.innerHTML='';
     shots.forEach(function(s, i){
-      var d=document.createElement('div'); d.className='thumb';
-      var img=document.createElement('img'); img.src=s.url; img.alt=s.name;
-      img.addEventListener('click', function(){ openLB(s.url); });
+      var d=document.createElement('div'); d.className='thumb'+(i===guideIdx?' sel':'');
+      var im=document.createElement('img'); im.src=s.url; im.alt=s.name;
+      im.title='Click to calibrate on this image · double-click to enlarge';
+      im.addEventListener('click', function(){ guideIdx=i; renderThumbs(); showGuide(); });
+      im.addEventListener('dblclick', function(){ openLB(s.url); });
       var rm=document.createElement('button'); rm.className='rm'; rm.textContent='×';
-      rm.addEventListener('click', function(){ URL.revokeObjectURL(s.url); shots.splice(i,1); renderThumbs(); });
+      rm.addEventListener('click', function(){ URL.revokeObjectURL(s.url); shots.splice(i,1); if(guideIdx>=shots.length) guideIdx=0; renderThumbs(); showGuide(); $('extract').disabled=shots.length===0; });
       var cap=document.createElement('div'); cap.className='cap'; cap.textContent=s.name;
-      d.appendChild(img); d.appendChild(rm); d.appendChild(cap); thumbs.appendChild(d);
+      d.appendChild(im); d.appendChild(rm); d.appendChild(cap); thumbs.appendChild(d);
     });
   }
   var lb=$('lb'), lbimg=$('lbimg');
@@ -219,47 +269,223 @@
   $('lbx').addEventListener('click', function(){ lb.classList.remove('on'); });
   lb.addEventListener('click', function(e){ if(e.target===lb) lb.classList.remove('on'); });
 
-  /* ---------- roster table ---------- */
+  /* ================= column guides (fractions of width) ================= */
+  var fx = { nameL:0.305, nameR:0.60, ptsL:0.70, ptsR:0.95 };
+  var guide=$('guide'), gctx=guide.getContext('2d');
+  var lastRows=[];   // detected row centers (fraction of height) for the guide image
+
+  function showGuide(){
+    if(!shots.length){ $('calib').style.display='none'; return; }
+    $('calib').style.display='block';
+    var img=shots[guideIdx].img;
+    if(!img.naturalWidth){ return; }
+    var W=Math.min(560, img.naturalWidth);
+    var scale=W/img.naturalWidth, H=Math.round(img.naturalHeight*scale);
+    guide.width=W; guide.height=H;
+    lastRows = detectRows(img).map(function(r){ return r.ycF; });
+    drawGuide();
+  }
+  function drawGuide(){
+    var img=shots[guideIdx].img; if(!img || !img.naturalWidth) return;
+    var W=guide.width, H=guide.height;
+    gctx.clearRect(0,0,W,H);
+    gctx.drawImage(img,0,0,W,H);
+    // row markers
+    gctx.strokeStyle='rgba(61,170,109,0.9)'; gctx.lineWidth=1;
+    lastRows.forEach(function(f){ var y=f*H; gctx.beginPath(); gctx.moveTo(0,y); gctx.lineTo(W,y); gctx.stroke(); });
+    // bands
+    band(fx.nameL, fx.nameR, 'rgba(61,124,196,0.22)', 'rgba(61,124,196,0.95)');
+    band(fx.ptsL,  fx.ptsR,  'rgba(212,168,67,0.20)', 'rgba(212,168,67,0.95)');
+    function band(l,r,fill,edge){
+      gctx.fillStyle=fill; gctx.fillRect(l*W,0,(r-l)*W,H);
+      gctx.strokeStyle=edge; gctx.lineWidth=2;
+      gctx.beginPath(); gctx.moveTo(l*W,0); gctx.lineTo(l*W,H); gctx.moveTo(r*W,0); gctx.lineTo(r*W,H); gctx.stroke();
+    }
+  }
+  // drag the 4 vertical edges
+  var dragging=null;
+  function edgeAt(xF){
+    var edges=[['nameL',fx.nameL],['nameR',fx.nameR],['ptsL',fx.ptsL],['ptsR',fx.ptsR]];
+    var best=null,bd=1;
+    edges.forEach(function(e){ var d=Math.abs(e[1]-xF); if(d<bd){bd=d;best=e[0];} });
+    return bd<0.03 ? best : null;
+  }
+  function xToF(ev){ var rect=guide.getBoundingClientRect(); return Math.max(0,Math.min(1,(ev.clientX-rect.left)/rect.width)); }
+  guide.addEventListener('pointerdown', function(ev){ dragging=edgeAt(xToF(ev)); if(dragging) guide.setPointerCapture(ev.pointerId); });
+  guide.addEventListener('pointermove', function(ev){
+    if(!dragging){ guide.style.cursor = edgeAt(xToF(ev)) ? 'ew-resize':'default'; return; }
+    var f=xToF(ev); fx[dragging]=f;
+    // keep order sane
+    fx.nameL=Math.min(fx.nameL,fx.nameR-0.02); fx.ptsL=Math.min(fx.ptsL,fx.ptsR-0.02);
+    drawGuide();
+  });
+  guide.addEventListener('pointerup', function(){ dragging=null; });
+
+  /* ================= image analysis ================= */
+  function toGrayData(img, targetW){
+    var scale=Math.min(1, targetW/img.naturalWidth);
+    var w=Math.max(1,Math.round(img.naturalWidth*scale)), h=Math.max(1,Math.round(img.naturalHeight*scale));
+    var c=document.createElement('canvas'); c.width=w; c.height=h;
+    var ctx=c.getContext('2d'); ctx.drawImage(img,0,0,w,h);
+    var d=ctx.getImageData(0,0,w,h).data;
+    var g=new Float32Array(w*h);
+    for(var i=0,p=0;i<g.length;i++,p+=4){ g[i]=0.299*d[p]+0.587*d[p+1]+0.114*d[p+2]; }
+    return {g:g,w:w,h:h};
+  }
+  // detect list rows -> array of {ycF, hF} fractions of height
+  function detectRows(img){
+    var G=toGrayData(img, 800), g=G.g, w=G.w, h=G.h;
+    var x0=Math.floor(w*0.30), x1=Math.floor(w*0.60);
+    var grad=new Float32Array(h);
+    for(var y=0;y<h;y++){
+      var s=0; var base=y*w;
+      for(var x=x0;x<x1;x++){ s+=Math.abs(g[base+x+1]-g[base+x]); }
+      grad[y]=s/(x1-x0);
+    }
+    var k=Math.max(3, Math.round(h/200)); var sm=new Float32Array(h);
+    for(var y2=0;y2<h;y2++){ var a=Math.max(0,y2-k),b=Math.min(h-1,y2+k),acc=0; for(var j=a;j<=b;j++)acc+=grad[j]; sm[y2]=acc/(b-a+1); }
+    var lo=Math.floor(h*0.44), mx=0; for(var y3=lo;y3<h;y3++) if(sm[y3]>mx) mx=sm[y3];
+    var thr=mx*0.22, peaks=[], i=lo;
+    while(i<h){
+      if(sm[i]>thr){ var jj=i,best=i,bv=sm[i]; while(jj<h&&sm[jj]>thr){ if(sm[jj]>bv){bv=sm[jj];best=jj;} jj++; } peaks.push(best); i=jj; }
+      else i++;
+    }
+    if(peaks.length>=2){
+      var gaps=[]; for(var q=1;q<peaks.length;q++) gaps.push(peaks[q]-peaks[q-1]);
+      var med=gaps.slice().sort(function(a,b){return a-b;})[Math.floor(gaps.length/2)];
+      if(gaps[0]<med*0.7) peaks.shift();  // drop "MEMBERS' FAITH POINTS" header line
+    }
+    var rowH = peaks.length>1 ? (peaks[peaks.length-1]-peaks[0])/(peaks.length-1) : h*0.09;
+    return peaks.map(function(p){ return { ycF:p/h, hF:rowH/h }; });
+  }
+  function otsu(arr){
+    var hist=new Array(256).fill(0), n=arr.length;
+    for(var i=0;i<n;i++) hist[arr[i]]++;
+    var sum=0; for(var t=0;t<256;t++) sum+=t*hist[t];
+    var sumB=0,wB=0,mx=0,thr=127;
+    for(var t2=0;t2<256;t2++){ wB+=hist[t2]; if(!wB)continue; var wF=n-wB; if(!wF)break; sumB+=t2*hist[t2];
+      var mB=sumB/wB, mF=(sum-sumB)/wF, v=wB*wF*(mB-mF)*(mB-mF); if(v>mx){mx=v;thr=t2;} }
+    return thr;
+  }
+  // crop a cell, upscale, otsu-binarize (text -> black on white); return canvas
+  function cellCanvas(img, lF, rF, ycF, hF, scale){
+    var nw=img.naturalWidth, nh=img.naturalHeight;
+    var sx=Math.floor(lF*nw), sw=Math.max(1,Math.floor((rF-lF)*nw));
+    var half=Math.max(1,Math.floor(hF*0.46*nh));
+    var sy=Math.max(0,Math.floor(ycF*nh)-half), sh=Math.min(nh-sy, half*2);
+    var w=sw*scale, h=sh*scale;
+    var c=document.createElement('canvas'); c.width=w; c.height=h;
+    var ctx=c.getContext('2d'); ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+    ctx.drawImage(img, sx,sy,sw,sh, 0,0,w,h);
+    var id=ctx.getImageData(0,0,w,h), d=id.data, gray=new Uint8Array(w*h);
+    for(var i=0,p=0;i<gray.length;i++,p+=4){ gray[i]=(0.299*d[p]+0.587*d[p+1]+0.114*d[p+2])|0; }
+    var t=otsu(gray);
+    for(var i2=0,p2=0;i2<gray.length;i2++,p2+=4){ var v=gray[i2]>t?0:255; d[p2]=d[p2+1]=d[p2+2]=v; d[p2+3]=255; }
+    ctx.putImageData(id,0,0);
+    return c;
+  }
+
+  /* ================= OCR ================= */
+  var worker=null;
+  async function getWorker(){
+    if(worker) return worker;
+    setStatus('Loading OCR engine (one-time, ~few MB)…');
+    worker = await Tesseract.createWorker('eng');
+    return worker;
+  }
+  function setStatus(t){ $('ocrStatus').textContent=t||''; }
+  function setProg(f){ $('progress').classList.toggle('on', f>=0 && f<1); $('progbar').style.width=Math.round(Math.max(0,Math.min(1,f))*100)+'%'; }
+
+  function cleanName(s){
+    return (s||'').replace(/\s+/g,' ').trim()
+      .replace(/^[^0-9A-Za-zÀ-￿]+/, '')   // strip leading avatar junk
+      .replace(/[|_]+$/,'').trim();
+  }
+  function cleanPts(s){ return (s||'').replace(/[^\d+,.]/g,'').replace(/^\+/,'').trim(); }
+
+  async function readAll(){
+    if(!shots.length) return;
+    $('extract').disabled=true; $('reExtract').disabled=true;
+    try{
+      var w=await getWorker();
+      var pool=[], total=0, done=0;
+      var perImg = shots.map(function(s){ return s.img.naturalWidth ? detectRows(s.img) : []; });
+      perImg.forEach(function(r){ total+=r.length*2; });
+      if(!total){ setStatus('No rows detected — try adjusting the guides or clearer screenshots.'); setProg(1); $('extract').disabled=false; return; }
+      for(var si=0; si<shots.length; si++){
+        var img=shots[si].img, rows=perImg[si];
+        for(var ri=0; ri<rows.length; ri++){
+          setStatus('Reading '+shots[si].name+' — row '+(ri+1)+'/'+rows.length+'…');
+          await w.setParameters({ tessedit_char_whitelist:'', tessedit_pageseg_mode:'7' });
+          var nmeas=await w.recognize(cellCanvas(img, fx.nameL, fx.nameR, rows[ri].ycF, rows[ri].hF, 3));
+          done++; setProg(done/total);
+          await w.setParameters({ tessedit_char_whitelist:'0123456789+,.', tessedit_pageseg_mode:'7' });
+          var pmeas=await w.recognize(cellCanvas(img, fx.ptsL, fx.ptsR, rows[ri].ycF, rows[ri].hF, 4));
+          done++; setProg(done/total);
+          var name=cleanName(nmeasText(nmeas)), pts=cleanPts(nmeasText(pmeas));
+          if(!name && !pts) continue;
+          pool.push({ name:name, pts:pts, src:shots[si].name });
+        }
+      }
+      mergeIntoRoster(pool);
+      setProg(1); setStatus('Done — read '+pool.length+' rows from '+shots.length+' screenshot(s). Review names below.');
+      $('reExtract').style.display='inline-block';
+    }catch(e){
+      setStatus('OCR error: '+(e && e.message ? e.message : e));
+    }finally{
+      $('extract').disabled=false; $('reExtract').disabled=false;
+    }
+  }
+  function nmeasText(m){ return (m && m.data && m.data.text) ? m.data.text : ''; }
+
+  // merge, dedup exact (name+pts) overlaps between screenshots
+  function mergeIntoRoster(pool){
+    var seen={};
+    getData().forEach(function(r){ seen[(r.name.toLowerCase())+'|'+r.ptsRaw]=true; });
+    pool.forEach(function(p){
+      var key=(p.name.toLowerCase())+'|'+p.pts;
+      if(seen[key]) return; seen[key]=true;
+      addRow(p.name, p.pts, p.src, true);
+    });
+    sortByPoints(); refresh();
+  }
+
+  $('extract').addEventListener('click', readAll);
+  $('reExtract').addEventListener('click', readAll);
+
+  /* ================= roster table ================= */
   var rows=$('rows');
-  function addRow(rank, name, pts){
+  function addRow(name, pts, src, flag){
     var tr=document.createElement('tr');
     tr.innerHTML =
-      '<td class="rank"><input class="r-rank" inputmode="numeric" value="'+(rank!=null?rank:'')+'"></td>'+
-      '<td><input class="r-name" value="'+(name!=null?esc(name):'')+'"></td>'+
-      '<td class="pts"><input class="r-pts" inputmode="numeric" value="'+(pts!=null?pts:'')+'"></td>'+
+      '<td class="rank"><span class="r-rank"></span></td>'+
+      '<td><input class="r-name" value="'+esc(name||'')+'"></td>'+
+      '<td class="pts"><input class="r-pts" inputmode="numeric" value="'+esc(pts||'')+'"></td>'+
+      '<td class="src">'+esc(src||'manual')+'</td>'+
       '<td class="act"><button class="del" title="Remove">×</button></td>';
+    if(flag) tr.classList.add('row-flag');
     tr.querySelector('.del').addEventListener('click', function(){ tr.remove(); refresh(); });
-    tr.querySelectorAll('input').forEach(function(inp){ inp.addEventListener('input', refresh); });
+    tr.querySelector('.r-name').addEventListener('input', function(){ tr.classList.remove('row-flag'); refresh(); });
+    tr.querySelector('.r-pts').addEventListener('input', refresh);
     rows.appendChild(tr);
     return tr;
   }
-  function esc(s){ return String(s).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
-  $('addRow').addEventListener('click', function(){ addRow(nextRank()); refresh(); });
-  $('fill30').addEventListener('click', function(){ fillTo(30); });
-  $('fill50').addEventListener('click', function(){ fillTo(50); });
+  $('addRow').addEventListener('click', function(){ addRow('','','manual',false); refresh(); });
   $('clearRows').addEventListener('click', function(){ rows.innerHTML=''; refresh(); });
-  $('sortRank').addEventListener('click', function(){ sortByRank(); refresh(); });
+  $('sortPts').addEventListener('click', function(){ sortByPoints(); refresh(); });
 
-  function nextRank(){
-    var max=0; getData().forEach(function(r){ if(r.rank>max) max=r.rank; }); return max+1;
-  }
-  function fillTo(n){
-    var present={}; getData().forEach(function(r){ if(r.rank) present[r.rank]=true; });
-    for(var i=1;i<=n;i++){ if(!present[i]) addRow(i,'',''); }
-    sortByRank(); refresh();
-  }
-  function sortByRank(){
+  function sortByPoints(){
     var trs=Array.prototype.slice.call(rows.children);
     trs.sort(function(a,b){
-      var ra=parseInt(a.querySelector('.r-rank').value,10)||9999;
-      var rb=parseInt(b.querySelector('.r-rank').value,10)||9999;
-      return ra-rb;
+      var pa=parsePts(a.querySelector('.r-pts').value), pb=parsePts(b.querySelector('.r-pts').value);
+      pa=(pa==null||isNaN(pa))?-1:pa; pb=(pb==null||isNaN(pb))?-1:pb;
+      return pb-pa;
     });
     trs.forEach(function(tr){ rows.appendChild(tr); });
   }
 
-  /* ---------- number parsing (locale aware) ---------- */
   function parsePts(raw){
     if(raw==null) return null;
     var s=String(raw).trim().replace(/^\+/,'');
@@ -269,88 +495,76 @@
     var n=parseFloat(s);
     return isNaN(n)?NaN:Math.round(n);
   }
-
   function getData(){
     return Array.prototype.map.call(rows.children, function(tr){
-      return {
-        tr: tr,
-        rank: parseInt(tr.querySelector('.r-rank').value,10) || null,
+      return { tr:tr,
         name: tr.querySelector('.r-name').value.trim(),
         ptsRaw: tr.querySelector('.r-pts').value.trim(),
-        pts: parsePts(tr.querySelector('.r-pts').value)
-      };
+        pts: parsePts(tr.querySelector('.r-pts').value) };
     });
   }
-
-  /* ---------- verify ---------- */
-  function refresh(){
+  // derived ranks by points desc; returns data with .rank set, and updates cells
+  function withRanks(){
     var data=getData();
-    // dupe / zero row styling
-    var seenRank={};
-    data.forEach(function(r){ if(r.rank){ seenRank[r.rank]=(seenRank[r.rank]||0)+1; } });
-    data.forEach(function(r){
-      r.tr.classList.toggle('row-dupe', r.rank && seenRank[r.rank]>1);
-      r.tr.classList.toggle('row-zero', r.pts===0);
+    var order=data.map(function(r,i){ return i; }).sort(function(a,b){
+      var pa=data[a].pts, pb=data[b].pts;
+      pa=(pa==null||isNaN(pa))?-1:pa; pb=(pb==null||isNaN(pb))?-1:pb;
+      return pb-pa;
     });
-    $('rosterCount').textContent = data.length + ' row' + (data.length===1?'':'s');
-    renderChecks(data);
-    renderPreview(data);
+    order.forEach(function(idx,pos){ data[idx].rank=pos+1; });
+    data.forEach(function(r){ r.tr.querySelector('.r-rank').textContent=(r.name||r.ptsRaw) ? r.rank : ''; });
+    return data;
   }
 
+  /* ================= verify ================= */
+  function refresh(){
+    var data=withRanks();
+    data.forEach(function(r){ r.tr.classList.toggle('row-zero', r.pts===0); });
+    $('rosterCount').textContent = data.length + ' row' + (data.length===1?'':'s');
+    renderChecks(data); renderPreview(data);
+  }
   function renderChecks(data){
     var ul=$('checks'); ul.innerHTML='';
-    var filled=data.filter(function(r){ return r.name || r.rank || r.ptsRaw; });
+    var filled=data.filter(function(r){ return r.name || r.ptsRaw; });
     function li(cls,txt){ var l=document.createElement('li');
       l.innerHTML='<span class="ic '+cls+'">'+(cls==='ok'?'✓':cls==='warn'?'!':cls==='err'?'✕':'·')+'</span><span>'+txt+'</span>'; ul.appendChild(l); }
 
     if(!$('ourAlliance').value.trim()) li('err','Our alliance (E#008) is required.');
     else li('ok','Our alliance: '+$('ourAlliance').value.trim());
+    if(!filled.length){ li('muted','Read screenshots or add rows to begin.'); return; }
 
-    if(!filled.length){ li('muted','Add roster rows to begin.'); return; }
-
-    // rank continuity
-    var ranks=filled.map(function(r){return r.rank;}).filter(Boolean).sort(function(a,b){return a-b;});
-    var dupes={}, seen={};
-    ranks.forEach(function(r){ if(seen[r]) dupes[r]=true; seen[r]=true; });
-    if(Object.keys(dupes).length) li('err','Duplicate rank(s): '+Object.keys(dupes).join(', '));
-    var gaps=[];
-    for(var i=1;i<ranks.length;i++){ for(var g=ranks[i-1]+1; g<ranks[i]; g++) gaps.push(g); }
-    if(ranks.length){
-      if(ranks[0]!==1) li('warn','Ranks start at '+ranks[0]+' (top of list not captured yet).');
-      if(gaps.length) li('warn','Missing rank'+(gaps.length>1?'s':'')+': '+gaps.slice(0,12).join(', ')+(gaps.length>12?'…':''));
-      if(!gaps.length && !Object.keys(dupes).length && ranks[0]===1) li('ok','Ranks 1–'+ranks[ranks.length-1]+' are contiguous.');
+    li('ok', filled.length+' player row(s).');
+    var su=$('signedUp').value.match(/(\d+)\s*\/\s*(\d+)/);
+    if(su){ var signed=+su[1], cap=+su[2];
+      if(filled.length!==cap) li('warn','Roster has '+filled.length+' rows but cap is '+cap+' ('+su[0]+'). Cover every rank across your screenshots.');
+      else li('ok','Row count matches roster cap ('+cap+').');
     }
-    // missing values
+    var flagged=data.filter(function(r){ return r.tr.classList.contains('row-flag'); }).length;
+    if(flagged) li('warn',flagged+' auto-read name(s) not yet reviewed — edit a name to clear its flag.');
+
     var noName=filled.filter(function(r){return !r.name;}).length;
     var badPts=filled.filter(function(r){return r.ptsRaw!=='' && isNaN(r.pts);}).length;
     var noPts =filled.filter(function(r){return r.ptsRaw==='';}).length;
     if(noName) li('warn',noName+' row(s) missing a name.');
-    if(badPts) li('err',badPts+' row(s) have unparseable Faith Points for this number format.');
-    if(noPts)  li('warn',noPts+' row(s) missing Faith Points.');
+    if(badPts) li('err',badPts+' row(s) have unparseable points for this number format.');
+    if(noPts)  li('warn',noPts+' row(s) missing points.');
     var zeros=filled.filter(function(r){return r.pts===0;}).length;
     if(zeros) li('ok',zeros+' member(s) at 0 pts — flagged as no-shows / no score.');
 
-    // duplicate names
     var nseen={}, ndupe={};
     filled.forEach(function(r){ if(r.name){ var k=r.name.toLowerCase(); if(nseen[k]) ndupe[r.name]=true; nseen[k]=true; } });
-    if(Object.keys(ndupe).length) li('warn','Repeated name(s) across rows: '+Object.keys(ndupe).join(', ')+' (players can appear in different events).');
+    if(Object.keys(ndupe).length) li('warn','Possible duplicate row(s) from overlapping shots: '+Object.keys(ndupe).join(', '));
 
-    // signed-up cross check
-    var su=$('signedUp').value.match(/(\d+)\s*\/\s*(\d+)/);
-    if(su){ var cap=+su[2];
-      if(ranks.length && ranks[ranks.length-1]>cap) li('err','Highest rank ('+ranks[ranks.length-1]+') exceeds roster cap '+cap+'.');
-    }
-    if(!badPts && !Object.keys(dupes).length) li('ok','Ready to export ('+filled.length+' rows).');
+    if(!badPts) li('ok','Ready to export ('+filled.length+' rows).');
   }
 
-  /* ---------- CSV ---------- */
+  /* ================= CSV ================= */
   function csvCell(v){ v=(v==null?'':String(v)); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
   function buildCSV(data){
-    var rows_=[];
-    rows_.push(['# Battle of Dawn / Wonder Contest — Legion Result']);
-    rows_.push(['Field','Value']);
-    var meta=[
-      ['Our Alliance', $('ourAlliance').value.trim()+' (Era #008)'],
+    var out=[];
+    out.push(['# Battle of Dawn / Wonder Contest — Legion Result']);
+    out.push(['Field','Value']);
+    [ ['Our Alliance', $('ourAlliance').value.trim()+' (Era #008)'],
       ['Our Legion', $('ourLegion').value.trim()],
       ['Our Server', '#008'],
       ['Opponent Legion', $('oppLegion').value.trim()],
@@ -362,41 +576,34 @@
       ['Team Total (banner, non-sum metric)', $('teamTotal').value.trim()],
       ['Members Signed Up', $('signedUp').value.trim()],
       ['Merit Change', $('merit').value.trim()]
-    ];
-    meta.forEach(function(m){ rows_.push(m); });
-    rows_.push([]);
-    rows_.push(['Rank','Player','FaithPoints']);
-    data.filter(function(r){ return r.name || r.rank || r.ptsRaw; })
-        .forEach(function(r){ rows_.push([r.rank||'', r.name, (r.pts==null||isNaN(r.pts))?'':r.pts]); });
-    return '﻿' + rows_.map(function(row){ return row.map(csvCell).join(','); }).join('\r\n');
+    ].forEach(function(m){ out.push(m); });
+    out.push([]); out.push(['Rank','Player','FaithPoints']);
+    var players=data.filter(function(r){ return r.name || r.ptsRaw; })
+                    .slice().sort(function(a,b){ return a.rank-b.rank; });
+    players.forEach(function(r){ out.push([r.rank, r.name, (r.pts==null||isNaN(r.pts))?'':r.pts]); });
+    return '﻿' + out.map(function(row){ return row.map(csvCell).join(','); }).join('\r\n');
   }
   function renderPreview(data){ $('preview').textContent = buildCSV(data).replace(/^﻿/,''); }
-
   function fname(){
     var ally=($('ourAlliance').value.trim()||'legion').replace(/[^\w-]+/g,'');
-    var d=$('date').value||'date';
-    var t=$('timeSlot').value.replace(':','');
-    return 'legion_'+ally+'_'+d+'_'+t+'.csv';
+    return 'legion_'+ally+'_'+($('date').value||'date')+'_'+$('timeSlot').value.replace(':','')+'.csv';
   }
   $('download').addEventListener('click', function(){
-    var blob=new Blob([buildCSV(getData())],{type:'text/csv;charset=utf-8'});
+    var blob=new Blob([buildCSV(withRanks())],{type:'text/csv;charset=utf-8'});
     var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fname();
     document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
   });
   $('copy').addEventListener('click', function(){
-    navigator.clipboard.writeText(buildCSV(getData()).replace(/^﻿/,'')).then(function(){
+    navigator.clipboard.writeText(buildCSV(withRanks()).replace(/^﻿/,'')).then(function(){
       $('copy').textContent='Copied!'; setTimeout(function(){ $('copy').textContent='Copy CSV'; },1200);
     });
   });
 
-  // meta fields re-render preview/checks
   ['ourAlliance','ourLegion','eventType','day','timeSlot','date','result','oppServer','oppLegion','signedUp','teamTotal','merit','locale']
     .forEach(function(id){ $(id).addEventListener('input', refresh); $(id).addEventListener('change', refresh); });
 
-  // seed with a few empty rows
-  for(var i=1;i<=5;i++) addRow(i,'','');
+  window.addEventListener('resize', function(){ if(shots.length) showGuide(); });
   refresh();
-
   if(window.SiteHeader){ window.SiteHeader.setLanguages({ codes:['en'], current:'en', onChange:function(){} }); }
 })();
 </script>
