@@ -569,6 +569,8 @@
     cursor:pointer; transition:background .15s; max-width:90%;
   }
   .ical-btn:hover { background:rgba(var(--kvk-accent-rgb),0.12); }
+  .ical-btn[disabled] { cursor:default; opacity:0.55; }
+  .ical-btn[disabled]:hover { background:transparent; }
   .ical-btn .ical-ico { font-size:16px; line-height:1; flex-shrink:0; }
   .ical-btn .ical-label {
     font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.5px;
@@ -898,9 +900,10 @@
     <div id="evtMeta"></div>
     <!-- localized "Until <milestone>" countdown caption (EventHeader shows the timer) -->
     <div class="cd-label" id="cd-label">Until Beast Taming</div>
-    <button type="button" id="icalBtn" class="ical-btn">
+    <button type="button" id="icalBtn" class="ical-btn" disabled title="Calendar export coming soon — dates not final">
       <span class="ical-ico" aria-hidden="true">&#128197;</span>
       <span class="ical-label" data-i18n="ical_btn">Add to Calendar</span>
+      <span style="opacity:0.7;">(soon)</span>
     </button>
   </div>
 
@@ -1444,17 +1447,13 @@
       <div class="spawn-box" data-map="008">
         <h4 style="margin-top:0;" data-i18n="spawn008_h">Where the Behemoth spawns on #008</h4>
         <figure class="spawn-fig" style="margin:0;">
-          <img class="zoomable" data-cap="Behemoth spawn on #008 — locked location at coordinates (1381,1256)" src="../assets/behemoth/behemoth_spawn_era8.jpg" alt="Behemoth spawn location on server #008 (1381,1256)" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
-          <div class="loc-mini" aria-hidden="true"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="locClip008"><polygon points="100,10 190,100 100,190 10,100"/></clipPath></defs><polygon class="loc-diamond" points="100,10 190,100 100,190 10,100"/><g class="loc-lines" clip-path="url(#locClip008)"><path d="M44.0,126.0 L50.8,119.7"/> <path d="M50.2,65.4 C50.4,66.2 51.3,67.6 51.3,70.0 C51.3,72.4 49.9,77.9 50.2,79.8 C50.5,81.8 51.6,81.3 53.0,81.6 C54.5,81.9 57.8,81.6 58.7,81.6"/> <path d="M77.4,160.7 C78.7,160.3 83.7,159.4 85.3,158.4 C86.9,157.3 85.5,156.0 87.0,154.3 C88.5,152.7 92.4,151.2 94.3,148.6 C96.3,146.0 98.1,140.4 98.9,138.7"/> <path d="M94.9,120.8 C93.6,119.5 88.9,115.0 87.0,112.8 C85.1,110.5 84.3,109.3 83.6,107.6 C82.8,105.8 82.5,105.0 82.5,102.4 C82.5,99.8 83.4,93.7 83.6,92.0"/> <path d="M59.3,82.2 C59.0,83.9 58.8,89.6 57.6,92.5 C56.3,95.5 52.9,95.6 51.9,100.1 C50.9,104.5 51.4,115.9 51.3,119.1"/> <path d="M135.6,92.0 C134.3,93.2 130.3,98.0 127.7,99.5 C125.2,100.9 121.6,100.4 120.4,100.6"/> <path d="M154.9,74.1 C154.7,74.4 153.9,74.5 153.7,75.8 C153.6,77.1 154.0,80.3 153.7,81.6 C153.5,82.8 152.3,82.5 152.0,83.3 C151.8,84.1 151.8,85.1 152.0,86.2 C152.3,87.3 153.7,88.3 153.7,89.7 C153.8,91.0 153.5,93.1 152.6,94.3 C151.8,95.4 150.3,96.4 148.7,96.6 C147.1,96.8 144.4,95.5 143.0,95.4 C141.6,95.3 140.6,95.9 140.2,96.0"/> <path d="M97.7,53.9 C98.1,52.9 99.5,50.0 100.0,48.1 C100.5,46.2 100.2,43.6 100.6,42.3 C100.9,41.1 101.5,41.0 102.3,40.6 C103.0,40.2 104.4,40.6 105.1,40.0 C105.8,39.4 106.0,38.6 106.2,37.1 C106.4,35.7 105.7,32.9 106.2,31.3 C106.8,29.8 109.1,28.4 109.6,27.9"/> <path d="M76.8,79.3 C76.5,78.4 75.5,76.3 75.1,74.1 C74.7,71.9 73.0,68.9 74.5,66.0 C76.0,63.1 80.4,58.7 84.2,56.7 C87.9,54.8 95.0,54.8 97.2,54.4"/> <path d="M139.6,95.4 C139.5,95.1 139.6,93.7 139.0,93.1 C138.5,92.5 136.7,92.2 136.2,92.0"/> <path d="M139.6,96.6 C139.4,97.2 138.6,98.7 138.5,100.1 C138.4,101.4 139.5,102.8 139.0,104.7 C138.6,106.6 136.2,109.6 135.6,111.6 C135.1,113.6 135.3,114.8 135.6,116.8 C136.0,118.8 138.1,121.2 137.9,123.7 C137.7,126.2 135.2,129.2 134.5,131.8 C133.9,134.4 134.0,138.1 133.9,139.3"/> <path d="M115.8,92.5 C115.1,92.7 112.5,94.1 111.3,93.7 C110.1,93.3 109.0,90.8 108.5,90.2"/> <path d="M95.5,121.4 C95.9,122.9 97.8,128.0 98.3,130.1 C98.8,132.2 98.3,133.5 98.3,134.1"/> <path d="M51.3,119.7 C52.3,119.8 55.6,120.5 57.0,120.3 C58.4,120.1 58.4,118.8 59.8,118.5 C61.2,118.2 63.2,117.5 65.5,118.5 C67.8,119.6 70.2,123.4 73.4,124.9 C76.6,126.3 80.7,125.6 84.7,127.2 C88.8,128.8 95.6,133.5 97.7,134.7"/> <path d="M84.2,91.4 C85.6,90.5 90.6,87.0 92.6,86.2 C94.7,85.4 95.6,86.4 96.6,86.8 C97.6,87.2 97.0,88.0 98.9,88.5 C100.8,89.0 106.4,89.5 107.9,89.7"/> <path d="M59.8,81.6 C60.5,81.1 62.6,79.2 63.8,78.7 C65.0,78.2 66.0,78.4 67.2,78.7 C68.4,79.0 69.5,80.2 71.1,80.4 C72.7,80.6 75.9,79.9 76.8,79.8"/> <path d="M96.0,120.8 C96.5,120.6 97.1,119.6 98.9,119.1 C100.7,118.6 104.3,118.6 106.8,118.0 C109.2,117.3 111.6,116.4 113.6,115.1 C115.6,113.7 117.6,111.1 118.7,109.9 C119.7,108.6 119.6,108.7 119.8,107.6 C120.0,106.4 119.8,103.7 119.8,102.9"/> <path d="M77.4,79.8 C78.1,80.8 80.9,83.7 81.9,85.6 C82.9,87.5 83.3,90.4 83.6,91.4"/> <path d="M135.6,91.4 C135.5,91.1 135.9,90.6 134.5,89.7 C133.1,88.7 129.4,87.6 127.2,85.6 C124.9,83.6 123.3,79.9 120.9,77.5 C118.6,75.1 114.6,72.8 113.0,71.2 C111.4,69.5 112.4,68.7 111.3,67.7 C110.2,66.8 108.5,67.6 106.2,65.4 C104.0,63.2 99.2,56.3 97.7,54.4"/> <path d="M98.9,137.6 L98.3,135.3"/> <path d="M99.4,138.2 C102.1,139.7 110.9,146.0 115.3,147.4 C119.6,148.9 123.0,147.4 125.5,146.8 C127.9,146.3 128.6,145.2 130.0,143.9 C131.4,142.7 133.3,140.1 133.9,139.3"/> <path d="M116.4,92.5 C116.6,92.5 117.0,92.0 117.5,92.5 C118.1,93.1 119.4,94.8 119.8,96.0 C120.2,97.3 119.8,99.4 119.8,100.1"/></g><circle class="loc-pin-ring" cx="97" cy="111" r="6"/><circle class="loc-pin-dot" cx="97" cy="111" r="4.5"/></svg></div>
-          <figcaption style="font-size:11px;color:var(--text-muted);margin-top:3px;text-align:center;" data-i18n="spawn008_cap">#057 is spawning their Behemoth on our server in [REU] territory &mdash; coordinates <strong>(1381,1256)</strong>. Tap to enlarge.</figcaption>
+          <div style="width:100%;aspect-ratio:16/10;border-radius:8px;border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:12px;background:var(--bg-card);" data-i18n="spawn_ph">Spawn map coming soon</div>
         </figure>
       </div>
       <div class="spawn-box" data-map="087" hidden>
         <h4 style="margin-top:0;" data-i18n="spawn087_h">Where our Behemoth spawns on #057</h4>
         <figure class="spawn-fig" style="margin:0;">
-          <img class="zoomable" data-cap="Our Behemoth's spawn on #057 — locked target at coordinates (1257,1231)" src="../assets/behemoth/behemoth_spawn_era87.jpg" alt="Our Behemoth spawn location on server #057 (1257,1231)" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
-          <div class="loc-mini" aria-hidden="true"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="locClip087"><polygon points="100,10 190,100 100,190 10,100"/></clipPath></defs><polygon class="loc-diamond" points="100,10 190,100 100,190 10,100"/><g class="loc-lines" clip-path="url(#locClip087)"><path d="M44.0,126.0 L50.8,119.7"/> <path d="M50.2,65.4 C50.4,66.2 51.3,67.6 51.3,70.0 C51.3,72.4 49.9,77.9 50.2,79.8 C50.5,81.8 51.6,81.3 53.0,81.6 C54.5,81.9 57.8,81.6 58.7,81.6"/> <path d="M77.4,160.7 C78.7,160.3 83.7,159.4 85.3,158.4 C86.9,157.3 85.5,156.0 87.0,154.3 C88.5,152.7 92.4,151.2 94.3,148.6 C96.3,146.0 98.1,140.4 98.9,138.7"/> <path d="M94.9,120.8 C93.6,119.5 88.9,115.0 87.0,112.8 C85.1,110.5 84.3,109.3 83.6,107.6 C82.8,105.8 82.5,105.0 82.5,102.4 C82.5,99.8 83.4,93.7 83.6,92.0"/> <path d="M59.3,82.2 C59.0,83.9 58.8,89.6 57.6,92.5 C56.3,95.5 52.9,95.6 51.9,100.1 C50.9,104.5 51.4,115.9 51.3,119.1"/> <path d="M135.6,92.0 C134.3,93.2 130.3,98.0 127.7,99.5 C125.2,100.9 121.6,100.4 120.4,100.6"/> <path d="M154.9,74.1 C154.7,74.4 153.9,74.5 153.7,75.8 C153.6,77.1 154.0,80.3 153.7,81.6 C153.5,82.8 152.3,82.5 152.0,83.3 C151.8,84.1 151.8,85.1 152.0,86.2 C152.3,87.3 153.7,88.3 153.7,89.7 C153.8,91.0 153.5,93.1 152.6,94.3 C151.8,95.4 150.3,96.4 148.7,96.6 C147.1,96.8 144.4,95.5 143.0,95.4 C141.6,95.3 140.6,95.9 140.2,96.0"/> <path d="M97.7,53.9 C98.1,52.9 99.5,50.0 100.0,48.1 C100.5,46.2 100.2,43.6 100.6,42.3 C100.9,41.1 101.5,41.0 102.3,40.6 C103.0,40.2 104.4,40.6 105.1,40.0 C105.8,39.4 106.0,38.6 106.2,37.1 C106.4,35.7 105.7,32.9 106.2,31.3 C106.8,29.8 109.1,28.4 109.6,27.9"/> <path d="M76.8,79.3 C76.5,78.4 75.5,76.3 75.1,74.1 C74.7,71.9 73.0,68.9 74.5,66.0 C76.0,63.1 80.4,58.7 84.2,56.7 C87.9,54.8 95.0,54.8 97.2,54.4"/> <path d="M139.6,95.4 C139.5,95.1 139.6,93.7 139.0,93.1 C138.5,92.5 136.7,92.2 136.2,92.0"/> <path d="M139.6,96.6 C139.4,97.2 138.6,98.7 138.5,100.1 C138.4,101.4 139.5,102.8 139.0,104.7 C138.6,106.6 136.2,109.6 135.6,111.6 C135.1,113.6 135.3,114.8 135.6,116.8 C136.0,118.8 138.1,121.2 137.9,123.7 C137.7,126.2 135.2,129.2 134.5,131.8 C133.9,134.4 134.0,138.1 133.9,139.3"/> <path d="M115.8,92.5 C115.1,92.7 112.5,94.1 111.3,93.7 C110.1,93.3 109.0,90.8 108.5,90.2"/> <path d="M95.5,121.4 C95.9,122.9 97.8,128.0 98.3,130.1 C98.8,132.2 98.3,133.5 98.3,134.1"/> <path d="M51.3,119.7 C52.3,119.8 55.6,120.5 57.0,120.3 C58.4,120.1 58.4,118.8 59.8,118.5 C61.2,118.2 63.2,117.5 65.5,118.5 C67.8,119.6 70.2,123.4 73.4,124.9 C76.6,126.3 80.7,125.6 84.7,127.2 C88.8,128.8 95.6,133.5 97.7,134.7"/> <path d="M84.2,91.4 C85.6,90.5 90.6,87.0 92.6,86.2 C94.7,85.4 95.6,86.4 96.6,86.8 C97.6,87.2 97.0,88.0 98.9,88.5 C100.8,89.0 106.4,89.5 107.9,89.7"/> <path d="M59.8,81.6 C60.5,81.1 62.6,79.2 63.8,78.7 C65.0,78.2 66.0,78.4 67.2,78.7 C68.4,79.0 69.5,80.2 71.1,80.4 C72.7,80.6 75.9,79.9 76.8,79.8"/> <path d="M96.0,120.8 C96.5,120.6 97.1,119.6 98.9,119.1 C100.7,118.6 104.3,118.6 106.8,118.0 C109.2,117.3 111.6,116.4 113.6,115.1 C115.6,113.7 117.6,111.1 118.7,109.9 C119.7,108.6 119.6,108.7 119.8,107.6 C120.0,106.4 119.8,103.7 119.8,102.9"/> <path d="M77.4,79.8 C78.1,80.8 80.9,83.7 81.9,85.6 C82.9,87.5 83.3,90.4 83.6,91.4"/> <path d="M135.6,91.4 C135.5,91.1 135.9,90.6 134.5,89.7 C133.1,88.7 129.4,87.6 127.2,85.6 C124.9,83.6 123.3,79.9 120.9,77.5 C118.6,75.1 114.6,72.8 113.0,71.2 C111.4,69.5 112.4,68.7 111.3,67.7 C110.2,66.8 108.5,67.6 106.2,65.4 C104.0,63.2 99.2,56.3 97.7,54.4"/> <path d="M98.9,137.6 L98.3,135.3"/> <path d="M99.4,138.2 C102.1,139.7 110.9,146.0 115.3,147.4 C119.6,148.9 123.0,147.4 125.5,146.8 C127.9,146.3 128.6,145.2 130.0,143.9 C131.4,142.7 133.3,140.1 133.9,139.3"/> <path d="M116.4,92.5 C116.6,92.5 117.0,92.0 117.5,92.5 C118.1,93.1 119.4,94.8 119.8,96.0 C120.2,97.3 119.8,99.4 119.8,100.1"/></g><circle class="loc-pin-ring" cx="93" cy="107" r="6"/><circle class="loc-pin-dot" cx="93" cy="107" r="4.5"/></svg></div>
-          <figcaption style="font-size:11px;color:var(--text-muted);margin-top:3px;text-align:center;" data-i18n="spawn087_cap">Our Behemoth spawns on #057 near [&Sigma;28] territory &mdash; coordinates <strong>(1257,1231)</strong>. Relocate near it for the 19:00 window. Tap to enlarge.</figcaption>
+          <div style="width:100%;aspect-ratio:16/10;border-radius:8px;border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:12px;background:var(--bg-card);" data-i18n="spawn_ph">Spawn map coming soon</div>
         </figure>
       </div>
       </div>
@@ -1555,7 +1554,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Empate &mdash; arrastra los controles para proyectar",
     "calc_note": "Solo proyección &mdash; modela daño menor, pilas Imperecederas consumidas, el bono por matar y el puntaje por vida restante. El puntaje real también incluye daño a ciudadelas de otras fuentes.",
     "inv_modal_title": "La invasión está EN VIVO &mdash; Ataca y Defiende",
-    "inv_modal_body": "Ambos Bégimos invaden ahora (90 min). <strong>Ataca</strong> a #057 en (1257,1231) y <strong>defiende</strong> el nuestro en (1381,1256). Solo las reuniones dañan a un Bégimo &mdash; mantén vivo el nuestro y pon a cero el suyo. Aquí se decide la guerra.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "Ir al mapa de batalla",
     "timeline_h": "Cronología del Evento",
     "lbl_taming": "Doma de Bestias",
@@ -1624,7 +1623,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> Recibiendo daño de Bégimo",
     "map_desc": "Cada mapa muestra un servidor como local con el Bégimo invasor en su aparición. <strong>Alcance ilimitado, ignora escudos</strong> &mdash; ninguna ciudad está a salvo (naranja = bajo fuego). El local lo reúne para bajarlo; los visitantes contra-reúnen para mantenerlo sumando. Alterna entre <strong>#008</strong> y <strong>#057</strong>.",
     "spawn008_h": "Dónde aparece el Bégimo en #008",
-    "spawn008_cap": "#057 está haciendo aparecer su Bégimo en nuestro servidor, en territorio [REU] &mdash; coordenadas <strong>(1381,1256)</strong>. Toca para ampliar.",
+    "spawn008_cap": "#057 está haciendo aparecer su Bégimo en nuestro servidor, en territorio [REU] &mdash; coordenadas <strong></strong>. Toca para ampliar.",
     "spawn087_h": "Dónde aparece nuestro Bégimo en #057",
     "st3_atk_h": "Atacar al Bégimo enemigo",
     "st3_a1": "<strong>Solo las reuniones lo dañan</strong> (1.000/seg cada una &mdash; por reunión, no por marcha). Más reuniones separadas = más daño; manténgan tantas como puedan.",
@@ -1711,10 +1710,10 @@ const TRANSLATIONS = {
     "bless_final": "Bendición de Bégimo",
     "bless_final_e": "Voluntario: 4.000 pts + 20 contrib / runa",
     "bless_lg_open": "Disponible para donar ahora",
-    "spawn087_cap": "Nuestro Bégimo aparece en #057 cerca de territorio [&Sigma;28] &mdash; coordenadas <strong>(1257,1231)</strong>. Reubícate cerca para la ventana de las 19:00. Toca para ampliar.",
+    "spawn087_cap": "Nuestro Bégimo aparece en #057 cerca de territorio [&Sigma;28] &mdash; coordenadas <strong></strong>. Reubícate cerca para la ventana de las 19:00. Toca para ampliar.",
     "loc_here": "zona de invasión",
-    "loc008_cap": "Aproximadamente dónde está <strong>(1381,1256)</strong> en el mapa del servidor #008 &mdash; al noreste del centro.",
-    "loc087_cap": "Aproximadamente dónde está <strong>(1257,1231)</strong> en el mapa del servidor #057 &mdash; al noreste del centro.",
+    "loc008_cap": "Aproximadamente dónde está <strong></strong> en el mapa del servidor #008 &mdash; al noreste del centro.",
+    "loc087_cap": "Aproximadamente dónde está <strong></strong> en el mapa del servidor #057 &mdash; al noreste del centro.",
     "tab_overview": "Resumen",
     "tab_s1": "Exploración",
     "tab_s2": "Doma de Bestias",
@@ -1737,7 +1736,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "平局 &mdash; 拖曳滑桿以推算",
     "calc_note": "僅為推算 &mdash; 模擬小額傷害、消耗的不死層數、擊殺獎勵與剩餘血量得分。實際得分亦包含其他來源的城塞傷害。",
     "inv_modal_title": "入侵進行中 &mdash; 攻擊與防守",
-    "inv_modal_body": "雙方巨獸現正入侵（90 分鐘）。於 (1257,1231) <strong>攻擊</strong> #057，並於 (1381,1256) <strong>防守</strong>我方。只有集結能傷害巨獸 &mdash; 保住我方並將敵方歸零。勝負在此決定。",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "前往戰場地圖",
     "timeline_h": "活動時間線",
     "lbl_taming": "馴獸",
@@ -1863,12 +1862,12 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> 正受巨獸傷害",
     "map_desc": "每張地圖以一方服務器為主場，入侵巨獸位於出生點。<strong>射程無限、無視護盾</strong> — 沒有城市安全（橙=正受攻擊）。主場集結削減它; 客場逆集結維持其得分。在<strong>#008</strong>與<strong>#057</strong>間切換。",
     "spawn008_h": "巨獸在#008的出生點",
-    "spawn008_cap": "#057在我方服務器的[REU]領地生成其巨獸 — 座標 <strong>(1381,1256)</strong>。點擊放大。",
+    "spawn008_cap": "#057在我方服務器的[REU]領地生成其巨獸 — 座標 <strong></strong>。點擊放大。",
     "spawn087_h": "我方巨獸在#057的出生點",
-    "spawn087_cap": "我方巨獸在#057的[&Sigma;28]領地附近生成 — 座標 <strong>(1257,1231)</strong>。19:00時段前轉移至附近。點擊放大。",
+    "spawn087_cap": "我方巨獸在#057的[&Sigma;28]領地附近生成 — 座標 <strong></strong>。19:00時段前轉移至附近。點擊放大。",
     "loc_here": "入侵區",
-    "loc008_cap": "<strong>(1381,1256)</strong> 在 #008 伺服器地圖上的大致位置 — 中心的東北方。",
-    "loc087_cap": "<strong>(1257,1231)</strong> 在 #057 伺服器地圖上的大致位置 — 中心的東北方。",
+    "loc008_cap": "<strong></strong> 在 #008 伺服器地圖上的大致位置 — 中心的東北方。",
+    "loc087_cap": "<strong></strong> 在 #057 伺服器地圖上的大致位置 — 中心的東北方。",
     "st3_atk_h": "攻擊敵方巨獸",
     "st3_a1": "<strong>只有集結能造成傷害</strong>（每個每秒1,000 — 按集結計，非按行軍）。獨立集結越多傷害越高; 儘量多保持。",
     "st3_a2": "<strong>長時間維持集結</strong> — 5分鐘後，傷害每15秒+500。別讓它們解散。",
@@ -1919,7 +1918,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Oavgjort &mdash; dra reglagen för att projicera",
     "calc_note": "Endast projektion &mdash; modellerar småskada, förbrukade Odödlighetsstackar, dödsbonus och återstående-HP-poäng. Faktisk poäng inkluderar även citadellskada från andra källor.",
     "inv_modal_title": "Invasionen är LIVE &mdash; Anfall och Försvara",
-    "inv_modal_body": "Båda Behemotherna invaderar nu (90 min). <strong>Anfall</strong> #057 vid (1257,1231) och <strong>försvara</strong> vår vid (1381,1256). Endast samlingar skadar en Behemoth &mdash; håll vår vid liv och nolla deras. Här avgörs kriget.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "Gå till slagfältskartan",
     "event_tag": "Nytt spelläge &middot; Era 8",
     "subtitle": "Väck blodslinjen &middot; Marschera in i fiendeimperier &middot; Krig mellan servrar",
@@ -2058,12 +2057,12 @@ const TRANSLATIONS = {
     "leg_dmg": "Under eld",
     "map_desc": "Varje karta visar en server som hemma med den invaderande Behemothen vid sin spawn. <strong>Obegränsad räckvidd, ignorerar sköldar</strong> &mdash; ingen stad är säker (orange = under eld). Hemma samlar ner den; besökare kontrasamlar för att hålla den poänggivande. Växla för att vända mellan <strong>#008</strong> och <strong>#057</strong>.",
     "spawn008_h": "Var Behemothen spawnar på #008",
-    "spawn008_cap": "#057 gyter sin Behemoth på vår server, i [REU]-territorium &mdash; koordinater <strong>(1381,1256)</strong>. Tryck för att förstora.",
+    "spawn008_cap": "#057 gyter sin Behemoth på vår server, i [REU]-territorium &mdash; koordinater <strong></strong>. Tryck för att förstora.",
     "spawn087_h": "Var vår Behemoth spawnar på #057",
-    "spawn087_cap": "Vår Behemoth gyter på #057 nära [&Sigma;28]-territorium &mdash; koordinater <strong>(1257,1231)</strong>. Omplacera dig nära den inför 19:00-fönstret. Tryck för att förstora.",
+    "spawn087_cap": "Vår Behemoth gyter på #057 nära [&Sigma;28]-territorium &mdash; koordinater <strong></strong>. Omplacera dig nära den inför 19:00-fönstret. Tryck för att förstora.",
     "loc_here": "invasionszon",
-    "loc008_cap": "Ungefär var <strong>(1381,1256)</strong> ligger på #008-serverkartan &mdash; nordost om mitten.",
-    "loc087_cap": "Ungefär var <strong>(1257,1231)</strong> ligger på #057-serverkartan &mdash; nordost om mitten.",
+    "loc008_cap": "Ungefär var <strong></strong> ligger på #008-serverkartan &mdash; nordost om mitten.",
+    "loc087_cap": "Ungefär var <strong></strong> ligger på #057-serverkartan &mdash; nordost om mitten.",
     "st3_atk_h": "Anfalla fiendens Behemoth",
     "st3_a1": "<strong>Endast samlingar</strong> skadar Behemothen (1 000/s styck) &mdash; fler separata samlingar = mer skada.",
     "st3_a2": "Håll samlingar länge: efter 5 min rampar skadan +500 var 15:e sekund &mdash; låt dem inte upplösas.",
@@ -2101,7 +2100,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Tasan &mdash; vedä liukusäätimiä projisoidaksesi",
     "calc_note": "Vain arvio &mdash; mallintaa pienvahingon, käytetyt Kuolemattomuuspinot, tappobonuksen ja jäljellä olevan HP:n pisteet. Todellinen pistemäärä sisältää myös muista lähteistä tulevan linnoitusvahingon.",
     "inv_modal_title": "Hyökkäys on KÄYNNISSÄ &mdash; Hyökkää ja Puolusta",
-    "inv_modal_body": "Molemmat Behemothit hyökkäävät nyt (90 min). <strong>Hyökkää</strong> #057:aa kohti kohdassa (1257,1231) ja <strong>puolusta</strong> omaamme kohdassa (1381,1256). Vain kokoontumiset vahingoittavat Behemothia &mdash; pidä omamme elossa ja nollaa heidän. Täällä sota ratkeaa.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "Siirry taistelukartalle",
     "event_tag": "Uusi pelitila &middot; Era 8",
     "subtitle": "Herätä verilinja &middot; Marssi vihollisvaltakuntiin &middot; Palvelinten välinen sota",
@@ -2240,12 +2239,12 @@ const TRANSLATIONS = {
     "leg_dmg": "Tulen alla",
     "map_desc": "Kukin kartta näyttää yhden palvelimen kotina hyökkäävän Behemothin syntypaikallaan. <strong>Rajaton kantama, ohittaa kilvet</strong> &mdash; mikään kaupunki ei ole turvassa (oranssi = tulen alla). Koti kokoaa sen alas; vieraat vastakokoontuvat pitääkseen sen pisteyttämässä. Vaihda kääntääksesi <strong>#008</strong> ja <strong>#057</strong> välillä.",
     "spawn008_h": "Missä Behemoth syntyy palvelimella #008",
-    "spawn008_cap": "#057 synnyttää Behemothinsa palvelimellamme, [REU]-alueella &mdash; koordinaatit <strong>(1381,1256)</strong>. Napauta suurentaaksesi.",
+    "spawn008_cap": "#057 synnyttää Behemothinsa palvelimellamme, [REU]-alueella &mdash; koordinaatit <strong></strong>. Napauta suurentaaksesi.",
     "spawn087_h": "Missä Behemothimme syntyy palvelimella #057",
-    "spawn087_cap": "Behemothimme syntyy palvelimella #057 lähellä [&Sigma;28]-aluetta &mdash; koordinaatit <strong>(1257,1231)</strong>. Siirry sen lähelle 19:00-ikkunaa varten. Napauta suurentaaksesi.",
+    "spawn087_cap": "Behemothimme syntyy palvelimella #057 lähellä [&Sigma;28]-aluetta &mdash; koordinaatit <strong></strong>. Siirry sen lähelle 19:00-ikkunaa varten. Napauta suurentaaksesi.",
     "loc_here": "hyökkäysvyöhyke",
-    "loc008_cap": "Suunnilleen missä <strong>(1381,1256)</strong> sijaitsee palvelimen #008 kartalla &mdash; keskustasta koilliseen.",
-    "loc087_cap": "Suunnilleen missä <strong>(1257,1231)</strong> sijaitsee palvelimen #057 kartalla &mdash; keskustasta koilliseen.",
+    "loc008_cap": "Suunnilleen missä <strong></strong> sijaitsee palvelimen #008 kartalla &mdash; keskustasta koilliseen.",
+    "loc087_cap": "Suunnilleen missä <strong></strong> sijaitsee palvelimen #057 kartalla &mdash; keskustasta koilliseen.",
     "st3_atk_h": "Vihollisen Behemothin hyökkääminen",
     "st3_a1": "<strong>Vain kokoontumiset</strong> vahingoittavat Behemothia (1 000/s kukin) &mdash; enemmän erillisiä kokoontumisia = enemmän vahinkoa.",
     "st3_a2": "Pidä kokoontumiset pitkään: 5 min jälkeen vahinko nousee +500 joka 15 s &mdash; älä anna niiden hajota.",
@@ -2283,7 +2282,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Uavgjort &mdash; dra glidebryterne for å projisere",
     "calc_note": "Kun projeksjon &mdash; modellerer småskade, brukte Udødelighetsstabler, drapsbonus og gjenværende-HP-poeng. Faktisk poeng inkluderer også citadellskade fra andre kilder.",
     "inv_modal_title": "Invasjonen er LIVE &mdash; Angrip og Forsvar",
-    "inv_modal_body": "Begge Behemothene invaderer nå (90 min). <strong>Angrip</strong> #057 ved (1257,1231) og <strong>forsvar</strong> vår ved (1381,1256). Bare samlinger skader en Behemoth &mdash; hold vår i live og nullstill deres. Her avgjøres krigen.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "Gå til slagmarkskartet",
     "event_tag": "Ny spillmodus &middot; Era 8",
     "subtitle": "Vekk blodslinjen &middot; Marsjer inn i fiendeimperier &middot; Krig mellom servere",
@@ -2422,12 +2421,12 @@ const TRANSLATIONS = {
     "leg_dmg": "Under ild",
     "map_desc": "Hvert kart viser én server som hjemme med den invaderende Behemothen ved sin spawn. <strong>Ubegrenset rekkevidde, ignorerer skjold</strong> &mdash; ingen by er trygg (oransje = under ild). Hjemme samler den ned; besøkende motsamler for å holde den scorende. Veksle for å bytte mellom <strong>#008</strong> og <strong>#057</strong>.",
     "spawn008_h": "Hvor Behemothen spawner på #008",
-    "spawn008_cap": "#057 gyter sin Behemoth på vår server, i [REU]-territorium &mdash; koordinater <strong>(1381,1256)</strong>. Trykk for å forstørre.",
+    "spawn008_cap": "#057 gyter sin Behemoth på vår server, i [REU]-territorium &mdash; koordinater <strong></strong>. Trykk for å forstørre.",
     "spawn087_h": "Hvor vår Behemoth spawner på #057",
-    "spawn087_cap": "Vår Behemoth gyter på #057 nær [&Sigma;28]-territorium &mdash; koordinater <strong>(1257,1231)</strong>. Flytt deg nær den til 19:00-vinduet. Trykk for å forstørre.",
+    "spawn087_cap": "Vår Behemoth gyter på #057 nær [&Sigma;28]-territorium &mdash; koordinater <strong></strong>. Flytt deg nær den til 19:00-vinduet. Trykk for å forstørre.",
     "loc_here": "invasjonssone",
-    "loc008_cap": "Omtrent hvor <strong>(1381,1256)</strong> ligger på #008-serverkartet &mdash; nordøst for midten.",
-    "loc087_cap": "Omtrent hvor <strong>(1257,1231)</strong> ligger på #057-serverkartet &mdash; nordøst for midten.",
+    "loc008_cap": "Omtrent hvor <strong></strong> ligger på #008-serverkartet &mdash; nordøst for midten.",
+    "loc087_cap": "Omtrent hvor <strong></strong> ligger på #057-serverkartet &mdash; nordøst for midten.",
     "st3_atk_h": "Angripe fiendens Behemoth",
     "st3_a1": "<strong>Bare samlinger</strong> skader Behemothen (1 000/s hver) &mdash; flere separate samlinger = mer skade.",
     "st3_a2": "Hold samlinger lenge: etter 5 min øker skaden +500 hvert 15. sekund &mdash; ikke la dem oppløses.",
@@ -2465,7 +2464,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Gelijk &mdash; sleep de schuifregelaars om te projecteren",
     "calc_note": "Alleen projectie &mdash; modelleert kleine schade, verbruikte Onsterfelijkheidsstapels, de doodsbonus en resterende-HP-score. Werkelijke score omvat ook citadelschade uit andere bronnen.",
     "inv_modal_title": "De invasie is LIVE &mdash; Aanvallen en Verdedigen",
-    "inv_modal_body": "Beide Behemoths vallen nu aan (90 min). <strong>Val</strong> #057 aan bij (1257,1231) en <strong>verdedig</strong> de onze bij (1381,1256). Alleen verzamelingen beschadigen een Behemoth &mdash; houd de onze in leven en zet die van hen op nul. Hier wordt de oorlog beslist.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "Naar de slagveldkaart",
     "event_tag": "Nieuwe spelmodus &middot; Era 8",
     "subtitle": "Wek de bloedlijn &middot; Marcheer vijandelijke rijken binnen &middot; Oorlog tussen servers",
@@ -2604,12 +2603,12 @@ const TRANSLATIONS = {
     "leg_dmg": "Onder vuur",
     "map_desc": "Elke kaart toont één server als thuis met de binnenvallende Behemoth bij zijn spawn. <strong>Onbeperkt bereik, negeert schilden</strong> &mdash; geen enkele stad is veilig (oranje = onder vuur). Thuis rallyet hem neer; bezoekers counter-rallyen om hem scorend te houden. Wissel om te schakelen tussen <strong>#008</strong> en <strong>#057</strong>.",
     "spawn008_h": "Waar de Behemoth spawnt op #008",
-    "spawn008_cap": "#057 laat hun Behemoth op onze server verschijnen, in [REU]-gebied &mdash; coördinaten <strong>(1381,1256)</strong>. Tik om te vergroten.",
+    "spawn008_cap": "#057 laat hun Behemoth op onze server verschijnen, in [REU]-gebied &mdash; coördinaten <strong></strong>. Tik om te vergroten.",
     "spawn087_h": "Waar onze Behemoth spawnt op #057",
-    "spawn087_cap": "Onze Behemoth verschijnt op #057 nabij [&Sigma;28]-gebied &mdash; coördinaten <strong>(1257,1231)</strong>. Verplaats je dichtbij voor het venster van 19:00. Tik om te vergroten.",
+    "spawn087_cap": "Onze Behemoth verschijnt op #057 nabij [&Sigma;28]-gebied &mdash; coördinaten <strong></strong>. Verplaats je dichtbij voor het venster van 19:00. Tik om te vergroten.",
     "loc_here": "invasiezone",
-    "loc008_cap": "Ongeveer waar <strong>(1381,1256)</strong> op de #008-serverkaart ligt &mdash; ten noordoosten van het midden.",
-    "loc087_cap": "Ongeveer waar <strong>(1257,1231)</strong> op de #057-serverkaart ligt &mdash; ten noordoosten van het midden.",
+    "loc008_cap": "Ongeveer waar <strong></strong> op de #008-serverkaart ligt &mdash; ten noordoosten van het midden.",
+    "loc087_cap": "Ongeveer waar <strong></strong> op de #057-serverkaart ligt &mdash; ten noordoosten van het midden.",
     "st3_atk_h": "De vijandelijke Behemoth aanvallen",
     "st3_a1": "<strong>Alleen rally's</strong> beschadigen de Behemoth (1.000/s elk) &mdash; meer aparte rally's = meer schade.",
     "st3_a2": "Houd rally's lang vol: na 5 min loopt de schade op met +500 elke 15 s &mdash; laat ze niet ontbinden.",
@@ -2647,7 +2646,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "සමයි &mdash; පුරෝකථනයට ස්ලයිඩර අදින්න",
     "calc_note": "පුරෝකථනය පමණි &mdash; සුළු හානිය, භාවිත කළ අමරණීය තට්ටු, ඝාතන ප්‍රසාදය සහ ඉතිරි HP ලකුණු ආදර්ශනය කරයි. සැබෑ ලකුණුවලට වෙනත් මූලාශ්‍රවලින් වූ බලකොටු හානිද ඇතුළත් වේ.",
     "inv_modal_title": "ආක්‍රමණය සජීවීයි &mdash; පහර දෙන්න සහ ආරක්ෂා කරන්න",
-    "inv_modal_body": "දෙපාර්ශ්වයේම Behemoth දැන් ආක්‍රමණය කරයි (මිනිත්තු 90). (1257,1231) දී #057 ට <strong>පහර දෙන්න</strong> සහ (1381,1256) දී අපගේ එක <strong>ආරක්ෂා කරන්න</strong>. Behemoth එකකට හානි කරන්නේ රැස්වීම් පමණි &mdash; අපගේ එක ජීවත්ව තබා ඔවුන්ගේ එක ශුන්‍ය කරන්න. යුද්ධය තීරණය වන්නේ මෙහිදීය.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "සටන් බිමේ සිතියමට යන්න",
     "event_tag": "නව ක්‍රීඩා ප්‍රකාරය &middot; Era 8",
     "subtitle": "රුධිර වංශය අවදි කරන්න &middot; සතුරු අධිරාජ්‍යයන්ට කඩා වදින්න &middot; සේවාදායක අතර යුද්ධය",
@@ -2786,12 +2785,12 @@ const TRANSLATIONS = {
     "leg_dmg": "වෙඩි යටතේ",
     "map_desc": "සෑම සිතියමක්ම එක් සේවාදායකයක් නිවස ලෙස පෙන්වයි, කඩා වදින Behemoth එහි ස්පෝන් හිදී. <strong>අසීමිත පරාසය, පලිහ නොසලකයි</strong> &mdash; කිසිදු නගරයක් ආරක්ෂිත නැත (තැඹිලි = වෙඩි යටතේ). නිවස එය රැලි කර පහත් කරයි; අමුත්තන් එය ලකුණු ලබමින් තබා ගැනීමට ප්‍රතිරැලි කරයි. <strong>#008</strong> සහ <strong>#057</strong> අතර මාරු කිරීමට ටොගල් කරන්න.",
     "spawn008_h": "#008 හි Behemoth ස්පෝන් වන්නේ කොහේද",
-    "spawn008_cap": "#057 ඔවුන්ගේ Behemoth අපගේ සේවාදායකයේ [REU] භූමියේ බිහි කරයි &mdash; ඛණ්ඩාංක <strong>(1381,1256)</strong>. විශාල කිරීමට තට්ටු කරන්න.",
+    "spawn008_cap": "#057 ඔවුන්ගේ Behemoth අපගේ සේවාදායකයේ [REU] භූමියේ බිහි කරයි &mdash; ඛණ්ඩාංක <strong></strong>. විශාල කිරීමට තට්ටු කරන්න.",
     "spawn087_h": "#057 හි අපගේ Behemoth ස්පෝන් වන්නේ කොහේද",
-    "spawn087_cap": "අපගේ Behemoth #057 හි [&Sigma;28] භූමිය අසල බිහි වේ &mdash; ඛණ්ඩාංක <strong>(1257,1231)</strong>. 19:00 කවුළුව සඳහා එය අසලට යළි පිහිටුවන්න. විශාල කිරීමට තට්ටු කරන්න.",
+    "spawn087_cap": "අපගේ Behemoth #057 හි [&Sigma;28] භූමිය අසල බිහි වේ &mdash; ඛණ්ඩාංක <strong></strong>. 19:00 කවුළුව සඳහා එය අසලට යළි පිහිටුවන්න. විශාල කිරීමට තට්ටු කරන්න.",
     "loc_here": "ආක්‍රමණ කලාපය",
-    "loc008_cap": "#008 සේවාදායක සිතියමේ <strong>(1381,1256)</strong> පිහිටන ආසන්න ස්ථානය &mdash; මධ්‍යයේ ඊසාන දෙසින්.",
-    "loc087_cap": "#057 සේවාදායක සිතියමේ <strong>(1257,1231)</strong> පිහිටන ආසන්න ස්ථානය &mdash; මධ්‍යයේ ඊසාන දෙසින්.",
+    "loc008_cap": "#008 සේවාදායක සිතියමේ <strong></strong> පිහිටන ආසන්න ස්ථානය &mdash; මධ්‍යයේ ඊසාන දෙසින්.",
+    "loc087_cap": "#057 සේවාදායක සිතියමේ <strong></strong> පිහිටන ආසන්න ස්ථානය &mdash; මධ්‍යයේ ඊසාන දෙසින්.",
     "st3_atk_h": "සතුරු Behemoth ට පහර දීම",
     "st3_a1": "<strong>රැලි පමණක්</strong> Behemoth ට හානි කරයි (එකකට 1,000/තත්) &mdash; වැඩි වෙන් වූ රැලි = වැඩි හානි.",
     "st3_a2": "රැලි දිගු කලක් තබා ගන්න: මිනිත්තු 5කට පසු හානිය සෑම තත්පර 15කට වරක් +500 බැගින් වැඩි වේ &mdash; ඒවා විසිරීමට ඉඩ නොදෙන්න.",
@@ -2829,7 +2828,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "சமநிலை &mdash; கணிக்க ஸ்லைடர்களை இழுக்கவும்",
     "calc_note": "கணிப்பு மட்டுமே &mdash; சிறு சேதம், பயன்படுத்திய அழியாத அடுக்குகள், கொல்லல் போனஸ் மற்றும் மீதமுள்ள HP புள்ளிகளை மாதிரியாக்குகிறது. உண்மையான மதிப்பெண்ணில் பிற மூலங்களிலிருந்து கோட்டை சேதமும் அடங்கும்.",
     "inv_modal_title": "படையெடுப்பு நேரலையில் &mdash; தாக்கு மற்றும் காக்க",
-    "inv_modal_body": "இரு Behemoth-களும் இப்போது படையெடுக்கின்றன (90 நிமிடம்). (1257,1231)-இல் #057-ஐ <strong>தாக்கு</strong> மற்றும் (1381,1256)-இல் நமதை <strong>காக்க</strong>. Behemoth-ஐ கூட்டங்கள் மட்டுமே சேதப்படுத்தும் &mdash; நமதை உயிருடன் வைத்து அவர்களுடையதை பூஜ்ஜியமாக்கு. போர் இங்கே தீர்மானிக்கப்படுகிறது.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "போர்க்கள வரைபடத்திற்கு செல்",
     "event_tag": "புதிய விளையாட்டு முறை &middot; Era 8",
     "subtitle": "இரத்தவழியை எழுப்பு &middot; எதிரி பேரரசுகளுக்குள் அணிவகு &middot; சர்வர்-இடை போர்",
@@ -2968,12 +2967,12 @@ const TRANSLATIONS = {
     "leg_dmg": "தாக்குதலில்",
     "map_desc": "ஒவ்வொரு வரைபடமும் ஒரு சர்வரை வீடாக காட்டுகிறது, படையெடுக்கும் Behemoth அதன் ஸ்பான்-இல். <strong>வரம்பற்ற தூரம், கவசங்களை புறக்கணிக்கிறது</strong> &mdash; எந்த நகரமும் பாதுகாப்பானதல்ல (ஆரஞ்சு = தாக்குதலில்). வீடு அதை திரட்டி வீழ்த்துகிறது; பார்வையாளர்கள் அதை புள்ளியிடும் நிலையில் வைக்க எதிர்-திரள்கிறார்கள். <strong>#008</strong> மற்றும் <strong>#057</strong> இடையே மாற டாகிள் செய்.",
     "spawn008_h": "#008-இல் Behemoth ஸ்பான் ஆகும் இடம்",
-    "spawn008_cap": "#057 தங்கள் Behemoth-ஐ நமது சர்வரில் [REU] பகுதியில் தோற்றுவிக்கிறார்கள் &mdash; ஆயத்தொலைவுகள் <strong>(1381,1256)</strong>. பெரிதாக்க தட்டு.",
+    "spawn008_cap": "#057 தங்கள் Behemoth-ஐ நமது சர்வரில் [REU] பகுதியில் தோற்றுவிக்கிறார்கள் &mdash; ஆயத்தொலைவுகள் <strong></strong>. பெரிதாக்க தட்டு.",
     "spawn087_h": "#057-இல் நமது Behemoth ஸ்பான் ஆகும் இடம்",
-    "spawn087_cap": "நமது Behemoth #057-இல் [&Sigma;28] பகுதிக்கு அருகில் தோன்றுகிறது &mdash; ஆயத்தொலைவுகள் <strong>(1257,1231)</strong>. 19:00 சாளரத்திற்கு அதன் அருகில் இடமாற்று. பெரிதாக்க தட்டு.",
+    "spawn087_cap": "நமது Behemoth #057-இல் [&Sigma;28] பகுதிக்கு அருகில் தோன்றுகிறது &mdash; ஆயத்தொலைவுகள் <strong></strong>. 19:00 சாளரத்திற்கு அதன் அருகில் இடமாற்று. பெரிதாக்க தட்டு.",
     "loc_here": "படையெடுப்பு மண்டலம்",
-    "loc008_cap": "#008 சர்வர் வரைபடத்தில் <strong>(1381,1256)</strong> இருக்கும் தோராயமான இடம் &mdash; மையத்திற்கு வடகிழக்கே.",
-    "loc087_cap": "#057 சர்வர் வரைபடத்தில் <strong>(1257,1231)</strong> இருக்கும் தோராயமான இடம் &mdash; மையத்திற்கு வடகிழக்கே.",
+    "loc008_cap": "#008 சர்வர் வரைபடத்தில் <strong></strong> இருக்கும் தோராயமான இடம் &mdash; மையத்திற்கு வடகிழக்கே.",
+    "loc087_cap": "#057 சர்வர் வரைபடத்தில் <strong></strong> இருக்கும் தோராயமான இடம் &mdash; மையத்திற்கு வடகிழக்கே.",
     "st3_atk_h": "எதிரி Behemoth-ஐ தாக்குதல்",
     "st3_a1": "<strong>திரள்கள் மட்டுமே</strong> Behemoth-ஐ சேதப்படுத்தும் (ஒன்றுக்கு 1,000/வினா) &mdash; அதிக தனித் திரள்கள் = அதிக சேதம்.",
     "st3_a2": "திரள்களை நீண்ட நேரம் வைத்திரு: 5 நிமிடத்திற்கு பிறகு சேதம் ஒவ்வொரு 15 வினாடிக்கும் +500 உயரும் &mdash; அவை கலைய விடாதே.",
@@ -3011,7 +3010,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "बराबरी &mdash; प्रक्षेपण हेतु स्लाइडर खींचें",
     "calc_note": "केवल प्रक्षेपण &mdash; छोटी क्षति, उपयोग किए गए अमर स्टैक, वध बोनस और शेष-HP स्कोर का मॉडल बनाता है। वास्तविक स्कोर में अन्य स्रोतों से गढ़ क्षति भी शामिल है।",
     "inv_modal_title": "आक्रमण लाइव है &mdash; आक्रमण और रक्षा करें",
-    "inv_modal_body": "दोनों बेहेमोथ अभी आक्रमण कर रहे हैं (90 मिनट)। (1257,1231) पर #057 पर <strong>आक्रमण</strong> करें और (1381,1256) पर हमारे की <strong>रक्षा</strong> करें। बेहेमोथ को केवल रैली नुकसान पहुँचाती हैं &mdash; हमारे को जीवित रखें और उनके को शून्य करें। युद्ध यहीं तय होता है।",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "युद्धक्षेत्र मानचित्र पर जाएँ",
     "event_tag": "नया गेम मोड &middot; Era 8",
     "subtitle": "रक्तरेखा जगाओ &middot; शत्रु साम्राज्यों में कूच करो &middot; सर्वर-पार युद्ध",
@@ -3150,12 +3149,12 @@ const TRANSLATIONS = {
     "leg_dmg": "हमले में",
     "map_desc": "प्रत्येक मानचित्र एक सर्वर को घर के रूप में दिखाता है, आक्रमणकारी Behemoth अपने स्पॉन पर। <strong>असीमित रेंज, ढालों की अनदेखी</strong> &mdash; कोई शहर सुरक्षित नहीं (नारंगी = हमले में)। घर इसे रैली कर गिराता है; आगंतुक इसे अंक-अर्जन में बनाए रखने के लिए काउंटर-रैली करते हैं। <strong>#008</strong> और <strong>#057</strong> के बीच स्विच करने के लिए टॉगल करें।",
     "spawn008_h": "#008 पर Behemoth कहाँ स्पॉन होता है",
-    "spawn008_cap": "#057 अपना बेहेमोथ हमारे सर्वर पर [REU] क्षेत्र में स्पॉन कर रहा है &mdash; निर्देशांक <strong>(1381,1256)</strong>। बड़ा करने के लिए टैप करें।",
+    "spawn008_cap": "#057 अपना बेहेमोथ हमारे सर्वर पर [REU] क्षेत्र में स्पॉन कर रहा है &mdash; निर्देशांक <strong></strong>। बड़ा करने के लिए टैप करें।",
     "spawn087_h": "#057 पर हमारा Behemoth कहाँ स्पॉन होता है",
-    "spawn087_cap": "हमारा बेहेमोथ #057 पर [&Sigma;28] क्षेत्र के पास स्पॉन होता है &mdash; निर्देशांक <strong>(1257,1231)</strong>। 19:00 खिड़की के लिए इसके पास स्थानांतरित हों। बड़ा करने के लिए टैप करें।",
+    "spawn087_cap": "हमारा बेहेमोथ #057 पर [&Sigma;28] क्षेत्र के पास स्पॉन होता है &mdash; निर्देशांक <strong></strong>। 19:00 खिड़की के लिए इसके पास स्थानांतरित हों। बड़ा करने के लिए टैप करें।",
     "loc_here": "आक्रमण क्षेत्र",
-    "loc008_cap": "#008 सर्वर मानचित्र पर <strong>(1381,1256)</strong> लगभग कहाँ है &mdash; केंद्र के उत्तर-पूर्व में।",
-    "loc087_cap": "#057 सर्वर मानचित्र पर <strong>(1257,1231)</strong> लगभग कहाँ है &mdash; केंद्र के उत्तर-पूर्व में।",
+    "loc008_cap": "#008 सर्वर मानचित्र पर <strong></strong> लगभग कहाँ है &mdash; केंद्र के उत्तर-पूर्व में।",
+    "loc087_cap": "#057 सर्वर मानचित्र पर <strong></strong> लगभग कहाँ है &mdash; केंद्र के उत्तर-पूर्व में।",
     "st3_atk_h": "शत्रु Behemoth पर आक्रमण",
     "st3_a1": "<strong>केवल रैलियाँ</strong> Behemoth को क्षति पहुँचाती हैं (प्रत्येक 1,000/से) &mdash; अधिक अलग रैलियाँ = अधिक क्षति।",
     "st3_a2": "रैलियाँ लंबे समय तक बनाए रखें: 5 मिनट बाद क्षति हर 15 से में +500 बढ़ती है &mdash; उन्हें भंग न होने दें।",
@@ -3193,7 +3192,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Égalité &mdash; fais glisser les curseurs pour projeter",
     "calc_note": "Projection seulement &mdash; modélise les petits dégâts, les piles Immortelles consommées, le bonus de mise à mort et le score de PV restants. Le score réel inclut aussi les dégâts aux citadelles d'autres sources.",
     "inv_modal_title": "L'invasion est EN DIRECT &mdash; Attaque et Défends",
-    "inv_modal_body": "Les deux Béhémoths envahissent maintenant (90 min). <strong>Attaque</strong> #057 en (1257,1231) et <strong>défends</strong> le nôtre en (1381,1256). Seuls les ralliements endommagent un Béhémoth &mdash; garde le nôtre en vie et mets le leur à zéro. C'est ici que la guerre se décide.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "Aller à la carte de bataille",
     "timeline_h": "Chronologie de l'Événement",
     "lbl_taming": "Apprivoisement",
@@ -3262,7 +3261,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> Subit les dégâts du Béhémoth",
     "map_desc": "Chaque carte montre un serveur comme hôte avec le Béhémoth envahisseur à son apparition. <strong>Portée illimitée, ignore les boucliers</strong> &mdash; aucune ville n'est à l'abri (orange = sous le feu). L'hôte le rallie ; les visiteurs contre-rallient pour le garder en jeu. Bascule entre <strong>#008</strong> et <strong>#057</strong>.",
     "spawn008_h": "Où le Béhémoth apparaît sur #008",
-    "spawn008_cap": "#057 fait apparaître leur Béhémoth sur notre serveur, en territoire [REU] &mdash; coordonnées <strong>(1381,1256)</strong>. Touche pour agrandir.",
+    "spawn008_cap": "#057 fait apparaître leur Béhémoth sur notre serveur, en territoire [REU] &mdash; coordonnées <strong></strong>. Touche pour agrandir.",
     "spawn087_h": "Où notre Béhémoth apparaît sur #057",
     "st3_atk_h": "Attaquer le Béhémoth ennemi",
     "st3_a1": "<strong>Seuls les ralliements le blessent</strong> (1 000/sec chacun &mdash; par ralliement, pas par marche). Plus de ralliements distincts = plus de dégâts ; garde-en autant que possible.",
@@ -3349,10 +3348,10 @@ const TRANSLATIONS = {
     "bless_final": "Bénédiction du Béhémoth",
     "bless_final_e": "Volontaire : 4 000 pts + 20 contrib / rune",
     "bless_lg_open": "Disponible au don maintenant",
-    "spawn087_cap": "Notre Béhémoth apparaît sur #057 près du territoire [&Sigma;28] &mdash; coordonnées <strong>(1257,1231)</strong>. Relocalise-toi à proximité pour la fenêtre de 19h00. Touche pour agrandir.",
+    "spawn087_cap": "Notre Béhémoth apparaît sur #057 près du territoire [&Sigma;28] &mdash; coordonnées <strong></strong>. Relocalise-toi à proximité pour la fenêtre de 19h00. Touche pour agrandir.",
     "loc_here": "zone d'invasion",
-    "loc008_cap": "Environ où se trouve <strong>(1381,1256)</strong> sur la carte du serveur #008 &mdash; au nord-est du centre.",
-    "loc087_cap": "Environ où se trouve <strong>(1257,1231)</strong> sur la carte du serveur #057 &mdash; au nord-est du centre.",
+    "loc008_cap": "Environ où se trouve <strong></strong> sur la carte du serveur #008 &mdash; au nord-est du centre.",
+    "loc087_cap": "Environ où se trouve <strong></strong> sur la carte du serveur #057 &mdash; au nord-est du centre.",
     "tab_overview": "Aperçu",
     "tab_s1": "Repérage",
     "tab_s2": "Apprivoisement",
@@ -3375,7 +3374,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "동점 &mdash; 슬라이더를 드래그해 예측",
     "calc_note": "예측 전용 &mdash; 소량 피해, 소모된 불멸 스택, 처치 보너스, 잔여 체력 점수를 모델링합니다. 실제 점수에는 다른 출처의 성채 피해도 포함됩니다.",
     "inv_modal_title": "침공이 진행 중 &mdash; 공격과 방어",
-    "inv_modal_body": "양쪽 비헤모스가 지금 침공합니다(90분). (1257,1231)에서 #057을 <strong>공격</strong>하고 (1381,1256)에서 우리 것을 <strong>방어</strong>하세요. 비헤모스는 집결만이 피해를 줍니다 &mdash; 우리 것을 살리고 적을 0으로 만드세요. 전쟁은 여기서 결정됩니다.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "전장 지도로 이동",
     "timeline_h": "이벤트 일정",
     "lbl_taming": "야수 길들이기",
@@ -3444,7 +3443,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> 비헤모스 피해를 받는 중",
     "map_desc": "각 지도는 한 서버를 홈으로, 침공 비헤모스는 등장 지점에 표시. <strong>무제한 사거리, 보호막 무시</strong> &mdash; 안전한 도시 없음(주황 = 피격 중). 홈은 깎아내리고, 원정은 역집결해 점수 유지. <strong>#008</strong>과 <strong>#057</strong> 전환.",
     "spawn008_h": "#008에서 비헤모스 등장 위치",
-    "spawn008_cap": "#057이 우리 서버의 [REU] 영역에 자기 비헤모스를 소환합니다 &mdash; 좌표 <strong>(1381,1256)</strong>. 탭하면 확대됩니다.",
+    "spawn008_cap": "#057이 우리 서버의 [REU] 영역에 자기 비헤모스를 소환합니다 &mdash; 좌표 <strong></strong>. 탭하면 확대됩니다.",
     "spawn087_h": "#057에서 우리 비헤모스 등장 위치",
     "st3_atk_h": "적 비헤모스 공격",
     "st3_a1": "<strong>집결만 피해를 줌</strong>(각 초당 1,000 &mdash; 행군이 아니라 집결 단위). 개별 집결이 많을수록 피해 증가; 최대한 많이 붙이세요.",
@@ -3531,10 +3530,10 @@ const TRANSLATIONS = {
     "bless_final": "비헤모스의 축복",
     "bless_final_e": "선택: 룬석당 4,000 pt + 기여 20",
     "bless_lg_open": "지금 기부 가능",
-    "spawn087_cap": "우리 비헤모스가 #057의 [&Sigma;28] 영역 근처에 소환됩니다 &mdash; 좌표 <strong>(1257,1231)</strong>. 19:00 창에 대비해 근처로 이전하세요. 탭하면 확대됩니다.",
+    "spawn087_cap": "우리 비헤모스가 #057의 [&Sigma;28] 영역 근처에 소환됩니다 &mdash; 좌표 <strong></strong>. 19:00 창에 대비해 근처로 이전하세요. 탭하면 확대됩니다.",
     "loc_here": "침공 구역",
-    "loc008_cap": "#008 서버 지도에서 <strong>(1381,1256)</strong>의 대략적인 위치 &mdash; 중심에서 북동쪽.",
-    "loc087_cap": "#057 서버 지도에서 <strong>(1257,1231)</strong>의 대략적인 위치 &mdash; 중심에서 북동쪽.",
+    "loc008_cap": "#008 서버 지도에서 <strong></strong>의 대략적인 위치 &mdash; 중심에서 북동쪽.",
+    "loc087_cap": "#057 서버 지도에서 <strong></strong>의 대략적인 위치 &mdash; 중심에서 북동쪽.",
     "tab_overview": "개요",
     "tab_s1": "정찰",
     "tab_s2": "야수 길들이기",
@@ -3557,7 +3556,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "互角 &mdash; スライダーを動かして予測",
     "calc_note": "予測のみ &mdash; 小ダメージ、消費した不死スタック、撃破ボーナス、残HP得点をモデル化。実際の得点には他の要因によるシタデル被害も含まれる。",
     "inv_modal_title": "侵攻進行中 &mdash; 攻撃と防衛",
-    "inv_modal_body": "両ベヒモスが今侵攻中（90分）。(1257,1231)で#057を<strong>攻撃</strong>し、(1381,1256)で自軍を<strong>防衛</strong>せよ。ベヒモスに与ダメージできるのは集結のみ &mdash; 自軍を生存させ敵をゼロにせよ。ここで勝敗が決まる。",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "戦場マップへ",
     "timeline_h": "イベントの流れ",
     "lbl_taming": "獣の調教",
@@ -3683,12 +3682,12 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> ベヒモス被害中",
     "map_desc": "各マップは一方のサーバーをホームとし、侵攻ベヒモスは出現地点に配置。<strong>射程無制限、シールド無視</strong> — どの都市も安全でない（橙=被弾中）。ホームは集結で削り、来訪側は逆集結で得点を維持。<strong>#008</strong>と<strong>#057</strong>を切替。",
     "spawn008_h": "#008でのベヒモス出現地点",
-    "spawn008_cap": "#057が自軍サーバーの[REU]領内に自軍ベヒモスを出現させる — 座標 <strong>(1381,1256)</strong>。タップで拡大。",
+    "spawn008_cap": "#057が自軍サーバーの[REU]領内に自軍ベヒモスを出現させる — 座標 <strong></strong>。タップで拡大。",
     "spawn087_h": "#057での自軍ベヒモス出現地点",
-    "spawn087_cap": "自軍ベヒモスが#057の[&Sigma;28]領地付近に出現 — 座標 <strong>(1257,1231)</strong>。19:00枠に向け近くへ転移。タップで拡大。",
+    "spawn087_cap": "自軍ベヒモスが#057の[&Sigma;28]領地付近に出現 — 座標 <strong></strong>。19:00枠に向け近くへ転移。タップで拡大。",
     "loc_here": "侵攻ゾーン",
-    "loc008_cap": "#008 サーバーマップ上で <strong>(1381,1256)</strong> のおおよその位置 — 中心の北東。",
-    "loc087_cap": "#057 サーバーマップ上で <strong>(1257,1231)</strong> のおおよその位置 — 中心の北東。",
+    "loc008_cap": "#008 サーバーマップ上で <strong></strong> のおおよその位置 — 中心の北東。",
+    "loc087_cap": "#057 サーバーマップ上で <strong></strong> のおおよその位置 — 中心の北東。",
     "st3_atk_h": "敵ベヒモスへの攻撃",
     "st3_a1": "<strong>集結のみダメージ</strong>（各毎秒1,000 — 行軍ごとでなく集結ごと）。別々の集結が多いほどダメージ増; できるだけ多く維持。",
     "st3_a2": "<strong>集結を長く維持</strong> — 5分後、ダメージが15秒ごとに+500。解散させるな。",
@@ -3739,7 +3738,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "平局 &mdash; 拖动滑块以推算",
     "calc_note": "仅为推算 &mdash; 模拟小额伤害、消耗的不死层数、击杀奖励与剩余血量得分。实际得分还包含其他来源的城塞伤害。",
     "inv_modal_title": "入侵进行中 &mdash; 攻击与防守",
-    "inv_modal_body": "双方巨兽现正入侵（90 分钟）。在 (1257,1231) <strong>攻击</strong> #057，并在 (1381,1256) <strong>防守</strong>我方。只有集结能伤害巨兽 &mdash; 保住我方并将敌方归零。胜负在此决定。",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "前往战场地图",
     "timeline_h": "活动时间线",
     "lbl_taming": "驯兽",
@@ -3865,12 +3864,12 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> 正受巨兽伤害",
     "map_desc": "每张地图以一方服务器为主场，入侵巨兽位于出生点。<strong>射程无限、无视护盾</strong> — 没有城市安全（橙=正受攻击）。主场集结削减它; 客场逆集结维持其得分。在<strong>#008</strong>与<strong>#057</strong>间切换。",
     "spawn008_h": "巨兽在#008的出生点",
-    "spawn008_cap": "#057在我方服务器的[REU]领地生成其巨兽 — 坐标 <strong>(1381,1256)</strong>。点击放大。",
+    "spawn008_cap": "#057在我方服务器的[REU]领地生成其巨兽 — 坐标 <strong></strong>。点击放大。",
     "spawn087_h": "我方巨兽在#057的出生点",
-    "spawn087_cap": "我方巨兽在#057的[&Sigma;28]领地附近生成 — 坐标 <strong>(1257,1231)</strong>。19:00时段前转移至附近。点击放大。",
+    "spawn087_cap": "我方巨兽在#057的[&Sigma;28]领地附近生成 — 坐标 <strong></strong>。19:00时段前转移至附近。点击放大。",
     "loc_here": "入侵区",
-    "loc008_cap": "<strong>(1381,1256)</strong> 在 #008 服务器地图上的大致位置 — 中心的东北方。",
-    "loc087_cap": "<strong>(1257,1231)</strong> 在 #057 服务器地图上的大致位置 — 中心的东北方。",
+    "loc008_cap": "<strong></strong> 在 #008 服务器地图上的大致位置 — 中心的东北方。",
+    "loc087_cap": "<strong></strong> 在 #057 服务器地图上的大致位置 — 中心的东北方。",
     "st3_atk_h": "攻击敌方巨兽",
     "st3_a1": "<strong>只有集结能造成伤害</strong>（每个每秒1,000 — 按集结计，非按行军）。独立集结越多伤害越高; 尽量多保持。",
     "st3_a2": "<strong>长时间维持集结</strong> — 5分钟后，伤害每15秒+500。别让它们解散。",
@@ -3921,7 +3920,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "تعادل &mdash; اسحب المؤشرات للإسقاط",
     "calc_note": "إسقاط فقط &mdash; يحاكي الضرر الطفيف، طبقات الخلود المستهلكة، مكافأة القتل، ونقاط الصحة المتبقية. تشمل النقاط الفعلية أيضاً ضرر القلاع من مصادر أخرى.",
     "inv_modal_title": "الغزو مباشر &mdash; هاجم ودافع",
-    "inv_modal_body": "كلا البهيموثين يغزوان الآن (90 دقيقة). <strong>هاجم</strong> #057 عند (1257,1231) و<strong>دافع</strong> عن بهيموثنا عند (1381,1256). لا يُلحق الضرر بالبهيموث إلا الحشود &mdash; أبقِ بهيموثنا حياً وصفّر بهيموثهم. هنا تُحسم الحرب.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "اذهب إلى خريطة المعركة",
     "timeline_h": "الجدول الزمني للحدث",
     "lbl_taming": "ترويض الوحش",
@@ -4047,12 +4046,12 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> يتلقى ضرر البهيموث",
     "map_desc": "كل خريطة تُظهر خادماً كأرض له مع البهيموث الغازي عند نقطة ظهوره. <strong>مدى لا محدود، يتجاهل الدروع</strong> — لا مدينة آمنة (برتقالي = تحت النار). الأرض تحشد لإسقاطه؛ الزائرون يحشدون مضاداً لإبقائه يسجل. بدّل بين <strong>#008</strong> و<strong>#057</strong>.",
     "spawn008_h": "مكان ظهور البهيموث على #008",
-    "spawn008_cap": "#057 يُظهِر بهيموثهم على خادمنا في أرض [REU] — الإحداثيات <strong>(1381,1256)</strong>. انقر للتكبير.",
+    "spawn008_cap": "#057 يُظهِر بهيموثهم على خادمنا في أرض [REU] — الإحداثيات <strong></strong>. انقر للتكبير.",
     "spawn087_h": "مكان ظهور بهيموثنا على #057",
-    "spawn087_cap": "بهيموثنا يظهر على #057 قرب أرض [&Sigma;28] — الإحداثيات <strong>(1257,1231)</strong>. انتقل قربها لنافذة 19:00. انقر للتكبير.",
+    "spawn087_cap": "بهيموثنا يظهر على #057 قرب أرض [&Sigma;28] — الإحداثيات <strong></strong>. انتقل قربها لنافذة 19:00. انقر للتكبير.",
     "loc_here": "منطقة الغزو",
-    "loc008_cap": "الموقع التقريبي لـ <strong>(1381,1256)</strong> على خريطة خادم #008 &mdash; شمال شرق المركز.",
-    "loc087_cap": "الموقع التقريبي لـ <strong>(1257,1231)</strong> على خريطة خادم #057 &mdash; شمال شرق المركز.",
+    "loc008_cap": "الموقع التقريبي لـ <strong></strong> على خريطة خادم #008 &mdash; شمال شرق المركز.",
+    "loc087_cap": "الموقع التقريبي لـ <strong></strong> على خريطة خادم #057 &mdash; شمال شرق المركز.",
     "st3_atk_h": "مهاجمة بهيموث العدو",
     "st3_a1": "<strong>الحشود فقط تُلحق الضرر</strong> (1,000/ث لكل حشد — لكل حشد لا لكل زحف). حشود منفصلة أكثر = ضرر أكبر؛ أبقِ أكبر عدد ممكن عليه.",
     "st3_a2": "<strong>أبقِ الحشود طويلاً</strong> — بعد 5 دقائق، يتصاعد الضرر +500 كل 15 ث. لا تدعها تتفكك.",
@@ -4103,7 +4102,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Uafgjort &mdash; træk skyderne for at projicere",
     "calc_note": "Kun projektion &mdash; modellerer småskade, brugte Udødeligheds-stakke, drabsbonus og resterende-HP-point. Faktisk score inkluderer også citadelskade fra andre kilder.",
     "inv_modal_title": "Invasionen er LIVE &mdash; Angrib og Forsvar",
-    "inv_modal_body": "Begge Behemother invaderer nu (90 min). <strong>Angrib</strong> #057 ved (1257,1231) og <strong>forsvar</strong> vores ved (1381,1256). Kun samlinger skader en Behemoth &mdash; hold vores i live og nulstil deres. Her afgøres krigen.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "Gå til slagmarkskortet",
     "timeline_h": "Begivenhedstidslinje",
     "lbl_taming": "Dyretæmning",
@@ -4229,12 +4228,12 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Tager Behemoth-skade",
     "map_desc": "Hvert kort viser én server som hjemme med den invaderende Behemoth ved dens spawn. <strong>Ubegrænset rækkevidde, ignorerer skjolde</strong> — ingen by er sikker (orange = under beskydning). Hjemme samler den ned; gæster modsamler for at holde den scorende. Skift mellem <strong>#008</strong> og <strong>#057</strong>.",
     "spawn008_h": "Hvor Behemoth spawner på #008",
-    "spawn008_cap": "#057 spawner deres Behemoth på vores server, i [REU]-territorium — koordinater <strong>(1381,1256)</strong>. Tryk for at forstørre.",
+    "spawn008_cap": "#057 spawner deres Behemoth på vores server, i [REU]-territorium — koordinater <strong></strong>. Tryk for at forstørre.",
     "spawn087_h": "Hvor vores Behemoth spawner på #057",
-    "spawn087_cap": "Vores Behemoth spawner på #057 nær [&Sigma;28]-territorium — koordinater <strong>(1257,1231)</strong>. Flyt nær det til 19:00-vinduet. Tryk for at forstørre.",
+    "spawn087_cap": "Vores Behemoth spawner på #057 nær [&Sigma;28]-territorium — koordinater <strong></strong>. Flyt nær det til 19:00-vinduet. Tryk for at forstørre.",
     "loc_here": "invasionszone",
-    "loc008_cap": "Cirka hvor <strong>(1381,1256)</strong> ligger på #008-serverkortet &mdash; nordøst for midten.",
-    "loc087_cap": "Cirka hvor <strong>(1257,1231)</strong> ligger på #057-serverkortet &mdash; nordøst for midten.",
+    "loc008_cap": "Cirka hvor <strong></strong> ligger på #008-serverkortet &mdash; nordøst for midten.",
+    "loc087_cap": "Cirka hvor <strong></strong> ligger på #057-serverkortet &mdash; nordøst for midten.",
     "st3_atk_h": "Angreb på fjendens Behemoth",
     "st3_a1": "<strong>Kun samlinger skader den</strong> (1.000/sek hver — pr. samling, ikke pr. march). Flere separate samlinger = mere skade; hold så mange som muligt på den.",
     "st3_a2": "<strong>Hold samlinger længe</strong> — efter 5 min stiger skaden +500 hver 15. sek. Lad dem ikke opløses.",
@@ -4285,7 +4284,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Gleichstand &mdash; ziehe die Regler zum Projizieren",
     "calc_note": "Nur Projektion &mdash; modelliert Kleinschaden, verbrauchte Unsterblichkeits-Stapel, Tötungsbonus und Rest-LP-Punkte. Die tatsächliche Punktzahl enthält auch Zitadellenschaden aus anderen Quellen.",
     "inv_modal_title": "Die Invasion ist LIVE &mdash; Angreifen und Verteidigen",
-    "inv_modal_body": "Beide Behemoths fallen jetzt ein (90 Min). <strong>Greife</strong> #057 bei (1257,1231) an und <strong>verteidige</strong> unseren bei (1381,1256). Nur Sammlungen schaden einem Behemoth &mdash; halte unseren am Leben und setze ihren auf null. Hier wird der Krieg entschieden.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "Zur Schlachtfeldkarte",
     "timeline_h": "Ereignis-Zeitplan",
     "lbl_taming": "Bestienzähmung",
@@ -4424,12 +4423,12 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Erleidet Behemoth-Schaden",
     "map_desc": "Jede Karte zeigt einen Server als Heimat mit dem einfallenden Behemoth am Spawn. <strong>Unbegrenzte Reichweite, ignoriert Schilde</strong> — keine Stadt ist sicher (orange = unter Beschuss). Heimat sammelt ihn nieder; Besucher kontern-sammeln, um ihn punktend zu halten. Wechsle zwischen <strong>#008</strong> und <strong>#057</strong>.",
     "spawn008_h": "Wo der Behemoth auf #008 spawnt",
-    "spawn008_cap": "#057 lässt ihren Behemoth auf unserem Server im [REU]-Gebiet erscheinen — Koordinaten <strong>(1381,1256)</strong>. Zum Vergrößern tippen.",
+    "spawn008_cap": "#057 lässt ihren Behemoth auf unserem Server im [REU]-Gebiet erscheinen — Koordinaten <strong></strong>. Zum Vergrößern tippen.",
     "spawn087_h": "Wo unser Behemoth auf #057 spawnt",
-    "spawn087_cap": "Unser Behemoth erscheint auf #057 nahe dem [&Sigma;28]-Gebiet — Koordinaten <strong>(1257,1231)</strong>. Ziehe für das 19:00-Fenster in die Nähe. Zum Vergrößern tippen.",
+    "spawn087_cap": "Unser Behemoth erscheint auf #057 nahe dem [&Sigma;28]-Gebiet — Koordinaten <strong></strong>. Ziehe für das 19:00-Fenster in die Nähe. Zum Vergrößern tippen.",
     "loc_here": "Invasionszone",
-    "loc008_cap": "Ungefähr wo <strong>(1381,1256)</strong> auf der #008-Serverkarte liegt &mdash; nordöstlich der Mitte.",
-    "loc087_cap": "Ungefähr wo <strong>(1257,1231)</strong> auf der #057-Serverkarte liegt &mdash; nordöstlich der Mitte.",
+    "loc008_cap": "Ungefähr wo <strong></strong> auf der #008-Serverkarte liegt &mdash; nordöstlich der Mitte.",
+    "loc087_cap": "Ungefähr wo <strong></strong> auf der #057-Serverkarte liegt &mdash; nordöstlich der Mitte.",
     "st3_atk_h": "Den Feind-Behemoth angreifen",
     "st3_a1": "<strong>Nur Sammlungen schaden ihm</strong> (je 1.000/Sek — pro Sammlung, nicht pro Marsch). Mehr getrennte Sammlungen = mehr Schaden; halte so viele wie möglich darauf.",
     "st3_a2": "<strong>Sammlungen lang halten</strong> — nach 5 Min steigt der Schaden alle 15 Sek um +500. Lass sie nicht auflösen.",
@@ -4467,7 +4466,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Ничья &mdash; двигай ползунки для прогноза",
     "calc_note": "Только прогноз &mdash; моделирует мелкий урон, сожжённые стаки бессмертия, бонус за убийство и очки за остаток HP. Реальный счёт также включает урон цитаделям из других источников.",
     "inv_modal_title": "Вторжение ИДЁТ &mdash; Атакуй и Защищай",
-    "inv_modal_body": "Оба Бегемота вторгаются сейчас (90 мин). <strong>Атакуй</strong> #057 в (1257,1231) и <strong>защищай</strong> нашего в (1381,1256). Урон Бегемоту наносят только сборы &mdash; держи нашего живым и обнуляй их. Здесь решается война.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "К карте поля боя",
     "timeline_h": "Хронология события",
     "lbl_taming": "Укрощение",
@@ -4606,12 +4605,12 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Получает урон Бегемота",
     "map_desc": "Каждая карта показывает один сервер как домашний со вторгающимся Бегемотом в точке появления. <strong>Неограниченная дальность, игнорирует щиты</strong> — ни один город не в безопасности (оранжевый = под ударом). Хозяева сбивают его сборами; гости контр-сбором держат его в счёте. Переключайся между <strong>#008</strong> и <strong>#057</strong>.",
     "spawn008_h": "Где Бегемот появляется на #008",
-    "spawn008_cap": "#057 размещает своего Бегемота на нашем сервере, на землях [REU] — координаты <strong>(1381,1256)</strong>. Нажми, чтобы увеличить.",
+    "spawn008_cap": "#057 размещает своего Бегемота на нашем сервере, на землях [REU] — координаты <strong></strong>. Нажми, чтобы увеличить.",
     "spawn087_h": "Где наш Бегемот появляется на #057",
-    "spawn087_cap": "Наш Бегемот появляется на #057 рядом с землями [&Sigma;28] — координаты <strong>(1257,1231)</strong>. Переместись поближе к окну 19:00. Нажми, чтобы увеличить.",
+    "spawn087_cap": "Наш Бегемот появляется на #057 рядом с землями [&Sigma;28] — координаты <strong></strong>. Переместись поближе к окну 19:00. Нажми, чтобы увеличить.",
     "loc_here": "зона вторжения",
-    "loc008_cap": "Примерно где находится <strong>(1381,1256)</strong> на карте сервера #008 &mdash; к северо-востоку от центра.",
-    "loc087_cap": "Примерно где находится <strong>(1257,1231)</strong> на карте сервера #057 &mdash; к северо-востоку от центра.",
+    "loc008_cap": "Примерно где находится <strong></strong> на карте сервера #008 &mdash; к северо-востоку от центра.",
+    "loc087_cap": "Примерно где находится <strong></strong> на карте сервера #057 &mdash; к северо-востоку от центра.",
     "st3_atk_h": "Атака вражеского Бегемота",
     "st3_a1": "<strong>Урон наносят только сборы</strong> (по 1 000/сек — за сбор, не за марш). Больше отдельных сборов = больше урона; держи на нём как можно больше.",
     "st3_a2": "<strong>Держи сборы долго</strong> — через 5 мин урон растёт на +500 каждые 15 сек. Не давай им распускаться.",
@@ -4649,7 +4648,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Pari &mdash; trascina i cursori per proiettare",
     "calc_note": "Solo proiezione &mdash; modella il danno minore, le cariche Immortali consumate, il bonus uccisione e il punteggio HP rimanenti. Il punteggio reale include anche il danno alle cittadelle da altre fonti.",
     "inv_modal_title": "L'invasione è LIVE &mdash; Attacca e Difendi",
-    "inv_modal_body": "Entrambi i Behemoth invadono ora (90 min). <strong>Attacca</strong> #057 a (1257,1231) e <strong>difendi</strong> il nostro a (1381,1256). Solo i raduni danneggiano un Behemoth &mdash; tieni il nostro vivo e azzera il loro. Qui si decide la guerra.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "Vai alla mappa di battaglia",
     "timeline_h": "Cronologia dell'Evento",
     "lbl_taming": "Domatura",
@@ -4788,12 +4787,12 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Subisce danno dal Behemoth",
     "map_desc": "Ogni mappa mostra un server come casa col Behemoth invasore al suo spawn. <strong>Raggio illimitato, ignora gli scudi</strong> — nessuna città è al sicuro (arancione = sotto attacco). La casa lo abbatte coi raduni; gli ospiti contro-radunano per tenerlo a far punti. Alterna tra <strong>#008</strong> e <strong>#057</strong>.",
     "spawn008_h": "Dove appare il Behemoth su #008",
-    "spawn008_cap": "#057 fa apparire il loro Behemoth sul nostro server, in territorio [REU] — coordinate <strong>(1381,1256)</strong>. Tocca per ingrandire.",
+    "spawn008_cap": "#057 fa apparire il loro Behemoth sul nostro server, in territorio [REU] — coordinate <strong></strong>. Tocca per ingrandire.",
     "spawn087_h": "Dove appare il nostro Behemoth su #057",
-    "spawn087_cap": "Il nostro Behemoth appare su #057 vicino al territorio [&Sigma;28] — coordinate <strong>(1257,1231)</strong>. Rilocati vicino per la finestra delle 19:00. Tocca per ingrandire.",
+    "spawn087_cap": "Il nostro Behemoth appare su #057 vicino al territorio [&Sigma;28] — coordinate <strong></strong>. Rilocati vicino per la finestra delle 19:00. Tocca per ingrandire.",
     "loc_here": "zona d'invasione",
-    "loc008_cap": "Più o meno dove si trova <strong>(1381,1256)</strong> sulla mappa del server #008 &mdash; a nord-est del centro.",
-    "loc087_cap": "Più o meno dove si trova <strong>(1257,1231)</strong> sulla mappa del server #057 &mdash; a nord-est del centro.",
+    "loc008_cap": "Più o meno dove si trova <strong></strong> sulla mappa del server #008 &mdash; a nord-est del centro.",
+    "loc087_cap": "Più o meno dove si trova <strong></strong> sulla mappa del server #057 &mdash; a nord-est del centro.",
     "st3_atk_h": "Attaccare il Behemoth nemico",
     "st3_a1": "<strong>Solo i raduni gli fanno danno</strong> (1.000/sec ciascuno — per raduno, non per marcia). Più raduni separati = più danno; tienine il più possibile su di lui.",
     "st3_a2": "<strong>Mantieni i raduni a lungo</strong> — dopo 5 min il danno sale di +500 ogni 15 sec. Non lasciarli sciogliere.",
@@ -4831,7 +4830,7 @@ const TRANSLATIONS = {
     "calc_diff_even": "Empate &mdash; arraste os controles para projetar",
     "calc_note": "Apenas projeção &mdash; modela dano leve, pilhas Imortais consumidas, o bônus de abate e a pontuação de HP restante. A pontuação real também inclui dano a cidadelas de outras fontes.",
     "inv_modal_title": "A invasão está AO VIVO &mdash; Ataque e Defenda",
-    "inv_modal_body": "Ambos os Behemoths invadem agora (90 min). <strong>Ataque</strong> #057 em (1257,1231) e <strong>defenda</strong> o nosso em (1381,1256). Só reuniões causam dano a um Behemoth &mdash; mantenha o nosso vivo e zere o deles. É aqui que a guerra é decidida.",
+    "inv_modal_body": "Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.",
     "inv_modal_btn": "Ir para o mapa de batalha",
     "timeline_h": "Linha do Tempo do Evento",
     "lbl_taming": "Domação",
@@ -4970,12 +4969,12 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Recebendo dano do Behemoth",
     "map_desc": "Cada mapa mostra um servidor como casa com o Behemoth invasor no seu spawn. <strong>Alcance ilimitado, ignora escudos</strong> — nenhuma cidade está segura (laranja = sob fogo). A casa o derruba com reuniões; os visitantes contra-reúnem para mantê-lo pontuando. Alterne entre <strong>#008</strong> e <strong>#057</strong>.",
     "spawn008_h": "Onde o Behemoth aparece em #008",
-    "spawn008_cap": "#057 está gerando o Behemoth deles no nosso servidor, em território [REU] — coordenadas <strong>(1381,1256)</strong>. Toque para ampliar.",
+    "spawn008_cap": "#057 está gerando o Behemoth deles no nosso servidor, em território [REU] — coordenadas <strong></strong>. Toque para ampliar.",
     "spawn087_h": "Onde nosso Behemoth aparece em #057",
-    "spawn087_cap": "Nosso Behemoth aparece em #057 perto do território [&Sigma;28] — coordenadas <strong>(1257,1231)</strong>. Realoque perto para a janela das 19:00. Toque para ampliar.",
+    "spawn087_cap": "Nosso Behemoth aparece em #057 perto do território [&Sigma;28] — coordenadas <strong></strong>. Realoque perto para a janela das 19:00. Toque para ampliar.",
     "loc_here": "zona de invasão",
-    "loc008_cap": "Aproximadamente onde fica <strong>(1381,1256)</strong> no mapa do servidor #008 &mdash; a nordeste do centro.",
-    "loc087_cap": "Aproximadamente onde fica <strong>(1257,1231)</strong> no mapa do servidor #057 &mdash; a nordeste do centro.",
+    "loc008_cap": "Aproximadamente onde fica <strong></strong> no mapa do servidor #008 &mdash; a nordeste do centro.",
+    "loc087_cap": "Aproximadamente onde fica <strong></strong> no mapa do servidor #057 &mdash; a nordeste do centro.",
     "st3_atk_h": "Atacando o Behemoth inimigo",
     "st3_a1": "<strong>Só reuniões causam dano</strong> (1.000/seg cada — por reunião, não por marcha). Mais reuniões separadas = mais dano; mantenha o máximo possível sobre ele.",
     "st3_a2": "<strong>Mantenha as reuniões por muito tempo</strong> — após 5 min o dano sobe +500 a cada 15s. Não deixe se dissolverem.",
@@ -5088,10 +5087,10 @@ var CD_TARGET_LABELS = {
 
 // Event window (UTC+0). Countdown targets the next major milestone: Beast Taming
 // start, then Attack-Defense start, then event end. Fallbacks overridden by JSON.
-var EVENT_START  = new Date('2026-07-27T00:00:00Z').getTime();   // matchmaking / event open
-var EVENT_END    = new Date('2026-08-02T00:00:00Z').getTime();   // after attack-defense
-var TAMING_START = new Date('2026-07-28T00:00:00Z').getTime();   // Beast Taming begins
-var ATKDEF_START = new Date('2026-07-31T00:00:00Z').getTime();   // Attack-Defense begins
+var EVENT_START  = new Date('2026-08-31T00:00:00Z').getTime();   // matchmaking / event open
+var EVENT_END    = new Date('2026-09-06T00:00:00Z').getTime();   // after attack-defense
+var TAMING_START = new Date('2026-09-01T00:00:00Z').getTime();   // Beast Taming begins
+var ATKDEF_START = new Date('2026-09-04T00:00:00Z').getTime();   // Attack-Defense begins
 
 // Load published behemoth fields and apply before the countdown starts.
 function applyBehemothLive() {
@@ -5163,6 +5162,10 @@ function mountBehemothHeader() {
     completeLabel: L.done || 'Event Complete',
     liveLabel: taming, liveDot: true,
     phases: [
+      // Matchmaking → Beast Taming: gives a live countdown to Sep 1 00:00 UTC while
+      // the event is in the pre-taming window (mirrors DD counting to its next stage).
+      { fromISO: iso(EVENT_START), leftLabel: mm, leftValue: fmt(EVENT_START),
+        rightLabel: taming, rightValue: fmt(TAMING_START), countdownISO: iso(TAMING_START) },
       { fromISO: iso(TAMING_START), leftLabel: taming, leftValue: fmt(TAMING_START),
         rightLabel: atkdef, rightValue: fmt(ATKDEF_START), countdownISO: iso(ATKDEF_START) },
       { fromISO: iso(ATKDEF_START), leftLabel: atkdef, leftValue: fmt(ATKDEF_START),
@@ -5454,9 +5457,9 @@ function classifyScionSlots(nowMin, slots, allowWrap) {
   });
 }
 
-// Trial of Scion only runs during Beast Taming (Days 2-4). For #057: Jul 28-30 UTC.
-var SCION_FIRST_DATE = '2026-07-28';
-var SCION_LAST_DATE  = '2026-07-30';
+// Trial of Scion only runs during Beast Taming (Days 2-4). This cycle: Sep 1-3 UTC.
+var SCION_FIRST_DATE = '2026-09-01';
+var SCION_LAST_DATE  = '2026-09-03';
 // The Trial is fully over when we're past the last date, OR it's the last date and
 // every window has already ended (no more Trials will ever run). Used to stop the
 // schedule highlighting a phantom "next" and to hand the header badge to invasions.
@@ -5595,8 +5598,8 @@ function openScionModal() {
 //   attack is sooner    -> "Invasion ATK"   ·  defense sooner -> "Invasion DEF"
 // While a window is live it pulses and counts down; idle shows h/m to the next one.
 var INVASION = {
-  atk:  new Date('2026-08-01T19:00:00Z').getTime(),   // our Behemoth invades #057
-  def:  new Date('2026-08-01T19:00:00Z').getTime(),   // #057 invades us
+  atk:  new Date('2026-09-05T19:00:00Z').getTime(),   // our Behemoth invades #057 (last A/D day; time TBD)
+  def:  new Date('2026-09-05T19:00:00Z').getTime(),   // #057 invades us
   durMin: 90
 };
 var INV_BADGE_LABELS = {
@@ -5841,9 +5844,9 @@ var ICAL_TEXT = {
     scion087: 'Trial of Scion (on #057 — theirs)',
     scionDesc: 'Open-field killing, 30-min window. Farm Scion damage + eliminations. Turn graphics down; watch for cross-border tiles.',
     invThem: 'Behemoth invasion — #057 attacks us',
-    invThemDesc: 'Enemy Behemoth invades #008 at (1219,1185). Be online to defend; rally it down to deny their score.',
+    invThemDesc: 'Enemy Behemoth invades #008. Be online to defend; rally it down to deny their score.',
     invUs: 'Behemoth invasion — we attack #057',
-    invUsDesc: 'Our Behemoth invades #057 at (1257,1231). Relocate and rally; keep ours alive for the remaining-HP score.'
+    invUsDesc: 'Our Behemoth invades #057. Relocate and rally; keep ours alive for the remaining-HP score.'
   },
   es: {
     calname: 'Behemoth Conquest', tz: 'horas en UTC+0',
@@ -5851,9 +5854,9 @@ var ICAL_TEXT = {
     scion087: 'Prueba del Scion (en #057 — suyo)',
     scionDesc: 'Matanza en campo abierto, ventana de 30 min. Farmea daño y eliminaciones de Scions. Baja los gráficos; cuidado con casillas transfronterizas.',
     invThem: 'Invasión de Bégimo — #057 nos ataca',
-    invThemDesc: 'El Bégimo enemigo invade #008 en (1219,1185). Conéctate para defender; bájalo a cero para negar su puntaje.',
+    invThemDesc: 'El Bégimo enemigo invade #008. Conéctate para defender; bájalo a cero para negar su puntaje.',
     invUs: 'Invasión de Bégimo — atacamos a #057',
-    invUsDesc: 'Nuestro Bégimo invade #057 en (1257,1231). Reubícate y reúne; mantén vivo el nuestro por el puntaje de vida restante.'
+    invUsDesc: 'Nuestro Bégimo invade #057. Reubícate y reúne; mantén vivo el nuestro por el puntaje de vida restante.'
   },
   fr: {
     calname: 'Behemoth Conquest', tz: 'heures en UTC+0',
@@ -5861,9 +5864,9 @@ var ICAL_TEXT = {
     scion087: 'Épreuve du Scion (sur #057 — le leur)',
     scionDesc: 'Combat en champ libre, fenêtre de 30 min. Farme dégâts et éliminations de Scions. Baisse les graphismes ; attention aux cases transfrontalières.',
     invThem: 'Invasion de Béhémoth — #057 nous attaque',
-    invThemDesc: 'Le Béhémoth ennemi envahit #008 en (1219,1185). Sois en ligne pour défendre ; mets-le à zéro pour annuler son score.',
+    invThemDesc: 'Le Béhémoth ennemi envahit #008. Sois en ligne pour défendre ; mets-le à zéro pour annuler son score.',
     invUs: 'Invasion de Béhémoth — on attaque #057',
-    invUsDesc: 'Notre Béhémoth envahit #057 en (1257,1231). Relocalise et rallie ; garde le nôtre en vie pour le score de PV restants.'
+    invUsDesc: 'Notre Béhémoth envahit #057. Relocalise et rallie ; garde le nôtre en vie pour le score de PV restants.'
   },
   ko: {
     calname: 'Behemoth Conquest', tz: '모든 시간 UTC+0',
@@ -5871,9 +5874,9 @@ var ICAL_TEXT = {
     scion087: '후손의 시험 (#057 — 상대)',
     scionDesc: '야전 사냥, 30분 창. 후손 피해와 처치를 파밍. 그래픽을 낮추고 국경 너머 타일 주의.',
     invThem: '비헤모스 침공 — #057이 우리를 공격',
-    invThemDesc: '적 비헤모스가 (1219,1185)에서 #008을 침공. 접속해 방어하고, 0으로 만들어 점수를 막으세요.',
+    invThemDesc: '적 비헤모스가에서 #008을 침공. 접속해 방어하고, 0으로 만들어 점수를 막으세요.',
     invUs: '비헤모스 침공 — 우리가 #057을 공격',
-    invUsDesc: '우리 비헤모스가 #057을 (1257,1231)에서 침공. 이전해 집결하고, 잔여 체력 점수를 위해 우리 것을 살려두세요.'
+    invUsDesc: '우리 비헤모스가 #057을에서 침공. 이전해 집결하고, 잔여 체력 점수를 위해 우리 것을 살려두세요.'
   },
   ja: {
     calname: 'Behemoth Conquest', tz: '時刻はすべてUTC+0',
@@ -5881,9 +5884,9 @@ var ICAL_TEXT = {
     scion087: '末裔の試練（#057 — 敵軍）',
     scionDesc: '30分間のフィールド狩り。末裔を倒してルーン石と撃破を稼ぐ。越境タイルに注意。',
     invThem: 'ベヒモス侵攻 — #057が我々を攻撃',
-    invThemDesc: '敵ベヒモスが(1219,1185)で#008に侵攻。オンラインで防衛し、ゼロにして得点を阻止。',
+    invThemDesc: '敵ベヒモスがで#008に侵攻。オンラインで防衛し、ゼロにして得点を阻止。',
     invUs: 'ベヒモス侵攻 — 我々が#057を攻撃',
-    invUsDesc: '自軍ベヒモスが(1257,1231)で#057に侵攻。転移して集結し、残HP得点のため自軍を生存させる。'
+    invUsDesc: '自軍ベヒモスがで#057に侵攻。転移して集結し、残HP得点のため自軍を生存させる。'
   },
   zh_cn: {
     calname: 'Behemoth Conquest', tz: '所有时间为UTC+0',
@@ -5891,9 +5894,9 @@ var ICAL_TEXT = {
     scion087: '后裔试炼（#057 — 敌方）',
     scionDesc: '30分钟野外击杀。击杀后裔获取符文石与击杀数。注意跨境地块。',
     invThem: '巨兽入侵 — #057进攻我们',
-    invThemDesc: '敌方巨兽于(1219,1185)入侵#008。上线防守，将其归零以阻止得分。',
+    invThemDesc: '敌方巨兽于入侵#008。上线防守，将其归零以阻止得分。',
     invUs: '巨兽入侵 — 我们进攻#057',
-    invUsDesc: '我方巨兽于(1257,1231)入侵#057。转移并集结；保住我方以获取剩余血量得分。'
+    invUsDesc: '我方巨兽于入侵#057。转移并集结；保住我方以获取剩余血量得分。'
   },
   zh_hk: {
     calname: 'Behemoth Conquest', tz: '所有時間為UTC+0',
@@ -5901,9 +5904,9 @@ var ICAL_TEXT = {
     scion087: '後裔試煉（#057 — 敵方）',
     scionDesc: '30分鐘野外擊殺。擊殺後裔獲取符文石與擊殺數。注意跨境地塊。',
     invThem: '巨獸入侵 — #057進攻我們',
-    invThemDesc: '敵方巨獸於(1219,1185)入侵#008。上線防守，將其歸零以阻止得分。',
+    invThemDesc: '敵方巨獸於入侵#008。上線防守，將其歸零以阻止得分。',
     invUs: '巨獸入侵 — 我們進攻#057',
-    invUsDesc: '我方巨獸於(1257,1231)入侵#057。轉移並集結；保住我方以獲取剩餘血量得分。'
+    invUsDesc: '我方巨獸於入侵#057。轉移並集結；保住我方以獲取剩餘血量得分。'
   },
   ar: {
     calname: 'Behemoth Conquest', tz: 'كل الأوقات UTC+0',
@@ -5911,9 +5914,9 @@ var ICAL_TEXT = {
     scion087: 'محنة السليل (في #057 — لهم)',
     scionDesc: 'قتل في الميدان المفتوح، نافذة 30 دقيقة. اجمع ضرر السليل والقضاء عليهم. احذر البلاطات العابرة للحدود.',
     invThem: 'غزو البهيموث — #057 يهاجمنا',
-    invThemDesc: 'بهيموث العدو يغزو #008 عند (1219,1185). كن متصلاً للدفاع؛ صفّره لمنع نقاطهم.',
+    invThemDesc: 'بهيموث العدو يغزو #008 عند. كن متصلاً للدفاع؛ صفّره لمنع نقاطهم.',
     invUs: 'غزو البهيموث — نهاجم #057',
-    invUsDesc: 'بهيموثنا يغزو #057 عند (1257,1231). انتقل واحشد؛ أبقِ بهيموثنا حياً لنقاط الصحة المتبقية.'
+    invUsDesc: 'بهيموثنا يغزو #057 عند. انتقل واحشد؛ أبقِ بهيموثنا حياً لنقاط الصحة المتبقية.'
   },
   da: {
     calname: 'Behemoth Conquest', tz: 'alle tider UTC+0',
@@ -5921,9 +5924,9 @@ var ICAL_TEXT = {
     scion087: 'Scion-prøven (på #057 — deres)',
     scionDesc: 'Åben-mark-drab, 30-min vindue. Farm Scion-skade + elimineringer. Hold øje med grænsefelter.',
     invThem: 'Behemoth-invasion — #057 angriber os',
-    invThemDesc: 'Fjendens Behemoth invaderer #008 ved (1219,1185). Vær online for at forsvare; nul den for at nægte deres point.',
+    invThemDesc: 'Fjendens Behemoth invaderer #008. Vær online for at forsvare; nul den for at nægte deres point.',
     invUs: 'Behemoth-invasion — vi angriber #057',
-    invUsDesc: 'Vores Behemoth invaderer #057 ved (1257,1231). Flyt og saml; hold vores i live for resterende-HP-point.'
+    invUsDesc: 'Vores Behemoth invaderer #057. Flyt og saml; hold vores i live for resterende-HP-point.'
   },
   de: {
     calname: 'Behemoth Conquest', tz: 'alle Zeiten UTC+0',
@@ -5931,9 +5934,9 @@ var ICAL_TEXT = {
     scion087: 'Scion-Prüfung (auf #057 — ihre)',
     scionDesc: 'Feldkampf, 30-Min-Fenster. Farme Scion-Schaden + Eliminierungen. Achte auf grenzüberschreitende Felder.',
     invThem: 'Behemoth-Invasion — #057 greift uns an',
-    invThemDesc: 'Feindlicher Behemoth fällt bei (1219,1185) in #008 ein. Sei online zum Verteidigen; nulle ihn, um ihre Punkte zu verhindern.',
+    invThemDesc: 'Feindlicher Behemoth fällt in #008 ein. Sei online zum Verteidigen; nulle ihn, um ihre Punkte zu verhindern.',
     invUs: 'Behemoth-Invasion — wir greifen #057 an',
-    invUsDesc: 'Unser Behemoth fällt bei (1257,1231) in #057 ein. Umziehen und sammeln; halte unseren am Leben für Rest-HP-Punkte.'
+    invUsDesc: 'Unser Behemoth fällt in #057 ein. Umziehen und sammeln; halte unseren am Leben für Rest-HP-Punkte.'
   },
   ru: {
     calname: 'Behemoth Conquest', tz: 'всё время UTC+0',
@@ -5941,9 +5944,9 @@ var ICAL_TEXT = {
     scion087: 'Испытание Отпрыска (на #057 — их)',
     scionDesc: 'Бой в открытом поле, окно 30 мин. Фармьте урон по Отпрыскам + добивания. Следите за приграничными тайлами.',
     invThem: 'Вторжение Бегемота — #057 атакует нас',
-    invThemDesc: 'Вражеский Бегемот вторгается в #008 на (1219,1185). Будьте онлайн для защиты; обнуляйте его, чтобы лишить их очков.',
+    invThemDesc: 'Вражеский Бегемот вторгается в #008 на. Будьте онлайн для защиты; обнуляйте его, чтобы лишить их очков.',
     invUs: 'Вторжение Бегемота — мы атакуем #057',
-    invUsDesc: 'Наш Бегемот вторгается в #057 на (1257,1231). Переместитесь и собирайте; держите нашего живым ради очков за остаток HP.'
+    invUsDesc: 'Наш Бегемот вторгается в #057 на. Переместитесь и собирайте; держите нашего живым ради очков за остаток HP.'
   },
   it: {
     calname: 'Behemoth Conquest', tz: 'tutti gli orari UTC+0',
@@ -5951,9 +5954,9 @@ var ICAL_TEXT = {
     scion087: 'Prova del Rampollo (su #057 — loro)',
     scionDesc: 'Uccisioni in campo aperto, finestra di 30 min. Farma danno ai Rampolli + eliminazioni. Attento alle caselle transfrontaliere.',
     invThem: 'Invasione del Behemoth — #057 ci attacca',
-    invThemDesc: 'Il Behemoth nemico invade #008 a (1219,1185). Sii online per difendere; azzeralo per negare i loro punti.',
+    invThemDesc: 'Il Behemoth nemico invade #008 a. Sii online per difendere; azzeralo per negare i loro punti.',
     invUs: 'Invasione del Behemoth — attacchiamo #057',
-    invUsDesc: 'Il nostro Behemoth invade #057 a (1257,1231). Rilocati e raduna; tieni il nostro vivo per i punti HP rimanenti.'
+    invUsDesc: 'Il nostro Behemoth invade #057 a. Rilocati e raduna; tieni il nostro vivo per i punti HP rimanenti.'
   },
   pt: {
     calname: 'Behemoth Conquest', tz: 'todos os horários UTC+0',
@@ -5961,9 +5964,9 @@ var ICAL_TEXT = {
     scion087: 'Provação do Descendente (em #057 — deles)',
     scionDesc: 'Abate em campo aberto, janela de 30 min. Farme dano aos Descendentes + eliminações. Cuidado com casas transfronteiriças.',
     invThem: 'Invasão do Behemoth — #057 nos ataca',
-    invThemDesc: 'O Behemoth inimigo invade #008 em (1219,1185). Fique online para defender; zere-o para negar os pontos deles.',
+    invThemDesc: 'O Behemoth inimigo invade #008 em. Fique online para defender; zere-o para negar os pontos deles.',
     invUs: 'Invasão do Behemoth — atacamos #057',
-    invUsDesc: 'Nosso Behemoth invade #057 em (1257,1231). Realoque e reúna; mantenha o nosso vivo pelos pontos de HP restante.'
+    invUsDesc: 'Nosso Behemoth invade #057 em. Realoque e reúna; mantenha o nosso vivo pelos pontos de HP restante.'
   }
 };
 
@@ -6125,9 +6128,9 @@ window.addEventListener('DOMContentLoaded', function () {
     renderBehemoth(beheCard.getAttribute('data-side') || 'us');
   }
 
-  // --- Add-to-calendar button ---
+  // --- Add-to-calendar button (disabled until dates are final) ---
   var icalBtn = document.getElementById('icalBtn');
-  if (icalBtn) icalBtn.addEventListener('click', downloadICS);
+  if (icalBtn && !icalBtn.disabled) icalBtn.addEventListener('click', downloadICS);
 
   // --- Trial of Scion active-window modal ---
   var scionModal = document.getElementById('scionModal');
@@ -6240,7 +6243,7 @@ window.addEventListener('DOMContentLoaded', function () {
     <span class="scion-modal-close" data-close aria-label="Close">&times;</span>
     <div class="scion-modal-icon">&#128293;</div>
     <h3 id="invModalTitle" data-i18n="inv_modal_title">Invasion is LIVE &mdash; Attack &amp; Defend</h3>
-    <p data-i18n="inv_modal_body">Both Behemoths invade now (90 min). <strong>Attack</strong> #057 at (1257,1231) and <strong>defend</strong> ours at (1381,1256). Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.</p>
+    <p data-i18n="inv_modal_body">Both Behemoths invade now (90 min). <strong>Attack</strong> theirs on #057 and <strong>defend</strong> ours. Only rallies damage a Behemoth &mdash; keep ours alive and zero theirs. This is where the war is decided.</p>
     <button type="button" class="scion-modal-btn" id="invModalGo" data-i18n="inv_modal_btn">Go to battlefield map</button>
   </div>
 </div>
