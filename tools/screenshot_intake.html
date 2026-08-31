@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Screenshot Data Intake — Era 8 Command</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/kvk-theme.css">
+  <style>
+    body { background: var(--bg-deep); color: var(--text-primary); font-family:'Barlow',system-ui,sans-serif; margin:0; padding:0 1rem 4rem; }
+    .wrap { max-width: 1040px; margin: 0 auto; }
+
+    .card { background: var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:16px; }
+    .card-h { font-family:'Bebas Neue',sans-serif; font-size:19px; letter-spacing:1.2px; color:var(--text-primary);
+              display:flex; align-items:center; gap:9px; margin-bottom:14px; border-bottom:1px solid var(--border); padding-bottom:9px; }
+    .card-h .n { color:var(--kvk-accent); font-size:13px; }
+    .hint { color:var(--text-muted); font-size:12.5px; line-height:1.5; }
+
+    /* form grid */
+    .form-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px 14px; }
+    .field { display:flex; flex-direction:column; gap:5px; }
+    .field label { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px;
+                   text-transform:uppercase; color:var(--text-muted); }
+    .field .req { color:var(--accent-red); }
+    input, select { background:var(--bg-deep); border:1px solid var(--border); border-radius:8px; padding:8px 11px;
+             color:var(--text-primary); font-size:14px; font-family:'Barlow',sans-serif; width:100%; box-sizing:border-box; }
+    input:focus, select:focus { outline:none; border-color:var(--kvk-accent-dim); }
+
+    /* dropzone + thumbs */
+    .drop { border:1.5px dashed var(--kvk-accent-dim); border-radius:10px; padding:22px; text-align:center;
+            color:var(--text-secondary); cursor:pointer; transition:border-color .15s, background .15s; }
+    .drop.hover { border-color:var(--kvk-accent); background:rgba(var(--kvk-accent-rgb),0.06); }
+    .drop b { color:var(--kvk-accent); }
+    .thumbs { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+    .thumb { position:relative; width:150px; border:1px solid var(--border); border-radius:8px; overflow:hidden; background:var(--bg-deep); }
+    .thumb img { width:100%; display:block; cursor:zoom-in; }
+    .thumb .rm { position:absolute; top:4px; right:4px; background:rgba(10,12,20,.8); color:var(--accent-red);
+                 border:1px solid var(--border); border-radius:6px; width:22px; height:22px; cursor:pointer; font-weight:700; line-height:1; }
+    .thumb .cap { font-size:11px; color:var(--text-muted); padding:4px 6px; text-align:center; word-break:break-all; }
+
+    /* roster table */
+    .tbl-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { padding:6px 8px; border-bottom:1px solid var(--border); text-align:left; }
+    th { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; text-transform:uppercase;
+         color:var(--text-muted); }
+    td input { padding:6px 8px; }
+    td.rank { width:64px; } td.pts { width:150px; } td.act { width:40px; text-align:center; }
+    .row-dupe input { border-color:var(--accent-red-dim); }
+    .row-zero td.pts input { color:var(--text-muted); }
+    .del { background:none; border:none; color:var(--accent-red); cursor:pointer; font-size:16px; line-height:1; }
+
+    .btn { padding:8px 14px; border-radius:8px; cursor:pointer; border:1px solid var(--border);
+           background:var(--bg-card2); color:var(--text-secondary); font-family:'Barlow Condensed',sans-serif;
+           font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; }
+    .btn:hover { filter:brightness(1.12); color:var(--text-primary); }
+    .btn.primary { background:var(--kvk-accent); color:var(--bg-deep); border-color:var(--kvk-accent); }
+    .btn:disabled { opacity:.45; cursor:not-allowed; }
+    .btnrow { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:14px; }
+
+    /* verify panel */
+    .checks { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:7px; }
+    .checks li { display:flex; gap:9px; align-items:flex-start; font-size:13.5px; }
+    .checks .ic { flex:none; width:18px; }
+    .ok { color:var(--accent-green); } .warn { color:var(--accent-gold); } .err { color:var(--accent-red); }
+    .muted { color:var(--text-muted); }
+
+    pre.preview { background:var(--bg-deep); border:1px solid var(--border); border-radius:8px; padding:12px;
+                  font-size:12px; color:var(--text-secondary); overflow-x:auto; white-space:pre; max-height:280px; }
+
+    /* lightbox */
+    .lb { position:fixed; inset:0; background:rgba(6,8,14,.92); display:none; align-items:center; justify-content:center; z-index:50; }
+    .lb.on { display:flex; }
+    .lb img { max-width:94vw; max-height:92vh; border-radius:8px; }
+    .lb .x { position:absolute; top:16px; right:22px; color:#fff; font-size:30px; cursor:pointer; }
+
+    .split { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @media (max-width:760px){ .split{ grid-template-columns:1fr; } }
+    .badge { display:inline-block; font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700;
+             letter-spacing:.5px; text-transform:uppercase; padding:1px 7px; border-radius:4px;
+             background:rgba(154,109,212,.16); color:var(--accent-purple); margin-left:8px; vertical-align:middle; }
+  </style>
+</head>
+<body data-kvk="generic">
+<div class="wrap">
+  <header class="kvk-header">
+    <div class="kvk-tag">Age of Empires Mobile · Era 8 (E#008)</div>
+    <h1 class="kvk-title">SCREENSHOT <span>DATA INTAKE</span> <span class="badge">beta</span></h1>
+    <div class="kvk-subtitle" data-i18n="s_sub">Turn in-game legion screenshots into a verified CSV — Battle of Dawn &amp; Wonder Contest</div>
+  </header>
+
+  <!-- 1 · EVENT DETAILS -->
+  <div class="card">
+    <div class="card-h"><span class="n">1</span> <span data-i18n="s_h_event">Event details</span></div>
+    <div class="form-grid">
+      <div class="field"><label data-i18n="s_our_alliance">Our alliance (E#008) <span class="req">*</span></label><input id="ourAlliance" placeholder="e.g. TKC"></div>
+      <div class="field"><label data-i18n="s_our_legion">Our legion / group name</label><input id="ourLegion" placeholder="e.g. Sat 0100"></div>
+      <div class="field"><label data-i18n="s_event_type">Event</label>
+        <select id="eventType">
+          <option value="Battle of Dawn">Battle of Dawn</option>
+          <option value="Wonder Contest">Wonder Contest</option>
+        </select></div>
+      <div class="field"><label data-i18n="s_day">Day</label>
+        <select id="day"><option>Saturday</option><option>Sunday</option></select></div>
+      <div class="field"><label data-i18n="s_time">Time slot</label>
+        <select id="timeSlot"><option>01:00</option><option>11:00</option><option>19:00</option></select></div>
+      <div class="field"><label data-i18n="s_date">Date</label><input id="date" type="date"></div>
+      <div class="field"><label data-i18n="s_result">Result</label>
+        <select id="result"><option>Victory</option><option>Defeat</option></select></div>
+      <div class="field"><label data-i18n="s_opp_server">Opponent server</label><input id="oppServer" placeholder="e.g. #057"></div>
+      <div class="field"><label data-i18n="s_opp_legion">Opponent legion name</label><input id="oppLegion" placeholder="e.g. VKE L1"></div>
+      <div class="field"><label data-i18n="s_signed">Members signed up</label><input id="signedUp" placeholder="e.g. 26/30"></div>
+      <div class="field"><label data-i18n="s_team_total">Team total (banner)</label><input id="teamTotal" placeholder="e.g. 113,685"></div>
+      <div class="field"><label data-i18n="s_merit">Merit change</label><input id="merit" placeholder="e.g. +80"></div>
+      <div class="field"><label data-i18n="s_locale">Number format</label>
+        <select id="locale">
+          <option value="en">English — 1,234.56 (comma thousands)</option>
+          <option value="eu">European — 1.234,56 (dot thousands)</option>
+        </select></div>
+    </div>
+    <div class="hint" style="margin-top:10px" data-i18n="s_event_hint">The banner "team total" (next to the sword icon) is recorded as-shown — in these events it is <b>not</b> the sum of member Faith Points. Attendance can only be inferred from members whose Faith Points are 0.</div>
+  </div>
+
+  <!-- 2 · SCREENSHOTS -->
+  <div class="card">
+    <div class="card-h"><span class="n">2</span> <span data-i18n="s_h_shots">Screenshots</span></div>
+    <div class="drop" id="drop">
+      <div data-i18n="s_drop">Drop the 5–6 screenshots here, or <b>click to choose</b>. They stack to cover ranks 1–30 (or 1–50).</div>
+      <input type="file" id="file" accept="image/*" multiple hidden>
+    </div>
+    <div class="thumbs" id="thumbs"></div>
+    <div class="hint" style="margin-top:10px" data-i18n="s_shots_hint">Screenshots stay on your device — nothing is uploaded. Click a thumbnail to enlarge it while you transcribe rows below.</div>
+  </div>
+
+  <!-- 3 · ROSTER -->
+  <div class="card">
+    <div class="card-h"><span class="n">3</span> <span data-i18n="s_h_roster">Roster — Members' Faith Points</span></div>
+    <div class="tbl-wrap">
+      <table id="roster">
+        <thead><tr>
+          <th class="rank" data-i18n="s_rank">Rank</th>
+          <th data-i18n="s_player">Player name</th>
+          <th class="pts" data-i18n="s_faith">Faith Points</th>
+          <th class="act"></th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="btnrow">
+      <button class="btn" id="addRow" data-i18n="s_add">+ Add row</button>
+      <button class="btn" id="fill30" data-i18n="s_fill30">Fill to 30</button>
+      <button class="btn" id="fill50" data-i18n="s_fill50">Fill to 50</button>
+      <button class="btn" id="sortRank" data-i18n="s_sort">Sort by rank</button>
+      <button class="btn" id="clearRows" data-i18n="s_clear">Clear</button>
+      <span class="hint" id="rosterCount"></span>
+    </div>
+    <div class="hint" style="margin-top:8px" data-i18n="s_roster_hint">Type names exactly as shown, including Unicode superscript suffixes (e.g. KATHᶠᵘⁿ, Ahmednhoᴷᵀ). Enter 0 for members who scored no points.</div>
+  </div>
+
+  <!-- 4 · VERIFY + EXPORT -->
+  <div class="card">
+    <div class="card-h"><span class="n">4</span> <span data-i18n="s_h_verify">Verify &amp; export</span></div>
+    <div class="split">
+      <div>
+        <div class="hint" style="margin-bottom:8px;text-transform:uppercase;letter-spacing:1px" data-i18n="s_checks">Checks</div>
+        <ul class="checks" id="checks"></ul>
+      </div>
+      <div>
+        <div class="hint" style="margin-bottom:8px;text-transform:uppercase;letter-spacing:1px" data-i18n="s_csv_preview">CSV preview</div>
+        <pre class="preview" id="preview"></pre>
+      </div>
+    </div>
+    <div class="btnrow">
+      <button class="btn primary" id="download" data-i18n="s_download">Download CSV</button>
+      <button class="btn" id="copy" data-i18n="s_copy">Copy CSV</button>
+      <span class="hint" data-i18n="s_export_hint">Verify the preview against your screenshots before this feeds the consumption tool.</span>
+    </div>
+  </div>
+</div>
+
+<div class="lb" id="lb"><span class="x" id="lbx">×</span><img id="lbimg" alt=""></div>
+
+<script src="../assets/site-header.js"></script>
+<script>
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* ---------- screenshots (client-only) ---------- */
+  var drop=$('drop'), fileInput=$('file'), thumbs=$('thumbs');
+  var shots=[];
+  drop.addEventListener('click', function(){ fileInput.click(); });
+  ['dragenter','dragover'].forEach(function(e){ drop.addEventListener(e,function(ev){ ev.preventDefault(); drop.classList.add('hover'); }); });
+  ['dragleave','drop'].forEach(function(e){ drop.addEventListener(e,function(ev){ ev.preventDefault(); drop.classList.remove('hover'); }); });
+  drop.addEventListener('drop', function(ev){ addFiles(ev.dataTransfer.files); });
+  fileInput.addEventListener('change', function(){ addFiles(fileInput.files); fileInput.value=''; });
+  function addFiles(list){
+    Array.prototype.forEach.call(list, function(f){
+      if(!f.type.indexOf || f.type.indexOf('image')!==0) return;
+      var url=URL.createObjectURL(f);
+      shots.push({name:f.name, url:url});
+    });
+    renderThumbs();
+  }
+  function renderThumbs(){
+    thumbs.innerHTML='';
+    shots.forEach(function(s, i){
+      var d=document.createElement('div'); d.className='thumb';
+      var img=document.createElement('img'); img.src=s.url; img.alt=s.name;
+      img.addEventListener('click', function(){ openLB(s.url); });
+      var rm=document.createElement('button'); rm.className='rm'; rm.textContent='×';
+      rm.addEventListener('click', function(){ URL.revokeObjectURL(s.url); shots.splice(i,1); renderThumbs(); });
+      var cap=document.createElement('div'); cap.className='cap'; cap.textContent=s.name;
+      d.appendChild(img); d.appendChild(rm); d.appendChild(cap); thumbs.appendChild(d);
+    });
+  }
+  var lb=$('lb'), lbimg=$('lbimg');
+  function openLB(u){ lbimg.src=u; lb.classList.add('on'); }
+  $('lbx').addEventListener('click', function(){ lb.classList.remove('on'); });
+  lb.addEventListener('click', function(e){ if(e.target===lb) lb.classList.remove('on'); });
+
+  /* ---------- roster table ---------- */
+  var rows=$('rows');
+  function addRow(rank, name, pts){
+    var tr=document.createElement('tr');
+    tr.innerHTML =
+      '<td class="rank"><input class="r-rank" inputmode="numeric" value="'+(rank!=null?rank:'')+'"></td>'+
+      '<td><input class="r-name" value="'+(name!=null?esc(name):'')+'"></td>'+
+      '<td class="pts"><input class="r-pts" inputmode="numeric" value="'+(pts!=null?pts:'')+'"></td>'+
+      '<td class="act"><button class="del" title="Remove">×</button></td>';
+    tr.querySelector('.del').addEventListener('click', function(){ tr.remove(); refresh(); });
+    tr.querySelectorAll('input').forEach(function(inp){ inp.addEventListener('input', refresh); });
+    rows.appendChild(tr);
+    return tr;
+  }
+  function esc(s){ return String(s).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+  $('addRow').addEventListener('click', function(){ addRow(nextRank()); refresh(); });
+  $('fill30').addEventListener('click', function(){ fillTo(30); });
+  $('fill50').addEventListener('click', function(){ fillTo(50); });
+  $('clearRows').addEventListener('click', function(){ rows.innerHTML=''; refresh(); });
+  $('sortRank').addEventListener('click', function(){ sortByRank(); refresh(); });
+
+  function nextRank(){
+    var max=0; getData().forEach(function(r){ if(r.rank>max) max=r.rank; }); return max+1;
+  }
+  function fillTo(n){
+    var present={}; getData().forEach(function(r){ if(r.rank) present[r.rank]=true; });
+    for(var i=1;i<=n;i++){ if(!present[i]) addRow(i,'',''); }
+    sortByRank(); refresh();
+  }
+  function sortByRank(){
+    var trs=Array.prototype.slice.call(rows.children);
+    trs.sort(function(a,b){
+      var ra=parseInt(a.querySelector('.r-rank').value,10)||9999;
+      var rb=parseInt(b.querySelector('.r-rank').value,10)||9999;
+      return ra-rb;
+    });
+    trs.forEach(function(tr){ rows.appendChild(tr); });
+  }
+
+  /* ---------- number parsing (locale aware) ---------- */
+  function parsePts(raw){
+    if(raw==null) return null;
+    var s=String(raw).trim().replace(/^\+/,'');
+    if(s==='') return null;
+    if($('locale').value==='eu'){ s=s.replace(/\./g,'').replace(/,/g,'.'); }
+    else { s=s.replace(/,/g,''); }
+    var n=parseFloat(s);
+    return isNaN(n)?NaN:Math.round(n);
+  }
+
+  function getData(){
+    return Array.prototype.map.call(rows.children, function(tr){
+      return {
+        tr: tr,
+        rank: parseInt(tr.querySelector('.r-rank').value,10) || null,
+        name: tr.querySelector('.r-name').value.trim(),
+        ptsRaw: tr.querySelector('.r-pts').value.trim(),
+        pts: parsePts(tr.querySelector('.r-pts').value)
+      };
+    });
+  }
+
+  /* ---------- verify ---------- */
+  function refresh(){
+    var data=getData();
+    // dupe / zero row styling
+    var seenRank={};
+    data.forEach(function(r){ if(r.rank){ seenRank[r.rank]=(seenRank[r.rank]||0)+1; } });
+    data.forEach(function(r){
+      r.tr.classList.toggle('row-dupe', r.rank && seenRank[r.rank]>1);
+      r.tr.classList.toggle('row-zero', r.pts===0);
+    });
+    $('rosterCount').textContent = data.length + ' row' + (data.length===1?'':'s');
+    renderChecks(data);
+    renderPreview(data);
+  }
+
+  function renderChecks(data){
+    var ul=$('checks'); ul.innerHTML='';
+    var filled=data.filter(function(r){ return r.name || r.rank || r.ptsRaw; });
+    function li(cls,txt){ var l=document.createElement('li');
+      l.innerHTML='<span class="ic '+cls+'">'+(cls==='ok'?'✓':cls==='warn'?'!':cls==='err'?'✕':'·')+'</span><span>'+txt+'</span>'; ul.appendChild(l); }
+
+    if(!$('ourAlliance').value.trim()) li('err','Our alliance (E#008) is required.');
+    else li('ok','Our alliance: '+$('ourAlliance').value.trim());
+
+    if(!filled.length){ li('muted','Add roster rows to begin.'); return; }
+
+    // rank continuity
+    var ranks=filled.map(function(r){return r.rank;}).filter(Boolean).sort(function(a,b){return a-b;});
+    var dupes={}, seen={};
+    ranks.forEach(function(r){ if(seen[r]) dupes[r]=true; seen[r]=true; });
+    if(Object.keys(dupes).length) li('err','Duplicate rank(s): '+Object.keys(dupes).join(', '));
+    var gaps=[];
+    for(var i=1;i<ranks.length;i++){ for(var g=ranks[i-1]+1; g<ranks[i]; g++) gaps.push(g); }
+    if(ranks.length){
+      if(ranks[0]!==1) li('warn','Ranks start at '+ranks[0]+' (top of list not captured yet).');
+      if(gaps.length) li('warn','Missing rank'+(gaps.length>1?'s':'')+': '+gaps.slice(0,12).join(', ')+(gaps.length>12?'…':''));
+      if(!gaps.length && !Object.keys(dupes).length && ranks[0]===1) li('ok','Ranks 1–'+ranks[ranks.length-1]+' are contiguous.');
+    }
+    // missing values
+    var noName=filled.filter(function(r){return !r.name;}).length;
+    var badPts=filled.filter(function(r){return r.ptsRaw!=='' && isNaN(r.pts);}).length;
+    var noPts =filled.filter(function(r){return r.ptsRaw==='';}).length;
+    if(noName) li('warn',noName+' row(s) missing a name.');
+    if(badPts) li('err',badPts+' row(s) have unparseable Faith Points for this number format.');
+    if(noPts)  li('warn',noPts+' row(s) missing Faith Points.');
+    var zeros=filled.filter(function(r){return r.pts===0;}).length;
+    if(zeros) li('ok',zeros+' member(s) at 0 pts — flagged as no-shows / no score.');
+
+    // duplicate names
+    var nseen={}, ndupe={};
+    filled.forEach(function(r){ if(r.name){ var k=r.name.toLowerCase(); if(nseen[k]) ndupe[r.name]=true; nseen[k]=true; } });
+    if(Object.keys(ndupe).length) li('warn','Repeated name(s) across rows: '+Object.keys(ndupe).join(', ')+' (players can appear in different events).');
+
+    // signed-up cross check
+    var su=$('signedUp').value.match(/(\d+)\s*\/\s*(\d+)/);
+    if(su){ var cap=+su[2];
+      if(ranks.length && ranks[ranks.length-1]>cap) li('err','Highest rank ('+ranks[ranks.length-1]+') exceeds roster cap '+cap+'.');
+    }
+    if(!badPts && !Object.keys(dupes).length) li('ok','Ready to export ('+filled.length+' rows).');
+  }
+
+  /* ---------- CSV ---------- */
+  function csvCell(v){ v=(v==null?'':String(v)); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+  function buildCSV(data){
+    var rows_=[];
+    rows_.push(['# Battle of Dawn / Wonder Contest — Legion Result']);
+    rows_.push(['Field','Value']);
+    var meta=[
+      ['Our Alliance', $('ourAlliance').value.trim()+' (Era #008)'],
+      ['Our Legion', $('ourLegion').value.trim()],
+      ['Our Server', '#008'],
+      ['Opponent Legion', $('oppLegion').value.trim()],
+      ['Opponent Server', $('oppServer').value.trim()],
+      ['Event', $('eventType').value],
+      ['Event Date', ($('date').value||'') + ' (' + $('day').value + ')'],
+      ['Event Time', $('timeSlot').value],
+      ['Result', $('result').value],
+      ['Team Total (banner, non-sum metric)', $('teamTotal').value.trim()],
+      ['Members Signed Up', $('signedUp').value.trim()],
+      ['Merit Change', $('merit').value.trim()]
+    ];
+    meta.forEach(function(m){ rows_.push(m); });
+    rows_.push([]);
+    rows_.push(['Rank','Player','FaithPoints']);
+    data.filter(function(r){ return r.name || r.rank || r.ptsRaw; })
+        .forEach(function(r){ rows_.push([r.rank||'', r.name, (r.pts==null||isNaN(r.pts))?'':r.pts]); });
+    return '﻿' + rows_.map(function(row){ return row.map(csvCell).join(','); }).join('\r\n');
+  }
+  function renderPreview(data){ $('preview').textContent = buildCSV(data).replace(/^﻿/,''); }
+
+  function fname(){
+    var ally=($('ourAlliance').value.trim()||'legion').replace(/[^\w-]+/g,'');
+    var d=$('date').value||'date';
+    var t=$('timeSlot').value.replace(':','');
+    return 'legion_'+ally+'_'+d+'_'+t+'.csv';
+  }
+  $('download').addEventListener('click', function(){
+    var blob=new Blob([buildCSV(getData())],{type:'text/csv;charset=utf-8'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fname();
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+  });
+  $('copy').addEventListener('click', function(){
+    navigator.clipboard.writeText(buildCSV(getData()).replace(/^﻿/,'')).then(function(){
+      $('copy').textContent='Copied!'; setTimeout(function(){ $('copy').textContent='Copy CSV'; },1200);
+    });
+  });
+
+  // meta fields re-render preview/checks
+  ['ourAlliance','ourLegion','eventType','day','timeSlot','date','result','oppServer','oppLegion','signedUp','teamTotal','merit','locale']
+    .forEach(function(id){ $(id).addEventListener('input', refresh); $(id).addEventListener('change', refresh); });
+
+  // seed with a few empty rows
+  for(var i=1;i<=5;i++) addRow(i,'','');
+  refresh();
+
+  if(window.SiteHeader){ window.SiteHeader.setLanguages({ codes:['en'], current:'en', onChange:function(){} }); }
+})();
+</script>
+</body>
+</html>
