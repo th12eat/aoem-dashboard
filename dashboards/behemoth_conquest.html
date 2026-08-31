@@ -5313,8 +5313,8 @@ function updatePhase(now) { renderStageLine(now); }
 //   6: hoof1 fort1   7: atk2 def2   8: hp2   9: hoof2 fort2   10: dmg2
 // (Defaults Undying Force / Wild Healing are always owned and need no entry.)
 var BLESS_OWNED = {
-  us:   ['dmg1', 'atk1', 'def1', 'hp1', 'ratk', 'rdef', 'wrally', 'hoof1'], // #008 through Iron Hoof I (stopped)
-  them: ['dmg1', 'atk1', 'def1', 'hp1', 'ratk'] // #057 through Rally Attack I (stopped)
+  us:   [], // #008 — start of cycle: only the Undying Force / Wild Healing defaults; next up Wild Damage Increase
+  them: []  // #057 — same
 };
 // Ordered list of steps -> the node IDs that compose each step.
 var BLESS_STEPS = [
