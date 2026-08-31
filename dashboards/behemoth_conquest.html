@@ -710,6 +710,7 @@
   .cmp-tbl .c-nm .tg { color: var(--text-muted); }
   /* numeric columns: fixed width + tabular figures so digits line up vertically and a missing value never shifts the row */
   .cmp-tbl .c-p  { width: 54px; text-align: right; color: var(--accent-gold); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
+  .cmp-tbl .c-me { width: 50px; text-align: right; color: var(--text-secondary); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
   .cmp-tbl .c-mp { width: 42px; text-align: right; font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; white-space: nowrap; }
   .cmp-tbl .c-mp.hi  { color: var(--accent-green); }
   .cmp-tbl .c-mp.mid { color: var(--text-secondary); }
@@ -859,6 +860,7 @@
     .cmp-grid { grid-template-columns: 1fr !important; }
     .cmp-tbl .c-nm { white-space: normal; }           /* let long CJK names wrap instead of clip */
     .cmp-tbl .c-p  { width: 50px; }
+    .cmp-tbl .c-me { width: 46px; }
     .cmp-tbl .c-mp { width: 38px; }
 
     /* Trial schedule: 2x2 grid on phones (4-up is too tight at 390px) */
@@ -1029,12 +1031,12 @@
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
         <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);" data-i18n="sc_us_acol">OUR ALLIANCES</div>
         <table class="cmp-tbl">
-          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-me" data-i18n="th_merits">Merits</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
           <tbody>
-            <tr><td class="c-rk">1</td><td class="c-nm">WorldClass <span class="tg">[eRa]</span></td><td class="c-p">23.2B</td><td class="c-mp hi">8%</td></tr>
-            <tr><td class="c-rk">2</td><td class="c-nm">CourtOfGods <span class="tg">[REU]</span></td><td class="c-p">14.2B</td><td class="c-mp lo">2%</td></tr>
-            <tr><td class="c-rk">3</td><td class="c-nm">Mythic <span class="tg">[Myt]</span></td><td class="c-p">9.5B</td><td class="c-mp mid">6%</td></tr>
-            <tr><td class="c-rk">4</td><td class="c-nm">FunUnited <span class="tg">[FUN]</span></td><td class="c-p">3.2B</td><td class="c-mp lo">1%</td></tr>
+            <tr><td class="c-rk">1</td><td class="c-nm">WorldClass <span class="tg">[eRa]</span></td><td class="c-p">23.2B</td><td class="c-me">1.9B</td><td class="c-mp hi">8%</td></tr>
+            <tr><td class="c-rk">2</td><td class="c-nm">CourtOfGods <span class="tg">[REU]</span></td><td class="c-p">14.2B</td><td class="c-me">280.9M</td><td class="c-mp lo">2%</td></tr>
+            <tr><td class="c-rk">3</td><td class="c-nm">Mythic <span class="tg">[Myt]</span></td><td class="c-p">9.5B</td><td class="c-me">604.7M</td><td class="c-mp mid">6%</td></tr>
+            <tr><td class="c-rk">4</td><td class="c-nm">FunUnited <span class="tg">[FUN]</span></td><td class="c-p">3.2B</td><td class="c-me">18.1M</td><td class="c-mp lo">1%</td></tr>
           </tbody>
         </table>
       </div>
@@ -1042,12 +1044,12 @@
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
         <div style="background:rgba(196,61,61,0.12);border-bottom:1px solid var(--accent-red-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-red);" data-i18n="sc_them_acol">#057 ALLIANCES</div>
         <table class="cmp-tbl">
-          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-me" data-i18n="th_merits">Merits</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
           <tbody>
-            <tr><td class="c-rk">1</td><td class="c-nm">Coalition57 <span class="tg">[&#9426;57]</span></td><td class="c-p">23.5B</td><td class="c-mp hi">11%</td></tr>
-            <tr><td class="c-rk">2</td><td class="c-nm">EUROPEHUN <span class="tg">[&#9431;57]</span></td><td class="c-p">20.1B</td><td class="c-mp mid">7%</td></tr>
-            <tr><td class="c-rk">3</td><td class="c-nm">VulKanEmpire <span class="tg">[&#9435;57]</span></td><td class="c-p">10.6B</td><td class="c-mp lo">2%</td></tr>
-            <tr><td class="c-rk">4</td><td class="c-nm">EXPLOSIVE <span class="tg">[TNT]</span></td><td class="c-p">1.6B</td><td class="c-mp lo">2%</td></tr>
+            <tr><td class="c-rk">1</td><td class="c-nm">Coalition57 <span class="tg">[&#9426;57]</span></td><td class="c-p">23.5B</td><td class="c-me">2.7B</td><td class="c-mp hi">11%</td></tr>
+            <tr><td class="c-rk">2</td><td class="c-nm">EUROPEHUN <span class="tg">[&#9431;57]</span></td><td class="c-p">20.1B</td><td class="c-me">1.5B</td><td class="c-mp mid">7%</td></tr>
+            <tr><td class="c-rk">3</td><td class="c-nm">VulKanEmpire <span class="tg">[&#9435;57]</span></td><td class="c-p">10.6B</td><td class="c-me">210.2M</td><td class="c-mp lo">2%</td></tr>
+            <tr><td class="c-rk">4</td><td class="c-nm">EXPLOSIVE <span class="tg">[TNT]</span></td><td class="c-p">1.6B</td><td class="c-me">37.7M</td><td class="c-mp lo">2%</td></tr>
           </tbody>
         </table>
       </div>
