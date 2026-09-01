@@ -219,16 +219,6 @@
     color: var(--text-muted);
   }
 
-  .cd-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    margin-top: 8px;
-    text-align: center;
-  }
-
   /* Section = boxed card (mirrors Desolate Desert's S.card). */
   .section {
     background: var(--bg-card);
@@ -900,8 +890,6 @@
     <div class="subtitle" data-i18n="subtitle">Awaken the bloodline &middot; March into enemy empires &middot; Cross-server war</div>
     <!-- stage-advancing event-meta header (shared EventHeader; phases below) -->
     <div id="evtMeta"></div>
-    <!-- localized "Until <milestone>" countdown caption (EventHeader shows the timer) -->
-    <div class="cd-label" id="cd-label">Until Beast Taming</div>
     <button type="button" id="icalBtn" class="ical-btn" disabled title="Calendar export coming soon — dates not final">
       <span class="ical-ico" aria-hidden="true">&#128197;</span>
       <span class="ical-label" data-i18n="ical_btn">Add to Calendar</span>
@@ -1123,11 +1111,11 @@
       <h4 data-i18n="st2_purity_h">Bloodline Purity race</h4>
       <div class="tug-wrap">
         <div class="tug-row">
-          <span class="tug-us">0 <span class="tug-name" data-i18n="tug_us">US &middot; #008</span></span>
+          <span class="tug-us"><span id="beh-purity-us">0</span> <span class="tug-name" data-i18n="tug_us">US &middot; #008</span></span>
           <span class="tug-name" data-i18n="tug_purity_lbl">Bloodline Purity (runestones donated)</span>
-          <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#057</span> 0</span>
+          <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#057</span> <span id="beh-purity-them">0</span></span>
         </div>
-        <div class="tug-bar"><div class="tug-fill-us" style="width:50%;"></div><div class="tug-fill-them" style="width:50%;"></div></div>
+        <div class="tug-bar"><div class="tug-fill-us" id="beh-purity-fill-us" style="width:50%;"></div><div class="tug-fill-them" id="beh-purity-fill-them" style="width:50%;"></div></div>
         <div class="tug-cap" data-i18n="tug_purity_cap">Beast Taming opens Sep 1 &mdash; donate Awaken Runestones to tip Bloodline Purity our way. Standings update as donations come in.</div>
       </div>
 
@@ -1449,7 +1437,8 @@
       <div class="spawn-box" data-map="008">
         <h4 style="margin-top:0;" data-i18n="spawn008_h">Where the Behemoth spawns on #008</h4>
         <figure class="spawn-fig" style="margin:0;">
-          <div style="width:100%;aspect-ratio:16/10;border-radius:8px;border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:12px;background:var(--bg-card);" data-i18n="spawn_ph">Spawn map coming soon</div>
+          <img class="zoomable" data-cap="#057's Behemoth invades our server at (1191,1208) — Saturday 19:00 UTC. Infinite range, ignores shields." src="../assets/behemoth/bc_era57_invasion_008.jpg" alt="#057 Behemoth invasion point on #008 — coordinates (1191,1208)" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
+          <figcaption style="font-size:11.5px;color:var(--text-secondary);margin-top:5px;text-align:center;line-height:1.5;" data-i18n="spawn008_cap"><strong style="color:#c43d3d;">#057 invades us</strong> &mdash; Behemoth spawns at <strong>(1191,1208)</strong> in [REU] territory. Window: <strong>Saturday 19:00 UTC</strong>. Tap to enlarge.</figcaption>
         </figure>
       </div>
       <div class="spawn-box" data-map="087" hidden>
@@ -1625,7 +1614,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> Recibiendo daño de Bégimo",
     "map_desc": "Cada mapa muestra un servidor como local con el Bégimo invasor en su aparición. <strong>Alcance ilimitado, ignora escudos</strong> &mdash; ninguna ciudad está a salvo (naranja = bajo fuego). El local lo reúne para bajarlo; los visitantes contra-reúnen para mantenerlo sumando. Alterna entre <strong>#008</strong> y <strong>#057</strong>.",
     "spawn008_h": "Dónde aparece el Bégimo en #008",
-    "spawn008_cap": "#057 está haciendo aparecer su Bégimo en nuestro servidor, en territorio [REU] &mdash; coordenadas <strong></strong>. Toca para ampliar.",
+    "spawn008_cap": "#057 está haciendo aparecer su Bégimo en nuestro servidor, en territorio [REU] &mdash; coordenadas <strong>(1191,1208)</strong>. Toca para ampliar.",
     "spawn087_h": "Dónde aparece nuestro Bégimo en #057",
     "st3_atk_h": "Atacar al Bégimo enemigo",
     "st3_a1": "<strong>Solo las reuniones lo dañan</strong> (1.000/seg cada una &mdash; por reunión, no por marcha). Más reuniones separadas = más daño; manténgan tantas como puedan.",
@@ -1864,7 +1853,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> 正受巨獸傷害",
     "map_desc": "每張地圖以一方服務器為主場，入侵巨獸位於出生點。<strong>射程無限、無視護盾</strong> — 沒有城市安全（橙=正受攻擊）。主場集結削減它; 客場逆集結維持其得分。在<strong>#008</strong>與<strong>#057</strong>間切換。",
     "spawn008_h": "巨獸在#008的出生點",
-    "spawn008_cap": "#057在我方服務器的[REU]領地生成其巨獸 — 座標 <strong></strong>。點擊放大。",
+    "spawn008_cap": "#057在我方服務器的[REU]領地生成其巨獸 — 座標 <strong>(1191,1208)</strong>。點擊放大。",
     "spawn087_h": "我方巨獸在#057的出生點",
     "spawn087_cap": "我方巨獸在#057的[&Sigma;28]領地附近生成 — 座標 <strong></strong>。19:00時段前轉移至附近。點擊放大。",
     "loc_here": "入侵區",
@@ -2059,7 +2048,7 @@ const TRANSLATIONS = {
     "leg_dmg": "Under eld",
     "map_desc": "Varje karta visar en server som hemma med den invaderande Behemothen vid sin spawn. <strong>Obegränsad räckvidd, ignorerar sköldar</strong> &mdash; ingen stad är säker (orange = under eld). Hemma samlar ner den; besökare kontrasamlar för att hålla den poänggivande. Växla för att vända mellan <strong>#008</strong> och <strong>#057</strong>.",
     "spawn008_h": "Var Behemothen spawnar på #008",
-    "spawn008_cap": "#057 gyter sin Behemoth på vår server, i [REU]-territorium &mdash; koordinater <strong></strong>. Tryck för att förstora.",
+    "spawn008_cap": "#057 gyter sin Behemoth på vår server, i [REU]-territorium &mdash; koordinater <strong>(1191,1208)</strong>. Tryck för att förstora.",
     "spawn087_h": "Var vår Behemoth spawnar på #057",
     "spawn087_cap": "Vår Behemoth gyter på #057 nära [&Sigma;28]-territorium &mdash; koordinater <strong></strong>. Omplacera dig nära den inför 19:00-fönstret. Tryck för att förstora.",
     "loc_here": "invasionszon",
@@ -2241,7 +2230,7 @@ const TRANSLATIONS = {
     "leg_dmg": "Tulen alla",
     "map_desc": "Kukin kartta näyttää yhden palvelimen kotina hyökkäävän Behemothin syntypaikallaan. <strong>Rajaton kantama, ohittaa kilvet</strong> &mdash; mikään kaupunki ei ole turvassa (oranssi = tulen alla). Koti kokoaa sen alas; vieraat vastakokoontuvat pitääkseen sen pisteyttämässä. Vaihda kääntääksesi <strong>#008</strong> ja <strong>#057</strong> välillä.",
     "spawn008_h": "Missä Behemoth syntyy palvelimella #008",
-    "spawn008_cap": "#057 synnyttää Behemothinsa palvelimellamme, [REU]-alueella &mdash; koordinaatit <strong></strong>. Napauta suurentaaksesi.",
+    "spawn008_cap": "#057 synnyttää Behemothinsa palvelimellamme, [REU]-alueella &mdash; koordinaatit <strong>(1191,1208)</strong>. Napauta suurentaaksesi.",
     "spawn087_h": "Missä Behemothimme syntyy palvelimella #057",
     "spawn087_cap": "Behemothimme syntyy palvelimella #057 lähellä [&Sigma;28]-aluetta &mdash; koordinaatit <strong></strong>. Siirry sen lähelle 19:00-ikkunaa varten. Napauta suurentaaksesi.",
     "loc_here": "hyökkäysvyöhyke",
@@ -2423,7 +2412,7 @@ const TRANSLATIONS = {
     "leg_dmg": "Under ild",
     "map_desc": "Hvert kart viser én server som hjemme med den invaderende Behemothen ved sin spawn. <strong>Ubegrenset rekkevidde, ignorerer skjold</strong> &mdash; ingen by er trygg (oransje = under ild). Hjemme samler den ned; besøkende motsamler for å holde den scorende. Veksle for å bytte mellom <strong>#008</strong> og <strong>#057</strong>.",
     "spawn008_h": "Hvor Behemothen spawner på #008",
-    "spawn008_cap": "#057 gyter sin Behemoth på vår server, i [REU]-territorium &mdash; koordinater <strong></strong>. Trykk for å forstørre.",
+    "spawn008_cap": "#057 gyter sin Behemoth på vår server, i [REU]-territorium &mdash; koordinater <strong>(1191,1208)</strong>. Trykk for å forstørre.",
     "spawn087_h": "Hvor vår Behemoth spawner på #057",
     "spawn087_cap": "Vår Behemoth gyter på #057 nær [&Sigma;28]-territorium &mdash; koordinater <strong></strong>. Flytt deg nær den til 19:00-vinduet. Trykk for å forstørre.",
     "loc_here": "invasjonssone",
@@ -2605,7 +2594,7 @@ const TRANSLATIONS = {
     "leg_dmg": "Onder vuur",
     "map_desc": "Elke kaart toont één server als thuis met de binnenvallende Behemoth bij zijn spawn. <strong>Onbeperkt bereik, negeert schilden</strong> &mdash; geen enkele stad is veilig (oranje = onder vuur). Thuis rallyet hem neer; bezoekers counter-rallyen om hem scorend te houden. Wissel om te schakelen tussen <strong>#008</strong> en <strong>#057</strong>.",
     "spawn008_h": "Waar de Behemoth spawnt op #008",
-    "spawn008_cap": "#057 laat hun Behemoth op onze server verschijnen, in [REU]-gebied &mdash; coördinaten <strong></strong>. Tik om te vergroten.",
+    "spawn008_cap": "#057 laat hun Behemoth op onze server verschijnen, in [REU]-gebied &mdash; coördinaten <strong>(1191,1208)</strong>. Tik om te vergroten.",
     "spawn087_h": "Waar onze Behemoth spawnt op #057",
     "spawn087_cap": "Onze Behemoth verschijnt op #057 nabij [&Sigma;28]-gebied &mdash; coördinaten <strong></strong>. Verplaats je dichtbij voor het venster van 19:00. Tik om te vergroten.",
     "loc_here": "invasiezone",
@@ -2787,7 +2776,7 @@ const TRANSLATIONS = {
     "leg_dmg": "වෙඩි යටතේ",
     "map_desc": "සෑම සිතියමක්ම එක් සේවාදායකයක් නිවස ලෙස පෙන්වයි, කඩා වදින Behemoth එහි ස්පෝන් හිදී. <strong>අසීමිත පරාසය, පලිහ නොසලකයි</strong> &mdash; කිසිදු නගරයක් ආරක්ෂිත නැත (තැඹිලි = වෙඩි යටතේ). නිවස එය රැලි කර පහත් කරයි; අමුත්තන් එය ලකුණු ලබමින් තබා ගැනීමට ප්‍රතිරැලි කරයි. <strong>#008</strong> සහ <strong>#057</strong> අතර මාරු කිරීමට ටොගල් කරන්න.",
     "spawn008_h": "#008 හි Behemoth ස්පෝන් වන්නේ කොහේද",
-    "spawn008_cap": "#057 ඔවුන්ගේ Behemoth අපගේ සේවාදායකයේ [REU] භූමියේ බිහි කරයි &mdash; ඛණ්ඩාංක <strong></strong>. විශාල කිරීමට තට්ටු කරන්න.",
+    "spawn008_cap": "#057 ඔවුන්ගේ Behemoth අපගේ සේවාදායකයේ [REU] භූමියේ බිහි කරයි &mdash; ඛණ්ඩාංක <strong>(1191,1208)</strong>. විශාල කිරීමට තට්ටු කරන්න.",
     "spawn087_h": "#057 හි අපගේ Behemoth ස්පෝන් වන්නේ කොහේද",
     "spawn087_cap": "අපගේ Behemoth #057 හි [&Sigma;28] භූමිය අසල බිහි වේ &mdash; ඛණ්ඩාංක <strong></strong>. 19:00 කවුළුව සඳහා එය අසලට යළි පිහිටුවන්න. විශාල කිරීමට තට්ටු කරන්න.",
     "loc_here": "ආක්‍රමණ කලාපය",
@@ -2969,7 +2958,7 @@ const TRANSLATIONS = {
     "leg_dmg": "தாக்குதலில்",
     "map_desc": "ஒவ்வொரு வரைபடமும் ஒரு சர்வரை வீடாக காட்டுகிறது, படையெடுக்கும் Behemoth அதன் ஸ்பான்-இல். <strong>வரம்பற்ற தூரம், கவசங்களை புறக்கணிக்கிறது</strong> &mdash; எந்த நகரமும் பாதுகாப்பானதல்ல (ஆரஞ்சு = தாக்குதலில்). வீடு அதை திரட்டி வீழ்த்துகிறது; பார்வையாளர்கள் அதை புள்ளியிடும் நிலையில் வைக்க எதிர்-திரள்கிறார்கள். <strong>#008</strong> மற்றும் <strong>#057</strong> இடையே மாற டாகிள் செய்.",
     "spawn008_h": "#008-இல் Behemoth ஸ்பான் ஆகும் இடம்",
-    "spawn008_cap": "#057 தங்கள் Behemoth-ஐ நமது சர்வரில் [REU] பகுதியில் தோற்றுவிக்கிறார்கள் &mdash; ஆயத்தொலைவுகள் <strong></strong>. பெரிதாக்க தட்டு.",
+    "spawn008_cap": "#057 தங்கள் Behemoth-ஐ நமது சர்வரில் [REU] பகுதியில் தோற்றுவிக்கிறார்கள் &mdash; ஆயத்தொலைவுகள் <strong>(1191,1208)</strong>. பெரிதாக்க தட்டு.",
     "spawn087_h": "#057-இல் நமது Behemoth ஸ்பான் ஆகும் இடம்",
     "spawn087_cap": "நமது Behemoth #057-இல் [&Sigma;28] பகுதிக்கு அருகில் தோன்றுகிறது &mdash; ஆயத்தொலைவுகள் <strong></strong>. 19:00 சாளரத்திற்கு அதன் அருகில் இடமாற்று. பெரிதாக்க தட்டு.",
     "loc_here": "படையெடுப்பு மண்டலம்",
@@ -3151,7 +3140,7 @@ const TRANSLATIONS = {
     "leg_dmg": "हमले में",
     "map_desc": "प्रत्येक मानचित्र एक सर्वर को घर के रूप में दिखाता है, आक्रमणकारी Behemoth अपने स्पॉन पर। <strong>असीमित रेंज, ढालों की अनदेखी</strong> &mdash; कोई शहर सुरक्षित नहीं (नारंगी = हमले में)। घर इसे रैली कर गिराता है; आगंतुक इसे अंक-अर्जन में बनाए रखने के लिए काउंटर-रैली करते हैं। <strong>#008</strong> और <strong>#057</strong> के बीच स्विच करने के लिए टॉगल करें।",
     "spawn008_h": "#008 पर Behemoth कहाँ स्पॉन होता है",
-    "spawn008_cap": "#057 अपना बेहेमोथ हमारे सर्वर पर [REU] क्षेत्र में स्पॉन कर रहा है &mdash; निर्देशांक <strong></strong>। बड़ा करने के लिए टैप करें।",
+    "spawn008_cap": "#057 अपना बेहेमोथ हमारे सर्वर पर [REU] क्षेत्र में स्पॉन कर रहा है &mdash; निर्देशांक <strong>(1191,1208)</strong>। बड़ा करने के लिए टैप करें।",
     "spawn087_h": "#057 पर हमारा Behemoth कहाँ स्पॉन होता है",
     "spawn087_cap": "हमारा बेहेमोथ #057 पर [&Sigma;28] क्षेत्र के पास स्पॉन होता है &mdash; निर्देशांक <strong></strong>। 19:00 खिड़की के लिए इसके पास स्थानांतरित हों। बड़ा करने के लिए टैप करें।",
     "loc_here": "आक्रमण क्षेत्र",
@@ -3263,7 +3252,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> Subit les dégâts du Béhémoth",
     "map_desc": "Chaque carte montre un serveur comme hôte avec le Béhémoth envahisseur à son apparition. <strong>Portée illimitée, ignore les boucliers</strong> &mdash; aucune ville n'est à l'abri (orange = sous le feu). L'hôte le rallie ; les visiteurs contre-rallient pour le garder en jeu. Bascule entre <strong>#008</strong> et <strong>#057</strong>.",
     "spawn008_h": "Où le Béhémoth apparaît sur #008",
-    "spawn008_cap": "#057 fait apparaître leur Béhémoth sur notre serveur, en territoire [REU] &mdash; coordonnées <strong></strong>. Touche pour agrandir.",
+    "spawn008_cap": "#057 fait apparaître leur Béhémoth sur notre serveur, en territoire [REU] &mdash; coordonnées <strong>(1191,1208)</strong>. Touche pour agrandir.",
     "spawn087_h": "Où notre Béhémoth apparaît sur #057",
     "st3_atk_h": "Attaquer le Béhémoth ennemi",
     "st3_a1": "<strong>Seuls les ralliements le blessent</strong> (1 000/sec chacun &mdash; par ralliement, pas par marche). Plus de ralliements distincts = plus de dégâts ; garde-en autant que possible.",
@@ -3445,7 +3434,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">&#9632;</b> 비헤모스 피해를 받는 중",
     "map_desc": "각 지도는 한 서버를 홈으로, 침공 비헤모스는 등장 지점에 표시. <strong>무제한 사거리, 보호막 무시</strong> &mdash; 안전한 도시 없음(주황 = 피격 중). 홈은 깎아내리고, 원정은 역집결해 점수 유지. <strong>#008</strong>과 <strong>#057</strong> 전환.",
     "spawn008_h": "#008에서 비헤모스 등장 위치",
-    "spawn008_cap": "#057이 우리 서버의 [REU] 영역에 자기 비헤모스를 소환합니다 &mdash; 좌표 <strong></strong>. 탭하면 확대됩니다.",
+    "spawn008_cap": "#057이 우리 서버의 [REU] 영역에 자기 비헤모스를 소환합니다 &mdash; 좌표 <strong>(1191,1208)</strong>. 탭하면 확대됩니다.",
     "spawn087_h": "#057에서 우리 비헤모스 등장 위치",
     "st3_atk_h": "적 비헤모스 공격",
     "st3_a1": "<strong>집결만 피해를 줌</strong>(각 초당 1,000 &mdash; 행군이 아니라 집결 단위). 개별 집결이 많을수록 피해 증가; 최대한 많이 붙이세요.",
@@ -3684,7 +3673,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> ベヒモス被害中",
     "map_desc": "各マップは一方のサーバーをホームとし、侵攻ベヒモスは出現地点に配置。<strong>射程無制限、シールド無視</strong> — どの都市も安全でない（橙=被弾中）。ホームは集結で削り、来訪側は逆集結で得点を維持。<strong>#008</strong>と<strong>#057</strong>を切替。",
     "spawn008_h": "#008でのベヒモス出現地点",
-    "spawn008_cap": "#057が自軍サーバーの[REU]領内に自軍ベヒモスを出現させる — 座標 <strong></strong>。タップで拡大。",
+    "spawn008_cap": "#057が自軍サーバーの[REU]領内に自軍ベヒモスを出現させる — 座標 <strong>(1191,1208)</strong>。タップで拡大。",
     "spawn087_h": "#057での自軍ベヒモス出現地点",
     "spawn087_cap": "自軍ベヒモスが#057の[&Sigma;28]領地付近に出現 — 座標 <strong></strong>。19:00枠に向け近くへ転移。タップで拡大。",
     "loc_here": "侵攻ゾーン",
@@ -3866,7 +3855,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> 正受巨兽伤害",
     "map_desc": "每张地图以一方服务器为主场，入侵巨兽位于出生点。<strong>射程无限、无视护盾</strong> — 没有城市安全（橙=正受攻击）。主场集结削减它; 客场逆集结维持其得分。在<strong>#008</strong>与<strong>#057</strong>间切换。",
     "spawn008_h": "巨兽在#008的出生点",
-    "spawn008_cap": "#057在我方服务器的[REU]领地生成其巨兽 — 坐标 <strong></strong>。点击放大。",
+    "spawn008_cap": "#057在我方服务器的[REU]领地生成其巨兽 — 坐标 <strong>(1191,1208)</strong>。点击放大。",
     "spawn087_h": "我方巨兽在#057的出生点",
     "spawn087_cap": "我方巨兽在#057的[&Sigma;28]领地附近生成 — 坐标 <strong></strong>。19:00时段前转移至附近。点击放大。",
     "loc_here": "入侵区",
@@ -4048,7 +4037,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> يتلقى ضرر البهيموث",
     "map_desc": "كل خريطة تُظهر خادماً كأرض له مع البهيموث الغازي عند نقطة ظهوره. <strong>مدى لا محدود، يتجاهل الدروع</strong> — لا مدينة آمنة (برتقالي = تحت النار). الأرض تحشد لإسقاطه؛ الزائرون يحشدون مضاداً لإبقائه يسجل. بدّل بين <strong>#008</strong> و<strong>#057</strong>.",
     "spawn008_h": "مكان ظهور البهيموث على #008",
-    "spawn008_cap": "#057 يُظهِر بهيموثهم على خادمنا في أرض [REU] — الإحداثيات <strong></strong>. انقر للتكبير.",
+    "spawn008_cap": "#057 يُظهِر بهيموثهم على خادمنا في أرض [REU] — الإحداثيات <strong>(1191,1208)</strong>. انقر للتكبير.",
     "spawn087_h": "مكان ظهور بهيموثنا على #057",
     "spawn087_cap": "بهيموثنا يظهر على #057 قرب أرض [&Sigma;28] — الإحداثيات <strong></strong>. انتقل قربها لنافذة 19:00. انقر للتكبير.",
     "loc_here": "منطقة الغزو",
@@ -4230,7 +4219,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Tager Behemoth-skade",
     "map_desc": "Hvert kort viser én server som hjemme med den invaderende Behemoth ved dens spawn. <strong>Ubegrænset rækkevidde, ignorerer skjolde</strong> — ingen by er sikker (orange = under beskydning). Hjemme samler den ned; gæster modsamler for at holde den scorende. Skift mellem <strong>#008</strong> og <strong>#057</strong>.",
     "spawn008_h": "Hvor Behemoth spawner på #008",
-    "spawn008_cap": "#057 spawner deres Behemoth på vores server, i [REU]-territorium — koordinater <strong></strong>. Tryk for at forstørre.",
+    "spawn008_cap": "#057 spawner deres Behemoth på vores server, i [REU]-territorium — koordinater <strong>(1191,1208)</strong>. Tryk for at forstørre.",
     "spawn087_h": "Hvor vores Behemoth spawner på #057",
     "spawn087_cap": "Vores Behemoth spawner på #057 nær [&Sigma;28]-territorium — koordinater <strong></strong>. Flyt nær det til 19:00-vinduet. Tryk for at forstørre.",
     "loc_here": "invasionszone",
@@ -4425,7 +4414,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Erleidet Behemoth-Schaden",
     "map_desc": "Jede Karte zeigt einen Server als Heimat mit dem einfallenden Behemoth am Spawn. <strong>Unbegrenzte Reichweite, ignoriert Schilde</strong> — keine Stadt ist sicher (orange = unter Beschuss). Heimat sammelt ihn nieder; Besucher kontern-sammeln, um ihn punktend zu halten. Wechsle zwischen <strong>#008</strong> und <strong>#057</strong>.",
     "spawn008_h": "Wo der Behemoth auf #008 spawnt",
-    "spawn008_cap": "#057 lässt ihren Behemoth auf unserem Server im [REU]-Gebiet erscheinen — Koordinaten <strong></strong>. Zum Vergrößern tippen.",
+    "spawn008_cap": "#057 lässt ihren Behemoth auf unserem Server im [REU]-Gebiet erscheinen — Koordinaten <strong>(1191,1208)</strong>. Zum Vergrößern tippen.",
     "spawn087_h": "Wo unser Behemoth auf #057 spawnt",
     "spawn087_cap": "Unser Behemoth erscheint auf #057 nahe dem [&Sigma;28]-Gebiet — Koordinaten <strong></strong>. Ziehe für das 19:00-Fenster in die Nähe. Zum Vergrößern tippen.",
     "loc_here": "Invasionszone",
@@ -4607,7 +4596,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Получает урон Бегемота",
     "map_desc": "Каждая карта показывает один сервер как домашний со вторгающимся Бегемотом в точке появления. <strong>Неограниченная дальность, игнорирует щиты</strong> — ни один город не в безопасности (оранжевый = под ударом). Хозяева сбивают его сборами; гости контр-сбором держат его в счёте. Переключайся между <strong>#008</strong> и <strong>#057</strong>.",
     "spawn008_h": "Где Бегемот появляется на #008",
-    "spawn008_cap": "#057 размещает своего Бегемота на нашем сервере, на землях [REU] — координаты <strong></strong>. Нажми, чтобы увеличить.",
+    "spawn008_cap": "#057 размещает своего Бегемота на нашем сервере, на землях [REU] — координаты <strong>(1191,1208)</strong>. Нажми, чтобы увеличить.",
     "spawn087_h": "Где наш Бегемот появляется на #057",
     "spawn087_cap": "Наш Бегемот появляется на #057 рядом с землями [&Sigma;28] — координаты <strong></strong>. Переместись поближе к окну 19:00. Нажми, чтобы увеличить.",
     "loc_here": "зона вторжения",
@@ -4789,7 +4778,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Subisce danno dal Behemoth",
     "map_desc": "Ogni mappa mostra un server come casa col Behemoth invasore al suo spawn. <strong>Raggio illimitato, ignora gli scudi</strong> — nessuna città è al sicuro (arancione = sotto attacco). La casa lo abbatte coi raduni; gli ospiti contro-radunano per tenerlo a far punti. Alterna tra <strong>#008</strong> e <strong>#057</strong>.",
     "spawn008_h": "Dove appare il Behemoth su #008",
-    "spawn008_cap": "#057 fa apparire il loro Behemoth sul nostro server, in territorio [REU] — coordinate <strong></strong>. Tocca per ingrandire.",
+    "spawn008_cap": "#057 fa apparire il loro Behemoth sul nostro server, in territorio [REU] — coordinate <strong>(1191,1208)</strong>. Tocca per ingrandire.",
     "spawn087_h": "Dove appare il nostro Behemoth su #057",
     "spawn087_cap": "Il nostro Behemoth appare su #057 vicino al territorio [&Sigma;28] — coordinate <strong></strong>. Rilocati vicino per la finestra delle 19:00. Tocca per ingrandire.",
     "loc_here": "zona d'invasione",
@@ -4971,7 +4960,7 @@ const TRANSLATIONS = {
     "leg_dmg": "<b style=\"color:#e8944a;\">■</b> Recebendo dano do Behemoth",
     "map_desc": "Cada mapa mostra um servidor como casa com o Behemoth invasor no seu spawn. <strong>Alcance ilimitado, ignora escudos</strong> — nenhuma cidade está segura (laranja = sob fogo). A casa o derruba com reuniões; os visitantes contra-reúnem para mantê-lo pontuando. Alterne entre <strong>#008</strong> e <strong>#057</strong>.",
     "spawn008_h": "Onde o Behemoth aparece em #008",
-    "spawn008_cap": "#057 está gerando o Behemoth deles no nosso servidor, em território [REU] — coordenadas <strong></strong>. Toque para ampliar.",
+    "spawn008_cap": "#057 está gerando o Behemoth deles no nosso servidor, em território [REU] — coordenadas <strong>(1191,1208)</strong>. Toque para ampliar.",
     "spawn087_h": "Onde nosso Behemoth aparece em #057",
     "spawn087_cap": "Nosso Behemoth aparece em #057 perto do território [&Sigma;28] — coordenadas <strong></strong>. Realoque perto para a janela das 19:00. Toque para ampliar.",
     "loc_here": "zona de invasão",
@@ -5070,22 +5059,6 @@ var CD_LABELS = {
   it: { start: "All'inizio", end: 'Alla fine', done: 'Evento concluso' },
   pt: { start: 'Até o início', end: 'Até o fim', done: 'Evento encerrado' }
 };
-// Milestone-specific countdown labels (Beast Taming / Attack-Defense start).
-var CD_TARGET_LABELS = {
-  en: { taming: 'Until Beast Taming', atkdef: 'Until Attack-Defense' },
-  es: { taming: 'Hasta Doma de Bestias', atkdef: 'Hasta Ataque-Defensa' },
-  fr: { taming: "Avant l'Apprivoisement", atkdef: 'Avant Attaque-Défense' },
-  ko: { taming: '야수 조련까지', atkdef: '공격-방어까지' },
-  ja: { taming: '獣馴らしまで', atkdef: '攻防戦まで' },
-  zh_cn: { taming: '距驯兽', atkdef: '距攻防战' },
-  zh_hk: { taming: '距馴獸', atkdef: '距攻防戰' },
-  ar: { taming: 'حتى ترويض الوحش', atkdef: 'حتى الهجوم والدفاع' },
-  da: { taming: 'Til Bæsttæmning', atkdef: 'Til Angreb-Forsvar' },
-  de: { taming: 'Bis zur Zähmung', atkdef: 'Bis Angriff-Verteidigung' },
-  ru: { taming: 'До приручения', atkdef: 'До атаки-обороны' },
-  it: { taming: "All'Addestramento", atkdef: 'Ad Attacco-Difesa' },
-  pt: { taming: 'Até a Domação', atkdef: 'Até Ataque-Defesa' }
-};
 
 // Event window (UTC+0). Countdown targets the next major milestone: Beast Taming
 // start, then Attack-Defense start, then event end. Fallbacks overridden by JSON.
@@ -5093,6 +5066,26 @@ var EVENT_START  = new Date('2026-08-31T00:00:00Z').getTime();   // matchmaking 
 var EVENT_END    = new Date('2026-09-06T00:00:00Z').getTime();   // after attack-defense
 var TAMING_START = new Date('2026-09-01T00:00:00Z').getTime();   // Beast Taming begins
 var ATKDEF_START = new Date('2026-09-04T00:00:00Z').getTime();   // Attack-Defense begins
+
+// Parse a displayed metric ("4.41B", "1.2M", "117,983", "0") to a number for
+// proportional tug-bar fills. Suffix B/M/K scale; commas are thousands separators.
+function parseMetric(v) {
+  if (v == null) return 0;
+  var s = String(v).trim().replace(/,/g, '');
+  var m = s.match(/^([\d.]+)\s*([BMK])?$/i);
+  if (!m) return 0;
+  var n = parseFloat(m[1]); if (isNaN(n)) return 0;
+  var suf = (m[2] || '').toUpperCase();
+  return n * (suf === 'B' ? 1e9 : suf === 'M' ? 1e6 : suf === 'K' ? 1e3 : 1);
+}
+// Set two opposing fill widths from a pair of metrics (falls back to 50/50 when both 0).
+function tugFill(usId, themId, usVal, themVal) {
+  var u = parseMetric(usVal), t = parseMetric(themVal), tot = u + t;
+  var uf = tot > 0 ? (u / tot * 100) : 50;
+  var eu = document.getElementById(usId), et = document.getElementById(themId);
+  if (eu) eu.style.width = uf.toFixed(1) + '%';
+  if (et) et.style.width = (100 - uf).toFixed(1) + '%';
+}
 
 // Load published behemoth fields and apply before the countdown starts.
 function applyBehemothLive() {
@@ -5106,8 +5099,11 @@ function applyBehemothLive() {
       if(j.atkDefStartISO) ATKDEF_START = new Date(j.atkDefStartISO).getTime();
       var set=function(id,v){ var el=document.getElementById(id); if(el&&v!=null) el.textContent=v; };
       // header date cells are now rendered by the shared EventHeader (mountBehemothHeader);
-      // only the tug-of-war scores remain as direct sets here.
+      // only the tug-of-war scores/purity remain as direct sets here.
       set('beh-score-us', j.scoreUs); set('beh-score-them', j.scoreThem);
+      set('beh-purity-us', j.purityUs); set('beh-purity-them', j.purityThem);
+      tugFill('beh-fill-us','beh-fill-them', j.scoreUs, j.scoreThem);
+      tugFill('beh-purity-fill-us','beh-purity-fill-them', j.purityUs, j.purityThem);
     });
   }).catch(function(e){ console.error('behemoth live load failed; using fallback', e); });
 }
@@ -5122,22 +5118,8 @@ function startCountdown() {
 
 function update() {
   var now = Date.now();
-  // The countdown DIGITS are now rendered by the shared EventHeader (#evtMeta);
-  // we keep only the localized "Until <milestone>" CAPTION (#cd-label) in sync,
-  // plus the Scion schedule / header badge / stage-line updates.
-  var label = document.getElementById('cd-label');
-  if (label) {
-    var L = CD_LABELS[currentLang] || CD_LABELS.en;
-    if (now < TAMING_START) {
-      label.textContent = CD_TARGET_LABELS[currentLang] ? CD_TARGET_LABELS[currentLang].taming : CD_TARGET_LABELS.en.taming;
-    } else if (now < ATKDEF_START) {
-      label.textContent = CD_TARGET_LABELS[currentLang] ? CD_TARGET_LABELS[currentLang].atkdef : CD_TARGET_LABELS.en.atkdef;
-    } else if (now < EVENT_END) {
-      label.textContent = L.end;
-    } else {
-      label.textContent = L.done;
-    }
-  }
+  // The countdown DIGITS + phase label are rendered by the shared EventHeader
+  // (#evtMeta). We only drive the Scion schedule / header badge / stage-line here.
   updateScionSchedule(now);
   updateHeaderBadge(now);
   updatePhase(now);
@@ -5318,8 +5300,8 @@ function updatePhase(now) { renderStageLine(now); }
 //   6: hoof1 fort1   7: atk2 def2   8: hp2   9: hoof2 fort2   10: dmg2
 // (Defaults Undying Force / Wild Healing are always owned and need no entry.)
 var BLESS_OWNED = {
-  us:   [], // #008 — start of cycle: only the Undying Force / Wild Healing defaults; next up Wild Damage Increase
-  them: []  // #057 — same
+  us:   ['dmg1', 'atk1'],         // #008 — Wild Damage I + Wild Attack I complete; Wild Defense I is next (open)
+  them: ['dmg1', 'atk1', 'def1']  // #057 — Wild Damage I + Wild Attack I + Wild Defense I complete
 };
 // Ordered list of steps -> the node IDs that compose each step.
 var BLESS_STEPS = [
