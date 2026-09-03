@@ -745,6 +745,7 @@
   .loc-mini svg { width:100%; height:100%; display:block; }
   .loc-diamond { fill:#1e2434; stroke:#3a4763; stroke-width:1.4; }
   .loc-lines { fill:none; stroke:#5a7a8c; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; opacity:0.85; }
+  .loc-grid { fill:none; stroke:rgba(90,120,150,0.45); stroke-width:0.8; }
   .loc-pin-ring { fill:none; stroke:var(--accent-gold); stroke-width:2.2; animation:locPulse 1.8s ease-out infinite; }
   .loc-pin-dot { fill:var(--accent-gold); stroke:#0d0f18; stroke-width:1.4; }
   @keyframes locPulse { 0%{ r:6; opacity:0.9; } 100%{ r:16; opacity:0; } }
@@ -1438,13 +1439,16 @@
         <h4 style="margin-top:0;" data-i18n="spawn008_h">Where the Behemoth spawns on #008</h4>
         <figure class="spawn-fig" style="margin:0;">
           <img class="zoomable" data-cap="#057's Behemoth invades our server at (1191,1208) — Saturday 19:00 UTC. Infinite range, ignores shields." src="../assets/behemoth/bc_era57_invasion_008.jpg" alt="#057 Behemoth invasion point on #008 — coordinates (1191,1208)" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
-          <figcaption style="font-size:11.5px;color:var(--text-secondary);margin-top:5px;text-align:center;line-height:1.5;" data-i18n="spawn008_cap"><strong style="color:#c43d3d;">#057 invades us</strong> &mdash; Behemoth spawns at <strong>(1191,1208)</strong> in [REU] territory. Window: <strong>Saturday 19:00 UTC</strong>. Tap to enlarge.</figcaption>
+          <div class="loc-mini" aria-hidden="true"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="locClip008"><polygon points="100,10 190,100 100,190 10,100"/></clipPath></defs><polygon class="loc-diamond" points="100,10 190,100 100,190 10,100"/><g class="loc-grid" clip-path="url(#locClip008)"><line x1="-50" y1="200" x2="200" y2="-50"/><line x1="-50" y1="250" x2="250" y2="-50"/><line x1="-50" y1="300" x2="300" y2="-50"/><line x1="-50" y1="-95" x2="245" y2="200"/><line x1="-50" y1="-50" x2="250" y2="250"/><line x1="-50" y1="0" x2="200" y2="250"/></g><circle class="loc-pin-ring" cx="109" cy="91" r="6"/><circle class="loc-pin-dot" cx="109" cy="91" r="4.5"/></svg></div>
+          <figcaption style="font-size:11.5px;color:var(--text-secondary);margin-top:5px;text-align:center;line-height:1.5;" data-i18n="spawn008_cap"><strong style="color:#c43d3d;">#057 invades us</strong> &mdash; Behemoth spawns at <strong>(1191,1208)</strong> in [REU] territory (NE of center). Window: <strong>Saturday 19:00 UTC</strong>. Tap to enlarge.</figcaption>
         </figure>
       </div>
       <div class="spawn-box" data-map="087" hidden>
         <h4 style="margin-top:0;" data-i18n="spawn087_h">Where our Behemoth spawns on #057</h4>
         <figure class="spawn-fig" style="margin:0;">
-          <div style="width:100%;aspect-ratio:16/10;border-radius:8px;border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:12px;background:var(--bg-card);" data-i18n="spawn_ph">Spawn map coming soon</div>
+          <img class="zoomable" data-cap="Our Behemoth invades #057 at (1437,1027) — Saturday 19:00 UTC. Relocate near it to counter-rally and keep it scoring." src="../assets/behemoth/bc_era8_invasion_057.jpg" alt="Our Behemoth invasion point on #057 — coordinates (1437,1027)" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
+          <div class="loc-mini" aria-hidden="true"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="locClip087"><polygon points="100,10 190,100 100,190 10,100"/></clipPath></defs><polygon class="loc-diamond" points="100,10 190,100 100,190 10,100"/><g class="loc-grid" clip-path="url(#locClip087)"><line x1="-50" y1="200" x2="200" y2="-50"/><line x1="-50" y1="250" x2="250" y2="-50"/><line x1="-50" y1="300" x2="300" y2="-50"/><line x1="-50" y1="-95" x2="245" y2="200"/><line x1="-50" y1="-50" x2="250" y2="250"/><line x1="-50" y1="0" x2="200" y2="250"/></g><circle class="loc-pin-ring" cx="118" cy="97" r="6"/><circle class="loc-pin-dot" cx="118" cy="97" r="4.5"/></svg></div>
+          <figcaption style="font-size:11.5px;color:var(--text-secondary);margin-top:5px;text-align:center;line-height:1.5;" data-i18n="spawn087_cap"><strong style="color:#5b8def;">We invade #057</strong> &mdash; our Behemoth spawns at <strong>(1437,1027)</strong> (E of center). Relocate near it for the <strong>Saturday 19:00 UTC</strong> window to counter-rally. Tap to enlarge.</figcaption>
         </figure>
       </div>
       </div>
@@ -1701,7 +1705,7 @@ const TRANSLATIONS = {
     "bless_final": "Bendición de Bégimo",
     "bless_final_e": "Voluntario: 4.000 pts + 20 contrib / runa",
     "bless_lg_open": "Disponible para donar ahora",
-    "spawn087_cap": "Nuestro Bégimo aparece en #057 cerca de territorio [&Sigma;28] &mdash; coordenadas <strong></strong>. Reubícate cerca para la ventana de las 19:00. Toca para ampliar.",
+    "spawn087_cap": "Nuestro Bégimo aparece en #057 cerca de territorio [&Sigma;28] &mdash; coordenadas <strong>(1437,1027)</strong>. Reubícate cerca para la ventana de las 19:00. Toca para ampliar.",
     "loc_here": "zona de invasión",
     "loc008_cap": "Aproximadamente dónde está <strong></strong> en el mapa del servidor #008 &mdash; al noreste del centro.",
     "loc087_cap": "Aproximadamente dónde está <strong></strong> en el mapa del servidor #057 &mdash; al noreste del centro.",
@@ -1855,7 +1859,7 @@ const TRANSLATIONS = {
     "spawn008_h": "巨獸在#008的出生點",
     "spawn008_cap": "#057在我方服務器的[REU]領地生成其巨獸 — 座標 <strong>(1191,1208)</strong>。點擊放大。",
     "spawn087_h": "我方巨獸在#057的出生點",
-    "spawn087_cap": "我方巨獸在#057的[&Sigma;28]領地附近生成 — 座標 <strong></strong>。19:00時段前轉移至附近。點擊放大。",
+    "spawn087_cap": "我方巨獸在#057的[&Sigma;28]領地附近生成 — 座標 <strong>(1437,1027)</strong>。19:00時段前轉移至附近。點擊放大。",
     "loc_here": "入侵區",
     "loc008_cap": "<strong></strong> 在 #008 伺服器地圖上的大致位置 — 中心的東北方。",
     "loc087_cap": "<strong></strong> 在 #057 伺服器地圖上的大致位置 — 中心的東北方。",
@@ -2050,7 +2054,7 @@ const TRANSLATIONS = {
     "spawn008_h": "Var Behemothen spawnar på #008",
     "spawn008_cap": "#057 gyter sin Behemoth på vår server, i [REU]-territorium &mdash; koordinater <strong>(1191,1208)</strong>. Tryck för att förstora.",
     "spawn087_h": "Var vår Behemoth spawnar på #057",
-    "spawn087_cap": "Vår Behemoth gyter på #057 nära [&Sigma;28]-territorium &mdash; koordinater <strong></strong>. Omplacera dig nära den inför 19:00-fönstret. Tryck för att förstora.",
+    "spawn087_cap": "Vår Behemoth gyter på #057 nära [&Sigma;28]-territorium &mdash; koordinater <strong>(1437,1027)</strong>. Omplacera dig nära den inför 19:00-fönstret. Tryck för att förstora.",
     "loc_here": "invasionszon",
     "loc008_cap": "Ungefär var <strong></strong> ligger på #008-serverkartan &mdash; nordost om mitten.",
     "loc087_cap": "Ungefär var <strong></strong> ligger på #057-serverkartan &mdash; nordost om mitten.",
@@ -2232,7 +2236,7 @@ const TRANSLATIONS = {
     "spawn008_h": "Missä Behemoth syntyy palvelimella #008",
     "spawn008_cap": "#057 synnyttää Behemothinsa palvelimellamme, [REU]-alueella &mdash; koordinaatit <strong>(1191,1208)</strong>. Napauta suurentaaksesi.",
     "spawn087_h": "Missä Behemothimme syntyy palvelimella #057",
-    "spawn087_cap": "Behemothimme syntyy palvelimella #057 lähellä [&Sigma;28]-aluetta &mdash; koordinaatit <strong></strong>. Siirry sen lähelle 19:00-ikkunaa varten. Napauta suurentaaksesi.",
+    "spawn087_cap": "Behemothimme syntyy palvelimella #057 lähellä [&Sigma;28]-aluetta &mdash; koordinaatit <strong>(1437,1027)</strong>. Siirry sen lähelle 19:00-ikkunaa varten. Napauta suurentaaksesi.",
     "loc_here": "hyökkäysvyöhyke",
     "loc008_cap": "Suunnilleen missä <strong></strong> sijaitsee palvelimen #008 kartalla &mdash; keskustasta koilliseen.",
     "loc087_cap": "Suunnilleen missä <strong></strong> sijaitsee palvelimen #057 kartalla &mdash; keskustasta koilliseen.",
@@ -2414,7 +2418,7 @@ const TRANSLATIONS = {
     "spawn008_h": "Hvor Behemothen spawner på #008",
     "spawn008_cap": "#057 gyter sin Behemoth på vår server, i [REU]-territorium &mdash; koordinater <strong>(1191,1208)</strong>. Trykk for å forstørre.",
     "spawn087_h": "Hvor vår Behemoth spawner på #057",
-    "spawn087_cap": "Vår Behemoth gyter på #057 nær [&Sigma;28]-territorium &mdash; koordinater <strong></strong>. Flytt deg nær den til 19:00-vinduet. Trykk for å forstørre.",
+    "spawn087_cap": "Vår Behemoth gyter på #057 nær [&Sigma;28]-territorium &mdash; koordinater <strong>(1437,1027)</strong>. Flytt deg nær den til 19:00-vinduet. Trykk for å forstørre.",
     "loc_here": "invasjonssone",
     "loc008_cap": "Omtrent hvor <strong></strong> ligger på #008-serverkartet &mdash; nordøst for midten.",
     "loc087_cap": "Omtrent hvor <strong></strong> ligger på #057-serverkartet &mdash; nordøst for midten.",
@@ -2596,7 +2600,7 @@ const TRANSLATIONS = {
     "spawn008_h": "Waar de Behemoth spawnt op #008",
     "spawn008_cap": "#057 laat hun Behemoth op onze server verschijnen, in [REU]-gebied &mdash; coördinaten <strong>(1191,1208)</strong>. Tik om te vergroten.",
     "spawn087_h": "Waar onze Behemoth spawnt op #057",
-    "spawn087_cap": "Onze Behemoth verschijnt op #057 nabij [&Sigma;28]-gebied &mdash; coördinaten <strong></strong>. Verplaats je dichtbij voor het venster van 19:00. Tik om te vergroten.",
+    "spawn087_cap": "Onze Behemoth verschijnt op #057 nabij [&Sigma;28]-gebied &mdash; coördinaten <strong>(1437,1027)</strong>. Verplaats je dichtbij voor het venster van 19:00. Tik om te vergroten.",
     "loc_here": "invasiezone",
     "loc008_cap": "Ongeveer waar <strong></strong> op de #008-serverkaart ligt &mdash; ten noordoosten van het midden.",
     "loc087_cap": "Ongeveer waar <strong></strong> op de #057-serverkaart ligt &mdash; ten noordoosten van het midden.",
@@ -2778,7 +2782,7 @@ const TRANSLATIONS = {
     "spawn008_h": "#008 හි Behemoth ස්පෝන් වන්නේ කොහේද",
     "spawn008_cap": "#057 ඔවුන්ගේ Behemoth අපගේ සේවාදායකයේ [REU] භූමියේ බිහි කරයි &mdash; ඛණ්ඩාංක <strong>(1191,1208)</strong>. විශාල කිරීමට තට්ටු කරන්න.",
     "spawn087_h": "#057 හි අපගේ Behemoth ස්පෝන් වන්නේ කොහේද",
-    "spawn087_cap": "අපගේ Behemoth #057 හි [&Sigma;28] භූමිය අසල බිහි වේ &mdash; ඛණ්ඩාංක <strong></strong>. 19:00 කවුළුව සඳහා එය අසලට යළි පිහිටුවන්න. විශාල කිරීමට තට්ටු කරන්න.",
+    "spawn087_cap": "අපගේ Behemoth #057 හි [&Sigma;28] භූමිය අසල බිහි වේ &mdash; ඛණ්ඩාංක <strong>(1437,1027)</strong>. 19:00 කවුළුව සඳහා එය අසලට යළි පිහිටුවන්න. විශාල කිරීමට තට්ටු කරන්න.",
     "loc_here": "ආක්‍රමණ කලාපය",
     "loc008_cap": "#008 සේවාදායක සිතියමේ <strong></strong> පිහිටන ආසන්න ස්ථානය &mdash; මධ්‍යයේ ඊසාන දෙසින්.",
     "loc087_cap": "#057 සේවාදායක සිතියමේ <strong></strong> පිහිටන ආසන්න ස්ථානය &mdash; මධ්‍යයේ ඊසාන දෙසින්.",
@@ -2960,7 +2964,7 @@ const TRANSLATIONS = {
     "spawn008_h": "#008-இல் Behemoth ஸ்பான் ஆகும் இடம்",
     "spawn008_cap": "#057 தங்கள் Behemoth-ஐ நமது சர்வரில் [REU] பகுதியில் தோற்றுவிக்கிறார்கள் &mdash; ஆயத்தொலைவுகள் <strong>(1191,1208)</strong>. பெரிதாக்க தட்டு.",
     "spawn087_h": "#057-இல் நமது Behemoth ஸ்பான் ஆகும் இடம்",
-    "spawn087_cap": "நமது Behemoth #057-இல் [&Sigma;28] பகுதிக்கு அருகில் தோன்றுகிறது &mdash; ஆயத்தொலைவுகள் <strong></strong>. 19:00 சாளரத்திற்கு அதன் அருகில் இடமாற்று. பெரிதாக்க தட்டு.",
+    "spawn087_cap": "நமது Behemoth #057-இல் [&Sigma;28] பகுதிக்கு அருகில் தோன்றுகிறது &mdash; ஆயத்தொலைவுகள் <strong>(1437,1027)</strong>. 19:00 சாளரத்திற்கு அதன் அருகில் இடமாற்று. பெரிதாக்க தட்டு.",
     "loc_here": "படையெடுப்பு மண்டலம்",
     "loc008_cap": "#008 சர்வர் வரைபடத்தில் <strong></strong> இருக்கும் தோராயமான இடம் &mdash; மையத்திற்கு வடகிழக்கே.",
     "loc087_cap": "#057 சர்வர் வரைபடத்தில் <strong></strong> இருக்கும் தோராயமான இடம் &mdash; மையத்திற்கு வடகிழக்கே.",
@@ -3142,7 +3146,7 @@ const TRANSLATIONS = {
     "spawn008_h": "#008 पर Behemoth कहाँ स्पॉन होता है",
     "spawn008_cap": "#057 अपना बेहेमोथ हमारे सर्वर पर [REU] क्षेत्र में स्पॉन कर रहा है &mdash; निर्देशांक <strong>(1191,1208)</strong>। बड़ा करने के लिए टैप करें।",
     "spawn087_h": "#057 पर हमारा Behemoth कहाँ स्पॉन होता है",
-    "spawn087_cap": "हमारा बेहेमोथ #057 पर [&Sigma;28] क्षेत्र के पास स्पॉन होता है &mdash; निर्देशांक <strong></strong>। 19:00 खिड़की के लिए इसके पास स्थानांतरित हों। बड़ा करने के लिए टैप करें।",
+    "spawn087_cap": "हमारा बेहेमोथ #057 पर [&Sigma;28] क्षेत्र के पास स्पॉन होता है &mdash; निर्देशांक <strong>(1437,1027)</strong>। 19:00 खिड़की के लिए इसके पास स्थानांतरित हों। बड़ा करने के लिए टैप करें।",
     "loc_here": "आक्रमण क्षेत्र",
     "loc008_cap": "#008 सर्वर मानचित्र पर <strong></strong> लगभग कहाँ है &mdash; केंद्र के उत्तर-पूर्व में।",
     "loc087_cap": "#057 सर्वर मानचित्र पर <strong></strong> लगभग कहाँ है &mdash; केंद्र के उत्तर-पूर्व में।",
@@ -3339,7 +3343,7 @@ const TRANSLATIONS = {
     "bless_final": "Bénédiction du Béhémoth",
     "bless_final_e": "Volontaire : 4 000 pts + 20 contrib / rune",
     "bless_lg_open": "Disponible au don maintenant",
-    "spawn087_cap": "Notre Béhémoth apparaît sur #057 près du territoire [&Sigma;28] &mdash; coordonnées <strong></strong>. Relocalise-toi à proximité pour la fenêtre de 19h00. Touche pour agrandir.",
+    "spawn087_cap": "Notre Béhémoth apparaît sur #057 près du territoire [&Sigma;28] &mdash; coordonnées <strong>(1437,1027)</strong>. Relocalise-toi à proximité pour la fenêtre de 19h00. Touche pour agrandir.",
     "loc_here": "zone d'invasion",
     "loc008_cap": "Environ où se trouve <strong></strong> sur la carte du serveur #008 &mdash; au nord-est du centre.",
     "loc087_cap": "Environ où se trouve <strong></strong> sur la carte du serveur #057 &mdash; au nord-est du centre.",
@@ -3521,7 +3525,7 @@ const TRANSLATIONS = {
     "bless_final": "비헤모스의 축복",
     "bless_final_e": "선택: 룬석당 4,000 pt + 기여 20",
     "bless_lg_open": "지금 기부 가능",
-    "spawn087_cap": "우리 비헤모스가 #057의 [&Sigma;28] 영역 근처에 소환됩니다 &mdash; 좌표 <strong></strong>. 19:00 창에 대비해 근처로 이전하세요. 탭하면 확대됩니다.",
+    "spawn087_cap": "우리 비헤모스가 #057의 [&Sigma;28] 영역 근처에 소환됩니다 &mdash; 좌표 <strong>(1437,1027)</strong>. 19:00 창에 대비해 근처로 이전하세요. 탭하면 확대됩니다.",
     "loc_here": "침공 구역",
     "loc008_cap": "#008 서버 지도에서 <strong></strong>의 대략적인 위치 &mdash; 중심에서 북동쪽.",
     "loc087_cap": "#057 서버 지도에서 <strong></strong>의 대략적인 위치 &mdash; 중심에서 북동쪽.",
@@ -3675,7 +3679,7 @@ const TRANSLATIONS = {
     "spawn008_h": "#008でのベヒモス出現地点",
     "spawn008_cap": "#057が自軍サーバーの[REU]領内に自軍ベヒモスを出現させる — 座標 <strong>(1191,1208)</strong>。タップで拡大。",
     "spawn087_h": "#057での自軍ベヒモス出現地点",
-    "spawn087_cap": "自軍ベヒモスが#057の[&Sigma;28]領地付近に出現 — 座標 <strong></strong>。19:00枠に向け近くへ転移。タップで拡大。",
+    "spawn087_cap": "自軍ベヒモスが#057の[&Sigma;28]領地付近に出現 — 座標 <strong>(1437,1027)</strong>。19:00枠に向け近くへ転移。タップで拡大。",
     "loc_here": "侵攻ゾーン",
     "loc008_cap": "#008 サーバーマップ上で <strong></strong> のおおよその位置 — 中心の北東。",
     "loc087_cap": "#057 サーバーマップ上で <strong></strong> のおおよその位置 — 中心の北東。",
@@ -3857,7 +3861,7 @@ const TRANSLATIONS = {
     "spawn008_h": "巨兽在#008的出生点",
     "spawn008_cap": "#057在我方服务器的[REU]领地生成其巨兽 — 坐标 <strong>(1191,1208)</strong>。点击放大。",
     "spawn087_h": "我方巨兽在#057的出生点",
-    "spawn087_cap": "我方巨兽在#057的[&Sigma;28]领地附近生成 — 坐标 <strong></strong>。19:00时段前转移至附近。点击放大。",
+    "spawn087_cap": "我方巨兽在#057的[&Sigma;28]领地附近生成 — 坐标 <strong>(1437,1027)</strong>。19:00时段前转移至附近。点击放大。",
     "loc_here": "入侵区",
     "loc008_cap": "<strong></strong> 在 #008 服务器地图上的大致位置 — 中心的东北方。",
     "loc087_cap": "<strong></strong> 在 #057 服务器地图上的大致位置 — 中心的东北方。",
@@ -4039,7 +4043,7 @@ const TRANSLATIONS = {
     "spawn008_h": "مكان ظهور البهيموث على #008",
     "spawn008_cap": "#057 يُظهِر بهيموثهم على خادمنا في أرض [REU] — الإحداثيات <strong>(1191,1208)</strong>. انقر للتكبير.",
     "spawn087_h": "مكان ظهور بهيموثنا على #057",
-    "spawn087_cap": "بهيموثنا يظهر على #057 قرب أرض [&Sigma;28] — الإحداثيات <strong></strong>. انتقل قربها لنافذة 19:00. انقر للتكبير.",
+    "spawn087_cap": "بهيموثنا يظهر على #057 قرب أرض [&Sigma;28] — الإحداثيات <strong>(1437,1027)</strong>. انتقل قربها لنافذة 19:00. انقر للتكبير.",
     "loc_here": "منطقة الغزو",
     "loc008_cap": "الموقع التقريبي لـ <strong></strong> على خريطة خادم #008 &mdash; شمال شرق المركز.",
     "loc087_cap": "الموقع التقريبي لـ <strong></strong> على خريطة خادم #057 &mdash; شمال شرق المركز.",
@@ -4221,7 +4225,7 @@ const TRANSLATIONS = {
     "spawn008_h": "Hvor Behemoth spawner på #008",
     "spawn008_cap": "#057 spawner deres Behemoth på vores server, i [REU]-territorium — koordinater <strong>(1191,1208)</strong>. Tryk for at forstørre.",
     "spawn087_h": "Hvor vores Behemoth spawner på #057",
-    "spawn087_cap": "Vores Behemoth spawner på #057 nær [&Sigma;28]-territorium — koordinater <strong></strong>. Flyt nær det til 19:00-vinduet. Tryk for at forstørre.",
+    "spawn087_cap": "Vores Behemoth spawner på #057 nær [&Sigma;28]-territorium — koordinater <strong>(1437,1027)</strong>. Flyt nær det til 19:00-vinduet. Tryk for at forstørre.",
     "loc_here": "invasionszone",
     "loc008_cap": "Cirka hvor <strong></strong> ligger på #008-serverkortet &mdash; nordøst for midten.",
     "loc087_cap": "Cirka hvor <strong></strong> ligger på #057-serverkortet &mdash; nordøst for midten.",
@@ -4416,7 +4420,7 @@ const TRANSLATIONS = {
     "spawn008_h": "Wo der Behemoth auf #008 spawnt",
     "spawn008_cap": "#057 lässt ihren Behemoth auf unserem Server im [REU]-Gebiet erscheinen — Koordinaten <strong>(1191,1208)</strong>. Zum Vergrößern tippen.",
     "spawn087_h": "Wo unser Behemoth auf #057 spawnt",
-    "spawn087_cap": "Unser Behemoth erscheint auf #057 nahe dem [&Sigma;28]-Gebiet — Koordinaten <strong></strong>. Ziehe für das 19:00-Fenster in die Nähe. Zum Vergrößern tippen.",
+    "spawn087_cap": "Unser Behemoth erscheint auf #057 nahe dem [&Sigma;28]-Gebiet — Koordinaten <strong>(1437,1027)</strong>. Ziehe für das 19:00-Fenster in die Nähe. Zum Vergrößern tippen.",
     "loc_here": "Invasionszone",
     "loc008_cap": "Ungefähr wo <strong></strong> auf der #008-Serverkarte liegt &mdash; nordöstlich der Mitte.",
     "loc087_cap": "Ungefähr wo <strong></strong> auf der #057-Serverkarte liegt &mdash; nordöstlich der Mitte.",
@@ -4598,7 +4602,7 @@ const TRANSLATIONS = {
     "spawn008_h": "Где Бегемот появляется на #008",
     "spawn008_cap": "#057 размещает своего Бегемота на нашем сервере, на землях [REU] — координаты <strong>(1191,1208)</strong>. Нажми, чтобы увеличить.",
     "spawn087_h": "Где наш Бегемот появляется на #057",
-    "spawn087_cap": "Наш Бегемот появляется на #057 рядом с землями [&Sigma;28] — координаты <strong></strong>. Переместись поближе к окну 19:00. Нажми, чтобы увеличить.",
+    "spawn087_cap": "Наш Бегемот появляется на #057 рядом с землями [&Sigma;28] — координаты <strong>(1437,1027)</strong>. Переместись поближе к окну 19:00. Нажми, чтобы увеличить.",
     "loc_here": "зона вторжения",
     "loc008_cap": "Примерно где находится <strong></strong> на карте сервера #008 &mdash; к северо-востоку от центра.",
     "loc087_cap": "Примерно где находится <strong></strong> на карте сервера #057 &mdash; к северо-востоку от центра.",
@@ -4780,7 +4784,7 @@ const TRANSLATIONS = {
     "spawn008_h": "Dove appare il Behemoth su #008",
     "spawn008_cap": "#057 fa apparire il loro Behemoth sul nostro server, in territorio [REU] — coordinate <strong>(1191,1208)</strong>. Tocca per ingrandire.",
     "spawn087_h": "Dove appare il nostro Behemoth su #057",
-    "spawn087_cap": "Il nostro Behemoth appare su #057 vicino al territorio [&Sigma;28] — coordinate <strong></strong>. Rilocati vicino per la finestra delle 19:00. Tocca per ingrandire.",
+    "spawn087_cap": "Il nostro Behemoth appare su #057 vicino al territorio [&Sigma;28] — coordinate <strong>(1437,1027)</strong>. Rilocati vicino per la finestra delle 19:00. Tocca per ingrandire.",
     "loc_here": "zona d'invasione",
     "loc008_cap": "Più o meno dove si trova <strong></strong> sulla mappa del server #008 &mdash; a nord-est del centro.",
     "loc087_cap": "Più o meno dove si trova <strong></strong> sulla mappa del server #057 &mdash; a nord-est del centro.",
@@ -4962,7 +4966,7 @@ const TRANSLATIONS = {
     "spawn008_h": "Onde o Behemoth aparece em #008",
     "spawn008_cap": "#057 está gerando o Behemoth deles no nosso servidor, em território [REU] — coordenadas <strong>(1191,1208)</strong>. Toque para ampliar.",
     "spawn087_h": "Onde nosso Behemoth aparece em #057",
-    "spawn087_cap": "Nosso Behemoth aparece em #057 perto do território [&Sigma;28] — coordenadas <strong></strong>. Realoque perto para a janela das 19:00. Toque para ampliar.",
+    "spawn087_cap": "Nosso Behemoth aparece em #057 perto do território [&Sigma;28] — coordenadas <strong>(1437,1027)</strong>. Realoque perto para a janela das 19:00. Toque para ampliar.",
     "loc_here": "zona de invasão",
     "loc008_cap": "Aproximadamente onde fica <strong></strong> no mapa do servidor #008 &mdash; a nordeste do centro.",
     "loc087_cap": "Aproximadamente onde fica <strong></strong> no mapa do servidor #057 &mdash; a nordeste do centro.",
@@ -5300,8 +5304,8 @@ function updatePhase(now) { renderStageLine(now); }
 //   6: hoof1 fort1   7: atk2 def2   8: hp2   9: hoof2 fort2   10: dmg2
 // (Defaults Undying Force / Wild Healing are always owned and need no entry.)
 var BLESS_OWNED = {
-  us:   ['dmg1', 'atk1', 'def1', 'hp1'],          // #008 — through Wild Health I; Rally Attack/Defense next (open)
-  them: ['dmg1', 'atk1', 'def1', 'hp1', 'ratk']   // #057 — through Rally Attack; Rally Defense next (open)
+  us:   ['dmg1', 'atk1', 'def1', 'hp1', 'ratk', 'rdef'],                     // #008 — through Rally Attack + Defense; Wild Rally next (open)
+  them: ['dmg1', 'atk1', 'def1', 'hp1', 'ratk', 'rdef', 'wrally', 'hoof1', 'fort1'] // #057 — through Iron Hoof I + Mobile Fortress I; Wild Attack/Defense II next (open)
 };
 // Ordered list of steps -> the node IDs that compose each step.
 var BLESS_STEPS = [
