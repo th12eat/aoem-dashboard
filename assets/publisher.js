@@ -60,7 +60,7 @@
 
     /**
      * READ (public, no token needed). Returns parsed JSON or null.
-     * Mirrors the fetchJSON idiom already used in app/index.html.
+     * Mirrors the fetchJSON idiom used across the dashboards.
      */
     load: function (path) {
       return fetch('../' + path.replace(/^\/+/, ''))

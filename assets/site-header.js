@@ -115,12 +115,10 @@
     if (attr) return attr;
     var file = (location.pathname.split('/').pop() || 'index.html');
     if (file === '' ) file = 'index.html';
-    // app/index.html and admin/index.html collide with home's "index.html";
-    // disambiguate by parent dir.
+    // admin/index.html collides with home's "index.html"; disambiguate by parent dir.
     if (file === 'index.html') {
       var parts = location.pathname.split('/').filter(Boolean);
       var dir = parts.length >= 2 ? parts[parts.length - 2] : '';
-      if (dir === 'app') return 'DKP & TMG Tracker';
       if (dir === 'admin') return 'Admin Portal';
       if (dir === 'glossary') return 'Glossary';
       if (dir === 'marches') return 'My Marches';

@@ -1,25 +1,22 @@
 # AoEM Era8 Command Center
 
-DKP tracker, TMG management tool, event dashboards, and coordination flyers for Age of Empires Mobile — Era8 server.
+Event dashboards, coordination tools, and reference for Age of Empires Mobile — Era8 server.
 
 **Live site:** https://th12eat.github.io/aoem-dashboard/
 
 ## What's here
 
-### Command Center (`/app`)
-The DKP & TMG tracker with four views:
-
-- **DKP Leaderboard** — All players ranked by DKP score. Filterable by alliance (WC1, Reunions, Mythic, AuroraCog). Searchable by name. Shows status tiers, event points, bonuses, and penalties.
-- **TMG Board** — Current season slot assignments (announced vs. completed). Each series has a "Copy for Mail" button that generates a condensed list under 1000 characters for in-game messaging.
-- **Incidents** — Log of breaker events, kicked players, punishments, and restitution.
-- **History** — Previous TMG season results.
+### DKP Tracker (external)
+DKP standings & activity tracking now live in an external tool:
+**https://guillomef06.github.io/activity-tracker/app/** (linked from the home page).
+The former internal `/app` (DKP + TMG board) was retired and removed; the two may be
+merged into one app later.
 
 ### Dashboards (`/dashboards`)
 - **Primordial Conflict Dashboard** — Interactive KvK event coordination dashboard.
 
 ### Flyers (`/flyers`)
-- **Day 6 Showdown Flyer** — Visual briefing for Day 6 stage of Primordial Conflict.
-- **Order Workshop Flyer** — Event coordination flyer for Order Workshop.
+Flyer pages still exist in the repo but are **not linked from the home page** (WIP).
 
 ## DKP System
 

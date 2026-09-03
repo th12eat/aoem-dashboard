@@ -88,7 +88,19 @@
         .pill.draft{ background: rgba(212,168,67,0.16); color: var(--accent-gold); }
         .pill.soon { background: rgba(154,109,212,0.16); color: var(--accent-purple); }
         .pill.ext  { background: rgba(138,144,165,0.16); color: var(--text-secondary); }
+        .pill.wip  { background: rgba(212,168,67,0.16); color: var(--accent-gold); }
         .card .ico { font-size: 15px; }
+
+        /* WIP cards: still clickable, but clearly unfinished (dimmed + hatched) */
+        .card.wip {
+            opacity: 0.6;
+            border-style: dashed;
+            background-image: repeating-linear-gradient(
+                45deg, transparent, transparent 9px,
+                rgba(212,168,67,0.05) 9px, rgba(212,168,67,0.05) 18px);
+        }
+        .card.wip:hover { opacity: 0.8; border-color: var(--accent-gold-dim); }
+        .card.wip .ct { color: var(--text-secondary); }
     </style>
 </head>
 <body data-kvk="generic">
@@ -147,30 +159,18 @@
             </a>
         </div>
 
-        <h2><span class="h2dot">◆</span> <span data-i18n="idx_flyers">Strategy Flyers</span></h2>
-        <div class="grid">
-            <a class="card" href="flyers/day6_showdown_flyer.html">
-                <div class="ct"><span class="ico">🔥</span> <span data-i18n="idx_day6_t">Day 6 Showdown</span></div>
-                <div class="cd" data-i18n="idx_day6_d">The decisive-day push playbook.</div>
-            </a>
-            <a class="card" href="flyers/order_workshop_flyer.html">
-                <div class="ct"><span class="ico">🔧</span> <span data-i18n="idx_ow_t">Order Workshop</span></div>
-                <div class="cd" data-i18n="idx_ow_d">Workshop timing &amp; vote coordination.</div>
-            </a>
-        </div>
-
         <h2><span class="h2dot">◆</span> <span data-i18n="idx_ref">Reference &amp; Tools</span></h2>
         <div class="grid">
-            <a class="card" href="glossary/index.html">
-                <div class="ct"><span class="ico">📖</span> <span data-i18n="idx_gloss_t">Heroes &amp; Bestiary Glossary</span></div>
+            <a class="card wip" href="glossary/index.html" title="Work in progress — not ready for use">
+                <div class="ct"><span class="ico">📖</span> <span data-i18n="idx_gloss_t">Heroes &amp; Bestiary Glossary</span> <span class="pill wip" data-i18n="idx_pill_wip">WIP</span></div>
                 <div class="cd" data-i18n="idx_gloss_d">Terms, heroes and monster reference.</div>
             </a>
-            <a class="card" href="marches/index.html">
-                <div class="ct"><span class="ico">🐎</span> <span data-i18n="idx_march_t">My Marches — Hero Builds</span></div>
+            <a class="card wip" href="marches/index.html" title="Work in progress — not ready for use">
+                <div class="ct"><span class="ico">🐎</span> <span data-i18n="idx_march_t">My Marches — Hero Builds</span> <span class="pill wip" data-i18n="idx_pill_wip">WIP</span></div>
                 <div class="cd" data-i18n="idx_march_d">Per-march hero &amp; gem build cards.</div>
             </a>
-            <a class="card" href="dashboards/horse_breeding.html">
-                <div class="ct"><span class="ico">🧬</span> <span data-i18n="idx_horse_t">Horse Breeding Optimizer</span></div>
+            <a class="card wip" href="dashboards/horse_breeding.html" title="Work in progress — not ready for use">
+                <div class="ct"><span class="ico">🧬</span> <span data-i18n="idx_horse_t">Horse Breeding Optimizer</span> <span class="pill wip" data-i18n="idx_pill_wip">WIP</span></div>
                 <div class="cd" data-i18n="idx_horse_d">Bulk breed-rule strategy tool.</div>
             </a>
         </div>
