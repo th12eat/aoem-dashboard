@@ -5304,7 +5304,7 @@ function updatePhase(now) { renderStageLine(now); }
 //   6: hoof1 fort1   7: atk2 def2   8: hp2   9: hoof2 fort2   10: dmg2
 // (Defaults Undying Force / Wild Healing are always owned and need no entry.)
 var BLESS_OWNED = {
-  us:   ['dmg1', 'atk1', 'def1', 'hp1', 'ratk', 'rdef'],                     // #008 — through Rally Attack + Defense; Wild Rally next (open)
+  us:   ['dmg1', 'atk1', 'def1', 'hp1', 'ratk', 'rdef', 'wrally'],           // #008 — through Wild Rally; Iron Hoof I + Mobile Fortress I next (open)
   them: ['dmg1', 'atk1', 'def1', 'hp1', 'ratk', 'rdef', 'wrally', 'hoof1', 'fort1'] // #057 — through Iron Hoof I + Mobile Fortress I; Wild Attack/Defense II next (open)
 };
 // Ordered list of steps -> the node IDs that compose each step.
