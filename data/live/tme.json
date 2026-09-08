@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "oppServer": "Era 23",
   "invasionTime": "19:00 UTC",
-  "prepStart": "2026-09-05",
-  "invasionStart": "2026-09-11",
+  "prepStart": "2026-09-07",
+  "invasionStart": "2026-09-13",
   "weWonPrep": false,
   "ourRank": 2,
   "oppRank": 1,
@@ -21,7 +21,7 @@
       "power": "23,655,582,897",
       "merits": "2,581,858,394",
       "prepPoints": "46,004,189,942",
-      "crossBorder": "58,681,717,850"
+      "crossBorder": ""
     },
     {
       "tag": "REU",
@@ -34,7 +34,7 @@
       "power": "14,724,343,193",
       "merits": "850,504,806",
       "prepPoints": "9,057,669,104",
-      "crossBorder": "25,535,519,320"
+      "crossBorder": ""
     },
     {
       "tag": "Myt",
@@ -47,7 +47,7 @@
       "power": "9,560,087,946",
       "merits": "874,216,312",
       "prepPoints": "9,111,295,042",
-      "crossBorder": "19,437,927,790"
+      "crossBorder": ""
     },
     {
       "tag": "FUN",
@@ -60,7 +60,7 @@
       "power": "3,577,684,687",
       "merits": "",
       "prepPoints": "8,771,748,544",
-      "crossBorder": "10,079,027,390"
+      "crossBorder": ""
     }
   ],
   "prepStages": [
@@ -97,7 +97,7 @@
   ],
   "totalOur": 8.65,
   "totalOpp": 14.2,
-  "prepLastUpdated": "2026-09-06 — Live · Prep Day 2 (Enhancing Buildings). Losing prep 8.65B vs 14.2B. Alliance merits for our side are carried from the prior cycle (not in this scouting set).",
+  "prepLastUpdated": "2026-09-08 — Live · Prep Day 2 (Enhancing Buildings, Tue). Losing prep 8.65B vs 14.2B. Matchmaking Sep 5–6, prep Sep 7–12, invasion Sep 13 19:00 UTC. Our alliance merits carried from the prior cycle (not in this scouting set).",
   "oppAlliances": [
     {
       "tag": "Đ23",
