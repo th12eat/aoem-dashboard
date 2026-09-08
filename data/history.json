@@ -733,8 +733,8 @@
       "event": "Behemoth",
       "date": "2026-08-31",
       "opp": "Era #057",
-      "result": "Live",
-      "note": "In progress — top-4 alliance scouting figures (power + total merits). Result updates when Behemoth Conquest concludes.",
+      "result": "Loss",
+      "note": "Lost Behemoth Conquest — final approximately 32B vs 80B (exact final not captured). Top-4 alliance scouting figures (power + total merits).",
       "ours": [
         [
           "eRa",
@@ -777,6 +777,57 @@
           "TNT",
           1643583919,
           37724017
+        ]
+      ]
+    },
+    {
+      "event": "TME",
+      "date": "2026-09-05",
+      "opp": "Era #023",
+      "result": "Live",
+      "note": "In progress — vs Era #023 (invasion ~Sep 11, 19:00 UTC est.). Prep Day 2: losing 8.65B vs 14.2B. Our top-4 power from this cycle's scouting; our merits carried from the prior cycle. Opponent top-4 power + merits are current scouting.",
+      "ours": [
+        [
+          "eRa",
+          23655582897,
+          2581858394
+        ],
+        [
+          "REU",
+          14724343193,
+          850504806
+        ],
+        [
+          "Myt",
+          9560087946,
+          874216312
+        ],
+        [
+          "FUN",
+          3577684687,
+          0
+        ]
+      ],
+      "oppA": [
+        [
+          "Đ23",
+          22146584169,
+          2767713854
+        ],
+        [
+          "Ᵽ23",
+          15165090634,
+          1827997432
+        ],
+        [
+          "β23",
+          12371267660,
+          164174696
+        ],
+        [
+          "U23",
+          3596379622,
+          20109372
         ]
       ]
     }
