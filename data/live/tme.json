@@ -78,8 +78,8 @@
     },
     {
       "nameKey": "prepStage3",
-      "ourPts": 0,
-      "oppPts": 0,
+      "ourPts": 9.43,
+      "oppPts": 14.0,
       "won": false
     },
     {
@@ -95,9 +95,9 @@
       "won": false
     }
   ],
-  "totalOur": 8.65,
-  "totalOpp": 14.2,
-  "prepLastUpdated": "2026-09-08 — Live · Prep Day 2 (Enhancing Buildings, Tue). Losing prep 8.65B vs 14.2B. Matchmaking Sep 5–6, prep Sep 7–12, invasion Sep 13 19:00 UTC. Our alliance merits carried from the prior cycle (not in this scouting set).",
+  "totalOur": 20.9,
+  "totalOpp": 32.1,
+  "prepLastUpdated": "2026-09-09 — Live · Prep Day 3 (Enhancing Technologies, Wed). Losing prep 20.9B vs 32.1B. Matchmaking Sep 5–6, prep Sep 7–12, invasion Sep 13 19:00 UTC. Our alliance merits carried from the prior cycle (not in this scouting set).",
   "oppAlliances": [
     {
       "tag": "Đ23",
