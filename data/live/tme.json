@@ -20,7 +20,7 @@
       "allies": 170,
       "power": "23,655,582,897",
       "merits": "2,581,858,394",
-      "prepPoints": "4,967,120,972",
+      "prepPoints": "12,139,141,893",
       "crossBorder": ""
     },
     {
@@ -33,7 +33,7 @@
       "allies": 162,
       "power": "14,724,343,193",
       "merits": "850,504,806",
-      "prepPoints": "2,443,580,786",
+      "prepPoints": "5,738,781,117",
       "crossBorder": ""
     },
     {
@@ -46,7 +46,7 @@
       "allies": 133,
       "power": "9,560,087,946",
       "merits": "874,216,312",
-      "prepPoints": "924,345,725",
+      "prepPoints": "1,973,285,470",
       "crossBorder": ""
     },
     {
@@ -59,7 +59,7 @@
       "allies": 74,
       "power": "3,577,684,687",
       "merits": "",
-      "prepPoints": "496,404,068",
+      "prepPoints": "946,099,086",
       "crossBorder": ""
     }
   ],
@@ -105,7 +105,7 @@
       "allies": 164,
       "power": "22,146,584,169",
       "merits": "2,767,713,854",
-      "prepPoints": "7,954,266,931",
+      "prepPoints": "17,642,640,796",
       "crossBorder": ""
     },
     {
@@ -114,7 +114,7 @@
       "allies": 148,
       "power": "15,165,090,634",
       "merits": "1,827,997,432",
-      "prepPoints": "4,740,734,183",
+      "prepPoints": "9,144,170,897",
       "crossBorder": ""
     },
     {
@@ -123,16 +123,16 @@
       "allies": 154,
       "power": "12,371,267,660",
       "merits": "164,174,696",
-      "prepPoints": "2,176,944,660",
+      "prepPoints": "4,323,844,077",
       "crossBorder": ""
     },
     {
-      "tag": "U23",
-      "name": "UnitedERA23",
+      "tag": "c23",
+      "name": "CornerERA23",
       "allies": 135,
       "power": "3,596,379,622",
       "merits": "20,109,372",
-      "prepPoints": "627,040,124",
+      "prepPoints": "2,048,031,292",
       "crossBorder": ""
     }
   ],
