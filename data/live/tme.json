@@ -20,7 +20,7 @@
       "allies": 170,
       "power": "23,655,582,897",
       "merits": "2,581,858,394",
-      "prepPoints": "12,139,141,893",
+      "prepPoints": "25,428,641,856",
       "crossBorder": ""
     },
     {
@@ -33,7 +33,7 @@
       "allies": 162,
       "power": "14,724,343,193",
       "merits": "850,504,806",
-      "prepPoints": "5,738,781,117",
+      "prepPoints": "10,644,267,234",
       "crossBorder": ""
     },
     {
@@ -46,7 +46,7 @@
       "allies": 133,
       "power": "9,560,087,946",
       "merits": "874,216,312",
-      "prepPoints": "1,973,285,470",
+      "prepPoints": "3,282,914,809",
       "crossBorder": ""
     },
     {
@@ -59,7 +59,7 @@
       "allies": 74,
       "power": "3,577,684,687",
       "merits": "",
-      "prepPoints": "946,099,086",
+      "prepPoints": "1,888,560,285",
       "crossBorder": ""
     }
   ],
@@ -78,14 +78,14 @@
     },
     {
       "nameKey": "prepStage3",
-      "ourPts": 9.43,
-      "oppPts": 14.0,
+      "ourPts": 13.23,
+      "oppPts": 20.3,
       "won": false
     },
     {
       "nameKey": "prepStage4",
-      "ourPts": 0,
-      "oppPts": 0,
+      "ourPts": 16.7,
+      "oppPts": 21.5,
       "won": false
     },
     {
@@ -95,9 +95,9 @@
       "won": false
     }
   ],
-  "totalOur": 20.9,
-  "totalOpp": 32.1,
-  "prepLastUpdated": "2026-09-09 — Live · Prep Day 3 (Enhancing Technologies, Wed). Losing prep 20.9B vs 32.1B. Matchmaking Sep 5–6, prep Sep 7–12, invasion Sep 13 19:00 UTC. Our alliance merits carried from the prior cycle (not in this scouting set).",
+  "totalOur": 41.4,
+  "totalOpp": 59.9,
+  "prepLastUpdated": "2026-09-10 — Live · Prep Day 4 (Unit Training, Thu). Losing prep 41.4B vs 59.9B. Matchmaking Sep 5–6, prep Sep 7–12, invasion Sep 13 19:00 UTC. Our alliance merits carried from the prior cycle (not in this scouting set).",
   "oppAlliances": [
     {
       "tag": "Đ23",
@@ -105,7 +105,7 @@
       "allies": 164,
       "power": "22,146,584,169",
       "merits": "2,767,713,854",
-      "prepPoints": "17,642,640,796",
+      "prepPoints": "31,523,366,126",
       "crossBorder": ""
     },
     {
@@ -114,7 +114,7 @@
       "allies": 148,
       "power": "15,165,090,634",
       "merits": "1,827,997,432",
-      "prepPoints": "9,144,170,897",
+      "prepPoints": "19,022,834,414",
       "crossBorder": ""
     },
     {
@@ -123,7 +123,7 @@
       "allies": 154,
       "power": "12,371,267,660",
       "merits": "164,174,696",
-      "prepPoints": "4,323,844,077",
+      "prepPoints": "7,072,181,496",
       "crossBorder": ""
     },
     {
@@ -132,7 +132,7 @@
       "allies": 135,
       "power": "3,596,379,622",
       "merits": "20,109,372",
-      "prepPoints": "2,048,031,292",
+      "prepPoints": "3,540,813,205",
       "crossBorder": ""
     }
   ],
