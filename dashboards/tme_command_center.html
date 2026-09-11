@@ -4027,7 +4027,22 @@ function DiamondMap({ alliances, isDefense, t }) {
   };
   const offRemap={"NE-outer":"NW-inner","NE-inner":"NW-outer","SE-outer":"SW-outer","SE-inner":"SW-inner"};
   const enemyKeys=isDefense?["NW-outer","NW-inner","SW-outer","SW-inner"]:["NE-outer","NE-inner","SE-outer","SE-inner"];
-  const aZone=a=>{const k=isDefense?a.position:offRemap[a.position];return{key:k,pts:zones[k]};};
+
+  // DEFENSE layout (by displayed label): eRa owns the whole NE line; the SE line
+  // is split into thirds — MyT (south-most), REU (middle), FUN (east-most).
+  const oSEa=lerp(oE,oS,1/3), oSEb=lerp(oE,oS,2/3);   // outer SE thirds
+  const iSEa=lerp(iE,iS,1/3), iSEb=lerp(iE,iS,2/3);   // inner SE thirds (edge butting IC)
+  const defZones={
+    "NE-full":[oN,oE,iE,iN],           // whole NE line — eRa
+    "SE-E":[oE,oSEa,iSEa,iE],          // east third — FUN
+    "SE-M":[oSEa,oSEb,iSEb,iSEa],      // middle third — REU
+    "SE-S":[oSEb,oS,iS,iSEb],          // south third — MyT
+  };
+  const defZoneByTag={eRa:"NE-full", FUN:"SE-E", REU:"SE-M", Myt:"SE-S"};
+  const aZone=a=>{
+    if(isDefense){const k=defZoneByTag[a.tag]||a.position;return{key:k,pts:defZones[k]||zones[k]};}
+    const k=offRemap[a.position];return{key:k,pts:zones[k]};
+  };
   const centroid=pts=>({x:pts.reduce((s,p)=>s+p.x,0)/pts.length,y:pts.reduce((s,p)=>s+p.y,0)/pts.length});
 
   const towerNames=[t.towerSword,t.towerArrow,t.towerCavalry,t.towerPike];
@@ -4046,32 +4061,39 @@ function DiamondMap({ alliances, isDefense, t }) {
     {x:cx+gateR*Math.cos(Math.PI-ga),y:cy+gateR*Math.sin(Math.PI-ga)},
   ];
 
-  // Rally arrows originate from the NE and SE split points on inner diamond
-  const rallyMids=isDefense?[iNE3,iSE]:[iNW23,iSW];
+  // Main IC-assault rally arrow. Defense: the SE push (REU gate-pusher leads it)
+  // → SE gate → IC. (NE line is eRa rallying towers, not the IC.) Offense: NW+SW.
+  const rallyMids=isDefense?[iSE]:[iNW23,iSW];
 
-  // Rally leader markers — pushed into colored zones from the split point
+  // Rally leader markers. Defense: explicit muster points that point at the
+  // tower(s) or gate each alliance rallies toward (lines bow around the IC).
+  // Offense: unchanged auto-placement pushed into each zone.
   const rallyMarkers=[];
   const pushDist=0.22;
   if(isDefense){
-    const a1=alliances.find(a=>a.position==="NE-outer"),a2=alliances.find(a=>a.position==="NE-inner");
-    const a3=alliances.find(a=>a.position==="SE-outer"),a4=alliances.find(a=>a.position==="SE-inner");
-    rallyMarkers.push({pt:lerp(iNE3,iN,pushDist),color:a1?.color||"#ef4444"});
-    rallyMarkers.push({pt:lerp(iNE3,iE,pushDist),color:a2?.color||"#3b82f6"});
-    rallyMarkers.push({pt:lerp(iSE,iS,pushDist),color:a3?.color||"#22c55e"});
-    rallyMarkers.push({pt:lerp(iSE,iE,pushDist),color:a4?.color||"#f59e0b"});
+    const swordT=towers[0], arrowT=towers[1], cavT=towers[2], pikeT=towers[3];
+    const seGate=gates[0];                       // SE gate
+    const s0=iSEb;                               // start of MyT's (south) third of the SE inner edge
+    // eRa — sits where the old REU lead was (E side of the SE inner edge) → Sword + Arrow towers.
+    // Label up-right into eRa's blue NE zone so it clears the REU gate-pusher.
+    rallyMarkers.push({pt:lerp(iSE,iE,0.34), color:"#3b82f6", tag:"eRa", targets:[swordT,arrowT], lbl:{x:-6,y:-18}});
+    // REU gate-pusher — dead center of the SE inner edge → SE gate. Label east (right).
+    rallyMarkers.push({pt:iSE, color:"#ef4444", tag:"REU", targets:[seGate], lbl:{x:34,y:4}});
+    // MyT / REU / FUN — spread along MyT's third of the inner SE edge → Cav tower
+    // (MyT also → Pike tower). Fan the three Cav arrows (bowSpread) and offset the
+    // labels along the edge (down-left, toward S) so they clear the zone name-tag.
+    rallyMarkers.push({pt:lerp(s0,iS,0.12), color:"#22c55e", tag:"Myt", targets:[cavT,pikeT], bowSpread:-34, lbl:{x:22,y:-16}});
+    rallyMarkers.push({pt:lerp(s0,iS,0.50), color:"#ef4444", tag:"REU", targets:[cavT], bowSpread:0,   lbl:{x:30,y:-2}});
+    rallyMarkers.push({pt:lerp(s0,iS,0.88), color:"#f59e0b", tag:"FUN", targets:[cavT], bowSpread:34,  lbl:{x:20,y:16}});
   } else {
     const a1=alliances.find(a=>a.position==="NE-outer"),a2=alliances.find(a=>a.position==="NE-inner");
     const a3=alliances.find(a=>a.position==="SE-outer"),a4=alliances.find(a=>a.position==="SE-inner");
-    // On offense: NE-outer(AGC) maps to NW-inner, NE-inner(WC1) maps to NW-outer (swapped)
-    rallyMarkers.push({pt:lerp(iNW23,iW,pushDist),color:a1?.color||"#ef4444"});  // AGC inner
-    rallyMarkers.push({pt:lerp(iNW23,iN,pushDist),color:a2?.color||"#3b82f6"});  // WC1 outer
+    // On offense: NE-outer maps to NW-inner, NE-inner maps to NW-outer (swapped)
+    rallyMarkers.push({pt:lerp(iNW23,iW,pushDist),color:a1?.color||"#ef4444"});
+    rallyMarkers.push({pt:lerp(iNW23,iN,pushDist),color:a2?.color||"#3b82f6"});
     rallyMarkers.push({pt:lerp(iSW,iS,pushDist),color:a3?.color||"#22c55e"});
     rallyMarkers.push({pt:lerp(iSW,iW,pushDist),color:a4?.color||"#f59e0b"});
   }
-
-  // WC1 rally leader point for gate-to-leader dashed line
-  const wc1RallyLdrPt=isDefense?lerp(iNE3,iE,pushDist):lerp(iNW23,iN,pushDist);
-  const wc1Gate=isDefense?gates[1]:gates[2]; // NE gate on defense, NW gate on offense
 
   // Siege markers — arrows only on defense; on offense show positions without arrows (enemy sieges us)
   const pb=28;
@@ -4082,7 +4104,6 @@ function DiamondMap({ alliances, isDefense, t }) {
     {x:oW.x-pb,y:oW.y-20,dir:"W",tag:"FUN",color:"#f59e0b",targetX:oW.x+55,targetY:oW.y-10},
     {x:oW.x-pb,y:oW.y,dir:"W",tag:"WC1",color:"#3b82f6",targetX:oW.x+55,targetY:oW.y},
     {x:oW.x-pb,y:oW.y+20,dir:"W",tag:"REU",color:"#ef4444",targetX:oW.x+55,targetY:oW.y+10},
-    {x:wc1RallyLdrPt.x+18,y:wc1RallyLdrPt.y,dir:"NE",tag:"WC1",color:"#3b82f6",targetX:cx+gateR*Math.cos(-Math.PI/4),targetY:cy+gateR*Math.sin(-Math.PI/4)},
   ]:[
     {x:oN.x,y:oN.y-pb,dir:"N",tag:"",color:"#f87171"},
     {x:oW.x-pb,y:oW.y,dir:"W",tag:"",color:"#f87171"},
@@ -4096,6 +4117,10 @@ function DiamondMap({ alliances, isDefense, t }) {
         <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <marker id="arrY" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#fbbf24"/></marker>
         <marker id="arrSiege" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#f87171"/></marker>
+        <marker id="arrEra" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/></marker>
+        <marker id="arrReu" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/></marker>
+        <marker id="arrMyt" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/></marker>
+        <marker id="arrFun" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="7" markerHeight="5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/></marker>
       </defs>
 
       {/* Outer boundary */}
@@ -4108,8 +4133,8 @@ function DiamondMap({ alliances, isDefense, t }) {
       {alliances.map(a=>{const{pts}=aZone(a);return <polygon key={`az-${a.tag}`} points={poly(pts)} fill={a.color} opacity="0.15" stroke={a.color} strokeWidth="1" strokeOpacity="0.3"/>;
       })}
 
-      {/* Split lines */}
-      {(isDefense?[[oNE3,iNE3],[oSE,iSE]]:[[oNW23,iNW23],[oSW,iSW]]).map(([a,b],i)=>(
+      {/* Split lines — defense: SE line split into thirds (NE line is one eRa zone) */}
+      {(isDefense?[[oSEa,iSEa],[oSEb,iSEb]]:[[oNW23,iNW23],[oSW,iSW]]).map(([a,b],i)=>(
         <line key={`sp${i}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#e2e8f0" strokeWidth="1" strokeDasharray="5,4" opacity="0.3"/>
       ))}
 
@@ -4120,8 +4145,40 @@ function DiamondMap({ alliances, isDefense, t }) {
       <circle cx={cx} cy={cy} r={gateR} fill="none" stroke="#94a3b8" strokeWidth="2.5" strokeDasharray="6,3"/>
       {gates.map((g,i)=><rect key={`g${i}`} x={g.x-5} y={g.y-5} width="10" height="10" rx="2" fill="#475569" stroke="#94a3b8" strokeWidth="1.5"/>)}
 
-      {/* Rally leader markers — triangles pushed into zones */}
+      {/* Rally leader markers.
+          Defense: a colored muster dot per lead, with dashed line(s) bowed
+          around the IC toward its target tower/gate (color-matched arrowhead).
+          Offense: legacy triangle pushed toward IC. */}
       {rallyMarkers.map((m,i)=>{
+        const arrById={"#3b82f6":"arrEra","#ef4444":"arrReu","#22c55e":"arrMyt","#f59e0b":"arrFun"};
+        const arr=arrById[m.color]||"arrY";
+        if(m.targets && m.targets.length){
+          // explicit label offset if provided, else push outward (away from IC)
+          const oang=Math.atan2(m.pt.y-cy,m.pt.x-cx);
+          const lx=m.lbl?m.pt.x+m.lbl.x:m.pt.x+Math.cos(oang)*20;
+          const ly=m.lbl?m.pt.y+m.lbl.y:m.pt.y+Math.sin(oang)*20;
+          return (
+            <g key={`rm${i}`}>
+              {m.targets.map((tg,j)=>{
+                // start just outside the muster dot toward the target
+                const dx=tg.x-m.pt.x, dy=tg.y-m.pt.y, L=Math.sqrt(dx*dx+dy*dy)||1;
+                const nx=dx/L, ny=dy/L;
+                const sx=m.pt.x+nx*7, sy=m.pt.y+ny*7;
+                const ex=tg.x-nx*16, ey=tg.y-ny*16;   // stop short of the tower circle
+                const mx=(sx+ex)/2, my=(sy+ey)/2;
+                // bow away from IC; when several leads hit the same tower, add a
+                // perpendicular spread (bowSpread) so their arrows fan out.
+                const rO=Math.atan2(my-cy,mx-cx);
+                const bow=30+j*10;
+                const spread=(m.bowSpread||0);
+                const qx=mx+Math.cos(rO)*bow - ny*spread, qy=my+Math.sin(rO)*bow + nx*spread;
+                return <path key={`rt${i}-${j}`} d={`M${sx},${sy} Q${qx},${qy} ${ex},${ey}`} fill="none" stroke={m.color} strokeWidth="2" strokeDasharray="5,4" opacity="0.85" markerEnd={`url(#${arr})`}/>;
+              })}
+              <circle cx={m.pt.x} cy={m.pt.y} r="5.5" fill={m.color} stroke="#0f172a" strokeWidth="1.5" opacity="0.95"/>
+              <text x={lx} y={ly} fontSize="9.5" fill={m.color} fontFamily="monospace" fontWeight="bold" textAnchor="middle" dominantBaseline="middle" opacity="0.95">{m.tag}</text>
+            </g>
+          );
+        }
         const dx=cx-m.pt.x,dy=cy-m.pt.y;
         const ang=Math.atan2(dy,dx);
         const size=8;
@@ -4167,7 +4224,7 @@ function DiamondMap({ alliances, isDefense, t }) {
       {/* Rally arrows — two segments: rally leader → gate → IC */}
       {rallyMids.map((from,i)=>{
         // Find the nearest gate to this rally start point
-        const gateIdx = isDefense ? (i===0 ? 1 : 0) : (i===0 ? 2 : 3); // def: NE=gate1, SE=gate0; off: NW=gate2, SW=gate3
+        const gateIdx = isDefense ? 0 : (i===0 ? 2 : 3); // def: SE=gate0; off: NW=gate2, SW=gate3
         const gate = gates[gateIdx];
 
         // Segment 1: from rally start to gate
@@ -4196,14 +4253,6 @@ function DiamondMap({ alliances, isDefense, t }) {
           </g>
         );
       })}
-
-      {/* WC1 rally leader — gate connection */}
-      {(()=>{
-        const dx=wc1Gate.x-wc1RallyLdrPt.x, dy=wc1Gate.y-wc1RallyLdrPt.y;
-        const len=Math.sqrt(dx*dx+dy*dy)||1;
-        const nx=dx/len, ny=dy/len;
-        return <line x1={wc1RallyLdrPt.x+nx*12} y1={wc1RallyLdrPt.y+ny*12} x2={wc1Gate.x-nx*8} y2={wc1Gate.y-ny*8} stroke="#fbbf24" strokeWidth="2" strokeDasharray="5,4" opacity="0.8"/>;
-      })()}
 
       {/* IC */}
       <circle cx={cx} cy={cy} r="36" fill="url(#icGlow)"/>
