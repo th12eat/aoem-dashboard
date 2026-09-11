@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "oppServer": "Era 23",
-  "invasionTime": "19:00 UTC",
+  "invasionTime": "11:00 UTC",
   "prepStart": "2026-09-07",
   "invasionStart": "2026-09-13",
   "weWonPrep": false,
@@ -97,7 +97,7 @@
   ],
   "totalOur": 50.6,
   "totalOpp": 75.4,
-  "prepLastUpdated": "2026-09-11 — Live · Prep complete (all 5 stages). Lost prep 50.6B vs 75.4B. Invasion Sep 13 19:00 UTC — defend our Imperial City. Our alliance merits carried from the prior cycle (not in this scouting set).",
+  "prepLastUpdated": "2026-09-11 — Live · Prep complete (all 5 stages). Lost prep 50.6B vs 75.4B. Invasion Sep 13 11:00 UTC — defend our Imperial City. Our alliance merits carried from the prior cycle (not in this scouting set).",
   "oppAlliances": [
     {
       "tag": "Đ23",

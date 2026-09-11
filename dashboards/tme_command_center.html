@@ -4943,25 +4943,6 @@ function TMECommandCenter(){
       <div style={{padding:12,maxWidth:960,margin:"0 auto"}}>
 
         {activeTab==="overview"&&(<>
-          <div style={card}>
-            <div style={cardTitle}>{t.sitBrief}</div>
-            {config.eventOver&&config.finalScore&&(
-              <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap",background:"rgba(196,61,61,0.10)",border:"1px solid #8a2b2b",borderRadius:8,padding:"10px 14px",marginBottom:12}}>
-                <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,letterSpacing:1,color:config.result==="Win"?"#4ade80":"#f87171"}}>{config.result==="Win"?"VICTORY":"DEFEAT"}</span>
-                <span style={{fontSize:13,color:"#e2e8f0",fontWeight:700}}>Era 8 {config.finalScore.us} <span style={{color:"#64748b",fontWeight:400}}>vs</span> {config.oppServer} {config.finalScore.them}</span>
-                <span style={{fontSize:11,color:"#94a3b8"}}>{config.finalScore.label}</span>
-              </div>
-            )}
-            <div style={{fontSize:12,lineHeight:1.8,color:"#cbd5e1"}}>
-              {config.prepStarted===false?(
-                <p style={{margin:"0 0 8px"}}>{t.newMatchup} <strong style={{color:"#f87171"}}>{config.oppServer} ({oppCode})</strong>. {t.standings.replace("{our}",config.ourRank).replace("{opp}",config.oppRank)} {t.prepNotStarted}</p>
-              ):(<>
-              <p style={{margin:"0 0 8px"}}><strong style={{color:"#f87171"}}>{config.oppServer}</strong> {(()=>{const done=config.prepStages.every(s=>s.ourPts>0||s.oppPts>0);if(done)return isDefense?t.wonPrep:t.lostPrep;return isDefense?t.wonPrepWith:t.losingPrepWith;})()} <strong>{config.totalOpp}B</strong> {t.vsOur} <strong>{config.totalOur}B</strong>. {t.atPresent} {isDefense?t.theyInvade:t.weInvade}</p>
-              <p style={{margin:0}}><strong>{t.strategy}</strong> {isDefense?t.stratDefense:t.stratOffense}</p>
-              </>)}
-            </div>
-          </div>
-
           {/* Event timeline + what-to-do, combined into one card so it's clear the
               day you tap on the timeline drives the plan shown just below it. */}
           {(()=>{
