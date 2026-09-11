@@ -3988,6 +3988,16 @@ function ZoomableMap({ children, resetLabel }) {
    DIAMOND MAP
    ═══════════════════════════════════════════════════ */
 function DiamondMap({ alliances, isDefense, t }) {
+  // Map-only relabel (display-only; does NOT affect tables/scouting). The
+  // battlefield graphic labels FUN/AGC as REU and REU as FUN. Colors are pinned
+  // here to the map's original scheme (REU red, FUN yellow) so the outside-map
+  // color swap in the JSON doesn't bleed into the map.
+  const remapForMap = a => {
+    if (a.tag === "FUN" || a.tag === "AGC") return { ...a, tag: "REU", color: "#ef4444" };
+    if (a.tag === "REU") return { ...a, tag: "FUN", color: "#f59e0b" };
+    return a;
+  };
+  alliances = (alliances || []).map(remapForMap);
   const w = 820, h = 820;
   const cx = w / 2, cy = h / 2;
   const outerR = 300, innerR = 160, gateR = 62, towerDist = 90;
@@ -4066,12 +4076,12 @@ function DiamondMap({ alliances, isDefense, t }) {
   // Siege markers — arrows only on defense; on offense show positions without arrows (enemy sieges us)
   const pb=28;
   const siegeMarkers=isDefense?[
-    {x:oN.x-28,y:oN.y-pb,dir:"N",tag:"AGC",color:"#ef4444",targetX:mid(oN,oW).x+30,targetY:mid(oN,oW).y+30},
+    {x:oN.x-28,y:oN.y-pb,dir:"N",tag:"REU",color:"#ef4444",targetX:mid(oN,oW).x+30,targetY:mid(oN,oW).y+30},
     {x:oN.x+28,y:oN.y-pb,dir:"N",tag:"WC1",color:"#3b82f6",targetX:mid(oN,oW).x+50,targetY:mid(oN,oW).y+10},
     {x:oS.x,y:oS.y+pb,dir:"S",tag:"MyT",color:"#22c55e",targetX:mid(oS,oW).x+30,targetY:mid(oS,oW).y-30},
-    {x:oW.x-pb,y:oW.y-20,dir:"W",tag:"REU",color:"#f59e0b",targetX:oW.x+55,targetY:oW.y-10},
+    {x:oW.x-pb,y:oW.y-20,dir:"W",tag:"FUN",color:"#f59e0b",targetX:oW.x+55,targetY:oW.y-10},
     {x:oW.x-pb,y:oW.y,dir:"W",tag:"WC1",color:"#3b82f6",targetX:oW.x+55,targetY:oW.y},
-    {x:oW.x-pb,y:oW.y+20,dir:"W",tag:"AGC",color:"#ef4444",targetX:oW.x+55,targetY:oW.y+10},
+    {x:oW.x-pb,y:oW.y+20,dir:"W",tag:"REU",color:"#ef4444",targetX:oW.x+55,targetY:oW.y+10},
     {x:wc1RallyLdrPt.x+18,y:wc1RallyLdrPt.y,dir:"NE",tag:"WC1",color:"#3b82f6",targetX:cx+gateR*Math.cos(-Math.PI/4),targetY:cy+gateR*Math.sin(-Math.PI/4)},
   ]:[
     {x:oN.x,y:oN.y-pb,dir:"N",tag:"",color:"#f87171"},
