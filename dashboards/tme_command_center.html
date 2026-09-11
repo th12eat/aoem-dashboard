@@ -4078,11 +4078,14 @@ function DiamondMap({ alliances, isDefense, t }) {
     rallyMarkers.push({pt:iNE, color:"#3b82f6", tag:"eRa", targets:[neGate], lbl:{x:-14,y:16}});
     // eRa tower lead — NE inner line, closer to the Sword tower → Sword + Archer towers.
     rallyMarkers.push({pt:lerp(iN,iE,0.30), color:"#3b82f6", tag:"eRa", targets:[swordT,arrowT], lbl:{x:-20,y:-12}});
+    // REU gate-pusher — center of REU's own slice (SE-M) inner line → SE gate.
+    const seGate=gates[0];
+    rallyMarkers.push({pt:lerp(iSEa,iSEb,0.5), color:"#ef4444", tag:"REU", targets:[seGate], straight:true, lbl:{x:32,y:-6}});
     // FUN / REU / MyT — spread along MyT's third of the inner SE edge → Cav tower
-    // (MyT also → Pike). FUN & MyT sit on opposite sides of REU (swapped).
-    rallyMarkers.push({pt:lerp(s0,iS,0.12), color:"#f59e0b", tag:"FUN", targets:[cavT], bowSpread:-34, lbl:{x:22,y:-16}});
-    rallyMarkers.push({pt:lerp(s0,iS,0.50), color:"#ef4444", tag:"REU", targets:[cavT], bowSpread:0,   lbl:{x:30,y:-2}});
-    rallyMarkers.push({pt:lerp(s0,iS,0.88), color:"#22c55e", tag:"Myt", targets:[cavT,pikeT], bowSpread:34, lbl:{x:32,y:2}});
+    // (MyT also → Pike), drawn as straight lines. FUN & MyT on opposite sides of REU.
+    rallyMarkers.push({pt:lerp(s0,iS,0.12), color:"#f59e0b", tag:"FUN", targets:[cavT], straight:true, lbl:{x:22,y:-16}});
+    rallyMarkers.push({pt:lerp(s0,iS,0.50), color:"#ef4444", tag:"REU", targets:[cavT], straight:true, lbl:{x:30,y:-2}});
+    rallyMarkers.push({pt:lerp(s0,iS,0.88), color:"#22c55e", tag:"Myt", targets:[cavT,pikeT], straight:true, lbl:{x:32,y:2}});
   } else {
     const a1=alliances.find(a=>a.position==="NE-outer"),a2=alliances.find(a=>a.position==="NE-inner");
     const a3=alliances.find(a=>a.position==="SE-outer"),a4=alliances.find(a=>a.position==="SE-inner");
@@ -4163,9 +4166,12 @@ function DiamondMap({ alliances, isDefense, t }) {
                 const nx=dx/L, ny=dy/L;
                 const sx=m.pt.x+nx*7, sy=m.pt.y+ny*7;
                 const ex=tg.x-nx*16, ey=tg.y-ny*16;   // stop short of the tower circle
+                // straight leads draw a plain line; otherwise bow away from IC
+                // (with optional perpendicular spread to fan multiple arrows).
+                if(m.straight){
+                  return <line key={`rt${i}-${j}`} x1={sx} y1={sy} x2={ex} y2={ey} stroke={m.color} strokeWidth="2" strokeDasharray="5,4" opacity="0.85" markerEnd={`url(#${arr})`}/>;
+                }
                 const mx=(sx+ex)/2, my=(sy+ey)/2;
-                // bow away from IC; when several leads hit the same tower, add a
-                // perpendicular spread (bowSpread) so their arrows fan out.
                 const rO=Math.atan2(my-cy,mx-cx);
                 const bow=30+j*10;
                 const spread=(m.bowSpread||0);
