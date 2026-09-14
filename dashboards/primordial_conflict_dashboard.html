@@ -906,21 +906,20 @@ function App() {
   if (!evtCfg.current) {
     evtCfg.current = {
       timezone: "UTC+0",
-      startISO: "2026-08-17T00:00:00Z", endISO: "2026-08-23T23:59:59Z",
-      startLabel: "Aug 17", startLabelText: T("Starts"),
-      endLabel: "Aug 23", endLabelText: T("Ends"),
-      pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete — Loss"),
+      startISO: "2026-09-14T00:00:00Z", endISO: "2026-09-20T23:59:59Z",
+      startLabel: "Sep 14", startLabelText: T("Starts"),
+      endLabel: "Sep 20", endLabelText: T("Ends"),
+      pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete"),
       liveLabel: "Contest Live", liveDot: true,
-      forceComplete: true,
       ical: { stub: true, label: T("Add to Calendar") },
       phases: [
-        { fromISO: "2026-08-17T00:00:00Z", leftLabel: T("Matchmaking"),  leftValue: "Aug 17", rightLabel: T("Battle Day 1"), rightValue: "Aug 18", countdownISO: "2026-08-18T00:00:00Z", stageLabel: "Contest Live | Matchmaking" },
-        { fromISO: "2026-08-18T00:00:00Z", leftLabel: T("Battle Day 1"), leftValue: "Aug 18", rightLabel: T("Battle Day 2"), rightValue: "Aug 19", countdownISO: "2026-08-19T00:00:00Z", stageLabel: "Contest Live | Battle Day 1" },
-        { fromISO: "2026-08-19T00:00:00Z", leftLabel: T("Battle Day 2"), leftValue: "Aug 19", rightLabel: T("Battle Day 3"), rightValue: "Aug 20", countdownISO: "2026-08-20T00:00:00Z", stageLabel: "Contest Live | Battle Day 2" },
-        { fromISO: "2026-08-20T00:00:00Z", leftLabel: T("Battle Day 3"), leftValue: "Aug 20", rightLabel: T("Selection"),    rightValue: "Aug 21", countdownISO: "2026-08-21T00:00:00Z", stageLabel: "Contest Live | Battle Day 3" },
-        { fromISO: "2026-08-21T00:00:00Z", leftLabel: T("Selection"),    leftValue: "Aug 21", rightLabel: T("Showdown"),     rightValue: "Aug 22", countdownISO: "2026-08-22T00:00:00Z", stageLabel: "Contest Live | Battlefield Selection" },
-        { fromISO: "2026-08-22T00:00:00Z", leftLabel: T("Showdown"),     leftValue: "Aug 22", rightLabel: T("Recovery"),     rightValue: "Aug 23", countdownISO: "2026-08-23T00:00:00Z", stageLabel: "Contest Live | Showdown" },
-        { fromISO: "2026-08-23T00:00:00Z", leftLabel: T("Recovery"),     leftValue: "Aug 23", rightLabel: T("Ends"),         rightValue: "Aug 23", countdownISO: "2026-08-23T23:59:59Z", stageLabel: "Contest Live | Recovery" },
+        { fromISO: "2026-09-14T00:00:00Z", leftLabel: T("Matchmaking"),  leftValue: "Sep 14", rightLabel: T("Battle Day 1"), rightValue: "Sep 15", countdownISO: "2026-09-15T00:00:00Z", stageLabel: "Contest Live | Matchmaking" },
+        { fromISO: "2026-09-15T00:00:00Z", leftLabel: T("Battle Day 1"), leftValue: "Sep 15", rightLabel: T("Battle Day 2"), rightValue: "Sep 16", countdownISO: "2026-09-16T00:00:00Z", stageLabel: "Contest Live | Battle Day 1" },
+        { fromISO: "2026-09-16T00:00:00Z", leftLabel: T("Battle Day 2"), leftValue: "Sep 16", rightLabel: T("Battle Day 3"), rightValue: "Sep 17", countdownISO: "2026-09-17T00:00:00Z", stageLabel: "Contest Live | Battle Day 2" },
+        { fromISO: "2026-09-17T00:00:00Z", leftLabel: T("Battle Day 3"), leftValue: "Sep 17", rightLabel: T("Selection"),    rightValue: "Sep 18", countdownISO: "2026-09-18T00:00:00Z", stageLabel: "Contest Live | Battle Day 3" },
+        { fromISO: "2026-09-18T00:00:00Z", leftLabel: T("Selection"),    leftValue: "Sep 18", rightLabel: T("Showdown"),     rightValue: "Sep 19", countdownISO: "2026-09-19T00:00:00Z", stageLabel: "Contest Live | Battlefield Selection" },
+        { fromISO: "2026-09-19T00:00:00Z", leftLabel: T("Showdown"),     leftValue: "Sep 19", rightLabel: T("Recovery"),     rightValue: "Sep 20", countdownISO: "2026-09-20T00:00:00Z", stageLabel: "Contest Live | Showdown" },
+        { fromISO: "2026-09-20T00:00:00Z", leftLabel: T("Recovery"),     leftValue: "Sep 20", rightLabel: T("Ends"),         rightValue: "Sep 20", countdownISO: "2026-09-20T23:59:59Z", stageLabel: "Contest Live | Recovery" },
       ],
     };
   }
