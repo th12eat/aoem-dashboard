@@ -167,18 +167,18 @@ const T = s => s;
 // battle days (round-robin), battlefield selection, showdown, recovery. Each
 // game day is a UTC calendar day; Day 2 (first battle) starts Tue Aug 18 00:00.
 const EVENT = {
-  startISO: "2026-08-17T00:00:00Z",
-  endISO:   "2026-08-23T23:59:59Z",
+  startISO: "2026-09-14T00:00:00Z",
+  endISO:   "2026-09-20T23:59:59Z",
   ourTime:  "19:00 UTC",           // our server's workshop / showdown window
 };
 
 // ── Servers (us first, then opponents) — colors per the user's assignment:
-//    Era #028 green · Era #008 blue · Era #088 orange · Era #059 purple.
+//    Era #008 (us) green · Era #012 blue · Era #017 orange · Era #013 purple.
 const SERVERS = [
-  { code: "E#008", label: "Era #008", name: "ERAEMPIRE", us: true,  hex: "#3d7cc4", rgb: "61,124,196" },
-  { code: "E#028", label: "Era #028", name: "",          us: false, hex: "#3daa6d", rgb: "61,170,109" },
-  { code: "E#088", label: "Era #088", name: "",          us: false, hex: "#e8944a", rgb: "232,148,74" },
-  { code: "E#059", label: "Era #059", name: "",          us: false, hex: "#9b6dff", rgb: "155,109,255" },
+  { code: "E#008", label: "Era #008", name: "ERAEMPIRE", us: true,  hex: "#3daa6d", rgb: "61,170,109", sdRank: 41, sdTier: "Glory 2x★" },
+  { code: "E#012", label: "Era #012", name: "",          us: false, hex: "#3d7cc4", rgb: "61,124,196", sdRank: 34, sdTier: "Glory 2x★" },
+  { code: "E#017", label: "Era #017", name: "",          us: false, hex: "#e8944a", rgb: "232,148,74", sdRank: 3,  sdTier: "Pinnacle 1x★" },
+  { code: "E#013", label: "Era #013", name: "",          us: false, hex: "#9b6dff", rgb: "155,109,255", sdRank: 2,  sdTier: "Glory 2x★" },
 ];
 const srvColor = code => SERVERS.find(s => s.code === code) || { hex: "#94a3b8", rgb: "148,163,184" };
 
@@ -192,10 +192,10 @@ let SCORE_UPDATED = "";
 // there are no points yet (like now), it still shows — split equally at 0.
 function KingdomBar() {
   const GRAD = {
-    "E#008": { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" }, // blue (us)
-    "E#028": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" }, // green
-    "E#088": { grad: "linear-gradient(90deg, #b4500f, #e8944a)", top: "#f0a860" }, // orange
-    "E#059": { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" }, // purple
+    "E#008": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" }, // green (us)
+    "E#012": { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" }, // blue
+    "E#017": { grad: "linear-gradient(90deg, #b4500f, #e8944a)", top: "#f0a860" }, // orange
+    "E#013": { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" }, // purple
   };
   const rowFor = code => (KINGDOM_SCOREBOARD || []).find(k => k.server === code) || {};
   const num = v => Number(String(v ?? 0).replace(/,/g, "")) || 0;
@@ -227,13 +227,13 @@ function KingdomBar() {
 // ── Schedule stages (the "line"). Each: key, label, day range, ISO start,
 //    `group` (consecutive same-group stages get one label above the timeline). ──
 const STAGES = [
-  { key: "match",    group: "match",    label: "Matchmaking & scouting",  days: [1],    startISO: "2026-08-17T00:00:00Z" },
-  { key: "battle1",  group: "battle",   label: "Battle Day 1 (1v1)",      days: [2],    startISO: "2026-08-18T00:00:00Z" },
-  { key: "battle2",  group: "battle",   label: "Battle Day 2 (1v1)",      days: [3],    startISO: "2026-08-19T00:00:00Z" },
-  { key: "battle3",  group: "battle",   label: "Battle Day 3 (1v1)",      days: [4],    startISO: "2026-08-20T00:00:00Z" },
-  { key: "select",   group: "select",   label: "Battlefield selection",   days: [5],    startISO: "2026-08-21T00:00:00Z" },
-  { key: "showdown", group: "showdown", label: "4-way showdown",          days: [6],    startISO: "2026-08-22T00:00:00Z" },
-  { key: "recovery", group: "recovery", label: "Troop recovery",          days: [7],    startISO: "2026-08-23T00:00:00Z" },
+  { key: "match",    group: "match",    label: "Matchmaking & scouting",  days: [1],    startISO: "2026-09-14T00:00:00Z" },
+  { key: "battle1",  group: "battle",   label: "Battle Day 1 (1v1)",      days: [2],    startISO: "2026-09-15T00:00:00Z" },
+  { key: "battle2",  group: "battle",   label: "Battle Day 2 (1v1)",      days: [3],    startISO: "2026-09-16T00:00:00Z" },
+  { key: "battle3",  group: "battle",   label: "Battle Day 3 (1v1)",      days: [4],    startISO: "2026-09-17T00:00:00Z" },
+  { key: "select",   group: "select",   label: "Battlefield selection",   days: [5],    startISO: "2026-09-18T00:00:00Z" },
+  { key: "showdown", group: "showdown", label: "4-way showdown",          days: [6],    startISO: "2026-09-19T00:00:00Z" },
+  { key: "recovery", group: "recovery", label: "Troop recovery",          days: [7],    startISO: "2026-09-20T00:00:00Z" },
 ];
 // Phase groups: label shown above the timeline + bright/dim colors. Purple family:
 // matching blue → battle lavender → selection neon purple → showdown deep purple
@@ -347,11 +347,13 @@ function ServerTable({ code, rows, kind }) {
   const c = srvColor(code);
   const s = SERVERS.find(x => x.code === code) || {};
   const title = s.label + (s.us ? " · Us" : "") + (s.name ? " " + s.name : "");
+  const sd = s.sdRank ? "SD #" + s.sdRank + (s.sdTier ? " · " + s.sdTier : "") : "";
   const mpCls = kind === "players" ? playerMpCls : allianceMpCls;
   return (
     <div className="cmp-card" style={{ borderColor: "rgba(" + c.rgb + ",0.4)" }}>
       <div className="cmp-head" style={{ background: "rgba(" + c.rgb + ",0.12)", borderBottomColor: "rgba(" + c.rgb + ",0.4)", color: c.hex }}>
         {title}
+        {sd ? <span style={{ float: "right", fontSize: 10, fontWeight: 600, opacity: 0.85 }}>{sd}</span> : null}
       </div>
       {rows && rows.length ? (
         <table className="cmp-tbl cmp-tbl-wrap">
@@ -440,10 +442,10 @@ function OverviewTab() {
         </div>
         <SampleBattleMap />
         <div className="legend-row" style={{ marginTop: 4 }}>
-          <span><span className="sw" style={{ background: "#5b8def" }}></span>{T("E#008 (Us)")}</span>
-          <span><span className="sw" style={{ background: "#3daa6d" }}></span>{T("E#028")}</span>
-          <span><span className="sw" style={{ background: "#e8944a" }}></span>{T("E#088")}</span>
-          <span><span className="sw" style={{ background: "#9b6dff" }}></span>{T("E#059")}</span>
+          <span><span className="sw" style={{ background: "#3daa6d" }}></span>{T("E#008 (Us)")}</span>
+          <span><span className="sw" style={{ background: "#3d7cc4" }}></span>{T("E#012")}</span>
+          <span><span className="sw" style={{ background: "#e8944a" }}></span>{T("E#017")}</span>
+          <span><span className="sw" style={{ background: "#9b6dff" }}></span>{T("E#013")}</span>
         </div>
       </div>
 
@@ -459,10 +461,10 @@ function OverviewTab() {
 // so the siege is labeled generically — our four servers colored, us South.
 function SampleBattleMap() {
   // corner → {code, hex, rgb}. Sample layout: us South, others clockwise.
-  const N = { code: "E#028", hex: "#3daa6d", rgb: "61,170,109" };
-  const E = { code: "E#088", hex: "#e8944a", rgb: "232,148,74" };
-  const S = { code: "E#008", hex: "#5b8def", rgb: "91,141,239" }; // us
-  const W = { code: "E#059", hex: "#9b6dff", rgb: "155,109,255" };
+  const N = { code: "E#012", hex: "#3d7cc4", rgb: "61,124,196" };
+  const E = { code: "E#017", hex: "#e8944a", rgb: "232,148,74" };
+  const S = { code: "E#008", hex: "#3daa6d", rgb: "61,170,109" }; // us (green)
+  const W = { code: "E#013", hex: "#9b6dff", rgb: "155,109,255" };
   const refs = [
     [260,117,"R1"],[331,187,"R2"],[401,260,"R3"],[331,331,"R4"],
     [260,401,"R5"],[189,331,"R6"],[119,260,"R7"],[189,187,"R8"],
@@ -957,7 +959,7 @@ function App() {
             <h3>{T("What is Primordial Conflict?")}</h3>
             <p><strong style={{ color: "var(--kvk-accent)" }}>{T("Primordial Conflict")}</strong> {T("is a 7-day, four-kingdom round-robin KvK. After a matchmaking day, your kingdom fights each of the other three 1v1 across three battle days (Days 2–4), earning Primordial Points by gathering Dew at Alchemy Pools and contesting Order Workshops. The kingdom leading on points then picks the showdown battlefield & time (Day 5), all four converge for a 4-way fight over 8 Essence Refineries (Day 6), and Day 7 recovers losses.")}</p>
             <p style={{ marginTop: 10 }}><strong style={{ color: "#3daa6d" }}>{T("This is a special KvK where no troop loss occurs")}</strong> — {T("units wounded in PvP are recovered, so there's no lasting attrition. Contest every objective aggressively and PvP freely.")}</p>
-            <p style={{ marginTop: 10 }}>{T("We are Era #008 (ERAEMPIRE), facing Era #028, Era #088 and Era #059. Our server's workshop and showdown window is")} <strong style={{ color: "var(--kvk-accent)" }}>{EVENT.ourTime}</strong>.</p>
+            <p style={{ marginTop: 10 }}>{T("We are Era #008 (ERAEMPIRE), facing Era #012, Era #017 and Era #013. Our server's workshop and showdown window is")} <strong style={{ color: "var(--kvk-accent)" }}>{EVENT.ourTime}</strong>.</p>
           </div>
         </div>
       ) : null}
@@ -1018,7 +1020,7 @@ function App() {
         </div>
 
         <div style={{ textAlign: "center", padding: "24px 0", borderTop: "1px solid var(--border,#2a2a3a)", marginTop: 24, fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#64748b", letterSpacing: ".5px" }}>
-          {T("Primordial Conflict · Era 8 (E#008 ERAEMPIRE) · Special KvK — no troop loss · vs Era #028 / Era #088 / Era #059")}
+          {T("Primordial Conflict · Era 8 (E#008 ERAEMPIRE) · Special KvK — no troop loss · vs Era #012 / Era #017 / Era #013")}
         </div>
       </div>
     </div>
