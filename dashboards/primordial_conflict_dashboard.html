@@ -740,7 +740,14 @@ function workshopStatus(now) {
   if (live) msToEnd = Math.max(0, Date.parse(WORKSHOP_DAYS[liveIdx].date + "T20:00:00Z") - now);
   const lock = beforeStart ? "The Order Workshop event opens on Battle Day 1 (Tue Sep 15, 19:00 UTC)"
              : (afterEnd ? "The Battle Stage is complete — Order Workshops have closed" : null);
-  return { live, liveIdx, nextIdx, states, msToEnd, lock, beforeStart, afterEnd };
+  // Short label for the next upcoming window (our 19:00 event), e.g. "Mon 19:00".
+  let nextLabel = "";
+  if (nextIdx !== -1) {
+    const wd = new Date(WORKSHOP_DAYS[nextIdx].date + "T19:00:00Z")
+      .toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });
+    nextLabel = wd + " 19:00";
+  }
+  return { live, liveIdx, nextIdx, states, msToEnd, lock, beforeStart, afterEnd, nextLabel };
 }
 
 const wsResultFor = day => WORKSHOP_RESULTS.find(r => r.day === day) || null;
@@ -976,7 +983,7 @@ function App() {
           <a href="#workshop-schedule" className={"ws-badge" + (ws.live ? "" : " is-idle")}
             title={ws.live ? T("Order Workshop event is LIVE — jump to schedule") : T("Order Workshop — jump to schedule & results")}
             onClick={(e) => { e.preventDefault(); jumpTo("overview", "workshop-schedule"); }}>
-            <span className="ws-ico">🔧</span><span className="ws-txt">{ws.live ? T("Workshop · LIVE") : ws.afterEnd ? T("Workshop · Done") : T("Workshop · 19:00")}</span>
+            <span className="ws-ico">🔧</span><span className="ws-txt">{ws.live ? T("Workshop · LIVE") : ws.afterEnd ? T("Workshop · Done") : (ws.nextLabel ? T("Workshop · ") + ws.nextLabel : T("Workshop"))}</span>
           </a>
         </div>
         <div style={S.headerSub}>{T("Four-Kingdom Round-Robin · Special KvK (No Troop Loss)")}</div>
