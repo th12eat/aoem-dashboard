@@ -717,8 +717,28 @@ let WORKSHOP_RESULTS = [];  // [{day, opponent, ourCaps, theirCaps, theirTime, n
 // Full status, modeled on DD's torStatus. Lifecycle: "locked" during matchmaking
 // (before Day 2 opens) and after Day 4 closes; otherwise per-day states
 // passed/live/next/upcoming, plus msToEnd for the live countdown.
+//
+// The header badge tracks the NEXT contest across BOTH sides: our 19:00 event
+// AND the opponent's per-day event (theirTime, from workshopResults). So the
+// full window list is built by merging both, sorted by time.
+function allWorkshopWindows() {
+  const wins = [];
+  WORKSHOP_DAYS.forEach(w => {
+    // ours — 19:00–20:00 UTC every battle day
+    wins.push({ day: w.day, kind: "ours", time: "19:00",
+      start: Date.parse(w.date + "T19:00:00Z"), end: Date.parse(w.date + "T20:00:00Z") });
+    // theirs — only if a time is known for that day (from workshopResults)
+    const res = (WORKSHOP_RESULTS || []).find(r => r.day === w.day);
+    if (res && res.theirTime) {
+      wins.push({ day: w.day, kind: "theirs", time: res.theirTime, opponent: res.opponent,
+        start: Date.parse(w.date + "T" + res.theirTime + ":00Z"),
+        end: Date.parse(w.date + "T" + res.theirTime + ":00Z") + 3600000 });
+    }
+  });
+  return wins.sort((a, b) => a.start - b.start);
+}
+
 function workshopStatus(now) {
-  const firstOpen = Date.parse(WORKSHOP_DAYS[0].date + "T19:00:00Z");
   const lastClose = Date.parse(WORKSHOP_DAYS[WORKSHOP_DAYS.length - 1].date + "T20:00:00Z");
   const beforeStart = now < Date.parse(WORKSHOP_DAYS[0].date + "T00:00:00Z"); // matchmaking / pre-battle
   const afterEnd = now >= lastClose;
@@ -740,14 +760,21 @@ function workshopStatus(now) {
   if (live) msToEnd = Math.max(0, Date.parse(WORKSHOP_DAYS[liveIdx].date + "T20:00:00Z") - now);
   const lock = beforeStart ? "The Order Workshop event opens on Battle Day 1 (Tue Sep 15, 19:00 UTC)"
              : (afterEnd ? "The Battle Stage is complete — Order Workshops have closed" : null);
-  // Short label for the next upcoming window (our 19:00 event), e.g. "Mon 19:00".
-  let nextLabel = "";
-  if (nextIdx !== -1) {
-    const wd = new Date(WORKSHOP_DAYS[nextIdx].date + "T19:00:00Z")
-      .toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });
-    nextLabel = wd + " 19:00";
-  }
-  return { live, liveIdx, nextIdx, states, msToEnd, lock, beforeStart, afterEnd, nextLabel };
+  // Badge tracks the next contest across BOTH sides. Any window covering `now`
+  // is "live"; otherwise show the soonest upcoming one (ours or theirs).
+  const wins = allWorkshopWindows();
+  const liveWin = wins.find(w => now >= w.start && now < w.end);
+  const nextWin = wins.find(w => now < w.start);
+  const anyLive = !!liveWin;
+  let badgeLabel = "";
+  const fmtWin = w => {
+    const wd = new Date(w.start).toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });
+    const who = w.kind === "ours" ? "ours" : ("vs " + (w.opponent || "").replace("Era ", ""));
+    return wd + " " + w.time + " · " + who;
+  };
+  if (liveWin) badgeLabel = "LIVE · " + (liveWin.kind === "ours" ? "ours" : ("vs " + (liveWin.opponent || "").replace("Era ", "")));
+  else if (nextWin) badgeLabel = fmtWin(nextWin);
+  return { live, anyLive, liveIdx, nextIdx, states, msToEnd, lock, beforeStart, afterEnd, badgeLabel };
 }
 
 const wsResultFor = day => WORKSHOP_RESULTS.find(r => r.day === day) || null;
@@ -980,10 +1007,10 @@ function App() {
         {/* bottom-right: Order Workshop badge — pulses purple while the 19:00 window is
             live, greyed during matchmaking and after Day 4. Jumps to the schedule/results. */}
         <div className="hdr-pills">
-          <a href="#workshop-schedule" className={"ws-badge" + (ws.live ? "" : " is-idle")}
-            title={ws.live ? T("Order Workshop event is LIVE — jump to schedule") : T("Order Workshop — jump to schedule & results")}
+          <a href="#workshop-schedule" className={"ws-badge" + (ws.anyLive ? "" : " is-idle")}
+            title={ws.anyLive ? T("Order Workshop event is LIVE — jump to schedule") : T("Order Workshop — jump to schedule & results")}
             onClick={(e) => { e.preventDefault(); jumpTo("overview", "workshop-schedule"); }}>
-            <span className="ws-ico">🔧</span><span className="ws-txt">{ws.live ? T("Workshop · LIVE") : ws.afterEnd ? T("Workshop · Done") : (ws.nextLabel ? T("Workshop · ") + ws.nextLabel : T("Workshop"))}</span>
+            <span className="ws-ico">🔧</span><span className="ws-txt">{ws.afterEnd ? T("Workshop · Done") : (ws.badgeLabel ? T("Workshop · ") + ws.badgeLabel : T("Workshop"))}</span>
           </a>
         </div>
         <div style={S.headerSub}>{T("Four-Kingdom Round-Robin · Special KvK (No Troop Loss)")}</div>
