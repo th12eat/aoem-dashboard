@@ -486,6 +486,20 @@
       "theirTime": "11:00",
       "theirCaps": 3,
       "ourCaps": 3
+    },
+    {
+      "day": 3,
+      "opponent": "Era #013",
+      "theirTime": "01:00",
+      "theirCaps": null,
+      "ourCaps": null
+    },
+    {
+      "day": 4,
+      "opponent": "Era #017",
+      "theirTime": "19:00",
+      "theirCaps": null,
+      "ourCaps": null
     }
   ],
   "scoreUpdated": "Sep 15 · Battle Day 1"
