@@ -163,9 +163,9 @@ const { useState, useEffect } = React;
 const T = s => s;
 
 // ── Event config ──
-// Matchmaking began Mon 2026-08-17 00:00 UTC. Seven-day arc: matching, three
+// Matchmaking began Sun 2026-09-14 00:00 UTC. Seven-day arc: matching, three
 // battle days (round-robin), battlefield selection, showdown, recovery. Each
-// game day is a UTC calendar day; Day 2 (first battle) starts Tue Aug 18 00:00.
+// game day is a UTC calendar day; Day 2 (first battle) starts Mon Sep 15 00:00.
 const EVENT = {
   startISO: "2026-09-14T00:00:00Z",
   endISO:   "2026-09-20T23:59:59Z",
@@ -249,7 +249,7 @@ const STAGE_TINT = Object.fromEntries(STAGES.map(s => [s.key, STAGE_GROUPS[s.gro
 
 // Current event day (1–7) from today's UTC date; 0 before it starts, capped at 7.
 function currentEventDay(now) {
-  const startDay = Date.parse("2026-08-17T00:00:00Z");
+  const startDay = Date.parse("2026-09-14T00:00:00Z");
   if (now < startDay) return 0;
   const d = Math.floor((now - startDay) / 86400000) + 1;
   return Math.min(7, d);
@@ -424,7 +424,7 @@ function OverviewTab() {
       <div className="pc-card">
         <h2>{T("Event Timeline")}</h2>
         <StageLine />
-        <p className="sl-note">{T("Seven-day, four-kingdom round-robin. Matchmaking opened Mon Aug 17 (00:00 UTC). Three 1v1 battle days (Day 2 starts Tue Aug 18), then the leading kingdom picks the showdown battlefield & time, a 4-way showdown, and a recovery day.")}</p>
+        <p className="sl-note">{T("Seven-day, four-kingdom round-robin. Matchmaking opened Sun Sep 14 (00:00 UTC). Three 1v1 battle days (Day 2 starts Mon Sep 15), then the leading kingdom picks the showdown battlefield & time, a 4-way showdown, and a recovery day.")}</p>
       </div>
 
       <div className="pc-card">
@@ -705,12 +705,12 @@ function ScoringTab() {
 }
 
 // Our server's Order Workshop event runs 19:00–20:00 UTC on each of the three
-// battle days (Day 2 = Aug 18 … Day 4 = Aug 20). Results are overlaid from
+// battle days (Day 2 = Sep 15 … Day 4 = Sep 17). Results are overlaid from
 // primordial.json (workshopResults[]) — each row is our fight that day.
 const WORKSHOP_DAYS = [
-  { day: 2, date: "2026-08-18" },
-  { day: 3, date: "2026-08-19" },
-  { day: 4, date: "2026-08-20" },
+  { day: 2, date: "2026-09-15" },
+  { day: 3, date: "2026-09-16" },
+  { day: 4, date: "2026-09-17" },
 ];
 let WORKSHOP_RESULTS = [];  // [{day, opponent, ourCaps, theirCaps, theirTime, note}]
 
@@ -738,7 +738,7 @@ function workshopStatus(now) {
   });
   let msToEnd = 0;
   if (live) msToEnd = Math.max(0, Date.parse(WORKSHOP_DAYS[liveIdx].date + "T20:00:00Z") - now);
-  const lock = beforeStart ? "The Order Workshop event opens on Battle Day 1 (Tue Aug 18, 19:00 UTC)"
+  const lock = beforeStart ? "The Order Workshop event opens on Battle Day 1 (Tue Sep 15, 19:00 UTC)"
              : (afterEnd ? "The Battle Stage is complete — Order Workshops have closed" : null);
   return { live, liveIdx, nextIdx, states, msToEnd, lock, beforeStart, afterEnd };
 }
