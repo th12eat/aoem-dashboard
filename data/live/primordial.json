@@ -460,23 +460,23 @@
   "kingdomScoreboard": [
     {
       "server": "E#008",
-      "points": 10800000000,
-      "dew": 23600000
+      "points": 19500000000,
+      "dew": 34000000
     },
     {
       "server": "E#012",
-      "points": 8090000000,
-      "dew": 17200000
+      "points": 11300000000,
+      "dew": 24600000
     },
     {
       "server": "E#013",
-      "points": 31400000000,
-      "dew": 54600000
+      "points": 41200000000,
+      "dew": 79300000
     },
     {
       "server": "E#017",
-      "points": 25000000000,
-      "dew": 51300000
+      "points": 41500000000,
+      "dew": 74200000
     }
   ],
   "workshopResults": [
@@ -498,9 +498,9 @@
       "day": 4,
       "opponent": "Era #017",
       "theirTime": "19:00",
-      "theirCaps": null,
-      "ourCaps": null
+      "theirCaps": 0,
+      "ourCaps": 0
     }
   ],
-  "scoreUpdated": "Sep 16 · Battle Day 2"
+  "scoreUpdated": "Sep 17 · Battle Day 3"
 }
