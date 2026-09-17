@@ -171,6 +171,10 @@ const EVENT = {
   endISO:   "2026-09-20T23:59:59Z",
   ourTime:  "19:00 UTC",           // our server's workshop / showdown window
 };
+// Day-6 showdown window (set once the Day-5 pick locks the time). Sat Sep 19,
+// 19:00 UTC this cycle; host/corners still TBD. Duration is a placeholder for
+// the "live" state — the fight runs the evening, not a strict 1h contest.
+const SHOWDOWN = { date: "2026-09-19", time: "19:00", durationH: 4 };
 
 // ── Servers (us first, then opponents) — colors per the user's assignment:
 //    Era #008 (us) green · Era #012 blue · Era #017 orange · Era #013 purple.
@@ -973,6 +977,18 @@ function App() {
   });
 
   const ws = workshopStatus(Date.now());
+  // Showdown badge state: once the workshops are done, the header badge hands
+  // off to the Day-6 showdown (its own 19:00 window), linking to the map.
+  const _now = Date.now();
+  const sdStart = Date.parse(SHOWDOWN.date + "T" + SHOWDOWN.time + ":00Z");
+  const sdEnd = sdStart + SHOWDOWN.durationH * 3600000;
+  const sdLive = _now >= sdStart && _now < sdEnd;
+  const sdOver = _now >= sdEnd;
+  // Show the showdown badge instead of the workshop one once workshops have
+  // closed (afterEnd) and the showdown hasn't finished.
+  const showShowdown = ws.afterEnd && !sdOver;
+  const sdWd = new Date(sdStart).toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });
+  const sdBadge = sdLive ? "LIVE" : (sdWd + " " + SHOWDOWN.time);
 
   // Jump to a section: switch to its tab, then smooth-scroll to the anchor id.
   const jumpTo = (tabId, anchorId) => {
@@ -1007,11 +1023,19 @@ function App() {
         {/* bottom-right: Order Workshop badge — pulses purple while the 19:00 window is
             live, greyed during matchmaking and after Day 4. Jumps to the schedule/results. */}
         <div className="hdr-pills">
-          <a href="#workshop-schedule" className={"ws-badge" + (ws.anyLive ? "" : " is-idle")}
-            title={ws.anyLive ? T("Order Workshop event is LIVE — jump to schedule") : T("Order Workshop — jump to schedule & results")}
-            onClick={(e) => { e.preventDefault(); jumpTo("overview", "workshop-schedule"); }}>
-            <span className="ws-ico">🔧</span><span className="ws-txt">{ws.afterEnd ? T("Workshop · Done") : (ws.badgeLabel ? T("Workshop · ") + ws.badgeLabel : T("Workshop"))}</span>
-          </a>
+          {showShowdown ? (
+            <a href="#day6-showdown" className={"ws-badge" + (sdLive ? "" : " is-idle")}
+              title={sdLive ? T("Showdown is LIVE — jump to the battlefield") : T("Day-6 Showdown — jump to the battlefield map")}
+              onClick={(e) => { e.preventDefault(); jumpTo("guide", "day6-showdown"); }}>
+              <span className="ws-ico">🔥</span><span className="ws-txt">{T("Showdown · ") + sdBadge}</span>
+            </a>
+          ) : (
+            <a href="#workshop-schedule" className={"ws-badge" + (ws.anyLive ? "" : " is-idle")}
+              title={ws.anyLive ? T("Order Workshop event is LIVE — jump to schedule") : T("Order Workshop — jump to schedule & results")}
+              onClick={(e) => { e.preventDefault(); jumpTo("overview", "workshop-schedule"); }}>
+              <span className="ws-ico">🔧</span><span className="ws-txt">{ws.afterEnd ? T("Workshop · Done") : (ws.badgeLabel ? T("Workshop · ") + ws.badgeLabel : T("Workshop"))}</span>
+            </a>
+          )}
         </div>
         <div style={S.headerSub}>{T("Four-Kingdom Round-Robin · Special KvK (No Troop Loss)")}</div>
         <h1 style={S.headerTitle}>{T("PRIMORDIAL CONFLICT")}</h1>
