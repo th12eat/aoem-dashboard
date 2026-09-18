@@ -461,22 +461,22 @@
     {
       "server": "E#008",
       "points": 19500000000,
-      "dew": 34000000
+      "dew": 34300000
     },
     {
       "server": "E#012",
-      "points": 11300000000,
-      "dew": 24600000
+      "points": 11400000000,
+      "dew": 25100000
     },
     {
       "server": "E#013",
-      "points": 41200000000,
-      "dew": 79300000
+      "points": 41400000000,
+      "dew": 81400000
     },
     {
       "server": "E#017",
-      "points": 41500000000,
-      "dew": 74200000
+      "points": 41600000000,
+      "dew": 75500000
     }
   ],
   "workshopResults": [
@@ -502,5 +502,5 @@
       "ourCaps": 0
     }
   ],
-  "scoreUpdated": "Sep 17 · Battle Day 3"
+  "scoreUpdated": "Sep 18 · Selection Day"
 }
