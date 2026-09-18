@@ -533,22 +533,23 @@ function SampleBattleMap() {
           <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" />
         </circle>
         <circle cx="-50" cy="260" r="5" fill={W.hex} />
-        {/* Siege pressure toward OUR (West) corner — enemy war machines stage on
-            the NW + SW flanks and curve in, each flagged DEFEND. */}
+        {/* Siege pressure toward OUR (West) corner tip (-50,260) — enemy war
+            machines stage further out on the NW + SW flanks and drive in at the
+            corner itself (not the R7 refinery), each flagged DEFEND. */}
         {/* NW flank */}
-        <text x="50" y="42" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="15" fontWeight="600" letterSpacing="0.5">SIEGE</text>
-        <circle cx="50" cy="52" r="4" fill="rgba(255,200,50,0.75)" />
-        <path d="M 55,60 C 77,102 97,162 104,204" stroke="rgba(255,200,50,0.6)" strokeWidth="2.5" fill="none" strokeDasharray="5,4" strokeLinecap="round" />
-        <polygon points="106,216 100,202 112,206" fill="rgba(255,200,50,0.75)" />
-        <use href="#pcsiegewarn" x="-4" y="82" width="44" height="44" />
-        <text x="70" y="118" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="600">DEFEND</text>
+        <text x="-150" y="80" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="15" fontWeight="600" letterSpacing="0.5">SIEGE</text>
+        <circle cx="-150" cy="92" r="4" fill="rgba(255,200,50,0.75)" />
+        <path d="M -146,100 C -128,150 -98,200 -66,240" stroke="rgba(255,200,50,0.6)" strokeWidth="2.5" fill="none" strokeDasharray="5,4" strokeLinecap="round" />
+        <polygon points="-56,251 -68,244 -60,234" fill="rgba(255,200,50,0.75)" />
+        <use href="#pcsiegewarn" x="-172" y="120" width="44" height="44" />
+        <text x="-130" y="184" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="600">DEFEND</text>
         {/* SW flank */}
-        <text x="50" y="486" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="15" fontWeight="600" letterSpacing="0.5">SIEGE</text>
-        <circle cx="50" cy="470" r="4" fill="rgba(255,200,50,0.75)" />
-        <path d="M 55,462 C 77,420 97,360 104,318" stroke="rgba(255,200,50,0.6)" strokeWidth="2.5" fill="none" strokeDasharray="5,4" strokeLinecap="round" />
-        <polygon points="106,306 100,320 112,316" fill="rgba(255,200,50,0.75)" />
-        <use href="#pcsiegewarn" x="-4" y="394" width="44" height="44" />
-        <text x="70" y="410" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="600">DEFEND</text>
+        <text x="-150" y="448" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="15" fontWeight="600" letterSpacing="0.5">SIEGE</text>
+        <circle cx="-150" cy="428" r="4" fill="rgba(255,200,50,0.75)" />
+        <path d="M -146,420 C -128,370 -98,320 -66,280" stroke="rgba(255,200,50,0.6)" strokeWidth="2.5" fill="none" strokeDasharray="5,4" strokeLinecap="round" />
+        <polygon points="-56,269 -68,276 -60,286" fill="rgba(255,200,50,0.75)" />
+        <use href="#pcsiegewarn" x="-172" y="336" width="44" height="44" />
+        <text x="-130" y="336" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="600">DEFEND</text>
       </svg>
     </div>
   );
