@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "oppServer": "Era 23",
-  "invasionTime": "11:00 UTC",
-  "prepStart": "2026-09-07",
-  "invasionStart": "2026-09-13",
+  "oppServer": "Era 87",
+  "invasionTime": "19:00 UTC",
+  "prepStart": "2026-09-21",
+  "invasionStart": "2026-09-27",
   "weWonPrep": false,
-  "ourRank": 2,
-  "oppRank": 1,
+  "ourRank": null,
+  "oppRank": null,
   "prepStarted": true,
-  "eventOver": true,
+  "eventOver": false,
   "alliances": [
     {
       "tag": "eRa",
@@ -18,10 +18,10 @@
       "tower": "Swordsman (N) / Archer (E)",
       "color": "#3b82f6",
       "allies": 170,
-      "power": "23,655,582,897",
-      "merits": "2,581,858,394",
-      "prepPoints": "34,970,315,836",
-      "crossBorder": "59,843,027,540"
+      "power": "24,386,210,184",
+      "merits": "2,321,338,909",
+      "prepPoints": "656,195,200",
+      "crossBorder": ""
     },
     {
       "tag": "REU",
@@ -31,10 +31,10 @@
       "tower": "Cavalry (S)",
       "color": "#ef4444",
       "allies": 162,
-      "power": "14,724,343,193",
-      "merits": "850,504,806",
-      "prepPoints": "14,584,642,314",
-      "crossBorder": "14,954,465,520"
+      "power": "14,999,085,814",
+      "merits": "329,327,716",
+      "prepPoints": "224,339,600",
+      "crossBorder": ""
     },
     {
       "tag": "Myt",
@@ -44,10 +44,10 @@
       "tower": "Pikeman (W)",
       "color": "#22c55e",
       "allies": 133,
-      "power": "9,560,087,946",
-      "merits": "874,216,312",
-      "prepPoints": "5,478,923,279",
-      "crossBorder": "11,336,605,530"
+      "power": "9,249,193,285",
+      "merits": "",
+      "prepPoints": "104,968,000",
+      "crossBorder": ""
     },
     {
       "tag": "FUN",
@@ -57,180 +57,180 @@
       "tower": "",
       "color": "#f59e0b",
       "allies": 74,
-      "power": "3,577,684,687",
-      "merits": "",
-      "prepPoints": "3,011,475,455",
-      "crossBorder": "726,748,210"
+      "power": "3,887,186,053",
+      "merits": "17,931,631",
+      "prepPoints": "77,483,200",
+      "crossBorder": ""
     }
   ],
   "prepStages": [
     {
       "nameKey": "prepStage1",
-      "ourPts": 1.51,
-      "oppPts": 2.1,
+      "ourPts": 1.06,
+      "oppPts": 1.9,
       "won": false
     },
     {
       "nameKey": "prepStage2",
-      "ourPts": 9.96,
-      "oppPts": 16.0,
+      "ourPts": 0,
+      "oppPts": 0,
       "won": false
     },
     {
       "nameKey": "prepStage3",
-      "ourPts": 13.23,
-      "oppPts": 20.3,
+      "ourPts": 0,
+      "oppPts": 0,
       "won": false
     },
     {
       "nameKey": "prepStage4",
-      "ourPts": 20.24,
-      "oppPts": 30.21,
+      "ourPts": 0,
+      "oppPts": 0,
       "won": false
     },
     {
       "nameKey": "prepStage5",
-      "ourPts": 5.66,
-      "oppPts": 6.79,
+      "ourPts": 0,
+      "oppPts": 0,
       "won": false
     }
   ],
-  "totalOur": 50.6,
-  "totalOpp": 75.4,
-  "prepLastUpdated": "2026-09-14 — Final · Lost TME to Era #023. Invasion DEFEAT 145B vs 209B (Imperial City Domination, 11:00 UTC). Prep also lost 50.6B vs 75.4B. Alliance figures are final prep + cross-border points.",
+  "totalOur": 1.06,
+  "totalOpp": 1.9,
+  "prepLastUpdated": "2026-09-21 — Live · Prep Day 1 (Forging Gear). vs Era #087 (Taiwan). Losing prep 1.06B vs 1.9B. Alliance figures: top-4 power/merits from scouting + current prep points. Invasion date est. Sep 27 — confirm.",
   "oppAlliances": [
     {
-      "tag": "Đ23",
-      "name": "LegionOfDonuts",
-      "allies": 164,
-      "power": "22,146,584,169",
-      "merits": "2,767,713,854",
-      "prepPoints": "44,493,864,726",
-      "crossBorder": "72,510,459,350"
+      "tag": "JAN",
+      "name": "戰｜浪跡天涯",
+      "allies": 170,
+      "power": "22,419,160,583",
+      "merits": "1,996,084,589",
+      "prepPoints": "725,808,400",
+      "crossBorder": ""
     },
     {
-      "tag": "Ᵽ23",
-      "name": "RoyalCrownKOR",
-      "allies": 148,
-      "power": "15,165,090,634",
-      "merits": "1,827,997,432",
-      "prepPoints": "24,229,606,814",
-      "crossBorder": "19,752,559,160"
+      "tag": "ACA",
+      "name": "鋼鐵巨嬰",
+      "allies": 168,
+      "power": "18,572,902,088",
+      "merits": "2,185,078,126",
+      "prepPoints": "450,321,600",
+      "crossBorder": ""
     },
     {
-      "tag": "β23",
-      "name": "Jericho",
-      "allies": 154,
-      "power": "12,371,267,660",
-      "merits": "164,174,696",
-      "prepPoints": "11,356,821,306",
-      "crossBorder": "3,432,426,200"
+      "tag": "WJD",
+      "name": "年總誓死隊",
+      "allies": 163,
+      "power": "11,827,806,974",
+      "merits": "239,842,196",
+      "prepPoints": "530,518,000",
+      "crossBorder": ""
     },
     {
-      "tag": "c23",
-      "name": "CornerERA23",
-      "allies": 135,
-      "power": "3,596,379,622",
-      "merits": "20,109,372",
-      "prepPoints": "5,955,652,155",
-      "crossBorder": "6,623,881,200"
+      "tag": "GOX",
+      "name": "武裝戰線",
+      "allies": 167,
+      "power": "9,502,988,422",
+      "merits": "136,590,396",
+      "prepPoints": "224,184,800",
+      "crossBorder": ""
     }
   ],
   "krakens": [
     {
       "rank": 1,
-      "name": "Đax",
-      "alliance": "Đ23",
-      "power": "348,226,764",
-      "merits": "376,404,905",
+      "name": "ᴷᴳBITMAPᴰʳˢ",
+      "alliance": "JAN",
+      "power": "398,711,696",
+      "merits": "317,662,116",
       "ratio": ""
     },
     {
       "rank": 2,
-      "name": "TruBlu",
-      "alliance": "Đ23",
-      "power": "346,110,102",
-      "merits": "303,473,968",
+      "name": "貧僧⁸⁷",
+      "alliance": "ACA",
+      "power": "359,197,634",
+      "merits": "152,701,897",
       "ratio": ""
     },
     {
       "rank": 3,
-      "name": "冰scorpio",
-      "alliance": "Đ23",
-      "power": "334,549,952",
-      "merits": "67,600,960",
+      "name": "瘋子Insane",
+      "alliance": "JAN",
+      "power": "348,150,397",
+      "merits": "",
       "ratio": ""
     },
     {
       "rank": 4,
-      "name": "Bøyd",
-      "alliance": "Đ23",
-      "power": "329,697,525",
-      "merits": "562,951,129",
+      "name": "華倫天奴",
+      "alliance": "JAN",
+      "power": "341,486,182",
+      "merits": "552,400,326",
       "ratio": ""
     },
     {
       "rank": 5,
-      "name": "kaktesplant",
-      "alliance": "Đ23",
-      "power": "307,246,664",
-      "merits": "302,549,790",
+      "name": "幻刺©十四代",
+      "alliance": "ACA",
+      "power": "327,506,538",
+      "merits": "448,068,293",
       "ratio": ""
     },
     {
       "rank": 6,
-      "name": "Triple3Crown",
-      "alliance": "Ᵽ23",
-      "power": "297,816,711",
-      "merits": "392,111,025",
+      "name": "無錢⁰⁸⁷求救",
+      "alliance": "JAN",
+      "power": "321,861,289",
+      "merits": "244,802,977",
       "ratio": ""
     },
     {
       "rank": 7,
-      "name": "ZoroMihawk",
-      "alliance": "Ᵽ23",
-      "power": "295,575,710",
-      "merits": "274,492,702",
+      "name": "伍佰揉到射",
+      "alliance": "ACA",
+      "power": "312,055,963",
+      "merits": "209,966,093",
       "ratio": ""
     },
     {
       "rank": 8,
-      "name": "Class",
-      "alliance": "Đ23",
-      "power": "287,276,011",
-      "merits": "120,084,713",
+      "name": "Springwind",
+      "alliance": "JAN",
+      "power": "284,088,720",
+      "merits": "",
       "ratio": ""
     },
     {
       "rank": 9,
-      "name": "SUPERLAZY5E",
-      "alliance": "Ᵽ23",
-      "power": "286,420,932",
-      "merits": "308,596,783",
+      "name": "櫻花妮妮",
+      "alliance": "ACA",
+      "power": "281,240,929",
+      "merits": "174,762,588",
       "ratio": ""
     },
     {
       "rank": 10,
-      "name": "KRMirae",
-      "alliance": "Ᵽ23",
-      "power": "278,472,593",
-      "merits": "324,085,861",
+      "name": "我阿公要生了",
+      "alliance": "JAN",
+      "power": "270,751,875",
+      "merits": "214,370,440",
       "ratio": ""
     },
     {
       "rank": 11,
-      "name": "OhMyGosh",
-      "alliance": "Ᵽ23",
-      "power": "270,908,433",
-      "merits": "184,461,840",
+      "name": "暗黑RobotGKO",
+      "alliance": "JAN",
+      "power": "269,439,920",
+      "merits": "",
       "ratio": ""
     },
     {
       "rank": 12,
-      "name": "TortaPounder",
-      "alliance": "--",
-      "power": "267,336,541",
-      "merits": "428,778,390",
+      "name": "弓本五臟",
+      "alliance": "ACA",
+      "power": "256,582,865",
+      "merits": "",
       "ratio": ""
     }
   ],
@@ -239,85 +239,85 @@
       "rank": 1,
       "name": "Collin6666",
       "alliance": "eRa",
-      "power": "400,512,737",
-      "merits": "94,370,516"
+      "power": "432,748,294",
+      "merits": ""
     },
     {
       "rank": 2,
-      "name": "XnJinX",
+      "name": "Macklemore",
       "alliance": "eRa",
-      "power": "348,957,777",
-      "merits": "254,397,161"
+      "power": "350,051,805",
+      "merits": "142,698,283"
     },
     {
       "rank": 3,
-      "name": "Macklemore",
+      "name": "XnJinX",
       "alliance": "eRa",
-      "power": "338,967,213",
-      "merits": "135,722,057"
+      "power": "349,691,982",
+      "merits": "258,161,322"
     },
     {
       "rank": 4,
-      "name": "abbybaby",
-      "alliance": "--",
-      "power": "282,830,353",
-      "merits": "155,783,791"
+      "name": "Lumberjack",
+      "alliance": "eRa",
+      "power": "299,882,478",
+      "merits": "355,892,409"
     },
     {
       "rank": 5,
-      "name": "Lumberjack",
+      "name": "BloodYoda",
       "alliance": "eRa",
-      "power": "281,222,340",
-      "merits": "349,953,019"
+      "power": "281,482,190",
+      "merits": "243,084,745"
     },
     {
       "rank": 6,
-      "name": "BloodYoda",
+      "name": "Zen7",
       "alliance": "eRa",
-      "power": "275,811,292",
-      "merits": "240,980,530"
+      "power": "271,418,142",
+      "merits": ""
     },
     {
       "rank": 7,
-      "name": "Zen7",
-      "alliance": "eRa",
-      "power": "271,284,748",
-      "merits": "112,029,973"
+      "name": "abbybaby",
+      "alliance": "--",
+      "power": "250,644,968",
+      "merits": "156,519,367"
     },
     {
       "rank": 8,
-      "name": "BUSHMASTER",
+      "name": "TommyTorpedo",
       "alliance": "eRa",
-      "power": "238,459,229",
-      "merits": "98,165,073"
+      "power": "243,725,405",
+      "merits": "153,326,502"
     },
     {
       "rank": 9,
-      "name": "TommyTorpedo",
+      "name": "BUSHMᴀSTᴇR",
       "alliance": "eRa",
-      "power": "236,440,925",
-      "merits": "149,059,962"
+      "power": "243,484,791",
+      "merits": ""
     },
     {
       "rank": 10,
-      "name": "Hermes++",
+      "name": "ScubaPig",
       "alliance": "eRa",
-      "power": "233,571,975",
-      "merits": "88,212,388"
+      "power": "240,763,379",
+      "merits": ""
     },
     {
       "rank": 11,
-      "name": "☙♣▪Africa✕⛰☙",
+      "name": "ᨏ᨞▰Africa✕▲ᨏ",
       "alliance": "eRa",
-      "power": "232,668,290",
-      "merits": "112,662,584"
+      "power": "240,162,001",
+      "merits": "122,223,643"
     },
     {
       "rank": 12,
-      "name": "ScubaPig",
+      "name": "Hermes++",
       "alliance": "eRa",
-      "power": "231,105,234",
-      "merits": "64,993,942"
+      "power": "235,352,048",
+      "merits": ""
     }
   ],
   "roles": {
@@ -386,10 +386,5 @@
       ]
     }
   },
-  "result": "Loss",
-  "finalScore": {
-    "us": "145B",
-    "them": "209B",
-    "label": "Imperial City Domination — E#023"
-  }
+  "result": "Live"
 }

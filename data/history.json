@@ -937,6 +937,57 @@
           ]
         ]
       }
+    },
+    {
+      "event": "TME",
+      "date": "2026-09-21",
+      "opp": "Era #087",
+      "result": "Live",
+      "note": "In progress — vs Era #087 (Taiwan). Prep Day 1 (Forging): losing 1.06B vs 1.9B. Top-4 alliance power + merits from this cycle scouting. Invasion date est. Sep 27.",
+      "ours": [
+        [
+          "eRa",
+          24386210184,
+          2321338909
+        ],
+        [
+          "REU",
+          14999085814,
+          329327716
+        ],
+        [
+          "Myt",
+          9249193285,
+          0
+        ],
+        [
+          "FUN",
+          3887186053,
+          17931631
+        ]
+      ],
+      "oppA": [
+        [
+          "JAN",
+          22419160583,
+          1996084589
+        ],
+        [
+          "ACA",
+          18572902088,
+          2185078126
+        ],
+        [
+          "WJD",
+          11827806974,
+          239842196
+        ],
+        [
+          "GOX",
+          9502988422,
+          136590396
+        ]
+      ]
     }
   ]
 }
