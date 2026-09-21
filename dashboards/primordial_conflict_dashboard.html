@@ -203,7 +203,7 @@ function KingdomBar() {
   };
   const rowFor = code => (KINGDOM_SCOREBOARD || []).find(k => k.server === code) || {};
   const num = v => Number(String(v ?? 0).replace(/,/g, "")) || 0;
-  const segs = SERVERS.map(s => { const r = rowFor(s.code); return { code: s.code, label: s.label, us: s.us, g: GRAD[s.code], pts: num(r.points), dew: num(r.dew) }; });
+  const segs = SERVERS.map(s => { const r = rowFor(s.code); return { code: s.code, label: s.label, us: s.us, g: GRAD[s.code], pts: num(r.points), dew: num(r.dew), essence: num(r.essence) }; });
   const total = segs.reduce((a, x) => a + x.pts, 0);
   const awaiting = !total; // no scores yet → split equally, still render the bar
   const widthPct = s => awaiting ? (100 / segs.length) : (s.pts / total) * 100;
@@ -215,13 +215,13 @@ function KingdomBar() {
         {segs.map(s => { const pct = widthPct(s); return (
           <div key={s.code} style={{ width: pct + "%", textAlign: "center", padding: "0 2px", overflow: "hidden" }}>
             {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 700, color: s.g.top, lineHeight: 1.2, whiteSpace: "nowrap" }}>{s.label}{s.us ? " (Us)" : ""}</div> : null}
-            {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 600, color: "#cbd5e1", lineHeight: 1.2, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{awaiting ? "0" : (<React.Fragment>{fmt(s.pts)} <span style={{ color: "#7aa7d8" }}>💧 {fmt(s.dew)}</span></React.Fragment>)}</div> : null}
+            {pct >= 8 ? <div style={{ fontSize: "12px", fontWeight: 600, color: "#cbd5e1", lineHeight: 1.2, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{awaiting ? "0" : (<React.Fragment>{fmt(s.pts)} <span style={{ color: "#7aa7d8" }}>💧 {fmt(s.dew)}</span>{s.essence ? <span style={{ color: "#d4a843" }}> ✨ {fmt(s.essence)}</span> : null}</React.Fragment>)}</div> : null}
           </div>
         ); })}
       </div>
       <div style={{ display: "flex", width: "100%", height: "22px", borderRadius: "6px", overflow: "hidden", border: "1px solid #334155" }}>
         {segs.map(s => { const pct = widthPct(s); return (
-          <div key={s.code} title={s.label + ": " + s.pts.toLocaleString() + " pts · " + s.dew.toLocaleString() + " Kingdom Dew" + (awaiting ? " (awaiting data)" : " (" + pct.toFixed(1) + "%)")} style={{ width: pct + "%", background: s.g.grad, borderRight: "1px solid rgba(0,0,0,0.3)" }} />
+          <div key={s.code} title={s.label + ": " + s.pts.toLocaleString() + " pts · " + s.dew.toLocaleString() + " Kingdom Dew" + (s.essence ? " · " + s.essence.toLocaleString() + " Kingdom Essence" : "") + (awaiting ? " (awaiting data)" : " (" + pct.toFixed(1) + "%)")} style={{ width: pct + "%", background: s.g.grad, borderRight: "1px solid rgba(0,0,0,0.3)" }} />
         ); })}
       </div>
     </div>
@@ -952,7 +952,7 @@ function App() {
       startISO: "2026-09-14T00:00:00Z", endISO: "2026-09-20T23:59:59Z",
       startLabel: "Sep 14", startLabelText: T("Starts"),
       endLabel: "Sep 20", endLabelText: T("Ends"),
-      pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete"),
+      pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete — 3rd of 4"),
       liveLabel: "Contest Live", liveDot: true,
       ical: { stub: true, label: T("Add to Calendar") },
       phases: [

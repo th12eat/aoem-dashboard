@@ -835,11 +835,18 @@
       "event": "Primordial Conflict",
       "date": "2026-09-14",
       "opp": "Era #012 / Era #017 / Era #013",
-      "result": "Live",
+      "result": "Loss",
       "multi": true,
       "star": true,
+      "placement": 3,
       "basis": "top-4 alliances (scouting)",
-      "note": "Special KvK — no troop loss occurs. Matchmaking-stage top-4 alliance power + total merits per server, from the Primordial Conflict dashboard Scouting tab. Stellar Dynasty: E#013 #2 (Glory 2x★), E#017 #3 (Pinnacle 1x★), E#012 #34 (Glory 2x★), E#008 #41 (Glory 2x★).",
+      "kingdomFinal": {
+        "Era #013": "89,100,000,000",
+        "Era #017": "83,600,000,000",
+        "Era 8": "23,800,000,000",
+        "Era #012": "11,900,000,000"
+      },
+      "note": "3rd of 4. Special KvK — no troop loss. Showdown hosted on #017 (we held the West corner). Final Kingdom Points below. Top-4 alliance power + merits are matchmaking-stage scouting. Stellar Dynasty: E#013 #2 (Glory 2x★), E#017 #3 (Pinnacle 1x★), E#012 #34 (Glory 2x★), E#008 #41 (Glory 2x★).",
       "ourRoster": [
         [
           "eRa",

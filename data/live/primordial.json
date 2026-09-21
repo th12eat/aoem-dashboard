@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "event": {
-    "stage": "Matchmaking",
+    "stage": "Complete",
     "startISO": "2026-09-14T00:00:00Z",
     "endISO": "2026-09-20T23:59:59Z"
   },
@@ -460,23 +460,27 @@
   "kingdomScoreboard": [
     {
       "server": "E#008",
-      "points": 19500000000,
-      "dew": 34300000
+      "points": 23800000000,
+      "dew": 34300000,
+      "essence": 3370000
     },
     {
       "server": "E#012",
-      "points": 11400000000,
-      "dew": 25100000
+      "points": 11900000000,
+      "dew": 25100000,
+      "essence": 391000
     },
     {
       "server": "E#013",
-      "points": 41400000000,
-      "dew": 81400000
+      "points": 89100000000,
+      "dew": 80000000,
+      "essence": 11000000
     },
     {
       "server": "E#017",
-      "points": 41600000000,
-      "dew": 75500000
+      "points": 83600000000,
+      "dew": 73200000,
+      "essence": 11100000
     }
   ],
   "workshopResults": [
@@ -502,5 +506,6 @@
       "ourCaps": 0
     }
   ],
-  "scoreUpdated": "Sep 18 · Selection Day"
+  "scoreUpdated": "Sep 20 · Final — 3rd of 4",
+  "result": "3rd of 4"
 }
