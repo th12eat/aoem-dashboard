@@ -785,27 +785,27 @@
       "date": "2026-09-05",
       "opp": "Era #023",
       "result": "Loss",
-      "note": "Lost to Era #023. Prep lost 50.6B vs 75.4B; invasion DEFEAT 145B vs 209B (Imperial City Domination, 11:00 UTC). Top-4 power + merits from this cycle's scouting (our merits carried from the prior cycle).",
+      "note": "Lost to Era #023. Prep lost 50.6B vs 75.4B; invasion DEFEAT 145B vs 209B (Imperial City Domination, 11:00 UTC). Top-4 power + merits from this cycle's scouting.",
       "ours": [
         [
           "eRa",
           23655582897,
-          2581858394
+          2101426455
         ],
         [
           "REU",
           14724343193,
-          850504806
+          303248680
         ],
         [
           "Myt",
           9560087946,
-          874216312
+          630248944
         ],
         [
           "FUN",
           3577684687,
-          0
+          23993806
         ]
       ],
       "oppA": [
