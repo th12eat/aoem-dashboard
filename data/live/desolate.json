@@ -148,20 +148,20 @@
       "server": "Era #068",
       "alliance": "TBD",
       "relation": "ally",
-      "notes": ""
+      "notes": "Ally — coordinate, no zeroing/farming."
     },
     {
       "id": 2,
       "server": "Era #066",
       "alliance": "TBD",
-      "relation": "ally",
+      "relation": "neutral",
       "notes": ""
     },
     {
       "id": 3,
       "server": "Era #028",
       "alliance": "TBD",
-      "relation": "ally",
+      "relation": "neutral",
       "notes": ""
     }
   ],
