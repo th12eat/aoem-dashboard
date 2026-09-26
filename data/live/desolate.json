@@ -1,75 +1,54 @@
 {
   "schemaVersion": 2,
   "eventConfig": {
-    "eventStart": "2026-08-10",
-    "eventEnd": "2026-08-17",
-    "matchingStart": "2026-08-08",
+    "eventStart": "2026-09-28",
+    "eventEnd": "2026-10-04",
+    "matchingStart": "2026-09-26",
     "servers": [
       "Era 8",
-      "Era #042",
-      "Era #039",
-      "Era #038"
+      "Era #068",
+      "Era #066",
+      "Era #028"
     ],
     "ourServer": "Era 8",
     "ourAlliances": [
-      "WC1",
-      "MyT",
+      "eRa",
+      "Myt",
       "REU",
-      "AGC"
+      "FUN"
     ],
     "season": "Stellar Dynasty",
     "ourSdRank": null,
     "mapFormat": "Map splits in phases: quarters → halves → full.",
-    "notes": "New matchup — scouting pending for #042 / #039 / #038.",
-    "aaruResult": "Era #042 won · Aaru 19:00 UTC Day 7 · Era #008 finished 4th of 4",
-    "eventOver": true
+    "notes": "New matchup — matchmaking Sep 26. Us North/blue. Opponents: #068 West, #066 East, #028 South.",
+    "aaruResult": "",
+    "eventOver": false
   },
   "kingdomPoints": {
-    "era8": "37.2B",
-    "era042": "93B",
-    "era039": "49.1B",
-    "era038": "42.3B",
-    "lastUpdated": "2026-08-16 — Final · Era #042 won · we finished 4th (Aaru 19:00 UTC)"
+    "era8": "—",
+    "era068": "—",
+    "era066": "—",
+    "era028": "—",
+    "lastUpdated": "2026-09-26 — Matchmaking. Awaiting event start (Sep 28)."
   },
-  "kingdomScoreboard": [
-    {
-      "rank": 1,
-      "server": "Era #042",
-      "points": "93,000,000,000"
-    },
-    {
-      "rank": 2,
-      "server": "Era #039",
-      "points": "49,100,000,000"
-    },
-    {
-      "rank": 3,
-      "server": "Era #038",
-      "points": "42,300,000,000"
-    },
-    {
-      "rank": 4,
-      "server": "Era 8",
-      "points": "37,200,000,000"
-    }
-  ],
+  "kingdomScoreboard": [],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
-      "tag": "WC1",
-      "points": "26,302,316,974"
+      "tag": "eRa",
+      "points": "—"
+    },
+    {
+      "tag": "Myt",
+      "points": "—"
     },
     {
       "tag": "REU",
-      "points": "6,306,297,694"
+      "points": "—"
     },
     {
-      "tag": "MyT",
-      "points": "4,462,578,152"
-    },
-    {
-      "tag": "AGC",
-      "points": "2,218,166,683"
+      "tag": "FUN",
+      "points": "—"
     }
   ],
   "placerGold": {
@@ -116,40 +95,40 @@
     ],
     "alliances": [
       {
-        "tag": "WC1",
+        "tag": "eRa",
         "current": null,
         "perHour": 0,
-        "gates": 2,
-        "pillarCities": 1,
+        "gates": 0,
+        "pillarCities": 0,
         "pillarNames": [],
-        "flags": 9,
-        "flagsBuilding": 1,
+        "flags": 0,
+        "flagsBuilding": 0,
         "confirmed": false
       },
       {
         "tag": "REU",
         "current": null,
         "perHour": 0,
-        "gates": 1,
-        "pillarCities": 1,
-        "pillarNames": [],
-        "flags": 5,
-        "flagsBuilding": 2,
-        "confirmed": false
-      },
-      {
-        "tag": "MyT",
-        "current": null,
-        "perHour": 0,
-        "gates": 1,
+        "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 8,
+        "flags": 0,
         "flagsBuilding": 0,
         "confirmed": false
       },
       {
-        "tag": "AGC",
+        "tag": "Myt",
+        "current": null,
+        "perHour": 0,
+        "gates": 0,
+        "pillarCities": 0,
+        "pillarNames": [],
+        "flags": 0,
+        "flagsBuilding": 0,
+        "confirmed": false
+      },
+      {
+        "tag": "FUN",
         "current": null,
         "perHour": 0,
         "gates": 0,
@@ -161,28 +140,28 @@
       }
     ],
     "flagZone2Cost": 50000,
-    "lastUpdated": "2026-08-08 — Awaiting event start (Aug 10)"
+    "lastUpdated": "2026-09-26 — Awaiting event start (Sep 28)"
   },
   "diplomacy": [
     {
       "id": 1,
-      "server": "Era #042",
+      "server": "Era #068",
       "alliance": "TBD",
-      "relation": "pending",
+      "relation": "ally",
       "notes": ""
     },
     {
       "id": 2,
-      "server": "Era #039",
+      "server": "Era #066",
       "alliance": "TBD",
-      "relation": "pending",
+      "relation": "ally",
       "notes": ""
     },
     {
       "id": 3,
-      "server": "Era #038",
+      "server": "Era #028",
       "alliance": "TBD",
-      "relation": "pending",
+      "relation": "ally",
       "notes": ""
     }
   ],
@@ -193,1038 +172,483 @@
       "sdRank": null,
       "alliances": [
         {
-          "tag": "WC1",
+          "tag": "eRa",
           "name": "WorldClass",
-          "power": "22,235,542,241",
-          "merits": "2,584,974,141"
-        },
-        {
-          "tag": "AGC",
-          "name": "AuroraGodCourt",
-          "power": "11,806,831,829",
-          "merits": "206,662,105"
+          "power": "24,829,224,559",
+          "merits": "2,340,781,966"
         },
         {
           "tag": "REU",
-          "name": "Reunions",
-          "power": "11,677,205,818",
-          "merits": "548,990,042"
+          "name": "CourtOfGods",
+          "power": "13,921,478,528",
+          "merits": "288,334,713"
         },
         {
-          "tag": "MyT",
+          "tag": "Myt",
           "name": "Mythic",
-          "power": "10,826,001,791",
-          "merits": "875,152,631"
+          "power": "9,368,461,419",
+          "merits": "637,193,302"
+        },
+        {
+          "tag": "FUN",
+          "name": "FunUnited",
+          "power": "3,869,418,610",
+          "merits": "16,662,178"
         }
       ],
       "players": [
         {
           "rank": 1,
-          "name": "時宗",
+          "name": "Collin6666",
           "alliance": "eRa",
-          "power": "759,527,248",
-          "merits": "442,384,201"
+          "power": "464,049,635",
+          "merits": "102,764,542"
         },
         {
           "rank": 2,
-          "name": "Collin6666",
+          "name": "XnJinX",
           "alliance": "eRa",
-          "power": "378,118,006",
-          "merits": "72,439,169"
+          "power": "372,844,796",
+          "merits": "258,161,322"
         },
         {
           "rank": 3,
-          "name": "XnJinX",
+          "name": "Macklemore",
           "alliance": "eRa",
-          "power": "337,980,435",
-          "merits": "243,154,901"
+          "power": "354,885,038",
+          "merits": "142,698,283"
         },
         {
           "rank": 4,
-          "name": "민트",
-          "alliance": "REU",
-          "power": "330,910,673",
-          "merits": "318,253,022"
+          "name": "Lumberjack",
+          "alliance": "eRa",
+          "power": "302,739,654",
+          "merits": "355,892,409"
         },
         {
           "rank": 5,
-          "name": "Macklemore",
+          "name": "BloodYoda",
           "alliance": "eRa",
-          "power": "312,634,632",
-          "merits": "122,139,219"
+          "power": "285,608,961",
+          "merits": "243,084,745"
         },
         {
           "rank": 6,
-          "name": "Lumberjack",
+          "name": "Zen7",
           "alliance": "eRa",
-          "power": "294,979,435",
-          "merits": "311,100,954"
+          "power": "271,421,455",
+          "merits": "112,215,964"
         },
         {
           "rank": 7,
-          "name": "ibubu♣JP",
-          "alliance": "eRa",
-          "power": "277,908,698",
-          "merits": "90,070,124"
+          "name": "abbybaby",
+          "alliance": "--",
+          "power": "260,412,453",
+          "merits": "156,519,367"
         },
         {
           "rank": 8,
-          "name": "BloodYoda",
+          "name": "BUSHMᴀSTᴇR",
           "alliance": "eRa",
-          "power": "273,043,059",
-          "merits": "237,824,754"
+          "power": "253,485,355",
+          "merits": "104,972,950"
         },
         {
           "rank": 9,
-          "name": "또라에몽",
-          "alliance": "REU",
-          "power": "258,876,860",
-          "merits": "42,415,406"
+          "name": "TommyTorpedo",
+          "alliance": "eRa",
+          "power": "244,345,768",
+          "merits": "153,326,502"
         },
         {
           "rank": 10,
-          "name": "상승칠성",
-          "alliance": "REU",
-          "power": "252,892,145",
-          "merits": "63,807,787"
+          "name": "ScubaPig",
+          "alliance": "eRa",
+          "power": "243,532,686",
+          "merits": "66,941,532"
         },
         {
           "rank": 11,
-          "name": "MuRageᴷᵀ✕",
+          "name": "ᨏ᨞▰Africa✕▲ᨏ",
           "alliance": "eRa",
-          "power": "239,410,597",
-          "merits": "162,609,126"
+          "power": "242,852,645",
+          "merits": "122,223,643"
         },
         {
           "rank": 12,
-          "name": "TommyTorpedo",
+          "name": "Hermes++",
           "alliance": "eRa",
-          "power": "235,497,252",
-          "merits": "142,312,675"
+          "power": "238,311,141",
+          "merits": "93,437,325"
         }
       ]
     },
     "opponents": [
       {
-        "server": "Era #042",
+        "server": "Era #068",
         "sdRank": null,
         "priority": "TBD",
-        "note": "",
+        "note": "West corner (orange).",
         "alliances": [
           {
-            "tag": "EGK",
-            "name": "EagleOfTheKing",
-            "power": "23,134,778,876",
-            "merits": "3,688,247,989"
+            "tag": "Ⓢ❻❽",
+            "name": "SyndicateSquad",
+            "power": "23,034,241,487",
+            "merits": "2,095,170,533"
           },
           {
-            "tag": "EC",
-            "name": "SL¥CareBears",
-            "power": "23,107,092,747",
-            "merits": "1,645,741,652"
+            "tag": "Ⓥ❻❽",
+            "name": "VIPMonarchs",
+            "power": "12,966,636,605",
+            "merits": "243,464,880"
           },
           {
-            "tag": "ZCH",
-            "name": "NexusHeroes",
-            "power": "13,866,504,218",
-            "merits": "255,100,939"
+            "tag": "Ⓞ❻❽",
+            "name": "OLDONÈ85",
+            "power": "3,859,046,754",
+            "merits": "20,290,745"
           },
           {
-            "tag": "WoK",
-            "name": "WolfOfTheKing",
-            "power": "2,923,726,765",
-            "merits": "31,035,555"
+            "tag": "GxK",
+            "name": "GoldenKnights",
+            "power": "406,349,120",
+            "merits": "11,314,395"
           }
         ],
         "players": [
           {
             "rank": 1,
-            "name": "AnyMousey",
-            "alliance": "EC",
-            "power": "390,366,960",
-            "merits": "506,728,304"
+            "name": "NIK99",
+            "alliance": "Ⓢ❻❽",
+            "power": "339,132,332",
+            "merits": "265,717,733"
           },
           {
             "rank": 2,
-            "name": "Lucii",
-            "alliance": "EC",
-            "power": "388,856,824",
-            "merits": "294,617,468"
-          },
-          {
-            "rank": 3,
-            "name": "Thanatore",
-            "alliance": "EGK",
-            "power": "365,648,766",
-            "merits": "407,885,218"
-          },
-          {
-            "rank": 4,
-            "name": "Formetokno",
-            "alliance": "EC",
-            "power": "363,180,860",
-            "merits": "227,233,751"
-          },
-          {
-            "rank": 5,
-            "name": "TR||CΣvΛhir",
-            "alliance": "EGK",
-            "power": "333,530,683",
-            "merits": "335,312,180"
-          },
-          {
-            "rank": 6,
-            "name": "ArabianLord",
-            "alliance": "EGK",
-            "power": "327,037,252",
-            "merits": "121,324,426"
-          },
-          {
-            "rank": 7,
-            "name": "Karagus",
-            "alliance": "EGK",
-            "power": "312,966,714",
-            "merits": "216,564,161"
-          },
-          {
-            "rank": 8,
-            "name": "Primal187",
-            "alliance": "EC",
-            "power": "292,773,743",
-            "merits": "93,640,846"
-          },
-          {
-            "rank": 9,
-            "name": "Otıs",
-            "alliance": "EGK",
-            "power": "290,901,551",
-            "merits": "458,094,684"
-          },
-          {
-            "rank": 10,
-            "name": "Babayagaˢᴸ¥",
-            "alliance": "EC",
-            "power": "285,635,592",
-            "merits": "146,429,647"
-          },
-          {
-            "rank": 11,
-            "name": "M1125",
-            "alliance": "EC",
-            "power": "273,663,945",
-            "merits": "103,301,222"
-          },
-          {
-            "rank": 12,
-            "name": "Bustterr",
-            "alliance": "EGK",
-            "power": "273,063,574",
-            "merits": "267,807,792"
-          }
-        ]
-      },
-      {
-        "server": "Era #039",
-        "sdRank": null,
-        "priority": "TBD",
-        "note": "",
-        "alliances": [
-          {
-            "tag": "③★⑨",
-            "name": "BestOfEmpire",
-            "power": "22,566,048,087",
-            "merits": "5,112,367,587"
-          },
-          {
-            "tag": "③∧⑨",
-            "name": "AgeofSpartans",
-            "power": "17,839,196,971",
-            "merits": "1,870,160,532"
-          },
-          {
-            "tag": "③✝⑨",
-            "name": "AegisVanguard",
-            "power": "10,599,918,409",
-            "merits": "140,373,186"
-          },
-          {
-            "tag": "T✝P",
-            "name": "templars",
-            "power": "954,887,493",
-            "merits": "16,465,670"
-          }
-        ],
-        "players": [
-          {
-            "rank": 1,
-            "name": "127대장",
-            "alliance": "③★⑨",
-            "power": "422,047,912",
-            "merits": "925,356,266"
-          },
-          {
-            "rank": 2,
-            "name": "DarthVader",
-            "alliance": "③★⑨",
-            "power": "397,568,707",
-            "merits": "545,131,569"
-          },
-          {
-            "rank": 3,
-            "name": "AZD다크애플",
-            "alliance": "③∧⑨",
-            "power": "330,176,808",
-            "merits": "152,510,525"
-          },
-          {
-            "rank": 4,
-            "name": "예진월드유주공주",
-            "alliance": "③★⑨",
-            "power": "320,157,942",
-            "merits": "556,601,913"
-          },
-          {
-            "rank": 5,
-            "name": "Ecthelíon",
-            "alliance": "③∧⑨",
-            "power": "296,571,850",
-            "merits": "56,798,671"
-          },
-          {
-            "rank": 6,
-            "name": "방철",
-            "alliance": "③★⑨",
-            "power": "291,957,087",
-            "merits": "52,712,790"
-          },
-          {
-            "rank": 7,
-            "name": "Ting⁷",
-            "alliance": "③★⑨",
-            "power": "281,235,277",
-            "merits": "107,738,444"
-          },
-          {
-            "rank": 8,
-            "name": "DatGuyMo",
-            "alliance": "③∧⑨",
-            "power": "281,101,730",
-            "merits": "286,448,740"
-          },
-          {
-            "rank": 9,
-            "name": "이재경ㅋㅋ",
-            "alliance": "③★⑨",
-            "power": "279,621,697",
-            "merits": "225,281,724"
-          },
-          {
-            "rank": 10,
-            "name": "KOR꼬꼬",
-            "alliance": "③★⑨",
-            "power": "278,540,050",
-            "merits": "38,657,876"
-          },
-          {
-            "rank": 11,
-            "name": "K£raz",
-            "alliance": "③∧⑨",
-            "power": "278,127,337",
-            "merits": "163,130,387"
-          },
-          {
-            "rank": 12,
-            "name": "닥치거라ㅋㅋ",
-            "alliance": "③★⑨",
-            "power": "277,373,995",
-            "merits": "214,144,619"
-          }
-        ]
-      },
-      {
-        "server": "Era #038",
-        "sdRank": null,
-        "priority": "TBD",
-        "note": "",
-        "alliances": [
-          {
-            "tag": "E38",
-            "name": "TheLastWolf",
-            "power": "20,498,778,374",
-            "merits": "1,920,883,425"
-          },
-          {
-            "tag": "K38",
-            "name": "Republic한국",
-            "power": "17,836,969,677",
-            "merits": "1,693,174,608"
-          },
-          {
-            "tag": "S38",
-            "name": "ShadowsOfWar",
-            "power": "11,080,393,467",
-            "merits": "131,982,763"
-          },
-          {
-            "tag": "NAS",
-            "name": "NewAllieSparta",
-            "power": "4,356,201,943",
-            "merits": "39,195,720"
-          }
-        ],
-        "players": [
-          {
-            "rank": 1,
-            "name": "Arcaneaura",
-            "alliance": "E38",
-            "power": "346,491,429",
-            "merits": "459,216,709"
-          },
-          {
-            "rank": 2,
-            "name": "HungryJoker",
+            "name": "Governor5373755",
             "alliance": "--",
-            "power": "329,925,158",
-            "merits": "546,778,565"
+            "power": "337,574,432",
+            "merits": "460,039,026"
           },
           {
             "rank": 3,
-            "name": "SAITAMAsun",
-            "alliance": "K38",
-            "power": "318,305,127",
-            "merits": "104,030,440"
+            "name": "FakeKA",
+            "alliance": "Ⓢ❻❽",
+            "power": "333,777,386",
+            "merits": "453,552,912"
           },
           {
             "rank": 4,
-            "name": "Kaspar~|~",
-            "alliance": "K38",
-            "power": "316,089,984",
-            "merits": "380,780,326"
+            "name": "TITANII",
+            "alliance": "Ⓢ❻❽",
+            "power": "311,377,277",
+            "merits": "150,183,404"
           },
           {
             "rank": 5,
-            "name": "Patatan",
-            "alliance": "E38",
-            "power": "307,144,209",
-            "merits": "85,270,013"
+            "name": "Moo°°",
+            "alliance": "Ⓢ❻❽",
+            "power": "288,052,311",
+            "merits": "244,049,384"
           },
           {
             "rank": 6,
-            "name": "SlickWhiskey",
-            "alliance": "E38",
-            "power": "288,843,491",
-            "merits": "63,056,726"
+            "name": "TidoDulu",
+            "alliance": "Ⓢ❻❽",
+            "power": "276,233,745",
+            "merits": "169,736,848"
           },
           {
             "rank": 7,
-            "name": "❀RiverHorseM",
-            "alliance": "E38",
-            "power": "275,295,313",
-            "merits": "76,077,947"
+            "name": "Adjudicatør",
+            "alliance": "Ⓢ❻❽",
+            "power": "254,200,530",
+            "merits": ""
           },
           {
             "rank": 8,
-            "name": "Harissssssss",
-            "alliance": "K38",
-            "power": "273,458,582",
-            "merits": "281,246,885"
+            "name": "Homelander☺",
+            "alliance": "Ⓢ❻❽",
+            "power": "245,709,674",
+            "merits": "173,168,458"
           },
           {
             "rank": 9,
-            "name": "BàTriệu",
-            "alliance": "E38",
-            "power": "273,002,863",
-            "merits": "318,789,922"
+            "name": "neddmann",
+            "alliance": "Ⓢ❻❽",
+            "power": "244,848,135",
+            "merits": "61,433,472"
           },
           {
             "rank": 10,
-            "name": "Bongosです",
-            "alliance": "E38",
-            "power": "264,278,029",
-            "merits": "71,349,651"
+            "name": "JennyOfPus",
+            "alliance": "Ⓢ❻❽",
+            "power": "244,768,216",
+            "merits": "163,180,370"
           },
           {
             "rank": 11,
-            "name": "THEGREAT¹³⁸⁹",
-            "alliance": "K38",
-            "power": "253,523,581",
-            "merits": "263,210,044"
+            "name": "⁴⁵ᴾᴼᴾᴾᵞᴹᴼᴹ₊❀",
+            "alliance": "Ⓢ❻❽",
+            "power": "237,965,630",
+            "merits": ""
           },
           {
             "rank": 12,
-            "name": "Benson¹ˢᵗ",
-            "alliance": "K38",
-            "power": "248,715,919",
-            "merits": "133,938,972"
+            "name": "♛¥ⱷⵣⵍⴹᴿᴼⵣ⁶⁸",
+            "alliance": "Ⓢ❻❽",
+            "power": "229,046,862",
+            "merits": ""
+          }
+        ]
+      },
+      {
+        "server": "Era #066",
+        "sdRank": null,
+        "priority": "TBD",
+        "note": "East corner (purple).",
+        "alliances": [
+          {
+            "tag": "HeX",
+            "name": "HonorExalted",
+            "power": "19,922,965,949",
+            "merits": "1,476,498,758"
+          },
+          {
+            "tag": "AꞭL",
+            "name": "Apex亗Legends",
+            "power": "15,169,941,227",
+            "merits": "642,921,846"
+          },
+          {
+            "tag": "EW亗",
+            "name": "1ELITE",
+            "power": "3,891,884,440",
+            "merits": "122,699,979"
+          },
+          {
+            "tag": "DUA",
+            "name": "AlgizUA",
+            "power": "2,268,007,597",
+            "merits": "20,934,673"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "のぶマン",
+            "alliance": "HeX",
+            "power": "318,042,950",
+            "merits": "297,881,804"
+          },
+          {
+            "rank": 2,
+            "name": "cyoko01",
+            "alliance": "HeX",
+            "power": "307,279,189",
+            "merits": ""
+          },
+          {
+            "rank": 3,
+            "name": "Journe",
+            "alliance": "HeX",
+            "power": "289,348,930",
+            "merits": "181,182,346"
+          },
+          {
+            "rank": 4,
+            "name": "Rixhard10",
+            "alliance": "AꞭL",
+            "power": "271,283,660",
+            "merits": "199,499,618"
+          },
+          {
+            "rank": 5,
+            "name": "✕š∀αⲅ⊕gЪ✕",
+            "alliance": "HeX",
+            "power": "254,654,554",
+            "merits": "83,306,438"
+          },
+          {
+            "rank": 6,
+            "name": "Vurro",
+            "alliance": "AꞭL",
+            "power": "231,874,971",
+            "merits": "245,102,556"
+          },
+          {
+            "rank": 7,
+            "name": "BHighlander",
+            "alliance": "HeX",
+            "power": "228,909,102",
+            "merits": "119,851,431"
+          },
+          {
+            "rank": 8,
+            "name": "AsUsual",
+            "alliance": "HeX",
+            "power": "227,901,091",
+            "merits": "156,855,523"
+          },
+          {
+            "rank": 9,
+            "name": "☆ALBOR18☆",
+            "alliance": "AꞭL",
+            "power": "224,821,745",
+            "merits": "104,750,500"
+          },
+          {
+            "rank": 10,
+            "name": "CatheX",
+            "alliance": "HeX",
+            "power": "218,595,944",
+            "merits": ""
+          },
+          {
+            "rank": 11,
+            "name": "HITOGAMI亝",
+            "alliance": "AꞭL",
+            "power": "214,923,735",
+            "merits": "174,927,344"
+          },
+          {
+            "rank": 12,
+            "name": "Ysman",
+            "alliance": "HeX",
+            "power": "208,329,904",
+            "merits": ""
+          }
+        ]
+      },
+      {
+        "server": "Era #028",
+        "sdRank": null,
+        "priority": "TBD",
+        "note": "South corner (green).",
+        "alliances": [
+          {
+            "tag": "τ28",
+            "name": "Titans of 28",
+            "power": "25,670,140,788",
+            "merits": "2,434,949,126"
+          },
+          {
+            "tag": "Σ28",
+            "name": "MΨRMIDΘNSΩϜ28",
+            "power": "11,008,955,849",
+            "merits": "178,672,437"
+          },
+          {
+            "tag": "H3K",
+            "name": "RoninOf28",
+            "power": "2,792,078,675",
+            "merits": "72,538,157"
+          },
+          {
+            "tag": "ASD",
+            "name": "AnatoliaSelçuk",
+            "power": "709,660,170",
+            "merits": "5,363,430"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "Baalkali",
+            "alliance": "τ28",
+            "power": "341,038,173",
+            "merits": "797,402,397"
+          },
+          {
+            "rank": 2,
+            "name": "Kingshai",
+            "alliance": "τ28",
+            "power": "332,986,487",
+            "merits": "248,751,765"
+          },
+          {
+            "rank": 3,
+            "name": "Karnaxxis",
+            "alliance": "τ28",
+            "power": "325,276,499",
+            "merits": "97,870,194"
+          },
+          {
+            "rank": 4,
+            "name": "下线了",
+            "alliance": "τ28",
+            "power": "292,910,946",
+            "merits": "338,460,330"
+          },
+          {
+            "rank": 5,
+            "name": "Scaara",
+            "alliance": "τ28",
+            "power": "269,781,430",
+            "merits": ""
+          },
+          {
+            "rank": 6,
+            "name": "ApakohZzz",
+            "alliance": "τ28",
+            "power": "266,892,030",
+            "merits": ""
+          },
+          {
+            "rank": 7,
+            "name": "³⁰⁰LadyOIL",
+            "alliance": "τ28",
+            "power": "264,926,086",
+            "merits": ""
+          },
+          {
+            "rank": 8,
+            "name": "Ryno",
+            "alliance": "τ28",
+            "power": "260,493,563",
+            "merits": "261,107,835"
+          },
+          {
+            "rank": 9,
+            "name": "Stickyiky",
+            "alliance": "τ28",
+            "power": "259,372,061",
+            "merits": ""
+          },
+          {
+            "rank": 10,
+            "name": "Banokles",
+            "alliance": "τ28",
+            "power": "249,700,826",
+            "merits": "174,659,153"
+          },
+          {
+            "rank": 11,
+            "name": "Pittsburgh",
+            "alliance": "Σ28",
+            "power": "246,857,239",
+            "merits": "143,596,042"
+          },
+          {
+            "rank": 12,
+            "name": "Arrwenn",
+            "alliance": "τ28",
+            "power": "244,004,681",
+            "merits": "138,545,110"
           }
         ]
       }
     ]
   },
   "allianceBuffs": {
-    "WC1": [],
+    "eRa": [],
     "REU": [],
-    "MyT": [],
-    "AGC": []
+    "Myt": [],
+    "FUN": []
   },
-  "mapState": {
-    "north_wind_fort": {
-      "occupant": "③★⑨",
-      "connected": true
-    },
-    "soaring_fort": {
-      "occupant": "③✝⑨",
-      "connected": true
-    },
-    "vengeance_fort": {
-      "occupant": "③★⑨",
-      "connected": true
-    },
-    "ruler_fort": {
-      "occupant": "③∧⑨",
-      "connected": true
-    },
-    "gate_moonfall": {
-      "occupant": "③★⑨",
-      "connected": true
-    },
-    "gate_sunshine": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "city_hippo": {
-      "occupant": "③★⑨",
-      "connected": true
-    },
-    "tower_1": {
-      "occupant": "③✝⑨",
-      "connected": true
-    },
-    "city_crocodile": {
-      "occupant": "③✝⑨",
-      "connected": true
-    },
-    "city_bull": {
-      "occupant": "③∧⑨",
-      "connected": true
-    },
-    "tower_2": {
-      "occupant": "③∧⑨",
-      "connected": true
-    },
-    "city_lion": {
-      "occupant": "③∧⑨",
-      "connected": true
-    },
-    "city_cat": {
-      "occupant": "EC",
-      "connected": true
-    },
-    "tower_3": {
-      "occupant": "EC",
-      "connected": true
-    },
-    "dawn_fort": {
-      "occupant": "S38",
-      "connected": true
-    },
-    "duskfire_dock": {
-      "occupant": "E38",
-      "connected": true
-    },
-    "lightbearer_dock": {
-      "occupant": "K38",
-      "connected": true
-    },
-    "blazing_fort": {
-      "occupant": "K38",
-      "connected": true
-    },
-    "city_scorpion": {
-      "occupant": "EC",
-      "connected": true
-    },
-    "gate_grace": {
-      "occupant": "EC",
-      "connected": true
-    },
-    "gate_fury": {
-      "occupant": "",
-      "connected": true
-    },
-    "mourning_fort": {
-      "occupant": "EC",
-      "connected": true
-    },
-    "balance_fort": {
-      "occupant": "EC",
-      "connected": true
-    },
-    "immortality_fort": {
-      "occupant": "ZCH",
-      "connected": true
-    },
-    "judgement_fort": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "city_vulture": {
-      "occupant": "EC",
-      "connected": true
-    },
-    "tower_4": {
-      "occupant": "ZCH",
-      "connected": true
-    },
-    "city_goose": {
-      "occupant": "ZCH",
-      "connected": true
-    },
-    "city_ram": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "tower_5": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "city_leopard": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "jade_eye_fort": {
-      "occupant": "WC1",
-      "connected": true
-    },
-    "city_jackal": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "majesty_dock": {
-      "occupant": "REU",
-      "connected": true
-    },
-    "tower_6": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "city_ibis": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "kingsguard_dock": {
-      "occupant": "MyT",
-      "connected": true
-    },
-    "crown_fort": {
-      "occupant": "WC1",
-      "connected": true
-    },
-    "gate_death": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "gate_chaos": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "gate_windrest": {
-      "occupant": "③★⑨",
-      "connected": true
-    },
-    "gate_primal_water": {
-      "occupant": "EC",
-      "connected": true
-    },
-    "gate_dawn_earth": {
-      "occupant": "③✝⑨",
-      "connected": true
-    },
-    "gate_abundance": {
-      "occupant": "ZCH",
-      "connected": true
-    },
-    "gate_life": {
-      "occupant": "",
-      "connected": true
-    },
-    "aaru": {
-      "occupant": "EGK",
-      "connected": true
-    },
-    "gate_azure_sky": {
-      "occupant": "K38",
-      "connected": true
-    }
-  },
+  "mapState": {},
   "mapRoutes": {
-    "actual": [
-      {
-        "owner": "EGK",
-        "path": [
-          "city_ram",
-          "tower_5"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EGK",
-        "path": [
-          "tower_5",
-          "city_leopard"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EGK",
-        "path": [
-          "city_leopard",
-          "city_jackal"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EGK",
-        "path": [
-          "city_jackal",
-          "tower_6"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EGK",
-        "path": [
-          "tower_6",
-          "city_ibis"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EGK",
-        "path": [
-          "city_ibis",
-          "gate_sunshine"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EGK",
-        "path": [
-          "city_jackal",
-          "gate_chaos"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EGK",
-        "path": [
-          "city_ibis",
-          "gate_death"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EGK",
-        "path": [
-          "city_leopard",
-          "jade_eye_fort"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EGK",
-        "path": [
-          "gate_death",
-          "aaru_n"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "ZCH",
-        "path": [
-          "immortality_fort",
-          "city_goose"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "ZCH",
-        "path": [
-          "city_goose",
-          "tower_4"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "ZCH",
-        "path": [
-          "city_goose",
-          "gate_abundance"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "ZCH",
-        "path": [
-          "gate_abundance",
-          "aaru_w"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EC",
-        "path": [
-          "city_vulture",
-          "gate_grace"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EC",
-        "path": [
-          "gate_grace",
-          "city_scorpion"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EC",
-        "path": [
-          "city_scorpion",
-          "tower_3"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EC",
-        "path": [
-          "tower_3",
-          "city_cat"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EC",
-        "path": [
-          "city_scorpion",
-          "gate_primal_water"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "EC",
-        "path": [
-          "gate_primal_water",
-          "aaru_s"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "③∧⑨",
-        "path": [
-          "ruler_fort",
-          "city_bull"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "③∧⑨",
-        "path": [
-          "city_bull",
-          "tower_2"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "③∧⑨",
-        "path": [
-          "tower_2",
-          "city_lion"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "③✝⑨",
-        "path": [
-          "soaring_fort",
-          "tower_1"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "③✝⑨",
-        "path": [
-          "tower_1",
-          "city_crocodile"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "③✝⑨",
-        "path": [
-          "tower_1",
-          "gate_dawn_earth"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "③✝⑨",
-        "path": [
-          "gate_dawn_earth",
-          "aaru_e"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "③★⑨",
-        "path": [
-          "city_hippo",
-          "gate_moonfall"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "③★⑨",
-        "path": [
-          "city_hippo",
-          "gate_windrest"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "③★⑨",
-        "path": [
-          "gate_windrest",
-          "aaru_e"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "K38",
-        "path": [
-          "gate_azure_sky",
-          "aaru_s"
-        ],
-        "ssh": true,
-        "sshOutward": true,
-        "sshAt": 0,
-        "noLine": true,
-        "connected": true
-      }
-    ],
-    "planned": [
-      {
-        "owner": "MyT",
-        "path": [
-          "jade_eye_fort",
-          "city_leopard",
-          "tower_5"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "MyT",
-        "path": [
-          "city_leopard",
-          "gate_chaos"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "REU",
-        "path": [
-          "majesty_dock",
-          "city_jackal",
-          "tower_6"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "REU",
-        "path": [
-          "city_jackal",
-          "gate_chaos"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "WC1",
-        "path": [
-          "crown_fort",
-          "city_ibis",
-          "tower_6"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "WC1",
-        "path": [
-          "city_ibis",
-          "gate_death"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "WC1",
-        "path": [
-          "city_ibis",
-          "gate_moonfall"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "WC1",
-        "path": [
-          "crown_fort"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "WC1",
-        "path": [
-          "kingsguard_dock"
-        ],
-        "ssh": false,
-        "connected": true
-      }
-    ]
+    "actual": [],
+    "planned": []
   }
 }
