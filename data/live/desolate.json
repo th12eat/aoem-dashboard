@@ -649,6 +649,160 @@
   "mapState": {},
   "mapRoutes": {
     "actual": [],
-    "planned": []
+    "planned": [
+      {
+        "owner": "eRa",
+        "path": [
+          "jade_eye_fort"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "crown_fort"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "majesty_dock",
+          "city_jackal"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "city_jackal",
+          "tower_6"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "city_jackal",
+          "city_leopard"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "city_jackal",
+          "gate_chaos"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "city_leopard",
+          "tower_5"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "tower_6",
+          "city_ibis"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "city_ibis",
+          "gate_moonfall"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "gate_chaos",
+          "aaru_w"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "aaru"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Myt",
+        "path": [
+          "jade_eye_fort",
+          "majesty_dock"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "kingsguard_dock",
+          "tower_6"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "tower_6",
+          "city_ibis"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "city_ibis",
+          "gate_sunshine"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "tower_6",
+          "gate_death"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "gate_death",
+          "aaru_n"
+        ],
+        "ssh": false,
+        "connected": true
+      }
+    ]
   }
 }
