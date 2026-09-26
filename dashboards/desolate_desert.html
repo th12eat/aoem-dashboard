@@ -619,17 +619,28 @@ function dimHex(hex, f) {
   const r = Math.round(((n>>16)&255) * f), g = Math.round(((n>>8)&255) * f), bl = Math.round((n&255) * f);
   return "#" + [r,g,bl].map(v => v.toString(16).padStart(2,"0")).join("");
 }
-// Default "active" (capturable) state by node, derived from the event day:
-//   towers active Day 3+ (2026-09-30); inner Z3 gates active Day 6+ (2026-10-03);
-//   Aaru Day 7+ (2026-10-04); everything else active from Day 1. Overridable via
-//   MAP_STATE[id].active.
+// Default "active" (capturable) state by node — follows the event's strict opening
+// schedule (all boundaries 00:00 UTC). Before its day a node is inactive (not yet
+// capturable); on/after its day it's unoccupied (or shows its occupant):
+//   Day 1 (Sep 28): build only — nothing capturable yet → whole map inactive.
+//   Day 2 (Sep 29): outer Mountain Forts/Docks (Z1→Z2) + Pillar Cities open.
+//   Day 3 (Sep 30): L/R Eye gates (Z2↔Z2) + Towers of Rotation open.
+//   Day 6 (Oct 3):  inner Z3 gates (Z2→Z3) open.
+//   Day 7 (Oct 4):  Aaru Palace opens.
+// Overridable per-node via MAP_STATE[id].active.
 function nodeActiveDefault(n, now) {
   const today = new Date(now).toISOString().slice(0,10);
   if (!n) return true;
+  if (n.type === "aaru")  return today >= "2026-10-04";
   if (n.type === "tower") return today >= "2026-09-30";
-  if (n.type === "aaru") return today >= "2026-10-04";
-  if (n.type === "gate" && n.info && n.info.includes("Z2→Z3")) return today >= "2026-10-03";
-  return true;
+  if (n.type === "city")  return today >= "2026-09-29";
+  if (n.type === "gate") {
+    const i = n.info || "";
+    if (i.includes("Z2→Z3")) return today >= "2026-10-03";   // inner Z3 gates
+    if (i.includes("Z2↔Z2")) return today >= "2026-09-30";   // L/R eye gates
+    return today >= "2026-09-29";                             // outer Z1→Z2 forts/docks
+  }
+  return today >= "2026-09-29";
 }
 
 // ── MAP STATE (source of truth) ──────────────────────────────────────────────
@@ -829,7 +840,9 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
           const owner = planOwn[id];                        // planned owner (from routes + overrides)
           const fill = owner ? allianceColor(owner, "plan") : NEUTRAL;
           const opacity = owner ? 1 : 0.55;
-          const tip = n.label + (n.info ? " — " + n.info : "") + (owner ? " · " + owner + " (planned)" : "");
+          // Plan map = end-game intent: every node is "active"; status is purely
+          // occupied (by whom) vs unoccupied. No active/inactive here.
+          const tip = n.label + (n.info ? " — " + n.info : "") + " · " + (owner ? owner + " (planned)" : "unoccupied (planned)");
           return (
           <circle key={id} cx={n.x} cy={n.y} r={(n.type === "aaru" ? 1.6 : 1.0) * (over ? 1.5 : 1)} fill={fill} stroke={over ? "#fff" : "#0a0c14"} strokeWidth={over ? 0.5 : 0.3} opacity={opacity} style={{ cursor: "default" }}
             onMouseEnter={() => setHoverNode(id)} onMouseLeave={() => setHoverNode(null)}><title>{tip}</title></circle>
