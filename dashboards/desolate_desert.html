@@ -226,10 +226,12 @@ const ROE_COLUMNS = [
   { key: "citiesGates", label: T("Cities / Gates") },
 ];
 // fight: map of column->bool. ally:true means green regardless (we side with them).
+// allyCols: specific columns treated as ally (green 🤝) even on an enemy row — e.g.
+// enemies everywhere BUT explicitly allied on Citadels (no zeroing each other's).
 const DIPLOMACY_ROE = [
-  { server: "Era #068", ally: true,  fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #068", ally: false, allyCols: ["citadels"], fight: { openField: true, riverland: true, farms: true, citadels: false, citiesGates: true } },
   { server: "Era #066", ally: false, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
-  { server: "Era #028", ally: false, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #028", ally: false, allyCols: ["citadels"], fight: { openField: true, riverland: true, farms: true, citadels: false, citiesGates: true } },
 ];
 
 // Per-player daily objectives (reset 00:00 UTC). `opensDay` = greyed until then.
@@ -495,12 +497,13 @@ function DiplomacyStatus() {
                     <span style={{ display: "inline-block", padding: "2px 10px", borderRadius: "999px", fontSize: "11px", fontWeight: 800, letterSpacing: "0.5px", textTransform: "uppercase", background: st.color + "26", color: st.color, border: `1px solid ${st.color}` }} title={st.desc}>{st.label}</span>
                   </td>
                   {ROE_COLUMNS.map(col => {
-                    const fight = row.ally ? false : !!row.fight[col.key];
-                    const dot = row.ally ? GREEN : (fight ? RED : GREY);
-                    const glyph = row.ally ? "🤝" : (fight ? "⚔️" : "✋");
+                    const allyCol = row.ally || (row.allyCols || []).includes(col.key);
+                    const fight = allyCol ? false : !!row.fight[col.key];
+                    const dot = allyCol ? GREEN : (fight ? RED : GREY);
+                    const glyph = allyCol ? "🤝" : (fight ? "⚔️" : "✋");
                     return (
                       <td key={col.key} style={{ ...S.td, textAlign: "center" }}>
-                        <span title={fight ? "Fight" : (row.ally ? "Ally" : "Leave alone / retaliate only")}
+                        <span title={allyCol ? "Ally" : (fight ? "Fight" : "Leave alone / retaliate only")}
                           style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "22px", height: "22px", borderRadius: "50%", background: dot, boxShadow: `0 0 8px ${dot}99`, fontSize: "11px" }}>{glyph}</span>
                       </td>
                     );
@@ -1617,12 +1620,12 @@ function DiplomacyTab({ state, setState }) {
       <div style={S.card}>
         <div style={S.cardTitle}>{T("Rules of Engagement")}</div>
         <div style={{ display: "grid", gap: "8px" }}>
-          <div style={{ padding: "10px", background: "#22c55e11", border: "1px solid #22c55e44", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (Era #068)</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>No zeroing citadels. No killing farmers. Coordinate and support each other. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
+          <div style={{ padding: "10px", background: "#ef444411", border: "1px solid #ef444444", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemies (Era #068, Era #028)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Fight everywhere — open field, riverland, farms, cities/gates — and deny them Placer Gold / Desert Points. <strong style={{ color: "#22c55e" }}>Exception: Citadels are allied</strong> — do NOT zero each other's citadels. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
           </div>
           <div style={{ padding: "10px", background: "#94a3b811", border: "1px solid #94a3b844", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (Era #066, Era #028)</div>
+            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (Era #066)</div>
             <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>No standing agreement — don't provoke, retaliate if attacked. Stances may shift as the event develops.</div>
           </div>
         </div>
@@ -2168,24 +2171,32 @@ function App() {
     const startISO = isDate(ec.eventStart) ? ec.eventStart + "T00:00:00Z" : null;
     const endISO = isDate(ec.eventEnd) ? ec.eventEnd + "T00:00:00Z" : null;
     const fmt = (iso) => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+    // Phase boundaries are derived from STAGES (single source of truth for dates),
+    // so the header countdown advances phase-by-phase (Z1→Z2→Tower→Z3→Aaru→Ends)
+    // and never drifts from the Event Timeline. Each phase counts down to the NEXT
+    // opening, not the whole event.
+    const byKey = (k) => STAGES.find(s => s.key === k);
+    const z1ISO = byKey("d1").startISO, z2ISO = byKey("d2").startISO;
+    const towISO = byKey("d345").startISO, z3ISO = byKey("d6").startISO;
     // Aaru fight time: HH:MM if AARU_OFFICIAL_TIME is a real time, else default 19:00.
     const aaruHHMM = (/^\d{1,2}:\d{2}/.exec(AARU_OFFICIAL_TIME) || [])[0] || "19:00";
-    const aaruISO = "2026-08-16T" + (aaruHHMM.length === 4 ? "0" + aaruHHMM : aaruHHMM) + ":00Z";
+    const aaruISO = byKey("d7").startISO.slice(0, 10) + "T" + (aaruHHMM.length === 4 ? "0" + aaruHHMM : aaruHHMM) + ":00Z";
     const aaruDisp = fmt(aaruISO) + " · " + aaruHHMM;
+    const endFallback = endISO || z3ISO;
     const phases = [
-      { fromISO: "2026-08-10T00:00:00Z", leftLabel: T("Zone 1"),     leftValue: fmt("2026-08-10T00:00:00Z"), rightLabel: T("Zone 2"),     rightValue: fmt("2026-08-11T00:00:00Z"), countdownISO: "2026-08-11T00:00:00Z" },
-      { fromISO: "2026-08-11T00:00:00Z", leftLabel: T("Zone 2"),     leftValue: fmt("2026-08-11T00:00:00Z"), rightLabel: T("Tower Open"), rightValue: fmt("2026-08-12T00:00:00Z"), countdownISO: "2026-08-12T00:00:00Z" },
-      { fromISO: "2026-08-12T00:00:00Z", leftLabel: T("Tower Open"), leftValue: fmt("2026-08-12T00:00:00Z"), rightLabel: T("Zone 3"),     rightValue: fmt("2026-08-15T00:00:00Z"), countdownISO: "2026-08-15T00:00:00Z" },
-      { fromISO: "2026-08-15T00:00:00Z", leftLabel: T("Zone 3"),     leftValue: fmt("2026-08-15T00:00:00Z"), rightLabel: T("Aaru Open"),  rightValue: aaruDisp,                    countdownISO: aaruISO },
-      { fromISO: aaruISO,                leftLabel: T("Aaru Open"),  leftValue: aaruDisp,                    rightLabel: T("Ends"),       rightValue: fmt(endISO || "2026-08-17T00:00:00Z"), countdownISO: endISO },
+      { fromISO: z1ISO,   leftLabel: T("Zone 1"),     leftValue: fmt(z1ISO),  rightLabel: T("Zone 2"),     rightValue: fmt(z2ISO),  countdownISO: z2ISO },
+      { fromISO: z2ISO,   leftLabel: T("Zone 2"),     leftValue: fmt(z2ISO),  rightLabel: T("Tower Open"), rightValue: fmt(towISO), countdownISO: towISO },
+      { fromISO: towISO,  leftLabel: T("Tower Open"), leftValue: fmt(towISO), rightLabel: T("Zone 3"),     rightValue: fmt(z3ISO),  countdownISO: z3ISO },
+      { fromISO: z3ISO,   leftLabel: T("Zone 3"),     leftValue: fmt(z3ISO),  rightLabel: T("Aaru Open"),  rightValue: aaruDisp,    countdownISO: aaruISO },
+      { fromISO: aaruISO, leftLabel: T("Aaru Open"),  leftValue: aaruDisp,    rightLabel: T("Ends"),       rightValue: fmt(endFallback), countdownISO: endISO },
     ];
     const mount = () => {
       if (window.EventHeader && document.getElementById("evtMeta")) {
         window.EventHeader.mount("#evtMeta", {
           timezone: "UTC+0",
           startISO, endISO,
-          startLabel: fmt(startISO || "2026-08-10T00:00:00Z"), startLabelText: T("Starts"),
-          endLabel: fmt(endISO || "2026-08-17T00:00:00Z"), endLabelText: T("Ends"),
+          startLabel: fmt(startISO || z1ISO), startLabelText: T("Starts"),
+          endLabel: fmt(endISO || endFallback), endLabelText: T("Ends"),
           pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete"),
           liveLabel: "Contest Live", liveDot: true,
           forceComplete: EVENT_CONFIG.eventOver === true,

@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "eventConfig": {
     "eventStart": "2026-09-28",
-    "eventEnd": "2026-10-04",
+    "eventEnd": "2026-10-05",
     "matchingStart": "2026-09-26",
     "servers": [
       "Era 8",
@@ -147,8 +147,8 @@
       "id": 1,
       "server": "Era #068",
       "alliance": "TBD",
-      "relation": "ally",
-      "notes": "Ally — coordinate, no zeroing/farming."
+      "relation": "hostile",
+      "notes": "Enemy everywhere EXCEPT Citadels (allied — no zeroing each other's citadels)."
     },
     {
       "id": 2,
@@ -161,8 +161,8 @@
       "id": 3,
       "server": "Era #028",
       "alliance": "TBD",
-      "relation": "neutral",
-      "notes": ""
+      "relation": "hostile",
+      "notes": "Enemy everywhere EXCEPT Citadels (allied — no zeroing each other's citadels)."
     }
   ],
   "contacts": [],
