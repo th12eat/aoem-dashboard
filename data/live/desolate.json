@@ -749,6 +749,18 @@
       {
         "owner": "Myt",
         "path": [
+          "crown_fort",
+          "kingsguard_dock"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true
+      },
+      {
+        "owner": "FUN",
+        "path": [
           "jade_eye_fort",
           "majesty_dock"
         ],
