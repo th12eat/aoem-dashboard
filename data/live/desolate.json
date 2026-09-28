@@ -747,30 +747,6 @@
         "connected": true
       },
       {
-        "owner": "Myt",
-        "path": [
-          "crown_fort",
-          "kingsguard_dock"
-        ],
-        "ssh": true,
-        "connected": true,
-        "sshOutward": true,
-        "sshAt": 0,
-        "noLine": true
-      },
-      {
-        "owner": "FUN",
-        "path": [
-          "jade_eye_fort",
-          "majesty_dock"
-        ],
-        "ssh": true,
-        "connected": true,
-        "sshOutward": true,
-        "sshAt": 0,
-        "noLine": true
-      },
-      {
         "owner": "REU",
         "path": [
           "kingsguard_dock",
@@ -814,6 +790,30 @@
         ],
         "ssh": false,
         "connected": true
+      },
+      {
+        "owner": "Myt",
+        "path": [
+          "crown_fort",
+          "kingsguard_dock"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true
+      },
+      {
+        "owner": "FUN",
+        "path": [
+          "jade_eye_fort",
+          "majesty_dock"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true
       }
     ]
   }
