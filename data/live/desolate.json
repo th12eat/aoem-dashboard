@@ -659,7 +659,7 @@
         "connected": true
       },
       {
-        "owner": "eRa",
+        "owner": "REU",
         "path": [
           "crown_fort"
         ],
@@ -750,7 +750,7 @@
         "owner": "REU",
         "path": [
           "kingsguard_dock",
-          "tower_6"
+          "city_ibis"
         ],
         "ssh": false,
         "connected": true
@@ -812,6 +812,17 @@
         "ssh": true,
         "connected": true,
         "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "city_ibis",
+          "gate_death"
+        ],
+        "ssh": true,
+        "connected": true,
         "sshAt": 0,
         "noLine": true
       }
