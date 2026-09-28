@@ -8,7 +8,7 @@
   "ourRank": null,
   "oppRank": null,
   "prepStarted": true,
-  "eventOver": false,
+  "eventOver": true,
   "alliances": [
     {
       "tag": "eRa",
@@ -20,8 +20,8 @@
       "allies": 170,
       "power": "24,386,210,184",
       "merits": "2,321,338,909",
-      "prepPoints": "47,320,555,005",
-      "crossBorder": ""
+      "prepPoints": "47,607,833,435",
+      "crossBorder": "58,851,121,410"
     },
     {
       "tag": "REU",
@@ -33,8 +33,8 @@
       "allies": 162,
       "power": "14,999,085,814",
       "merits": "329,327,716",
-      "prepPoints": "11,166,258,416",
-      "crossBorder": ""
+      "prepPoints": "11,306,397,726",
+      "crossBorder": "7,786,444,350"
     },
     {
       "tag": "Myt",
@@ -46,8 +46,8 @@
       "allies": 133,
       "power": "9,249,193,285",
       "merits": "637,397,967",
-      "prepPoints": "4,619,870,883",
-      "crossBorder": ""
+      "prepPoints": "4,706,945,543",
+      "crossBorder": "9,088,885,020"
     },
     {
       "tag": "FUN",
@@ -59,8 +59,8 @@
       "allies": 74,
       "power": "3,887,186,053",
       "merits": "17,931,631",
-      "prepPoints": "3,251,396,847",
-      "crossBorder": ""
+      "prepPoints": "3,274,196,727",
+      "crossBorder": "795,455,200"
     }
   ],
   "prepStages": [
@@ -95,9 +95,9 @@
       "won": false
     }
   ],
-  "totalOur": 65.4,
-  "totalOpp": 80.3,
-  "prepLastUpdated": "2026-09-26 — Live · Prep Day 5 (Power Boost, final stage). vs Era #087 (Taiwan). Losing prep 65.4B vs 80.3B. Alliance figures: top-4 power/merits from scouting + current prep points. Invasion Sep 27 19:00 UTC.",
+  "totalOur": 144,
+  "totalOpp": 192,
+  "prepLastUpdated": "2026-09-27 — FINAL · Loss vs Era #087 (Taiwan). Total event points 144B vs 192B (majority from the Cross-Border invasion fight). Prep finished 65.4B vs 80.3B. Alliance figures are final event points; Cross-Border column shows our alliances' invasion points.",
   "oppAlliances": [
     {
       "tag": "JAN",
@@ -105,7 +105,7 @@
       "allies": 170,
       "power": "22,419,160,583",
       "merits": "1,996,084,589",
-      "prepPoints": "39,230,943,599",
+      "prepPoints": "39,383,398,889",
       "crossBorder": ""
     },
     {
@@ -114,7 +114,7 @@
       "allies": 168,
       "power": "18,572,902,088",
       "merits": "2,185,078,126",
-      "prepPoints": "19,360,658,948",
+      "prepPoints": "19,470,623,778",
       "crossBorder": ""
     },
     {
@@ -123,7 +123,7 @@
       "allies": 163,
       "power": "11,827,806,974",
       "merits": "239,842,196",
-      "prepPoints": "16,412,969,476",
+      "prepPoints": "16,572,755,836",
       "crossBorder": ""
     },
     {
@@ -132,7 +132,7 @@
       "allies": 167,
       "power": "9,502,988,422",
       "merits": "136,590,396",
-      "prepPoints": "8,052,285,687",
+      "prepPoints": "8,095,105,717",
       "crossBorder": ""
     }
   ],
@@ -386,5 +386,5 @@
       ]
     }
   },
-  "result": "Live"
+  "result": "Loss"
 }
