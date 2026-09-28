@@ -229,8 +229,8 @@ const ROE_COLUMNS = [
 // allyCols: specific columns treated as ally (green 🤝) even on an enemy row — e.g.
 // enemies everywhere BUT explicitly allied on Citadels (no zeroing each other's).
 const DIPLOMACY_ROE = [
-  { server: "Era #068", ally: false, allyCols: ["citadels"], fight: { openField: true, riverland: true, farms: true, citadels: false, citiesGates: true } },
-  { server: "Era #066", ally: false, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #068", ally: true, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #066", ally: false, allyCols: ["citadels"], fight: { openField: true, riverland: true, farms: true, citadels: false, citiesGates: true } },
   { server: "Era #028", ally: false, allyCols: ["citadels"], fight: { openField: true, riverland: true, farms: true, citadels: false, citiesGates: true } },
 ];
 
@@ -1620,13 +1620,13 @@ function DiplomacyTab({ state, setState }) {
       <div style={S.card}>
         <div style={S.cardTitle}>{T("Rules of Engagement")}</div>
         <div style={{ display: "grid", gap: "8px" }}>
-          <div style={{ padding: "10px", background: "#ef444411", border: "1px solid #ef444444", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemies (Era #068, Era #028)</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Fight everywhere — open field, riverland, farms, cities/gates — and deny them Placer Gold / Desert Points. <strong style={{ color: "#22c55e" }}>Exception: Citadels are allied</strong> — do NOT zero each other's citadels. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
+          <div style={{ padding: "10px", background: "#22c55e11", border: "1px solid #22c55e44", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (Era #068)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Do NOT fight them anywhere. No zeroing citadels. No killing farmers. Coordinate and support each other. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
           </div>
-          <div style={{ padding: "10px", background: "#94a3b811", border: "1px solid #94a3b844", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "13px" }}>Neutral (Era #066)</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>No standing agreement — don't provoke, retaliate if attacked. Stances may shift as the event develops.</div>
+          <div style={{ padding: "10px", background: "#ef444411", border: "1px solid #ef444444", borderRadius: "8px" }}>
+            <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemies (Era #066, Era #028)</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Fight everywhere — open field, riverland, farms, cities/gates — and deny them Placer Gold / Desert Points. <strong style={{ color: "#22c55e" }}>Exception: Citadels are pacted</strong> — do NOT zero each other's citadels. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
           </div>
         </div>
       </div>

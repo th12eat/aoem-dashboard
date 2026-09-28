@@ -147,22 +147,22 @@
       "id": 1,
       "server": "Era #068",
       "alliance": "TBD",
-      "relation": "hostile",
-      "notes": "Enemy everywhere EXCEPT Citadels (allied — no zeroing each other's citadels)."
+      "relation": "ally",
+      "notes": "Ally — coordinate, no fighting anywhere."
     },
     {
       "id": 2,
       "server": "Era #066",
       "alliance": "TBD",
-      "relation": "neutral",
-      "notes": ""
+      "relation": "hostile",
+      "notes": "Enemy everywhere EXCEPT Citadels (pact — no zeroing each other's citadels)."
     },
     {
       "id": 3,
       "server": "Era #028",
       "alliance": "TBD",
       "relation": "hostile",
-      "notes": "Enemy everywhere EXCEPT Citadels (allied — no zeroing each other's citadels)."
+      "notes": "Enemy everywhere EXCEPT Citadels (pact — no zeroing each other's citadels)."
     }
   ],
   "contacts": [],
