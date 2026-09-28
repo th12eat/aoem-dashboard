@@ -25,13 +25,18 @@
     "eventOver": false
   },
   "kingdomPoints": {
-    "era8": "—",
-    "era068": "—",
-    "era066": "—",
-    "era028": "—",
-    "lastUpdated": "2026-09-26 — Matchmaking. Awaiting event start (Sep 28)."
+    "era8": "1,505,182,000",
+    "era068": "1,496,510,045",
+    "era066": "1,315,996,185",
+    "era028": "1,017,323,410",
+    "lastUpdated": "2026-09-28 — Day 1 (Zone 1). Kingdom points: E#008 1.51B, E#068 1.50B, E#066 1.32B, E#028 1.02B."
   },
-  "kingdomScoreboard": [],
+  "kingdomScoreboard": [
+    { "rank": 1, "server": "Era 8", "points": "1,505,182,000" },
+    { "rank": 2, "server": "Era #068", "points": "1,496,510,045" },
+    { "rank": 3, "server": "Era #066", "points": "1,315,996,185" },
+    { "rank": 4, "server": "Era #028", "points": "1,017,323,410" }
+  ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
