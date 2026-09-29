@@ -694,6 +694,30 @@
     "city_leopard": {
       "occupant": "eRa",
       "connected": true
+    },
+    "judgement_fort": {
+      "occupant": "Ⓞ❻❽",
+      "connected": true
+    },
+    "immortality_fort": {
+      "occupant": "Ⓥ❻❽",
+      "connected": true
+    },
+    "city_goose": {
+      "occupant": "Ⓥ❻❽",
+      "connected": true
+    },
+    "mourning_fort": {
+      "occupant": "Ⓢ❻❽",
+      "connected": true
+    },
+    "balance_fort": {
+      "occupant": "Ⓢ❻❽",
+      "connected": true
+    },
+    "city_vulture": {
+      "occupant": "Ⓢ❻❽",
+      "connected": true
     }
   },
   "mapRoutes": {
@@ -772,6 +796,60 @@
         "sshOutward": true,
         "sshAt": 0,
         "noLine": true
+      },
+      {
+        "owner": "Ⓞ❻❽",
+        "path": [
+          "judgement_fort",
+          "city_ram"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Ⓥ❻❽",
+        "path": [
+          "immortality_fort",
+          "city_goose"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Ⓥ❻❽",
+        "path": [
+          "city_goose",
+          "tower_4"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Ⓢ❻❽",
+        "path": [
+          "balance_fort",
+          "city_vulture"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Ⓢ❻❽",
+        "path": [
+          "city_vulture",
+          "gate_grace"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Ⓢ❻❽",
+        "path": [
+          "city_vulture",
+          "tower_4"
+        ],
+        "ssh": false,
+        "connected": true
       }
     ],
     "planned": [
