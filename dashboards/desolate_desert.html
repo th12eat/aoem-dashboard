@@ -260,33 +260,43 @@ const KEY_NODES = [
   { id: "aaru", name: "Aaru Palace", zone: "z3", type: "palace", desc: "Final objective. Massive Desert Points per second. Hold longest or 1hr consecutive to win.", points: 5000 },
 ];
 
-// Per-alliance progress toward each alliance achievement. target = denominator;
-// cur = current value per alliance. Reset to fresh pre-event state (all 0) for the
-// new #028/#066/#068 grouping — fills in as the event progresses.
+// Per-alliance progress toward each alliance achievement. target = denominator.
+// `derive` names a LIVE metric so progress auto-tracks from the data (no manual
+// upkeep): "flags" = alliance flag count · "stronghold" = 1 if any flags built ·
+// "pillars" = # pillar cities occupied on the map · "points" = alliance Desert
+// Points. Point-goals with no clean live source (Tower/Aaru occupation points)
+// keep a manual `cur` override until captured. See achievementCur() below.
 const ACHIEVEMENTS = [
-  { name: "Desert Roots", req: "Build alliance stronghold", target: 1, personal: "100K Desert Points",
-    cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
-  { name: "Pioneer the Frontier I", req: "Build 5 alliance flags", target: 5, personal: "200K Desert Points",
-    cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
-  { name: "Pioneer the Frontier II", req: "Build 10 alliance flags", target: 10, personal: "500K Desert Points",
-    cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
-  { name: "Pioneer the Frontier III", req: "Build 15 alliance flags", target: 15, personal: "800K Desert Points",
-    cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
-  { name: "Pioneer the Frontier IV", req: "Build 20 alliance flags", target: 20, personal: "1.2M Desert Points",
-    cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
-  { name: "Siege and Plunder I", req: "Occupy 1 Lv.7 city (Pillar City)", target: 1, personal: "500K Desert Points",
-    cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
-  { name: "Desert Treasure I", req: "Alliance Desert Points", target: 160000000, personal: "5M Desert Points",
-    cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
-  { name: "Desert Treasure II", req: "Alliance Desert Points", target: 320000000, personal: "10M Desert Points",
-    cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
-  { name: "Desert Treasure III", req: "Alliance Desert Points", target: 640000000, personal: "20M Desert Points",
-    cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
+  { name: "Desert Roots", req: "Build alliance stronghold", target: 1, personal: "100K Desert Points", derive: "stronghold" },
+  { name: "Pioneer the Frontier I", req: "Build 5 alliance flags", target: 5, personal: "200K Desert Points", derive: "flags" },
+  { name: "Pioneer the Frontier II", req: "Build 10 alliance flags", target: 10, personal: "500K Desert Points", derive: "flags" },
+  { name: "Pioneer the Frontier III", req: "Build 15 alliance flags", target: 15, personal: "800K Desert Points", derive: "flags" },
+  { name: "Pioneer the Frontier IV", req: "Build 20 alliance flags", target: 20, personal: "1.2M Desert Points", derive: "flags" },
+  { name: "Siege and Plunder I", req: "Occupy 1 Lv.7 city (Pillar City)", target: 1, personal: "500K Desert Points", derive: "pillars" },
+  { name: "Desert Treasure I", req: "Alliance Desert Points", target: 160000000, personal: "5M Desert Points", derive: "points" },
+  { name: "Desert Treasure II", req: "Alliance Desert Points", target: 320000000, personal: "10M Desert Points", derive: "points" },
+  { name: "Desert Treasure III", req: "Alliance Desert Points", target: 640000000, personal: "20M Desert Points", derive: "points" },
   { name: "Tower Master I", req: "Occupy Tower + Peaceful Riverland pts", target: 4000000, personal: "10M Desert Points",
     cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
   { name: "Crowned in Aaru", req: "Occupy Aaru Palace + occupation pts", target: 8000000, personal: "20M Desert Points",
     cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
 ];
+// Current value for an achievement/alliance — derived from live data when the
+// achievement has a `derive` key, else from its manual `cur` map (null = "—").
+function achievementCur(a, tag) {
+  if (a.derive) {
+    const pg = (PLACER_GOLD.alliances || []).find(x => x.tag === tag) || {};
+    if (a.derive === "flags")      return Number(pg.flags || 0);
+    if (a.derive === "stronghold") return (Number(pg.flags || 0) > 0 || (pg.gates || 0) > 0 || (pg.pillarCities || 0) > 0) ? 1 : 0;
+    if (a.derive === "pillars")    return Number(pg.pillarCities || 0);
+    if (a.derive === "points") {
+      const ap = (ALLIANCE_POINTS || []).find(x => x.tag === tag);
+      const n = ap ? Number(String(ap.points).replace(/[^0-9.]/g, "")) : NaN;
+      return isNaN(n) ? null : n;
+    }
+  }
+  return a.cur ? a.cur[tag] : null;
+}
 
 const AARU_TIME_SLOTS = [
   { label: "01:00 - 05:00 UTC", start: "01:00", end: "05:00" },
@@ -1502,7 +1512,7 @@ function PointsTab() {
             {ACHIEVEMENTS.map(a => {
               const abbr = (n) => { n = Number(n); if (n >= 1e9) return (n/1e9).toFixed(2).replace(/\.?0+$/,"")+"B"; if (n >= 1e6) return (n/1e6).toFixed(0)+"M"; if (n >= 1e3) return (n/1e3).toFixed(0)+"K"; return String(n); };
               const cell = (tag) => {
-                const cur = a.cur ? a.cur[tag] : null;
+                const cur = achievementCur(a, tag);
                 if (cur == null) return <span style={{ color: "#475569" }}>—</span>;
                 const met = cur >= a.target;
                 const label = a.target >= 1e6 ? (abbr(cur) + "/" + abbr(a.target)) : (cur + "/" + a.target);
