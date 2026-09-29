@@ -718,6 +718,30 @@
     "city_vulture": {
       "occupant": "Ⓢ❻❽",
       "connected": true
+    },
+    "blazing_fort": {
+      "occupant": "H3K",
+      "connected": true
+    },
+    "lightbearer_dock": {
+      "occupant": "τ28",
+      "connected": true
+    },
+    "duskfire_dock": {
+      "occupant": "τ28",
+      "connected": true
+    },
+    "city_scorpion": {
+      "occupant": "τ28",
+      "connected": true
+    },
+    "dawn_fort": {
+      "occupant": "Σ28",
+      "connected": true
+    },
+    "city_lion": {
+      "occupant": "Σ28",
+      "connected": true
     }
   },
   "mapRoutes": {
@@ -850,6 +874,110 @@
         ],
         "ssh": false,
         "connected": true
+      },
+      {
+        "owner": "τ28",
+        "path": [
+          "lightbearer_dock",
+          "city_scorpion"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "τ28",
+        "path": [
+          "city_scorpion",
+          "gate_grace"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "τ28",
+        "path": [
+          "city_scorpion",
+          "tower_3"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Σ28",
+        "path": [
+          "dawn_fort",
+          "city_lion"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Σ28",
+        "path": [
+          "city_lion",
+          "tower_2"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Σ28",
+        "path": [
+          "tower_2",
+          "aaru"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true
+      },
+      {
+        "owner": "τ28",
+        "path": [
+          "tower_3",
+          "aaru"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true
+      },
+      {
+        "owner": "Ⓢ❻❽",
+        "path": [
+          "gate_grace",
+          "aaru"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true
+      },
+      {
+        "owner": "Ⓥ❻❽",
+        "path": [
+          "tower_4",
+          "aaru"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true
+      },
+      {
+        "owner": "REU",
+        "path": [
+          "city_ibis",
+          "gate_death"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshAt": 0,
+        "noLine": true
       }
     ],
     "planned": [
