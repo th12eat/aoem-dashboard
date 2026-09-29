@@ -742,6 +742,34 @@
     "city_lion": {
       "occupant": "Σ28",
       "connected": true
+    },
+    "ruler_fort": {
+      "occupant": "HeX",
+      "connected": true
+    },
+    "vengeance_fort": {
+      "occupant": "HeX",
+      "connected": true
+    },
+    "city_crocodile": {
+      "occupant": "HeX",
+      "connected": true
+    },
+    "city_bull": {
+      "occupant": "HeX",
+      "connected": true
+    },
+    "soaring_fort": {
+      "occupant": "AꞭL",
+      "connected": true
+    },
+    "north_wind_fort": {
+      "occupant": "AꞭL",
+      "connected": true
+    },
+    "city_hippo": {
+      "occupant": "AꞭL",
+      "connected": true
     }
   },
   "mapRoutes": {
@@ -973,6 +1001,73 @@
         "path": [
           "city_ibis",
           "gate_death"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshAt": 0,
+        "noLine": true
+      },
+      {
+        "owner": "HeX",
+        "path": [
+          "vengeance_fort",
+          "city_crocodile"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "HeX",
+        "path": [
+          "city_crocodile",
+          "city_bull"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "HeX",
+        "path": [
+          "city_bull",
+          "tower_2"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "AꞭL",
+        "path": [
+          "city_hippo",
+          "tower_1"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "AꞭL",
+        "path": [
+          "city_hippo",
+          "gate_moonfall"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "HeX",
+        "path": [
+          "city_crocodile",
+          "gate_dawn_earth"
+        ],
+        "ssh": true,
+        "connected": true,
+        "sshAt": 0,
+        "noLine": true
+      },
+      {
+        "owner": "AꞭL",
+        "path": [
+          "tower_1",
+          "gate_windrest"
         ],
         "ssh": true,
         "connected": true,
