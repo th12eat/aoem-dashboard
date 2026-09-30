@@ -230,8 +230,8 @@ const ROE_COLUMNS = [
 // enemies everywhere BUT explicitly allied on Citadels (no zeroing each other's).
 const DIPLOMACY_ROE = [
   { server: "Era #068", ally: true, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
-  { server: "Era #066", ally: false, allyCols: ["citadels"], fight: { openField: true, riverland: true, farms: true, citadels: false, citiesGates: true } },
-  { server: "Era #028", ally: false, allyCols: ["citadels"], fight: { openField: true, riverland: true, farms: true, citadels: false, citiesGates: true } },
+  { server: "Era #066", ally: false, fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
+  { server: "Era #028", ally: false, fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
 ];
 
 // Per-player daily objectives (reset 00:00 UTC). `opensDay` = greyed until then.
@@ -277,7 +277,7 @@ const ACHIEVEMENTS = [
   { name: "Desert Treasure II", req: "Alliance Desert Points", target: 320000000, personal: "10M Desert Points", derive: "points" },
   { name: "Desert Treasure III", req: "Alliance Desert Points", target: 640000000, personal: "20M Desert Points", derive: "points" },
   { name: "Tower Master I", req: "Occupy Tower + Peaceful Riverland pts", target: 4000000, personal: "10M Desert Points",
-    cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
+    cur: { eRa: 4000000, FUN: 0, Myt: 0, REU: 4000000 } },
   { name: "Crowned in Aaru", req: "Occupy Aaru Palace + occupation pts", target: 8000000, personal: "20M Desert Points",
     cur: { eRa: 0, FUN: 0, Myt: 0, REU: 0 } },
 ];
@@ -1636,7 +1636,7 @@ function DiplomacyTab({ state, setState }) {
           </div>
           <div style={{ padding: "10px", background: "#ef444411", border: "1px solid #ef444444", borderRadius: "8px" }}>
             <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemies (Era #066, Era #028)</div>
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Fight everywhere — open field, riverland, farms, cities/gates — and deny them Placer Gold / Desert Points. <strong style={{ color: "#22c55e" }}>Exception: Citadels are pacted</strong> — do NOT zero each other's citadels. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
+            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Fight everywhere — open field, riverland, farms, citadels, cities/gates — and deny them Placer Gold / Desert Points. Fight over Aaru as normal (every kingdom for itself at the Palace).</div>
           </div>
         </div>
       </div>
@@ -1773,15 +1773,15 @@ function RoutePlannerTab({ state, setState }) {
 }
 
 // Tower of Rotation / Peaceful Riverland awakening windows (UTC minutes-into-day).
-// Active only Days 3-5 (2026-07-08 .. 2026-07-10). Auto-greys passed windows,
+// Active Days 3-5 (2026-09-30 .. 2026-10-02). Auto-greys passed windows,
 // highlights the live one, marks the next; all-grey before Day 3 and after Day 5.
 const TOR_WINDOWS = [
   { label: "05:00 – 07:00", start: 300, end: 420 },
   { label: "13:00 – 15:00", start: 780, end: 900 },
   { label: "21:00 – 23:00", start: 1260, end: 1380 },
 ];
-const TOR_FIRST_DATE = "2026-07-08"; // Day 3
-const TOR_LAST_DATE = "2026-07-10";  // Day 5
+const TOR_FIRST_DATE = "2026-09-30"; // Day 3 (Tower opens)
+const TOR_LAST_DATE = "2026-10-02";  // Day 5 (Tower window closes)
 const TOR_LEVELS = 40;               // each 2-hr window = 40 level-slots (3 min each)
 
 // Simple treasure-chest icon (inline SVG so it renders identically everywhere).

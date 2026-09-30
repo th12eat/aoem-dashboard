@@ -25,51 +25,51 @@
     "eventOver": false
   },
   "kingdomPoints": {
-    "era8": "3,600,142,619",
-    "era068": "3,481,483,790",
-    "era066": "3,233,713,599",
-    "era028": "2,507,414,706",
-    "lastUpdated": "2026-09-29 — Day 2 (Zone 2). Kingdom points: E#008 3.60B, E#068 3.48B, E#066 3.23B, E#028 2.51B."
+    "era8": "9,570,000,000",
+    "era068": "11,500,000,000",
+    "era066": "7,600,000,000",
+    "era028": "13,700,000,000",
+    "lastUpdated": "2026-09-30 — Day 3 (Tower of Rotation). Kingdom points: E#008 9.57B, E#068 11.5B, E#028 13.7B, E#066 7.6B."
   },
   "kingdomScoreboard": [
     {
       "rank": 1,
-      "server": "Era 8",
-      "points": "3,600,142,619"
+      "server": "Era #028",
+      "points": "13,700,000,000"
     },
     {
       "rank": 2,
       "server": "Era #068",
-      "points": "3,481,483,790"
+      "points": "11,500,000,000"
     },
     {
       "rank": 3,
-      "server": "Era #066",
-      "points": "3,233,713,599"
+      "server": "Era 8",
+      "points": "9,570,000,000"
     },
     {
       "rank": 4,
-      "server": "Era #028",
-      "points": "2,507,414,706"
+      "server": "Era #066",
+      "points": "7,600,000,000"
     }
   ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
       "tag": "eRa",
-      "points": "1,943,653,018"
+      "points": "6,755,865,404"
     },
     {
       "tag": "Myt",
-      "points": "466,527,140"
+      "points": "753,988,361"
     },
     {
       "tag": "REU",
-      "points": "1,095,242,156"
+      "points": "2,052,365,946"
     },
     {
       "tag": "FUN",
-      "points": "204,287,000"
+      "points": "350,982,030"
     }
   ],
   "placerGold": {
@@ -120,12 +120,12 @@
         "current": null,
         "perHour": 0,
         "gates": 2,
-        "pillarCities": 2,
+        "pillarCities": 3,
         "pillarNames": [
           "City of Jackal",
           "City of Leopard"
         ],
-        "flags": 15,
+        "flags": 24,
         "flagsBuilding": 0,
         "confirmed": false
       },
@@ -136,7 +136,7 @@
         "gates": 2,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 8,
+        "flags": 10,
         "flagsBuilding": 0,
         "confirmed": false
       },
@@ -147,7 +147,7 @@
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 8,
+        "flags": 10,
         "flagsBuilding": 0,
         "confirmed": false
       },
@@ -158,13 +158,13 @@
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 20,
+        "flags": 2,
         "flagsBuilding": 0,
         "confirmed": false
       }
     ],
     "flagZone2Cost": 50000,
-    "lastUpdated": "2026-09-29 — Day 2 (Zone 2). Flag counts + Era 8 occupations."
+    "lastUpdated": "2026-09-30 — Day 3. Flags eRa 24 / REU 10 / Myt 10 / FUN 2 (built 20, deleted). eRa 3 pillar cities."
   },
   "diplomacy": [
     {
@@ -179,14 +179,14 @@
       "server": "Era #066",
       "alliance": "TBD",
       "relation": "hostile",
-      "notes": "Enemy everywhere EXCEPT Citadels (pact — no zeroing each other's citadels)."
+      "notes": "Enemy everywhere — fight on all fronts, including citadels."
     },
     {
       "id": 3,
       "server": "Era #028",
       "alliance": "TBD",
       "relation": "hostile",
-      "notes": "Enemy everywhere EXCEPT Citadels (pact — no zeroing each other's citadels)."
+      "notes": "Enemy everywhere — fight on all fronts, including citadels."
     }
   ],
   "contacts": [],
