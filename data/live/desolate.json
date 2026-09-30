@@ -123,7 +123,8 @@
         "pillarCities": 3,
         "pillarNames": [
           "City of Jackal",
-          "City of Leopard"
+          "City of Leopard",
+          "City of Ibis"
         ],
         "flags": 24,
         "flagsBuilding": 0,
@@ -821,6 +822,10 @@
     "tower_1": {
       "occupant": "AꞭL",
       "connected": true
+    },
+    "tower_4": {
+      "occupant": "Ⓢ❻❽",
+      "connected": true
     }
   },
   "mapRoutes": {
@@ -1035,8 +1040,7 @@
           "tower_4"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
         "owner": "Ⓢ❻❽",
@@ -1208,6 +1212,36 @@
         "connected": true,
         "building": true,
         "sshAt": 0
+      },
+      {
+        "owner": "Σ28",
+        "path": [
+          "city_lion",
+          "tower_2"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "HeX",
+        "path": [
+          "north_wind_fort",
+          "intercept_moonfall_hippo"
+        ],
+        "ssh": false,
+        "connected": true,
+        "building": true,
+        "siege": true
+      },
+      {
+        "owner": "τ28",
+        "path": [
+          "blazing_fort",
+          "gate_fury"
+        ],
+        "ssh": false,
+        "connected": true,
+        "building": true
       }
     ],
     "planned": [
