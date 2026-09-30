@@ -988,15 +988,6 @@
       {
         "owner": "Ⓥ❻❽",
         "path": [
-          "city_goose",
-          "tower_4"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "Ⓥ❻❽",
-        "path": [
           "tower_4",
           "city_vulture"
         ],
