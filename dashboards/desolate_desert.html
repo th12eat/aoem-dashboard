@@ -39,7 +39,10 @@
         /* map: a node under siege pulses red */
         .node-siege { animation: siegePulse 1s ease-in-out infinite; }
         @keyframes siegePulse { 0%,100% { stroke: #ef4444; stroke-width: 0.5; } 50% { stroke: #ef4444; stroke-width: 1.4; } }
-        @media (prefers-reduced-motion: reduce) { .route-building, .node-siege { animation: none; } }
+        /* map: a contested route edge — red underlay pulses in width/opacity */
+        .route-siege { animation: routeSiege 1s ease-in-out infinite; }
+        @keyframes routeSiege { 0%,100% { opacity: 0.35; stroke-width: 1.8; } 50% { opacity: 0.85; stroke-width: 3.4; } }
+        @media (prefers-reduced-motion: reduce) { .route-building, .node-siege, .route-siege { animation: none; } }
         /* small blinking dot used in the Tower schedule "LIVE" label */
         .tor-live-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#facc15;
             box-shadow:0 0 6px #facc15; animation: torDotBlink 1.2s ease-in-out infinite; }
@@ -286,8 +289,10 @@ const ACHIEVEMENTS = [
 function achievementCur(a, tag) {
   if (a.derive) {
     const pg = (PLACER_GOLD.alliances || []).find(x => x.tag === tag) || {};
-    if (a.derive === "flags")      return Number(pg.flags || 0);
-    if (a.derive === "stronghold") return (Number(pg.flags || 0) > 0 || (pg.gates || 0) > 0 || (pg.pillarCities || 0) > 0) ? 1 : 0;
+    // flag achievements are permanent once earned — use the high-water mark
+    // (flagsPeak, if recorded) so deleting flags never un-checks a completed tier.
+    if (a.derive === "flags")      return Math.max(Number(pg.flags || 0), Number(pg.flagsPeak || 0));
+    if (a.derive === "stronghold") return (Number(pg.flags || 0) > 0 || Number(pg.flagsPeak || 0) > 0 || (pg.gates || 0) > 0 || (pg.pillarCities || 0) > 0) ? 1 : 0;
     if (a.derive === "pillars")    return Number(pg.pillarCities || 0);
     if (a.derive === "points") {
       const ap = (ALLIANCE_POINTS || []).find(x => x.tag === tag);
@@ -445,7 +450,9 @@ function StageLine() {
           const now = i === cur;
           const z = zoneOf(s);
           const dotOn = reached(i);
-          const dotColor = now ? "#f5731f" : (dotOn ? z.bright : z.dark);
+          // active dot uses its OWN zone color (Z1 beige / Z2 purple / Z3 orange),
+          // not a fixed hue — it just pulses (sl-dot-pulse) to mark "current".
+          const dotColor = now ? z.bright : (dotOn ? z.bright : z.dark);
           const dotBorder = dotColor;
           // line to the NEXT dot represents this span; bright once we've reached this stage.
           const lineOn = cur >= i;
@@ -453,7 +460,7 @@ function StageLine() {
           // the segment leaving the CURRENT stage animates as a barber-pole progress bar
           const lineActive = i === cur && i < STAGES.length - 1;
           const dayLbl = s.days.length > 1 ? `Day ${s.days[0]}–${s.days[s.days.length-1]}` : `Day ${s.days[0]}`;
-          const labelCol = now ? "#f5731f" : (dotOn ? z.bright : z.dark);
+          const labelCol = now ? z.bright : (dotOn ? z.bright : z.dark);
           return (
             <div key={s.key} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", position: "relative" }}>
               {i < STAGES.length - 1 ? (lineActive
@@ -750,7 +757,9 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
         building: cur.building || !!r.building,
         partial: cur.partial || !!r.partial,
         disconnected: (cur.disconnected === undefined ? (r.connected === false) : (cur.disconnected || r.connected === false)),
+        siege: cur.siege || !!r.siege,
       };
+      if (r.siege) e.siege = true;   // this edge is contested → red pulse overlay
     }
   });
   // routeOffset kept (all zero) so SSH markers sit on the (un-offset) line centers.
@@ -787,7 +796,12 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
           const owners = e.owners;
           const n = owners.length;
           const DASH = 2.2;                                  // candy-stripe segment length (%units)
-          return owners.map((owner, oi) => {
+          // contested edge: a pulsing red line drawn UNDER the owner strokes.
+          const siegeOverlay = (mode !== "plan" && e.siege && !(hl && !owners.includes(hl)))
+            ? <line key={ek + "|siege"} className="route-siege" x1={A.x} y1={A.y} x2={B.x} y2={B.y}
+                fill="none" stroke="#ef4444" strokeWidth="2.2" strokeLinecap="round" style={{ pointerEvents: "none" }} />
+            : null;
+          const ownerLines = owners.map((owner, oi) => {
             const st = e.state[owner] || {};
             let stroke = col(owner), opacity = 0.95, dash = null, w = 0.8, building = false;
             if (mode !== "plan") {
@@ -808,8 +822,9 @@ function MapOverlay({ mode = "live", hl, setHl, pinned, focus, setFocus }) {
               strokeDasharray={dashArr || undefined} strokeDashoffset={dashOff}
               opacity={opacity} style={{ cursor: "pointer" }}
               onMouseEnter={(ev) => hoverOn(owner, ev)} onMouseMove={(ev) => hoverOn(owner, ev)} onMouseLeave={hoverOff}>
-              <title>{owner}{n > 1 ? " (shared)" : ""}</title></line>;
+              <title>{owner}{n > 1 ? " (shared)" : ""}{e.siege ? " · UNDER SIEGE" : ""}</title></line>;
           });
+          return <React.Fragment key={ek}>{siegeOverlay}{ownerLines}</React.Fragment>;
         })}
         {/* SSH markers (diamond; pulsing red ring when under siege) */}
         {routes.map((r, i) => { if (!r.ssh || outOfFocus(r.owner)) return null; const s = sshPoint(r, routeOffset[i]); if (!s) return null;
