@@ -745,7 +745,8 @@
     },
     "city_vulture": {
       "occupant": "τ28",
-      "connected": true
+      "connected": true,
+      "siege": true
     },
     "lightbearer_dock": {
       "occupant": "τ28",
@@ -813,7 +814,8 @@
     },
     "city_hippo": {
       "occupant": "eRa",
-      "connected": true
+      "connected": true,
+      "siege": true
     },
     "ruler_fort": {
       "occupant": "AꞭL",
@@ -821,11 +823,13 @@
     },
     "tower_1": {
       "occupant": "AꞭL",
-      "connected": true
+      "connected": true,
+      "siege": true
     },
     "tower_4": {
       "occupant": "Ⓢ❻❽",
-      "connected": true
+      "connected": true,
+      "siege": true
     }
   },
   "mapRoutes": {
@@ -912,7 +916,8 @@
         "ssh": true,
         "connected": true,
         "sshAt": 0,
-        "noLine": true
+        "noLine": true,
+        "sshFrac": 0.2
       },
       {
         "owner": "Myt",
@@ -972,7 +977,8 @@
           "city_vulture"
         ],
         "ssh": false,
-        "connected": true
+        "connected": true,
+        "siege": true
       },
       {
         "owner": "Ⓥ❻❽",
@@ -991,18 +997,10 @@
         ],
         "ssh": true,
         "connected": true,
-        "sshOutward": true,
+        "sshOutward": false,
         "sshAt": 0,
-        "noLine": true
-      },
-      {
-        "owner": "Ⓢ❻❽",
-        "path": [
-          "balance_fort",
-          "city_vulture"
-        ],
-        "ssh": false,
-        "connected": true
+        "noLine": true,
+        "sshFrac": 0.18
       },
       {
         "owner": "Ⓢ❻❽",
@@ -1097,7 +1095,8 @@
         "ssh": true,
         "connected": true,
         "sshAt": 0,
-        "noLine": true
+        "noLine": true,
+        "sshFrac": 0.2
       },
       {
         "owner": "Σ28",
@@ -1113,13 +1112,13 @@
         "owner": "Σ28",
         "path": [
           "tower_2",
-          "aaru"
+          "gate_azure_sky"
         ],
         "ssh": true,
         "connected": true,
-        "sshOutward": true,
         "sshAt": 0,
-        "noLine": true
+        "noLine": true,
+        "sshFrac": 0.35
       },
       {
         "owner": "HeX",
@@ -1190,7 +1189,8 @@
         "ssh": true,
         "sshAt": 0,
         "noLine": true,
-        "connected": true
+        "connected": true,
+        "sshFrac": 0.2
       },
       {
         "owner": "eRa",
@@ -1200,16 +1200,8 @@
         ],
         "ssh": false,
         "connected": true,
-        "building": true
-      },
-      {
-        "owner": "Ⓥ❻❽",
-        "path": [
-          "immortality_fort",
-          "tower_4"
-        ],
-        "ssh": false,
-        "connected": true
+        "building": true,
+        "siege": true
       },
       {
         "owner": "Ⓢ❻❽",
@@ -1238,10 +1230,11 @@
           "city_goose"
         ],
         "ssh": true,
-        "sshOutward": true,
+        "sshOutward": false,
         "sshAt": 0,
         "noLine": true,
-        "connected": true
+        "connected": true,
+        "sshFrac": 0.22
       }
     ],
     "planned": [
