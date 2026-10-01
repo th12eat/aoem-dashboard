@@ -1042,14 +1042,14 @@
       {
         "owner": "τ28",
         "path": [
-          "tower_3",
-          "aaru"
+          "city_vulture",
+          "gate_grace"
         ],
         "ssh": true,
         "connected": true,
-        "sshOutward": true,
         "sshAt": 0,
-        "noLine": true
+        "noLine": true,
+        "sshFrac": 0.18
       },
       {
         "owner": "τ28",
