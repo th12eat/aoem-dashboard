@@ -1235,6 +1235,16 @@
         "noLine": true,
         "connected": true,
         "sshFrac": 0.22
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "city_jackal",
+          "gate_chaos"
+        ],
+        "ssh": false,
+        "connected": true,
+        "building": true
       }
     ],
     "planned": [
