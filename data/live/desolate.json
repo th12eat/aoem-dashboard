@@ -25,51 +25,51 @@
     "eventOver": false
   },
   "kingdomPoints": {
-    "era8": "9,570,000,000",
-    "era068": "11,500,000,000",
-    "era066": "7,600,000,000",
-    "era028": "13,700,000,000",
-    "lastUpdated": "2026-09-30 — Day 3 (Tower of Rotation). Kingdom points: E#008 9.57B, E#068 11.5B, E#028 13.7B, E#066 7.6B."
+    "era8": "19,268,714,821",
+    "era068": "17,087,345,256",
+    "era066": "14,717,672,295",
+    "era028": "21,384,773,653",
+    "lastUpdated": "2026-10-01 — Day 4. Kingdom points: E#028 21.4B, E#008 19.3B, E#068 17.1B, E#066 14.7B."
   },
   "kingdomScoreboard": [
     {
       "rank": 1,
       "server": "Era #028",
-      "points": "13,700,000,000"
+      "points": "21,384,773,653"
     },
     {
       "rank": 2,
-      "server": "Era #068",
-      "points": "11,500,000,000"
+      "server": "Era 8",
+      "points": "19,268,714,821"
     },
     {
       "rank": 3,
-      "server": "Era 8",
-      "points": "9,570,000,000"
+      "server": "Era #068",
+      "points": "17,087,345,256"
     },
     {
       "rank": 4,
       "server": "Era #066",
-      "points": "7,600,000,000"
+      "points": "14,717,672,295"
     }
   ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
       "tag": "eRa",
-      "points": "6,755,865,404"
+      "points": "15,140,891,027"
     },
     {
       "tag": "Myt",
-      "points": "753,988,361"
+      "points": "1,008,772,207"
     },
     {
       "tag": "REU",
-      "points": "2,052,365,946"
+      "points": "3,201,182,588"
     },
     {
       "tag": "FUN",
-      "points": "350,982,030"
+      "points": "458,681,885"
     }
   ],
   "placerGold": {
@@ -124,9 +124,9 @@
         "pillarNames": [
           "City of Jackal",
           "City of Leopard",
-          "City of Ibis"
+          "City of Hippo"
         ],
-        "flags": 24,
+        "flags": 18,
         "flagsBuilding": 0,
         "confirmed": false,
         "flagsPeak": 24
@@ -136,9 +136,11 @@
         "current": null,
         "perHour": 0,
         "gates": 2,
-        "pillarCities": 0,
-        "pillarNames": [],
-        "flags": 10,
+        "pillarCities": 1,
+        "pillarNames": [
+          "City of Ibis"
+        ],
+        "flags": 8,
         "flagsBuilding": 0,
         "confirmed": false,
         "flagsPeak": 10
@@ -150,10 +152,10 @@
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 10,
+        "flags": 11,
         "flagsBuilding": 0,
         "confirmed": false,
-        "flagsPeak": 10
+        "flagsPeak": 11
       },
       {
         "tag": "FUN",
@@ -169,7 +171,7 @@
       }
     ],
     "flagZone2Cost": 50000,
-    "lastUpdated": "2026-09-30 — Day 3. Flags eRa 24 / REU 10 / Myt 10 / FUN 2 (built 20, deleted). eRa 3 pillar cities."
+    "lastUpdated": "2026-10-01 — Day 4. Flags eRa 18 / REU 8 / Myt 11 / FUN 2. eRa 3 pillars (Jackal/Leopard/Hippo), REU 1 (Ibis)."
   },
   "diplomacy": [
     {
@@ -701,7 +703,7 @@
       "connected": true
     },
     "city_ibis": {
-      "occupant": "eRa",
+      "occupant": "REU",
       "connected": true
     },
     "gate_moonfall": {
@@ -730,7 +732,7 @@
       "connected": true
     },
     "city_goose": {
-      "occupant": "Ⓥ❻❽",
+      "occupant": "Ⓢ❻❽",
       "connected": true
     },
     "mourning_fort": {
@@ -742,9 +744,8 @@
       "connected": true
     },
     "city_vulture": {
-      "occupant": "Ⓢ❻❽",
-      "connected": true,
-      "siege": true
+      "occupant": "τ28",
+      "connected": true
     },
     "lightbearer_dock": {
       "occupant": "τ28",
@@ -811,9 +812,8 @@
       "connected": true
     },
     "city_hippo": {
-      "occupant": "AꞭL",
-      "connected": true,
-      "siege": true
+      "occupant": "eRa",
+      "connected": true
     },
     "ruler_fort": {
       "occupant": "AꞭL",
@@ -878,28 +878,8 @@
       {
         "owner": "eRa",
         "path": [
-          "city_ibis",
-          "gate_moonfall"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "eRa",
-        "path": [
           "gate_moonfall",
           "city_hippo"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true,
-        "siege": true
-      },
-      {
-        "owner": "REU",
-        "path": [
-          "kingsguard_dock",
-          "city_ibis"
         ],
         "ssh": false,
         "connected": true
@@ -1040,8 +1020,7 @@
           "city_goose"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
         "owner": "τ28",
@@ -1089,9 +1068,7 @@
           "city_vulture"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true,
-        "siege": true
+        "connected": true
       },
       {
         "owner": "τ28",
@@ -1171,27 +1148,7 @@
         "ssh": true,
         "connected": true,
         "sshAt": 0,
-        "noLine": true
-      },
-      {
-        "owner": "HeX",
-        "path": [
-          "city_hippo",
-          "gate_moonfall"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true,
-        "siege": true
-      },
-      {
-        "owner": "AꞭL",
-        "path": [
-          "city_hippo",
-          "tower_1"
-        ],
-        "ssh": false,
-        "connected": true
+        "building": true
       },
       {
         "owner": "AꞭL",
@@ -1217,7 +1174,7 @@
         "owner": "HeX",
         "path": [
           "north_wind_fort",
-          "intercept_moonfall_hippo"
+          "gate_moonfall"
         ],
         "ssh": false,
         "connected": true,
@@ -1225,14 +1182,66 @@
         "siege": true
       },
       {
-        "owner": "τ28",
+        "owner": "eRa",
         "path": [
-          "blazing_fort",
-          "gate_fury"
+          "city_hippo",
+          "gate_windrest"
+        ],
+        "ssh": true,
+        "sshAt": 0,
+        "noLine": true,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "city_hippo",
+          "tower_1"
         ],
         "ssh": false,
         "connected": true,
         "building": true
+      },
+      {
+        "owner": "Ⓥ❻❽",
+        "path": [
+          "immortality_fort",
+          "tower_4"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "Ⓢ❻❽",
+        "path": [
+          "city_goose",
+          "tower_5"
+        ],
+        "ssh": false,
+        "connected": true,
+        "building": true
+      },
+      {
+        "owner": "Ⓢ❻❽",
+        "path": [
+          "city_goose",
+          "gate_abundance"
+        ],
+        "ssh": false,
+        "connected": true,
+        "building": true
+      },
+      {
+        "owner": "Ⓢ❻❽",
+        "path": [
+          "gate_abundance",
+          "city_goose"
+        ],
+        "ssh": true,
+        "sshOutward": true,
+        "sshAt": 0,
+        "noLine": true,
+        "connected": true
       }
     ],
     "planned": [
