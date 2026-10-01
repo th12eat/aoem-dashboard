@@ -806,7 +806,8 @@
     },
     "gate_sunshine": {
       "occupant": "HeX",
-      "connected": true
+      "connected": true,
+      "siege": true
     },
     "soaring_fort": {
       "occupant": "AꞭL",
@@ -1160,8 +1161,7 @@
         ],
         "ssh": false,
         "connected": true,
-        "building": true,
-        "siege": true
+        "building": true
       },
       {
         "owner": "eRa",
