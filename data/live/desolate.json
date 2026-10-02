@@ -25,51 +25,51 @@
     "eventOver": false
   },
   "kingdomPoints": {
-    "era8": "19,268,714,821",
-    "era068": "17,087,345,256",
-    "era066": "14,717,672,295",
-    "era028": "21,384,773,653",
-    "lastUpdated": "2026-10-01 — Day 4. Kingdom points: E#028 21.4B, E#008 19.3B, E#068 17.1B, E#066 14.7B."
+    "era8": "28,900,000,000",
+    "era068": "23,400,000,000",
+    "era066": "20,700,000,000",
+    "era028": "33,500,000,000",
+    "lastUpdated": "2026-10-02 — Day 5. Kingdom points: E#028 33.5B, E#008 28.9B, E#068 23.4B, E#066 20.7B."
   },
   "kingdomScoreboard": [
     {
       "rank": 1,
       "server": "Era #028",
-      "points": "21,384,773,653"
+      "points": "33,500,000,000"
     },
     {
       "rank": 2,
       "server": "Era 8",
-      "points": "19,268,714,821"
+      "points": "28,900,000,000"
     },
     {
       "rank": 3,
       "server": "Era #068",
-      "points": "17,087,345,256"
+      "points": "23,400,000,000"
     },
     {
       "rank": 4,
       "server": "Era #066",
-      "points": "14,717,672,295"
+      "points": "20,700,000,000"
     }
   ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
       "tag": "eRa",
-      "points": "15,140,891,027"
+      "points": "22,958,259,781"
     },
     {
       "tag": "Myt",
-      "points": "1,008,772,207"
+      "points": "1,235,630,103"
     },
     {
       "tag": "REU",
-      "points": "3,201,182,588"
+      "points": "4,922,104,348"
     },
     {
       "tag": "FUN",
-      "points": "458,681,885"
+      "points": "613,453,610"
     }
   ],
   "placerGold": {
@@ -140,7 +140,7 @@
         "pillarNames": [
           "City of Ibis"
         ],
-        "flags": 8,
+        "flags": 6,
         "flagsBuilding": 0,
         "confirmed": false,
         "flagsPeak": 10
@@ -152,10 +152,10 @@
         "gates": 0,
         "pillarCities": 0,
         "pillarNames": [],
-        "flags": 11,
+        "flags": 15,
         "flagsBuilding": 0,
         "confirmed": false,
-        "flagsPeak": 11
+        "flagsPeak": 15
       },
       {
         "tag": "FUN",
@@ -171,7 +171,7 @@
       }
     ],
     "flagZone2Cost": 50000,
-    "lastUpdated": "2026-10-01 — Day 4. Flags eRa 18 / REU 8 / Myt 11 / FUN 2. eRa 3 pillars (Jackal/Leopard/Hippo), REU 1 (Ibis)."
+    "lastUpdated": "2026-10-02 — Day 5. Flags eRa 18 / Myt 15 / REU 6 / FUN 2. Pillar/gate counts pending map update."
   },
   "diplomacy": [
     {
