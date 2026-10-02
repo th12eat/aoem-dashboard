@@ -1447,11 +1447,15 @@ function PointsTab() {
                 const capped = has && a.current >= PLACER_GOLD.cap;
                 const flagTxt = a.flags != null ? (a.flags + (a.flagsBuilding ? " (+" + a.flagsBuilding + ")" : "")) : "—";
                 const capTxt = (PLACER_GOLD.cap/1000) + "k";
-                // Gen/h computed live from held nodes (not a stored constant): gates
-                // at the base Z1→Z2 rate + pillar cities. Flags generate nothing/h.
+                // Gen/h summed from the ACTUAL occupied nodes on the map (via
+                // nodePerHour), so eye gates (Z2↔Z2 +4k) and Z2→Z3 gates (+8k) count
+                // at their real rates — not a flat per-gate estimate. Falls back to
+                // the flat gate+pillar estimate only if the alliance holds nothing on
+                // the map yet (counts entered manually before map state exists).
+                const mapGenH = allianceFromMap(a.tag).perHour;
                 const gateRate = (PLACER_GOLD.nodes.find(n => n.key === "gate_z1z2") || {}).perHour || 0;
                 const pillarRate = (PLACER_GOLD.nodes.find(n => n.key === "pillar_city") || {}).perHour || 0;
-                const genH = (a.gates || 0) * gateRate + (a.pillarCities || 0) * pillarRate;
+                const genH = mapGenH > 0 ? mapGenH : ((a.gates || 0) * gateRate + (a.pillarCities || 0) * pillarRate);
                 return (
                 <tr key={a.tag}>
                   <td style={S.td}><span style={{ fontWeight: 600 }}>{a.tag}</span></td>

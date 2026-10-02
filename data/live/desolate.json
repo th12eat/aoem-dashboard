@@ -119,7 +119,7 @@
         "tag": "eRa",
         "current": null,
         "perHour": 0,
-        "gates": 2,
+        "gates": 3,
         "pillarCities": 3,
         "pillarNames": [
           "City of Jackal",
@@ -135,7 +135,7 @@
         "tag": "REU",
         "current": null,
         "perHour": 0,
-        "gates": 2,
+        "gates": 3,
         "pillarCities": 1,
         "pillarNames": [
           "City of Ibis"
