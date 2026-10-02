@@ -708,8 +708,7 @@
     },
     "gate_moonfall": {
       "occupant": "eRa",
-      "connected": true,
-      "siege": true
+      "connected": true
     },
     "crown_fort": {
       "occupant": "REU",
@@ -724,7 +723,7 @@
       "connected": true
     },
     "city_ram": {
-      "occupant": "Ⓞ❻❽",
+      "occupant": "Ⓢ❻❽",
       "connected": true
     },
     "immortality_fort": {
@@ -732,7 +731,7 @@
       "connected": true
     },
     "city_goose": {
-      "occupant": "Ⓢ❻❽",
+      "occupant": "τ28",
       "connected": true
     },
     "mourning_fort": {
@@ -745,8 +744,7 @@
     },
     "city_vulture": {
       "occupant": "τ28",
-      "connected": true,
-      "siege": true
+      "connected": true
     },
     "lightbearer_dock": {
       "occupant": "τ28",
@@ -797,7 +795,7 @@
       "connected": true
     },
     "tower_2": {
-      "occupant": "HeX",
+      "occupant": "Σ28",
       "connected": true
     },
     "north_wind_fort": {
@@ -805,9 +803,8 @@
       "connected": true
     },
     "gate_sunshine": {
-      "occupant": "HeX",
-      "connected": true,
-      "siege": true
+      "occupant": "REU",
+      "connected": true
     },
     "soaring_fort": {
       "occupant": "AꞭL",
@@ -815,22 +812,19 @@
     },
     "city_hippo": {
       "occupant": "eRa",
-      "connected": true,
-      "siege": true
+      "connected": true
     },
     "ruler_fort": {
       "occupant": "AꞭL",
       "connected": true
     },
     "tower_1": {
-      "occupant": "AꞭL",
-      "connected": true,
-      "siege": true
+      "occupant": "eRa",
+      "connected": true
     },
     "tower_4": {
       "occupant": "Ⓢ❻❽",
-      "connected": true,
-      "siege": true
+      "connected": true
     }
   },
   "mapRoutes": {
@@ -872,24 +866,6 @@
         "connected": true
       },
       {
-        "owner": "eRa",
-        "path": [
-          "tower_6",
-          "city_ibis"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "eRa",
-        "path": [
-          "gate_moonfall",
-          "city_hippo"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
         "owner": "REU",
         "path": [
           "city_ibis",
@@ -897,16 +873,6 @@
         ],
         "ssh": false,
         "connected": true
-      },
-      {
-        "owner": "REU",
-        "path": [
-          "city_ibis",
-          "gate_sunshine"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
       },
       {
         "owner": "REU",
@@ -931,16 +897,6 @@
         "sshOutward": true,
         "sshAt": 0,
         "noLine": true
-      },
-      {
-        "owner": "Myt",
-        "path": [
-          "crown_fort",
-          "gate_sunshine"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
       },
       {
         "owner": "Ⓞ❻❽",
@@ -975,25 +931,6 @@
         "owner": "Ⓥ❻❽",
         "path": [
           "tower_4",
-          "city_vulture"
-        ],
-        "ssh": false,
-        "connected": true,
-        "siege": true
-      },
-      {
-        "owner": "Ⓥ❻❽",
-        "path": [
-          "tower_4",
-          "gate_life"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "Ⓥ❻❽",
-        "path": [
-          "tower_4",
           "aaru"
         ],
         "ssh": true,
@@ -1002,25 +939,6 @@
         "sshAt": 0,
         "noLine": true,
         "sshFrac": 0.18
-      },
-      {
-        "owner": "Ⓢ❻❽",
-        "path": [
-          "city_vulture",
-          "tower_4"
-        ],
-        "ssh": false,
-        "connected": true,
-        "siege": true
-      },
-      {
-        "owner": "Ⓢ❻❽",
-        "path": [
-          "tower_4",
-          "city_goose"
-        ],
-        "ssh": false,
-        "connected": true
       },
       {
         "owner": "τ28",
@@ -1093,36 +1011,6 @@
         "building": true
       },
       {
-        "owner": "Σ28",
-        "path": [
-          "tower_2",
-          "gate_azure_sky"
-        ],
-        "ssh": true,
-        "connected": true,
-        "sshAt": 0,
-        "noLine": true,
-        "sshFrac": 0.35
-      },
-      {
-        "owner": "HeX",
-        "path": [
-          "city_crocodile",
-          "city_bull"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
-        "owner": "HeX",
-        "path": [
-          "city_bull",
-          "tower_2"
-        ],
-        "ssh": false,
-        "connected": true
-      },
-      {
         "owner": "HeX",
         "path": [
           "city_crocodile",
@@ -1130,18 +1018,6 @@
         ],
         "ssh": true,
         "connected": true,
-        "sshAt": 0,
-        "building": true
-      },
-      {
-        "owner": "AꞭL",
-        "path": [
-          "tower_1",
-          "gate_windrest"
-        ],
-        "ssh": true,
-        "connected": true,
-        "building": true,
         "sshAt": 0
       },
       {
@@ -1152,16 +1028,6 @@
         ],
         "ssh": false,
         "connected": true
-      },
-      {
-        "owner": "HeX",
-        "path": [
-          "north_wind_fort",
-          "gate_moonfall"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
       },
       {
         "owner": "eRa",
@@ -1182,29 +1048,7 @@
           "tower_1"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true,
-        "siege": true
-      },
-      {
-        "owner": "Ⓢ❻❽",
-        "path": [
-          "city_goose",
-          "tower_5"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
-      },
-      {
-        "owner": "Ⓢ❻❽",
-        "path": [
-          "city_goose",
-          "gate_abundance"
-        ],
-        "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
         "owner": "Ⓢ❻❽",
@@ -1234,6 +1078,72 @@
         "path": [
           "city_vulture",
           "tower_4"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "city_hippo",
+          "gate_windrest"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "eRa",
+        "path": [
+          "tower_1",
+          "city_crocodile"
+        ],
+        "ssh": false,
+        "connected": true,
+        "building": true,
+        "siege": true
+      },
+      {
+        "owner": "HeX",
+        "path": [
+          "vengeance_fort",
+          "city_crocodile"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "τ28",
+        "path": [
+          "tower_3",
+          "gate_primal_water"
+        ],
+        "ssh": false,
+        "connected": true,
+        "building": true
+      },
+      {
+        "owner": "τ28",
+        "path": [
+          "tower_4",
+          "city_goose"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "τ28",
+        "path": [
+          "tower_4",
+          "gate_abundance"
+        ],
+        "ssh": false,
+        "connected": true
+      },
+      {
+        "owner": "τ28",
+        "path": [
+          "city_vulture",
+          "balance_fort"
         ],
         "ssh": false,
         "connected": true,
