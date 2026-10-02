@@ -1122,6 +1122,16 @@
         "ssh": false,
         "connected": true,
         "building": true
+      },
+      {
+        "owner": "AꞭL",
+        "path": [
+          "soaring_fort",
+          "tower_1"
+        ],
+        "ssh": false,
+        "connected": true,
+        "building": true
       }
     ],
     "planned": [
