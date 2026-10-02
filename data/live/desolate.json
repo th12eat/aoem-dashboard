@@ -883,8 +883,8 @@
         "ssh": true,
         "connected": true,
         "sshAt": 0,
-        "noLine": true,
-        "sshFrac": 0.2
+        "sshFrac": 0.2,
+        "building": true
       },
       {
         "owner": "Myt",
