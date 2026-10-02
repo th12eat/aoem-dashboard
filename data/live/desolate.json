@@ -928,19 +928,6 @@
         "building": true
       },
       {
-        "owner": "Ⓥ❻❽",
-        "path": [
-          "tower_4",
-          "aaru"
-        ],
-        "ssh": true,
-        "connected": true,
-        "sshOutward": false,
-        "sshAt": 0,
-        "noLine": true,
-        "sshFrac": 0.18
-      },
-      {
         "owner": "τ28",
         "path": [
           "lightbearer_dock",
@@ -1049,19 +1036,6 @@
         ],
         "ssh": false,
         "connected": true
-      },
-      {
-        "owner": "Ⓢ❻❽",
-        "path": [
-          "gate_abundance",
-          "city_goose"
-        ],
-        "ssh": true,
-        "sshOutward": false,
-        "sshAt": 0,
-        "noLine": true,
-        "connected": true,
-        "sshFrac": 0.22
       },
       {
         "owner": "eRa",
