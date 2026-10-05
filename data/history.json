@@ -992,10 +992,10 @@
       "event": "Desolate Desert",
       "date": "2026-09-28",
       "opp": "Era #068 / #066 / #028",
-      "result": "Live",
+      "result": "Loss",
       "multi": true,
       "season": "Stellar Dynasty",
-      "note": "In progress — matchmaking Sep 26, event starts Sep 28 (Aaru Oct 4 est.). Us North/blue vs #068 (West), #066 (East), #028 (South). Top-4 alliance power + merits from this cycle's scouting.",
+      "note": "Lost — Era #028 won; Era 8 finished 2nd of 4. Four-kingdom land grab vs #068/#066/#028. Final kingdom points below; top-4 alliance power+merits from this cycle's scouting; our alliance Desert Points at close.",
       "ourRoster": [
         [
           "eRa",
@@ -1085,6 +1085,19 @@
             5363430
           ]
         ]
+      },
+      "placement": 2,
+      "kingdomFinal": {
+        "Era #028": "81,137,084,508",
+        "Era 8": "46,421,622,942",
+        "Era #066": "33,753,322,752",
+        "Era #068": "31,295,987,638"
+      },
+      "oursDesertPoints": {
+        "eRa": "37,147,766,508",
+        "REU": "7,976,871,831",
+        "Myt": "1,753,478,549",
+        "FUN": "881,305,363"
       }
     }
   ]

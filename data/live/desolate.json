@@ -21,55 +21,55 @@
     "ourSdRank": null,
     "mapFormat": "Map splits in phases: quarters → halves → full.",
     "notes": "New matchup — matchmaking Sep 26. Us North/blue. Opponents: #068 West, #066 East, #028 South.",
-    "aaruResult": "",
-    "eventOver": false
+    "aaruResult": "Era #028 won · we finished 2nd of 4 (Loss).",
+    "eventOver": true
   },
   "kingdomPoints": {
-    "era8": "28,900,000,000",
-    "era068": "23,400,000,000",
-    "era066": "20,700,000,000",
-    "era028": "33,500,000,000",
-    "lastUpdated": "2026-10-02 — Day 5. Kingdom points: E#028 33.5B, E#008 28.9B, E#068 23.4B, E#066 20.7B."
+    "era8": "46,421,622,942",
+    "era068": "31,295,987,638",
+    "era066": "33,753,322,752",
+    "era028": "81,137,084,508",
+    "lastUpdated": "2026-10-04 — FINAL. Era #028 won; we finished 2nd of 4. Kingdom points: E#028 81.1B, E#008 46.4B, E#066 33.8B, E#068 31.3B."
   },
   "kingdomScoreboard": [
     {
       "rank": 1,
       "server": "Era #028",
-      "points": "33,500,000,000"
+      "points": "81,137,084,508"
     },
     {
       "rank": 2,
       "server": "Era 8",
-      "points": "28,900,000,000"
+      "points": "46,421,622,942"
     },
     {
       "rank": 3,
-      "server": "Era #068",
-      "points": "23,400,000,000"
+      "server": "Era #066",
+      "points": "33,753,322,752"
     },
     {
       "rank": 4,
-      "server": "Era #066",
-      "points": "20,700,000,000"
+      "server": "Era #068",
+      "points": "31,295,987,638"
     }
   ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
       "tag": "eRa",
-      "points": "22,958,259,781"
+      "points": "37,147,766,508"
     },
     {
       "tag": "Myt",
-      "points": "1,235,630,103"
+      "points": "1,753,478,549"
     },
     {
       "tag": "REU",
-      "points": "4,922,104,348"
+      "points": "7,976,871,831"
     },
     {
       "tag": "FUN",
-      "points": "613,453,610"
+      "points": "881,305,363"
     }
   ],
   "placerGold": {
@@ -119,59 +119,63 @@
         "tag": "eRa",
         "current": null,
         "perHour": 0,
-        "gates": 3,
-        "pillarCities": 3,
+        "gates": 2,
+        "pillarCities": 1,
         "pillarNames": [
-          "City of Jackal",
-          "City of Leopard",
-          "City of Hippo"
+          "City of Jackal"
         ],
         "flags": 18,
         "flagsBuilding": 0,
         "confirmed": false,
-        "flagsPeak": 24
+        "flagsPeak": 24,
+        "pillarsPeak": 4
       },
       {
         "tag": "REU",
         "current": null,
         "perHour": 0,
         "gates": 3,
-        "pillarCities": 1,
-        "pillarNames": [
-          "City of Ibis"
-        ],
+        "pillarCities": 0,
+        "pillarNames": [],
         "flags": 6,
         "flagsBuilding": 0,
         "confirmed": false,
-        "flagsPeak": 10
+        "flagsPeak": 20,
+        "pillarsPeak": 1
       },
       {
         "tag": "Myt",
         "current": null,
         "perHour": 0,
-        "gates": 0,
-        "pillarCities": 0,
-        "pillarNames": [],
+        "gates": 1,
+        "pillarCities": 1,
+        "pillarNames": [
+          "City of Ibis"
+        ],
         "flags": 15,
         "flagsBuilding": 0,
         "confirmed": false,
-        "flagsPeak": 15
+        "flagsPeak": 20,
+        "pillarsPeak": 1
       },
       {
         "tag": "FUN",
         "current": null,
         "perHour": 0,
-        "gates": 0,
-        "pillarCities": 0,
-        "pillarNames": [],
+        "gates": 1,
+        "pillarCities": 1,
+        "pillarNames": [
+          "City of Leopard"
+        ],
         "flags": 2,
         "flagsBuilding": 0,
         "confirmed": false,
-        "flagsPeak": 20
+        "flagsPeak": 20,
+        "pillarsPeak": 1
       }
     ],
     "flagZone2Cost": 50000,
-    "lastUpdated": "2026-10-02 — Day 5. Flags eRa 18 / Myt 15 / REU 6 / FUN 2. Pillar/gate counts pending map update."
+    "lastUpdated": "2026-10-04 — FINAL. End-of-event holdings; achievement credit via high-water marks."
   },
   "diplomacy": [
     {
@@ -883,8 +887,7 @@
         "ssh": true,
         "connected": true,
         "sshAt": 0,
-        "sshFrac": 0.2,
-        "building": true
+        "sshFrac": 0.2
       },
       {
         "owner": "Myt",
@@ -924,8 +927,7 @@
           "gate_abundance"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
         "owner": "τ28",
@@ -994,8 +996,7 @@
           "gate_azure_sky"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
         "owner": "HeX",
@@ -1044,8 +1045,7 @@
           "gate_chaos"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
         "owner": "τ28",
@@ -1072,9 +1072,7 @@
           "city_crocodile"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true,
-        "siege": true
+        "connected": true
       },
       {
         "owner": "HeX",
@@ -1092,8 +1090,7 @@
           "gate_primal_water"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
         "owner": "τ28",
@@ -1120,8 +1117,7 @@
           "balance_fort"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       },
       {
         "owner": "AꞭL",
@@ -1130,8 +1126,7 @@
           "tower_1"
         ],
         "ssh": false,
-        "connected": true,
-        "building": true
+        "connected": true
       }
     ],
     "planned": [

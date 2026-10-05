@@ -293,7 +293,8 @@ function achievementCur(a, tag) {
     // (flagsPeak, if recorded) so deleting flags never un-checks a completed tier.
     if (a.derive === "flags")      return Math.max(Number(pg.flags || 0), Number(pg.flagsPeak || 0));
     if (a.derive === "stronghold") return (Number(pg.flags || 0) > 0 || Number(pg.flagsPeak || 0) > 0 || (pg.gates || 0) > 0 || (pg.pillarCities || 0) > 0) ? 1 : 0;
-    if (a.derive === "pillars")    return Number(pg.pillarCities || 0);
+    // pillar/city achievement is permanent once earned — high-water mark too.
+    if (a.derive === "pillars")    return Math.max(Number(pg.pillarCities || 0), Number(pg.pillarsPeak || 0));
     if (a.derive === "points") {
       const ap = (ALLIANCE_POINTS || []).find(x => x.tag === tag);
       const n = ap ? Number(String(ap.points).replace(/[^0-9.]/g, "")) : NaN;
