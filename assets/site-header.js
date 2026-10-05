@@ -31,6 +31,20 @@
   var ROOT = rootPrefix();
   var href = function (p) { return ROOT + p; };
 
+  // ---- site favicon (Era 8 "#8" mark) — injected once on every page that loads
+  // this header, so we don't have to add a <link> to each HTML file. Skips if the
+  // page already declares its own icon. SVG scales crisply to any tab size. ----
+  (function injectFavicon() {
+    try {
+      if (document.querySelector('link[rel~="icon"]')) return;
+      var link = document.createElement('link');
+      link.rel = 'icon';
+      link.type = 'image/svg+xml';
+      link.href = href('assets/favicon.svg');
+      (document.head || document.documentElement).appendChild(link);
+    } catch (e) {}
+  })();
+
   // ---- canonical language display names (native, short enough for the chip) ----
   // Pages register only the codes they support; names come from here so the
   // dropdown looks identical everywhere. Add codes here as new langs appear.
