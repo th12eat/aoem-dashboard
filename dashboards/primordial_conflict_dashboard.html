@@ -163,26 +163,26 @@ const { useState, useEffect } = React;
 const T = s => s;
 
 // ── Event config ──
-// Matchmaking began Sun 2026-09-14 00:00 UTC. Seven-day arc: matching, three
+// Matchmaking began Mon 2026-10-12 00:00 UTC. Seven-day arc: matching, three
 // battle days (round-robin), battlefield selection, showdown, recovery. Each
-// game day is a UTC calendar day; Day 2 (first battle) starts Mon Sep 15 00:00.
+// game day is a UTC calendar day; Day 2 (first battle) starts Tue Oct 13 00:00.
 const EVENT = {
-  startISO: "2026-09-14T00:00:00Z",
-  endISO:   "2026-09-20T23:59:59Z",
+  startISO: "2026-10-12T00:00:00Z",
+  endISO:   "2026-10-18T23:59:59Z",
   ourTime:  "19:00 UTC",           // our server's workshop / showdown window
 };
-// Day-6 showdown window (set once the Day-5 pick locks the time). Sat Sep 19,
+// Day-6 showdown window (set once the Day-5 pick locks the time). Sat Oct 17,
 // 19:00 UTC this cycle; host/corners still TBD. Duration is a placeholder for
 // the "live" state — the fight runs the evening, not a strict 1h contest.
-const SHOWDOWN = { date: "2026-09-19", time: "19:00", durationH: 4 };
+const SHOWDOWN = { date: "2026-10-17", time: "19:00", durationH: 4 };
 
 // ── Servers (us first, then opponents) — colors per the user's assignment:
-//    Era #008 (us) green · Era #012 blue · Era #017 orange · Era #013 purple.
+//    Era #008 (us) orange · Era #030 blue · Era #036 green · Era #084 purple.
 const SERVERS = [
-  { code: "E#008", label: "Era #008", name: "ERAEMPIRE", us: true,  hex: "#3daa6d", rgb: "61,170,109", sdRank: 41, sdTier: "Glory 2x★" },
-  { code: "E#012", label: "Era #012", name: "",          us: false, hex: "#3d7cc4", rgb: "61,124,196", sdRank: 34, sdTier: "Glory 2x★" },
-  { code: "E#017", label: "Era #017", name: "",          us: false, hex: "#e8944a", rgb: "232,148,74", sdRank: 3,  sdTier: "Pinnacle 1x★" },
-  { code: "E#013", label: "Era #013", name: "",          us: false, hex: "#9b6dff", rgb: "155,109,255", sdRank: 2,  sdTier: "Glory 2x★" },
+  { code: "E#008", label: "Era #008", name: "ERAEMPIRE", us: true,  hex: "#e8944a", rgb: "232,148,74" },
+  { code: "E#030", label: "Era #030", name: "",          us: false, hex: "#3d7cc4", rgb: "61,124,196" },
+  { code: "E#036", label: "Era #036", name: "",          us: false, hex: "#3daa6d", rgb: "61,170,109" },
+  { code: "E#084", label: "Era #084", name: "",          us: false, hex: "#9b6dff", rgb: "155,109,255" },
 ];
 const srvColor = code => SERVERS.find(s => s.code === code) || { hex: "#94a3b8", rgb: "148,163,184" };
 
@@ -196,10 +196,10 @@ let SCORE_UPDATED = "";
 // there are no points yet (like now), it still shows — split equally at 0.
 function KingdomBar() {
   const GRAD = {
-    "E#008": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" }, // green (us)
-    "E#012": { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" }, // blue
-    "E#017": { grad: "linear-gradient(90deg, #b4500f, #e8944a)", top: "#f0a860" }, // orange
-    "E#013": { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" }, // purple
+    "E#008": { grad: "linear-gradient(90deg, #b4500f, #e8944a)", top: "#f0a860" }, // orange (us)
+    "E#030": { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" }, // blue
+    "E#036": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" }, // green
+    "E#084": { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" }, // purple
   };
   const rowFor = code => (KINGDOM_SCOREBOARD || []).find(k => k.server === code) || {};
   const num = v => Number(String(v ?? 0).replace(/,/g, "")) || 0;
@@ -231,13 +231,13 @@ function KingdomBar() {
 // ── Schedule stages (the "line"). Each: key, label, day range, ISO start,
 //    `group` (consecutive same-group stages get one label above the timeline). ──
 const STAGES = [
-  { key: "match",    group: "match",    label: "Matchmaking & scouting",  days: [1],    startISO: "2026-09-14T00:00:00Z" },
-  { key: "battle1",  group: "battle",   label: "Battle Day 1 (1v1)",      days: [2],    startISO: "2026-09-15T00:00:00Z" },
-  { key: "battle2",  group: "battle",   label: "Battle Day 2 (1v1)",      days: [3],    startISO: "2026-09-16T00:00:00Z" },
-  { key: "battle3",  group: "battle",   label: "Battle Day 3 (1v1)",      days: [4],    startISO: "2026-09-17T00:00:00Z" },
-  { key: "select",   group: "select",   label: "Battlefield selection",   days: [5],    startISO: "2026-09-18T00:00:00Z" },
-  { key: "showdown", group: "showdown", label: "4-way showdown",          days: [6],    startISO: "2026-09-19T00:00:00Z" },
-  { key: "recovery", group: "recovery", label: "Troop recovery",          days: [7],    startISO: "2026-09-20T00:00:00Z" },
+  { key: "match",    group: "match",    label: "Matchmaking & scouting",  days: [1],    startISO: "2026-10-12T00:00:00Z" },
+  { key: "battle1",  group: "battle",   label: "Battle Day 1 (1v1)",      days: [2],    startISO: "2026-10-13T00:00:00Z" },
+  { key: "battle2",  group: "battle",   label: "Battle Day 2 (1v1)",      days: [3],    startISO: "2026-10-14T00:00:00Z" },
+  { key: "battle3",  group: "battle",   label: "Battle Day 3 (1v1)",      days: [4],    startISO: "2026-10-15T00:00:00Z" },
+  { key: "select",   group: "select",   label: "Battlefield selection",   days: [5],    startISO: "2026-10-16T00:00:00Z" },
+  { key: "showdown", group: "showdown", label: "4-way showdown",          days: [6],    startISO: "2026-10-17T00:00:00Z" },
+  { key: "recovery", group: "recovery", label: "Troop recovery",          days: [7],    startISO: "2026-10-18T00:00:00Z" },
 ];
 // Phase groups: label shown above the timeline + bright/dim colors. Purple family:
 // matching blue → battle lavender → selection neon purple → showdown deep purple
@@ -253,7 +253,7 @@ const STAGE_TINT = Object.fromEntries(STAGES.map(s => [s.key, STAGE_GROUPS[s.gro
 
 // Current event day (1–7) from today's UTC date; 0 before it starts, capped at 7.
 function currentEventDay(now) {
-  const startDay = Date.parse("2026-09-14T00:00:00Z");
+  const startDay = Date.parse("2026-10-12T00:00:00Z");
   if (now < startDay) return 0;
   const d = Math.floor((now - startDay) / 86400000) + 1;
   return Math.min(7, d);
@@ -428,7 +428,7 @@ function OverviewTab() {
       <div className="pc-card">
         <h2>{T("Event Timeline")}</h2>
         <StageLine />
-        <p className="sl-note">{T("Seven-day, four-kingdom round-robin. Matchmaking opened Sun Sep 14 (00:00 UTC). Three 1v1 battle days (Day 2 starts Mon Sep 15), then the leading kingdom picks the showdown battlefield & time, a 4-way showdown, and a recovery day.")}</p>
+        <p className="sl-note">{T("Seven-day, four-kingdom round-robin. Matchmaking opened Mon Oct 12 (00:00 UTC). Three 1v1 battle days (Day 2 starts Tue Oct 13), then the leading kingdom picks the showdown battlefield & time, a 4-way showdown, and a recovery day.")}</p>
       </div>
 
       <div className="pc-card">
@@ -441,15 +441,15 @@ function OverviewTab() {
       <div className="pc-card">
         <h2>🗺️ {T("The Map")}</h2>
         <div className="callout" style={{ marginTop: 0 }}>
-          <strong>{T("Locked — Showdown on E#017")}</strong>
-          {T("Host is E#017 (South). Corners: E#013 North · E#012 East · E#008 (us) West · E#017 South. We defend our West corner and focus refinery R7.")}
+          <strong>{T("Sample Layout — Positions TBD")}</strong>
+          {T("The showdown host server and each kingdom's corner aren't decided until the Day-5 battlefield pick. Corners below are a SAMPLE only — the 8-refinery ring around the Imperial City is the real, fixed geometry.")}
         </div>
         <SampleBattleMap />
         <div className="legend-row" style={{ marginTop: 4 }}>
-          <span><span className="sw" style={{ background: "#3daa6d" }}></span>{T("E#008 (Us)")}</span>
-          <span><span className="sw" style={{ background: "#3d7cc4" }}></span>{T("E#012")}</span>
-          <span><span className="sw" style={{ background: "#e8944a" }}></span>{T("E#017")}</span>
-          <span><span className="sw" style={{ background: "#9b6dff" }}></span>{T("E#013")}</span>
+          <span><span className="sw" style={{ background: "#e8944a" }}></span>{T("E#008 (Us)")}</span>
+          <span><span className="sw" style={{ background: "#3d7cc4" }}></span>{T("E#030")}</span>
+          <span><span className="sw" style={{ background: "#3daa6d" }}></span>{T("E#036")}</span>
+          <span><span className="sw" style={{ background: "#9b6dff" }}></span>{T("E#084")}</span>
         </div>
       </div>
 
@@ -459,17 +459,18 @@ function OverviewTab() {
   );
 }
 
-// Day-6 showdown battlefield (host E#017). Four kingdom corners with bulky
-// corner caps, the 8-refinery ring, and siege arrows curving into OUR (West)
-// corner. Corner assignments locked by the Day-5 pick:
-//   North E#013 · East E#012 · South E#017 (host) · West E#008 (us).
-// The "us" emphasis (opacity, (US) label, pulse, siege) sits on West.
-// NOTE: on reset, restore the SAMPLE watermark + "Sample Layout" blurb.
+// Sample showdown battlefield (ported from the Day-6 flyer): four kingdom corners
+// with bulky corner caps, the 8-refinery ring, and siege arrows curving into our
+// corner. Corner assignments + host are a SAMPLE (unknown until the Day-5 pick),
+// so the siege is labeled generically — our four servers colored, us South.
+// NOTE: once the Day-5 pick locks, swap in the real host/corners, drop the SAMPLE
+// watermark, and move the FOCUS/siege to our real corner.
 function SampleBattleMap() {
-  const N = { code: "E#013", hex: "#9b6dff", rgb: "155,109,255" };
-  const E = { code: "E#012", hex: "#3d7cc4", rgb: "61,124,196" };
-  const S = { code: "E#017", hex: "#e8944a", rgb: "232,148,74" }; // host
-  const W = { code: "E#008", hex: "#3daa6d", rgb: "61,170,109" }; // us (green)
+  // corner → {code, hex, rgb}. Sample layout: us (E#008) South, others clockwise.
+  const N = { code: "E#036", hex: "#3daa6d", rgb: "61,170,109" };
+  const E = { code: "E#084", hex: "#9b6dff", rgb: "155,109,255" };
+  const S = { code: "E#008", hex: "#e8944a", rgb: "232,148,74" }; // us (orange)
+  const W = { code: "E#030", hex: "#3d7cc4", rgb: "61,124,196" };
   const refs = [
     [260,117,"R1"],[331,187,"R2"],[401,260,"R3"],[331,331,"R4"],
     [260,401,"R5"],[189,331,"R6"],[119,260,"R7"],[189,187,"R8"],
@@ -489,28 +490,27 @@ function SampleBattleMap() {
             <polygon points="12,2 22,20 2,20" fill="none" stroke="rgba(255,200,50,0.9)" strokeWidth="2" strokeLinejoin="round" />
             <text x="12" y="18" textAnchor="middle" fill="rgba(255,200,50,0.9)" fontFamily="Barlow,sans-serif" fontSize="14" fontWeight="700">!</text>
           </symbol>
-          <marker id="pcfocus" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-            <polygon points="0,0 10,5 0,10" fill="#4fc386" />
-          </marker>
         </defs>
         {/* outer + inner diamonds */}
         <polygon points="260,-50 570,260 260,570 -50,260" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
-        {/* corner chunks — West (us) emphasized */}
+        {/* corner chunks — South (us) emphasized */}
         <polygon points="105,105 260,-50 415,105 375,145 260,30 145,145" fill={"rgba(" + N.rgb + ",0.12)"} stroke={"rgba(" + N.rgb + ",0.4)"} strokeWidth="1.5" />
         <polygon points="415,105 570,260 415,415 375,375 490,260 375,145" fill={"rgba(" + E.rgb + ",0.12)"} stroke={"rgba(" + E.rgb + ",0.4)"} strokeWidth="1.5" />
-        <polygon points="415,415 260,570 105,415 145,375 260,490 375,375" fill={"rgba(" + S.rgb + ",0.12)"} stroke={"rgba(" + S.rgb + ",0.4)"} strokeWidth="1.5" />
-        <polygon points="105,415 -50,260 105,105 145,145 30,260 145,375" fill={"rgba(" + W.rgb + ",0.18)"} stroke={"rgba(" + W.rgb + ",0.55)"} strokeWidth="2" />
+        <polygon points="415,415 260,570 105,415 145,375 260,490 375,375" fill={"rgba(" + S.rgb + ",0.18)"} stroke={"rgba(" + S.rgb + ",0.55)"} strokeWidth="2" />
+        <polygon points="105,415 -50,260 105,105 145,145 30,260 145,375" fill={"rgba(" + W.rgb + ",0.12)"} stroke={"rgba(" + W.rgb + ",0.4)"} strokeWidth="1.5" />
         {/* bulkier corner caps (the diamond bump-outs beyond each corner) */}
         <polygon points="210,-100 260,-150 310,-100 360,-50 310,0 260,-50 210,0 160,-50" fill={"rgba(" + N.rgb + ",0.18)"} stroke={"rgba(" + N.rgb + ",0.5)"} strokeWidth="1.5" />
         <polygon points="620,210 670,260 620,310 570,360 520,310 570,260 520,210 570,160" fill={"rgba(" + E.rgb + ",0.18)"} stroke={"rgba(" + E.rgb + ",0.5)"} strokeWidth="1.5" />
-        <polygon points="310,620 260,670 210,620 160,570 210,520 260,570 310,520 360,570" fill={"rgba(" + S.rgb + ",0.18)"} stroke={"rgba(" + S.rgb + ",0.5)"} strokeWidth="1.5" />
-        <polygon points="-100,310 -150,260 -100,210 -50,160 0,210 -50,260 0,310 -50,360" fill={"rgba(" + W.rgb + ",0.28)"} stroke={"rgba(" + W.rgb + ",0.7)"} strokeWidth="2" />
+        <polygon points="310,620 260,670 210,620 160,570 210,520 260,570 310,520 360,570" fill={"rgba(" + S.rgb + ",0.28)"} stroke={"rgba(" + S.rgb + ",0.7)"} strokeWidth="2" />
+        <polygon points="-100,310 -150,260 -100,210 -50,160 0,210 -50,260 0,310 -50,360" fill={"rgba(" + W.rgb + ",0.18)"} stroke={"rgba(" + W.rgb + ",0.5)"} strokeWidth="1.5" />
         <polygon points="260,30 490,260 260,490 30,260" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
         {/* IC */}
         <circle cx="260" cy="260" r="80" fill="url(#pcglow)" />
         <circle cx="260" cy="260" r="36" fill="none" stroke="rgba(212,168,67,0.5)" strokeWidth="2" strokeDasharray="4,3" />
         <circle cx="260" cy="260" r="6" fill="#d4a843" />
         <text x="260" y="242" textAnchor="middle" fill="#d4a843" fontFamily="'Bebas Neue',sans-serif" fontSize="13" letterSpacing="2">IMPERIAL CITY</text>
+        {/* SAMPLE watermark */}
+        <text x="260" y="285" textAnchor="middle" fill="rgba(232,148,74,0.5)" fontFamily="'Bebas Neue',sans-serif" fontSize="16" letterSpacing="4">SAMPLE</text>
         {/* refineries */}
         {refs.map(([x, y, id]) => (
           <g key={id}>
@@ -519,37 +519,34 @@ function SampleBattleMap() {
             <text x={x} y={y+42} textAnchor="middle" fill="#d4a843" fontFamily="'Barlow Condensed',sans-serif" fontSize="18" fontWeight="600">{id}</text>
           </g>
         ))}
-        {/* R7 focus arrow — our priority refinery */}
-        <line x1="10" y1="260" x2="88" y2="260" stroke="#4fc386" strokeWidth="3" strokeLinecap="round" markerEnd="url(#pcfocus)" />
-        <text x="6" y="248" textAnchor="end" fill="#4fc386" fontFamily="'Barlow Condensed',sans-serif" fontSize="16" fontWeight="700" letterSpacing="0.5">FOCUS R7</text>
         {/* corner labels */}
         <text x="260" y="-92" textAnchor="middle" fill={N.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="24" fontWeight="700" letterSpacing="1">{N.code}</text>
         <text x="626" y="266" textAnchor="middle" fill={E.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="24" fontWeight="700" letterSpacing="1">{E.code}</text>
-        <text x="260" y="642" textAnchor="middle" fill={S.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="24" fontWeight="700" letterSpacing="1">{S.code} (HOST)</text>
-        <text x="-106" y="266" textAnchor="middle" fill={W.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="26" fontWeight="700" letterSpacing="1">{W.code} (US)</text>
-        {/* "you are here" pulse on our West corner */}
-        <circle cx="-50" cy="260" r="12" fill="none" stroke={W.hex} strokeWidth="2" strokeDasharray="3,2">
+        <text x="260" y="642" textAnchor="middle" fill={S.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="26" fontWeight="700" letterSpacing="1">{S.code} (US)</text>
+        <text x="-106" y="266" textAnchor="middle" fill={W.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="24" fontWeight="700" letterSpacing="1">{W.code}</text>
+        {/* "you are here" pulse on our South corner */}
+        <circle cx="260" cy="570" r="12" fill="none" stroke={S.hex} strokeWidth="2" strokeDasharray="3,2">
           <animate attributeName="r" values="12;18;12" dur="2s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" />
         </circle>
-        <circle cx="-50" cy="260" r="5" fill={W.hex} />
-        {/* Siege pressure toward OUR (West) corner tip (-50,260) — enemy war
-            machines stage further out on the NW + SW flanks and drive in at the
-            corner itself (not the R7 refinery), each flagged DEFEND. */}
-        {/* NW flank */}
-        <text x="-150" y="80" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="15" fontWeight="600" letterSpacing="0.5">SIEGE</text>
-        <circle cx="-150" cy="92" r="4" fill="rgba(255,200,50,0.75)" />
-        <path d="M -146,100 C -128,150 -98,200 -66,240" stroke="rgba(255,200,50,0.6)" strokeWidth="2.5" fill="none" strokeDasharray="5,4" strokeLinecap="round" />
-        <polygon points="-56,251 -68,244 -60,234" fill="rgba(255,200,50,0.75)" />
-        <use href="#pcsiegewarn" x="-172" y="120" width="44" height="44" />
-        <text x="-130" y="184" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="600">DEFEND</text>
+        <circle cx="260" cy="570" r="5" fill={S.hex} />
+        {/* Siege pressure toward our corner (sample). On the host's home map the
+            enemy war machines stage close and curve in from the flanks (SE + SW),
+            not head-on — each arrow flagged DEFEND. Host TBD, so labeled generic. */}
+        {/* SE flank */}
+        <text x="470" y="628" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="15" fontWeight="600" letterSpacing="0.5">SIEGE</text>
+        <circle cx="470" cy="604" r="4" fill="rgba(255,200,50,0.75)" />
+        <path d="M 462,601 C 420,579 360,559 318,552" stroke="rgba(255,200,50,0.6)" strokeWidth="2.5" fill="none" strokeDasharray="5,4" strokeLinecap="round" />
+        <polygon points="306,550 320,546 316,558" fill="rgba(255,200,50,0.75)" />
+        <use href="#pcsiegewarn" x="372" y="502" width="44" height="44" />
+        <text x="394" y="560" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="600">DEFEND</text>
         {/* SW flank */}
-        <text x="-150" y="448" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="15" fontWeight="600" letterSpacing="0.5">SIEGE</text>
-        <circle cx="-150" cy="428" r="4" fill="rgba(255,200,50,0.75)" />
-        <path d="M -146,420 C -128,370 -98,320 -66,280" stroke="rgba(255,200,50,0.6)" strokeWidth="2.5" fill="none" strokeDasharray="5,4" strokeLinecap="round" />
-        <polygon points="-56,269 -68,276 -60,286" fill="rgba(255,200,50,0.75)" />
-        <use href="#pcsiegewarn" x="-172" y="336" width="44" height="44" />
-        <text x="-130" y="336" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="600">DEFEND</text>
+        <text x="50" y="628" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="15" fontWeight="600" letterSpacing="0.5">SIEGE</text>
+        <circle cx="50" cy="604" r="4" fill="rgba(255,200,50,0.75)" />
+        <path d="M 58,601 C 100,579 160,559 202,552" stroke="rgba(255,200,50,0.6)" strokeWidth="2.5" fill="none" strokeDasharray="5,4" strokeLinecap="round" />
+        <polygon points="214,550 200,546 204,558" fill="rgba(255,200,50,0.75)" />
+        <use href="#pcsiegewarn" x="104" y="502" width="44" height="44" />
+        <text x="126" y="560" textAnchor="middle" fill="rgba(255,200,50,0.85)" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="600">DEFEND</text>
       </svg>
     </div>
   );
@@ -714,12 +711,12 @@ function ScoringTab() {
 }
 
 // Our server's Order Workshop event runs 19:00–20:00 UTC on each of the three
-// battle days (Day 2 = Sep 15 … Day 4 = Sep 17). Results are overlaid from
+// battle days (Day 2 = Oct 13 … Day 4 = Oct 15). Results are overlaid from
 // primordial.json (workshopResults[]) — each row is our fight that day.
 const WORKSHOP_DAYS = [
-  { day: 2, date: "2026-09-15" },
-  { day: 3, date: "2026-09-16" },
-  { day: 4, date: "2026-09-17" },
+  { day: 2, date: "2026-10-13" },
+  { day: 3, date: "2026-10-14" },
+  { day: 4, date: "2026-10-15" },
 ];
 let WORKSHOP_RESULTS = [];  // [{day, opponent, ourCaps, theirCaps, theirTime, note}]
 
@@ -767,7 +764,7 @@ function workshopStatus(now) {
   });
   let msToEnd = 0;
   if (live) msToEnd = Math.max(0, Date.parse(WORKSHOP_DAYS[liveIdx].date + "T20:00:00Z") - now);
-  const lock = beforeStart ? "The Order Workshop event opens on Battle Day 1 (Tue Sep 15, 19:00 UTC)"
+  const lock = beforeStart ? "The Order Workshop event opens on Battle Day 1 (Tue Oct 13, 19:00 UTC)"
              : (afterEnd ? "The Battle Stage is complete — Order Workshops have closed" : null);
   // Badge tracks the next contest across BOTH sides. Any window covering `now`
   // is "live"; otherwise show the soonest upcoming one (ours or theirs).
@@ -949,20 +946,20 @@ function App() {
   if (!evtCfg.current) {
     evtCfg.current = {
       timezone: "UTC+0",
-      startISO: "2026-09-14T00:00:00Z", endISO: "2026-09-20T23:59:59Z",
-      startLabel: "Sep 14", startLabelText: T("Starts"),
-      endLabel: "Sep 20", endLabelText: T("Ends"),
-      pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete — 3rd of 4"),
+      startISO: "2026-10-12T00:00:00Z", endISO: "2026-10-18T23:59:59Z",
+      startLabel: "Oct 12", startLabelText: T("Starts"),
+      endLabel: "Oct 18", endLabelText: T("Ends"),
+      pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete"),
       liveLabel: "Contest Live", liveDot: true,
       ical: { stub: true, label: T("Add to Calendar") },
       phases: [
-        { fromISO: "2026-09-14T00:00:00Z", leftLabel: T("Matchmaking"),  leftValue: "Sep 14", rightLabel: T("Battle Day 1"), rightValue: "Sep 15", countdownISO: "2026-09-15T00:00:00Z", stageLabel: "Contest Live | Matchmaking" },
-        { fromISO: "2026-09-15T00:00:00Z", leftLabel: T("Battle Day 1"), leftValue: "Sep 15", rightLabel: T("Battle Day 2"), rightValue: "Sep 16", countdownISO: "2026-09-16T00:00:00Z", stageLabel: "Contest Live | Battle Day 1" },
-        { fromISO: "2026-09-16T00:00:00Z", leftLabel: T("Battle Day 2"), leftValue: "Sep 16", rightLabel: T("Battle Day 3"), rightValue: "Sep 17", countdownISO: "2026-09-17T00:00:00Z", stageLabel: "Contest Live | Battle Day 2" },
-        { fromISO: "2026-09-17T00:00:00Z", leftLabel: T("Battle Day 3"), leftValue: "Sep 17", rightLabel: T("Selection"),    rightValue: "Sep 18", countdownISO: "2026-09-18T00:00:00Z", stageLabel: "Contest Live | Battle Day 3" },
-        { fromISO: "2026-09-18T00:00:00Z", leftLabel: T("Selection"),    leftValue: "Sep 18", rightLabel: T("Showdown"),     rightValue: "Sep 19", countdownISO: "2026-09-19T00:00:00Z", stageLabel: "Contest Live | Battlefield Selection" },
-        { fromISO: "2026-09-19T00:00:00Z", leftLabel: T("Showdown"),     leftValue: "Sep 19", rightLabel: T("Recovery"),     rightValue: "Sep 20", countdownISO: "2026-09-20T00:00:00Z", stageLabel: "Contest Live | Showdown" },
-        { fromISO: "2026-09-20T00:00:00Z", leftLabel: T("Recovery"),     leftValue: "Sep 20", rightLabel: T("Ends"),         rightValue: "Sep 20", countdownISO: "2026-09-20T23:59:59Z", stageLabel: "Contest Live | Recovery" },
+        { fromISO: "2026-10-12T00:00:00Z", leftLabel: T("Matchmaking"),  leftValue: "Oct 12", rightLabel: T("Battle Stage"), rightValue: "Oct 13", countdownISO: "2026-10-13T00:00:00Z", stageLabel: "Contest Live | Matchmaking" },
+        { fromISO: "2026-10-13T00:00:00Z", leftLabel: T("Battle Day 1"), leftValue: "Oct 13", rightLabel: T("Battle Day 2"), rightValue: "Oct 14", countdownISO: "2026-10-14T00:00:00Z", stageLabel: "Contest Live | Battle Day 1" },
+        { fromISO: "2026-10-14T00:00:00Z", leftLabel: T("Battle Day 2"), leftValue: "Oct 14", rightLabel: T("Battle Day 3"), rightValue: "Oct 15", countdownISO: "2026-10-15T00:00:00Z", stageLabel: "Contest Live | Battle Day 2" },
+        { fromISO: "2026-10-15T00:00:00Z", leftLabel: T("Battle Day 3"), leftValue: "Oct 15", rightLabel: T("Selection"),    rightValue: "Oct 16", countdownISO: "2026-10-16T00:00:00Z", stageLabel: "Contest Live | Battle Day 3" },
+        { fromISO: "2026-10-16T00:00:00Z", leftLabel: T("Selection"),    leftValue: "Oct 16", rightLabel: T("Showdown"),     rightValue: "Oct 17", countdownISO: "2026-10-17T00:00:00Z", stageLabel: "Contest Live | Battlefield Selection" },
+        { fromISO: "2026-10-17T00:00:00Z", leftLabel: T("Showdown"),     leftValue: "Oct 17", rightLabel: T("Recovery"),     rightValue: "Oct 18", countdownISO: "2026-10-18T00:00:00Z", stageLabel: "Contest Live | Showdown" },
+        { fromISO: "2026-10-18T00:00:00Z", leftLabel: T("Recovery"),     leftValue: "Oct 18", rightLabel: T("Ends"),         rightValue: "Oct 18", countdownISO: "2026-10-18T23:59:59Z", stageLabel: "Contest Live | Recovery" },
       ],
     };
   }
@@ -1013,7 +1010,7 @@ function App() {
             <h3>{T("What is Primordial Conflict?")}</h3>
             <p><strong style={{ color: "var(--kvk-accent)" }}>{T("Primordial Conflict")}</strong> {T("is a 7-day, four-kingdom round-robin KvK. After a matchmaking day, your kingdom fights each of the other three 1v1 across three battle days (Days 2–4), earning Primordial Points by gathering Dew at Alchemy Pools and contesting Order Workshops. The kingdom leading on points then picks the showdown battlefield & time (Day 5), all four converge for a 4-way fight over 8 Essence Refineries (Day 6), and Day 7 recovers losses.")}</p>
             <p style={{ marginTop: 10 }}><strong style={{ color: "#3daa6d" }}>{T("This is a special KvK where no troop loss occurs")}</strong> — {T("units wounded in PvP are recovered, so there's no lasting attrition. Contest every objective aggressively and PvP freely.")}</p>
-            <p style={{ marginTop: 10 }}>{T("We are Era #008 (ERAEMPIRE), facing Era #012, Era #017 and Era #013. Our server's workshop and showdown window is")} <strong style={{ color: "var(--kvk-accent)" }}>{EVENT.ourTime}</strong>.</p>
+            <p style={{ marginTop: 10 }}>{T("We are Era #008 (ERAEMPIRE), facing Era #030, Era #036 and Era #084. Our server's workshop and showdown window is")} <strong style={{ color: "var(--kvk-accent)" }}>{EVENT.ourTime}</strong>.</p>
           </div>
         </div>
       ) : null}
@@ -1082,7 +1079,7 @@ function App() {
         </div>
 
         <div style={{ textAlign: "center", padding: "24px 0", borderTop: "1px solid var(--border,#2a2a3a)", marginTop: 24, fontFamily: "'Barlow Condensed',sans-serif", fontSize: 12, color: "#64748b", letterSpacing: ".5px" }}>
-          {T("Primordial Conflict · Era 8 (E#008 ERAEMPIRE) · Special KvK — no troop loss · vs Era #012 / Era #017 / Era #013")}
+          {T("Primordial Conflict · Era 8 (E#008 ERAEMPIRE) · Special KvK — no troop loss · vs Era #030 / Era #036 / Era #084")}
         </div>
       </div>
     </div>
