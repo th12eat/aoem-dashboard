@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 2,
+  "eventConfig": {
+    "eventStart": "2026-10-21",
+    "eventEnd": "2026-11-03",
+    "recoveryEnd": "2026-11-05",
+    "matchingStart": "2026-10-19",
+    "servers": ["Era 8", "Era #068", "Era #066", "Era #028"],
+    "ourServer": "Era 8",
+    "ourAlliances": ["eRa", "Myt", "REU", "FUN"],
+    "notes": "Dates are placeholders until matchmaking sets the real calendar. Node list TBD.",
+    "eventOver": false
+  },
+  "kingdomPoints": {
+    "era8": "—",
+    "era068": "—",
+    "era066": "—",
+    "era028": "—",
+    "lastUpdated": "Draft — awaiting matchmaking & node list"
+  },
+  "kingdomScoreboard": [],
+  "allianceScoreboard": [],
+  "alliancePoints": [
+    { "tag": "eRa", "points": "—" },
+    { "tag": "Myt", "points": "—" },
+    { "tag": "REU", "points": "—" },
+    { "tag": "FUN", "points": "—" }
+  ],
+  "diplomacy": [
+    { "id": 1, "server": "Era #068", "alliance": "TBD", "relation": "neutral", "notes": "" },
+    { "id": 2, "server": "Era #066", "alliance": "TBD", "relation": "neutral", "notes": "" },
+    { "id": 3, "server": "Era #028", "alliance": "TBD", "relation": "neutral", "notes": "" }
+  ],
+  "contacts": [],
+  "mapState": {},
+  "mapRoutes": { "actual": [], "planned": [] }
+}
