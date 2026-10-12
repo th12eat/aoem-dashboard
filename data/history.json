@@ -1099,6 +1099,105 @@
         "Myt": "1,753,478,549",
         "FUN": "881,305,363"
       }
+    },
+    {
+      "event": "Primordial Conflict",
+      "date": "2026-10-12",
+      "opp": "Era #030 / Era #036 / Era #084",
+      "result": "Live",
+      "multi": true,
+      "basis": "top-4 alliances (scouting)",
+      "note": "Special KvK — no troop loss occurs. Matchmaking-stage top-4 alliance power + total merits per server, from the Primordial Conflict dashboard Scouting tab. Result updates when the event concludes.",
+      "ourRoster": [
+        [
+          "eRa",
+          25410263087,
+          2642206985
+        ],
+        [
+          "REU",
+          14809110578,
+          307069148
+        ],
+        [
+          "Myt",
+          11408009854,
+          526090994
+        ],
+        [
+          "001",
+          1057171685,
+          6334356
+        ]
+      ],
+      "oppRosters": {
+        "Era #030": [
+          [
+            "PxG",
+            21409489348,
+            2267919267
+          ],
+          [
+            "NøM",
+            13286790185,
+            297472258
+          ],
+          [
+            "UWS",
+            7481163919,
+            164807220
+          ],
+          [
+            "GHC",
+            1331153688,
+            14539007
+          ]
+        ],
+        "Era #036": [
+          [
+            "A36",
+            22820852118,
+            2253227966
+          ],
+          [
+            "O36",
+            21078956491,
+            2351046695
+          ],
+          [
+            "R36",
+            4948455079,
+            110784217
+          ],
+          [
+            "LTX",
+            1065985858,
+            5775034
+          ]
+        ],
+        "Era #084": [
+          [
+            "RoK",
+            20154628784,
+            2155521501
+          ],
+          [
+            "LOK",
+            4537220236,
+            31970746
+          ],
+          [
+            "SKP",
+            2938586062,
+            10774692
+          ],
+          [
+            "R84",
+            2227124579,
+            10290980
+          ]
+        ]
+      }
     }
   ]
 }
