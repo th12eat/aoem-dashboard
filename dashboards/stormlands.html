@@ -184,17 +184,21 @@ const SERVER_BADGES = [
   { srv: "Era #028", x: 48.5, y: 89.0 },  // south — green
 ];
 
+// Day numbering is CONTEST days (Day 1 = first day after matchmaking). In-game the
+// rules read "18 days total; contest Day 2 → Day 15" because they count the 2
+// matchmaking days first — our Day 1–14 = their Day 2–15. Milestones below are from
+// MrSneakyy's beta walkthrough of the in-game schedule.
 const SCHEDULE = [
-  { day: 1, date: "2026-10-21", title: "Eroded Wasteland Opens", desc: "Relocate into the Eroded Wasteland (starting zone). Build your alliance Stronghold, Storm Beacons, gathering center and supply depot. Hunt Storm Wolves for Storm Energy & Storm Fragments.", zone: "Eroded Wasteland" },
-  { day: 2, date: "2026-10-22", title: "Zone 2 — Eroded Forbidden Zone", desc: "Wasteland Forts, Basic Artisan Cities (build Storm Machines) and Energy Cities (Storm Energy over time) open. Basic Storm Altars awaken — the controlling alliance triggers Storm Erosion daily.", zone: "Eroded Wasteland → Eroded Forbidden Zone" },
-  { day: 3, date: "2026-10-23", title: "Contest Continues", desc: "Expand with connected Storm Beacons. Daily Storm Erosion. Kill the Storm Hydra near the Z1/Z2 fort for a boon of Storm Points.", zone: "Eroded Forbidden Zone" },
-  { day: 4, date: "2026-10-24", title: "Contest Continues", desc: "Push territory. Upgrade Storm Weapons with Storm Fragments / Storm Crystals. Daily Storm Erosion.", zone: "Eroded Forbidden Zone" },
-  { day: 5, date: "2026-10-25", title: "Push to the Storm Eye", desc: "Accumulate Storm Energy for Zone 3 beacons. Position on the Storm Eye Forts.", zone: "Eroded Forbidden Zone" },
-  { day: 6, date: "2026-10-26", title: "Zone 3 — Eternal Storm Eye", desc: "Storm Eye Forts and Advanced Artisan Cities open. Occupy forts to enter the Eternal Storm Eye region. Beacons cost more but are more durable.", zone: "Eternal Storm Eye" },
-  { day: 7, date: "2026-10-27", title: "Contest Continues", desc: "Hold Storm Eye territory. Mind the regional Storm Power — fall below it and your citadel & troops take continuous damage.", zone: "Eternal Storm Eye" },
-  { day: 8, date: "2026-10-28", title: "Push to Oblivion", desc: "Build Controlled Storm Power via Storm Weapons. Position on the Oblivion Forts.", zone: "Eternal Storm Eye" },
-  { day: 9, date: "2026-10-29", title: "Zone 4 — Oblivion Realm", desc: "Oblivion Forts and Advanced Energy Storage Cities (raise your alliance Storm Energy cap) open. The Core Storm Sacred Tower appears near the Temple.", zone: "Oblivion Realm" },
-  { day: 10, date: "2026-10-30", title: "Contest Continues", desc: "Secure the Oblivion Realm and the Core Storm Sacred Tower — holding it grants a powerful buff and teleport into the Temple core area.", zone: "Oblivion Realm" },
+  { day: 1, date: "2026-10-21", title: "Eroded Wasteland Opens", desc: "Relocate into the kingdom's Eroded Wasteland region (the outer rim). Build your alliance Stronghold, Storm Beacons, gathering center and supply depot. Hunt Storm Wolves for Storm Energy & Storm Fragments.", zone: "Eroded Wasteland" },
+  { day: 2, date: "2026-10-22", title: "Zone 2 — Eroded Forbidden Zone", desc: "Wasteland Forts open — occupy them to enter the Eroded Forbidden Zone. Basic Artisan Cities (occupy to build Storm Machines) and Energy Cities (gain Storm Energy over time) are now contestable.", zone: "Eroded Wasteland → Eroded Forbidden Zone" },
+  { day: 3, date: "2026-10-23", title: "Storm Altars & Storm Erosion", desc: "Basic Storm Altars and the Storm Erosion event open. Occupying an Altar lets you offer to upgrade it and pick the Storm Erosion time slot. Each Altar can trigger erosion once every 2 days (~7 triggers over the event); Erosion Beasts & Giants spawn in waves up to 30 min.", zone: "Eroded Forbidden Zone" },
+  { day: 4, date: "2026-10-24", title: "Storm Hydra Awakens", desc: "Eroded Forbidden Zone forts awaken to spawn a Storm Hydra for 1 hour — during that window all governors' troops may march through any forbidden zone regardless of ownership. Killing the Hydra gives a boon of Storm Points.", zone: "Eroded Forbidden Zone" },
+  { day: 5, date: "2026-10-25", title: "Intermediate Energy Cities", desc: "Intermediate Energy Cities open. Keep accumulating Storm Energy for Zone 3 beacons and position on the Storm Eye Forts.", zone: "Eroded Forbidden Zone" },
+  { day: 6, date: "2026-10-26", title: "Zone 3 — Eternal Storm Eye", desc: "The ring opens: Storm Eye Forts, Advanced Artisan Cities and Advanced Storm Altars become contestable. Occupy forts to enter the Eternal Storm Eye region. Beacons cost more but are more durable.", zone: "Eternal Storm Eye" },
+  { day: 7, date: "2026-10-27", title: "Contest Continues", desc: "Hold Storm Eye territory. Mind the regional Storm Power — fall below it and your citadel & troops take continuous damage, and you fight PvE worse.", zone: "Eternal Storm Eye" },
+  { day: 8, date: "2026-10-28", title: "Push to Oblivion", desc: "Build Controlled Storm Power via Storm Weapons (Fragments + Crystals). Position on the Oblivion Forts.", zone: "Eternal Storm Eye" },
+  { day: 9, date: "2026-10-29", title: "Zone 4 — Oblivion Realm (Center Opens)", desc: "The center opens: Oblivion Forts, Advanced Energy Storage Cities (raise your alliance Storm Energy cap) and the Core Storm Sacred Tower near the Temple.", zone: "Oblivion Realm" },
+  { day: 10, date: "2026-10-30", title: "Forbidden-Zone Barrier Drops", desc: "The forbidden-zone barrier is up until Day 10 — until now you're safe in Zone 1 & Zone 2. Secure the Oblivion Realm and the Core Storm Sacred Tower (powerful buff + teleport into the Temple core area).", zone: "Oblivion Realm" },
   { day: 11, date: "2026-10-31", title: "Zeus Time Vote (Battle I)", desc: "The server/kingdom with the most points at end of Day 11 chooses the Day-12 Temple of Zeus battle time.", zone: "Oblivion Realm" },
   { day: 12, date: "2026-11-01", title: "Battle for the Temple of Zeus I", desc: "First Temple of Zeus battle at the voted time. Hold the Temple core for a massive point influx.", zone: "Temple of Zeus" },
   { day: 13, date: "2026-11-02", title: "Zeus Time Vote (Battle II)", desc: "The top-scoring server at end of Day 13 chooses the Day-14 Temple of Zeus battle time.", zone: "Temple of Zeus" },
@@ -268,7 +272,7 @@ const KEY_NODES = [
   { id: "wfort", name: "Wasteland Fort / Dock", zone: "z1", type: "fort", desc: "Gate to the Eroded Forbidden Zone. Occupy to enter Zone 2.", points: 0 },
   { id: "energy_city", name: "Energy City", zone: "z2", type: "city", desc: "Occupying alliance gains Storm Energy over time. Also earns Storm Points per minute while held.", points: 500 },
   { id: "artisan_city", name: "Basic Artisan City", zone: "z2", type: "city", desc: "Occupying alliance can build Storm Machines.", points: 500 },
-  { id: "basic_altar", name: "Basic Storm Altar", zone: "z2", type: "tower", desc: "Offer 'offer' to raise its level (All Units Dmg +0.5% / Health +1.5% per level). Controlling alliance triggers Storm Erosion daily and gathers 'offer'.", points: 1000 },
+  { id: "basic_altar", name: "Basic Storm Altar", zone: "z2", type: "tower", desc: "Offer 'offer' to raise its level (All Units Dmg +0.5% / Health +1.5% per level). Controlling alliance picks the Storm Erosion time slot and gathers 'offer'. Each Altar can trigger erosion once every 2 days (~7 triggers across the event).", points: 1000 },
   { id: "sefort", name: "Storm Eye Fort", zone: "z3", type: "fort", desc: "Gate to the Eternal Storm Eye region. Opens Day 6.", points: 0 },
   { id: "adv_artisan", name: "Advanced Artisan City", zone: "z3", type: "city", desc: "Higher-tier Artisan City. Opens Day 6.", points: 500 },
   { id: "obfort", name: "Oblivion Fort", zone: "z4", type: "fort", desc: "Gate to the Oblivion Realm. Opens Day 9.", points: 0 },
@@ -2058,13 +2062,14 @@ function AltarSchedule() {
     <div id="tower-schedule" style={{ ...S.card }}>
       <div style={S.cardTitle}>{T("Storm Erosion — Daily Event")}</div>
       <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6, marginBottom: "12px" }}>
-        {T("The alliance that controls a Basic Storm Altar decides when to trigger Storm Erosion each day — there's no fixed server-wide clock. Coordinate your push to the Altar's trigger.")}
+        {T("The alliance that controls a Basic Storm Altar picks the Storm Erosion time slot — there's no fixed server-wide clock. Opens Day 3. Each Altar can trigger erosion once every 2 days, so expect roughly 7 triggers across the 14-day contest. Coordinate your push to the Altar's chosen window.")}
       </div>
       <div style={{ display: "grid", gap: "6px" }}>
         {[
-          ["Enemies", "Erosion Beasts (basic) and Erosion Giants (tougher, higher rewards)."],
+          ["Cadence", "Once every 2 days per Altar (~7 total). Controller chooses the time slot."],
+          ["Waves", "Erosion Beasts (basic) and Erosion Giants (tougher) spawn in waves for up to 30 min."],
           ["Points", "Damage pays 1:1 in Storm Points, up to the 15M daily cap."],
-          ["Drops", "Storm Fragments (toward the 3K/day cap) for upgrading Storm Weapons."],
+          ["Drops", "Storm Fragments (toward the daily cap) for upgrading Storm Weapons (Lv1–10)."],
           ["Control", "Hold the Altar to pick the trigger time + gather 'offer' to level it up."],
         ].map(([k, v]) => (
           <div key={k} style={{ display: "flex", gap: "10px", fontSize: "12px", lineHeight: 1.5 }}>
@@ -2073,7 +2078,7 @@ function AltarSchedule() {
           </div>
         ))}
       </div>
-      <div style={{ fontSize: "11px", color: "#64748b", marginTop: "10px" }}>{T("Trigger timing + exact rewards TBD until more in-game info lands.")}</div>
+      <div style={{ fontSize: "11px", color: "#64748b", marginTop: "10px" }}>{T("From MrSneakyy's beta walkthrough. Exact slot times + per-wave rewards TBD; beta values may change at release.")}</div>
     </div>
   );
 }
@@ -2090,7 +2095,7 @@ function PveTab() {
         <div style={{ display: "grid", gap: "8px" }}>
           {[
             { icon: "🚩", title: "Reinforce Beacons & Strongholds", desc: "Reinforcing a Storm Beacon or Stronghold being built reduces construction time significantly. This is critical for rapid expansion." },
-            { icon: "🐺", title: "Hunt Storm Wolves", desc: "Killing Storm Wolves inside Stormlands yields Storm Energy (up to 2K/day), Storm Fragments (up to 3K/day), and points: Lv31–35 = 13.5K, Lv36–40 = 15K, Lv41–45 = 16.5K." },
+            { icon: "🐺", title: "Hunt Storm Wolves", desc: "Killing Storm Wolves inside Stormlands yields Storm Energy (up to 2K/day) for your weapon, Storm Fragments (Lv1–10 upgrades), and points: Lv31–35 = 13.5K, Lv36–40 = 15K, Lv41–45 = 16.5K (counts toward the 2M/day Monster Elimination cap)." },
             { icon: "⚡", title: "Fight in Storm Erosion", desc: "Damage Erosion Beasts & Giants during the daily Storm Erosion event — 1:1 Storm Points per point of damage, up to the 15M daily cap. Also drops Storm Fragments." },
             { icon: "⛏️", title: "Gather Within the Map", desc: "Every 100 resources gathered in Stormlands = 20 Storm Points (up to 6M/day). Use the Storm Gathering Center for a speed boost + attack immunity." },
             { icon: "🗺️", title: "Ancient Storm Monument & Offerings", desc: "Clear the daily Ancient Storm Monument explorations, and offer at Basic Storm Altars (100 offer = 80K points)." },
@@ -2134,12 +2139,12 @@ function PveTab() {
         <div style={S.cardTitle}>{T("Currencies & Resources")}</div>
         <div style={S.grid2}>
           {[
-            ["Storm Energy", "#ef9f6b", "Build & path currency (Desolate Desert's Placer Gold). From holding Energy Cities + first-capture bonuses, plus up to 2K/day from defeating Storm Wolves. Spent on Storm Beacons and structures. Advanced Energy Storage Cities raise your alliance's storage cap."],
-            ["Storm Points", "#f59e0b", "Victory currency. From PvE, gathering, Storm Erosion, battle and holding nodes. Kingdom with the most wins + picks the Zeus battle time. Over 200K personal = Kingdom rewards at the end."],
-            ["Storm Fragments", "#8fc4f0", "Up to 3K/day from defeating Storm Wolves + the Storm Erosion event. Upgrade Storm Weapon levels 1–10."],
-            ["Storm Crystals", "#5b9bd8", "Up to 200/day from rallying Storm Rhinos. Upgrade Storm Weapon levels 11–20."],
+            ["Storm Energy", "#ef9f6b", "Build & path currency (Desolate Desert's Placer Gold). From holding Energy Cities + first-capture bonuses, plus up to 2K/day from defeating Storm Wolves. Spent on Storm Beacons and structures. Advanced Energy Storage Cities raise your alliance's storage cap. (The in-game rules also show a 3K figure — MrSneakyy flagged it as a likely typo; treat 2K/day as the wolf cap.)"],
+            ["Storm Points", "#f59e0b", "Victory currency. From PvE, gathering, Storm Erosion, battle and holding nodes. Wolf kills give points too (capped ~2M/day via Monster Elimination). Kingdom with the most wins + picks the Zeus battle time. Over 200K personal = Kingdom ranking rewards at the end."],
+            ["Storm Fragments", "#8fc4f0", "From defeating Storm Wolves + the Storm Erosion event. Upgrade Storm Weapon levels 1–10. You need these AND Crystals or you bottleneck at the Lv10 threshold."],
+            ["Storm Crystals", "#5b9bd8", "Up to 200/day from rallying Storm Rhinos. Upgrade Storm Weapon levels 11–20. Rally rhinos daily or you can't push weapons past Lv10."],
             ["Offer", "#c9a878", "Earned at Basic Storm Altars. Offer it back to an Altar to raise its level (more bonuses). 100 offer = 80K Storm Points."],
-            ["Controlled Storm Power", "#b06bd0", "Built mainly via Storm Weapons. If below a zone/monster's Storm Power, your citadel & troops take continuous damage and you fight PvE worse — see the scaling table below. Alliance lands block the citadel/troop damage."],
+            ["Controlled Storm Power", "#b06bd0", "Built via Storm Weapons (+100/level). A node's dot turns white once your Storm Power clears the local requirement (no debuff), red if you're under it. Below the zone/monster's Storm Power you take more damage and deal less in PvE — see the scaling table below. Alliance lands block the citadel/troop damage."],
           ].map(([title, col, desc]) => (
             <div key={title} style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
               <div style={{ fontWeight: 700, color: col, marginBottom: "4px" }}>{T(title)}</div>
