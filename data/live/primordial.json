@@ -131,8 +131,8 @@
   },
   "kingdomScoreboard": [],
   "workshopResults": [
-    { "day": 2, "opponent": "Era #084" },
-    { "day": 3, "opponent": "Era #030" },
+    { "day": 2, "opponent": "Era #030", "theirTime": "19:00" },
+    { "day": 3, "opponent": "Era #084", "theirTime": "11:00" },
     { "day": 4, "opponent": "Era #036" }
   ],
   "scoreUpdated": ""
