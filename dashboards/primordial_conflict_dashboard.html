@@ -171,10 +171,10 @@ const EVENT = {
   endISO:   "2026-10-18T23:59:59Z",
   ourTime:  "19:00 UTC",           // our server's workshop / showdown window
 };
-// Day-6 showdown window (set once the Day-5 pick locks the time). Sat Oct 17,
-// 19:00 UTC this cycle; host/corners still TBD. Duration is a placeholder for
-// the "live" state — the fight runs the evening, not a strict 1h contest.
-const SHOWDOWN = { date: "2026-10-17", time: "19:00", durationH: 4 };
+// Day-6 showdown window. Sat Oct 17, 19:00 UTC on E#030's map (host). Duration is
+// a placeholder for the "live" state — the fight runs the evening, not a strict
+// 1h contest.
+const SHOWDOWN = { date: "2026-10-17", time: "19:00", durationH: 4, host: "E#030" };
 
 // ── Servers (us first, then opponents) — colors per the user's assignment:
 //    Era #008 (us) orange · Era #030 blue · Era #036 green · Era #084 purple.
@@ -441,8 +441,8 @@ function OverviewTab() {
       <div className="pc-card">
         <h2>🗺️ {T("The Map")}</h2>
         <div className="callout" style={{ marginTop: 0 }}>
-          <strong>{T("Sample Layout — Positions TBD")}</strong>
-          {T("The showdown host server and each kingdom's corner aren't decided until the Day-5 battlefield pick. Corners below are a SAMPLE only — the 8-refinery ring around the Imperial City is the real, fixed geometry.")}
+          <strong>{T("Showdown Battlefield · Host E#030")}</strong>
+          {T("The Day-6 showdown is on E#030's map (Sat Oct 17, 19:00 UTC). Corners: us (E#008) South, E#030 West, E#036 East, E#084 North — all converging on the 8-refinery ring around the Imperial City.")}
         </div>
         <SampleBattleMap />
         <div className="legend-row" style={{ marginTop: 4 }}>
@@ -466,11 +466,11 @@ function OverviewTab() {
 // NOTE: once the Day-5 pick locks, swap in the real host/corners, drop the SAMPLE
 // watermark, and move the FOCUS/siege to our real corner.
 function SampleBattleMap() {
-  // corner → {code, hex, rgb}. Sample layout: us (E#008) South, others clockwise.
-  const N = { code: "E#036", hex: "#3daa6d", rgb: "61,170,109" };
-  const E = { code: "E#084", hex: "#9b6dff", rgb: "155,109,255" };
+  // corner → {code, hex, rgb}. us (E#008) South. #030 is the showdown HOST (West).
+  const N = { code: "E#084", hex: "#9b6dff", rgb: "155,109,255" };
+  const E = { code: "E#036", hex: "#3daa6d", rgb: "61,170,109" };
   const S = { code: "E#008", hex: "#e8944a", rgb: "232,148,74" }; // us (orange)
-  const W = { code: "E#030", hex: "#3d7cc4", rgb: "61,124,196" };
+  const W = { code: "E#030", hex: "#3d7cc4", rgb: "61,124,196", host: true };
   const refs = [
     [260,117,"R1"],[331,187,"R2"],[401,260,"R3"],[331,331,"R4"],
     [260,401,"R5"],[189,331,"R6"],[119,260,"R7"],[189,187,"R8"],
@@ -509,8 +509,6 @@ function SampleBattleMap() {
         <circle cx="260" cy="260" r="36" fill="none" stroke="rgba(212,168,67,0.5)" strokeWidth="2" strokeDasharray="4,3" />
         <circle cx="260" cy="260" r="6" fill="#d4a843" />
         <text x="260" y="242" textAnchor="middle" fill="#d4a843" fontFamily="'Bebas Neue',sans-serif" fontSize="13" letterSpacing="2">IMPERIAL CITY</text>
-        {/* SAMPLE watermark */}
-        <text x="260" y="285" textAnchor="middle" fill="rgba(232,148,74,0.5)" fontFamily="'Bebas Neue',sans-serif" fontSize="16" letterSpacing="4">SAMPLE</text>
         {/* refineries */}
         {refs.map(([x, y, id]) => (
           <g key={id}>
@@ -524,6 +522,7 @@ function SampleBattleMap() {
         <text x="626" y="266" textAnchor="middle" fill={E.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="24" fontWeight="700" letterSpacing="1">{E.code}</text>
         <text x="260" y="642" textAnchor="middle" fill={S.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="26" fontWeight="700" letterSpacing="1">{S.code} (US)</text>
         <text x="-106" y="266" textAnchor="middle" fill={W.hex} fontFamily="'Barlow Condensed',sans-serif" fontSize="24" fontWeight="700" letterSpacing="1">{W.code}</text>
+        <text x="-106" y="289" textAnchor="middle" fill="#d4a843" fontFamily="'Barlow Condensed',sans-serif" fontSize="14" fontWeight="700" letterSpacing="2">★ HOST</text>
         {/* "you are here" pulse on our South corner */}
         <circle cx="260" cy="570" r="12" fill="none" stroke={S.hex} strokeWidth="2" strokeDasharray="3,2">
           <animate attributeName="r" values="12;18;12" dur="2s" repeatCount="indefinite" />
@@ -951,7 +950,29 @@ function App() {
       endLabel: "Oct 18", endLabelText: T("Ends"),
       pendingLabel: T("Matchmaking"), completeLabel: T("Event Complete"),
       liveLabel: "Contest Live", liveDot: true,
-      ical: { stub: true, label: T("Add to Calendar") },
+      ical: {
+        label: T("Add Showdown to Calendar"), filename: "primordial-showdown",
+        // Day-6 4-way showdown on E#030's map — Sat Oct 17 19:00 UTC, SHOWDOWN.durationH long.
+        build: () => {
+          const pad = n => String(n).padStart(2, "0");
+          const start = new Date(SHOWDOWN.date + "T" + SHOWDOWN.time + ":00Z");
+          const end = new Date(start.getTime() + SHOWDOWN.durationH * 3600000);
+          const z = d => d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + "T" +
+                         pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + "00Z";
+          const stamp = z(new Date(EVENT.startISO)); // fixed DTSTAMP (no Date.now churn)
+          return [
+            "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//AoEM Era8//Primordial Conflict//EN",
+            "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
+            "UID:primordial-showdown-2026@aoem-era8",
+            "DTSTAMP:" + stamp, "DTSTART:" + z(start), "DTEND:" + z(end),
+            "SUMMARY:Primordial Conflict — Day 6 Showdown (host E#030)",
+            "DESCRIPTION:4-way showdown over the 8 Essence Refineries around the Imperial City on E#030's map. Our corner: South. Window 19:00 UTC.",
+            "BEGIN:VALARM", "TRIGGER:-PT30M", "ACTION:DISPLAY",
+            "DESCRIPTION:Primordial showdown in 30 minutes", "END:VALARM",
+            "END:VEVENT", "END:VCALENDAR",
+          ].join("\r\n");
+        },
+      },
       phases: [
         { fromISO: "2026-10-12T00:00:00Z", leftLabel: T("Matchmaking"),  leftValue: "Oct 12", rightLabel: T("Battle Stage"), rightValue: "Oct 13", countdownISO: "2026-10-13T00:00:00Z", stageLabel: "Contest Live | Matchmaking" },
         { fromISO: "2026-10-13T00:00:00Z", leftLabel: T("Battle Day 1"), leftValue: "Oct 13", rightLabel: T("Battle Day 2"), rightValue: "Oct 14", countdownISO: "2026-10-14T00:00:00Z", stageLabel: "Contest Live | Battle Day 1" },
