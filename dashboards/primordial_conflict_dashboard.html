@@ -265,8 +265,8 @@ function currentEventDay(now) {
 const DAILY_OBJECTIVES = [
   { name: "Gather Primordial Dew", target: null, note: "Alchemy Pools (Lv.1–4). 100 Dew → 10K points. Run 1 march on a Lv.4 pool + the rest on Lv.3." },
   { name: "Lv.4 Pool Hyena Kills", target: null, opensDay: 2, note: "Land the killing blow on a Corrupted Hyena for +10% gather speed at that pool (only 3 near the IC, refresh 12h)." },
-  { name: "Order Workshop Caps", target: null, opensDay: 2, note: "Capture workshops in our 19:00 event + the opponent's. 600M on capture, +200M if held at end." },
-  { name: "Workshop Stationing", target: null, opensDay: 2, note: "Stay inside a held workshop — +500 pts/sec per person. Every tier counts equally." },
+  { name: "Order Workshop Caps", target: null, opensDay: 2, workshopTied: true, note: "Capture workshops in our 19:00 event + the opponent's. 600M on capture, +200M if held at end." },
+  { name: "Workshop Stationing", target: null, opensDay: 2, workshopTied: true, note: "Stay inside a held workshop — +500 pts/sec per person. Every tier counts equally." },
   { name: "Combat Eliminations", target: null, opensDay: 2, note: "Score PvP within tier gap ≤ 2. No troop loss this cycle — fight freely." },
   { name: "Primordial Essence", target: null, opensDay: 6, note: "Day 6 only — garrison a refinery (50K+ units) for 1/sec, plus 1 per 500 combat pts (max 70K)." },
 ];
@@ -824,6 +824,10 @@ function DailyObjectives() {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const id = setInterval(() => setNow(Date.now()), 60000); return () => clearInterval(id); }, []);
   const day = currentEventDay(now);
+  // Workshop-tied objectives follow the Order Workshop section's own lifecycle:
+  // once the workshops have closed (afterEnd), grey + lock them just like the
+  // section itself (not merely greyed by day).
+  const wsClosed = workshopStatus(now).afterEnd;
   return (
     <div id="daily-objectives" className="pc-card anchor-target">
       <h2>📜 {T("Daily Objectives (per player)")}</h2>
@@ -837,13 +841,17 @@ function DailyObjectives() {
           </tr></thead>
           <tbody>
             {DAILY_OBJECTIVES.map(o => {
-              const locked = o.opensDay && day < o.opensDay;
+              const notYetOpen = o.opensDay && day < o.opensDay;
+              const wsOver = o.workshopTied && wsClosed;   // workshop event has closed
+              const locked = notYetOpen || wsOver;
               const targetTxt = o.target == null ? "Unlimited" : (o.target >= 1e6 ? (o.target / 1e6) + "M" : (o.target / 1e3) + "K");
+              const noteTxt = wsOver ? T("Order Workshops closed · ") + o.note
+                            : (notYetOpen ? T("Opens Day ") + o.opensDay + " · " + o.note : o.note);
               return (
                 <tr key={o.name} style={locked ? { opacity: 0.45 } : null}>
                   <td style={{ textAlign: "left", fontWeight: 600, color: locked ? "#64748b" : "#e8eaf0" }}>{o.name}{locked ? " 🔒" : ""}</td>
                   <td style={{ textAlign: "right", fontVariantNumeric: "tabular-nums", fontWeight: 700, color: o.target == null ? "#94a3b8" : (locked ? "#64748b" : "var(--kvk-accent)") }}>{o.target == null ? T("Unlimited") : "0 / " + targetTxt}</td>
-                  <td style={{ textAlign: "left", fontSize: "11px", color: "#94a3b8" }}>{locked ? T("Opens Day ") + o.opensDay + " · " + o.note : o.note}</td>
+                  <td style={{ textAlign: "left", fontSize: "11px", color: "#94a3b8" }}>{noteTxt}</td>
                 </tr>
               );
             })}
