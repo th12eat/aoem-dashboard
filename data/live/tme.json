@@ -48,6 +48,19 @@
       "merits": "533,716,644",
       "prepPoints": "0",
       "crossBorder": ""
+    },
+    {
+      "tag": "001",
+      "name": "ReinoUno",
+      "roleKey": "roleReserve",
+      "position": "reserve",
+      "tower": "—",
+      "color": "#94a3b8",
+      "allies": 52,
+      "power": "1,058,214,383",
+      "merits": "6,334,902",
+      "prepPoints": "0",
+      "crossBorder": ""
     }
   ],
   "prepStages": [
@@ -110,6 +123,15 @@
       "allies": 143,
       "power": "11,647,204,920",
       "merits": "227,961,205",
+      "prepPoints": "0",
+      "crossBorder": ""
+    },
+    {
+      "tag": "jxp",
+      "name": "帝國近衛軍",
+      "allies": 28,
+      "power": "965,482,278",
+      "merits": "790,999",
       "prepPoints": "0",
       "crossBorder": ""
     }
@@ -210,6 +232,30 @@
       "power": "262,332,537",
       "merits": "158,499,571",
       "ratio": ""
+    },
+    {
+      "rank": 13,
+      "name": "Tiiiitoooos",
+      "alliance": "TWH",
+      "power": "261,840,675",
+      "merits": "169,961,897",
+      "ratio": ""
+    },
+    {
+      "rank": 14,
+      "name": "Elessarˢ²⁴",
+      "alliance": "TKH",
+      "power": "251,233,337",
+      "merits": "267,123,829",
+      "ratio": ""
+    },
+    {
+      "rank": 15,
+      "name": "Ticklepink",
+      "alliance": "--",
+      "power": "237,535,796",
+      "merits": "113,175,988",
+      "ratio": ""
     }
   ],
   "ourTop": [
@@ -296,6 +342,27 @@
       "alliance": "eRa",
       "power": "243,009,302",
       "merits": "98,710,990"
+    },
+    {
+      "rank": 13,
+      "name": "☙✿⛵Africa✗⛰☙",
+      "alliance": "eRa",
+      "power": "241,803,666",
+      "merits": "143,784,479"
+    },
+    {
+      "rank": 14,
+      "name": "DarthHelmet",
+      "alliance": "eRa",
+      "power": "239,320,236",
+      "merits": "182,150,477"
+    },
+    {
+      "rank": 15,
+      "name": "IntoxFr",
+      "alliance": "eRa",
+      "power": "226,475,325",
+      "merits": "74,549,114"
     }
   ],
   "roles": {
@@ -364,5 +431,74 @@
       ]
     }
   },
-  "result": null
+  "result": null,
+  "serverTiers": {
+    "labels": [
+      "100M+",
+      "200M+",
+      "300M+",
+      "400M+",
+      "500M+"
+    ],
+    "us": [
+      232,
+      22,
+      3,
+      1,
+      0
+    ],
+    "opp": [
+      265,
+      31,
+      3,
+      1,
+      0
+    ]
+  },
+  "serverDepth": {
+    "ranks": [
+      1,
+      10,
+      50,
+      100,
+      200,
+      300
+    ],
+    "us": {
+      "power": [
+        460,
+        244,
+        161,
+        138,
+        113,
+        91
+      ],
+      "merits": [
+        369,
+        153,
+        43,
+        23,
+        8,
+        4
+      ]
+    },
+    "opp": {
+      "power": [
+        444,
+        268,
+        183,
+        141,
+        119,
+        100
+      ],
+      "merits": [
+        578,
+        233,
+        54,
+        30,
+        13,
+        7
+      ]
+    }
+  }
 }

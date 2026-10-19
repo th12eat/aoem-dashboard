@@ -243,6 +243,13 @@ const EN = {
   oppAlliancesSub: "Top alliances from",
   krakenTargets: "SIEGE TARGETS",
   krakenDesc: "Ranked by merit:power ratio (M:P) — higher ratio = more combat-active. Citadel HP ~1.25M.",
+  top4Total: "Top-4 Total",
+  tierTitle: "Power Tier Distribution",
+  tierThreshold: "Threshold",
+  tierDesc: "Players at or above each power threshold (of 300 ranked).",
+  depthTitle: "Roster Depth by Rank",
+  depthRank: "Rank",
+  depthDesc: "Player power/merits at each rank (of 300) — a read on server depth, not individual names.",
   mapInner: "inner",
   mapOuter: "outer",
   towerSword: "Sword",
@@ -4872,6 +4879,25 @@ function TMECommandCenter(){
   // opponent label without the leading "E" (E#090 -> #090)
   const oppLabel=oppCode.replace(/^E/,"");
 
+  // Top-4 totals row for an alliance table: summed power + cross-border, and a
+  // WHOLE-recalculated M:P (ΣmeritsΣ / Σpower — not an average of the per-row %s).
+  const allianceTotals=(rows)=>{
+    let p=0,m=0,cb=0,anyCb=false;
+    rows.forEach(a=>{ p+=parseNum(a.power); m+=parseNum(a.merits); if(a.crossBorder){cb+=parseNum(a.crossBorder);anyCb=true;} });
+    const mp=p>0?(m/p*100).toFixed(1)+"%":"—";
+    return(
+      <tr style={{borderTop:"2px solid #334155",fontWeight:700}}>
+        <td className="c-rk"></td>
+        <td className="c-nm" style={{color:"#cbd5e1"}}>{t.top4Total||"Top-4 Total"}</td>
+        <td className="c-p">{fmtN(p)}</td>
+        <td className="c-cb">{anyCb?fmtN(cb):"—"}</td>
+        <td className={"c-mp "+mpCls(mp)}>{mp}</td>
+      </tr>
+    );
+  };
+  // Roster-depth toggle: which metric the depth table shows (power | merits).
+  const[depthMetric,setDepthMetric]=useState("power");
+
   return(
     <div style={{minHeight:"100vh",background:"#0a0e1a",color:"#e2e8f0",fontFamily:"'Barlow',system-ui,sans-serif"}}>
       <InvasionLiveModal config={config} t={t} />
@@ -5004,6 +5030,7 @@ function TMECommandCenter(){
                     <td className={"c-mp "+mpCls(mpRatio(a.merits,a.power))}>{mpRatio(a.merits,a.power)}</td>
                   </tr>
                 ))}
+                {allianceTotals(computedAlliances)}
                 </tbody>
               </table>
             </div>
@@ -5022,6 +5049,7 @@ function TMECommandCenter(){
                     <td className={"c-mp "+mpCls(mpRatio(a.merits,a.power))}>{mpRatio(a.merits,a.power)}</td>
                   </tr>
                 ))}
+                {allianceTotals(computedOppAlliances)}
                 </tbody>
               </table>
             </div>
@@ -5063,6 +5091,69 @@ function TMECommandCenter(){
             </div>
           </div>
           <div style={{fontSize:10,color:"#64748b",margin:"-4px 0 12px",padding:"0 2px"}}>{t.krakenDesc}</div>
+
+          {/* ── Server strength: power-tier distribution + roster depth by rank ── */}
+          {(config.serverTiers||config.serverDepth)&&(
+          <div className="cmp-grid">
+            {config.serverTiers&&(
+            <div className="cmp-card">
+              <div className="cmp-head">{t.tierTitle||"Power Tier Distribution"}</div>
+              <table className="cmp-tbl">
+                <thead><tr>
+                  <th className="c-nm">{t.tierThreshold||"Threshold"}</th>
+                  <th className="c-p" style={{color:"var(--accent-blue)"}}>{"E#008"}</th>
+                  <th className="c-p" style={{color:"var(--accent-red)"}}>{oppLabel}</th>
+                </tr></thead>
+                <tbody>
+                {config.serverTiers.labels.map((lb,i)=>(
+                  <tr key={lb}>
+                    <td className="c-nm">{lb}</td>
+                    <td className="c-p">{config.serverTiers.us[i]}</td>
+                    <td className="c-p">{config.serverTiers.opp[i]}</td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
+              <div style={{fontSize:10,color:"#64748b",padding:"6px 8px"}}>{t.tierDesc||"Players at or above each power threshold (of 300 ranked)."}</div>
+            </div>
+            )}
+
+            {config.serverDepth&&(
+            <div className="cmp-card">
+              <div className="cmp-head" style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
+                <span>{t.depthTitle||"Roster Depth by Rank"}</span>
+                <span style={{display:"inline-flex",border:"1px solid #334155",borderRadius:6,overflow:"hidden"}}>
+                  {["power","merits"].map(mcol=>(
+                    <button key={mcol} onClick={()=>setDepthMetric(mcol)}
+                      style={{padding:"3px 10px",fontSize:10,fontFamily:"monospace",cursor:"pointer",border:"none",
+                        background:depthMetric===mcol?"#1e3a5f":"transparent",
+                        color:depthMetric===mcol?"#fbbf24":"#64748b"}}>
+                      {mcol==="power"?(t.colPower||"Power"):(t.colMerits||"Merits")}
+                    </button>
+                  ))}
+                </span>
+              </div>
+              <table className="cmp-tbl">
+                <thead><tr>
+                  <th className="c-nm">{t.depthRank||"Rank"}</th>
+                  <th className="c-p" style={{color:"var(--accent-blue)"}}>{"E#008"}</th>
+                  <th className="c-p" style={{color:"var(--accent-red)"}}>{oppLabel}</th>
+                </tr></thead>
+                <tbody>
+                {config.serverDepth.ranks.map((rk,i)=>(
+                  <tr key={rk}>
+                    <td className="c-nm">#{rk}</td>
+                    <td className="c-p">{config.serverDepth.us[depthMetric][i]}M</td>
+                    <td className="c-p">{config.serverDepth.opp[depthMetric][i]}M</td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
+              <div style={{fontSize:10,color:"#64748b",padding:"6px 8px"}}>{t.depthDesc||"Player power/merits at each rank (of 300), a read on server depth — not individual names."}</div>
+            </div>
+            )}
+          </div>
+          )}
 
         </>)}
 
