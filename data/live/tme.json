@@ -53,9 +53,9 @@
   "prepStages": [
     {
       "nameKey": "prepStage1",
-      "ourPts": 0,
-      "oppPts": 0,
-      "won": null
+      "ourPts": 1.85,
+      "oppPts": 1.87,
+      "won": false
     },
     {
       "nameKey": "prepStage2",
@@ -82,9 +82,9 @@
       "won": null
     }
   ],
-  "totalOur": 0,
-  "totalOpp": 0,
-  "prepLastUpdated": "2026-10-19 — Day 1 of prep (matchmaking began Sat Oct 17). Scouting loaded; prep points start at 0.",
+  "totalOur": 1.85,
+  "totalOpp": 1.87,
+  "prepLastUpdated": "2026-10-19 — Prep Day 1 (Stage 1). Us 1.85B vs Era #016 1.87B.",
   "oppAlliances": [
     {
       "tag": "TKH",
@@ -200,7 +200,7 @@
       "name": "ħeráclius中",
       "alliance": "TKH",
       "power": "262,485,199",
-      "merits": "",
+      "merits": "100,408,429",
       "ratio": ""
     },
     {
