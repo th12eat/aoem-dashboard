@@ -224,14 +224,35 @@ function serverRanks(e){
 const rankTag  = n => ` <span style="color:${RANK_COLOR[n]||'#94a3b8'};font-weight:700">#${n}</span>`;
 const rankCell = n => `<td style="color:${RANK_COLOR[n]||'#94a3b8'};font-weight:700">#${n}</td>`;
 
-// ---- W/L summary ----
+// Our finishing place for a concluded event (1..4), or null if in progress.
+// Multi-server brackets resolve from kingdomFinal (or an explicit `placement`);
+// head-to-head events (TME/Behemoth) map Win→1st, Loss→last (grouped with #4).
+function eventPlacement(e){
+  if(e.result==="Live"||e.result==="TBD") return null;
+  const ranks=serverRanks(e);
+  if(ranks && ranks[OUR_SERVER]) return ranks[OUR_SERVER];
+  if(e.placement) return e.placement;
+  if(e.result==="Win") return 1;
+  if(e.result==="Loss") return 4;   // 1v1 loss shares the "Lost / #4" bucket
+  return null;
+}
+
+// ---- Placement summary ----
+// Break the record out by finish (1st/Won · 2nd · 3rd · 4th/Lost) so a 2nd-of-4
+// no longer reads as a flat "loss". In-progress + total shown alongside.
 function renderSummary(){
-  let w=0,l=0,t=0;
-  // "In progress" counts both live (playing now) and TBD (result pending).
-  EVENTS.forEach(e=>{ if(e.result==="Win")w++; else if(e.result==="Loss")l++; else if(e.result==="TBD"||e.result==="Live")t++; });
+  const c={1:0,2:0,3:0,4:0}; let t=0;
+  EVENTS.forEach(e=>{
+    if(e.result==="TBD"||e.result==="Live"){ t++; return; }
+    const p=eventPlacement(e); if(p>=1&&p<=4) c[p]++;
+  });
+  // chips use the shared placement palette: #1 green, #2 yellow, #3 orange, #4 red
+  const chip=(n,val,lbl)=>`<div class="chip"><div class="big" style="color:${RANK_COLOR[n]}">${val}</div><div class="lbl">${lbl}</div></div>`;
   const html=[
-    `<div class="chip win"><div class="big">${w}</div><div class="lbl">${T("Wins")}</div></div>`,
-    `<div class="chip loss"><div class="big">${l}</div><div class="lbl">${T("Losses")}</div></div>`,
+    chip(1,c[1],T("1st / Won")),
+    chip(2,c[2],T("2nd")),
+    chip(3,c[3],T("3rd")),
+    chip(4,c[4],T("4th / Lost")),
     `<div class="chip"><div class="big">${t}</div><div class="lbl">${T("In progress")}</div></div>`,
     `<div class="chip"><div class="big">${EVENTS.length}</div><div class="lbl">${T("Events tracked")}</div></div>`,
   ].join("");
