@@ -1,9 +1,11 @@
 {
   "schemaVersion": 2,
   "event": {
-    "stage": "Battle Stage",
+    "stage": "Complete",
     "startISO": "2026-10-12T00:00:00Z",
-    "endISO": "2026-10-18T23:59:59Z"
+    "endISO": "2026-10-18T23:59:59Z",
+    "eventOver": true,
+    "result": "Loss — 2nd of 4 (E#036 won)"
   },
   "servers": [
     {
@@ -451,24 +453,28 @@
   },
   "kingdomScoreboard": [
     {
-      "server": "E#008",
-      "points": 22200000000,
-      "dew": 49100000
+      "server": "E#036",
+      "points": 49600000000,
+      "dew": 33800000,
+      "essence": 6180000
     },
     {
-      "server": "E#036",
-      "points": 19300000000,
-      "dew": 43900000
+      "server": "E#008",
+      "points": 46600000000,
+      "dew": 49900000,
+      "essence": 5280000
     },
     {
       "server": "E#084",
-      "points": 16000000000,
-      "dew": 33700000
+      "points": 34800000000,
+      "dew": 34100000,
+      "essence": 2750000
     },
     {
       "server": "E#030",
-      "points": 12400000000,
-      "dew": 37600000
+      "points": 20500000000,
+      "dew": 39100000,
+      "essence": 2410000
     }
   ],
   "workshopResults": [
@@ -494,5 +500,5 @@
       "ourCaps": 3
     }
   ],
-  "scoreUpdated": "Battle Day 3 (Oct 15) — after our Day-4 workshop vs #036"
+  "scoreUpdated": "FINAL (Oct 18) — E#036 1st, E#008 (us) 2nd of 4."
 }
