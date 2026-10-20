@@ -20,7 +20,7 @@
       "allies": 169,
       "power": "25,642,543,135",
       "merits": "2,813,680,748",
-      "prepPoints": "0",
+      "prepPoints": "11,071,699,151",
       "crossBorder": ""
     },
     {
@@ -33,7 +33,7 @@
       "allies": 158,
       "power": "14,981,844,433",
       "merits": "324,160,972",
-      "prepPoints": "0",
+      "prepPoints": "3,629,517,292",
       "crossBorder": ""
     },
     {
@@ -46,7 +46,7 @@
       "allies": 169,
       "power": "11,575,914,281",
       "merits": "533,716,644",
-      "prepPoints": "0",
+      "prepPoints": "1,613,490,078",
       "crossBorder": ""
     },
     {
@@ -59,22 +59,22 @@
       "allies": 52,
       "power": "1,058,214,383",
       "merits": "6,334,902",
-      "prepPoints": "0",
+      "prepPoints": "456,000",
       "crossBorder": ""
     }
   ],
   "prepStages": [
     {
       "nameKey": "prepStage1",
-      "ourPts": 1.85,
-      "oppPts": 1.87,
-      "won": false
+      "ourPts": 2.2,
+      "oppPts": 2.0,
+      "won": true
     },
     {
       "nameKey": "prepStage2",
-      "ourPts": 0,
-      "oppPts": 0,
-      "won": null
+      "ourPts": 16.3,
+      "oppPts": 13.5,
+      "won": true
     },
     {
       "nameKey": "prepStage3",
@@ -95,9 +95,9 @@
       "won": null
     }
   ],
-  "totalOur": 1.85,
-  "totalOpp": 1.87,
-  "prepLastUpdated": "2026-10-19 — Prep Day 1 (Stage 1). Us 1.85B vs Era #016 1.87B.",
+  "totalOur": 18.5,
+  "totalOpp": 15.5,
+  "prepLastUpdated": "2026-10-20 — Prep Day 2 (Stage 2). Stage us 16.3B vs #016 13.5B · Total 18.5B vs 15.5B.",
   "oppAlliances": [
     {
       "tag": "TKH",
@@ -105,7 +105,7 @@
       "allies": 165,
       "power": "22,850,933,181",
       "merits": "3,449,602,035",
-      "prepPoints": "0",
+      "prepPoints": "6,934,174,044",
       "crossBorder": ""
     },
     {
@@ -114,7 +114,7 @@
       "allies": 165,
       "power": "20,897,963,536",
       "merits": "824,615,027",
-      "prepPoints": "0",
+      "prepPoints": "5,172,877,927",
       "crossBorder": ""
     },
     {
@@ -123,7 +123,7 @@
       "allies": 143,
       "power": "11,647,204,920",
       "merits": "227,961,205",
-      "prepPoints": "0",
+      "prepPoints": "1,675,204,049",
       "crossBorder": ""
     },
     {
@@ -132,7 +132,7 @@
       "allies": 28,
       "power": "965,482,278",
       "merits": "790,999",
-      "prepPoints": "0",
+      "prepPoints": "34,218,550",
       "crossBorder": ""
     }
   ],
