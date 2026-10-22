@@ -20,7 +20,7 @@
       "allies": 169,
       "power": "25,642,543,135",
       "merits": "2,813,680,748",
-      "prepPoints": "11,071,699,151",
+      "prepPoints": "65,310,553,258",
       "crossBorder": ""
     },
     {
@@ -33,7 +33,7 @@
       "allies": 158,
       "power": "14,981,844,433",
       "merits": "324,160,972",
-      "prepPoints": "3,629,517,292",
+      "prepPoints": "16,551,154,752",
       "crossBorder": ""
     },
     {
@@ -46,7 +46,7 @@
       "allies": 169,
       "power": "11,575,914,281",
       "merits": "533,716,644",
-      "prepPoints": "1,613,490,078",
+      "prepPoints": "5,039,716,725",
       "crossBorder": ""
     },
     {
@@ -78,9 +78,9 @@
     },
     {
       "nameKey": "prepStage3",
-      "ourPts": 0,
-      "oppPts": 0,
-      "won": null
+      "ourPts": 36.3,
+      "oppPts": 21.6,
+      "won": true
     },
     {
       "nameKey": "prepStage4",
@@ -95,9 +95,9 @@
       "won": null
     }
   ],
-  "totalOur": 18.5,
-  "totalOpp": 15.5,
-  "prepLastUpdated": "2026-10-20 — Prep Day 2 (Stage 2). Stage us 16.3B vs #016 13.5B · Total 18.5B vs 15.5B.",
+  "totalOur": 87.2,
+  "totalOpp": 67.1,
+  "prepLastUpdated": "2026-10-22 — Prep Day 4 (Stage 3). Stage us 36.3B vs #016 21.6B · Total 87.2B vs 67.1B.",
   "oppAlliances": [
     {
       "tag": "TKH",
@@ -105,7 +105,7 @@
       "allies": 165,
       "power": "22,850,933,181",
       "merits": "3,449,602,035",
-      "prepPoints": "6,934,174,044",
+      "prepPoints": "35,573,899,402",
       "crossBorder": ""
     },
     {
@@ -114,7 +114,7 @@
       "allies": 165,
       "power": "20,897,963,536",
       "merits": "824,615,027",
-      "prepPoints": "5,172,877,927",
+      "prepPoints": "26,522,141,577",
       "crossBorder": ""
     },
     {
@@ -123,7 +123,7 @@
       "allies": 143,
       "power": "11,647,204,920",
       "merits": "227,961,205",
-      "prepPoints": "1,675,204,049",
+      "prepPoints": "5,712,163,441",
       "crossBorder": ""
     },
     {
@@ -132,7 +132,7 @@
       "allies": 28,
       "power": "965,482,278",
       "merits": "790,999",
-      "prepPoints": "34,218,550",
+      "prepPoints": "96,600,840",
       "crossBorder": ""
     }
   ],
