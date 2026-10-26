@@ -4796,8 +4796,13 @@ function TMECommandCenter(){
     mount();
   },[config.prepStart, config.invasionStart, config.eventOver, t]);
 
-  // Until prep is meaningfully underway, don't let an early/partial score flip attack-defense.
-  const isDefense=config.prepStarted===false?false:(config.totalOur < config.totalOpp);
+  // Attack vs defense is decided by PREP-STAGE totals only (the server leading prep
+  // attacks), NOT the overall event total (which also folds in Cross-Border invasion
+  // points). We led prep but lost on cross-border, so the map must still show ATTACK.
+  // Until prep is meaningfully underway, don't let an early/partial score flip it.
+  const prepSum=(key)=>(config.prepStages||[]).reduce((s,st)=>s+(Number(st[key])||0),0);
+  const prepOur=prepSum("ourPts"), prepOpp=prepSum("oppPts");
+  const isDefense=config.prepStarted===false?false:(prepOur < prepOpp);
   const mapIsDefense=mapViewOverride!==null?mapViewOverride:isDefense;
   const oppCode=genOppCode(config.oppServer);
 
@@ -4902,18 +4907,26 @@ function TMECommandCenter(){
   };
   // Roster-depth toggle: which metric the depth table shows (power | merits).
   const[depthMetric,setDepthMetric]=useState("power");
-  // Lean indicator between the two server columns: a fixed 3-char monospace frame
-  // where the glyph sits LEFT (‹, green) when we're higher, RIGHT (›, red) when
-  // they're higher, or CENTER (·, grey) on a tie. The two unused slots are spaces,
-  // so the arrow visibly leans toward the stronger side. Higher value = stronger
-  // (both tier counts and depth power/merits read "more is better").
+  // Lean indicator between the two server columns: three fixed, evenly-spaced slots
+  // "‹ · ›" that are center-aligned in the cell. Exactly one slot is lit — LEFT ‹
+  // (green) when we're higher, RIGHT › (red) when they're higher, CENTER · (grey)
+  // on a tie — the other two render transparent so spacing stays constant and the
+  // arrow clearly leans toward the stronger side. Higher value = stronger.
   const leanCell=(us,them)=>{
     const u=parseFloat(us)||0, th=parseFloat(them)||0;
-    let s,color;
-    if(u>th){ s="‹  "; color="var(--accent-green)"; }
-    else if(th>u){ s="  ›"; color="var(--accent-red)"; }
-    else { s=" · "; color="#64748b"; }
-    return <td style={{fontFamily:"monospace",whiteSpace:"pre",textAlign:"center",color,fontWeight:700,padding:"5px 4px"}}>{s}</td>;
+    const active = u>th ? "l" : (th>u ? "r" : "c");
+    const slot=(on,glyph,color)=>(
+      <span style={{color: on?color:"transparent", fontWeight:700}}>{glyph}</span>
+    );
+    return (
+      <td style={{fontFamily:"monospace",whiteSpace:"pre",textAlign:"center",padding:"5px 4px",letterSpacing:"1px"}}>
+        {slot(active==="l","‹","var(--accent-green)")}
+        {" "}
+        {slot(active==="c","·","#64748b")}
+        {" "}
+        {slot(active==="r","›","var(--accent-red)")}
+      </td>
+    );
   };
 
   return(
