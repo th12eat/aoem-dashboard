@@ -150,7 +150,7 @@
    ]
   },
   {
-   "event": "Behemoth",
+   "event": "Behemoth Conquest",
    "date": "2026-06-30",
    "opp": "Era #087",
    "result": "Loss",
@@ -416,7 +416,7 @@
    ]
   },
   {
-   "event": "Behemoth",
+   "event": "Behemoth Conquest",
    "date": "2026-07-27",
    "opp": "Era #028",
    "result": "Win",
@@ -730,7 +730,7 @@
    }
   },
   {
-   "event": "Behemoth",
+   "event": "Behemoth Conquest",
    "date": "2026-08-31",
    "opp": "Era #057",
    "result": "Loss",
@@ -1199,7 +1199,6 @@
     ]
    },
    "placement": 2,
-   "star": true,
    "kingdomFinal": {
     "Era 8": 46600000000,
     "Era #030": 20500000000,
@@ -1246,6 +1245,57 @@
      "TSH",
      11647204920,
      227961205
+    ]
+   ]
+  },
+  {
+   "event": "Behemoth Conquest",
+   "date": "2026-10-26",
+   "opp": "Era #046",
+   "result": "Live",
+   "note": "In progress — matchmaking Oct 26, Beast Taming Oct 27, Attack-Defense Oct 30. Top-4 alliance power + total merits per server from scouting.",
+   "ours": [
+    [
+     "eRa",
+     26350804656,
+     2895161781
+    ],
+    [
+     "REU",
+     15079588881,
+     334908296
+    ],
+    [
+     "Myt",
+     11624649245,
+     539488964
+    ],
+    [
+     "BBZ",
+     721849578,
+     2350749
+    ]
+   ],
+   "oppA": [
+    [
+     "SψD",
+     26531240907,
+     2587731562
+    ],
+    [
+     "GoW",
+     14577752327,
+     161611554
+    ],
+    [
+     "DøG",
+     2970599052,
+     30613295
+    ],
+    [
+     "faf",
+     2232437614,
+     15427418
     ]
    ]
   }
