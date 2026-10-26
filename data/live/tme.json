@@ -4,11 +4,11 @@
   "invasionTime": "19:00 UTC",
   "prepStart": "2026-10-19",
   "invasionStart": "2026-10-25",
-  "weWonPrep": null,
+  "weWonPrep": true,
   "ourRank": null,
   "oppRank": null,
   "prepStarted": true,
-  "eventOver": false,
+  "eventOver": true,
   "alliances": [
     {
       "tag": "eRa",
@@ -21,7 +21,7 @@
       "power": "25,642,543,135",
       "merits": "2,813,680,748",
       "prepPoints": "79,834,198,658",
-      "crossBorder": ""
+      "crossBorder": "73,500,899,450"
     },
     {
       "tag": "REU",
@@ -34,7 +34,7 @@
       "power": "14,981,844,433",
       "merits": "324,160,972",
       "prepPoints": "22,792,043,922",
-      "crossBorder": ""
+      "crossBorder": "17,536,333,950"
     },
     {
       "tag": "Myt",
@@ -47,7 +47,7 @@
       "power": "11,575,914,281",
       "merits": "533,716,644",
       "prepPoints": "7,915,855,365",
-      "crossBorder": ""
+      "crossBorder": "8,906,883,070"
     },
     {
       "tag": "001",
@@ -59,8 +59,8 @@
       "allies": 52,
       "power": "1,058,214,383",
       "merits": "6,334,902",
-      "prepPoints": "1,755,000",
-      "crossBorder": ""
+      "prepPoints": "1,755,600",
+      "crossBorder": "3,246,220"
     }
   ],
   "prepStages": [
@@ -95,9 +95,9 @@
       "won": null
     }
   ],
-  "totalOur": 110.0,
-  "totalOpp": 87.3,
-  "prepLastUpdated": "2026-10-24 — Prep Day 6 (Stage 4). Stage us 55.2B vs #016 50.2B · Total 110B vs 87.3B.",
+  "totalOur": 211.0,
+  "totalOpp": 251.0,
+  "prepLastUpdated": "2026-10-25 — FINAL · Loss vs Era #016. Total event points 211B vs 251B (lost the Cross-Border invasion despite winning prep 110B vs 87.3B).",
   "oppAlliances": [
     {
       "tag": "TKH",
@@ -106,7 +106,7 @@
       "power": "22,850,933,181",
       "merits": "3,449,602,035",
       "prepPoints": "46,320,231,872",
-      "crossBorder": ""
+      "crossBorder": "64,049,276,110"
     },
     {
       "tag": "TWH",
@@ -115,7 +115,7 @@
       "power": "20,897,963,536",
       "merits": "824,615,027",
       "prepPoints": "33,779,954,767",
-      "crossBorder": ""
+      "crossBorder": "57,296,539,500"
     },
     {
       "tag": "TSH",
@@ -124,7 +124,7 @@
       "power": "11,647,204,920",
       "merits": "227,961,205",
       "prepPoints": "9,325,849,231",
-      "crossBorder": ""
+      "crossBorder": "3,026,675,480"
     },
     {
       "tag": "jxp",
@@ -133,7 +133,7 @@
       "power": "965,482,278",
       "merits": "790,999",
       "prepPoints": "254,012,260",
-      "crossBorder": ""
+      "crossBorder": "322,142,580"
     }
   ],
   "krakens": [
@@ -431,7 +431,7 @@
       ]
     }
   },
-  "result": null,
+  "result": "Loss",
   "serverTiers": {
     "labels": [
       "100M+",

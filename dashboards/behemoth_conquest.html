@@ -722,7 +722,7 @@
   #cmpToggle[aria-expanded="true"] .cmp-lbl-more { display: none; }
   #cmpToggle[aria-expanded="true"] .cmp-lbl-less { display: inline; }
 
-  /* -- Battlefield map toggle (#008 vs #057) -- */
+  /* -- Battlefield map toggle (#008 vs #046) -- */
   .map-toggle { display: flex; gap: 6px; margin: 2px 0 8px; }
   .map-toggle .mt-btn {
     flex: 1; padding: 8px 6px; background: var(--bg-card); border: 1px solid var(--border);
@@ -915,10 +915,10 @@
       <div class="tug-row">
         <span class="tug-us"><span id="beh-score-us">0</span> <span class="tug-name" data-i18n="tug_us">US &middot; #008</span></span>
         <span class="tug-name" data-i18n="tug_points_lbl">Behemoth Points</span>
-        <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#057</span> <span id="beh-score-them">0</span></span>
+        <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#046</span> <span id="beh-score-them">0</span></span>
       </div>
       <div class="tug-bar"><div class="tug-fill-us" id="beh-fill-us" style="width:50%;"></div><div class="tug-fill-them" id="beh-fill-them" style="width:50%;"></div></div>
-      <div class="tug-cap" data-i18n="tug_points_cap">Matchmaking is set &mdash; vs <strong>#057</strong>. The score race that decides the war starts with Beast Taming; scores update as the event progresses.</div>
+      <div class="tug-cap" data-i18n="tug_points_cap">Matchmaking is set &mdash; vs <strong>#046</strong>. The score race that decides the war starts with Beast Taming; scores update as the event progresses.</div>
     </div>
   </div>
 
@@ -980,12 +980,12 @@
   <!-- DAILY SCHEDULE — TRIAL OF SCION (moved from Beast Taming) -->
   <div class="section" id="scion-schedule">
     <div class="sh"><span data-i18n="st2_sched_h">Daily Schedule &mdash; Trial of Scion</span></div>
-    <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:6px;" data-i18n="st2_sched_p">Four fixed 30-min windows daily (UTC+0). <span style="color:#5b8def;font-weight:700;">Blue = on #008 (ours)</span>, <span style="color:#c43d3d;font-weight:700;">red = on #057</span>. Cross-border tiles open during our windows &mdash; zeroing risk. Runs during Beast Taming (Days 2&ndash;4).</p>
+    <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:6px;" data-i18n="st2_sched_p">Four fixed 30-min windows daily (UTC+0). <span style="color:#5b8def;font-weight:700;">Blue = on #008 (ours)</span>, <span style="color:#c43d3d;font-weight:700;">red = on #046</span>. Cross-border tiles open during our windows &mdash; zeroing risk. Runs during Beast Taming (Days 2&ndash;4).</p>
     <div class="sched scion-sched" id="scionSched">
       <span class="slot scion-slot" data-start="60"  data-end="90"  data-server="008"><b>01:00</b>&ndash;01:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
-      <span class="slot scion-slot" data-start="420" data-end="450" data-server="028"><b>07:00</b>&ndash;07:30 <span class="srv" data-i18n="srv087">#057</span><span class="slot-state"></span></span>
+      <span class="slot scion-slot" data-start="420" data-end="450" data-server="028"><b>07:00</b>&ndash;07:30 <span class="srv" data-i18n="srv087">#046</span><span class="slot-state"></span></span>
       <span class="slot scion-slot" data-start="780" data-end="810" data-server="008"><b>13:00</b>&ndash;13:30 <span class="srv" data-i18n="srv008">#008</span><span class="slot-state"></span></span>
-      <span class="slot scion-slot" data-start="1140" data-end="1170" data-server="028"><b>19:00</b>&ndash;19:30 <span class="srv" data-i18n="srv087">#057</span><span class="slot-state"></span></span>
+      <span class="slot scion-slot" data-start="1140" data-end="1170" data-server="028"><b>19:00</b>&ndash;19:30 <span class="srv" data-i18n="srv087">#046</span><span class="slot-state"></span></span>
     </div>
   </div>
 
@@ -997,99 +997,151 @@
     <div class="stage-head"><span class="stitle" data-i18n="st1_title">Scouting</span><span class="sdays" data-i18n="st1_days">Day 1</span></div>
     <div class="stage-body">
   <div class="section">
-    <div class="sh"><span data-i18n="sc_h">Scouting the Match &mdash; Us vs #057</span></div>
+    <div class="sh"><span>Scouting the Match &mdash; Us vs #046</span></div>
 
     <!-- standings stat row -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
       <div style="background:var(--bg-card);border:1px solid var(--accent-blue-dim);border-radius:9px;padding:10px 12px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:var(--accent-blue);" data-i18n="sc_us_lbl">OUR SERVER &middot; #008</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:var(--accent-blue);">OUR SERVER &middot; #008</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--text-primary);line-height:1.1;">&mdash;</div>
-        <div style="font-size:10.5px;color:var(--text-muted);" data-i18n="sc_us_sub">Stellar Dynasty</div>
+        <div style="font-size:10.5px;color:var(--text-muted);">Stellar Dynasty</div>
       </div>
       <div style="background:var(--bg-card);border:1px solid var(--accent-red-dim);border-radius:9px;padding:10px 12px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:var(--accent-red);" data-i18n="sc_them_lbl">ENEMY SERVER &middot; #057</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:var(--accent-red);">ENEMY SERVER &middot; #046</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--text-primary);line-height:1.1;">&mdash;</div>
-        <div style="font-size:10.5px;color:var(--text-muted);" data-i18n="sc_them_sub">Stellar Dynasty</div>
+        <div style="font-size:10.5px;color:var(--text-muted);">Stellar Dynasty</div>
       </div>
     </div>
 
-    <!-- top-4 alliances, side by side -->
-    <div class="sub-h" data-i18n="sc_ally_h">Top 4 Alliances</div>
+    <!-- top-4 alliances, side by side (with Top-4 Total row) -->
+    <div class="sub-h">Top 4 Alliances</div>
     <div class="cmp-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
-      <!-- OURS -->
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
-        <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);" data-i18n="sc_us_acol">OUR ALLIANCES</div>
+        <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);">OUR ALLIANCES</div>
         <table class="cmp-tbl">
-          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-me" data-i18n="th_merits">Merits</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p">Power</th><th class="c-me">Merits</th><th class="c-mp">M:P</th></tr></thead>
           <tbody>
-            <tr><td class="c-rk">1</td><td class="c-nm">WorldClass <span class="tg">[eRa]</span></td><td class="c-p">23.2B</td><td class="c-me">1.9B</td><td class="c-mp hi">8%</td></tr>
-            <tr><td class="c-rk">2</td><td class="c-nm">CourtOfGods <span class="tg">[REU]</span></td><td class="c-p">14.2B</td><td class="c-me">280.9M</td><td class="c-mp lo">2%</td></tr>
-            <tr><td class="c-rk">3</td><td class="c-nm">Mythic <span class="tg">[Myt]</span></td><td class="c-p">9.5B</td><td class="c-me">604.7M</td><td class="c-mp mid">6%</td></tr>
-            <tr><td class="c-rk">4</td><td class="c-nm">FunUnited <span class="tg">[FUN]</span></td><td class="c-p">3.2B</td><td class="c-me">18.1M</td><td class="c-mp lo">1%</td></tr>
+            <tr><td class="c-rk">1</td><td class="c-nm">WorldClass <span class="tg">[eRa]</span></td><td class="c-p">26.35B</td><td class="c-me">2895.2M</td><td class="c-mp hi">11%</td></tr>
+            <tr><td class="c-rk">2</td><td class="c-nm">CourtOfGods <span class="tg">[REU]</span></td><td class="c-p">15.08B</td><td class="c-me">334.9M</td><td class="c-mp lo">2%</td></tr>
+            <tr><td class="c-rk">3</td><td class="c-nm">Mythic <span class="tg">[Myt]</span></td><td class="c-p">11.62B</td><td class="c-me">539.5M</td><td class="c-mp mid">5%</td></tr>
+            <tr><td class="c-rk">4</td><td class="c-nm">BigBruzzies <span class="tg">[BBZ]</span></td><td class="c-p">0.72B</td><td class="c-me">2.4M</td><td class="c-mp lo">0%</td></tr>
+            <tr style="border-top:2px solid var(--border);font-weight:700;"><td class="c-rk"></td><td class="c-nm" style="color:var(--text-secondary);">Top-4 Total</td><td class="c-p">53.78B</td><td class="c-me">3771.9M</td><td class="c-mp mid">7%</td></tr>
           </tbody>
         </table>
       </div>
-      <!-- THEIRS -->
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
-        <div style="background:rgba(196,61,61,0.12);border-bottom:1px solid var(--accent-red-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-red);" data-i18n="sc_them_acol">#057 ALLIANCES</div>
+        <div style="background:rgba(196,61,61,0.12);border-bottom:1px solid var(--accent-red-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-red);">#046 ALLIANCES</div>
         <table class="cmp-tbl">
-          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-me" data-i18n="th_merits">Merits</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p">Power</th><th class="c-me">Merits</th><th class="c-mp">M:P</th></tr></thead>
           <tbody>
-            <tr><td class="c-rk">1</td><td class="c-nm">Coalition57 <span class="tg">[&#9426;57]</span></td><td class="c-p">23.5B</td><td class="c-me">2.7B</td><td class="c-mp hi">11%</td></tr>
-            <tr><td class="c-rk">2</td><td class="c-nm">EUROPEHUN <span class="tg">[&#9431;57]</span></td><td class="c-p">20.1B</td><td class="c-me">1.5B</td><td class="c-mp mid">7%</td></tr>
-            <tr><td class="c-rk">3</td><td class="c-nm">VulKanEmpire <span class="tg">[&#9435;57]</span></td><td class="c-p">10.6B</td><td class="c-me">210.2M</td><td class="c-mp lo">2%</td></tr>
-            <tr><td class="c-rk">4</td><td class="c-nm">EXPLOSIVE <span class="tg">[TNT]</span></td><td class="c-p">1.6B</td><td class="c-me">37.7M</td><td class="c-mp lo">2%</td></tr>
+            <tr><td class="c-rk">1</td><td class="c-nm">TheSWORD <span class="tg">[S&#968;D]</span></td><td class="c-p">26.53B</td><td class="c-me">2587.7M</td><td class="c-mp hi">10%</td></tr>
+            <tr><td class="c-rk">2</td><td class="c-nm">GOWEMPIRE <span class="tg">[GoW]</span></td><td class="c-p">14.58B</td><td class="c-me">161.6M</td><td class="c-mp lo">1%</td></tr>
+            <tr><td class="c-rk">3</td><td class="c-nm">DescentofGods <span class="tg">[D&#248;G]</span></td><td class="c-p">2.97B</td><td class="c-me">30.6M</td><td class="c-mp lo">1%</td></tr>
+            <tr><td class="c-rk">4</td><td class="c-nm">ForgedAsFamily <span class="tg">[faf]</span></td><td class="c-p">2.23B</td><td class="c-me">15.4M</td><td class="c-mp lo">1%</td></tr>
+            <tr style="border-top:2px solid var(--border);font-weight:700;"><td class="c-rk"></td><td class="c-nm" style="color:var(--text-secondary);">Top-4 Total</td><td class="c-p">46.31B</td><td class="c-me">2795.4M</td><td class="c-mp mid">6%</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- top-10 power players, side by side (rows 6-10 collapsed behind toggle) -->
+    <!-- top-15 players, side by side (rows 11-15 behind the existing cmp toggle). Power/Merits switch. -->
+    <div class="sub-h" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+      <span>Top Players</span>
+      <span style="display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+        <button type="button" class="scout-metric-btn active" data-metric="power" style="padding:3px 10px;font-size:10px;font-family:monospace;cursor:pointer;border:none;background:#1e3a5f;color:var(--kvk-accent);">Power</button>
+        <button type="button" class="scout-metric-btn" data-metric="merits" style="padding:3px 10px;font-size:10px;font-family:monospace;cursor:pointer;border:none;background:transparent;color:var(--text-muted);">Merits</button>
+      </span>
+    </div>
     <div id="cmpWrap" class="cmp cmp-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <!-- OURS -->
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
-        <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);" data-i18n="sc_us_col">OUR TOP POWER</div>
+        <div style="background:rgba(61,124,196,0.12);border-bottom:1px solid var(--accent-blue-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-blue);">OUR TOP <span class="scout-metric-lbl">POWER</span></div>
         <table class="cmp-tbl">
-          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p"><span class="scout-metric-lbl">Power</span></th><th class="c-mp">M:P</th></tr></thead>
           <tbody>
-            <tr><td class="c-rk">1</td><td class="c-nm">Collin6666 <span class="tg">[eRa]</span></td><td class="c-p">391.2M</td><td class="c-mp lo">21%</td></tr>
-            <tr><td class="c-rk">2</td><td class="c-nm">XnJinX <span class="tg">[eRa]</span></td><td class="c-p">342.0M</td><td class="c-mp hi">73%</td></tr>
-            <tr><td class="c-rk">3</td><td class="c-nm">Macklemore <span class="tg">[eRa]</span></td><td class="c-p">322.0M</td><td class="c-mp mid">41%</td></tr>
-            <tr><td class="c-rk">4</td><td class="c-nm">abbybaby <span class="tg">[&#8212;]</span></td><td class="c-p">282.8M</td><td class="c-mp mid">55%</td></tr>
-            <tr><td class="c-rk">5</td><td class="c-nm">Lumberjack <span class="tg">[eRa]</span></td><td class="c-p">279.5M</td><td class="c-mp hi">122%</td></tr>
-            <tr><td class="c-rk">6</td><td class="c-nm">BloodYoda <span class="tg">[eRa]</span></td><td class="c-p">274.9M</td><td class="c-mp hi">87%</td></tr>
-            <tr><td class="c-rk">7</td><td class="c-nm">Zen7 <span class="tg">[eRa]</span></td><td class="c-p">259.2M</td><td class="c-mp mid">43%</td></tr>
-            <tr><td class="c-rk">8</td><td class="c-nm">TommyTorpedo <span class="tg">[eRa]</span></td><td class="c-p">237.3M</td><td class="c-mp mid">62%</td></tr>
-            <tr><td class="c-rk">9</td><td class="c-nm">&#665;&#7452;&#1109;&#668;&#7437;&#7424;&#1109;&#7451;&#7431;&#640; <span class="tg">[eRa]</span></td><td class="c-p">231.5M</td><td class="c-mp mid">40%</td></tr>
-            <tr><td class="c-rk">10</td><td class="c-nm">Hermes++ <span class="tg">[eRa]</span></td><td class="c-p">229.7M</td><td class="c-mp mid">35%</td></tr>
-            <tr><td class="c-rk">11</td><td class="c-nm">&#10048;&#9753;&#9642;Africa&#10005;&#9824;&#10048; <span class="tg">[eRa]</span></td><td class="c-p">226.6M</td><td class="c-mp mid">45%</td></tr>
-            <tr><td class="c-rk">12</td><td class="c-nm">ScubaPig <span class="tg">[eRa]</span></td><td class="c-p">226.3M</td><td class="c-mp lo">28%</td></tr>
+            <tr class=""><td class="c-rk">1</td><td class="c-nm">Collin6666</td><td class="c-p" data-power="487.1M" data-merits="161.7M">487.1M</td><td class="c-mp lo">33%</td></tr>
+            <tr class=""><td class="c-rk">2</td><td class="c-nm">XnJinX</td><td class="c-p" data-power="402.0M" data-merits="269.5M">402.0M</td><td class="c-mp hi">67%</td></tr>
+            <tr class=""><td class="c-rk">3</td><td class="c-nm">Macklemore</td><td class="c-p" data-power="357.6M" data-merits="156.3M">357.6M</td><td class="c-mp mid">44%</td></tr>
+            <tr class=""><td class="c-rk">4</td><td class="c-nm">Lumberjack</td><td class="c-p" data-power="314.9M" data-merits="372.0M">314.9M</td><td class="c-mp hi">118%</td></tr>
+            <tr class=""><td class="c-rk">5</td><td class="c-nm">&#352;nipe&#344;&#8853;</td><td class="c-p" data-power="296.1M" data-merits="186.1M">296.1M</td><td class="c-mp mid">63%</td></tr>
+            <tr class=""><td class="c-rk">6</td><td class="c-nm">BloodYoda</td><td class="c-p" data-power="294.9M" data-merits="254.4M">294.9M</td><td class="c-mp hi">86%</td></tr>
+            <tr class=""><td class="c-rk">7</td><td class="c-nm">Zen7</td><td class="c-p" data-power="271.4M" data-merits="112.2M">271.4M</td><td class="c-mp mid">41%</td></tr>
+            <tr class=""><td class="c-rk">8</td><td class="c-nm">BUSHM&#1233;ST&#610;&#1122;</td><td class="c-p" data-power="259.5M" data-merits="132.6M">259.5M</td><td class="c-mp mid">51%</td></tr>
+            <tr class=""><td class="c-rk">9</td><td class="c-nm">ScubaPig</td><td class="c-p" data-power="258.4M" data-merits="77.4M">258.4M</td><td class="c-mp lo">30%</td></tr>
+            <tr class=""><td class="c-rk">10</td><td class="c-nm">TommyTorpedo</td><td class="c-p" data-power="254.6M" data-merits="161.2M">254.6M</td><td class="c-mp mid">63%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">11</td><td class="c-nm">C&#1233;&#327;&#216;NB&#1233;LLZZ</td><td class="c-p" data-power="252.5M" data-merits="112.0M">252.5M</td><td class="c-mp mid">44%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">12</td><td class="c-nm">&#10048;&#9753;&#9642;Africa&#10005;&#9824;&#10048;</td><td class="c-p" data-power="250.8M" data-merits="146.9M">250.8M</td><td class="c-mp mid">59%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">13</td><td class="c-nm">Hermes++</td><td class="c-p" data-power="247.3M" data-merits="99.9M">247.3M</td><td class="c-mp mid">40%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">14</td><td class="c-nm">&#7430;&#7449;&#7472;Helmet</td><td class="c-p" data-power="243.9M" data-merits="254.9M">243.9M</td><td class="c-mp hi">104%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">15</td><td class="c-nm">IntoxFr</td><td class="c-p" data-power="230.1M" data-merits="75.8M">230.1M</td><td class="c-mp lo">33%</td></tr>
           </tbody>
         </table>
       </div>
-      <!-- THEIRS -->
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
-        <div style="background:rgba(196,61,61,0.12);border-bottom:1px solid var(--accent-red-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-red);" data-i18n="sc_them_col">#057 TOP POWER</div>
+        <div style="background:rgba(196,61,61,0.12);border-bottom:1px solid var(--accent-red-dim);padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--accent-red);">#046 TOP <span class="scout-metric-lbl">POWER</span></div>
         <table class="cmp-tbl">
-          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p" data-i18n="th_power">Power</th><th class="c-mp" data-i18n="th_mp">M:P</th></tr></thead>
+          <thead><tr><th class="c-rk"></th><th class="c-nm"></th><th class="c-p"><span class="scout-metric-lbl">Power</span></th><th class="c-mp">M:P</th></tr></thead>
           <tbody>
-            <tr><td class="c-rk">1</td><td class="c-nm">&#7476;&#7489;&#7482;JAEGEER~ <span class="tg">[&#9405;57]</span></td><td class="c-p">389.1M</td><td class="c-mp mid">56%</td></tr>
-            <tr><td class="c-rk">2</td><td class="c-nm">+MapLe+&#8309;&#8311; <span class="tg">[&#9400;57]</span></td><td class="c-p">377.0M</td><td class="c-mp hi">88%</td></tr>
-            <tr><td class="c-rk">3</td><td class="c-nm">&#7476;&#7489;&#7482;ragnaR <span class="tg">[&#9405;57]</span></td><td class="c-p">332.9M</td><td class="c-mp hi">68%</td></tr>
-            <tr><td class="c-rk">4</td><td class="c-nm">TheYASUO <span class="tg">[&#9400;57]</span></td><td class="c-p">332.5M</td><td class="c-mp hi">122%</td></tr>
-            <tr><td class="c-rk">5</td><td class="c-nm">&#9760;SmOcKy&#9760; <span class="tg">[&#9405;57]</span></td><td class="c-p">292.7M</td><td class="c-mp mid">64%</td></tr>
-            <tr><td class="c-rk">6</td><td class="c-nm">Kunjo&#8309;&#8311; <span class="tg">[&#9400;57]</span></td><td class="c-p">292.3M</td><td class="c-mp hi">83%</td></tr>
-            <tr><td class="c-rk">7</td><td class="c-nm">TJalala&#8309;&#8311; <span class="tg">[&#9400;57]</span></td><td class="c-p">288.1M</td><td class="c-mp hi">149%</td></tr>
-            <tr><td class="c-rk">8</td><td class="c-nm">Kilpi&#8309;&#8311; <span class="tg">[&#9400;57]</span></td><td class="c-p">284.7M</td><td class="c-mp hi">92%</td></tr>
-            <tr><td class="c-rk">9</td><td class="c-nm">RiPPiN <span class="tg">[&#9405;57]</span></td><td class="c-p">276.0M</td><td class="c-mp lo">18%</td></tr>
-            <tr><td class="c-rk">10</td><td class="c-nm">&#9884;TimeToBurn&#9884; <span class="tg">[&#9400;57]</span></td><td class="c-p">256.2M</td><td class="c-mp hi">77%</td></tr>
-            <tr><td class="c-rk">11</td><td class="c-nm">Avalon1 <span class="tg">[&#9405;57]</span></td><td class="c-p">250.3M</td><td class="c-mp lo">4%</td></tr>
-            <tr><td class="c-rk">12</td><td class="c-nm">Headbanger&#8309;&#8311; <span class="tg">[&#9405;57]</span></td><td class="c-p">244.0M</td><td class="c-mp mid">36%</td></tr>
+            <tr class=""><td class="c-rk">1</td><td class="c-nm">IronForge</td><td class="c-p" data-power="806.6M" data-merits="329.6M">806.6M</td><td class="c-mp mid">41%</td></tr>
+            <tr class=""><td class="c-rk">2</td><td class="c-nm">Vuorian</td><td class="c-p" data-power="400.9M" data-merits="238.9M">400.9M</td><td class="c-mp mid">60%</td></tr>
+            <tr class=""><td class="c-rk">3</td><td class="c-nm">Patatan</td><td class="c-p" data-power="312.6M" data-merits="121.9M">312.6M</td><td class="c-mp mid">39%</td></tr>
+            <tr class=""><td class="c-rk">4</td><td class="c-nm">emperor^^</td><td class="c-p" data-power="290.8M" data-merits="266.9M">290.8M</td><td class="c-mp hi">92%</td></tr>
+            <tr class=""><td class="c-rk">5</td><td class="c-nm">Alexandre&#8308;&#8310;</td><td class="c-p" data-power="290.0M" data-merits="95.6M">290.0M</td><td class="c-mp lo">33%</td></tr>
+            <tr class=""><td class="c-rk">6</td><td class="c-nm">M1125</td><td class="c-p" data-power="284.2M" data-merits="140.3M">284.2M</td><td class="c-mp mid">49%</td></tr>
+            <tr class=""><td class="c-rk">7</td><td class="c-nm">BanKulin1903</td><td class="c-p" data-power="278.2M" data-merits="103.8M">278.2M</td><td class="c-mp mid">37%</td></tr>
+            <tr class=""><td class="c-rk">8</td><td class="c-nm">&#215;Wakanda</td><td class="c-p" data-power="276.1M" data-merits="129.1M">276.1M</td><td class="c-mp mid">47%</td></tr>
+            <tr class=""><td class="c-rk">9</td><td class="c-nm">ProlificShup</td><td class="c-p" data-power="275.9M" data-merits="215.0M">275.9M</td><td class="c-mp hi">78%</td></tr>
+            <tr class=""><td class="c-rk">10</td><td class="c-nm">&#9734;AL|CE&#9734;</td><td class="c-p" data-power="275.5M" data-merits="113.5M">275.5M</td><td class="c-mp mid">41%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">11</td><td class="c-nm">Genocide&#8482;</td><td class="c-p" data-power="258.4M" data-merits="217.7M">258.4M</td><td class="c-mp hi">84%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">12</td><td class="c-nm">Ch3b</td><td class="c-p" data-power="258.0M" data-merits="265.8M">258.0M</td><td class="c-mp hi">103%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">13</td><td class="c-nm">&#9398;&#183;z&#183;&#9398;&#183;f</td><td class="c-p" data-power="242.8M" data-merits="333.4M">242.8M</td><td class="c-mp hi">137%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">14</td><td class="c-nm">SirSolis</td><td class="c-p" data-power="240.4M" data-merits="142.3M">240.4M</td><td class="c-mp mid">59%</td></tr>
+            <tr class="cmp-more"><td class="c-rk">15</td><td class="c-nm">GHOST&#7458;&#7457;&#7449;</td><td class="c-p" data-power="239.8M" data-merits="126.7M">239.8M</td><td class="c-mp mid">53%</td></tr>
           </tbody>
         </table>
       </div>
     </div>
-    <p style="font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5;" data-i18n="sc_note"><b style="color:var(--accent-green);">M:P</b> = merit&divide;power (combat activity).</p>
+    <button id="cmpToggle" type="button" aria-expanded="false"><span class="cmp-lbl-more">Show top 15</span><span class="cmp-lbl-less">Show top 10</span> <span class="chev">&#9662;</span></button>
+    <p style="font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5;"><b style="color:var(--accent-green);">M:P</b> = merit&divide;power (combat activity). Player M:P classed on a wide scale (hi&ge;65% / mid&ge;35%).</p>
+
+    <!-- server strength: power-tier distribution + roster depth by rank -->
+    <div class="sub-h">Server Strength</div>
+    <div class="cmp-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
+        <div style="padding:7px 10px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--kvk-accent);">POWER TIER DISTRIBUTION</div>
+        <table class="cmp-tbl">
+          <thead><tr><th class="c-nm">Threshold</th><th class="c-p" style="color:var(--accent-blue);">#008</th><th style="width:30px;"></th><th class="c-p" style="color:var(--accent-red);">#046</th></tr></thead>
+          <tbody>
+            <tr><td class="c-nm">100M+</td><td class="c-p">260</td><td style="font-family:monospace;white-space:pre;text-align:center;color:var(--text-muted);font-weight:700;width:30px;">&nbsp;&middot;&nbsp;</td><td class="c-p">260</td></tr>
+            <tr><td class="c-nm">200M+</td><td class="c-p">26</td><td style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-red);font-weight:700;width:30px;">&nbsp;&nbsp;&rsaquo;</td><td class="c-p">36</td></tr>
+            <tr><td class="c-nm">300M+</td><td class="c-p">4</td><td style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-green);font-weight:700;width:30px;">&lsaquo;&nbsp;&nbsp;</td><td class="c-p">3</td></tr>
+            <tr><td class="c-nm">400M+</td><td class="c-p">2</td><td style="font-family:monospace;white-space:pre;text-align:center;color:var(--text-muted);font-weight:700;width:30px;">&nbsp;&middot;&nbsp;</td><td class="c-p">2</td></tr>
+            <tr><td class="c-nm">500M+</td><td class="c-p">0</td><td style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-red);font-weight:700;width:30px;">&nbsp;&nbsp;&rsaquo;</td><td class="c-p">1</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:10px;color:var(--text-muted);padding:6px 10px;">Players at or above each power threshold (of 300 ranked).</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
+        <div style="padding:7px 10px;display:flex;justify-content:space-between;align-items:center;gap:8px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--kvk-accent);">
+          <span>ROSTER DEPTH BY RANK</span>
+          <span style="display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+            <button type="button" class="depth-metric-btn active" data-metric="power" style="padding:3px 10px;font-size:10px;font-family:monospace;cursor:pointer;border:none;background:#1e3a5f;color:var(--kvk-accent);">Power</button>
+            <button type="button" class="depth-metric-btn" data-metric="merits" style="padding:3px 10px;font-size:10px;font-family:monospace;cursor:pointer;border:none;background:transparent;color:var(--text-muted);">Merits</button>
+          </span>
+        </div>
+        <table class="cmp-tbl" id="depthTbl">
+          <thead><tr><th class="c-nm">Rank</th><th class="c-p" style="color:var(--accent-blue);">#008</th><th style="width:30px;"></th><th class="c-p" style="color:var(--accent-red);">#046</th></tr></thead>
+          <tbody>
+            <tr data-rank="1"><td class="c-nm">#1</td><td class="c-p dp-power">487M</td><td class="c-p dp-merits" style="display:none;">372M</td><td class="dp-lean-power" style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-red);font-weight:700;width:30px;">&nbsp;&nbsp;&rsaquo;</td><td class="dp-lean-merits" style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-green);font-weight:700;width:30px;display:none;">&lsaquo;&nbsp;&nbsp;</td><td class="c-p dp-power">806M</td><td class="c-p dp-merits" style="display:none;">333M</td></tr>
+            <tr data-rank="10"><td class="c-nm">#10</td><td class="c-p dp-power">254M</td><td class="c-p dp-merits" style="display:none;">161M</td><td class="dp-lean-power" style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-red);font-weight:700;width:30px;">&nbsp;&nbsp;&rsaquo;</td><td class="dp-lean-merits" style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-green);font-weight:700;width:30px;display:none;">&lsaquo;&nbsp;&nbsp;</td><td class="c-p dp-power">275M</td><td class="c-p dp-merits" style="display:none;">152M</td></tr>
+            <tr data-rank="50"><td class="c-nm">#50</td><td class="c-p dp-power">168M</td><td class="c-p dp-merits" style="display:none;">43M</td><td class="dp-lean-power" style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-red);font-weight:700;width:30px;">&nbsp;&nbsp;&rsaquo;</td><td class="dp-lean-merits" style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-red);font-weight:700;width:30px;display:none;">&nbsp;&nbsp;&rsaquo;</td><td class="c-p dp-power">180M</td><td class="c-p dp-merits" style="display:none;">47M</td></tr>
+            <tr data-rank="100"><td class="c-nm">#100</td><td class="c-p dp-power">142M</td><td class="c-p dp-merits" style="display:none;">23M</td><td class="dp-lean-power" style="font-family:monospace;white-space:pre;text-align:center;color:var(--text-muted);font-weight:700;width:30px;">&nbsp;&middot;&nbsp;</td><td class="dp-lean-merits" style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-red);font-weight:700;width:30px;display:none;">&nbsp;&nbsp;&rsaquo;</td><td class="c-p dp-power">142M</td><td class="c-p dp-merits" style="display:none;">26M</td></tr>
+            <tr data-rank="200"><td class="c-nm">#200</td><td class="c-p dp-power">115M</td><td class="c-p dp-merits" style="display:none;">8M</td><td class="dp-lean-power" style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-green);font-weight:700;width:30px;">&lsaquo;&nbsp;&nbsp;</td><td class="dp-lean-merits" style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-red);font-weight:700;width:30px;display:none;">&nbsp;&nbsp;&rsaquo;</td><td class="c-p dp-power">112M</td><td class="c-p dp-merits" style="display:none;">9M</td></tr>
+            <tr data-rank="300"><td class="c-nm">#300</td><td class="c-p dp-power">92M</td><td class="c-p dp-merits" style="display:none;">4M</td><td class="dp-lean-power" style="font-family:monospace;white-space:pre;text-align:center;color:var(--accent-green);font-weight:700;width:30px;">&lsaquo;&nbsp;&nbsp;</td><td class="dp-lean-merits" style="font-family:monospace;white-space:pre;text-align:center;color:var(--text-muted);font-weight:700;width:30px;display:none;">&nbsp;&middot;&nbsp;</td><td class="c-p dp-power">89M</td><td class="c-p dp-merits" style="display:none;">4M</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:10px;color:var(--text-muted);padding:6px 10px;">Player power/merits at each rank (of 300) &mdash; server depth, not names.</div>
+      </div>
+    </div>
   </div>
     </div>
   </div>
@@ -1114,7 +1166,7 @@
         <div class="tug-row">
           <span class="tug-us"><span id="beh-purity-us">0</span> <span class="tug-name" data-i18n="tug_us">US &middot; #008</span></span>
           <span class="tug-name" data-i18n="tug_purity_lbl">Bloodline Purity (runestones donated)</span>
-          <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#057</span> <span id="beh-purity-them">0</span></span>
+          <span class="tug-them"><span class="tug-name" data-i18n="tug_them">#046</span> <span id="beh-purity-them">0</span></span>
         </div>
         <div class="tug-bar"><div class="tug-fill-us" id="beh-purity-fill-us" style="width:50%;"></div><div class="tug-fill-them" id="beh-purity-fill-them" style="width:50%;"></div></div>
         <div class="tug-cap" data-i18n="tug_purity_cap">Beast Taming opens Sep 1 &mdash; donate Awaken Runestones to tip Bloodline Purity our way. Standings update as donations come in.</div>
@@ -1128,7 +1180,7 @@
               <th class="bl-nm" rowspan="2" data-i18n="bless_th_name">Blessing</th>
               <th class="bl-bf" rowspan="2" data-i18n="bless_th_buff">Buff</th>
               <th class="bl-grp bl-grp-us" colspan="2" data-i18n="bless_grp_us">US &middot; #008</th>
-              <th class="bl-grp bl-grp-them" colspan="2" data-i18n="bless_grp_them">#057</th>
+              <th class="bl-grp bl-grp-them" colspan="2" data-i18n="bless_grp_them">#046</th>
             </tr>
             <tr>
               <th class="bl-t">I</th><th class="bl-t">II</th>
@@ -1200,7 +1252,7 @@
         </table>
         <div class="bless-legend">
           <span><b class="lg-us">&#9632;</b> <span data-i18n="bless_lg_us">We have it</span></span>
-          <span><b class="lg-them">&#9632;</b> <span data-i18n="bless_lg_them">#057 has it</span></span>
+          <span><b class="lg-them">&#9632;</b> <span data-i18n="bless_lg_them">#046 has it</span></span>
           <span><b class="lg-open">&#9632;</b> <span data-i18n="bless_lg_open">Open to donate now</span></span>
           <span><b class="lg-none">&#9632;</b> <span data-i18n="bless_lg_none">Locked</span></span>
         </div>
@@ -1244,6 +1296,9 @@
       </ul>
 
       <h4 id="battlefield" data-i18n="st3_map_h">Battlefield Map</h4>
+      <div style="background:rgba(212,160,23,0.10);border:1px solid var(--kvk-accent-dim);border-radius:8px;padding:8px 12px;margin:2px 0 10px;font-size:12px;color:var(--text-secondary);line-height:1.5;">
+        ⚠ <strong style="color:var(--kvk-accent);">Invasion data pending for #046.</strong> The spawn coordinates, images and captions below are from the prior cycle (#057) — they'll be replaced once the #046 invasion points are scouted.
+      </div>
       <div class="map-toggle" role="tablist" aria-label="Choose battlefield">
         <button type="button" class="mt-btn active" data-map="008" role="tab" aria-selected="true"><span data-i18n="map_btn008">Behemoth on #008</span> <span class="mt-sub" data-i18n="map_btn008_sub">our server</span></button>
         <button type="button" class="mt-btn" data-map="087" role="tab" aria-selected="false"><span data-i18n="map_btn087">Behemoth on #057</span> <span class="mt-sub" data-i18n="map_btn087_sub">enemy server</span></button>
@@ -1434,7 +1489,7 @@
         <span class="slot" style="border-color:var(--accent-red-dim);" data-i18n="leg_enemy"><b style="color:#c43d3d;">&#9632;</b> Enemy citadels &middot; enemy portals &#9670;</span>
         <span class="slot" data-i18n="leg_dmg"><b style="color:#e8944a;">&#9632;</b> Taking Behemoth damage</span>
       </div>
-      <p style="font-size:12px;color:var(--text-muted);margin:0 0 10px;" data-i18n="map_desc">Each map shows one server as home with the invading Behemoth at its spawn. <strong>Unlimited range, ignores shields</strong> &mdash; no city is safe (orange = under fire). Home rallies it down; visitors counter-rally to keep it scoring. Toggle to flip between <strong>#008</strong> and <strong>#057</strong>.</p>
+      <p style="font-size:12px;color:var(--text-muted);margin:0 0 10px;" data-i18n="map_desc">Each map shows one server as home with the invading Behemoth at its spawn. <strong>Unlimited range, ignores shields</strong> &mdash; no city is safe (orange = under fire). Home rallies it down; visitors counter-rally to keep it scoring. Toggle to flip between <strong>#008</strong> and <strong>#046</strong>.</p>
       <div class="spawn-box" data-map="008">
         <h4 style="margin-top:0;" data-i18n="spawn008_h">Where the Behemoth spawns on #008</h4>
         <figure class="spawn-fig" style="margin:0;">
@@ -1444,7 +1499,7 @@
         </figure>
       </div>
       <div class="spawn-box" data-map="087" hidden>
-        <h4 style="margin-top:0;" data-i18n="spawn087_h">Where our Behemoth spawns on #057</h4>
+        <h4 style="margin-top:0;" data-i18n="spawn087_h">Where our Behemoth spawns on #046</h4>
         <figure class="spawn-fig" style="margin:0;">
           <img class="zoomable" data-cap="Our Behemoth invades #057 at (1437,1027) — Saturday 19:00 UTC. Relocate near it to counter-rally and keep it scoring." src="../assets/behemoth/bc_era8_invasion_057.jpg" alt="Our Behemoth invasion point on #057 — coordinates (1437,1027)" loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--border);display:block;">
           <div class="loc-mini" aria-hidden="true"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="locClip087"><polygon points="100,10 190,100 100,190 10,100"/></clipPath></defs><polygon class="loc-diamond" points="100,10 190,100 100,190 10,100"/><g class="loc-grid" clip-path="url(#locClip087)"><line x1="-50" y1="200" x2="200" y2="-50"/><line x1="-50" y1="250" x2="250" y2="-50"/><line x1="-50" y1="300" x2="300" y2="-50"/><line x1="-50" y1="-95" x2="245" y2="200"/><line x1="-50" y1="-50" x2="250" y2="250"/><line x1="-50" y1="0" x2="200" y2="250"/></g><circle class="loc-pin-ring" cx="118" cy="97" r="6"/><circle class="loc-pin-dot" cx="118" cy="97" r="4.5"/></svg></div>
@@ -1501,7 +1556,7 @@
           </div>
           <!-- THEIRS (red) -->
           <div class="calc-side them">
-            <h5 data-i18n="calc_theirs">Enemy Behemoth &middot; #057</h5>
+            <h5 data-i18n="calc_theirs">Enemy Behemoth &middot; #046</h5>
             <div class="calc-row">
               <div class="clab"><span data-i18n="calc_hp">Health remaining</span><span class="cval" id="themHpVal">100%</span></div>
               <div class="hp-track">
@@ -6057,6 +6112,51 @@ window.addEventListener('DOMContentLoaded', function () {
     cmpToggle.addEventListener('click', function () {
       var open = cmpWrap.classList.toggle('expanded');
       cmpToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  // --- Scouting: Top Players Power/Merits switch ---
+  var metricBtns = document.querySelectorAll('.scout-metric-btn');
+  if (metricBtns.length) {
+    metricBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var metric = btn.getAttribute('data-metric');
+        metricBtns.forEach(function (b) {
+          var on = b.getAttribute('data-metric') === metric;
+          b.classList.toggle('active', on);
+          b.style.background = on ? '#1e3a5f' : 'transparent';
+          b.style.color = on ? 'var(--kvk-accent)' : 'var(--text-muted)';
+        });
+        // swap the power-column numbers + header label
+        document.querySelectorAll('#cmpWrap .cmp-tbl td.c-p[data-power]').forEach(function (td) {
+          td.textContent = td.getAttribute(metric === 'merits' ? 'data-merits' : 'data-power');
+        });
+        document.querySelectorAll('.scout-metric-lbl').forEach(function (el) {
+          el.textContent = metric === 'merits' ? (el.textContent === 'POWER' ? 'MERITS' : 'Merits')
+                                               : (el.textContent === 'MERITS' ? 'POWER' : 'Power');
+        });
+      });
+    });
+  }
+
+  // --- Scouting: Roster Depth Power/Merits switch ---
+  var depthBtns = document.querySelectorAll('.depth-metric-btn');
+  if (depthBtns.length) {
+    depthBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var metric = btn.getAttribute('data-metric');
+        depthBtns.forEach(function (b) {
+          var on = b.getAttribute('data-metric') === metric;
+          b.classList.toggle('active', on);
+          b.style.background = on ? '#1e3a5f' : 'transparent';
+          b.style.color = on ? 'var(--kvk-accent)' : 'var(--text-muted)';
+        });
+        var showP = metric !== 'merits';
+        document.querySelectorAll('#depthTbl .dp-power').forEach(function (el){ el.style.display = showP ? '' : 'none'; });
+        document.querySelectorAll('#depthTbl .dp-merits').forEach(function (el){ el.style.display = showP ? 'none' : ''; });
+        document.querySelectorAll('#depthTbl .dp-lean-power').forEach(function (el){ el.style.display = showP ? '' : 'none'; });
+        document.querySelectorAll('#depthTbl .dp-lean-merits').forEach(function (el){ el.style.display = showP ? 'none' : ''; });
+      });
     });
   }
 

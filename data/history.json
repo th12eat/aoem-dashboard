@@ -1211,9 +1211,9 @@
    "event": "TME",
    "date": "2026-10-19",
    "opp": "Era #016",
-   "result": "Live",
+   "result": "Loss",
    "basis": "top-3 alliances (scouting)",
-   "note": "In progress — matchmaking began Oct 17, prep Day 1 Oct 19, invasion Oct 25. Top-3 alliance power + total merits per server from the TME dashboard Scouting tab (neither server has a solid #4).",
+   "note": "Final 211B vs 251B — lost the Cross-Border invasion despite leading prep (110B vs 87.3B). Top-3 alliance power + total merits per server from scouting.",
    "ours": [
     [
      "eRa",
