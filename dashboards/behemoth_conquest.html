@@ -1380,7 +1380,7 @@
 <circle cx="380" cy="300" r="34" fill="rgba(var(--kvk-accent-rgb),0.12)" stroke="rgba(var(--kvk-accent-rgb),0.55)" stroke-width="2"/>
 <text x="380" y="313" text-anchor="middle" font-size="38">🐘</text>
 <text x="380" y="244" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="15" fill="#8a2d54" letter-spacing="1.5">BEHEMOTH</text>
-<text x="380" y="352" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="700" fill="#8a2d54">3.75M HP</text>
+<text id="mapHpThem" x="380" y="352" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="700" fill="#8a2d54">3.5M HP</text>
 <g font-family="Barlow Condensed,sans-serif" font-size="12.5" font-weight="700">
 <text x="380" y="371" text-anchor="middle" fill="#8a2d54">Undying Force</text>
 <path d="M346 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(var(--kvk-accent-rgb),0.85)" stroke="#8a2d54" stroke-width="0.8"/>
@@ -1470,7 +1470,7 @@
 <circle cx="380" cy="300" r="34" fill="rgba(var(--kvk-accent-rgb),0.12)" stroke="rgba(var(--kvk-accent-rgb),0.55)" stroke-width="2"/>
 <text x="380" y="313" text-anchor="middle" font-size="38">🐘</text>
 <text x="380" y="244" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="15" fill="#8a2d54" letter-spacing="1.5">BEHEMOTH</text>
-<text x="380" y="352" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="700" fill="#8a2d54">3.75M HP</text>
+<text id="mapHpUs" x="380" y="352" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-size="15" font-weight="700" fill="#8a2d54">3.5M HP</text>
 <g font-family="Barlow Condensed,sans-serif" font-size="12.5" font-weight="700">
 <text x="380" y="371" text-anchor="middle" fill="#8a2d54">Undying Force</text>
 <path d="M346 380 l5 -2 5 2 v4 q0 4 -5 6 q-5 -2 -5 -6 z" fill="rgba(var(--kvk-accent-rgb),0.85)" stroke="#8a2d54" stroke-width="0.8"/>
@@ -5460,6 +5460,13 @@ function updateBlessings() {
     else if (open[node]) { cell.classList.add('open'); }
     // else: locked (default greyed)
   });
+  // Battlefield-map HP labels show the INVADING Behemoth per view: map-box 008
+  // (our server) is invaded by THEM; map-box 087 (their server) by US. Drive both
+  // off beheStats so they read the Mobile Fortress HP bonus only once that side
+  // actually owns it (base 3.5M -> 3.75M at fort1 -> 4.0M at fort2).
+  var mapHpUs = document.getElementById('mapHpUs'), mapHpThem = document.getElementById('mapHpThem');
+  if (mapHpUs) mapHpUs.textContent = fmtHP(beheStats('us').hp) + ' HP';
+  if (mapHpThem) mapHpThem.textContent = fmtHP(beheStats('them').hp) + ' HP';
 }
 
 // Trial of Scion schedule: state labels per language (set live each tick).
