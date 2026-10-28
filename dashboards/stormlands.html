@@ -190,10 +190,10 @@ const SERVER_BADGES = [
 // MrSneakyy's beta walkthrough of the in-game schedule.
 const SCHEDULE = [
   { day: 1, date: "2026-10-21", title: "Eroded Wasteland Opens", desc: "Relocate into the kingdom's Eroded Wasteland region (the outer rim). Build your alliance Stronghold, Storm Beacons, gathering center and supply depot. Hunt Storm Wolves for Storm Energy & Storm Fragments.", zone: "Eroded Wasteland" },
-  { day: 2, date: "2026-10-22", title: "Zone 2 — Eroded Forbidden Zone", desc: "Wasteland Forts open — occupy them to enter the Eroded Forbidden Zone. Basic Artisan Cities (occupy to build Storm Machines) and Energy Cities (gain Storm Energy over time) are now contestable.", zone: "Eroded Wasteland → Eroded Forbidden Zone" },
-  { day: 3, date: "2026-10-23", title: "Storm Altars & Storm Erosion", desc: "Basic Storm Altars and the Storm Erosion event open. Occupying an Altar lets you offer to upgrade it and pick the Storm Erosion time slot. Each Altar can trigger erosion once every 2 days (~7 triggers over the event); Erosion Beasts & Giants spawn in waves up to 30 min.", zone: "Eroded Forbidden Zone" },
-  { day: 4, date: "2026-10-24", title: "Storm Hydra Awakens", desc: "Eroded Forbidden Zone forts awaken to spawn a Storm Hydra for 1 hour — during that window all governors' troops may march through any forbidden zone regardless of ownership. Killing the Hydra gives a boon of Storm Points.", zone: "Eroded Forbidden Zone" },
-  { day: 5, date: "2026-10-25", title: "Intermediate Energy Cities", desc: "Intermediate Energy Cities open. Keep accumulating Storm Energy for Zone 3 beacons and position on the Storm Eye Forts.", zone: "Eroded Forbidden Zone" },
+  { day: 2, date: "2026-10-22", title: "Zone 2 — Eroded Forbidden Zone", desc: "Wasteland Forts open — occupy them to enter the Eroded Forbidden Zone. Basic Artisan Cities (occupy to build Storm Machines — Cannons, Trebuchets, Towers) and Energy Cities (gain Storm Energy over time) are now contestable.", zone: "Eroded Wasteland → Eroded Forbidden Zone" },
+  { day: 3, date: "2026-10-23", title: "Storm Altars & Storm Erosion", desc: "The Storm Altar opens for occupation. The occupying alliance makes offerings to level the Altar (claiming offering rewards) and can start the Storm Erosion event once every 2 days — Erosion Wolves & Giants spawn around the Altar; defeat them for rewards + Storm Points.", zone: "Eroded Forbidden Zone" },
+  { day: 4, date: "2026-10-24", title: "Storm Incursion Begins (5 days)", desc: "Storm Incursion runs Day 4–8: a Storm Hydra appears at the forbidden-zone fort each day, and troops can pass freely through the fort during this time. Damaging the Hydra earns rewards + Storm Points; the alliance landing the final blow earns a bonus.", zone: "Eroded Forbidden Zone" },
+  { day: 5, date: "2026-10-25", title: "Strongholds & Mountain Forts Open", desc: "From Day 5 to Day 9, Storm Strongholds and mountain forts gradually open for occupation. Activate a Storm Stronghold to build Storm Beacons — attacks can only be launched from cities connected to an activated Storm Stronghold. As forts open, the battle moves toward the center.", zone: "Eroded Forbidden Zone" },
   { day: 6, date: "2026-10-26", title: "Zone 3 — Eternal Storm Eye", desc: "The ring opens: Storm Eye Forts, Advanced Artisan Cities and Advanced Storm Altars become contestable. Occupy forts to enter the Eternal Storm Eye region. Beacons cost more but are more durable.", zone: "Eternal Storm Eye" },
   { day: 7, date: "2026-10-27", title: "Contest Continues", desc: "Hold Storm Eye territory. Mind the regional Storm Power — fall below it and your citadel & troops take continuous damage, and you fight PvE worse.", zone: "Eternal Storm Eye" },
   { day: 8, date: "2026-10-28", title: "Push to Oblivion", desc: "Build Controlled Storm Power via Storm Weapons (Fragments + Crystals). Position on the Oblivion Forts.", zone: "Eternal Storm Eye" },
@@ -271,7 +271,7 @@ const KEY_NODES = [
   { id: "stronghold", name: "Alliance Stronghold", zone: "z1", type: "building", desc: "Foundation of alliance lands. Storm Beacons must connect back to this or a Storm Stronghold. Built anywhere in the Eroded Wasteland.", points: 0 },
   { id: "wfort", name: "Wasteland Fort / Dock", zone: "z1", type: "fort", desc: "Gate to the Eroded Forbidden Zone. Occupy to enter Zone 2.", points: 0 },
   { id: "energy_city", name: "Energy City", zone: "z2", type: "city", desc: "Occupying alliance gains Storm Energy over time. Also earns Storm Points per minute while held.", points: 500 },
-  { id: "artisan_city", name: "Basic Artisan City", zone: "z2", type: "city", desc: "Occupying alliance can build Storm Machines.", points: 500 },
+  { id: "artisan_city", name: "Basic Artisan City", zone: "z2", type: "city", desc: "Occupying alliance can build Storm Machines to boost its power: Storm Cannons (area damage to enemy troops on the map), Storm Trebuchets (wear down building durability), Storm Towers (heavy damage to enemies in range — defend alliance land).", points: 500 },
   { id: "basic_altar", name: "Basic Storm Altar", zone: "z2", type: "tower", desc: "Offer 'offer' to raise its level (All Units Dmg +0.5% / Health +1.5% per level). Controlling alliance picks the Storm Erosion time slot and gathers 'offer'. Each Altar can trigger erosion once every 2 days (~7 triggers across the event).", points: 1000 },
   { id: "sefort", name: "Storm Eye Fort", zone: "z3", type: "fort", desc: "Gate to the Eternal Storm Eye region. Opens Day 6.", points: 0 },
   { id: "adv_artisan", name: "Advanced Artisan City", zone: "z3", type: "city", desc: "Higher-tier Artisan City. Opens Day 6.", points: 500 },
@@ -336,9 +336,11 @@ const AARU_OFFICIAL_TIME = "19:00 UTC";
 
 const BUILDINGS = [
   { name: "Alliance Stronghold", desc: "Foundation of alliance lands. Built in the Eroded Wasteland. All Storm Beacons must connect back to a Stronghold or Storm Stronghold to stay active.", icon: "🏰" },
-  { name: "Storm Stronghold", desc: "Forward sub-stronghold built in higher zones. Must connect to the main Stronghold to start construction; once started it no longer needs to stay connected.", icon: "🏯" },
+  { name: "Storm Stronghold", desc: "Forward sub-stronghold (opens Day 5–9). Activate it to build Storm Beacons — and note attacks can only be launched from cities connected to an activated Storm Stronghold.", icon: "🏯" },
   { name: "Storm Beacon", desc: "Alliance flag. Built on tiles adjacent to an active connection (Stronghold, Storm Stronghold, or a line of beacons back to one). Costs more Storm Energy in higher zones but more durable.", icon: "🚩" },
-  { name: "Storm Machine", desc: "Built by alliances occupying Artisan Cities. Siege/support engine for the contest.", icon: "⚙️" },
+  { name: "Storm Cannon", desc: "Storm Machine from an Artisan City — deals area damage directly to enemy troops on the world map.", icon: "💥" },
+  { name: "Storm Trebuchet", desc: "Storm Machine from an Artisan City — steadily wears down building durability.", icon: "🪨" },
+  { name: "Storm Tower", desc: "Storm Machine from an Artisan City — deals heavy damage to enemies within range to help defend your alliance land.", icon: "🗼" },
   { name: "Bandage Camp", desc: "Troops replenish here. With Auto-housing on, retreating troops return to the Bandage Camp instead of the Citadel.", icon: "🏥" },
   { name: "Storm Gathering Center", desc: "One per map. Speeds up gathering, immune to attacks.", icon: "⛏️" },
   { name: "Storm Supply Depot", desc: "Claim Supplies Bounty rewards.", icon: "📦" },
@@ -1345,7 +1347,7 @@ function PointsTab() {
     ["Storm Altar offering (100 offer)", "80K pts"],
     ["Storm Weapon upgrade (per level)", "+1M at Lv1, +500K each level"],
     ["Ancient Storm Monument (exploration)", "daily exploration pts"],
-    ["Defeat Storm Hydra (Z1↔Z2 fort)", "boon of Storm Points (TBD)"],
+    ["Storm Incursion — damage the Storm Hydra (Day 4–8)", "rewards + Storm Points; bonus for final blow"],
     ["Hold Temple of Zeus / core", "TBD"],
     ["Gravely wound enemy unit", "1–36 pts (by tier, see table)"],
     ["Defeat enemy unit", "5–180 pts (by tier, see table)"],
@@ -2059,6 +2061,7 @@ function AltarLiveModal() {
 // card (anchored at #tower-schedule so the header badge jump still works).
 function AltarSchedule() {
   return (
+    <React.Fragment>
     <div id="tower-schedule" style={{ ...S.card }}>
       <div style={S.cardTitle}>{T("Storm Erosion — Daily Event")}</div>
       <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6, marginBottom: "12px" }}>
@@ -2067,10 +2070,10 @@ function AltarSchedule() {
       <div style={{ display: "grid", gap: "6px" }}>
         {[
           ["Cadence", "Once every 2 days per Altar (~7 total). Controller chooses the time slot."],
-          ["Waves", "Erosion Beasts (basic) and Erosion Giants (tougher) spawn in waves for up to 30 min."],
+          ["Waves", "Erosion Wolves (basic) and Erosion Giants (tougher) spawn around the Altar."],
           ["Points", "Damage pays 1:1 in Storm Points, up to the 15M daily cap."],
           ["Drops", "Storm Fragments (toward the daily cap) for upgrading Storm Weapons (Lv1–10)."],
-          ["Control", "Hold the Altar to pick the trigger time + gather 'offer' to level it up."],
+          ["Control", "Hold the Altar to pick the trigger time + gather 'offer' to level it up (claim offering rewards)."],
         ].map(([k, v]) => (
           <div key={k} style={{ display: "flex", gap: "10px", fontSize: "12px", lineHeight: 1.5 }}>
             <span style={{ minWidth: "62px", fontWeight: 700, color: "#8fc4f0" }}>{k}</span>
@@ -2078,8 +2081,29 @@ function AltarSchedule() {
           </div>
         ))}
       </div>
-      <div style={{ fontSize: "11px", color: "#64748b", marginTop: "10px" }}>{T("From MrSneakyy's beta walkthrough. Exact slot times + per-wave rewards TBD; beta values may change at release.")}</div>
+      <div style={{ fontSize: "11px", color: "#64748b", marginTop: "10px" }}>{T("Official guide: the Altar opens Day 3; erosion can be started once every 2 days. Exact slot times TBD.")}</div>
     </div>
+
+    <div style={{ ...S.card }}>
+      <div style={S.cardTitle}>{T("Storm Incursion — Day 4–8")}</div>
+      <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6, marginBottom: "12px" }}>
+        {T("Storm Incursion begins Day 4 and lasts 5 days. A Storm Hydra appears at the forbidden-zone fort each day, and troops can pass freely through that fort while it's up — the one window to move through the gate regardless of ownership.")}
+      </div>
+      <div style={{ display: "grid", gap: "6px" }}>
+        {[
+          ["When", "Day 4 through Day 8 — one Hydra at the forbidden-zone fort per day."],
+          ["Free passage", "Troops march freely through the fort during the incursion."],
+          ["Points", "Damaging the Hydra earns rewards + Storm Points."],
+          ["Final blow", "The alliance that lands the killing blow earns a bonus."],
+        ].map(([k, v]) => (
+          <div key={k} style={{ display: "flex", gap: "10px", fontSize: "12px", lineHeight: 1.5 }}>
+            <span style={{ minWidth: "72px", fontWeight: 700, color: "#ef9f6b" }}>{k}</span>
+            <span style={{ color: "#94a3b8" }}>{v}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+    </React.Fragment>
   );
 }
 
