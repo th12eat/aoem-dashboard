@@ -5360,8 +5360,8 @@ function updatePhase(now) { renderStageLine(now); }
 //   6: hoof1 fort1   7: atk2 def2   8: hp2   9: hoof2 fort2   10: dmg2
 // (Defaults Undying Force / Wild Healing are always owned and need no entry.)
 var BLESS_OWNED = {
-  us:   ['dmg1', 'atk1'],   // #008 — Undying Force + Wild Healing (always-on) + Wild Damage I + Wild Attack I
-  them: ['dmg1', 'atk1']    // #046 — same: Wild Damage I + Wild Attack I
+  us:   ['dmg1', 'atk1', 'def1', 'hp1'],   // #008 — through Wild Health I (Wild Damage/Attack/Defense I + Wild Health I)
+  them: ['dmg1', 'atk1', 'def1', 'hp1']    // #046 — same, through Wild Health I
 };
 // Ordered list of steps -> the node IDs that compose each step.
 var BLESS_STEPS = [
