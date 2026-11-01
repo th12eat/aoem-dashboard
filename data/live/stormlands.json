@@ -113,7 +113,113 @@
           "merits": "13,105,837"
         }
       ],
-      "players": []
+      "players": [
+        {
+          "rank": 1,
+          "name": "Collin6666",
+          "alliance": "eRa",
+          "power": "487,855,154",
+          "merits": ""
+        },
+        {
+          "rank": 2,
+          "name": "XnJinX",
+          "alliance": "eRa",
+          "power": "398,962,470",
+          "merits": ""
+        },
+        {
+          "rank": 3,
+          "name": "Macklemore",
+          "alliance": "eRa",
+          "power": "354,553,120",
+          "merits": ""
+        },
+        {
+          "rank": 4,
+          "name": "Lumberjack",
+          "alliance": "eRa",
+          "power": "316,083,794",
+          "merits": ""
+        },
+        {
+          "rank": 5,
+          "name": "ŠnipeŘ⊕",
+          "alliance": "eRa",
+          "power": "295,406,522",
+          "merits": ""
+        },
+        {
+          "rank": 6,
+          "name": "BloodYoda",
+          "alliance": "eRa",
+          "power": "294,475,716",
+          "merits": ""
+        },
+        {
+          "rank": 7,
+          "name": "Zen7",
+          "alliance": "eRa",
+          "power": "271,404,655",
+          "merits": ""
+        },
+        {
+          "rank": 8,
+          "name": "BUSHMⱯSTɆЯ",
+          "alliance": "eRa",
+          "power": "259,820,649",
+          "merits": ""
+        },
+        {
+          "rank": 9,
+          "name": "☙✿⛵Africa✗⛰☙",
+          "alliance": "eRa",
+          "power": "257,425,669",
+          "merits": ""
+        },
+        {
+          "rank": 10,
+          "name": "TommyTorpedo",
+          "alliance": "eRa",
+          "power": "253,993,014",
+          "merits": ""
+        },
+        {
+          "rank": 11,
+          "name": "CⱭŇŇØNBⱭLLZZ",
+          "alliance": "eRa",
+          "power": "251,996,738",
+          "merits": ""
+        },
+        {
+          "rank": 12,
+          "name": "ScubaPig",
+          "alliance": "eRa",
+          "power": "250,271,568",
+          "merits": ""
+        },
+        {
+          "rank": 13,
+          "name": "Hermes++",
+          "alliance": "eRa",
+          "power": "250,178,999",
+          "merits": ""
+        },
+        {
+          "rank": 14,
+          "name": "DarkHelmet",
+          "alliance": "eRa",
+          "power": "243,518,952",
+          "merits": ""
+        },
+        {
+          "rank": 15,
+          "name": "IntoxFr",
+          "alliance": "eRa",
+          "power": "229,005,019",
+          "merits": ""
+        }
+      ]
     },
     "opponents": [
       {
@@ -147,7 +253,113 @@
             "merits": "13,554,600"
           }
         ],
-        "players": []
+        "players": [
+          {
+            "rank": 1,
+            "name": "127대장",
+            "alliance": "③★⑨",
+            "power": "411,526,013",
+            "merits": ""
+          },
+          {
+            "rank": 2,
+            "name": "수원SuWon",
+            "alliance": "③★⑨",
+            "power": "382,706,819",
+            "merits": ""
+          },
+          {
+            "rank": 3,
+            "name": "NickNickNick",
+            "alliance": "③∧⑨",
+            "power": "381,213,274",
+            "merits": ""
+          },
+          {
+            "rank": 4,
+            "name": "AZD다크애플",
+            "alliance": "③∧⑨",
+            "power": "359,557,002",
+            "merits": ""
+          },
+          {
+            "rank": 5,
+            "name": "KOR꼬꼬",
+            "alliance": "③★⑨",
+            "power": "338,087,718",
+            "merits": ""
+          },
+          {
+            "rank": 6,
+            "name": "예진월드유주공주",
+            "alliance": "③★⑨",
+            "power": "320,619,376",
+            "merits": ""
+          },
+          {
+            "rank": 7,
+            "name": "YeshuaIsLord",
+            "alliance": "③★⑨",
+            "power": "313,238,597",
+            "merits": ""
+          },
+          {
+            "rank": 8,
+            "name": "Ecthelíon",
+            "alliance": "③∧⑨",
+            "power": "307,257,535",
+            "merits": ""
+          },
+          {
+            "rank": 9,
+            "name": "닥치거라ㅋㅋ",
+            "alliance": "③★⑨",
+            "power": "305,379,295",
+            "merits": ""
+          },
+          {
+            "rank": 10,
+            "name": "★TɛsTRoN",
+            "alliance": "③★⑨",
+            "power": "304,454,653",
+            "merits": ""
+          },
+          {
+            "rank": 11,
+            "name": "디엠`",
+            "alliance": "③★⑨",
+            "power": "300,864,031",
+            "merits": ""
+          },
+          {
+            "rank": 12,
+            "name": "이재경ㅋㅋ",
+            "alliance": "③★⑨",
+            "power": "293,354,428",
+            "merits": ""
+          },
+          {
+            "rank": 13,
+            "name": "토마토",
+            "alliance": "③★⑨",
+            "power": "285,008,195",
+            "merits": ""
+          },
+          {
+            "rank": 14,
+            "name": "K£raz³ʌ⁹",
+            "alliance": "③∧⑨",
+            "power": "283,199,969",
+            "merits": ""
+          },
+          {
+            "rank": 15,
+            "name": "NPC123",
+            "alliance": "③★⑨",
+            "power": "276,514,420",
+            "merits": ""
+          }
+        ]
       },
       {
         "server": "Era #038",
@@ -180,7 +392,113 @@
             "merits": "44,237,400"
           }
         ],
-        "players": []
+        "players": [
+          {
+            "rank": 1,
+            "name": "ForSale$€",
+            "alliance": "TLW",
+            "power": "736,659,874",
+            "merits": ""
+          },
+          {
+            "rank": 2,
+            "name": "Arcaneaura",
+            "alliance": "TLW",
+            "power": "399,152,023",
+            "merits": ""
+          },
+          {
+            "rank": 3,
+            "name": "SAITAMAsun",
+            "alliance": "TLW",
+            "power": "357,730,108",
+            "merits": ""
+          },
+          {
+            "rank": 4,
+            "name": "HungryJoker",
+            "alliance": "TLW",
+            "power": "349,298,545",
+            "merits": ""
+          },
+          {
+            "rank": 5,
+            "name": "BàTriệu",
+            "alliance": "TLW",
+            "power": "327,788,048",
+            "merits": ""
+          },
+          {
+            "rank": 6,
+            "name": "SlickWhiskey",
+            "alliance": "TLW",
+            "power": "323,720,875",
+            "merits": ""
+          },
+          {
+            "rank": 7,
+            "name": "Safffaaarrrr",
+            "alliance": "TLW",
+            "power": "279,186,529",
+            "merits": ""
+          },
+          {
+            "rank": 8,
+            "name": "Benson¹ˢᵗ",
+            "alliance": "Pbl",
+            "power": "277,569,098",
+            "merits": ""
+          },
+          {
+            "rank": 9,
+            "name": "Vizièr",
+            "alliance": "TLW",
+            "power": "273,022,863",
+            "merits": ""
+          },
+          {
+            "rank": 10,
+            "name": "Jollybaby®",
+            "alliance": "TLW",
+            "power": "266,826,068",
+            "merits": ""
+          },
+          {
+            "rank": 11,
+            "name": "Bongosです",
+            "alliance": "TLW",
+            "power": "265,043,622",
+            "merits": ""
+          },
+          {
+            "rank": 12,
+            "name": "Beaufort23",
+            "alliance": "TLW",
+            "power": "263,934,617",
+            "merits": ""
+          },
+          {
+            "rank": 13,
+            "name": "Genaid",
+            "alliance": "TLW",
+            "power": "258,146,467",
+            "merits": ""
+          },
+          {
+            "rank": 14,
+            "name": "THEGREAT1389",
+            "alliance": "Pbl",
+            "power": "254,140,852",
+            "merits": ""
+          },
+          {
+            "rank": 15,
+            "name": "TheEnigma",
+            "alliance": "TLW",
+            "power": "246,437,984",
+            "merits": ""
+          }
+        ]
       },
       {
         "server": "Era #015",
@@ -213,7 +531,64 @@
             "merits": "8,368,424"
           }
         ],
-        "players": []
+        "players": [
+          {
+            "rank": 1,
+            "name": "DiscoPeat",
+            "alliance": "PrF",
+            "power": "569,582,197",
+            "merits": ""
+          },
+          {
+            "rank": 2,
+            "name": "AlexSada",
+            "alliance": "PrF",
+            "power": "333,480,579",
+            "merits": ""
+          },
+          {
+            "rank": 3,
+            "name": "BrainWest",
+            "alliance": "PrF",
+            "power": "328,018,397",
+            "merits": ""
+          },
+          {
+            "rank": 4,
+            "name": "MVZAlexR",
+            "alliance": "PrF",
+            "power": "297,228,149",
+            "merits": ""
+          },
+          {
+            "rank": 5,
+            "name": "Caxotef2p",
+            "alliance": "PrF",
+            "power": "290,682,207",
+            "merits": ""
+          },
+          {
+            "rank": 6,
+            "name": "FabiMeridius",
+            "alliance": "PrF",
+            "power": "283,286,746",
+            "merits": ""
+          },
+          {
+            "rank": 7,
+            "name": "Marinien",
+            "alliance": "PrF",
+            "power": "281,074,797",
+            "merits": ""
+          },
+          {
+            "rank": 8,
+            "name": "Thulhagiri",
+            "alliance": "PrF",
+            "power": "275,626,702",
+            "merits": ""
+          }
+        ]
       }
     ]
   }
