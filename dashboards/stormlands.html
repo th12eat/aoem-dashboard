@@ -135,25 +135,25 @@ let EVENT_CONFIG = {
   eventEnd: "2026-11-03",       // Day 14 (final Zeus battle)
   recoveryEnd: "2026-11-05",    // +2 days recovery (up to 65% troop recovery, as all KvKs)
   matchingStart: "2026-10-19",
-  servers: ["Era 8", "Era #068", "Era #066", "Era #028"],
+  servers: ["Era 8", "Era #039", "Era #038", "Era #015"],
   ourServer: "Era 8",
-  ourAlliances: ["eRa", "Myt", "REU", "FUN"],
+  ourAlliances: ["eRa", "REU", "Myt", "AuR"],
 };
 
 // Per-alliance colors for our 4 (Era 8). LIVE uses a purple family (distinct from
 // opponent server hues on the shared board); PLAN uses the original TME palette
 // (no opponents on the plan map, so no clash).
-const ALLIANCE_COLORS = {        // live (blue family — our NORTH/Blue corner this DD)
-  eRa: "#4a7fc0", // blue
-  FUN: "#2f5a8f", // deep blue
-  Myt: "#8ab4e8", // light blue
-  REU: "#b3d1f2", // pale blue
+const ALLIANCE_COLORS = {        // live (purple family — our EAST/Purple corner this Stormlands)
+  eRa: "#9a6dd4", // purple
+  REU: "#6d28d9", // deep purple
+  Myt: "#b18cff", // light purple
+  AuR: "#d8c4f0", // pale purple
 };
-const ALLIANCE_COLORS_PLAN = {   // plan (TME palette)
+const ALLIANCE_COLORS_PLAN = {   // plan (distinct palette; no opponents on plan map)
   eRa: "#3b82f6", // blue
-  FUN: "#f59e0b", // amber
   REU: "#ef4444", // red
   Myt: "#22c55e", // green
+  AuR: "#f59e0b", // amber
 };
 // resolve an owner's color for a given map mode (plan uses the TME set for ours).
 function allianceColor(tag, mode) {
@@ -169,19 +169,19 @@ function allianceColor(tag, mode) {
 // blue family; the three opponents take their corner-color families. Opponent
 // alliance tags are unknown until scouting — filled in when that data lands.
 const SERVER_ALLIANCE_SHADES = {
-  "Era 8":    { eRa: "#4a7fc0", Myt: "#8ab4e8", FUN: "#2f5a8f", REU: "#b3d1f2" },  // blue (N)
-  "Era #068": { "Ⓢ❻❽": "#d4934a", "Ⓥ❻❽": "#ecb673", "Ⓞ❻❽": "#a3691f", GxK: "#f5d3a6" },   // orange (W)
-  "Era #066": { HeX: "#a855f7", "AꞭL": "#c4b5fd", "EW亗": "#8b5cf6", DUA: "#3a6ea5" },  // purple (E)
-  "Era #028": { "τ28": "#4f9d70", "Σ28": "#82c99e", H3K: "#327c53", ASD: "#aadcc0" },  // green (S)
+  "Era 8":    { eRa: "#9a6dd4", REU: "#6d28d9", Myt: "#b18cff", AuR: "#d8c4f0" },  // purple (E — us)
+  "Era #039": { "③★⑨": "#4a7fc0", "③∧⑨": "#8ab4e8", "③✛⑨": "#2f5a8f", "LC°": "#b3d1f2" },  // blue (N)
+  "Era #038": { TLW: "#d4934a", Pbl: "#ecb673", SOW: "#a3691f", "NL0": "#f5d3a6" },  // orange (W)
+  "Era #015": { PrF: "#4f9d70", YUP: "#82c99e", UpF: "#327c53", SEF: "#aadcc0" },  // green (S)
 };
 // Server badge hit-areas — positions match the four crests baked into the
 // minimap background (N/W/E/S corners of the diamond). Clicking focuses that
 // server's alliances. Live mode only (plan has no opponents).
 const SERVER_BADGES = [
-  { srv: "Era 8",    x: 48.5, y: 10.5 },  // north — blue   (US this event)
-  { srv: "Era #068", x: 10.5, y: 49.5 },  // west  — orange
-  { srv: "Era #066", x: 89.0, y: 49.5 },  // east  — purple
-  { srv: "Era #028", x: 48.5, y: 89.0 },  // south — green
+  { srv: "Era #039", x: 48.5, y: 10.5 },  // north — blue
+  { srv: "Era #038", x: 10.5, y: 49.5 },  // west  — orange
+  { srv: "Era 8",    x: 89.0, y: 49.5 },  // east  — purple (US this event)
+  { srv: "Era #015", x: 48.5, y: 89.0 },  // south — green
 ];
 
 // Day numbering is CONTEST days (Day 1 = first day after matchmaking). In-game the
@@ -250,9 +250,9 @@ const ROE_COLUMNS = [
 // allyCols: specific columns treated as ally (green 🤝) even on an enemy row — e.g.
 // enemies everywhere BUT explicitly allied on Citadels (no zeroing each other's).
 const DIPLOMACY_ROE = [
-  { server: "Era #068", ally: true, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
-  { server: "Era #066", ally: false, fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
-  { server: "Era #028", ally: false, fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
+  { server: "Era #039", ally: false, fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
+  { server: "Era #038", ally: false, fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
+  { server: "Era #015", ally: false, fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
 ];
 
 // Per-player daily objectives (reset 00:00 UTC). `opensDay` = greyed until then.
@@ -403,12 +403,12 @@ function currentStageIndex() {
 
 // Reusable Kingdom Desert-Star proportional bar (Orange>Blue>Purple>Green).
 function KingdomBar({ compact }) {
-  const ORDER = ["Era 8", "Era #068", "Era #066", "Era #028"];
+  const ORDER = ["Era #039", "Era 8", "Era #015", "Era #038"];
   const GRAD = {
-    "Era 8":    { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" },  // blue (us)
-    "Era #068": { grad: "linear-gradient(90deg, #c47d4a, #ef9f6b)", top: "#ef9f6b" },  // orange
-    "Era #066": { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" },  // purple
-    "Era #028": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" },  // green
+    "Era 8":    { grad: "linear-gradient(90deg, #6d28d9, #9b6dff)", top: "#b18cff" },  // purple (us)
+    "Era #039": { grad: "linear-gradient(90deg, #2456a0, #3d7cc4)", top: "#5b9bd8" },  // blue
+    "Era #038": { grad: "linear-gradient(90deg, #c47d4a, #ef9f6b)", top: "#ef9f6b" },  // orange
+    "Era #015": { grad: "linear-gradient(90deg, #1f7a4d, #3daa6d)", top: "#4fc386" },  // green
   };
   const ptsFor = (srv) => { const row = (KINGDOM_SCOREBOARD || []).find(k => k.server === srv); return row ? Number(String(row.points).replace(/,/g, "")) : 0; };
   const segs = ORDER.map(srv => ({ srv, g: GRAD[srv], pts: ptsFor(srv), us: srv === "Era 8" }));
@@ -618,12 +618,12 @@ const MAP_NODES = {
 };
 // Which server each alliance belongs to (for map/table coloring).
 const ALLIANCE_SERVER = {
-  eRa: "Era 8", FUN: "Era 8", REU: "Era 8", Myt: "Era 8",
-  "Ⓢ❻❽": "Era #068", "Ⓥ❻❽": "Era #068", "Ⓞ❻❽": "Era #068", GxK: "Era #068",
-  HeX: "Era #066", "AꞭL": "Era #066", "EW亗": "Era #066", DUA: "Era #066",
-  "τ28": "Era #028", "Σ28": "Era #028", H3K: "Era #028", ASD: "Era #028",
+  eRa: "Era 8", REU: "Era 8", Myt: "Era 8", AuR: "Era 8",
+  "③★⑨": "Era #039", "③∧⑨": "Era #039", "③✛⑨": "Era #039", "LC°": "Era #039",
+  TLW: "Era #038", Pbl: "Era #038", SOW: "Era #038", "NL0": "Era #038",
+  PrF: "Era #015", YUP: "Era #015", UpF: "Era #015", SEF: "Era #015",
 };
-const OUR_ALLIANCES = ["eRa", "FUN", "REU", "Myt"];
+const OUR_ALLIANCES = ["eRa", "REU", "Myt", "AuR"];
 // Owner → line/dot color. Our 4 alliances get distinct colors (per mode); every
 // opponent alliance normally uses its muted server-corner color. When `focus`
 // (a server name) is set and this owner belongs to it, break out into the
@@ -927,7 +927,7 @@ function NodeControlTable({ hl, setHl, pinned, setPinned }) {
     { key: "damage", short: "Damage", grp: "tower" },
   ];
   const buffVal = { health: "+5%", attack: "+10%", defense: "+10%", dmgReduction: "+5%", damage: "+6%" };
-  const order = ["Era 8", "Era #068", "Era #066", "Era #028"];
+  const order = ["Era #039", "Era 8", "Era #015", "Era #038"];
   const tags = Object.keys(ALLIANCE_SERVER).sort((a,b) => order.indexOf(ALLIANCE_SERVER[a]) - order.indexOf(ALLIANCE_SERVER[b]));
   const fmt = (n) => n >= 1e6 ? (n/1e6) + "M" : n >= 1e3 ? (n/1e3) + "k" : String(n);
   return (
@@ -1050,7 +1050,7 @@ function OverviewTab({ state, setState }) {
         {/* Opponent server color key — live only (plan map has no opponents) */}
         {mapMode === "live" ? (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center", marginTop: "8px", paddingTop: "8px", borderTop: "1px solid #1e2435" }}>
-          {[["Era #068","#068"],["Era #066","#066"],["Era #028","#028"]].map(([srv,lbl]) => (
+          {[["Era #039","#039"],["Era #038","#038"],["Era #015","#015"]].map(([srv,lbl]) => (
             <div key={srv} onClick={() => setFocus(srv)} title={"Click to break out " + srv + "'s alliances"} style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
               <span style={{ width: "14px", height: "14px", borderRadius: "3px", background: serverColor(srv).hex, display: "inline-block" }} />
               <span style={{ fontSize: "12px", fontWeight: 600, color: "#94a3b8" }}>{lbl}</span>
@@ -1222,7 +1222,7 @@ function MapTab({ state, setState }) {
           />
         </div>
         <div style={{ fontSize: "11px", color: "#94a3b8", textAlign: "center", marginTop: "8px" }}>
-          Scroll to zoom, drag to pan. Server positions: Era #008 (Blue) | Era #068 (Orange) | Era #066 (Purple) | Era #028 (Green)
+          Scroll to zoom, drag to pan. Server positions: Era #008 (Purple, E) | Era #039 (Blue, N) | Era #038 (Orange, W) | Era #015 (Green, S)
         </div>
       </div>
 
@@ -1720,9 +1720,9 @@ function PointsTab() {
 }
 
 let DEFAULT_DIPLOMACY = [
-  { id: 1, server: "Era #068", alliance: "TBD", relation: "ally", notes: "Ally — coordinate, no zeroing/farming." },
-  { id: 2, server: "Era #066", alliance: "TBD", relation: "neutral", notes: "" },
-  { id: 3, server: "Era #028", alliance: "TBD", relation: "neutral", notes: "" },
+  { id: 1, server: "Era #039", alliance: "TBD", relation: "neutral", notes: "" },
+  { id: 2, server: "Era #038", alliance: "TBD", relation: "neutral", notes: "" },
+  { id: 3, server: "Era #015", alliance: "TBD", relation: "neutral", notes: "" },
 ];
 
 let CONTACTS = [];
@@ -1815,11 +1815,11 @@ function DiplomacyTab({ state, setState }) {
         <div style={S.cardTitle}>{T("Rules of Engagement")}</div>
         <div style={{ display: "grid", gap: "8px" }}>
           <div style={{ padding: "10px", background: "#22c55e11", border: "1px solid #22c55e44", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (Era #068)</div>
+            <div style={{ fontWeight: 700, color: "#22c55e", fontSize: "13px" }}>Allies (TBD)</div>
             <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Do NOT fight them anywhere. No zeroing citadels. No killing farmers. Coordinate and support each other. Fight over Zeus as normal (every kingdom for itself at the Palace).</div>
           </div>
           <div style={{ padding: "10px", background: "#ef444411", border: "1px solid #ef444444", borderRadius: "8px" }}>
-            <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemies (Era #066, Era #028)</div>
+            <div style={{ fontWeight: 700, color: "#ef4444", fontSize: "13px" }}>Enemies (Era #039, #038, #015)</div>
             <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Fight everywhere — open field, riverland, farms, citadels, cities/gates — and deny them Storm Energy / Storm Points. Fight over Zeus as normal (every kingdom for itself at the Palace).</div>
           </div>
         </div>
@@ -2275,10 +2275,10 @@ const playerMpCls = (pct) => pct>=65?"hi":pct>=35?"mid":"lo";
 // Per-server map-position colors (muted): us purple, and the three opponents
 // matched to their map positions. rgb triplets so we can tint bar/border.
 const SERVER_COLORS = {
-  "Era 8":    { rgb: "91,139,196",  hex: "#5b8bc4" },  // blue   (N — us)
-  "Era #068": { rgb: "212,147,74",  hex: "#d4934a" },  // orange (W)
-  "Era #066": { rgb: "154,109,212", hex: "#9a6dd4" },  // purple (E)
-  "Era #028": { rgb: "90,168,122",  hex: "#5aa87a" }   // green  (S)
+  "Era 8":    { rgb: "154,109,212", hex: "#9a6dd4" },  // purple (E — us)
+  "Era #039": { rgb: "91,139,196",  hex: "#5b8bc4" },  // blue   (N)
+  "Era #038": { rgb: "212,147,74",  hex: "#d4934a" },  // orange (W)
+  "Era #015": { rgb: "90,168,122",  hex: "#5aa87a" }   // green  (S)
 };
 const serverColor = (srv) => SERVER_COLORS[srv] || { rgb: "138,144,165", hex: "#8a90a5" };
 

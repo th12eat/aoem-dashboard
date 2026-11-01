@@ -1252,8 +1252,8 @@
    "event": "Behemoth Conquest",
    "date": "2026-10-26",
    "opp": "Era #046",
-   "result": "Live",
-   "note": "In progress — matchmaking Oct 26, Beast Taming Oct 27, Attack-Defense Oct 30. Top-4 alliance power + total merits per server from scouting.",
+   "result": "Loss",
+   "note": "Final 35B vs 63.9B. Top-4 alliance power + total merits per server from scouting.",
    "ours": [
     [
      "eRa",
@@ -1298,6 +1298,106 @@
      15427418
     ]
    ]
+  },
+  {
+   "event": "Stormlands",
+   "date": "2026-11-01",
+   "opp": "Era #039 / Era #038 / Era #015",
+   "result": "Live",
+   "multi": true,
+   "star": true,
+   "basis": "top-4 alliances (scouting)",
+   "note": "In progress — matchmaking began Nov 1. 4-kingdom land war; us East (purple). Top-4 alliance power + total merits per server from scouting.",
+   "ourRoster": [
+    [
+     "eRa",
+     26189743346,
+     3043208404
+    ],
+    [
+     "REU",
+     15537719009,
+     358369013
+    ],
+    [
+     "Myt",
+     11456399862,
+     502663963
+    ],
+    [
+     "AuR",
+     1019492134,
+     13105837
+    ]
+   ],
+   "oppRosters": {
+    "Era #039": [
+     [
+      "③★⑨",
+      26369894769,
+      5578767819
+     ],
+     [
+      "③∧⑨",
+      21834223408,
+      2315575911
+     ],
+     [
+      "③✛⑨",
+      12643658563,
+      194614655
+     ],
+     [
+      "LC°",
+      761339841,
+      13554600
+     ]
+    ],
+    "Era #038": [
+     [
+      "TLW",
+      24535424476,
+      3552399790
+     ],
+     [
+      "Pbl",
+      16376978788,
+      1360666978
+     ],
+     [
+      "SOW",
+      9671821883,
+      86348643
+     ],
+     [
+      "NL0",
+      1273495311,
+      44237400
+     ]
+    ],
+    "Era #015": [
+     [
+      "PrF",
+      25619299609,
+      3757851035
+     ],
+     [
+      "YUP",
+      15421340974,
+      154986874
+     ],
+     [
+      "UpF",
+      2566696065,
+      6205007
+     ],
+     [
+      "SEF",
+      1788800278,
+      8368424
+     ]
+    ]
+   }
   }
  ]
 }

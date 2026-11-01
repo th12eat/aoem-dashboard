@@ -1,37 +1,220 @@
 {
   "schemaVersion": 2,
   "eventConfig": {
-    "eventStart": "2026-10-21",
-    "eventEnd": "2026-11-03",
-    "recoveryEnd": "2026-11-05",
-    "matchingStart": "2026-10-19",
-    "servers": ["Era 8", "Era #068", "Era #066", "Era #028"],
+    "eventStart": "2026-11-03",
+    "eventEnd": "2026-11-16",
+    "recoveryEnd": "2026-11-18",
+    "matchingStart": "2026-11-01",
+    "servers": [
+      "Era 8",
+      "Era #039",
+      "Era #038",
+      "Era #015"
+    ],
     "ourServer": "Era 8",
-    "ourAlliances": ["eRa", "Myt", "REU", "FUN"],
-    "notes": "Dates are placeholders until matchmaking sets the real calendar. Node list TBD.",
+    "ourAlliances": [
+      "eRa",
+      "REU",
+      "Myt",
+      "AuR"
+    ],
+    "corners": {
+      "Era #039": "North/blue",
+      "Era 8": "East/purple",
+      "Era #015": "South/green",
+      "Era #038": "West/orange"
+    },
+    "notes": "4-kingdom Stormlands. Us East/purple. Matchmaking began Nov 1.",
     "eventOver": false
   },
   "kingdomPoints": {
     "era8": "—",
-    "era068": "—",
-    "era066": "—",
-    "era028": "—",
-    "lastUpdated": "Draft — awaiting matchmaking & node list"
+    "era039": "—",
+    "era038": "—",
+    "era015": "—",
+    "lastUpdated": "Matchmaking — awaiting contest-stage scores"
   },
   "kingdomScoreboard": [],
   "allianceScoreboard": [],
   "alliancePoints": [
-    { "tag": "eRa", "points": "—" },
-    { "tag": "Myt", "points": "—" },
-    { "tag": "REU", "points": "—" },
-    { "tag": "FUN", "points": "—" }
+    {
+      "tag": "eRa",
+      "points": "—"
+    },
+    {
+      "tag": "REU",
+      "points": "—"
+    },
+    {
+      "tag": "Myt",
+      "points": "—"
+    },
+    {
+      "tag": "AuR",
+      "points": "—"
+    }
   ],
   "diplomacy": [
-    { "id": 1, "server": "Era #068", "alliance": "TBD", "relation": "neutral", "notes": "" },
-    { "id": 2, "server": "Era #066", "alliance": "TBD", "relation": "neutral", "notes": "" },
-    { "id": 3, "server": "Era #028", "alliance": "TBD", "relation": "neutral", "notes": "" }
+    {
+      "id": 1,
+      "server": "Era #039",
+      "alliance": "TBD",
+      "relation": "neutral",
+      "notes": ""
+    },
+    {
+      "id": 2,
+      "server": "Era #038",
+      "alliance": "TBD",
+      "relation": "neutral",
+      "notes": ""
+    },
+    {
+      "id": 3,
+      "server": "Era #015",
+      "alliance": "TBD",
+      "relation": "neutral",
+      "notes": ""
+    }
   ],
   "contacts": [],
   "mapState": {},
-  "mapRoutes": { "actual": [], "planned": [] }
+  "mapRoutes": {
+    "actual": [],
+    "planned": []
+  },
+  "research": {
+    "ours": {
+      "server": "Era 8",
+      "sdRank": null,
+      "alliances": [
+        {
+          "tag": "eRa",
+          "name": "WorldClass",
+          "power": "26,189,743,346",
+          "merits": "3,043,208,404"
+        },
+        {
+          "tag": "REU",
+          "name": "CourtOfGods",
+          "power": "15,537,719,009",
+          "merits": "358,369,013"
+        },
+        {
+          "tag": "Myt",
+          "name": "Mythic",
+          "power": "11,456,399,862",
+          "merits": "502,663,963"
+        },
+        {
+          "tag": "AuR",
+          "name": "Aurora",
+          "power": "1,019,492,134",
+          "merits": "13,105,837"
+        }
+      ],
+      "players": []
+    },
+    "opponents": [
+      {
+        "server": "Era #039",
+        "sdRank": null,
+        "priority": "TBD",
+        "note": "North corner (blue).",
+        "alliances": [
+          {
+            "tag": "③★⑨",
+            "name": "BestOfEmpire",
+            "power": "26,369,894,769",
+            "merits": "5,578,767,819"
+          },
+          {
+            "tag": "③∧⑨",
+            "name": "AgeofSpartans",
+            "power": "21,834,223,408",
+            "merits": "2,315,575,911"
+          },
+          {
+            "tag": "③✛⑨",
+            "name": "AegisVanguard",
+            "power": "12,643,658,563",
+            "merits": "194,614,655"
+          },
+          {
+            "tag": "LC°",
+            "name": "RABBIT",
+            "power": "761,339,841",
+            "merits": "13,554,600"
+          }
+        ],
+        "players": []
+      },
+      {
+        "server": "Era #038",
+        "sdRank": null,
+        "priority": "TBD",
+        "note": "West corner (orange).",
+        "alliances": [
+          {
+            "tag": "TLW",
+            "name": "TheLastWolf",
+            "power": "24,535,424,476",
+            "merits": "3,552,399,790"
+          },
+          {
+            "tag": "Pbl",
+            "name": "Republic한국",
+            "power": "16,376,978,788",
+            "merits": "1,360,666,978"
+          },
+          {
+            "tag": "SOW",
+            "name": "ShadowsOfWar",
+            "power": "9,671,821,883",
+            "merits": "86,348,643"
+          },
+          {
+            "tag": "NL0",
+            "name": "NuclearLaunch",
+            "power": "1,273,495,311",
+            "merits": "44,237,400"
+          }
+        ],
+        "players": []
+      },
+      {
+        "server": "Era #015",
+        "sdRank": null,
+        "priority": "TBD",
+        "note": "South corner (green).",
+        "alliances": [
+          {
+            "tag": "PrF",
+            "name": "Professional",
+            "power": "25,619,299,609",
+            "merits": "3,757,851,035"
+          },
+          {
+            "tag": "YUP",
+            "name": "Stönérš",
+            "power": "15,421,340,974",
+            "merits": "154,986,874"
+          },
+          {
+            "tag": "UpF",
+            "name": "Unprofessional",
+            "power": "2,566,696,065",
+            "merits": "6,205,007"
+          },
+          {
+            "tag": "SEF",
+            "name": "SecretFire",
+            "power": "1,788,800,278",
+            "merits": "8,368,424"
+          }
+        ],
+        "players": []
+      }
+    ]
+  }
 }
