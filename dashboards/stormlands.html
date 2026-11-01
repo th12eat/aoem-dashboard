@@ -2265,6 +2265,10 @@ let RESEARCH = {
   ours: { server: "Era 8", sdRank: null, alliances: [], players: [] },
   opponents: []
 };
+// Server-strength tables (overlaid from stormlands.json): power-tier counts and
+// per-rank depth (power/merits, in millions) keyed by server.
+let ST_TIERS = null;   // { labels:[...], byServer:{ "Era 8":[...], ... } }
+let ST_DEPTH = null;   // { ranks:[1,10,...], byServer:{ "Era 8":{power:[...],merits:[...]}, ... } }
 
 // M:P % + activity tier (players run a wide scale; alliances a low one)
 const rmp = (m, p) => { const mm=parseInt(String(m).replace(/,/g,""),10)||0; const pp=parseInt(String(p).replace(/,/g,""),10)||1; return ((mm/pp)*100); };
@@ -2310,6 +2314,20 @@ function ServerTable({ server, sdRank, priority, rows, kind }) {
               <td className={"c-mp " + (has ? cls(pct) : "")} style={has ? undefined : { color: "#64748b" }}>{has ? pct.toFixed(1) + "%" : "—"}</td>
             </tr>
           ); })}
+          {/* Top-4 Total: summed power + whole-recalculated M:P (Σmerits/Σpower). Alliances only. */}
+          {kind === "alliances" ? (() => {
+            const pn = (v) => parseInt(String(v).replace(/[^0-9]/g, ""), 10) || 0;
+            let p = 0, m = 0; rows.forEach(a => { p += pn(a.power); m += pn(a.merits); });
+            const pct = p > 0 ? (m / p * 100) : 0;
+            return (
+              <tr style={{ borderTop: "2px solid rgba(" + c.rgb + ",0.5)", fontWeight: 700 }}>
+                <td className="c-rk"></td>
+                <td className="c-nm" style={{ color: "#cbd5e1" }}>{T("Top-4 Total")}</td>
+                <td className="c-p" style={{ color: c.hex }}>{rfmt(String(p))}</td>
+                <td className={"c-mp " + allianceMpCls(pct)}>{pct.toFixed(1) + "%"}</td>
+              </tr>
+            );
+          })() : null}
           </tbody>
         </table>
       ) : <div style={{ padding: "14px 12px", fontSize: 12, color: "#64748b", fontStyle: "italic" }}>{T("Awaiting scouting data.")}</div>}
@@ -2324,6 +2342,18 @@ function ResearchTab() {
     { server: r.ours?.server || "Era 8", sdRank: r.ours?.sdRank, priority: null, alliances: r.ours?.alliances || [], players: r.ours?.players || [] },
     ...(r.opponents || []).map(o => ({ server: o.server, sdRank: o.sdRank, priority: o.priority, alliances: o.alliances || [], players: o.players || [] }))
   ];
+  const [depthMetric, setDepthMetric] = React.useState("power");
+  const SRV_ORDER = servers.map(s => s.server);               // us-first column order
+  const srvLabel = (srv) => (srv === "Era 8" ? "#008" : srv.replace("Era ", "")) + (srv === "Era 8" ? " · Us" : "");
+  // best/worst highlighting across a row of numbers (higher = better).
+  const extremeStyle = (vals, v) => {
+    const nums = vals.filter(x => x != null);
+    const max = Math.max(...nums), min = Math.min(...nums);
+    if (v === max && max !== min) return { color: "#4ade80", fontWeight: 800 };   // best — green
+    if (v === min && max !== min) return { color: "#f87171", fontWeight: 700 };   // worst — red
+    return { color: "#cbd5e1" };
+  };
+  const tiers = ST_TIERS, depth = ST_DEPTH;
   return (
     <div>
       {/* ALLIANCES */}
@@ -2341,6 +2371,67 @@ function ResearchTab() {
           {servers.map((s, i) => <ServerTable key={i} server={s.server} sdRank={s.sdRank} priority={s.priority} rows={s.players} kind="players" />)}
         </div>
       </div>
+
+      {/* POWER TIER DISTRIBUTION — one column per server; best green, worst red */}
+      {tiers && tiers.labels ? (
+        <div style={S.card}>
+          <div style={S.cardTitle}>{T("Power Tier Distribution")}</div>
+          <div style={{ overflowX: "auto" }}>
+            <table style={S.table}>
+              <thead><tr>
+                <th style={S.th}>{T("Threshold")}</th>
+                {SRV_ORDER.map(srv => <th key={srv} style={{ ...S.th, textAlign: "right", color: serverColor(srv).hex }}>{srvLabel(srv)}</th>)}
+              </tr></thead>
+              <tbody>
+                {tiers.labels.map((lb, ri) => {
+                  const vals = SRV_ORDER.map(srv => (tiers.byServer[srv] || [])[ri]);
+                  return (
+                    <tr key={lb}>
+                      <td style={{ ...S.td, fontWeight: 600, color: "#e8eaf0" }}>{lb}</td>
+                      {SRV_ORDER.map((srv, ci) => <td key={srv} style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", ...extremeStyle(vals, vals[ci]) }}>{vals[ci]}</td>)}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>{T("Players at or above each power threshold (of 300 ranked). Green = most, red = fewest.")}</div>
+        </div>
+      ) : null}
+
+      {/* ROSTER DEPTH BY RANK — power/merits toggle; best green, worst red */}
+      {depth && depth.ranks ? (
+        <div style={S.card}>
+          <div style={{ ...S.cardTitle, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px" }}>
+            <span>{T("Roster Depth by Rank")}</span>
+            <span style={{ display: "inline-flex", border: "1px solid #334155", borderRadius: "999px", overflow: "hidden" }}>
+              {["power", "merits"].map(m => (
+                <button key={m} onClick={() => setDepthMetric(m)} style={{ border: "none", cursor: "pointer", padding: "4px 12px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", fontFamily: "'Barlow Condensed', sans-serif", background: depthMetric === m ? "#ef9f6b" : "transparent", color: depthMetric === m ? "#0a0c14" : "#94a3b8" }}>{m === "power" ? T("Power") : T("Merits")}</button>
+              ))}
+            </span>
+          </div>
+          <div style={{ overflowX: "auto" }}>
+            <table style={S.table}>
+              <thead><tr>
+                <th style={S.th}>{T("Rank")}</th>
+                {SRV_ORDER.map(srv => <th key={srv} style={{ ...S.th, textAlign: "right", color: serverColor(srv).hex }}>{srvLabel(srv)}</th>)}
+              </tr></thead>
+              <tbody>
+                {depth.ranks.map((rk, ri) => {
+                  const vals = SRV_ORDER.map(srv => ((depth.byServer[srv] || {})[depthMetric] || [])[ri]);
+                  return (
+                    <tr key={rk}>
+                      <td style={{ ...S.td, fontWeight: 700, color: "#e8eaf0" }}>#{rk}</td>
+                      {SRV_ORDER.map((srv, ci) => <td key={srv} style={{ ...S.td, textAlign: "right", fontVariantNumeric: "tabular-nums", ...extremeStyle(vals, vals[ci]) }}>{vals[ci] != null ? vals[ci] + "M" : "—"}</td>)}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>{T("Player power/merits at each rank (of 300) — a read on server depth, not individual names. Green = strongest at that rank, red = weakest.")}</div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -2544,6 +2635,8 @@ function App() {
         if (j.diplomacy)      DEFAULT_DIPLOMACY = j.diplomacy;
         if (j.contacts)       CONTACTS        = j.contacts;
         if (j.research)       RESEARCH        = j.research;
+        if (j.serverTiers)    ST_TIERS        = j.serverTiers;
+        if (j.serverDepth)    ST_DEPTH        = j.serverDepth;
         if (j.kingdomScoreboard)  KINGDOM_SCOREBOARD  = j.kingdomScoreboard;
         if (j.allianceScoreboard) ALLIANCE_SCOREBOARD = j.allianceScoreboard;
         if (j.placerGold)         PLACER_GOLD         = j.placerGold;
