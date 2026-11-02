@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "eventConfig": {
-    "eventStart": "2026-11-03",
-    "eventEnd": "2026-11-16",
-    "recoveryEnd": "2026-11-18",
+    "eventStart": "2026-11-02",
+    "eventEnd": "2026-11-15",
+    "recoveryEnd": "2026-11-17",
     "matchingStart": "2026-11-01",
     "servers": [
       "Era 8",
@@ -28,13 +28,30 @@
     "eventOver": false
   },
   "kingdomPoints": {
-    "era8": "—",
-    "era039": "—",
-    "era038": "—",
-    "era015": "—",
-    "lastUpdated": "Matchmaking — awaiting contest-stage scores"
+    "era8": "1,130,000,000",
+    "era039": "1,190,000,000",
+    "era038": "1,160,000,000",
+    "era015": "1,090,000,000",
+    "lastUpdated": "2026-11-02 — Day 1"
   },
-  "kingdomScoreboard": [],
+  "kingdomScoreboard": [
+    {
+      "server": "Era #039",
+      "points": 1190000000
+    },
+    {
+      "server": "Era 8",
+      "points": 1130000000
+    },
+    {
+      "server": "Era #038",
+      "points": 1160000000
+    },
+    {
+      "server": "Era #015",
+      "points": 1090000000
+    }
+  ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {

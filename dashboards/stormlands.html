@@ -129,11 +129,10 @@ function T(en) {
    EVENT DATA
    ═══════════════════════════════════════════════════ */
 let EVENT_CONFIG = {
-  // 18-day event: 2 days matchmaking + 14 days contest + 2 days recovery.
-  // Dates are PLACEHOLDERS until matchmaking sets the real calendar.
-  eventStart: "2026-11-03",      // Day 1 (first day after matchmaking)
-  eventEnd: "2026-11-16",       // Day 14 (final Zeus battle)
-  recoveryEnd: "2026-11-18",    // +2 days recovery (up to 65% troop recovery, as all KvKs)
+  // 17-day event: 1 day matchmaking (Nov 1) + 14 days contest (Day 1 = Nov 2) + 2 days recovery.
+  eventStart: "2026-11-02",      // Day 1 (first day after matchmaking)
+  eventEnd: "2026-11-15",       // Day 14 (final Zeus battle)
+  recoveryEnd: "2026-11-17",    // +2 days recovery (up to 65% troop recovery, as all KvKs)
   matchingStart: "2026-11-01",
   servers: ["Era 8", "Era #039", "Era #038", "Era #015"],
   ourServer: "Era 8",
@@ -189,20 +188,20 @@ const SERVER_BADGES = [
 // matchmaking days first — our Day 1–14 = their Day 2–15. Milestones below are from
 // MrSneakyy's beta walkthrough of the in-game schedule.
 const SCHEDULE = [
-  { day: 1, date: "2026-11-03", title: "Eroded Wasteland Opens", desc: "Relocate into the kingdom's Eroded Wasteland region (the outer rim). Build your alliance Stronghold, Storm Beacons, gathering center and supply depot. Hunt Storm Wolves for Storm Energy & Storm Fragments.", zone: "Eroded Wasteland" },
-  { day: 2, date: "2026-11-04", title: "Zone 2 — Eroded Forbidden Zone", desc: "Wasteland Forts open — occupy them to enter the Eroded Forbidden Zone. Basic Artisan Cities (occupy to build Storm Machines — Cannons, Trebuchets, Towers) and Energy Cities (gain Storm Energy over time) are now contestable.", zone: "Eroded Wasteland → Eroded Forbidden Zone" },
-  { day: 3, date: "2026-11-05", title: "Storm Altars & Storm Erosion", desc: "The Storm Altar opens for occupation. The occupying alliance makes offerings to level the Altar (claiming offering rewards) and can start the Storm Erosion event once every 2 days — Erosion Wolves & Giants spawn around the Altar; defeat them for rewards + Storm Points.", zone: "Eroded Forbidden Zone" },
-  { day: 4, date: "2026-11-06", title: "Storm Incursion Begins (5 days)", desc: "Storm Incursion runs Day 4–8: a Storm Hydra appears at the forbidden-zone fort each day, and troops can pass freely through the fort during this time. Damaging the Hydra earns rewards + Storm Points; the alliance landing the final blow earns a bonus.", zone: "Eroded Forbidden Zone" },
-  { day: 5, date: "2026-11-07", title: "Strongholds & Mountain Forts Open", desc: "From Day 5 to Day 9, Storm Strongholds and mountain forts gradually open for occupation. Activate a Storm Stronghold to build Storm Beacons — attacks can only be launched from cities connected to an activated Storm Stronghold. As forts open, the battle moves toward the center.", zone: "Eroded Forbidden Zone" },
-  { day: 6, date: "2026-11-08", title: "Zone 3 — Eternal Storm Eye", desc: "The ring opens: Storm Eye Forts, Advanced Artisan Cities and Advanced Storm Altars become contestable. Occupy forts to enter the Eternal Storm Eye region. Beacons cost more but are more durable.", zone: "Eternal Storm Eye" },
-  { day: 7, date: "2026-11-09", title: "Contest Continues", desc: "Hold Storm Eye territory. Mind the regional Storm Power — fall below it and your citadel & troops take continuous damage, and you fight PvE worse.", zone: "Eternal Storm Eye" },
-  { day: 8, date: "2026-11-10", title: "Push to Oblivion", desc: "Build Controlled Storm Power via Storm Weapons (Fragments + Crystals). Position on the Oblivion Forts.", zone: "Eternal Storm Eye" },
-  { day: 9, date: "2026-11-11", title: "Zone 4 — Oblivion Realm (Center Opens)", desc: "The center opens: Oblivion Forts, Advanced Energy Storage Cities (raise your alliance Storm Energy cap) and the Core Storm Sacred Tower near the Temple.", zone: "Oblivion Realm" },
-  { day: 10, date: "2026-11-12", title: "Forbidden-Zone Barrier Drops", desc: "The forbidden-zone barrier is up until Day 10 — until now you're safe in Zone 1 & Zone 2. Secure the Oblivion Realm and the Core Storm Sacred Tower (powerful buff + teleport into the Temple core area).", zone: "Oblivion Realm" },
-  { day: 11, date: "2026-11-13", title: "Zeus Time Vote (Battle I)", desc: "The server/kingdom with the most points at end of Day 11 chooses the Day-12 Temple of Zeus battle time.", zone: "Oblivion Realm" },
-  { day: 12, date: "2026-11-14", title: "Battle for the Temple of Zeus I", desc: "First Temple of Zeus battle at the voted time. Hold the Temple core for a massive point influx.", zone: "Temple of Zeus" },
-  { day: 13, date: "2026-11-15", title: "Zeus Time Vote (Battle II)", desc: "The top-scoring server at end of Day 13 chooses the Day-14 Temple of Zeus battle time.", zone: "Temple of Zeus" },
-  { day: 14, date: "2026-11-16", title: "Battle for the Temple of Zeus II — Finale", desc: "Final Temple of Zeus battle. Most kingdom points wins. Then: 2-day recovery (up to 65% troop loss returned).", zone: "Temple of Zeus" },
+  { day: 1, date: "2026-11-02", title: "Eroded Wasteland Opens", desc: "Relocate into the kingdom's Eroded Wasteland region (the outer rim). Build your alliance Stronghold, Storm Beacons, gathering center and supply depot. Hunt Storm Wolves for Storm Energy & Storm Fragments.", zone: "Eroded Wasteland" },
+  { day: 2, date: "2026-11-03", title: "Zone 2 — Eroded Forbidden Zone", desc: "Wasteland Forts open — occupy them to enter the Eroded Forbidden Zone. Basic Artisan Cities (occupy to build Storm Machines — Cannons, Trebuchets, Towers) and Energy Cities (gain Storm Energy over time) are now contestable.", zone: "Eroded Wasteland → Eroded Forbidden Zone" },
+  { day: 3, date: "2026-11-04", title: "Storm Altars & Storm Erosion", desc: "The Storm Altar opens for occupation. The occupying alliance makes offerings to level the Altar (claiming offering rewards) and can start the Storm Erosion event once every 2 days — Erosion Wolves & Giants spawn around the Altar; defeat them for rewards + Storm Points.", zone: "Eroded Forbidden Zone" },
+  { day: 4, date: "2026-11-05", title: "Storm Incursion Begins (5 days)", desc: "Storm Incursion runs Day 4–8: a Storm Hydra appears at the forbidden-zone fort each day, and troops can pass freely through the fort during this time. Damaging the Hydra earns rewards + Storm Points; the alliance landing the final blow earns a bonus.", zone: "Eroded Forbidden Zone" },
+  { day: 5, date: "2026-11-06", title: "Strongholds & Mountain Forts Open", desc: "From Day 5 to Day 9, Storm Strongholds and mountain forts gradually open for occupation. Activate a Storm Stronghold to build Storm Beacons — attacks can only be launched from cities connected to an activated Storm Stronghold. As forts open, the battle moves toward the center.", zone: "Eroded Forbidden Zone" },
+  { day: 6, date: "2026-11-07", title: "Zone 3 — Eternal Storm Eye", desc: "The ring opens: Storm Eye Forts, Advanced Artisan Cities and Advanced Storm Altars become contestable. Occupy forts to enter the Eternal Storm Eye region. Beacons cost more but are more durable.", zone: "Eternal Storm Eye" },
+  { day: 7, date: "2026-11-08", title: "Contest Continues", desc: "Hold Storm Eye territory. Mind the regional Storm Power — fall below it and your citadel & troops take continuous damage, and you fight PvE worse.", zone: "Eternal Storm Eye" },
+  { day: 8, date: "2026-11-09", title: "Push to Oblivion", desc: "Build Controlled Storm Power via Storm Weapons (Fragments + Crystals). Position on the Oblivion Forts.", zone: "Eternal Storm Eye" },
+  { day: 9, date: "2026-11-10", title: "Zone 4 — Oblivion Realm (Center Opens)", desc: "The center opens: Oblivion Forts, Advanced Energy Storage Cities (raise your alliance Storm Energy cap) and the Core Storm Sacred Tower near the Temple.", zone: "Oblivion Realm" },
+  { day: 10, date: "2026-11-11", title: "Forbidden-Zone Barrier Drops", desc: "The forbidden-zone barrier is up until Day 10 — until now you're safe in Zone 1 & Zone 2. Secure the Oblivion Realm and the Core Storm Sacred Tower (powerful buff + teleport into the Temple core area).", zone: "Oblivion Realm" },
+  { day: 11, date: "2026-11-12", title: "Zeus Time Vote (Battle I)", desc: "The server/kingdom with the most points at end of Day 11 chooses the Day-12 Temple of Zeus battle time.", zone: "Oblivion Realm" },
+  { day: 12, date: "2026-11-13", title: "Battle for the Temple of Zeus I", desc: "First Temple of Zeus battle at the voted time. Hold the Temple core for a massive point influx.", zone: "Temple of Zeus" },
+  { day: 13, date: "2026-11-14", title: "Zeus Time Vote (Battle II)", desc: "The top-scoring server at end of Day 13 chooses the Day-14 Temple of Zeus battle time.", zone: "Temple of Zeus" },
+  { day: 14, date: "2026-11-15", title: "Battle for the Temple of Zeus II — Finale", desc: "Final Temple of Zeus battle. Most kingdom points wins. Then: 2-day recovery (up to 65% troop loss returned).", zone: "Temple of Zeus" },
 ];
 
 const ZONES = [
@@ -216,12 +215,12 @@ const ZONES = [
 // the stage covers; `startISO` = when it opens (drives the live indicator).
 // zone key drives the connecting-line + dot color for each stage.
 const STAGES = [
-  { key: "d1",  label: T("Eroded Wasteland"),         days: [1],         startISO: "2026-11-03T00:00:00Z", zone: "z1" },
-  { key: "d2",  label: T("Zone 2 — Forts & Cities"),  days: [2,3,4,5],   startISO: "2026-11-04T00:00:00Z", zone: "z2" },
-  { key: "d6",  label: T("Zone 3 — Storm Eye"),       days: [6,7,8],     startISO: "2026-11-08T00:00:00Z", zone: "z3" },
-  { key: "d9",  label: T("Zone 4 — Oblivion"),        days: [9,10,11],   startISO: "2026-11-11T00:00:00Z", zone: "z4" },
-  { key: "d12", label: T("Zeus Battle I"),            days: [12],        startISO: "2026-11-14T00:00:00Z", zone: "temple" },
-  { key: "d14", label: T("Zeus Battle II"),           days: [13,14],     startISO: "2026-11-15T00:00:00Z", zone: "temple" },
+  { key: "d1",  label: T("Eroded Wasteland"),         days: [1],         startISO: "2026-11-02T00:00:00Z", zone: "z1" },
+  { key: "d2",  label: T("Zone 2 — Forts & Cities"),  days: [2,3,4,5],   startISO: "2026-11-03T00:00:00Z", zone: "z2" },
+  { key: "d6",  label: T("Zone 3 — Storm Eye"),       days: [6,7,8],     startISO: "2026-11-07T00:00:00Z", zone: "z3" },
+  { key: "d9",  label: T("Zone 4 — Oblivion"),        days: [9,10,11],   startISO: "2026-11-10T00:00:00Z", zone: "z4" },
+  { key: "d12", label: T("Zeus Battle I"),            days: [12],        startISO: "2026-11-13T00:00:00Z", zone: "temple" },
+  { key: "d14", label: T("Zeus Battle II"),           days: [13,14],     startISO: "2026-11-14T00:00:00Z", zone: "temple" },
 ];
 // stage zone colors: Z1 purple, Z2 teal, Z3 pink (placeholder palette — easy to retune).
 // `bright` = reached/current spans; `dark` = not-yet-reached spans; `label` = legend text.
@@ -562,54 +561,54 @@ function DiplomacyStatus() {
 // minimap and named clockwise from 12 o'clock. type: gate | city | tower | aaru.
 const MAP_NODES = {
   // outer ring — Wasteland Forts / Docks (Z1 → Z2), open Day 2
-  wfort_1: { x: 50.0, y: 22.4, type: "gate", label: "Northgale Fort", info: "Z1→Z2", u: "2026-11-04" },
-  wfort_2: { x: 63.3, y: 35.7, type: "gate", label: "Dawnwind Dock", info: "Z1→Z2", u: "2026-11-04" },
-  wfort_3: { x: 76.6, y: 49.0, type: "gate", label: "Emberdune Fort", info: "Z1→Z2", u: "2026-11-04" },
-  wfort_4: { x: 63.3, y: 62.3, type: "gate", label: "Ashfall Dock", info: "Z1→Z2", u: "2026-11-04" },
-  wfort_5: { x: 50.0, y: 75.6, type: "gate", label: "Southstorm Fort", info: "Z1→Z2", u: "2026-11-04" },
-  wfort_6: { x: 36.7, y: 62.3, type: "gate", label: "Duskmire Dock", info: "Z1→Z2", u: "2026-11-04" },
-  wfort_7: { x: 23.4, y: 49.0, type: "gate", label: "Westwall Fort", info: "Z1→Z2", u: "2026-11-04" },
-  wfort_8: { x: 36.7, y: 35.7, type: "gate", label: "Highcrag Dock", info: "Z1→Z2", u: "2026-11-04" },
+  wfort_1: { x: 50.0, y: 22.4, type: "gate", label: "Northgale Fort", info: "Z1→Z2", u: "2026-11-03" },
+  wfort_2: { x: 63.3, y: 35.7, type: "gate", label: "Dawnwind Dock", info: "Z1→Z2", u: "2026-11-03" },
+  wfort_3: { x: 76.6, y: 49.0, type: "gate", label: "Emberdune Fort", info: "Z1→Z2", u: "2026-11-03" },
+  wfort_4: { x: 63.3, y: 62.3, type: "gate", label: "Ashfall Dock", info: "Z1→Z2", u: "2026-11-03" },
+  wfort_5: { x: 50.0, y: 75.6, type: "gate", label: "Southstorm Fort", info: "Z1→Z2", u: "2026-11-03" },
+  wfort_6: { x: 36.7, y: 62.3, type: "gate", label: "Duskmire Dock", info: "Z1→Z2", u: "2026-11-03" },
+  wfort_7: { x: 23.4, y: 49.0, type: "gate", label: "Westwall Fort", info: "Z1→Z2", u: "2026-11-03" },
+  wfort_8: { x: 36.7, y: 35.7, type: "gate", label: "Highcrag Dock", info: "Z1→Z2", u: "2026-11-03" },
   // Z2 ring — Energy Cities (Storm Energy) + Basic Artisan Cities (Storm Machines), open Day 2
-  city_energy_1: { x: 50.0, y: 26.8, type: "city", label: "Energy City — Gale", info: "Attack +10%", u: "2026-11-04" },
-  city_artisan_1: { x: 61.1, y: 37.9, type: "city", label: "Artisan City — Forge", info: "Defense +10%", u: "2026-11-04" },
-  city_energy_2: { x: 72.2, y: 49.0, type: "city", label: "Energy City — Surge", info: "Health +5%", u: "2026-11-04" },
-  city_artisan_2: { x: 61.1, y: 60.1, type: "city", label: "Artisan City — Anvil", info: "Attack +10%", u: "2026-11-04" },
-  city_energy_3: { x: 50.0, y: 71.2, type: "city", label: "Energy City — Spark", info: "Defense +10%", u: "2026-11-04" },
-  city_artisan_3: { x: 38.9, y: 60.1, type: "city", label: "Artisan City — Kiln", info: "Health +5%", u: "2026-11-04" },
-  city_energy_4: { x: 27.8, y: 49.0, type: "city", label: "Energy City — Current", info: "Attack +10%", u: "2026-11-04" },
-  city_artisan_4: { x: 38.9, y: 37.9, type: "city", label: "Artisan City — Smelt", info: "Defense +10%", u: "2026-11-04" },
+  city_energy_1: { x: 50.0, y: 26.8, type: "city", label: "Energy City — Gale", info: "Attack +10%", u: "2026-11-03" },
+  city_artisan_1: { x: 61.1, y: 37.9, type: "city", label: "Artisan City — Forge", info: "Defense +10%", u: "2026-11-03" },
+  city_energy_2: { x: 72.2, y: 49.0, type: "city", label: "Energy City — Surge", info: "Health +5%", u: "2026-11-03" },
+  city_artisan_2: { x: 61.1, y: 60.1, type: "city", label: "Artisan City — Anvil", info: "Attack +10%", u: "2026-11-03" },
+  city_energy_3: { x: 50.0, y: 71.2, type: "city", label: "Energy City — Spark", info: "Defense +10%", u: "2026-11-03" },
+  city_artisan_3: { x: 38.9, y: 60.1, type: "city", label: "Artisan City — Kiln", info: "Health +5%", u: "2026-11-03" },
+  city_energy_4: { x: 27.8, y: 49.0, type: "city", label: "Energy City — Current", info: "Attack +10%", u: "2026-11-03" },
+  city_artisan_4: { x: 38.9, y: 37.9, type: "city", label: "Artisan City — Smelt", info: "Defense +10%", u: "2026-11-03" },
   // Basic Storm Altars (Storm Erosion trigger + offerings), open Day 2
-  altar_1: { x: 37.8, y: 36.8, type: "tower", label: "Basic Storm Altar", info: "Damage +6%", u: "2026-11-04" },
-  altar_2: { x: 62.2, y: 61.2, type: "tower", label: "Basic Storm Altar", info: "Dmg Reduction +5%", u: "2026-11-04" },
+  altar_1: { x: 37.8, y: 36.8, type: "tower", label: "Basic Storm Altar", info: "Damage +6%", u: "2026-11-03" },
+  altar_2: { x: 62.2, y: 61.2, type: "tower", label: "Basic Storm Altar", info: "Dmg Reduction +5%", u: "2026-11-03" },
   // Storm Eye Forts (Z2 → Z3), open Day 6
-  sefort_1: { x: 50.0, y: 31.2, type: "gate", label: "Storm Eye Fort #1", info: "Z2→Z3", u: "2026-11-08" },
-  sefort_2: { x: 58.9, y: 40.1, type: "gate", label: "Storm Eye Fort #2", info: "Z2→Z3", u: "2026-11-08" },
-  sefort_3: { x: 67.8, y: 49.0, type: "gate", label: "Storm Eye Fort #3", info: "Z2→Z3", u: "2026-11-08" },
-  sefort_4: { x: 58.9, y: 57.9, type: "gate", label: "Storm Eye Fort #4", info: "Z2→Z3", u: "2026-11-08" },
-  sefort_5: { x: 50.0, y: 66.8, type: "gate", label: "Storm Eye Fort #5", info: "Z2→Z3", u: "2026-11-08" },
-  sefort_6: { x: 41.1, y: 57.9, type: "gate", label: "Storm Eye Fort #6", info: "Z2→Z3", u: "2026-11-08" },
-  sefort_7: { x: 32.2, y: 49.0, type: "gate", label: "Storm Eye Fort #7", info: "Z2→Z3", u: "2026-11-08" },
-  sefort_8: { x: 41.1, y: 40.1, type: "gate", label: "Storm Eye Fort #8", info: "Z2→Z3", u: "2026-11-08" },
+  sefort_1: { x: 50.0, y: 31.2, type: "gate", label: "Storm Eye Fort #1", info: "Z2→Z3", u: "2026-11-07" },
+  sefort_2: { x: 58.9, y: 40.1, type: "gate", label: "Storm Eye Fort #2", info: "Z2→Z3", u: "2026-11-07" },
+  sefort_3: { x: 67.8, y: 49.0, type: "gate", label: "Storm Eye Fort #3", info: "Z2→Z3", u: "2026-11-07" },
+  sefort_4: { x: 58.9, y: 57.9, type: "gate", label: "Storm Eye Fort #4", info: "Z2→Z3", u: "2026-11-07" },
+  sefort_5: { x: 50.0, y: 66.8, type: "gate", label: "Storm Eye Fort #5", info: "Z2→Z3", u: "2026-11-07" },
+  sefort_6: { x: 41.1, y: 57.9, type: "gate", label: "Storm Eye Fort #6", info: "Z2→Z3", u: "2026-11-07" },
+  sefort_7: { x: 32.2, y: 49.0, type: "gate", label: "Storm Eye Fort #7", info: "Z2→Z3", u: "2026-11-07" },
+  sefort_8: { x: 41.1, y: 40.1, type: "gate", label: "Storm Eye Fort #8", info: "Z2→Z3", u: "2026-11-07" },
   // Eternal Storm Eye ring — Advanced Artisan Cities, open Day 6
-  city_adv_1: { x: 57.0, y: 42.0, type: "city", label: "Advanced Artisan City #1", info: "Attack +10%", u: "2026-11-08" },
-  city_adv_2: { x: 57.0, y: 56.0, type: "city", label: "Advanced Artisan City #2", info: "Defense +10%", u: "2026-11-08" },
-  city_adv_3: { x: 43.0, y: 56.0, type: "city", label: "Advanced Artisan City #3", info: "Health +5%", u: "2026-11-08" },
-  city_adv_4: { x: 43.0, y: 42.0, type: "city", label: "Advanced Artisan City #4", info: "Attack +10%", u: "2026-11-08" },
+  city_adv_1: { x: 57.0, y: 42.0, type: "city", label: "Advanced Artisan City #1", info: "Attack +10%", u: "2026-11-07" },
+  city_adv_2: { x: 57.0, y: 56.0, type: "city", label: "Advanced Artisan City #2", info: "Defense +10%", u: "2026-11-07" },
+  city_adv_3: { x: 43.0, y: 56.0, type: "city", label: "Advanced Artisan City #3", info: "Health +5%", u: "2026-11-07" },
+  city_adv_4: { x: 43.0, y: 42.0, type: "city", label: "Advanced Artisan City #4", info: "Attack +10%", u: "2026-11-07" },
   // Oblivion Forts (Z3 → Z4), open Day 9
-  obfort_1: { x: 50.0, y: 39.4, type: "gate", label: "Oblivion Fort #1", info: "Z3→Z4", u: "2026-11-11" },
-  obfort_2: { x: 59.6, y: 49.0, type: "gate", label: "Oblivion Fort #2", info: "Z3→Z4", u: "2026-11-11" },
-  obfort_3: { x: 50.0, y: 58.6, type: "gate", label: "Oblivion Fort #3", info: "Z3→Z4", u: "2026-11-11" },
-  obfort_4: { x: 40.4, y: 49.0, type: "gate", label: "Oblivion Fort #4", info: "Z3→Z4", u: "2026-11-11" },
+  obfort_1: { x: 50.0, y: 39.4, type: "gate", label: "Oblivion Fort #1", info: "Z3→Z4", u: "2026-11-10" },
+  obfort_2: { x: 59.6, y: 49.0, type: "gate", label: "Oblivion Fort #2", info: "Z3→Z4", u: "2026-11-10" },
+  obfort_3: { x: 50.0, y: 58.6, type: "gate", label: "Oblivion Fort #3", info: "Z3→Z4", u: "2026-11-10" },
+  obfort_4: { x: 40.4, y: 49.0, type: "gate", label: "Oblivion Fort #4", info: "Z3→Z4", u: "2026-11-10" },
   // Oblivion Realm ring — Advanced Energy Storage Cities (raise Storm Energy cap), open Day 9
-  city_store_1: { x: 53.1, y: 45.9, type: "city", label: "Energy Storage City #1", info: "Defense +10%", u: "2026-11-11" },
-  city_store_2: { x: 53.1, y: 52.1, type: "city", label: "Energy Storage City #2", info: "Health +5%", u: "2026-11-11" },
-  city_store_3: { x: 46.9, y: 52.1, type: "city", label: "Energy Storage City #3", info: "Attack +10%", u: "2026-11-11" },
-  city_store_4: { x: 46.9, y: 45.9, type: "city", label: "Energy Storage City #4", info: "Defense +10%", u: "2026-11-11" },
+  city_store_1: { x: 53.1, y: 45.9, type: "city", label: "Energy Storage City #1", info: "Defense +10%", u: "2026-11-10" },
+  city_store_2: { x: 53.1, y: 52.1, type: "city", label: "Energy Storage City #2", info: "Health +5%", u: "2026-11-10" },
+  city_store_3: { x: 46.9, y: 52.1, type: "city", label: "Energy Storage City #3", info: "Attack +10%", u: "2026-11-10" },
+  city_store_4: { x: 46.9, y: 45.9, type: "city", label: "Energy Storage City #4", info: "Defense +10%", u: "2026-11-10" },
   // Core Storm Sacred Tower (buff + teleport into Temple core), open Day 9
-  sacred_tower: { x: 50.0, y: 45.3, type: "tower", label: "Core Storm Sacred Tower", info: "Sacred · Damage +6%", u: "2026-11-11" },
+  sacred_tower: { x: 50.0, y: 45.3, type: "tower", label: "Core Storm Sacred Tower", info: "Sacred · Damage +6%", u: "2026-11-10" },
   // Temple of Zeus — map center. Battles Day 12 & Day 14.
-  temple: { x: 50.0, y: 49.0, type: "aaru", label: T("Temple of Zeus"), info: "", u: "2026-11-14" },
+  temple: { x: 50.0, y: 49.0, type: "aaru", label: T("Temple of Zeus"), info: "", u: "2026-11-13" },
   // invisible diamond anchors around the Temple — pure path targets (no dot).
   temple_n: { x: 50.0, y: 47.0, type: "aaru_corner", label: "Temple — N" },
   temple_e: { x: 52.0, y: 49.0, type: "aaru_corner", label: "Temple — E" },
@@ -1956,151 +1955,174 @@ function RoutePlannerTab({ state, setState }) {
   );
 }
 
-// Storm Altar / Storm Erosion awakening windows (UTC minutes-into-day).
-// Active Days 3-5 (2026-09-30 .. 2026-10-02). Auto-greys passed windows,
-// highlights the live one, marks the next; all-grey before Day 3 and after Day 5.
-const TOR_WINDOWS = [
-  { label: "05:00 – 07:00", start: 300, end: 420 },
-  { label: "13:00 – 15:00", start: 780, end: 900 },
-  { label: "21:00 – 23:00", start: 1260, end: 1380 },
-];
-const TOR_FIRST_DATE = "2026-09-30"; // Day 3 (Altar opens)
-const TOR_LAST_DATE = "2026-10-02";  // Day 5 (Altar window closes)
-const TOR_LEVELS = 40;               // each 2-hr window = 40 level-slots (3 min each)
+// ── Trackable daily events: Storm Erosion (19:00 UTC daily) + Storm Incursion
+//    (3 windows daily, Day 4–8). Both compute live/next/passed state from the
+//    current UTC time so pills light up / grey out and a modal pops when live. ──
+const EROSION_OPEN_DATE = "2026-11-04";   // Day 3 — Storm Altar + Erosion open
+const EROSION_END_DATE  = "2026-11-15";   // Day 14 — last contest day
+const EROSION_WINDOW = { start: 1140, end: 1200, label: "19:00 – 20:00 UTC" }; // 19:00 default (editable)
 
-// Simple treasure-chest icon (inline SVG so it renders identically everywhere).
-function ChestIcon({ size = 18, color = "#facc15" }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, display: "block" }}>
-      {/* lid */}
-      <path d="M3 9a9 5 0 0 1 18 0v1H3V9z" fill={color} opacity="0.9" />
-      {/* body */}
-      <rect x="3" y="10" width="18" height="9" rx="1.5" fill={color} />
-      {/* band + lock */}
-      <rect x="3" y="12.5" width="18" height="2" fill="#0a0c14" opacity="0.55" />
-      <rect x="10.5" y="11" width="3" height="6" rx="0.6" fill="#0a0c14" opacity="0.7" />
-      <circle cx="12" cy="13.5" r="1.1" fill={color} />
-    </svg>
-  );
+const INCURSION_FIRST_DATE = "2026-11-05"; // Day 4
+const INCURSION_LAST_DATE  = "2026-11-09"; // Day 8
+const INCURSION_WINDOWS = [
+  { label: "05:00 – 06:00", start: 300,  end: 360 },
+  { label: "13:00 – 14:00", start: 780,  end: 840 },
+  { label: "21:00 – 22:00", start: 1260, end: 1320 },
+];
+
+function utcDateStr(now) {
+  const d = new Date(now);
+  return d.getUTCFullYear() + "-" + String(d.getUTCMonth()+1).padStart(2,"0") + "-" + String(d.getUTCDate()).padStart(2,"0");
+}
+function utcMin(now) { const d = new Date(now); return d.getUTCHours()*60 + d.getUTCMinutes() + d.getUTCSeconds()/60; }
+
+// Storm Erosion status: single daily window (19:00). active = within the event
+// date range; live = during the window today. lock = pre-open / post-event text.
+function erosionStatus(now) {
+  const today = utcDateStr(now), m = utcMin(now);
+  const inRange = today >= EROSION_OPEN_DATE && today <= EROSION_END_DATE;
+  const live = inRange && m >= EROSION_WINDOW.start && m < EROSION_WINDOW.end;
+  const msToEnd = live ? Math.max(0, (EROSION_WINDOW.end - m) * 60000) : 0;
+  const msToStart = (inRange && m < EROSION_WINDOW.start) ? Math.max(0, (EROSION_WINDOW.start - m) * 60000) : 0;
+  const lock = today < EROSION_OPEN_DATE ? "Storm Erosion opens Day 3 (Nov 4)"
+             : (today > EROSION_END_DATE ? "The contest stage is over — Storm Erosion has closed" : null);
+  return { inRange, live, msToEnd, msToStart, lock };
 }
 
-// Shared live status of the Storm Altar / Storm Erosion event, computed
-// from the current UTC time. Returns {active, live, windowIdx, level, states[]}.
-function torStatus(now) {
-  const d = new Date(now);
-  const todayStr = d.getUTCFullYear() + "-" + String(d.getUTCMonth()+1).padStart(2,"0") + "-" + String(d.getUTCDate()).padStart(2,"0");
-  const active = todayStr >= TOR_FIRST_DATE && todayStr <= TOR_LAST_DATE;
-  const nowMin = d.getUTCHours()*60 + d.getUTCMinutes() + d.getUTCSeconds()/60;
+// Storm Incursion status: 3 windows/day, Day 4–8. states[]=passed/live/next/upcoming;
+// nextLabel/badge for the header; lock before Day 4 / after Day 8.
+function incursionStatus(now) {
+  const today = utcDateStr(now), m = utcMin(now);
+  const inRange = today >= INCURSION_FIRST_DATE && today <= INCURSION_LAST_DATE;
   let liveIdx = -1, nextIdx = -1;
-  for (let i=0;i<TOR_WINDOWS.length;i++){
-    const w = TOR_WINDOWS[i];
-    if (nowMin >= w.start && nowMin < w.end) liveIdx = i;
-    if (nextIdx === -1 && nowMin < w.start) nextIdx = i;
+  for (let i = 0; i < INCURSION_WINDOWS.length; i++) {
+    const w = INCURSION_WINDOWS[i];
+    if (m >= w.start && m < w.end) liveIdx = i;
+    if (nextIdx === -1 && m < w.start) nextIdx = i;
   }
-  const live = active && liveIdx !== -1;
-  let level = 0;
-  if (live) {
-    const w = TOR_WINDOWS[liveIdx];
-    const per = (w.end - w.start) / TOR_LEVELS; // minutes per level slot
-    level = Math.min(TOR_LEVELS, Math.floor((nowMin - w.start) / per) + 1);
-  }
-  const states = TOR_WINDOWS.map((w, i) => {
-    if (!active) return "upcoming";
+  const live = inRange && liveIdx !== -1;
+  const states = INCURSION_WINDOWS.map((w, i) => {
+    if (!inRange) return "upcoming";
     if (i === liveIdx) return "live";
     if (i === nextIdx) return "next";
-    if (nowMin >= w.end) return "passed";
+    if (m >= w.end) return "passed";
     return "upcoming";
   });
-  // ms remaining until the live window ends (for a countdown)
-  let msToEnd = 0;
-  if (live) msToEnd = Math.max(0, (TOR_WINDOWS[liveIdx].end - nowMin) * 60000);
-  return { active, live, windowIdx: liveIdx, level, states, msToEnd };
+  const msToEnd = live ? Math.max(0, (INCURSION_WINDOWS[liveIdx].end - m) * 60000) : 0;
+  // badge label: LIVE, else next window today, else first window (tomorrow / Day 4)
+  let badge;
+  if (live) badge = "LIVE";
+  else if (inRange && nextIdx !== -1) badge = INCURSION_WINDOWS[nextIdx].label.split(" ")[0];
+  else badge = INCURSION_WINDOWS[0].label.split(" ")[0];
+  const lock = today < INCURSION_FIRST_DATE ? "Storm Incursion begins Day 4 (Nov 5)"
+             : (today > INCURSION_LAST_DATE ? "Storm Incursion has ended (ran Day 4–8)" : null);
+  return { inRange, live, liveIdx, states, msToEnd, badge, lock };
 }
 
-// Popup that fires once each time a Altar window goes live (edge-detected).
-// Storm Erosion has no fixed server-wide window (the controlling alliance triggers
-// it), so there's no live-countdown modal to pop yet. Kept as an inert component so
-// the <AltarLiveModal /> mount point stays valid; wire up once timing is known.
-function AltarLiveModal() {
-  return null;
-  /* eslint-disable no-unreachable */
+// Modal that pops once when Storm Erosion goes live, and once per Incursion window.
+function StormEventModals() {
   const [now, setNow] = React.useState(() => Date.now());
-  const [open, setOpen] = React.useState(false);
-  const wasLive = React.useRef(false);
+  const [open, setOpen] = React.useState(null); // "erosion" | "incursion" | null
+  const wasEro = React.useRef(false), wasInc = React.useRef(false);
+  React.useEffect(() => { const id = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(id); }, []);
+  const ero = erosionStatus(now), inc = incursionStatus(now);
   React.useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, []);
-  const st = torStatus(now);
+    if (ero.live && !wasEro.current) setOpen("erosion");
+    if (!ero.live && open === "erosion") setOpen(null);
+    wasEro.current = ero.live;
+  }, [ero.live]);
   React.useEffect(() => {
-    if (st.live && !wasLive.current) setOpen(true);   // just went live → pop
-    if (!st.live) setOpen(false);                     // window ended → dismiss
-    wasLive.current = st.live;
-  }, [st.live]);
-  if (!open || !st.live) return null;
+    if (inc.live && !wasInc.current) setOpen("incursion");
+    if (!inc.live && open === "incursion") setOpen(null);
+    wasInc.current = inc.live;
+  }, [inc.live]);
+  if (!open) return null;
+  const st = open === "erosion" ? ero : inc;
+  if (!st.live) return null;
   const s = Math.floor(st.msToEnd / 1000);
   const cd = String(Math.floor(s/3600)).padStart(2,"0") + ":" + String(Math.floor((s%3600)/60)).padStart(2,"0") + ":" + String(s%60).padStart(2,"0");
+  const ero_mode = open === "erosion";
   return (
-    <div className="tor-modal" onClick={() => setOpen(false)}>
+    <div className="tor-modal" onClick={() => setOpen(null)}>
       <div className="tor-modal-card" onClick={e => e.stopPropagation()}>
-        <span className="tor-modal-close" onClick={() => setOpen(false)}>×</span>
-        <div className="tor-modal-ico">🗼</div>
-        <h3>{T("Storm Altar is Live!")}</h3>
-        <div className="tor-modal-lvl">Level {st.level} / {TOR_LEVELS}</div>
-        <div style={{ fontSize: "11px", color: "#64748b", margin: "10px 0 2px", letterSpacing: "0.5px", textTransform: "uppercase" }}>{T("Ends in")}</div>
+        <span className="tor-modal-close" onClick={() => setOpen(null)}>×</span>
+        <div className="tor-modal-ico">{ero_mode ? "⚡" : "🐉"}</div>
+        <h3>{ero_mode ? T("Storm Erosion is Live!") : T("Storm Incursion is Live!")}</h3>
+        <div className="tor-modal-lvl">{ero_mode ? T("Hit the Erosion Wolves & Giants") : T("Last hit the Storm Hydra — 200M pts")}</div>
+        <div style={{ fontSize: "11px", color: "#64748b", margin: "10px 0 2px", letterSpacing: "0.5px", textTransform: "uppercase" }}>{T("Window ends in")}</div>
         <div className="tor-modal-cd">{cd}</div>
       </div>
     </div>
   );
 }
+// Back-compat alias (App still mounts <AltarLiveModal/>).
+function AltarLiveModal() { return <StormEventModals />; }
 
-// Full awakening schedule + level tracker (lives on Overview, id anchor for header jump).
-// Storm Erosion overview card. Unlike Desolate Desert's fixed Tower-of-Rotation
-// windows, the alliance holding a Basic Storm Altar triggers Storm Erosion on its
-// OWN schedule each day — so there's no fixed clock to show yet. This is an info
-// card (anchored at #tower-schedule so the header badge jump still works).
+// Live Storm Erosion + Storm Incursion trackers (Overview; #tower-schedule anchor
+// for the header badge jump).
 function AltarSchedule() {
+  const [now, setNow] = React.useState(() => Date.now());
+  React.useEffect(() => { const id = setInterval(() => setNow(Date.now()), 15000); return () => clearInterval(id); }, []);
+  const ero = erosionStatus(now), inc = incursionStatus(now);
+  const stateCol = { live: "#facc15", next: "#8fc4f0", passed: "#64748b", upcoming: "#64748b" };
+  const stateLbl = { live: "Live now", next: "Next up", passed: "Done", upcoming: "" };
   return (
     <React.Fragment>
-    <div id="tower-schedule" style={{ ...S.card }}>
-      <div style={S.cardTitle}>{T("Storm Erosion — Daily Event")}</div>
-      <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6, marginBottom: "12px" }}>
-        {T("The alliance that controls a Basic Storm Altar picks the Storm Erosion time slot — there's no fixed server-wide clock. Opens Day 3. Each Altar can trigger erosion once every 2 days, so expect roughly 7 triggers across the 14-day contest. Coordinate your push to the Altar's chosen window.")}
-      </div>
-      <div style={{ display: "grid", gap: "6px" }}>
-        {[
-          ["Cadence", "Once every 2 days per Altar (~7 total). Controller chooses the time slot."],
-          ["Waves", "Erosion Wolves (basic) and Erosion Giants (tougher) spawn around the Altar."],
-          ["Points", "Damage pays 1:1 in Storm Points, up to the 15M daily cap."],
-          ["Drops", "Storm Fragments (toward the daily cap) for upgrading Storm Weapons (Lv1–10)."],
-          ["Control", "Hold the Altar to pick the trigger time + gather 'offer' to level it up (claim offering rewards)."],
-        ].map(([k, v]) => (
-          <div key={k} style={{ display: "flex", gap: "10px", fontSize: "12px", lineHeight: 1.5 }}>
-            <span style={{ minWidth: "62px", fontWeight: 700, color: "#8fc4f0" }}>{k}</span>
-            <span style={{ color: "#94a3b8" }}>{v}</span>
+    {/* STORM EROSION — single daily 19:00 window */}
+    <div id="tower-schedule" style={{ ...S.card, position: "relative" }}>
+      <div style={{ ...S.cardTitle, position: "relative", zIndex: 4 }}>{T("Storm Erosion — Daily Event")}</div>
+      {ero.lock ? (
+        <div style={{ position: "absolute", inset: 0, zIndex: 3, borderRadius: "10px", background: "rgba(10,12,20,0.72)", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "16px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+            <span style={{ fontSize: "26px", filter: "grayscale(1)", opacity: 0.7 }}>⚡🔒</span>
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.5px", color: "#94a3b8", maxWidth: "320px" }}>{T(ero.lock)}</span>
           </div>
-        ))}
+        </div>
+      ) : null}
+      <div style={ero.lock ? { filter: "grayscale(1)", opacity: 0.4, pointerEvents: "none" } : null}>
+        <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6, marginBottom: "12px" }}>
+          {T("The alliance holding a Storm Altar triggers Storm Erosion daily. Our server default window is")} <strong style={{ color: "#facc15" }}>19:00 UTC</strong>{T(" — be online to burst the waves. Damage pays 1:1 in Storm Points (15M daily cap) and drops Storm Fragments.")}
+        </div>
+        {/* the single daily window pill */}
+        <div className={"tor-slot" + (ero.live ? " is-live" : "")} style={{ display: "inline-flex", flexDirection: "column", alignItems: "center", gap: "3px", padding: "9px 18px", borderRadius: "8px", border: "1px solid #facc1544", background: "#facc1511" }}>
+          <span style={{ fontSize: "13px", fontWeight: 700, color: "#e2e8f0" }}>{EROSION_WINDOW.label}</span>
+          <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: ero.live ? "#facc15" : "#64748b" }}>
+            {ero.live ? (<React.Fragment><span className="tor-live-dot" /> {T("Live now")}</React.Fragment>)
+                      : (ero.inRange ? T("Daily · 19:00 UTC") : T("Opens Day 3"))}
+          </span>
+        </div>
+        <div style={{ fontSize: "11px", color: "#64748b", marginTop: "10px" }}>{T("Default 19:00 UTC (the Altar controller can change the slot). Opens Day 3; triggerable once every 2 days per Altar.")}</div>
       </div>
-      <div style={{ fontSize: "11px", color: "#64748b", marginTop: "10px" }}>{T("Official guide: the Altar opens Day 3; erosion can be started once every 2 days. Exact slot times TBD.")}</div>
     </div>
 
-    <div style={{ ...S.card }}>
-      <div style={S.cardTitle}>{T("Storm Incursion — Day 4–8")}</div>
-      <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6, marginBottom: "12px" }}>
-        {T("Storm Incursion begins Day 4 and lasts 5 days. A Storm Hydra appears at the forbidden-zone fort each day, and troops can pass freely through that fort while it's up — the one window to move through the gate regardless of ownership.")}
-      </div>
-      <div style={{ display: "grid", gap: "6px" }}>
-        {[
-          ["When", "Day 4–8 · three 1-hour windows daily at 05:00, 13:00, 21:00 UTC."],
-          ["Free passage", "Z2 gates open during the window — march freely to any Z2 region (yours or theirs); enemies can do the same."],
-          ["Points", "Only the FINAL HIT scores: 200M Storm Points to the alliance + server that lands the killing blow on a Hydra. Chip damage scores nothing."],
-          ["Watch out", "Enemies use the open gates to disrupt — stealing your Hydra's last hit, then lingering after gates close to hit your gatherers or contest a building/gate."],
-        ].map(([k, v]) => (
-          <div key={k} style={{ display: "flex", gap: "10px", fontSize: "12px", lineHeight: 1.5 }}>
-            <span style={{ minWidth: "72px", fontWeight: 700, color: "#ef9f6b" }}>{k}</span>
-            <span style={{ color: "#94a3b8" }}>{v}</span>
+    {/* STORM INCURSION — 3 daily windows, Day 4–8 */}
+    <div id="incursion-schedule" style={{ ...S.card, position: "relative" }}>
+      <div style={{ ...S.cardTitle, position: "relative", zIndex: 4 }}>{T("Storm Incursion — Day 4–8")}</div>
+      {inc.lock ? (
+        <div style={{ position: "absolute", inset: 0, zIndex: 3, borderRadius: "10px", background: "rgba(10,12,20,0.72)", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "16px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+            <span style={{ fontSize: "26px", filter: "grayscale(1)", opacity: 0.7 }}>🐉🔒</span>
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.5px", color: "#94a3b8", maxWidth: "320px" }}>{T(inc.lock)}</span>
           </div>
-        ))}
+        </div>
+      ) : null}
+      <div style={inc.lock ? { filter: "grayscale(1)", opacity: 0.4, pointerEvents: "none" } : null}>
+        <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.6, marginBottom: "12px" }}>
+          {T("Three 1-hour Hydra windows daily. Z2 gates open during each — march freely. Only the FINAL HIT scores: 200M Storm Points to the alliance + server that lands it.")}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" }}>
+          {INCURSION_WINDOWS.map((w, i) => {
+            const s = inc.states[i];
+            const cls = "tor-slot" + (s === "live" ? " is-live" : s === "next" ? " is-next" : s === "passed" ? " is-passed" : "");
+            return (
+              <div key={w.label} className={cls} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3px", padding: "9px 4px", borderRadius: "8px", border: "1px solid #5b9bd844", background: "#5b9bd811" }}>
+                <span style={{ fontSize: "12px", fontWeight: 700, color: "#e2e8f0" }}>{w.label}</span>
+                {stateLbl[s] ? <span style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: stateCol[s] }}>{s === "live" ? <span className="tor-live-dot" /> : null}{T(stateLbl[s])}</span> : null}
+              </div>
+            );
+          })}
+        </div>
+        <div style={{ fontSize: "11px", color: "#64748b", marginTop: "10px" }}>{T("Runs Day 4–8 (Nov 5–9), 05:00 / 13:00 / 21:00 UTC. Enemies use the open gates to disrupt — steal last hits and linger after to hit gatherers.")}</div>
       </div>
     </div>
     </React.Fragment>
@@ -2239,6 +2261,30 @@ function PveTab() {
           ))}
         </div>
         <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>{T("Exact Altar level/bonus table and trigger timing TBD until more in-game info lands.")}</div>
+      </div>
+
+      {/* Storm Machines — built by alliances holding Artisan Cities */}
+      <div style={S.card}>
+        <div style={{ ...S.cardTitle, display: "flex", alignItems: "center", gap: "8px" }}>
+          <span>🏰</span><span>{T("Storm Machines")}</span>
+        </div>
+        <div style={{ fontSize: "13px", color: "#e2e8f0", marginBottom: "12px", lineHeight: 1.6 }}>
+          {T("Alliances that occupy an Artisan City can build Storm Machines — siege engines deployed on the map to swing PvP fights. Each type has a role: push an enemy position, break their buildings, or anchor a defensive line. Hold the Artisan City to keep building and replacing them.")}
+        </div>
+        <div style={S.grid3}>
+          {[
+            { icon: "💥", title: "Storm Cannons", col: "#ef9f6b", desc: "Deal area damage to enemy troops on the map. Use them to soften a stack before a rally or to punish massed defenders." },
+            { icon: "🪓", title: "Storm Trebuchets", col: "#f59e0b", desc: "Wear down building durability. The siege option for cracking enemy Beacons, Strongholds and contested structures faster." },
+            { icon: "🛡️", title: "Storm Towers", col: "#5b9bd8", desc: "Deal heavy damage to anything in range — a stationary defensive anchor to hold alliance land and protect your gates/gatherers." },
+          ].map(m => (
+            <div key={m.title} style={{ padding: "10px", background: "#0f172a", borderRadius: "8px" }}>
+              <div style={{ fontSize: "18px", marginBottom: "4px" }}>{m.icon}</div>
+              <div style={{ fontWeight: 700, fontSize: "13px", marginBottom: "4px", color: m.col }}>{T(m.title)}</div>
+              <div style={{ fontSize: "11px", color: "#94a3b8" }}>{T(m.desc)}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ fontSize: "11px", color: "#64748b", marginTop: "8px" }}>{T("Built from Artisan Cities — capturing and holding those cities is what unlocks the machines.")}</div>
       </div>
 
       {/* Alliance Buildings */}
@@ -2475,7 +2521,7 @@ function App() {
   const [nowTs, setNowTs] = useState(() => Date.now());
   const [helpOpen, setHelpOpen] = useState(false);
   useEffect(() => { const id = setInterval(() => setNowTs(Date.now()), 15000); return () => clearInterval(id); }, []);
-  const tor = torStatus(nowTs);
+  const inc = incursionStatus(nowTs);
 
   // Stage-advancing event-meta header (shared EventHeader `phases`): each cell's
   // sub-header is a zone name and its value is the date that stage opens; the
@@ -2557,13 +2603,20 @@ function App() {
             onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("daily-objectives"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>📜</a>
           <button type="button" className="hdr-icobtn" title={T("What is Stormlands?")} onClick={() => setHelpOpen(true)}>❓</button>
         </div>
-        {/* bottom-right: Storm Erosion jump badge */}
+        {/* bottom-right: Storm Incursion jump badge (next window / LIVE; locked out of range) */}
         <div className="hdr-pills">
-          <a href="#tower-schedule" className="tor-badge is-idle"
-            title={T("Storm Erosion — jump to details")}
-            onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("tower-schedule"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>
-            <span className="tb-ico">⚡</span><span className="tb-lvl">{T("Storm Erosion")}</span>
-          </a>
+          {inc.lock ? (
+            <span className="tor-badge is-idle" style={{ opacity: 0.5, filter: "grayscale(1)", cursor: "default" }} title={T(inc.lock)}>
+              <span className="tb-ico">🔒</span><span className="tb-lvl">{T("Storm Incursion")}</span>
+            </span>
+          ) : (
+            <a href="#incursion-schedule" className={"tor-badge" + (inc.live ? "" : " is-idle")}
+              title={T("Storm Incursion — jump to details")}
+              onClick={() => { setTab("overview"); setTimeout(() => { const el = document.getElementById("incursion-schedule"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60); }}>
+              <span className="tb-ico">{inc.live ? <span className="tor-live-dot" /> : "🐉"}</span>
+              <span className="tb-lvl">{inc.live ? T("Incursion LIVE") : (T("Incursion ") + inc.badge)}</span>
+            </a>
+          )}
         </div>
         <div style={S.headerSub}>{T("Season Finale · Four-Kingdom Land War")}</div>
         <h1 style={S.headerTitle}>{T("STORMLANDS")}</h1>
