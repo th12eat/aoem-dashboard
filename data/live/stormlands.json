@@ -28,28 +28,28 @@
     "eventOver": false
   },
   "kingdomPoints": {
-    "era8": "1,130,000,000",
-    "era039": "1,190,000,000",
-    "era038": "1,160,000,000",
-    "era015": "1,090,000,000",
-    "lastUpdated": "2026-11-02 — Day 1"
+    "era8": "2,930,000,000",
+    "era039": "3,020,000,000",
+    "era038": "2,970,000,000",
+    "era015": "2,870,000,000",
+    "lastUpdated": "2026-11-03 — Day 2"
   },
   "kingdomScoreboard": [
     {
       "server": "Era #039",
-      "points": 1190000000
+      "points": 3020000000
     },
     {
       "server": "Era 8",
-      "points": 1130000000
+      "points": 2930000000
     },
     {
       "server": "Era #038",
-      "points": 1160000000
+      "points": 2970000000
     },
     {
       "server": "Era #015",
-      "points": 1090000000
+      "points": 2870000000
     }
   ],
   "allianceScoreboard": [],
