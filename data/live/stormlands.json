@@ -28,43 +28,43 @@
     "eventOver": false
   },
   "kingdomPoints": {
-    "era8": "2,930,000,000",
-    "era039": "3,020,000,000",
-    "era038": "2,970,000,000",
-    "era015": "2,870,000,000",
+    "era8": "32,300,000,000",
+    "era039": "51,000,000,000",
+    "era038": "40,800,000,000",
+    "era015": "31,300,000,000",
     "lastUpdated": "2026-11-03 — Day 2"
   },
   "kingdomScoreboard": [
     {
       "server": "Era #039",
-      "points": 3020000000
+      "points": 51000000000
     },
     {
       "server": "Era 8",
-      "points": 2930000000
+      "points": 32300000000
     },
     {
       "server": "Era #038",
-      "points": 2970000000
+      "points": 40800000000
     },
     {
       "server": "Era #015",
-      "points": 2870000000
+      "points": 31300000000
     }
   ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
       "tag": "eRa",
-      "points": "—"
+      "points": "11,477,485,060"
     },
     {
       "tag": "REU",
-      "points": "—"
+      "points": "3,486,921,806"
     },
     {
       "tag": "Myt",
-      "points": "—"
+      "points": "1,819,905,811"
     },
     {
       "tag": "AuR",
