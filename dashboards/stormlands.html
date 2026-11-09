@@ -292,30 +292,32 @@ const KEY_NODES = [
 // once the in-game list lands. No fabricated progress (`cur`) until we have real data.
 const ACHIEVEMENTS = [
   // Pioneer The Frontier I–V — build Storm Beacons (auto-tracks from flag count).
-  // Tier I confirmed complete for eRa/REU/Myt; higher tiers track live.
-  { name: "Pioneer The Frontier I",   req: "Build 5 Storm Beacons",  target: 5,  personal: "20M Storm Points",  derive: "flags", cur: { eRa: 5, REU: 5, Myt: 5 } },
-  { name: "Pioneer The Frontier II",  req: "Build 10 Storm Beacons", target: 10, personal: "40M Storm Points",  derive: "flags" },
-  { name: "Pioneer The Frontier III", req: "Build 20 Storm Beacons", target: 20, personal: "60M Storm Points",  derive: "flags" },
-  { name: "Pioneer The Frontier IV",  req: "Build 30 Storm Beacons", target: 30, personal: "100M Storm Points", derive: "flags" },
+  // Confirmed built: eRa 30, REU 20, Myt 20. Higher tiers fill in live.
+  { name: "Pioneer The Frontier I",   req: "Build 5 Storm Beacons",  target: 5,  personal: "20M Storm Points",  derive: "flags", cur: { eRa: 30, REU: 20, Myt: 20 } },
+  { name: "Pioneer The Frontier II",  req: "Build 10 Storm Beacons", target: 10, personal: "40M Storm Points",  derive: "flags", cur: { eRa: 30, REU: 20, Myt: 20 } },
+  { name: "Pioneer The Frontier III", req: "Build 20 Storm Beacons", target: 20, personal: "60M Storm Points",  derive: "flags", cur: { eRa: 30, REU: 20, Myt: 20 } },
+  { name: "Pioneer The Frontier IV",  req: "Build 30 Storm Beacons", target: 30, personal: "100M Storm Points", derive: "flags", cur: { eRa: 30 } },
   { name: "Pioneer The Frontier V",   req: "Build 50 Storm Beacons", target: 50, personal: "150M Storm Points", derive: "flags" },
   // Siege And Plunder I–V — occupy cities/altars (auto-tracks from pillar count).
-  { name: "Siege And Plunder I",   req: "Occupy a city or altar (1)", target: 1, personal: "20M Storm Points",  derive: "pillars", cur: { eRa: 1, REU: 1, Myt: 1 } },
-  { name: "Siege And Plunder II",  req: "Occupy a city or altar (2)", target: 2, personal: "30M Storm Points",  derive: "pillars" },
-  { name: "Siege And Plunder III", req: "Occupy a city or altar (3)", target: 3, personal: "50M Storm Points",  derive: "pillars" },
-  { name: "Siege And Plunder IV",  req: "Occupy a city or altar (4)", target: 4, personal: "70M Storm Points",  derive: "pillars" },
-  { name: "Siege And Plunder V",   req: "Occupy a city or altar (5)", target: 5, personal: "100M Storm Points", derive: "pillars" },
+  // Confirmed: eRa, REU, Myt all at 5 cities/altars.
+  { name: "Siege And Plunder I",   req: "Occupy a city or altar (1)", target: 1, personal: "20M Storm Points",  derive: "pillars", cur: { eRa: 5, REU: 5, Myt: 5 } },
+  { name: "Siege And Plunder II",  req: "Occupy a city or altar (2)", target: 2, personal: "30M Storm Points",  derive: "pillars", cur: { eRa: 5, REU: 5, Myt: 5 } },
+  { name: "Siege And Plunder III", req: "Occupy a city or altar (3)", target: 3, personal: "50M Storm Points",  derive: "pillars", cur: { eRa: 5, REU: 5, Myt: 5 } },
+  { name: "Siege And Plunder IV",  req: "Occupy a city or altar (4)", target: 4, personal: "70M Storm Points",  derive: "pillars", cur: { eRa: 5, REU: 5, Myt: 5 } },
+  { name: "Siege And Plunder V",   req: "Occupy a city or altar (5)", target: 5, personal: "100M Storm Points", derive: "pillars", cur: { eRa: 5, REU: 5, Myt: 5 } },
   // Windrider I–III — alliance Storm Points thresholds (auto-tracks from points).
   { name: "Windrider I",   req: "Alliance Storm Points", target: 4500000000,  personal: "100M Storm Points", derive: "points" },
   { name: "Windrider II",  req: "Alliance Storm Points", target: 9000000000,  personal: "120M Storm Points", derive: "points" },
   { name: "Windrider III", req: "Alliance Storm Points", target: 18000000000, personal: "150M Storm Points", derive: "points" },
-  // Resist The Erosion I–II — finish Storm Erosion within a time limit (not live-trackable).
-  { name: "Resist The Erosion I",  req: "Finish Storm Erosion within 20 min", personal: "80M Storm Points" },
-  { name: "Resist The Erosion II", req: "Finish Storm Erosion within 12 min", personal: "100M Storm Points" },
-  // Piety I–IV — upgrade the Storm Altar (not live-trackable).
-  { name: "Piety I",   req: "Upgrade Storm Altar to Lv2", personal: "15M Storm Points" },
-  { name: "Piety II",  req: "Upgrade Storm Altar to Lv4", personal: "30M Storm Points" },
-  { name: "Piety III", req: "Upgrade Storm Altar to Lv6", personal: "60M Storm Points" },
-  { name: "Piety IV",  req: "Upgrade Storm Altar to Lv8", personal: "100M Storm Points" },
+  // Resist The Erosion I–II — finish Storm Erosion within a time limit (done/not-done;
+  // cur = true marks ✓). eRa/REU/Myt all beat 12 min (so both tiers).
+  { name: "Resist The Erosion I",  req: "Finish Storm Erosion within 20 min", bool: true, personal: "80M Storm Points",  cur: { eRa: true, REU: true, Myt: true } },
+  { name: "Resist The Erosion II", req: "Finish Storm Erosion within 12 min", bool: true, personal: "100M Storm Points", cur: { eRa: true, REU: true, Myt: true } },
+  // Piety I–IV — upgrade the Storm Altar (done/not-done). Nobody has upgraded yet.
+  { name: "Piety I",   req: "Upgrade Storm Altar to Lv2", bool: true, personal: "15M Storm Points" },
+  { name: "Piety II",  req: "Upgrade Storm Altar to Lv4", bool: true, personal: "30M Storm Points" },
+  { name: "Piety III", req: "Upgrade Storm Altar to Lv6", bool: true, personal: "60M Storm Points" },
+  { name: "Piety IV",  req: "Upgrade Storm Altar to Lv8", bool: true, personal: "100M Storm Points" },
 ];
 // Current value for an achievement/alliance — derived from live data when the
 // achievement has a `derive` key, else from its manual `cur` map (null = "—").
@@ -1714,6 +1716,10 @@ function PointsTab() {
               const cell = (tag) => {
                 const cur = achievementCur(a, tag);
                 if (cur == null) return <span style={{ color: "#475569" }}>—</span>;
+                // boolean (done/not-done) achievements: ✓ when true, — otherwise
+                if (a.bool) return cur
+                  ? <span style={{ color: "#3daa6d", fontWeight: 700 }}>✓</span>
+                  : <span style={{ color: "#475569" }}>—</span>;
                 const met = cur >= a.target;
                 const label = a.target >= 1e6 ? (abbr(cur) + "/" + abbr(a.target)) : (cur + "/" + a.target);
                 return <span style={{ color: met ? "#3daa6d" : "#94a3b8", fontWeight: met ? 700 : 400, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{met ? "✓ " : ""}{label}</span>;
@@ -1721,7 +1727,7 @@ function PointsTab() {
               return (
               <tr key={a.name}>
                 <td style={S.td}><span style={{ fontWeight: 600 }}>{a.name}</span></td>
-                <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{a.req}{a.target >= 1e6 ? " (" + abbr(a.target) + ")" : (a.target > 1 ? " (" + a.target + ")" : "")}</td>
+                <td style={{ ...S.td, fontSize: "12px", color: "#94a3b8" }}>{a.req}{a.bool ? "" : (a.target >= 1e6 ? " (" + abbr(a.target) + ")" : (a.target > 1 ? " (" + a.target + ")" : ""))}</td>
                 {["eRa","REU","Myt","AuR"].map(tag => <td key={tag} style={{ ...S.td, textAlign: "center", fontSize: "12px" }}>{cell(tag)}</td>)}
                 <td style={{ ...S.td, fontSize: "11px", color: "#64748b" }}>{a.personal}</td>
               </tr>
