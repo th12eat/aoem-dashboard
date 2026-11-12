@@ -313,11 +313,12 @@ const ACHIEVEMENTS = [
   // cur = true marks ✓). eRa/REU/Myt all beat 12 min (so both tiers).
   { name: "Resist The Erosion I",  req: "Finish Storm Erosion within 20 min", bool: true, personal: "80M Storm Points",  cur: { eRa: true, REU: true, Myt: true } },
   { name: "Resist The Erosion II", req: "Finish Storm Erosion within 12 min", bool: true, personal: "100M Storm Points", cur: { eRa: true, REU: true, Myt: true } },
-  // Piety I–IV — upgrade the Storm Altar (done/not-done). Nobody has upgraded yet.
-  { name: "Piety I",   req: "Upgrade Storm Altar to Lv2", bool: true, personal: "15M Storm Points" },
-  { name: "Piety II",  req: "Upgrade Storm Altar to Lv4", bool: true, personal: "30M Storm Points" },
-  { name: "Piety III", req: "Upgrade Storm Altar to Lv6", bool: true, personal: "60M Storm Points" },
-  { name: "Piety IV",  req: "Upgrade Storm Altar to Lv8", bool: true, personal: "100M Storm Points" },
+  // Piety I–IV — upgrade the Storm Altar (done/not-done). Gifted to everyone via a
+  // bug (all tiers auto-granted to participating alliances).
+  { name: "Piety I",   req: "Upgrade Storm Altar to Lv2", bool: true, personal: "15M Storm Points",  cur: { eRa: true, REU: true, Myt: true } },
+  { name: "Piety II",  req: "Upgrade Storm Altar to Lv4", bool: true, personal: "30M Storm Points",  cur: { eRa: true, REU: true, Myt: true } },
+  { name: "Piety III", req: "Upgrade Storm Altar to Lv6", bool: true, personal: "60M Storm Points",  cur: { eRa: true, REU: true, Myt: true } },
+  { name: "Piety IV",  req: "Upgrade Storm Altar to Lv8", bool: true, personal: "100M Storm Points", cur: { eRa: true, REU: true, Myt: true } },
 ];
 // Current value for an achievement/alliance — derived from live data when the
 // achievement has a `derive` key, else from its manual `cur` map (null = "—").
