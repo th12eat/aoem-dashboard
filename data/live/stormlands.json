@@ -28,43 +28,43 @@
     "eventOver": false
   },
   "kingdomPoints": {
-    "era8": "32,300,000,000",
-    "era039": "51,000,000,000",
-    "era038": "40,800,000,000",
-    "era015": "31,300,000,000",
-    "lastUpdated": "2026-11-03 — Day 2"
+    "era8": "50,200,000,000",
+    "era039": "76,600,000,000",
+    "era038": "57,100,000,000",
+    "era015": "49,300,000,000",
+    "lastUpdated": "2026-11-04 — Day 3"
   },
   "kingdomScoreboard": [
     {
       "server": "Era #039",
-      "points": 51000000000
+      "points": 76600000000
     },
     {
       "server": "Era 8",
-      "points": 32300000000
+      "points": 50200000000
     },
     {
       "server": "Era #038",
-      "points": 40800000000
+      "points": 57100000000
     },
     {
       "server": "Era #015",
-      "points": 31300000000
+      "points": 49300000000
     }
   ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
       "tag": "eRa",
-      "points": "11,477,485,060"
+      "points": "21,613,610,877"
     },
     {
       "tag": "REU",
-      "points": "3,486,921,806"
+      "points": "5,098,743,079"
     },
     {
       "tag": "Myt",
-      "points": "1,819,905,811"
+      "points": "3,497,807,679"
     },
     {
       "tag": "AuR",
@@ -77,21 +77,21 @@
       "server": "Era #039",
       "alliance": "TBD",
       "relation": "neutral",
-      "notes": ""
+      "notes": "Neutral — no pact; avoid unprovoked engagements for now."
     },
     {
       "id": 2,
       "server": "Era #038",
       "alliance": "TBD",
       "relation": "neutral",
-      "notes": ""
+      "notes": "Neutral — no pact; avoid unprovoked engagements for now."
     },
     {
       "id": 3,
       "server": "Era #015",
       "alliance": "TBD",
-      "relation": "ally",
-      "notes": "Ally — side with them across all fronts (open field, riverland, farms, citadels, cities/gates)."
+      "relation": "hostile",
+      "notes": "Hostile — treat as a target across all fronts (open field, riverland, farms, citadels, cities/gates)."
     }
   ],
   "contacts": [],

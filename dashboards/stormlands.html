@@ -249,9 +249,9 @@ const ROE_COLUMNS = [
 // allyCols: specific columns treated as ally (green 🤝) even on an enemy row — e.g.
 // enemies everywhere BUT explicitly allied on Citadels (no zeroing each other's).
 const DIPLOMACY_ROE = [
-  { server: "Era #039", ally: false, fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
-  { server: "Era #038", ally: false, fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
-  { server: "Era #015", ally: true, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #039", ally: false, neutral: true, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #038", ally: false, neutral: true, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
+  { server: "Era #015", ally: false, fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
 ];
 
 // Per-player daily objectives (reset 00:00 UTC). `opensDay` = greyed until then.
@@ -349,8 +349,8 @@ const AARU_TIME_SLOTS = [
   { label: "19:00 - 23:00 UTC", start: "19:00", end: "23:00" },
 ];
 // Settled Temple of Zeus battle time — chosen in-game by the top server on Day 11
-// (Battle I) and Day 13 (Battle II). TBD until the votes conclude.
-const AARU_OFFICIAL_TIME = "19:00 UTC";
+// (Battle I) and Day 13 (Battle II).
+const AARU_OFFICIAL_TIME = "11:00 UTC";
 
 const BUILDINGS = [
   { name: "Alliance Stronghold", desc: "Foundation of alliance lands. Built in the Eroded Wasteland. All Storm Beacons must connect back to a Stronghold or Storm Stronghold to stay active.", icon: "🏰" },
@@ -525,6 +525,7 @@ function DiplomacyStatus() {
   const GREEN = "#22c55e", RED = "#ef4444", GREY = "#9ca3af", ORANGE = "#f97316", YELLOW = "#facc15";
   const stance = (row) => {
     if (row.ally) return { color: GREEN, label: T("Ally"), desc: "Side with them everywhere" };
+    if (row.neutral) return { color: GREY, label: T("Neutral"), desc: "No pact — avoid unprovoked engagements" };
     const n = ROE_COLUMNS.filter(c => row.fight[c.key]).length;
     const total = ROE_COLUMNS.length;
     if (n === 0) return { color: GREY, label: T("Retaliate only"), desc: "Don't initiate — hit back only" };
@@ -1855,7 +1856,7 @@ function DiplomacyTab({ state, setState }) {
         </div>
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
           {AARU_TIME_SLOTS.map(slot => {
-            const official = slot.label === AARU_OFFICIAL_TIME;
+            const official = slot.label === AARU_OFFICIAL_TIME || (slot.start + " UTC") === AARU_OFFICIAL_TIME;
             return (
             <button
               key={slot.label}
