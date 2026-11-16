@@ -1303,10 +1303,17 @@
    "event": "Stormlands",
    "date": "2026-11-01",
    "opp": "Era #039 / Era #038 / Era #015",
-   "result": "Live",
+   "result": "Loss",
    "multi": true,
+   "placement": 4,
    "basis": "top-4 alliances (scouting)",
-   "note": "In progress — matchmaking began Nov 1. 4-kingdom land war; us East (purple). Top-4 alliance power + total merits per server from scouting.",
+   "note": "Season finale — we finished 4th of 4. Final Kingdom Points: E#039 113.6B (1st), E#038 70.1B (2nd), E#015 66.1B (3rd), E#008 64.2B (us, 4th). 4-kingdom land war; us East (purple). Top-4 alliance power + total merits per server from scouting.",
+   "kingdomFinal": {
+    "Era 8": 64200000000,
+    "Era #039": 113600000000,
+    "Era #038": 70100000000,
+    "Era #015": 66100000000
+   },
    "ourRoster": [
     [
      "eRa",

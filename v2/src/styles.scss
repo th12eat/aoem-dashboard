@@ -1,0 +1,16 @@
+/* Global styles. Design tokens live in styles/_kvk-tokens.scss (ported from
+   the 1.0 assets/kvk-theme.css). */
+@use './styles/kvk-tokens';
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+* {
+  box-sizing: border-box;
+}

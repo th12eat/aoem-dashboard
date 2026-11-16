@@ -1,0 +1,18 @@
+{
+  "name": "Era 8 Command Center",
+  "short_name": "Era8Command",
+  "description": "Unified AoEM Era8 event dashboards and coordination tools",
+  "start_url": "/aoem-dashboard/v2/",
+  "scope": "/aoem-dashboard/v2/",
+  "display": "standalone",
+  "background_color": "#0a0c14",
+  "theme_color": "#0a0c14",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

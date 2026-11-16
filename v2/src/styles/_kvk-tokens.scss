@@ -1,0 +1,616 @@
+/* ============================================================
+   AoEM Era 8 — Shared KvK Theme (ported from 1.0 assets/kvk-theme.css)
+   ------------------------------------------------------------
+   Framework-agnostic design tokens + the shared component classes
+   (.kvk-header / .rank-table / .points-table / .cmp-* / .tabs) that
+   constitute the "bespoke but common" visual language. Kept GLOBAL
+   (not component-scoped) so every widget shares one source of truth.
+
+   Per-event accent is driven by [data-kvk="..."] set on the dashboard
+   host element from EventDashboardConfig.kvkTheme — accent switching
+   is pure CSS, no ThemeService needed.
+   ============================================================ */
+
+:root {
+  /* -- canonical palette (from Behemoth Conquest) -- */
+  --bg-deep: #0a0c14;
+  --bg-card: #11141f;
+  --bg-card2: #161a28;
+  --border: #1e2435;
+  --text-primary: #e8eaf0;
+  --text-secondary: #8a90a5;
+  --text-muted: #565c72;
+
+  /* fixed semantic accents (stay constant across events) */
+  --accent-gold: #d4a843;
+  --accent-gold-dim: #a17e2f;
+  --accent-red: #c43d3d;
+  --accent-red-dim: #8a2b2b;
+  --accent-blue: #3d7cc4;
+  --accent-blue-dim: #2b5a8a;
+  --accent-green: #3daa6d;
+  --accent-green-dim: #2a7a4c;
+  --accent-purple: #9a6dd4;
+  --accent-purple-dim: #6b4a9a;
+
+  /* -- per-KvK accent (defaults to gold; data-kvk overrides below) -- */
+  --kvk-accent: var(--accent-gold);
+  --kvk-accent-dim: var(--accent-gold-dim);
+  --kvk-accent-rgb: 212, 168, 67;
+  --kvk-bg: none;
+
+  /* -- layout: single standard content width across the whole app -- */
+  --w-content: 960px;
+
+  /* -- canonical font stacks (the Behemoth Conquest type system) -- */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-ui: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  /* -- canonical type scale (Behemoth Conquest sizes) -- */
+  --fs-title: clamp(42px, 8vw, 66px);
+  --fs-stat: 30px;
+  --fs-h2: 24px;
+  --fs-h3: 18px;
+  --fs-lead: 16px;
+  --fs-body: 14px;
+  --fs-label: 13px;
+  --fs-sub: 12px;
+  --fs-micro: 11px;
+  --fs-tiny: 9.5px;
+}
+
+/* ---- per-KvK accent assignments ---- */
+[data-kvk='behemoth'] {
+  --kvk-accent: #8a2d54;
+  --kvk-accent-dim: #5e1e39;
+  --kvk-accent-rgb: 138, 45, 84;
+}
+[data-kvk='tme'] {
+  --kvk-accent: #3d7cc4;
+  --kvk-accent-dim: #2b5a8a;
+  --kvk-accent-rgb: 61, 124, 196;
+}
+[data-kvk='desolate'] {
+  --kvk-accent: #f5731f;
+  --kvk-accent-dim: #b4500f;
+  --kvk-accent-rgb: 245, 115, 31;
+}
+[data-kvk='stormlands'] {
+  --kvk-accent: #ef9f6b;
+  --kvk-accent-dim: #c47d4a;
+  --kvk-accent-rgb: 239, 159, 107;
+}
+[data-kvk='primordial'] {
+  --kvk-accent: #9b6dff;
+  --kvk-accent-dim: #6b4c9a;
+  --kvk-accent-rgb: 155, 109, 255;
+}
+[data-kvk='day6'] {
+  --kvk-accent: #c43d3d;
+  --kvk-accent-dim: #8a2b2b;
+  --kvk-accent-rgb: 196, 61, 61;
+}
+[data-kvk='workshop'] {
+  --kvk-accent: #d4a017;
+  --kvk-accent-dim: #7a5c0e;
+  --kvk-accent-rgb: 212, 160, 23;
+}
+[data-kvk='golden'] {
+  --kvk-accent: #d4a843;
+  --kvk-accent-dim: #a17e2f;
+  --kvk-accent-rgb: 212, 168, 67;
+}
+[data-kvk='history'] {
+  --kvk-accent: #d4a843;
+  --kvk-accent-dim: #a17e2f;
+  --kvk-accent-rgb: 212, 168, 67;
+}
+[data-kvk='generic'] {
+  --kvk-accent: #d4a843;
+  --kvk-accent-dim: #a17e2f;
+  --kvk-accent-rgb: 212, 168, 67;
+}
+
+body {
+  font-size: var(--fs-body);
+}
+
+/* ============================================================ Shared themed header ============================================================ */
+.kvk-header {
+  text-align: center;
+  padding: 56px 20px 36px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid var(--kvk-accent-dim);
+  margin-bottom: 28px;
+}
+.kvk-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--kvk-bg);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  opacity: 0.42;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.45) 50%,
+    rgba(0, 0, 0, 0.12) 80%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.45) 50%,
+    rgba(0, 0, 0, 0.12) 80%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.kvk-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center top, rgba(var(--kvk-accent-rgb), 0.14) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+.kvk-header > * {
+  position: relative;
+  z-index: 2;
+}
+.kvk-tag {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: var(--fs-label);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--kvk-accent);
+  margin-bottom: 6px;
+}
+.kvk-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  letter-spacing: 3px;
+  line-height: 1;
+  color: var(--text-primary);
+  margin: 0;
+}
+.kvk-title span {
+  color: var(--kvk-accent);
+}
+.kvk-subtitle {
+  font-family: var(--font-ui);
+  font-size: var(--fs-lead);
+  color: var(--text-secondary);
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================================ Shared utility accents ============================================================ */
+.kvk-accent {
+  color: var(--kvk-accent);
+}
+.kvk-accent-bd {
+  border-color: var(--kvk-accent-dim);
+}
+.kvk-accent-bg {
+  background: rgba(var(--kvk-accent-rgb), 0.12);
+}
+
+/* Shared iCal button */
+.evt-ical {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px auto 0;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--kvk-accent-dim);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s;
+  max-width: 90%;
+}
+.evt-ical:hover {
+  background: rgba(var(--kvk-accent-rgb), 0.12);
+}
+.evt-ical[disabled] {
+  cursor: default;
+  opacity: 0.65;
+}
+.evt-ical .ico {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.evt-ical .lbl {
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--kvk-accent);
+  line-height: 1.2;
+}
+
+/* ============================================================ Shared ranking/data table (Primordial roster look) ============================================================ */
+.rank-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-label);
+}
+.rank-table th {
+  font-family: var(--font-ui);
+  font-size: var(--fs-tiny);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.rank-table td {
+  padding: 5px 8px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+.rank-table tr:last-child td {
+  border-bottom: none;
+}
+.rank-table td.name {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.rank-table th.num {
+  text-align: right;
+}
+.rank-table td.num {
+  text-align: right;
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  font-variant-numeric: tabular-nums;
+}
+.rank-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.rank-table th.sortable:hover {
+  color: var(--text-secondary);
+}
+.rank-table th.sortable.active {
+  color: var(--kvk-accent);
+}
+.rank-table th .caret {
+  font-size: var(--fs-tiny);
+}
+.rank-table td.mp-hi {
+  color: var(--accent-green);
+}
+.rank-table td.mp-lo {
+  color: var(--accent-red);
+}
+.rank-table td.tag {
+  font-family: var(--font-ui);
+  color: var(--text-muted);
+}
+.rank-table tbody tr:hover td {
+  background: var(--bg-card2);
+}
+.rank-table tr.is-ours td,
+.rank-table tr.highlight td {
+  background: rgba(var(--kvk-accent-rgb), 0.07);
+}
+
+/* ============================================================ Shared scoreboard table (Primordial points-table look) ============================================================ */
+.points-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-body);
+}
+.points-table th {
+  font-family: var(--font-ui);
+  font-size: var(--fs-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+}
+.points-table td {
+  text-align: center;
+  padding: 6px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(var(--kvk-accent-rgb), 0.1);
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+}
+.points-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.points-table tbody tr:hover td {
+  background: var(--bg-card2);
+}
+.points-table th:first-child,
+.points-table td:first-child {
+  text-align: left;
+}
+.points-table td.name {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.points-table td.mp-hi {
+  color: var(--accent-green);
+}
+.points-table td.mp-lo {
+  color: var(--accent-red);
+}
+.points-table tr.total td {
+  font-weight: 700;
+  color: var(--text-primary);
+  border-top: 1px solid var(--border);
+}
+
+/* ============================================================ Shared comparison table (Behemoth cmp-tbl look) ============================================================ */
+.cmp-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.cmp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.cmp-grid .cmp-card {
+  margin-bottom: 0;
+}
+@media (max-width: 640px) {
+  .cmp-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.cmp-head {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  letter-spacing: 1px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(var(--kvk-accent-rgb), 0.12);
+  color: var(--kvk-accent);
+}
+.cmp-head.us {
+  background: rgba(61, 124, 196, 0.12);
+  border-bottom-color: var(--accent-blue-dim);
+  color: var(--accent-blue);
+}
+.cmp-head.them {
+  background: rgba(196, 61, 61, 0.12);
+  border-bottom-color: var(--accent-red-dim);
+  color: var(--accent-red);
+}
+.cmp-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-label);
+  table-layout: fixed;
+}
+.cmp-tbl thead th {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-tiny);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 6px 10px 4px;
+  border-bottom: 1px solid var(--border);
+}
+.cmp-tbl td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.cmp-tbl tr:last-child td {
+  border-bottom: none;
+}
+.cmp-tbl tr:hover td {
+  background: var(--bg-card2);
+}
+.cmp-tbl .c-rk {
+  width: 28px;
+  color: var(--text-muted);
+  text-align: center;
+}
+.cmp-tbl th.c-rk {
+  text-align: center;
+}
+.cmp-tbl .c-nm {
+  color: var(--text-primary);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cmp-tbl .c-nm .tg {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.cmp-tbl.cmp-tbl-wrap {
+  table-layout: auto;
+}
+.cmp-tbl.cmp-tbl-wrap .c-nm {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  word-break: break-word;
+}
+.cmp-tbl .c-p {
+  width: 68px;
+  text-align: right;
+  color: var(--kvk-accent);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+  white-space: nowrap;
+}
+.cmp-tbl .c-cb {
+  width: 72px;
+  text-align: right;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+  white-space: nowrap;
+}
+.cmp-tbl th.c-cb {
+  color: var(--text-muted);
+}
+.cmp-tbl .c-mp {
+  width: 54px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+  white-space: nowrap;
+}
+.cmp-tbl .c-mp.hi {
+  color: #3daa6d;
+}
+.cmp-tbl .c-mp.mid {
+  color: #d4a843;
+}
+.cmp-tbl .c-mp.lo {
+  color: #c9603f;
+}
+
+/* ============================================================ Shared tab bar ============================================================ */
+.tabs {
+  display: flex;
+  justify-content: safe center;
+  gap: 4px;
+  max-width: var(--w-content);
+  margin: 0 auto 28px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+.tab {
+  flex: 0 0 auto;
+  padding: 11px 20px;
+  margin-bottom: -1px;
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+.tab:hover {
+  color: var(--text-secondary);
+}
+.tab.active {
+  color: var(--kvk-accent);
+  border-bottom-color: var(--kvk-accent);
+}
+.tab.is-now {
+  color: var(--kvk-accent);
+}
+.tab.is-now::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--kvk-accent);
+  margin-right: 6px;
+  vertical-align: middle;
+  animation: tabNowPulse 1.6s ease-in-out infinite;
+}
+@keyframes tabNowPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+@keyframes livePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 3px 0 rgba(251, 191, 36, 0.45);
+    border-color: rgba(251, 191, 36, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 14px 4px rgba(251, 191, 36, 0.85);
+    border-color: rgba(253, 224, 71, 1);
+  }
+}
+.live-pulse {
+  animation: livePulse 1.8s ease-in-out infinite;
+  border-radius: 6px;
+  border: 2px solid rgba(251, 191, 36, 0.7);
+}
+
+/* ── Shared Event-Timeline animations ── */
+@keyframes slDotPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(250, 204, 21, 0);
+  }
+}
+.sl-dot-pulse {
+  animation: slDotPulse 1.8s ease-in-out infinite;
+}
+.sl-line-active {
+  background-color: var(--seg, #94a3b8);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.5) 0,
+    rgba(255, 255, 255, 0.5) 5px,
+    rgba(255, 255, 255, 0) 5px,
+    rgba(255, 255, 255, 0) 10px
+  );
+  animation: slBarber 1.6s linear infinite;
+}
+@keyframes slBarber {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 14.1421356px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sl-dot-pulse {
+    animation: none;
+  }
+  .sl-line-active {
+    animation: none;
+  }
+}

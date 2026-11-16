@@ -1,0 +1,15 @@
+# Angular / Node
+/node_modules
+/dist
+/out-tsc
+/.angular
+/tmp
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# Logs
+npm-debug.log*
+/coverage

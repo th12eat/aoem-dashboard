@@ -1,0 +1,201 @@
+/* Ported verbatim from 1.0 assets/site-header.js (.ehdr-* scoped styles). */
+:host {
+  display: block;
+}
+
+.ehdr {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: rgba(10, 12, 20, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--kvk-accent-dim, #a17e2f);
+  font-family: 'Barlow Condensed', sans-serif;
+}
+.ehdr a {
+  text-decoration: none;
+  color: inherit;
+}
+.ehdr-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+.ehdr-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 15px;
+  color: var(--text-primary, #e8eaf0);
+  flex: 0 0 auto;
+}
+.ehdr-brand .ehdr-mark {
+  color: var(--kvk-accent, #d4a843);
+  font-size: 18px;
+  line-height: 1;
+}
+/* 90° chevron drawn from borders — crisp thin ">" */
+.ehdr-chevron {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid var(--text-muted, #565c72);
+  border-right: 2px solid var(--text-muted, #565c72);
+  transform: rotate(45deg);
+  margin: 0 2px;
+}
+.ehdr-page {
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: var(--text-secondary, #8a90a5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ehdr-right {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ehdr-lang {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border, #1e2435);
+  background: var(--bg-card, #11141f);
+  border-radius: 20px;
+  padding: 3px 6px 3px 10px;
+  color: var(--text-secondary, #8a90a5);
+}
+.ehdr-lang.on {
+  display: flex;
+}
+.ehdr-lang .ehdr-globe {
+  font-size: 13px;
+  opacity: 0.8;
+  line-height: 1;
+}
+.ehdr-lang select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: var(--text-secondary, #8a90a5);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  padding: 2px 16px 2px 2px;
+}
+.ehdr-lang select:hover {
+  color: var(--text-primary, #e8eaf0);
+}
+.ehdr-lang select option {
+  background: var(--bg-card, #11141f);
+  color: var(--text-primary, #e8eaf0);
+}
+.ehdr-lang .ehdr-caret {
+  margin-left: -14px;
+  pointer-events: none;
+}
+.ehdr-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: 1px solid var(--border, #1e2435);
+  background: var(--bg-card, #11141f);
+  border-radius: 20px;
+  padding: 4px 10px 4px 5px;
+  color: var(--text-secondary, #8a90a5);
+  font: inherit;
+}
+.ehdr-chip:hover {
+  border-color: var(--kvk-accent-dim, #a17e2f);
+}
+.ehdr-av {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--kvk-accent-rgb, 212, 168, 67), 0.18);
+  font-size: 13px;
+}
+.ehdr-name {
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+.ehdr-caret {
+  font-size: 9px;
+  opacity: 0.7;
+}
+.ehdr-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  min-width: 180px;
+  background: var(--bg-card, #11141f);
+  border: 1px solid var(--border, #1e2435);
+  border-radius: 10px;
+  padding: 6px;
+  display: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+.ehdr-menu.open {
+  display: block;
+}
+.ehdr-menu .ehdr-mi {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  font-size: 13px;
+  color: var(--text-secondary, #8a90a5);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+.ehdr-menu .ehdr-mi:hover {
+  background: var(--bg-card2, #161a28);
+  color: var(--text-primary, #e8eaf0);
+}
+.ehdr-menu .ehdr-sep {
+  height: 1px;
+  background: var(--border, #1e2435);
+  margin: 5px 4px;
+}
+.ehdr-menu .ehdr-note {
+  padding: 6px 10px 8px;
+  font-size: 10.5px;
+  color: var(--text-muted, #565c72);
+  letter-spacing: 0.5px;
+}
+.ehdr-badge {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: rgba(var(--kvk-accent-rgb, 212, 168, 67), 0.16);
+  color: var(--kvk-accent, #d4a843);
+  padding: 1px 6px;
+  border-radius: 4px;
+}

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Era 8 Command Center</title>
+    <script>
+      // GitHub Pages SPA deep-link fallback — step 1.
+      //
+      // GH Pages serves exactly ONE 404.html, from the publish root. The deploy
+      // workflow copies THIS file to the composite publish root
+      // (/aoem-dashboard/404.html) so it handles every unmatched path on the
+      // site. It must therefore be path-aware: only v2 SPA routes get bounced
+      // into the Angular app; anything else (a genuinely missing 1.0 page) is
+      // left to show a normal not-found.
+      (function () {
+        var V2 = '/aoem-dashboard/v2/';
+        var path = location.pathname;
+        if (path.indexOf(V2) === 0 && path !== V2) {
+          // A v2 deep link was hard-refreshed. Stash the full URL and bounce to
+          // the app root; index.html's restore script (step 2) replays it into
+          // the router via history.replaceState.
+          try {
+            sessionStorage.redirect = location.href;
+          } catch (e) {}
+          location.replace(V2);
+        } else {
+          // Not a v2 route — show a minimal not-found rather than hijacking it.
+          document.documentElement.innerHTML =
+            '<body style="font-family:system-ui;background:#0a0c14;color:#e8eaf0;text-align:center;padding:16vh 20px">' +
+            '<h1 style="font-size:48px;margin:0">404</h1>' +
+            '<p>Page not found. <a style="color:#d4a843" href="/aoem-dashboard/">Back to Era 8 Command</a></p></body>';
+        }
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

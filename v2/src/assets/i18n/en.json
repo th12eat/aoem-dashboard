@@ -1,0 +1,131 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "error": "Couldn't load event data.",
+    "backToHub": "← All dashboards",
+    "unknownDashboard": "That dashboard doesn't exist (yet).",
+    "us": "Us"
+  },
+  "hub": {
+    "title": "ERA 8 COMMAND CENTER",
+    "tag": "Age of Empires Mobile · Era 8",
+    "subtitle": "Unified event dashboards & coordination",
+    "beta": "2.0 beta"
+  },
+  "widget": {
+    "scoreboard": {
+      "server": "Server",
+      "alliance": "Alliance",
+      "points": "Points"
+    },
+    "leaderboard": {
+      "alliance": "Alliance",
+      "player": "Player",
+      "tag": "Tag",
+      "power": "Power",
+      "merits": "Merits"
+    },
+    "scouting": {
+      "mp": "M:P",
+      "top4": "Top-4 Total",
+      "awaiting": "Awaiting scouting data."
+    },
+    "diplomacy": {
+      "server": "Server",
+      "alliance": "Alliance",
+      "relation": "Relation",
+      "notes": "Notes"
+    },
+    "countdown": {
+      "start": "Starts",
+      "end": "Ends",
+      "timezone": "Timezone",
+      "days": "Days",
+      "hours": "Hours",
+      "min": "Min",
+      "sec": "Sec",
+      "pending": "Matchmaking",
+      "live": "Contest Live",
+      "complete": "Event Complete"
+    },
+    "calendar": {
+      "add": "Add to Calendar",
+      "soon": "Calendar export coming soon"
+    },
+    "roe": {
+      "server": "Server",
+      "stance": "Stance"
+    },
+    "achievements": {
+      "sub": "Progress toward each alliance-level achievement. ✓ = met. Personal requirements (met individually, not tracked here) shown at right. Fills in as the event progresses.",
+      "achievement": "Achievement",
+      "requirement": "Requirement",
+      "personal": "Personal"
+    },
+    "kingdomBar": {
+      "updated": "Last updated"
+    },
+    "schedule": {
+      "liveNow": "Live now",
+      "next": "Next",
+      "passed": "Passed",
+      "upcoming": "Upcoming"
+    },
+    "map": {
+      "empty": "Map coming soon — positions are being plotted."
+    }
+  },
+  "stormlands": {
+    "title": "STORMLANDS",
+    "tag": "Season Finale · Era 8",
+    "subtitle": "Season Finale · Four-Kingdom Land War",
+    "header": {
+      "zeus": "Temple of Zeus Fight:",
+      "jumpObjectives": "Jump to Daily Objectives",
+      "whatIs": "What is Stormlands?",
+      "incursion": "Incursion",
+      "incursionLive": "Incursion LIVE",
+      "incursionBefore": "Storm Incursion begins Day 4 (Nov 5)",
+      "incursionAfter": "Storm Incursion has ended (ran Day 4–8)"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "research": "Scouting",
+      "points": "Points",
+      "pve": "PvE Guide"
+    },
+    "overview": {
+      "kingdoms": "Kingdom Standings",
+      "timeline": "Event Timeline",
+      "roe": "Rules of Engagement — Opposing Servers",
+      "erosion": "Storm Erosion — Daily Event",
+      "incursion": "Storm Incursion — Day 4–8",
+      "map": "The Map"
+    },
+    "research": {
+      "alliances": "Top Alliances",
+      "players": "Top Players",
+      "tiers": "Power Tier Distribution",
+      "depthPower": "Roster Depth by Rank — Power (millions)",
+      "depthMerits": "Roster Depth by Rank — Merits (millions)"
+    },
+    "points": {
+      "sources": "Storm Points Sources",
+      "caps": "Daily Point Objectives & Caps",
+      "battle": "Battle Points by Troop Tier",
+      "weapons": "Storm Weapons",
+      "weaponScaling": "Storm Weapon — Level Scaling",
+      "alliances": "Era 8 Alliance Storm Points",
+      "flagCost": "Flag Cost by Zone & Count",
+      "achievements": "Conquest Achievements — Alliance Progress"
+    },
+    "pve": {
+      "help": "How PvE Players Help Win",
+      "zones": "Zones",
+      "currencies": "Currencies & Resources",
+      "debuff": "Storm Power Debuff — Scaling",
+      "machines": "Storm Machines",
+      "buildings": "Alliance Buildings"
+    }
+  }
+}

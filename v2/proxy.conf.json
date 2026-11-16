@@ -1,0 +1,9 @@
+{
+  "/data": {
+    "target": "http://localhost:4201",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "comment": "In dev, StaticEventDataSource fetches /data/live/*.json. Those files live one level up in the 1.0 repo, so we serve them from a tiny sidecar static server on :4201 (see npm run serve:data) and proxy /data to it. In prod the files are published at /aoem-dashboard/data and no proxy is needed."
+  }
+}

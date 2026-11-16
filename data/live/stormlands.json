@@ -24,47 +24,47 @@
       "Era #015": "South/green",
       "Era #038": "West/orange"
     },
-    "notes": "4-kingdom Stormlands. Us East/purple. Matchmaking began Nov 1.",
-    "eventOver": false
+    "notes": "4-kingdom Stormlands. Us East/purple. Final: 4th of 4. E#039 won.",
+    "eventOver": true
   },
   "kingdomPoints": {
-    "era8": "50,200,000,000",
-    "era039": "76,600,000,000",
-    "era038": "57,100,000,000",
-    "era015": "49,300,000,000",
-    "lastUpdated": "2026-11-04 — Day 3"
+    "era8": "64,200,000,000",
+    "era039": "113,600,000,000",
+    "era038": "70,100,000,000",
+    "era015": "66,100,000,000",
+    "lastUpdated": "2026-11-15 — Final (4th of 4)"
   },
   "kingdomScoreboard": [
     {
       "server": "Era #039",
-      "points": 76600000000
-    },
-    {
-      "server": "Era 8",
-      "points": 50200000000
+      "points": 113600000000
     },
     {
       "server": "Era #038",
-      "points": 57100000000
+      "points": 70100000000
     },
     {
       "server": "Era #015",
-      "points": 49300000000
+      "points": 66100000000
+    },
+    {
+      "server": "Era 8",
+      "points": 64200000000
     }
   ],
   "allianceScoreboard": [],
   "alliancePoints": [
     {
       "tag": "eRa",
-      "points": "21,613,610,877"
+      "points": "27,559,172,105"
     },
     {
       "tag": "REU",
-      "points": "5,098,743,079"
+      "points": "6,926,240,000"
     },
     {
       "tag": "Myt",
-      "points": "3,497,807,679"
+      "points": "6,870,084,670"
     },
     {
       "tag": "AuR",

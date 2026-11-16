@@ -1,0 +1,125 @@
+<header class="kvk-header" [style.--kvk-bg]="bgStyle()">
+  <!-- top-right jump buttons (📜 / ❓) -->
+  @if (buttons().length) {
+    <div class="hdr-pills-top">
+      @for (b of buttons(); track b.glyph) {
+        <button type="button" class="hdr-icobtn" [title]="b.titleKey | translate" (click)="onButton(b)">{{ b.glyph }}</button>
+      }
+    </div>
+  }
+
+  <!-- lockable live badge (Storm Incursion) -->
+  @if (badgeState(); as bs) {
+    @if (bs.locked) {
+      <span class="tor-badge is-idle is-locked" [title]="bs.lockedKey ? (bs.lockedKey | translate) : ''">
+        <span class="tb-ico">🔒</span><span class="tb-lvl">{{ bs.badge.labelKey | translate }}</span>
+      </span>
+    } @else {
+      <button type="button" class="tor-badge" [class.is-idle]="!bs.live" (click)="onBadge()">
+        <span class="tb-ico">
+          @if (bs.live) {
+            <span class="tor-live-dot"></span>
+          } @else {
+            {{ bs.badge.glyph }}
+          }
+        </span>
+        <span class="tb-lvl">
+          @if (bs.live) {
+            {{ bs.badge.liveLabelKey | translate }}
+          } @else {
+            {{ bs.badge.labelKey | translate }} {{ bs.nextLabel }}
+          }
+        </span>
+      </button>
+    }
+  }
+
+  <!-- tag · title · crests -->
+  @if (tagKey()) {
+    <div class="kvk-tag">{{ tagKey()! | translate }}</div>
+  }
+  <h1 class="kvk-title">{{ titleKey() | translate }}</h1>
+  @if (subtitleKey()) {
+    <div class="kvk-subtitle">{{ subtitleKey()! | translate }}</div>
+  }
+
+  @if (crests().length) {
+    <div class="hdr-crests">
+      @for (c of crests(); track c.label; let i = $index) {
+        @if (i === vsAfter()) {
+          <span class="hdr-vs">VS</span>
+        }
+        <span
+          class="hdr-crest"
+          [style.background]="'rgba(' + c.rgb + ',0.22)'"
+          [style.border]="'1px solid ' + c.color"
+          [style.box-shadow]="c.us ? '0 0 8px rgba(' + c.rgb + ',0.5)' : 'none'"
+          >{{ c.label }}</span
+        >
+      }
+    </div>
+  }
+
+  <!-- event-meta box: Start | End | Timezone + countdown + stage -->
+  @if (data()) {
+    <div class="evt-meta">
+      <div class="evt-timerow">
+        <div class="evt-cell">
+          <div class="evt-label">{{ 'widget.countdown.start' | translate }}</div>
+          <div class="evt-val">{{ startLabel() }}</div>
+        </div>
+        <div class="evt-div"></div>
+        <div class="evt-cell">
+          <div class="evt-label">{{ 'widget.countdown.end' | translate }}</div>
+          <div class="evt-val">{{ endLabel() }}</div>
+        </div>
+        <div class="evt-div"></div>
+        <div class="evt-cell">
+          <div class="evt-label">{{ 'widget.countdown.timezone' | translate }}</div>
+          <div class="evt-val">{{ timezone() }}</div>
+        </div>
+      </div>
+
+      @if (phase() !== 'over' && countdown(); as cd) {
+        <div class="evt-countdown">
+          <div class="evt-cd"><div class="v">{{ cd.d }}</div><div class="u">{{ 'widget.countdown.days' | translate }}</div></div>
+          <div class="evt-cd"><div class="v">{{ cd.h }}</div><div class="u">{{ 'widget.countdown.hours' | translate }}</div></div>
+          <div class="evt-cd"><div class="v">{{ cd.m }}</div><div class="u">{{ 'widget.countdown.min' | translate }}</div></div>
+          <div class="evt-cd"><div class="v">{{ cd.s }}</div><div class="u">{{ 'widget.countdown.sec' | translate }}</div></div>
+        </div>
+      }
+
+      <div class="evt-stage">
+        @switch (phase()) {
+          @case ('before') {
+            <b>{{ 'widget.countdown.pending' | translate }}</b>
+          }
+          @case ('live') {
+            <span class="evt-live-dot"></span><b>{{ 'widget.countdown.live' | translate }}</b>
+          }
+          @case ('over') {
+            <b>{{ 'widget.countdown.complete' | translate }}</b>
+          }
+        }
+      </div>
+    </div>
+  }
+
+  <!-- fight-time line + calendar stub -->
+  @if (fightTime() || calendarStub()) {
+    <div class="hdr-footer">
+      @if (fightTime()) {
+        <div class="hdr-fight">
+          <span class="hdr-fight-k">{{ fightTimeLabelKey() ? (fightTimeLabelKey()! | translate) : '' }}</span>
+          <strong class="hdr-fight-v">{{ fightTime() }}</strong>
+        </div>
+      }
+      @if (calendarStub()) {
+        <button type="button" class="evt-ical" disabled [title]="'widget.calendar.soon' | translate">
+          <span class="ico">📅</span>
+          <span class="lbl">{{ 'widget.calendar.add' | translate }}</span>
+        </button>
+      }
+    </div>
+  }
+</header>
