@@ -10,6 +10,8 @@ interface Row {
   balanceText: string;
   genPerHour: number;
   gates: number;
+  /** Gate breakdown by transition (null for legacy data with no map holdings). */
+  gateBreak: string | null;
   pillars: number;
   flagsText: string;
 }
@@ -53,7 +55,10 @@ interface Row {
               <td class="rt" [style.color]="r.genPerHour > 0 ? '#3daa6d' : 'var(--text-muted)'">
                 {{ r.genPerHour > 0 ? '+' + fmt(r.genPerHour) : '0' }}
               </td>
-              <td class="ctr" [style.color]="r.gates ? 'var(--text-primary)' : 'var(--text-muted)'">{{ r.gates }}</td>
+              <td class="ctr" [style.color]="r.gates ? 'var(--text-primary)' : 'var(--text-muted)'">
+                {{ r.gates }}
+                @if (r.gateBreak) { <span class="pb-gatebreak">{{ r.gateBreak }}</span> }
+              </td>
               <td class="ctr" [style.color]="r.pillars ? 'var(--kvk-accent)' : 'var(--text-muted)'" [style.font-weight]="r.pillars ? 600 : 400">{{ r.pillars }}</td>
               <td class="ctr" [style.color]="'var(--text-secondary)'">{{ r.flagsText }}</td>
             </tr>
@@ -78,6 +83,13 @@ interface Row {
       th.ctr,
       td.ctr {
         text-align: center;
+      }
+      .pb-gatebreak {
+        display: block;
+        font-size: 10px;
+        color: var(--text-muted);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
       }
       .pb-bar-h {
         min-width: 160px;
@@ -133,7 +145,15 @@ export class PlacerBalancesComponent {
       const h = holding.get(a.tag);
       const gen = h?.placerPerHour ?? 0;
       const gates = h?.gates ?? a.gates;
-      const pillars = h?.cities ?? a.pillarCities;
+      const pillars = h?.pillars ?? h?.cities ?? a.pillarCities;
+      // Gate breakdown by transition (only when derived from the live map).
+      const gb: string[] = [];
+      if (h) {
+        if (h.gatesZ1Z2) gb.push(`${h.gatesZ1Z2}·Z1→Z2`);
+        if (h.gatesZ2Z2) gb.push(`${h.gatesZ2Z2}·Z2↔Z2`);
+        if (h.gatesZ2Z3) gb.push(`${h.gatesZ2Z3}·Z2→Z3`);
+      }
+      const gateBreak = gb.length ? gb.join('  ') : null;
       const has = a.current != null;
       const pct = has ? Math.min(100, Math.round((a.current! / cap) * 100)) : 0;
       const capped = has && a.current! >= cap;
@@ -144,6 +164,7 @@ export class PlacerBalancesComponent {
         balanceText: has ? `${a.current!.toLocaleString()} / ${capTxt}` : `— / ${capTxt}`,
         genPerHour: gen,
         gates,
+        gateBreak,
         pillars,
         flagsText: a.flags ? `${a.flags}${a.flagsBuilding ? ` (+${a.flagsBuilding})` : ''}` : '0',
       };

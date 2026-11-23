@@ -183,6 +183,10 @@ export function deriveMapView(
         placerPerHour: 0,
         cities: 0,
         gates: 0,
+        gatesZ1Z2: 0,
+        gatesZ2Z2: 0,
+        gatesZ2Z3: 0,
+        pillars: 0,
         towers: 0,
         aaru: false,
       };
@@ -194,9 +198,17 @@ export function deriveMapView(
     if (!n.occupant) continue;
     const h = ensure(n.occupant);
     h.placerPerHour += n.placerPerHour;
-    if (n.type === 'city') h.cities++;
-    else if (n.type === 'gate') h.gates++;
-    else if (n.type === 'tower') h.towers++;
+    if (n.type === 'city') {
+      // DD "cities" are pillar cities — buffs/achievements, NO placer gold.
+      h.cities++;
+      h.pillars++;
+    } else if (n.type === 'gate') {
+      h.gates++;
+      // Break gates out by transition — each yields different placer gold.
+      if (n.transition === 'Z2->Z3') h.gatesZ2Z3++;
+      else if (n.transition === 'Z2<->Z2') h.gatesZ2Z2++;
+      else h.gatesZ1Z2++; // Z1->Z2 (default)
+    } else if (n.type === 'tower') h.towers++;
     else if (n.type === 'aaru') h.aaru = true;
     if (n.buffActive && n.buff && !h.buffs.includes(n.buff.key)) h.buffs.push(n.buff.key);
   }
