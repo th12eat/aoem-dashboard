@@ -29,8 +29,12 @@ import { plotTrend, type TrendSeries } from './trend-chart.geometry';
               <circle [attr.cx]="d.x" [attr.cy]="d.y" r="0.7" [attr.fill]="s.color" />
             }
             @if (s.last) {
-              <text class="tc-last" [attr.x]="s.last.x + 1" [attr.y]="s.last.y" [attr.fill]="s.color">{{ fmtY()(s.last.value) }}</text>
+              <text class="tc-last" [attr.x]="s.last.x + 1" [attr.y]="s.last.y" [attr.fill]="s.color">{{ s.last.text }}</text>
             }
+          }
+          <!-- x group tick marks (month boundaries) -->
+          @for (t of geo.xTicks; track $index) {
+            <line class="tc-xtick" [attr.x1]="t.x" [attr.y1]="t.y1" [attr.x2]="t.x" [attr.y2]="t.y2" />
           }
           <!-- x labels -->
           @for (x of geo.xLabels; track $index) {
@@ -83,6 +87,10 @@ import { plotTrend, type TrendSeries } from './trend-chart.geometry';
       .tc-xlab {
         font-size: 1.8px;
         fill: var(--text-muted);
+      }
+      .tc-xtick {
+        stroke: var(--border);
+        stroke-width: 0.2;
       }
       .tc-last {
         font-size: 2px;

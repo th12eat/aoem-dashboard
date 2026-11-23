@@ -62,6 +62,12 @@ export function serverNumber(s: string | number): number {
  * server only as a name string (`servers.name`), with no numeric column, so a
  * real lookup would parse `user_profiles.server_id → servers.name`. When tool
  * creation (per-server stand-up) lands, replace this with that lookup.
+ *
+ * FUTURE (deferred super_admin seam): a `dashboard_settings(server_number,
+ * default_alliances)` table plus a `super_admin` role (mirroring Activity
+ * Tracker) would let an admin set the server # and the default top-4 alliances
+ * per server. This function + the editor's Event Setup defaults are the single
+ * seam to swap when that lands — no other caller hardcodes the server number.
  */
 export function ourServerNumber(): number {
   return 8;

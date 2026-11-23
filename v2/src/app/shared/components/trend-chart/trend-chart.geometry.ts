@@ -2,11 +2,20 @@
 export interface TrendPoint {
   label: string;
   y: number;
+  /** Optional grouping key (e.g. "Nov"). Consecutive points sharing a group
+   * collapse to ONE x-axis label, centered over the group's span — so a run of
+   * dates in the same month shows a single "Nov" tick instead of five. When
+   * absent, every point gets its own `label` tick (legacy behaviour). */
+  group?: string;
 }
 export interface TrendSeries {
   label: string;
   color: string;
   points: TrendPoint[];
+  /** Optional per-series formatter for this line's last-value label. Lets a
+   * mixed-unit chart (e.g. Power in B + M:P in %) label each line correctly
+   * while the shared y-axis uses `fmtY`. Falls back to `fmtY` when absent. */
+  fmt?: (n: number) => string;
 }
 
 export interface PlottedSeries {
@@ -15,7 +24,7 @@ export interface PlottedSeries {
   /** SVG polyline "x,y x,y …" in viewBox units. */
   polyline: string;
   dots: { x: number; y: number }[];
-  last: { x: number; y: number; value: number } | null;
+  last: { x: number; y: number; text: string } | null;
 }
 export interface TrendGeometry {
   width: number;
@@ -26,6 +35,9 @@ export interface TrendGeometry {
   padB: number;
   yTicks: { y: number; label: string }[];
   xLabels: { x: number; label: string }[];
+  /** Vertical tick marks delimiting x-label groups (month boundaries). Empty
+   * when points aren't grouped. */
+  xTicks: { x: number; y1: number; y2: number }[];
   series: PlottedSeries[];
   /** y of the zero baseline when the range crosses 0 (for %-growth), else null. */
   zeroY: number | null;
@@ -62,12 +74,13 @@ export function plotTrend(series: TrendSeries[], fmtY: (n: number) => string): T
   const plotted: PlottedSeries[] = series.map(s => {
     const dots = s.points.map((p, i) => ({ x: round(xFor(i)), y: round(yFor(p.y)) }));
     const lastPt = s.points[s.points.length - 1];
+    const label = s.fmt ?? fmtY;
     return {
       label: s.label,
       color: s.color,
       polyline: dots.map(d => `${d.x},${d.y}`).join(' '),
       dots,
-      last: dots.length ? { ...dots[dots.length - 1], value: lastPt.y } : null,
+      last: dots.length ? { ...dots[dots.length - 1], text: label(lastPt.y) } : null,
     };
   });
 
@@ -77,9 +90,34 @@ export function plotTrend(series: TrendSeries[], fmtY: (n: number) => string): T
     return { y: round(yFor(v)), label: fmtY(v) };
   });
 
-  // x labels from the first series that has points
+  // x labels from the first series that has points. When points carry a `group`
+  // key, collapse consecutive same-group points into ONE label centered over
+  // the group's span (e.g. a month shown once), with tick marks at boundaries.
+  // Otherwise fall back to one label per point.
   const ref = series.find(s => s.points.length)?.points ?? [];
-  const xLabels = ref.map((p, i) => ({ x: round(xFor(i)), label: p.label }));
+  const grouped = ref.length > 0 && ref.every(p => p.group != null);
+  const plotBottom = PAD_T + plotH;
+  let xLabels: { x: number; label: string }[];
+  const xTicks: { x: number; y1: number; y2: number }[] = [];
+  if (grouped) {
+    xLabels = [];
+    let start = 0;
+    for (let i = 1; i <= ref.length; i++) {
+      if (i === ref.length || ref[i].group !== ref[start].group) {
+        // label centered over indices [start, i-1]
+        const cx = (xFor(start) + xFor(i - 1)) / 2;
+        xLabels.push({ x: round(cx), label: ref[start].group! });
+        // boundary tick between this group and the next (not after the last)
+        if (i < ref.length) {
+          const bx = (xFor(i - 1) + xFor(i)) / 2;
+          xTicks.push({ x: round(bx), y1: round(plotBottom), y2: round(plotBottom + 1.2) });
+        }
+        start = i;
+      }
+    }
+  } else {
+    xLabels = ref.map((p, i) => ({ x: round(xFor(i)), label: p.label }));
+  }
 
   return {
     width: W,
@@ -90,6 +128,7 @@ export function plotTrend(series: TrendSeries[], fmtY: (n: number) => string): T
     padB: PAD_B,
     yTicks,
     xLabels,
+    xTicks,
     series: plotted,
     zeroY: crossesZero ? round(yFor(0)) : null,
   };

@@ -3,11 +3,17 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { EventService } from '@core/services/event.service';
+import { MapStateStore } from '@core/services/map-state.store';
+import { EventRegistryService } from '@core/services/event-registry.service';
+import { ClockService } from '@core/services/clock.service';
+import { deriveMapView } from '@core/services/derive-map-view';
 import { isSectionMissing, type DataSection } from '@core/services/event-data-status';
 import { deriveEndDate, kingdomCount } from '@shared/utils/kvk-schedule';
 import { CORNER_NAMES, cornerColor, fmtServer, ourServerNumber, serverNumber } from '@shared/utils/corners';
 import { rankByDesc, relationNote } from '@shared/utils/derive-ranks';
 import { buildTemplate, applyCsv } from '@shared/utils/event-csv';
+import type { AllianceHoldings } from '@shared/models/map.model';
+import type { Kingdom } from '@shared/models/event-data.model';
 import { EditableGridComponent, type GridColumn, type GridRow } from './sections/editable-grid.component';
 import { MapEditorPage } from '../map-editor/map-editor.page';
 
@@ -52,6 +58,15 @@ interface SetupServer {
       </button>
     </div>
     @if (saveMsg()) { <p class="de-msg" [class.err]="saveErr()">{{ saveMsg() }}</p> }
+    @if (draftBanner()) {
+      <div class="de-draft">
+        <span>⚠ Unsaved draft found from a previous session. Restore your in-progress edits?</span>
+        <span class="de-draft-actions">
+          <button type="button" class="de-draft-restore" (click)="restoreDraft()">Restore</button>
+          <button type="button" class="de-draft-discard" (click)="discardDraft()">Discard</button>
+        </span>
+      </div>
+    }
 
     @if (!occId() && resolved()) {
       <p class="de-warn">No occurrence found for "{{ slug() }}" on {{ date() }}. Create it first on the Events page.</p>
@@ -130,6 +145,7 @@ interface SetupServer {
             }
             @case ('placerGold') {
               <h3>Placer economy</h3>
+              <p class="de-hint">Gates (by transition), Pillars and Gen /h are <strong>derived from the live map</strong> (read-only) — occupy nodes on the Map tab to change them. Pillars grant buffs/achievements but no placer gold. Only Flags and the peak columns are entered here.</p>
               <app-editable-grid [columns]="PLACER_COLS" [rows]="placerRows()" [fixedRows]="4" [hideMove]="true" (rowsChange)="setPlacer($event)" />
             }
           }
@@ -142,6 +158,9 @@ interface SetupServer {
 export class EventDataEditorPage {
   private readonly route = inject(ActivatedRoute);
   private readonly events = inject(EventService);
+  private readonly mapStore = inject(MapStateStore);
+  private readonly registry = inject(EventRegistryService);
+  private readonly clock = inject(ClockService);
 
   readonly slug = toSignal(this.route.paramMap.pipe(map(p => p.get('slug') ?? '')), { initialValue: '' });
   readonly date = toSignal(this.route.paramMap.pipe(map(p => p.get('date') ?? '')), { initialValue: '' });
@@ -156,6 +175,17 @@ export class EventDataEditorPage {
   readonly saveMsg = signal<string | null>(null);
   readonly saveErr = signal(false);
   readonly showImport = signal(false);
+
+  /** A pending localStorage draft (newer than the DB doc) awaiting Restore/Discard. */
+  private readonly pendingDraft = signal<Doc | null>(null);
+  readonly draftBanner = computed(() => this.pendingDraft() !== null);
+  /** Guards the persist effect from writing while we're still booting / restoring. */
+  private draftReady = false;
+
+  /** The occurrence's live-map holdings (keyed by alliance tag) — the source of
+   * truth for derived placer gates/pillars/gen. Loaded from event_map_state and
+   * recomputed whenever Event Setup (kingdoms/alliances) changes. */
+  readonly mapHoldings = signal<Map<string, AllianceHoldings>>(new Map());
 
   readonly kCount = computed(() => kingdomCount(this.slug()));
   readonly oppCount = computed(() => this.kCount() - 1);
@@ -191,14 +221,18 @@ export class EventDataEditorPage {
     { key: 'power', label: 'Power' },
     { key: 'merits', label: 'Merits' },
   ];
+  // Gates (by transition), Pillars and Gen/h are DERIVED from the live map
+  // (read-only). Pillars give NO placer gold. Only flags + peaks are entered.
   readonly PLACER_COLS: GridColumn[] = [
     { key: 'tag', label: 'Tag', locked: true },
+    { key: 'gatesZ1Z2', label: 'Z1→Z2', locked: true, width: '70px' },
+    { key: 'gatesZ2Z2', label: 'Z2↔Z2', locked: true, width: '70px' },
+    { key: 'gatesZ2Z3', label: 'Z2→Z3', locked: true, width: '70px' },
+    { key: 'pillars', label: 'Pillars', locked: true, width: '70px' },
+    { key: 'genPerHour', label: 'Gen /h', locked: true, width: '90px' },
     { key: 'flags', label: 'Flags' },
     { key: 'flagsPeak', label: 'Flags peak' },
-    { key: 'pillarCities', label: 'Pillars' },
     { key: 'pillarsPeak', label: 'Pillars peak' },
-    { key: 'gates', label: 'Gates' },
-    { key: 'current', label: 'Balance' },
   ];
 
   readonly sections = computed<SectionDef[]>(() => {
@@ -216,8 +250,80 @@ export class EventDataEditorPage {
     return base;
   });
 
+  /** Per-occurrence draft key. Stable across reloads of the same event+date. */
+  private draftKey(): string {
+    return `aoem.draft.${this.slug()}.${this.date()}`;
+  }
+
   constructor() {
     void this.boot();
+    // Persist the working doc to localStorage on every change (reload-survival).
+    // In-memory cross-tab update already works via the shared signal; this only
+    // adds durability. Gated by draftReady so boot()/restore don't self-trigger.
+    effect(() => {
+      const d = this.doc();
+      if (!this.draftReady || !this.occId()) return;
+      try {
+        localStorage.setItem(this.draftKey(), JSON.stringify(d));
+      } catch {
+        /* quota / unavailable — drafts are best-effort */
+      }
+    });
+    // Refresh the live-map holdings whenever the Placer tab is open (DD only).
+    // Reads the occurrence's saved live map + current Event Setup, so gate/pillar
+    // counts reflect the map the moment the admin opens the tab.
+    effect(() => {
+      const id = this.occId();
+      const isPlacer = this.active() === 'placerGold';
+      // touch kingdoms so re-deriving picks up alliance/corner edits
+      const kingdomsLen = (this.ecObj()['kingdoms'] as unknown[] | undefined)?.length ?? 0;
+      void kingdomsLen;
+      if (id && isPlacer) untracked(() => void this.refreshMapHoldings(id));
+    });
+  }
+
+  /** Load the occurrence's saved LIVE map state and derive per-alliance holdings
+   * (gates-by-transition, pillars, gen/h). Empty map → empty holdings. */
+  private async refreshMapHoldings(eventId: string): Promise<void> {
+    const cfg = this.registry.getConfig(this.slug());
+    const geo = cfg?.mapGeometry;
+    if (!geo) {
+      this.mapHoldings.set(new Map());
+      return;
+    }
+    const live = await this.mapStore.load(eventId, this.slug(), 'live');
+    if (!live) {
+      this.mapHoldings.set(new Map());
+      return;
+    }
+    // Build the kingdoms + allianceServer maps deriveMapView needs from Setup.
+    const setup = this.setup();
+    const kingdoms: Kingdom[] = setup.map(s => {
+      const cc = cornerColor(s.corner);
+      return {
+        server: fmtServer(s.num, 'spaced'),
+        display: fmtServer(s.num, 'full'),
+        corner: s.corner,
+        color: cc.color,
+        barColor: cc.barColor,
+        rgb: cc.rgb,
+        us: s.num === this.ourNum,
+      };
+    });
+    const allianceServer: Record<string, string> = {};
+    for (const s of setup) for (const tag of s.alliances) allianceServer[tag] = fmtServer(s.num, 'spaced');
+    const startMs = Date.parse(this.ec('eventStart'));
+    const view = deriveMapView(
+      geo,
+      live.state,
+      live.routes,
+      live.strongholds,
+      kingdoms,
+      allianceServer,
+      startMs,
+      this.clock.now(),
+    );
+    this.mapHoldings.set(new Map(view.holdings.map(h => [h.tag, h])));
   }
 
   private async boot(): Promise<void> {
@@ -228,20 +334,53 @@ export class EventDataEditorPage {
     const dbDoc = await this.events.loadDoc(occ.id);
     if (dbDoc) {
       this.doc.set(dbDoc);
-      return;
+    } else {
+      // Fresh occurrence: start EMPTY — only this occurrence's own dates, blank
+      // kingdoms. Do NOT inherit the committed static JSON (that stays the
+      // dashboard fallback for legacy no-occurrence types only). Every other tab
+      // seeds its own fixed-count blank rows from kCount()/Event Setup.
+      this.doc.set({
+        schemaVersion: 2,
+        eventConfig: {
+          eventStart: occ.startDate,
+          eventEnd: deriveEndDate(this.slug(), occ.startDate),
+          kingdoms: [],
+        },
+      });
     }
-    // Fresh occurrence: start EMPTY — only this occurrence's own dates, blank
-    // kingdoms. Do NOT inherit the committed static JSON (that stays the
-    // dashboard fallback for legacy no-occurrence types only). Every other tab
-    // seeds its own fixed-count blank rows from kCount()/Event Setup.
-    this.doc.set({
-      schemaVersion: 2,
-      eventConfig: {
-        eventStart: occ.startDate,
-        eventEnd: deriveEndDate(this.slug(), occ.startDate),
-        kingdoms: [],
-      },
-    });
+    // A reload-surviving draft? Offer to restore it (don't auto-apply, so the
+    // admin can choose the DB truth). Draft becomes live only via Restore.
+    this.pendingDraft.set(this.readDraft());
+    // From here on, doc changes are the user's — safe to persist.
+    this.draftReady = true;
+  }
+
+  private readDraft(): Doc | null {
+    try {
+      const raw = localStorage.getItem(this.draftKey());
+      if (!raw) return null;
+      const parsed = JSON.parse(raw) as Doc;
+      return parsed && typeof parsed === 'object' ? parsed : null;
+    } catch {
+      return null;
+    }
+  }
+
+  restoreDraft(): void {
+    const d = this.pendingDraft();
+    if (d) this.doc.set(d);
+    this.pendingDraft.set(null);
+    this.saveErr.set(false);
+    this.saveMsg.set('↩ Draft restored — review, then Save to persist.');
+  }
+
+  discardDraft(): void {
+    try {
+      localStorage.removeItem(this.draftKey());
+    } catch {
+      /* ignore */
+    }
+    this.pendingDraft.set(null);
   }
 
   missing(section: DataSection): boolean {
@@ -554,27 +693,46 @@ export class EventDataEditorPage {
     const tags = this.ours()?.alliances ?? [];
     const existing = ((this.obj(this.doc()['placerGold'])['alliances'] as Doc[] | undefined) ?? []);
     const byTag = new Map(existing.map(a => [String(a['tag'] ?? ''), a]));
+    const holdings = this.mapHoldings();
     return Array.from({ length: 4 }, (_, i) => {
-      const a = this.obj(byTag.get(tags[i] ?? ''));
-      const r: GridRow = { tag: tags[i] ?? '' };
-      for (const k of ['flags', 'flagsPeak', 'pillarCities', 'pillarsPeak', 'gates', 'current']) {
+      const tag = tags[i] ?? '';
+      const a = this.obj(byTag.get(tag));
+      const h = holdings.get(tag);
+      const r: GridRow = { tag };
+      // editable: flags + peaks
+      for (const k of ['flags', 'flagsPeak', 'pillarsPeak']) {
         r[k] = a[k] == null ? '' : String(a[k]);
       }
+      // derived (read-only) from the live map — empty map ⇒ 0s
+      r['gatesZ1Z2'] = String(h?.gatesZ1Z2 ?? 0);
+      r['gatesZ2Z2'] = String(h?.gatesZ2Z2 ?? 0);
+      r['gatesZ2Z3'] = String(h?.gatesZ2Z3 ?? 0);
+      r['pillars'] = String(h?.pillars ?? 0);
+      r['genPerHour'] = h ? `+${h.placerPerHour.toLocaleString()}` : '0';
       return r;
     });
   }
   setPlacer(rows: GridRow[]): void {
     const tags = this.ours()?.alliances ?? [];
     const p = this.obj(this.doc()['placerGold']);
-    const alliances = rows.map((r, i) => ({
-      tag: tags[i] ?? '',
-      flags: Number(r['flags']) || 0,
-      flagsPeak: Number(r['flagsPeak']) || 0,
-      pillarCities: Number(r['pillarCities']) || 0,
-      pillarsPeak: Number(r['pillarsPeak']) || 0,
-      gates: Number(r['gates']) || 0,
-      current: r['current']?.trim() === '' ? null : Number(r['current']),
-    }));
+    const holdings = this.mapHoldings();
+    const alliances = rows.map((r, i) => {
+      const tag = tags[i] ?? '';
+      const h = holdings.get(tag);
+      return {
+        tag,
+        flags: Number(r['flags']) || 0,
+        flagsPeak: Number(r['flagsPeak']) || 0,
+        pillarsPeak: Number(r['pillarsPeak']) || 0,
+        // persist the map-derived counts so the dashboard has a fallback when
+        // it loads the doc before the map holdings resolve.
+        pillarCities: h?.pillars ?? 0,
+        gates: h?.gates ?? 0,
+        gatesZ1Z2: h?.gatesZ1Z2 ?? 0,
+        gatesZ2Z2: h?.gatesZ2Z2 ?? 0,
+        gatesZ2Z3: h?.gatesZ2Z3 ?? 0,
+      };
+    });
     this.patch('placerGold', { ...p, alliances });
   }
 
@@ -625,6 +783,8 @@ export class EventDataEditorPage {
       this.saveErr.set(true);
       this.saveMsg.set(`Save failed: ${error}`);
     } else {
+      // Persisted to the DB → the local draft is now redundant; clear it.
+      this.discardDraft();
       this.saveMsg.set('✓ Saved — live on the dashboard now.');
     }
   }

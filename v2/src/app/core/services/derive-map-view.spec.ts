@@ -51,6 +51,38 @@ describe('deriveMapView', () => {
     expect(h.gates).toBe(1);
   });
 
+  it('breaks gates out by transition and counts pillars (DD cities)', () => {
+    const geo: MapGeometry = {
+      viewBox: '0 0 100 100',
+      underlayAsset: 'x.jpg',
+      serverBadges: [],
+      nodes: [
+        { id: 'g_z1', x: 10, y: 10, type: 'gate', transition: 'Z1->Z2', label: 'Z1 Gate', activeDayOffset: 1 },
+        { id: 'g_eye', x: 20, y: 20, type: 'gate', transition: 'Z2<->Z2', label: 'Eye Gate', activeDayOffset: 1 },
+        { id: 'g_z3a', x: 30, y: 30, type: 'gate', transition: 'Z2->Z3', label: 'Inner A', activeDayOffset: 5 },
+        { id: 'g_z3b', x: 35, y: 35, type: 'gate', transition: 'Z2->Z3', label: 'Inner B', activeDayOffset: 5 },
+        { id: 'pillar', x: 40, y: 40, type: 'city', buff: { key: 'attack', label: 'Attack', magnitude: '+10%' }, label: 'Pillar City', activeDayOffset: 1 },
+      ],
+    };
+    const state: Record<string, MapNodeState> = {
+      g_z1: { occupant: 'eRa' },
+      g_eye: { occupant: 'eRa' },
+      g_z3a: { occupant: 'eRa' },
+      g_z3b: { occupant: 'eRa' },
+      pillar: { occupant: 'eRa' },
+    };
+    const v = deriveMapView(geo, state, routes, [], KINGDOMS, ALLIANCE_SERVER, START, Date.parse('2026-10-10T00:00:00Z'));
+    const h = v.holdings.find(x => x.tag === 'eRa')!;
+    expect(h.gates).toBe(4);
+    expect(h.gatesZ1Z2).toBe(1);
+    expect(h.gatesZ2Z2).toBe(1);
+    expect(h.gatesZ2Z3).toBe(2);
+    expect(h.pillars).toBe(1);
+    expect(h.cities).toBe(1);
+    // placer: 3k (Z1→Z2) + 4k (Z2↔Z2) + 8k×2 (Z2→Z3) + 8k (city) = 31k
+    expect(h.placerPerHour).toBe(31000);
+  });
+
   it('schedule-gates node activation from eventStart + activeDayOffset', () => {
     const state: Record<string, MapNodeState> = {};
     // Day 1 (offset 1 = Sep 29): city active, inner gate (offset 5) not yet.
