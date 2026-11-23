@@ -1,0 +1,137 @@
+:host {
+  display: block;
+  padding: 16px;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.auth-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+
+  span {
+    font-size: var(--fs-micro);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  input,
+  select {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    padding: 9px 10px;
+    font: inherit;
+  }
+}
+
+.auth-reveal {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  background: none;
+  border: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-micro);
+  cursor: pointer;
+}
+
+.auth-field-err {
+  color: var(--accent-red);
+  font-size: var(--fs-sub);
+  margin: 2px 0 0;
+}
+
+.auth-err {
+  color: var(--accent-red);
+  font-size: var(--fs-label);
+  margin: 0;
+}
+
+.auth-ok {
+  color: #22c55e;
+  font-size: var(--fs-label);
+  margin: 0;
+}
+
+.auth-note {
+  color: var(--text-muted);
+  font-size: var(--fs-sub);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.auth-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-card2);
+  color: var(--text-primary);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+
+  &.primary {
+    background: var(--kvk-accent);
+    border-color: var(--kvk-accent);
+    color: #0a0c14;
+  }
+  &.ghost {
+    background: transparent;
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.auth-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  a {
+    color: var(--text-muted);
+    font-size: var(--fs-label);
+    text-decoration: none;
+  }
+}
+
+.auth-back {
+  color: var(--text-muted);
+  font-size: var(--fs-label);
+  text-decoration: none;
+}
+
+.auth-server {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: var(--fs-label);
+  color: var(--text-secondary);
+}

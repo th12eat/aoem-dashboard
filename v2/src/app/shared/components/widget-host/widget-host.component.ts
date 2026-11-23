@@ -6,16 +6,36 @@ import type { EventData } from '@shared/models/event-data.model';
 import { getPath } from '@shared/utils/get-path';
 import { WIDGET_REGISTRY } from './widget-registry';
 
+/** True when a bound data slice carries nothing to render: null/undefined, an
+ * empty array, or an object with no own keys (or whose array fields are all
+ * empty, e.g. {actual:[],planned:[]} or {ours,opponents} rosters). */
+function isEmptyData(v: unknown): boolean {
+  if (v == null) return true;
+  if (Array.isArray(v)) return v.length === 0;
+  if (typeof v === 'object') {
+    const vals = Object.values(v as Record<string, unknown>);
+    if (vals.length === 0) return true;
+    // all-array object (routes, research) → empty iff every array is empty
+    if (vals.every(x => Array.isArray(x))) return vals.every(x => (x as unknown[]).length === 0);
+    return false;
+  }
+  return false;
+}
+
 /**
- * Renders a single widget from its config. Looks the component up in
- * WIDGET_REGISTRY by `kind`, resolves the widget's `bind` path against the
- * full EventData, and instantiates the component via ngComponentOutlet with the
- * uniform { config, data } inputs. An unknown kind renders a visible, non-fatal
- * diagnostic rather than throwing.
+ * Renders a single widget from its config, wrapped in the standard section card
+ * (the 1.0 S.card box: dark panel, border, Bebas accent title + underline) —
+ * so every section is visually boxed without each widget re-implementing it.
  *
- * When config.collapsible is set, the widget is wrapped in a card with a
- * clickable header + ▾ chevron (1.0 srcOpen/yieldOpen/costOpen sections). The
- * widget's own titleKey is used as the collapsible header label.
+ * Layout decisions, all here (not in the widgets):
+ *   • card === false  → render bare (e.g. kingdomBar, which has its own chrome)
+ *   • collapsible      → card with a clickable title header + ▾ chevron
+ *   • otherwise        → card with a static title header
+ * The title always comes from config.titleKey and is rendered by the card, so
+ * widgets never draw their own heading (WidgetHost passes titleKey: undefined
+ * down to the inner component).
+ *
+ * An unknown kind renders a visible, non-fatal diagnostic rather than throwing.
  */
 @Component({
   selector: 'app-widget-host',
@@ -24,27 +44,37 @@ import { WIDGET_REGISTRY } from './widget-registry';
   template: `
     @if (!component()) {
       <div class="widget-unknown">Unknown widget kind: "{{ config().kind }}"</div>
-    } @else if (config().collapsible) {
-      <div class="collapse-card">
-        <button type="button" class="collapse-head" (click)="toggle()">
-          <span>{{ config().titleKey ? (config().titleKey! | translate) : '' }}</span>
-          <span class="collapse-caret" [class.open]="open()">▾</span>
-        </button>
-        @if (open()) {
-          <div class="collapse-body">
-            <ng-container *ngComponentOutlet="component()!; inputs: innerInputs()" />
+    } @else if (config().card === false) {
+      <ng-container *ngComponentOutlet="component()!; inputs: innerInputs()" />
+    } @else {
+      <section class="card" [id]="config().anchor || null">
+        @if (title()) {
+          @if (config().collapsible) {
+            <button type="button" class="card-title card-toggle" (click)="toggle()">
+              <span>{{ title()! | translate }}</span>
+              <span class="card-caret" [class.open]="open()">▾</span>
+            </button>
+          } @else {
+            <h3 class="card-title">{{ title()! | translate }}</h3>
+          }
+        }
+        @if (!config().collapsible || open()) {
+          <div class="card-body">
+            @if (dataMissing()) {
+              <p class="widget-missing">{{ 'common.missingData' | translate }}</p>
+            } @else {
+              <ng-container *ngComponentOutlet="component()!; inputs: innerInputs()" />
+            }
           </div>
         }
-      </div>
-    } @else {
-      <ng-container *ngComponentOutlet="component()!; inputs: inputs()" />
+      </section>
     }
   `,
   styles: [
     `
       :host {
         display: block;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
       }
       .widget-unknown {
         border: 1px dashed var(--accent-red);
@@ -54,35 +84,46 @@ import { WIDGET_REGISTRY } from './widget-registry';
         font-family: var(--font-mono);
         font-size: var(--fs-label);
       }
-      .collapse-card {
+      .card {
         background: var(--bg-card);
         border: 1px solid var(--border);
-        border-radius: 9px;
-        overflow: hidden;
+        border-radius: 10px;
+        padding: 16px;
       }
-      .collapse-head {
+      .card-title {
+        font-family: var(--font-display);
+        font-size: var(--fs-h2);
+        font-weight: 400;
+        color: var(--kvk-accent);
+        letter-spacing: 2px;
+        padding: 0 0 6px;
+        margin: 0 0 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .card-toggle {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 14px;
         background: none;
         border: none;
+        border-bottom: 1px solid var(--border);
         cursor: pointer;
-        font-family: var(--font-display);
-        font-size: var(--fs-h3);
-        letter-spacing: 1px;
-        color: var(--text-primary);
+        text-align: left;
       }
-      .collapse-caret {
+      .card-caret {
         color: var(--text-muted);
         transition: transform 0.15s;
       }
-      .collapse-caret.open {
+      .card-caret.open {
         transform: rotate(180deg);
       }
-      .collapse-body {
-        padding: 0 14px 14px;
+      .widget-missing {
+        color: var(--text-muted);
+        font-size: var(--fs-label);
+        font-style: italic;
+        margin: 0;
+        padding: 6px 2px;
       }
     `,
   ],
@@ -92,24 +133,31 @@ export class WidgetHostComponent {
   readonly eventData = input.required<EventData>();
 
   readonly component = computed(() => WIDGET_REGISTRY[this.config().kind] ?? null);
+  readonly title = computed(() => this.config().titleKey);
 
   private readonly userToggled = signal<boolean | null>(null);
   /** Collapsible open state: user choice if any, else config.defaultOpen. */
   readonly open = computed(() => this.userToggled() ?? this.config().defaultOpen === true);
 
-  /** Inputs handed to the rendered widget. `data` is the bind-resolved slice
-   * (or the whole EventData when no bind is given). */
-  readonly inputs = computed<Record<string, unknown>>(() => ({
-    config: this.config(),
-    data: getPath(this.eventData(), this.config().bind),
-  }));
+  /** The bind-resolved data slice for the inner widget. */
+  private readonly boundData = computed(() => getPath(this.eventData(), this.config().bind));
 
-  /** Inside a collapsible card the title is rendered by the card header, so
-   * suppress the widget's own duplicate title. */
+  /** Inputs for the inner widget: the bind-resolved data slice, and a config
+   * with titleKey stripped (the card owns the title). */
   readonly innerInputs = computed<Record<string, unknown>>(() => ({
     config: { ...this.config(), titleKey: undefined },
-    data: getPath(this.eventData(), this.config().bind),
+    data: this.boundData(),
   }));
+
+  /** Show a "data not available" notice when a DATA-BOUND widget has an empty
+   * slice (empty array / object / null). Widgets that render from `options`
+   * (no bind — richText, cardGrid, specTable, scheduleWindows) are never
+   * flagged. The map widget is exempt (it draws geometry even when empty). */
+  readonly dataMissing = computed(() => {
+    const cfg = this.config();
+    if (!cfg.bind || cfg.kind === 'map') return false;
+    return isEmptyData(this.boundData());
+  });
 
   toggle(): void {
     this.userToggled.set(!this.open());

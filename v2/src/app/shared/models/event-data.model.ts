@@ -22,6 +22,25 @@ export interface NumericValue {
   display: string;
 }
 
+/** A participating kingdom/server with its map-corner identity + colour. The
+ * colour is instance data (the starting corner — and thus the colour — changes
+ * per event), so every per-server visual reads it from here, never hardcoded. */
+export interface Kingdom {
+  server: string;
+  /** Display label (e.g. "Era #008"). */
+  display: string;
+  /** Map corner (e.g. "East"). */
+  corner?: string;
+  /** Corner colour (hex) — muted, used on the map/scouting/crests. */
+  color: string;
+  /** Brighter colour for the Kingdom Bar gradient's light end (v1.0 GRAD.top).
+   * Optional; falls back to `color` when absent. */
+  barColor?: string;
+  /** rgb triplet for translucent tints/glows. */
+  rgb: string;
+  us: boolean;
+}
+
 export interface EventMeta {
   eventStart: string;
   eventEnd: string;
@@ -31,6 +50,10 @@ export interface EventMeta {
   ourServer: string;
   ourAlliances: string[];
   corners: Record<string, string>;
+  /** Structured per-server identity + colour (data-driven). */
+  kingdoms: Kingdom[];
+  /** Verbatim headline fight time (e.g. Temple of Zeus), shown in the header. */
+  zeusTime?: string;
   notes: string;
   eventOver: boolean;
 }
@@ -39,6 +62,12 @@ export interface ScoreboardRow {
   server: string;
   points: NumericValue;
   isOurs: boolean;
+  /** Kingdom display label + colour (joined from meta.kingdoms). */
+  display: string;
+  color: string;
+  /** Brighter bar colour (kingdoms.barColor), falls back to color. */
+  barColor: string;
+  rgb: string;
 }
 
 export interface AlliancePointsRow {
@@ -52,6 +81,15 @@ export interface DiplomacyRow {
   alliance: string;
   relation: string;
   notes: string;
+  /** Server corner colour (joined from meta.kingdoms). */
+  color: string;
+  /** Which fronts we fight on: "all" | "none" | a list of front keys. The ROE
+   * widget expands this against the front columns the config defines, so the
+   * front vocabulary stays in the template and only the per-occurrence value
+   * lives in data. */
+  fronts: 'all' | 'none' | string[];
+  /** Explicit ally flag (relation === 'ally'). */
+  ally: boolean;
 }
 
 export interface RosterAlliance {
@@ -74,6 +112,10 @@ export interface ServerRoster {
   sdRank: number | null;
   priority?: string;
   note?: string;
+  /** Kingdom display label + colour (joined from meta.kingdoms). */
+  display: string;
+  color: string;
+  rgb: string;
   alliances: RosterAlliance[];
   players: RosterPlayer[];
 }
@@ -87,12 +129,19 @@ export interface ResearchData {
 export interface TierMatrix {
   labels: string[];
   byServer: Record<string, number[]>;
+  /** server → corner colour (joined from meta.kingdoms) for column headers. */
+  colors: Record<string, string>;
+  /** our server name, for the "· Us" marker. */
+  ourServer: string;
 }
 
 /** Matrix: power/merit curves sampled at rank cut-offs, per server. */
 export interface DepthMatrix {
   ranks: number[];
   byServer: Record<string, { power: number[]; merits: number[] }>;
+  /** server → corner colour (joined from meta.kingdoms) for column headers. */
+  colors: Record<string, string>;
+  ourServer: string;
 }
 
 export interface EventData {
@@ -112,6 +161,34 @@ export interface EventData {
   /** Per-alliance node/flag economy (1.0 placerGold). Drives achievement
    * derives (flags/pillars high-water marks). Empty when no live map data. */
   placerGold: PlacerGoldAlliance[];
+  /** Placer-gold economy (cap + balances) for the balances table. */
+  placer: PlacerGold;
+  /** Node Control / buffs rows (derived from map ownership). Empty until live
+   * map data exists. */
+  nodeControl: NodeControlRow[];
+  /** Raw per-node live state + routes (from the data file). The page joins this
+   * with the event's map geometry into `mapView` — the single source of truth
+   * the map + derived tables read. */
+  mapRaw: {
+    state: Record<string, unknown>;
+    routes: { actual: unknown[]; planned: unknown[] };
+    strongholds: unknown[];
+    /** Dual-map blobs from the DB (event_map_state). Legacy fields above track
+     * the LIVE doc so the economy tables are unaffected; these carry each full
+     * map. `plan` is undefined when no plan row has been saved yet. */
+    live?: { state: Record<string, unknown>; routes: { actual: unknown[]; planned: unknown[] }; strongholds: unknown[] };
+    plan?: { state: Record<string, unknown>; routes: { actual: unknown[]; planned: unknown[] }; strongholds: unknown[] };
+  };
+  /** alliance tag → server name, derived from ourAlliances + scouting rosters.
+   * Lets the map colour opponent-held nodes by their server corner. */
+  allianceServer: Record<string, string>;
+  /** Derived LIVE map view (single source of truth for the economy tables).
+   * Undefined when the event has no map geometry. */
+  mapView?: import('./map.model').MapView;
+  /** Derived PLAN map view (our-server pre-set plan; falls back to live). */
+  mapViewPlan?: import('./map.model').MapView;
+  /** Both derived maps for the KvkMap widget's Live/Plan toggle. */
+  mapViews?: { live: import('./map.model').MapView; plan: import('./map.model').MapView };
 }
 
 /** Per-alliance flag/city economy used by achievement progress derives. */
@@ -122,4 +199,27 @@ export interface PlacerGoldAlliance {
   pillarCities: number;
   pillarsPeak: number;
   gates: number;
+  /** Current accrued placer-gold balance (tracked value; null if unknown). */
+  current: number | null;
+  /** Flags currently under construction (shown as "+n"). */
+  flagsBuilding: number;
+}
+
+/** Placer-gold economy config + per-alliance balances (1.0 placerGold). */
+export interface PlacerGold {
+  /** Storage cap (bar denominator). */
+  cap: number;
+  alliances: PlacerGoldAlliance[];
+}
+
+/** A row in the Node Control / buffs table — derived from map node ownership.
+ * `buffs` is the set of granted buff keys (e.g. 'attack'); `perHour` is passive
+ * energy generation. Empty until live map data exists. */
+export interface NodeControlRow {
+  tag: string;
+  server: string;
+  color: string;
+  rgb: string;
+  buffs: string[];
+  perHour: number;
 }

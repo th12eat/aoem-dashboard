@@ -1,56 +1,92 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import type { WidgetConfig } from '@shared/models/event-dashboard-config.model';
 import type { DepthMatrix } from '@shared/models/event-data.model';
+import { extremeCell } from '@shared/utils/extreme';
 
 /**
- * Generic matrix renderer for a DepthMatrix ({ ranks, byServer:{power,merits} }):
- * shows the power (or merit) value at each rank cut-off, per server. The metric
- * is chosen by options.metric. Numbers are shown verbatim (already in millions
- * in the source) with an "M" suffix. Replaces per-dashboard "roster depth"
- * tables with one widget.
+ * Roster depth by rank (1.0 "Roster Depth by Rank"): rank cut-offs as ROWS,
+ * servers as COLUMNS, showing the power (or merits) value in millions at each
+ * rank. A Power|Merits TOGGLE at the top-right switches the metric in place.
+ * Best value per row is green, worst red (shared extremeCell). Column headers
+ * tinted by each server's corner colour (data-driven from the matrix).
  */
-interface DepthOptions {
-  metric?: 'power' | 'merits';
-  ourServer?: string;
-}
-
 @Component({
   selector: 'app-depth-table',
   imports: [TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (title()) {
-      <h3 class="widget-title">{{ title()! | translate }}</h3>
-    }
-    <table class="points-table">
-      <thead>
-        <tr>
-          <th>{{ 'widget.scoreboard.server' | translate }}</th>
-          @for (rank of matrix().ranks; track rank) {
-            <th>#{{ rank }}</th>
-          }
-        </tr>
-      </thead>
-      <tbody>
-        @for (server of servers(); track server) {
-          <tr [class.is-ours]="server === ourServer()">
-            <td class="name">{{ server }}</td>
-            @for (v of curve(server); track $index) {
-              <td>{{ v }}M</td>
+    <div class="dt-toolbar">
+      <div class="dt-toggle">
+        <button type="button" [class.on]="metric() === 'power'" (click)="metric.set('power')">
+          {{ 'widget.depth.power' | translate }}
+        </button>
+        <button type="button" [class.on]="metric() === 'merits'" (click)="metric.set('merits')">
+          {{ 'widget.depth.merits' | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="dt-scroll">
+      <table class="points-table">
+        <thead>
+          <tr>
+            <th>{{ 'widget.depth.rank' | translate }}</th>
+            @for (server of servers(); track server) {
+              <th class="rt" [style.color]="matrix().colors[server]">{{ label(server) }}</th>
             }
           </tr>
-        }
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          @for (row of rows(); track row.rank) {
+            <tr>
+              <td class="name">#{{ row.rank }}</td>
+              @for (c of row.cells; track $index) {
+                <td class="rt" [style.color]="c.color" [style.font-weight]="c.weight">{{ c.text }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   `,
   styles: [
     `
       :host {
         display: block;
       }
-      tr.is-ours td {
-        background: rgba(var(--kvk-accent-rgb), 0.07);
+      .dt-toolbar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 8px;
+      }
+      .dt-toggle {
+        display: inline-flex;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .dt-toggle button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px 14px;
+        font-family: var(--font-ui);
+        font-size: var(--fs-label);
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--text-muted);
+      }
+      .dt-toggle button.on {
+        background: rgba(var(--kvk-accent-rgb), 0.16);
+        color: var(--kvk-accent);
+      }
+      .dt-scroll {
+        overflow-x: auto;
+      }
+      th.rt,
+      td.rt {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
       }
     `,
   ],
@@ -59,16 +95,25 @@ export class DepthTableComponent {
   readonly config = input.required<WidgetConfig>();
   readonly data = input.required<unknown>();
 
-  private readonly opts = computed<DepthOptions>(() => (this.config().options as DepthOptions) ?? {});
-  readonly title = computed(() => this.config().titleKey);
-  readonly matrix = computed<DepthMatrix>(() => (this.data() as DepthMatrix | undefined) ?? { ranks: [], byServer: {} });
-  readonly servers = computed(() => Object.keys(this.matrix().byServer));
-  readonly metric = computed(() => this.opts().metric ?? 'power');
-  readonly ourServer = computed(() => this.opts().ourServer);
+  readonly metric = signal<'power' | 'merits'>('power');
 
-  curve(server: string): number[] {
-    const s = this.matrix().byServer[server];
-    if (!s) return [];
-    return this.metric() === 'merits' ? s.merits : s.power;
+  readonly matrix = computed<DepthMatrix>(
+    () => (this.data() as DepthMatrix | undefined) ?? { ranks: [], byServer: {}, colors: {}, ourServer: '' },
+  );
+  readonly servers = computed(() => Object.keys(this.matrix().byServer));
+
+  readonly rows = computed(() => {
+    const m = this.matrix();
+    const metric = this.metric();
+    const servers = this.servers();
+    return m.ranks.map((rank, ri) => {
+      const vals = servers.map(s => m.byServer[s]?.[metric]?.[ri] ?? null);
+      return { rank, cells: vals.map(v => extremeCell(vals, v, v == null ? '—' : `${v}M`)) };
+    });
+  });
+
+  label(server: string): string {
+    const short = server.replace('Era ', '');
+    return server === this.matrix().ourServer ? `${short} · Us` : short;
   }
 }

@@ -1,0 +1,157 @@
+@if (!hasMap()) {
+  <p class="map-empty">{{ 'widget.map.empty' | translate }}</p>
+} @else {
+  <div class="map-toolbar">
+    <div class="map-toggle">
+      <button type="button" [class.on]="mode() === 'live'" (click)="setMode('live')">{{ 'widget.map.live' | translate }}</button>
+      <button type="button" [class.on]="mode() === 'plan'" (click)="setMode('plan')">{{ 'widget.map.plan' | translate }}</button>
+    </div>
+  </div>
+
+  <div
+    class="map-wrap"
+    #wrap
+    (wheel)="onWheel($event)"
+    (pointerdown)="onPanStart($event)"
+    (pointermove)="onPanMove($event)"
+    (pointerup)="onPanEnd($event)"
+    (pointercancel)="onPanEnd($event)"
+  >
+    @if (zoom() > 1.001) {
+      <button type="button" class="map-zoom-reset" (click)="resetZoom()" title="Reset zoom">⤢ reset</button>
+    }
+    <div class="map-view" [style.transform]="transform()">
+      <img class="map-underlay" [src]="underlay()" alt="" draggable="false" />
+      <svg class="map-svg" [attr.viewBox]="viewBox()" preserveAspectRatio="none">
+      <!-- siege underlays (pulsing red) -->
+      @for (ln of lines(); track ln.key) {
+        @if (ln.siege) {
+          <line class="route-siege" [attr.x1]="ln.x1" [attr.y1]="ln.y1" [attr.x2]="ln.x2" [attr.y2]="ln.y2" />
+        }
+      }
+      <!-- candy-cane edges: solid base + optional striped overlay -->
+      @for (ln of lines(); track ln.key) {
+        <!-- base (full colour) -->
+        <line
+          [class.route-building]="ln.pathing"
+          [attr.x1]="ln.x1"
+          [attr.y1]="ln.y1"
+          [attr.x2]="ln.x2"
+          [attr.y2]="ln.y2"
+          [attr.stroke]="ln.base"
+          [attr.stroke-width]="ln.strokeWidth"
+          stroke-linecap="round"
+          [attr.stroke-dasharray]="ln.severed ? '0.8 1.2' : ln.pathing ? '1.6 1.1' : null"
+          [attr.opacity]="ln.opacity"
+          (mouseenter)="hoverOwner(ln.owners[0])"
+          (mouseleave)="hoverOwner(null)"
+        />
+        <!-- stripe overlay (2nd colour or white when pathing) -->
+        @if (ln.stripe) {
+          <line
+            [class.route-candy]="ln.animated"
+            [attr.x1]="ln.x1"
+            [attr.y1]="ln.y1"
+            [attr.x2]="ln.x2"
+            [attr.y2]="ln.y2"
+            [attr.stroke]="ln.stripe"
+            [attr.stroke-width]="ln.strokeWidth"
+            stroke-dasharray="1.6 1.6"
+            [attr.opacity]="ln.opacity"
+          />
+        }
+      }
+      <!-- nodes -->
+      @for (n of renderNodes(); track n.id) {
+        <circle
+          [class.node-siege]="n.siege"
+          [attr.cx]="n.cx"
+          [attr.cy]="n.cy"
+          [attr.r]="n.r"
+          [attr.fill]="n.fill"
+          [attr.stroke]="n.stroke"
+          [attr.stroke-width]="n.strokeWidth"
+          [attr.opacity]="n.opacity"
+          [class.clickable]="n.occupant"
+          (mouseenter)="hoverOwner(n.occupant)"
+          (mouseleave)="hoverOwner(null)"
+          (click)="clickNode(n.occupant)"
+        >
+          <title>{{ n.tip }}</title>
+        </circle>
+      }
+      <!-- strongholds (SH home / SSH forward base) as rotated diamonds -->
+      @for (s of strongholds(); track $index) {
+        <rect
+          [class.node-siege]="s.siege"
+          [attr.x]="s.x - 1.1"
+          [attr.y]="s.y - 1.1"
+          width="2.2"
+          height="2.2"
+          [attr.fill]="s.color"
+          [attr.stroke]="s.siege ? '#ef4444' : '#0a0c14'"
+          stroke-width="0.3"
+          [attr.transform]="'rotate(45 ' + s.x + ' ' + s.y + ')'"
+          [attr.opacity]="s.fade ? 0.18 : 1"
+        >
+          <title>{{ s.kind === 'sh' ? 'Stronghold' : 'Sub-Stronghold' }} ({{ s.owner }})</title>
+        </rect>
+      }
+      <!-- server corner hit-areas (live only) -->
+      @if (mode() === 'live') {
+        @for (b of serverBadges(); track b.server) {
+          <circle
+            class="map-badge"
+            [attr.cx]="b.x"
+            [attr.cy]="b.y"
+            r="6.5"
+            fill="transparent"
+            (click)="clickBadge(b.server)"
+          >
+            <title>{{ b.server }}</title>
+          </circle>
+        }
+      }
+      </svg>
+    </div>
+  </div>
+
+  <!-- legend -->
+  <div class="map-legend">
+    @if (focusKey(); as fk) {
+      <div class="legend-row legend-focus">
+        <span class="legend-sq" [style.background]="fk.color"></span>
+        <strong>{{ fk.server }}</strong> alliances
+        <button type="button" class="legend-reset" (click)="focus.set(null)">reset</button>
+      </div>
+      <div class="legend-row">
+        @for (a of fk.alliances; track a.tag) {
+          <span class="legend-item"><span class="legend-sq" [style.background]="a.color"></span>{{ a.tag }}</span>
+        }
+      </div>
+    } @else {
+      <div class="legend-row">
+        @for (a of ourKey(); track a.tag) {
+          <span class="legend-item"><span class="legend-sq" [style.background]="a.color"></span>{{ a.tag }}</span>
+        }
+      </div>
+      @if (mode() === 'live' && serverKey().length) {
+        <div class="legend-row legend-servers">
+          @for (s of serverKey(); track s.server) {
+            <button type="button" class="legend-item clickable" (click)="clickBadge(s.server)" [title]="'Focus ' + s.server">
+              <span class="legend-sq" [style.background]="s.color"></span>{{ s.label }}
+            </button>
+          }
+        </div>
+      }
+    }
+    <!-- symbol / status key -->
+    <div class="legend-row legend-symbols">
+      <span class="legend-item"><span class="legend-diamond"></span>{{ 'widget.map.ssh' | translate }}</span>
+      <span class="legend-item"><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="#94a3b8" stroke-width="2" /></svg>{{ 'widget.map.connected' | translate }}</span>
+      <span class="legend-item"><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="#94a3b8" stroke-width="2" stroke-dasharray="3 3" /></svg>{{ 'widget.map.building' | translate }}</span>
+      <span class="legend-item legend-dim"><svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" stroke="#94a3b8" stroke-width="2" /></svg>{{ 'widget.map.disconnected' | translate }}</span>
+      <span class="legend-item"><span class="legend-siege"></span>{{ 'widget.map.siege' | translate }}</span>
+    </div>
+  </div>
+}

@@ -1,4 +1,5 @@
 import type { EventDashboardConfig } from '@shared/models/event-dashboard-config.model';
+import { STORMLANDS_MAP } from './stormlands.map';
 
 /**
  * Stormlands — first dashboard on the 2.0 config model and the reference for
@@ -15,38 +16,30 @@ import type { EventDashboardConfig } from '@shared/models/event-dashboard-config
  * Tabs mirror 1.0: Overview · Scouting · Points · PvE Guide.
  */
 
-// Per-corner server colours (1.0 KingdomBar gradients, flattened to a mid tone).
-const SERVER_COLORS: Record<string, string> = {
-  'Era #039': '#3d7cc4', // North / blue
-  'Era 8': '#9b6dff', // East / purple (us)
-  'Era #015': '#3daa6d', // South / green
-  'Era #038': '#ef9f6b', // West / orange
-};
-const KINGDOM_ORDER = ['Era #039', 'Era 8', 'Era #015', 'Era #038'];
-
 export const STORMLANDS_CONFIG: EventDashboardConfig = {
   slug: 'stormlands',
   kvkTheme: 'stormlands',
   titleKey: 'stormlands.title',
-  tagKey: 'stormlands.tag',
+  // Single grey line ABOVE the title (1.0). No separate tag line.
   subtitleKey: 'stormlands.subtitle',
   header: {
+    // Template-level header chrome only. Instance data — the server crests and
+    // the Zeus fight time — is derived from the data file (meta.kingdoms /
+    // meta.zeusTime) by EventHeaderComponent, not listed here.
     backgroundAsset: 'assets/kvk-bg-stormlands.jpg',
     timezone: 'UTC+0',
-    fightTime: '11:00 UTC',
     fightTimeLabelKey: 'stormlands.header.zeus',
     calendarStub: true,
     vsAfterIndex: 1,
-    crests: [
-      { label: 'Era #008', color: '#9a6dd4', rgb: '154,109,212', us: true },
-      { label: 'Era #039', color: '#5b8bc4', rgb: '91,139,196' },
-      { label: 'Era #038', color: '#d4934a', rgb: '212,147,74' },
-      { label: 'Era #015', color: '#5aa87a', rgb: '90,168,122' },
-    ],
     buttons: [
-      { glyph: '📜', titleKey: 'stormlands.header.jumpObjectives', jumpToTab: 'points' },
-      { glyph: '❓', titleKey: 'stormlands.header.whatIs' },
+      { glyph: '📜', titleKey: 'stormlands.header.jumpObjectives', jumpToTab: 'overview', jumpToAnchor: 'daily-objectives' },
+      { glyph: '❓', titleKey: 'stormlands.header.whatIs', help: true },
     ],
+    help: {
+      titleKey: 'stormlands.header.whatIs',
+      image: 'assets/stormlands-map.png',
+      body: 'Stormlands is a 7-day, four-kingdom land grab on a shared desert map. Alliances build a Stronghold and expand outward with connected flags, capturing gates/docks and Energy Cities for Storm Energy and Storm Points. The map opens zone by zone (Eroded Wasteland → Eroded Forbidden Zone → Eternal Realm), climaxing in the Temple of Zeus fight on Day 7. Most points wins — and PvE contribution (gathering, tribes, explorations, Altar damage) matters as much as PvP. This is the final event of the season.',
+    },
     badge: {
       labelKey: 'stormlands.header.incursion',
       liveLabelKey: 'stormlands.header.incursionLive',
@@ -61,37 +54,25 @@ export const STORMLANDS_CONFIG: EventDashboardConfig = {
       lockedBeforeKey: 'stormlands.header.incursionBefore',
       lockedAfterKey: 'stormlands.header.incursionAfter',
       jumpToTab: 'overview',
+      jumpToAnchor: 'incursion-schedule',
     },
   },
-  dataSource: { kind: 'static', slug: 'stormlands' },
+  mapGeometry: STORMLANDS_MAP,
+  dataSource: { kind: 'supabase', typeSlug: 'stormlands' },
   tabs: [
     // ───────────────────────────── OVERVIEW ─────────────────────────────
     {
       id: 'overview',
       labelKey: 'stormlands.tabs.overview',
       widgets: [
+        // Rules of Engagement first (matches 1.0 Overview order). The persistent
+        // kingdom-standings bar lives above the tabs (see EventDashboardPage),
+        // so there's no separate kingdom scoreboard here.
         {
-          kind: 'kingdomBar',
-          bind: 'kingdomScoreboard',
-          options: { colors: SERVER_COLORS, order: KINGDOM_ORDER },
-        },
-        { kind: 'scoreboard', bind: 'kingdomScoreboard', titleKey: 'stormlands.overview.kingdoms' },
-        {
-          kind: 'timeline',
-          titleKey: 'stormlands.overview.timeline',
-          options: {
-            stages: [
-              { dayLabel: 'Day 1', label: 'Eroded Wasteland', startISO: '2026-11-02T00:00:00Z', color: '#c9a878' },
-              { dayLabel: 'Day 2–5', label: 'Zone 2 — Forts & Cities', startISO: '2026-11-03T00:00:00Z', color: '#5b9bd8' },
-              { dayLabel: 'Day 6–8', label: 'Zone 3 — Storm Eye', startISO: '2026-11-07T00:00:00Z', color: '#ef9f6b' },
-              { dayLabel: 'Day 9–11', label: 'Zone 4 — Oblivion', startISO: '2026-11-10T00:00:00Z', color: '#b06bd0' },
-              { dayLabel: 'Day 12', label: 'Zeus Battle I', startISO: '2026-11-13T00:00:00Z', color: '#8fc4f0' },
-              { dayLabel: 'Day 13–14', label: 'Zeus Battle II', startISO: '2026-11-14T00:00:00Z', color: '#8fc4f0' },
-            ],
-          },
-        },
-        {
+          // Rows come from the data file's `diplomacy` (per-occurrence). Only
+          // the front columns — the same every Stormlands — live here.
           kind: 'roeTable',
+          bind: 'diplomacy',
           titleKey: 'stormlands.overview.roe',
           options: {
             columns: [
@@ -101,16 +82,68 @@ export const STORMLANDS_CONFIG: EventDashboardConfig = {
               { key: 'citadels', label: 'Citadels' },
               { key: 'citiesGates', label: 'Cities / Gates' },
             ],
+          },
+        },
+        {
+          kind: 'map',
+          bind: 'mapViews',
+          titleKey: 'stormlands.overview.map',
+          options: { geometry: STORMLANDS_MAP },
+        },
+        {
+          // Buffs (Attack/Defense) derived from the map's energy-city ownership.
+          kind: 'nodeControl',
+          bind: 'mapView',
+          titleKey: 'stormlands.overview.nodeControl',
+          collapsible: true,
+          defaultOpen: false,
+        },
+        {
+          // Bound to meta: stage dates are computed from meta.eventStart +
+          // each stage's dayOffset, so a new occurrence needs no config change.
+          kind: 'timeline',
+          bind: 'meta',
+          titleKey: 'stormlands.overview.timeline',
+          options: {
+            zones: [
+              { id: 'z1', label: 'Zone 1', bright: '#c9a878', dark: '#5a4a30' },
+              { id: 'z2', label: 'Zone 2', bright: '#5b9bd8', dark: '#273f5a' },
+              { id: 'z3', label: 'Zone 3', bright: '#ef9f6b', dark: '#5f3e26' },
+              { id: 'z4', label: 'Zone 4', bright: '#b06bd0', dark: '#432854' },
+              { id: 'temple', label: 'Temple', bright: '#8fc4f0', dark: '#2a3f54' },
+            ],
+            stages: [
+              { dayLabel: 'Day 1', label: 'Eroded Wasteland', zone: 'z1', dayOffset: 0 },
+              { dayLabel: 'Day 2–5', label: 'Zone 2 — Forts & Cities', zone: 'z2', dayOffset: 1 },
+              { dayLabel: 'Day 6–8', label: 'Zone 3 — Storm Eye', zone: 'z3', dayOffset: 5 },
+              { dayLabel: 'Day 9–11', label: 'Zone 4 — Oblivion', zone: 'z4', dayOffset: 8 },
+              { dayLabel: 'Day 12', label: 'Zeus Battle I', zone: 'temple', dayOffset: 11 },
+              { dayLabel: 'Day 13–14', label: 'Zeus Battle II', zone: 'temple', dayOffset: 12 },
+            ],
+          },
+        },
+        {
+          kind: 'specTable',
+          titleKey: 'stormlands.overview.objectives',
+          anchor: 'daily-objectives',
+          options: {
+            intro: 'Resets 00:00 UTC daily. Track your own progress toward each target.',
+            columns: [{ header: 'Objective' }, { header: 'Daily Target', align: 'right', color: '#ef9f6b' }, { header: 'Notes' }],
             rows: [
-              { server: 'Era #039', color: '#5b8bc4', neutral: true, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
-              { server: 'Era #038', color: '#d4934a', neutral: true, fight: { openField: false, riverland: false, farms: false, citadels: false, citiesGates: false } },
-              { server: 'Era #015', color: '#5aa87a', fight: { openField: true, riverland: true, farms: true, citadels: true, citiesGates: true } },
+              ['Monster Elimination', '0 / 2M', 'Defeat Storm Wolves & world monsters inside Stormlands'],
+              ['Gathering', '0 / 6M', 'Gather within the Stormlands map (20 pts / 100 resources)'],
+              ['Storm Erosion', '0 / 15M', 'Damage Erosion Beasts & Giants during Storm Erosion (1:1 pts per dmg)'],
+              ['Storm Weapons', 'Unlimited', 'Upgrade bonus scales with weapon level (Lv1 +1M, +500k each level)'],
+              ['Altar Offerings', 'Unlimited', 'Storm offering (100 offer) earns 80K pts each'],
+              ['Ancient Storm Monument', 'Unlimited', 'Daily exploration quests'],
+              ['Battle', 'Unlimited', 'Unlimited — scales with eliminations you achieve'],
             ],
           },
         },
         {
           kind: 'scheduleWindows',
           titleKey: 'stormlands.overview.erosion',
+          anchor: 'erosion-schedule',
           options: {
             intro:
               'The alliance holding a Storm Altar triggers Storm Erosion daily. Our server default window is 19:00 UTC — be online to burst the waves. Damage pays 1:1 in Storm Points (15M daily cap) and drops Storm Fragments.',
@@ -127,6 +160,7 @@ export const STORMLANDS_CONFIG: EventDashboardConfig = {
         {
           kind: 'scheduleWindows',
           titleKey: 'stormlands.overview.incursion',
+          anchor: 'incursion-schedule',
           options: {
             intro:
               'Three 1-hour Hydra windows daily. Z2 gates open during each — march freely. Only the FINAL HIT scores: 200M Storm Points to the alliance + server that lands it.',
@@ -144,7 +178,6 @@ export const STORMLANDS_CONFIG: EventDashboardConfig = {
             lockedAfter: 'Storm Incursion has ended (ran Day 4–8)',
           },
         },
-        { kind: 'map', bind: 'mapState', titleKey: 'stormlands.overview.map' },
       ],
     },
 
@@ -155,23 +188,12 @@ export const STORMLANDS_CONFIG: EventDashboardConfig = {
       widgets: [
         { kind: 'scoutingGrid', bind: 'research', titleKey: 'stormlands.research.alliances', options: { show: 'alliances' } },
         { kind: 'scoutingGrid', bind: 'research', titleKey: 'stormlands.research.players', options: { show: 'players' } },
+        { kind: 'tierTable', bind: 'serverTiers', titleKey: 'stormlands.research.tiers' },
         {
-          kind: 'tierTable',
-          bind: 'serverTiers',
-          titleKey: 'stormlands.research.tiers',
-          options: { ourServer: 'Era 8' },
-        },
-        {
+          // Single table with an in-widget Power|Merits toggle (1.0 parity).
           kind: 'depthTable',
           bind: 'serverDepth',
-          titleKey: 'stormlands.research.depthPower',
-          options: { metric: 'power', ourServer: 'Era 8' },
-        },
-        {
-          kind: 'depthTable',
-          bind: 'serverDepth',
-          titleKey: 'stormlands.research.depthMerits',
-          options: { metric: 'merits', ourServer: 'Era 8' },
+          titleKey: 'stormlands.research.depth',
         },
       ],
     },

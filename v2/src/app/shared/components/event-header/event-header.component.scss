@@ -6,6 +6,26 @@
   display: block;
 }
 
+/* Constrain the header (and its background image) to the standard content
+   width, centred — matching 1.0 (maxWidth:960). Overrides the global
+   full-bleed .kvk-header so the bg image doesn't stretch across wide viewports. */
+:host .kvk-header {
+  max-width: var(--w-content);
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Grey subtitle sits ABOVE the title (1.0): swap its top margin for bottom. */
+:host .kvk-subtitle {
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+/* Stormlands-style: the whole title is the event accent colour (not white). */
+:host .kvk-title-accent {
+  color: var(--kvk-accent);
+}
+
 /* top-right jump buttons */
 .hdr-pills-top {
   position: absolute;
@@ -286,4 +306,57 @@
   letter-spacing: 0.5px;
   color: var(--kvk-accent, #d4a843);
   line-height: 1.2;
+}
+
+/* help modal (❓) */
+.help-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.help-modal {
+  position: relative;
+  max-width: 520px;
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--kvk-accent-dim);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.help-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.help-close:hover {
+  color: var(--text-primary);
+}
+.help-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  letter-spacing: 1px;
+  color: var(--kvk-accent);
+  margin: 0 0 12px;
+}
+.help-img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.help-body {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
 }

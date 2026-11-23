@@ -13,6 +13,11 @@ const RAW = {
     ourServer: 'Era 8',
     ourAlliances: ['eRa', 'REU'],
     corners: { 'Era 8': 'East/purple' },
+    kingdoms: [
+      { server: 'Era 8', display: 'Era #008', corner: 'East', color: '#9a6dd4', rgb: '154,109,212', us: true },
+      { server: 'Era #039', display: 'Era #039', corner: 'North', color: '#5b8bc4', rgb: '91,139,196' },
+    ],
+    zeusTime: '11:00 UTC',
     notes: '4-kingdom Stormlands.',
     eventOver: false,
   },
@@ -25,7 +30,7 @@ const RAW = {
     { tag: 'eRa', points: '21,613,610,877' },
     { tag: 'AuR', points: '—' },
   ],
-  diplomacy: [{ id: 3, server: 'Era #015', alliance: 'TBD', relation: 'hostile', notes: 'Target.' }],
+  diplomacy: [{ id: 3, server: 'Era #039', alliance: 'TBD', relation: 'hostile', fronts: 'all', notes: 'Target.' }],
   research: {
     ours: {
       server: 'Era 8',
@@ -66,6 +71,31 @@ describe('normalizeEventData', () => {
     expect(ours.isOurs).toBe(true);
     const other = data.kingdomScoreboard.find(r => r.server === 'Era #039')!;
     expect(other.isOurs).toBe(false);
+  });
+
+  it('joins kingdom identity + colour onto scoreboard rows (data-driven)', () => {
+    const ours = data.kingdomScoreboard.find(r => r.server === 'Era 8')!;
+    expect(ours.display).toBe('Era #008');
+    expect(ours.color).toBe('#9a6dd4');
+    expect(ours.rgb).toBe('154,109,212');
+    expect(data.meta.zeusTime).toBe('11:00 UTC');
+    expect(data.meta.kingdoms.find(k => k.us)?.server).toBe('Era 8');
+  });
+
+  it('enriches diplomacy rows with colour + fronts + ally flag', () => {
+    const d = data.diplomacy[0];
+    expect(d.color).toBe('#5b8bc4'); // joined from Era #039 kingdom
+    expect(d.fronts).toBe('all');
+    expect(d.ally).toBe(false);
+    expect(d.relation).toBe('hostile');
+  });
+
+  it('falls back to a neutral colour when a server has no kingdoms entry', () => {
+    const noKingdoms = normalizeEventData({
+      ...RAW,
+      eventConfig: { ...RAW.eventConfig, kingdoms: [] },
+    });
+    expect(noKingdoms.kingdomScoreboard[0].color).toBe('#8a90a5');
   });
 
   it('preserves display text while parsing alliance points, incl. em-dash', () => {

@@ -28,13 +28,20 @@ export type WidgetKind =
   | 'specTable'
   | 'cardGrid'
   | 'scheduleWindows'
-  | 'achievements';
+  | 'achievements'
+  | 'nodeControl'
+  | 'placerBalances';
 
 /** Where a dashboard's data comes from. The DataSource seam branches on `kind`
- * so swapping static→Supabase is a config change, not a component change. */
+ * so swapping static→Supabase is a config change, not a component change.
+ *
+ * `supabase` with `typeSlug` is the occurrence-aware source: it resolves the
+ * current (or a dated) occurrence of that event type from the `events` table,
+ * reads its `event_data` doc, and falls back to the committed static JSON when
+ * no DB row exists yet. `date` (YYYY-MM-DD) targets a past occurrence. */
 export type DataSourceRef =
   | { kind: 'static'; slug: string }
-  | { kind: 'supabase'; table: string; filter?: Record<string, string | number> };
+  | { kind: 'supabase'; typeSlug: string; date?: string };
 
 /** A single widget instance within a tab. */
 export interface WidgetConfig {
@@ -45,8 +52,14 @@ export interface WidgetConfig {
   bind?: string;
   /** i18n key for an optional section heading above the widget. */
   titleKey?: string;
-  /** When true, the widget is wrapped in a collapsible card (handled by
-   * WidgetHost) with a ▾ chevron; `defaultOpen` sets the initial state. */
+  /** Whether to wrap the widget in the standard card box (default true).
+   * Set false for widgets that provide their own chrome (kingdomBar). */
+  card?: boolean;
+  /** Optional DOM id on the widget's card, so header buttons/badges can
+   * scroll to it (jumpToTab + anchor). */
+  anchor?: string;
+  /** When true, the widget's card is collapsible (▾ chevron); `defaultOpen`
+   * sets the initial state. */
   collapsible?: boolean;
   defaultOpen?: boolean;
   /** Widget-specific options (columns, map node schema, callout list, …).
@@ -82,6 +95,10 @@ export interface HeaderButton {
   titleKey: string;
   /** Tab id to switch to when clicked (optional). */
   jumpToTab?: string;
+  /** Widget anchor id to scroll to after switching tab (optional). */
+  jumpToAnchor?: string;
+  /** Opens the help modal instead of jumping (the ❓ button). */
+  help?: boolean;
 }
 
 /** A live event badge in the header (e.g. Storm Incursion), lockable by date. */
@@ -101,6 +118,18 @@ export interface HeaderBadge {
   lockedAfterKey: string;
   /** Tab to jump to when clicked. */
   jumpToTab?: string;
+  /** Widget anchor id to scroll to after switching tab. */
+  jumpToAnchor?: string;
+}
+
+/** A help modal shown by the ❓ header button. */
+export interface HeaderHelp {
+  /** i18n key for the modal title. */
+  titleKey: string;
+  /** Verbatim intro paragraph(s). */
+  body: string;
+  /** Optional image (relative to app base). */
+  image?: string;
 }
 
 /** Header configuration — the rich event header (bg, meta, buttons, crests). */
@@ -123,6 +152,8 @@ export interface HeaderConfig {
   badge?: HeaderBadge;
   /** Show the (disabled) "Add to Calendar" pill. */
   calendarStub?: boolean;
+  /** Help modal opened by a ❓ button. */
+  help?: HeaderHelp;
 }
 
 /** The full config for one event dashboard. */
@@ -139,6 +170,9 @@ export interface EventDashboardConfig {
   subtitleKey?: string;
   /** Rich header configuration (bg, meta box, buttons, badge, crests). */
   header?: HeaderConfig;
+  /** Static interactive-map geometry (per-event layout). When present, the page
+   * derives the live MapView from it + the data's mapState/mapRoutes. */
+  mapGeometry?: import('./map.model').MapGeometry;
   dataSource: DataSourceRef;
   tabs: TabConfig[];
 }
@@ -162,4 +196,6 @@ export const WIDGET_KINDS: readonly WidgetKind[] = [
   'cardGrid',
   'scheduleWindows',
   'achievements',
+  'nodeControl',
+  'placerBalances',
 ] as const;

@@ -34,14 +34,11 @@
     }
   }
 
-  <!-- tag · title · crests -->
-  @if (tagKey()) {
-    <div class="kvk-tag">{{ tagKey()! | translate }}</div>
-  }
-  <h1 class="kvk-title">{{ titleKey() | translate }}</h1>
+  <!-- grey subtitle line above the accent-coloured title (1.0) -->
   @if (subtitleKey()) {
     <div class="kvk-subtitle">{{ subtitleKey()! | translate }}</div>
   }
+  <h1 class="kvk-title kvk-title-accent">{{ titleKey() | translate }}</h1>
 
   @if (crests().length) {
     <div class="hdr-crests">
@@ -123,3 +120,24 @@
     </div>
   }
 </header>
+
+@if (helpOpen() && help(); as h) {
+  <div
+    class="help-overlay"
+    role="button"
+    tabindex="0"
+    aria-label="Close"
+    (click)="helpOpen.set(false)"
+    (keydown.escape)="helpOpen.set(false)"
+    (keydown.enter)="helpOpen.set(false)"
+  >
+    <div class="help-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" tabindex="-1">
+      <button type="button" class="help-close" (click)="helpOpen.set(false)" aria-label="Close">×</button>
+      <h2 class="help-title">{{ h.titleKey | translate }}</h2>
+      @if (h.image) {
+        <img class="help-img" [src]="h.image" alt="" />
+      }
+      <p class="help-body">{{ h.body }}</p>
+    </div>
+  </div>
+}

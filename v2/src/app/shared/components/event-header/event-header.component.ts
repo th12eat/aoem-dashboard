@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, computed, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { ClockService } from '@core/services/clock.service';
 import type { EventDashboardConfig } from '@shared/models/event-dashboard-config.model';
 import type { EventMeta } from '@shared/models/event-data.model';
 
@@ -24,23 +25,36 @@ import type { EventMeta } from '@shared/models/event-data.model';
   templateUrl: './event-header.component.html',
   styleUrl: './event-header.component.scss',
 })
-export class EventHeaderComponent implements OnDestroy {
+export class EventHeaderComponent {
   readonly config = input.required<EventDashboardConfig>();
   readonly data = input<EventMeta | null>(null);
-  readonly jumpToTab = output<string>();
+  /** Emits a jump target: switch to `tab` then scroll to `anchor` (if any). */
+  readonly jump = output<{ tab?: string; anchor?: string }>();
 
-  private readonly now = signal(Date.now());
-  private readonly timer = setInterval(() => this.now.set(Date.now()), 1000);
+  private readonly clock = inject(ClockService);
+  private readonly now = this.clock.now;
+
+  /** Help modal open state (❓ button). */
+  readonly helpOpen = signal(false);
+  readonly help = computed(() => this.header().help);
 
   readonly header = computed(() => this.config().header ?? {});
   readonly titleKey = computed(() => this.config().titleKey);
-  readonly tagKey = computed(() => this.config().tagKey);
   readonly subtitleKey = computed(() => this.config().subtitleKey);
-  readonly crests = computed(() => this.header().crests ?? []);
+  /** Crests are data-driven: derived from meta.kingdoms (the per-event corner
+   * identities/colours), falling back to any config-provided list. */
+  readonly crests = computed(() => {
+    const kingdoms = this.data()?.kingdoms;
+    if (kingdoms && kingdoms.length) {
+      return kingdoms.map(k => ({ label: k.display, color: k.color, rgb: k.rgb, us: k.us }));
+    }
+    return this.header().crests ?? [];
+  });
   readonly vsAfter = computed(() => this.header().vsAfterIndex ?? 1);
   readonly buttons = computed(() => this.header().buttons ?? []);
   readonly timezone = computed(() => this.header().timezone ?? 'UTC+0');
-  readonly fightTime = computed(() => this.header().fightTime);
+  /** Fight time (e.g. Temple of Zeus) is data-driven from meta.zeusTime. */
+  readonly fightTime = computed(() => this.data()?.zeusTime ?? this.header().fightTime);
   readonly fightTimeLabelKey = computed(() => this.header().fightTimeLabelKey);
   readonly calendarStub = computed(() => this.header().calendarStub === true);
 
@@ -108,15 +122,17 @@ export class EventHeaderComponent implements OnDestroy {
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   }
 
-  onButton(b: { jumpToTab?: string }): void {
-    if (b.jumpToTab) this.jumpToTab.emit(b.jumpToTab);
+  onButton(b: { jumpToTab?: string; jumpToAnchor?: string; help?: boolean }): void {
+    if (b.help) {
+      this.helpOpen.set(true);
+      return;
+    }
+    if (b.jumpToTab || b.jumpToAnchor) this.jump.emit({ tab: b.jumpToTab, anchor: b.jumpToAnchor });
   }
   onBadge(): void {
     const s = this.badgeState();
-    if (s && !s.locked && s.badge.jumpToTab) this.jumpToTab.emit(s.badge.jumpToTab);
-  }
-
-  ngOnDestroy(): void {
-    clearInterval(this.timer);
+    if (s && !s.locked && (s.badge.jumpToTab || s.badge.jumpToAnchor)) {
+      this.jump.emit({ tab: s.badge.jumpToTab, anchor: s.badge.jumpToAnchor });
+    }
   }
 }

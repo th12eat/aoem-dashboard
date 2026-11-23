@@ -9,12 +9,16 @@ import type {
   TierMatrix,
   DepthMatrix,
   EventMeta,
+  Kingdom,
 } from '@shared/models/event-data.model';
 import { toNumericValue } from '@shared/utils/numeric';
 
 /** Raw record coming off the wire (1.0 schemaVersion 2 JSON). Deliberately
  * loose — normalization is the one place that touches raw shapes. */
 type Raw = Record<string, unknown>;
+
+/** Neutral fallback colour for a server with no kingdoms entry. */
+const UNKNOWN_KINGDOM = { display: '', color: '#8a90a5', rgb: '138,144,165' };
 
 function asArray(v: unknown): Raw[] {
   return Array.isArray(v) ? (v as Raw[]) : [];
@@ -24,6 +28,18 @@ function asObject(v: unknown): Raw {
 }
 function str(v: unknown, fallback = ''): string {
   return typeof v === 'string' ? v : fallback;
+}
+
+function normalizeKingdoms(raw: Raw): Kingdom[] {
+  return asArray(raw['kingdoms']).map(k => ({
+    server: str(k['server']),
+    display: str(k['display']) || str(k['server']),
+    corner: str(k['corner']) || undefined,
+    color: str(k['color']) || UNKNOWN_KINGDOM.color,
+    barColor: str(k['barColor']) || undefined,
+    rgb: str(k['rgb']) || UNKNOWN_KINGDOM.rgb,
+    us: k['us'] === true,
+  }));
 }
 
 function normalizeMeta(raw: Raw): EventMeta {
@@ -37,17 +53,36 @@ function normalizeMeta(raw: Raw): EventMeta {
     ourServer: str(c['ourServer']),
     ourAlliances: asArray(c['ourAlliances']).map(String) as unknown as string[],
     corners: asObject(c['corners']) as Record<string, string>,
+    kingdoms: normalizeKingdoms(c),
+    zeusTime: str(c['zeusTime']) || undefined,
     notes: str(c['notes']),
     eventOver: c['eventOver'] === true,
   };
 }
 
-function normalizeRoster(raw: Raw): ServerRoster {
+/** Lookup from server name → its kingdom identity/colour (data-driven). */
+type KingdomLookup = (server: string) => { display: string; color: string; barColor: string; rgb: string };
+function kingdomLookup(kingdoms: Kingdom[]): KingdomLookup {
+  const map = new Map(kingdoms.map(k => [k.server, k]));
+  return server => {
+    const k = map.get(server);
+    return k
+      ? { display: k.display, color: k.color, barColor: k.barColor ?? k.color, rgb: k.rgb }
+      : { ...UNKNOWN_KINGDOM, display: server, barColor: UNKNOWN_KINGDOM.color };
+  };
+}
+
+function normalizeRoster(raw: Raw, kd: KingdomLookup): ServerRoster {
+  const server = str(raw['server']);
+  const k = kd(server);
   return {
-    server: str(raw['server']),
+    server,
     sdRank: typeof raw['sdRank'] === 'number' ? (raw['sdRank'] as number) : null,
     priority: str(raw['priority']) || undefined,
     note: str(raw['note']) || undefined,
+    display: k.display || server,
+    color: k.color,
+    rgb: k.rgb,
     alliances: asArray(raw['alliances']).map(
       (a): RosterAlliance => ({
         tag: str(a['tag']),
@@ -79,41 +114,77 @@ export function normalizeEventData(input: unknown): EventData {
   const points = asObject(raw['kingdomPoints']);
   const meta = normalizeMeta(raw);
   const ourServer = meta.ourServer;
+  const kd = kingdomLookup(meta.kingdoms);
 
   const research = asObject(raw['research']);
+
+  // alliance tag → server: our alliances map to ourServer; each opponent
+  // roster's alliances map to that roster's server. Used by the map to colour
+  // opponent-held nodes by their corner.
+  const allianceServer: Record<string, string> = {};
+  for (const tag of meta.ourAlliances) allianceServer[tag] = ourServer;
+  const oursRoster = asObject(research['ours']);
+  for (const a of asArray(oursRoster['alliances'])) {
+    const tag = str(a['tag']);
+    if (tag) allianceServer[tag] = ourServer;
+  }
+  for (const opp of asArray(research['opponents'])) {
+    const server = str(opp['server']);
+    for (const a of asArray(opp['alliances'])) {
+      const tag = str(a['tag']);
+      if (tag) allianceServer[tag] = server;
+    }
+  }
 
   return {
     schemaVersion: typeof raw['schemaVersion'] === 'number' ? (raw['schemaVersion'] as number) : 0,
     meta,
     pointsUpdatedLabel: str(points['lastUpdated']) || undefined,
-    kingdomScoreboard: asArray(raw['kingdomScoreboard']).map(
-      (r): ScoreboardRow => ({
-        server: str(r['server']),
+    kingdomScoreboard: asArray(raw['kingdomScoreboard']).map((r): ScoreboardRow => {
+      const server = str(r['server']);
+      const k = kd(server);
+      return {
+        server,
         points: toNumericValue(r['points']),
-        isOurs: str(r['server']) === ourServer,
-      }),
-    ),
+        isOurs: server === ourServer,
+        display: k.display || server,
+        color: k.color,
+        barColor: k.barColor,
+        rgb: k.rgb,
+      };
+    }),
     alliancePoints: asArray(raw['alliancePoints']).map(
       (r): AlliancePointsRow => ({
         tag: str(r['tag']),
         points: toNumericValue(r['points']),
       }),
     ),
-    diplomacy: asArray(raw['diplomacy']).map(
-      (r): DiplomacyRow => ({
+    diplomacy: asArray(raw['diplomacy']).map((r): DiplomacyRow => {
+      const server = str(r['server']);
+      const relation = str(r['relation']);
+      const rawFronts = r['fronts'];
+      const fronts: 'all' | 'none' | string[] = Array.isArray(rawFronts)
+        ? (rawFronts as unknown[]).map(String)
+        : rawFronts === 'all'
+          ? 'all'
+          : 'none';
+      return {
         id: typeof r['id'] === 'number' ? (r['id'] as number) : 0,
-        server: str(r['server']),
+        server,
         alliance: str(r['alliance']),
-        relation: str(r['relation']),
+        relation,
         notes: str(r['notes']),
-      }),
-    ),
+        color: kd(server).color,
+        fronts,
+        ally: relation.toLowerCase() === 'ally',
+      };
+    }),
     research: {
-      ours: normalizeRoster(asObject(research['ours'])),
-      opponents: asArray(research['opponents']).map(normalizeRoster),
+      ours: normalizeRoster(asObject(research['ours']), kd),
+      opponents: asArray(research['opponents']).map(o => normalizeRoster(o, kd)),
     },
-    serverTiers: normalizeTiers(asObject(raw['serverTiers'])),
-    serverDepth: normalizeDepth(asObject(raw['serverDepth'])),
+    serverTiers: normalizeTiers(asObject(raw['serverTiers']), kd, ourServer),
+    serverDepth: normalizeDepth(asObject(raw['serverDepth']), kd, ourServer),
     mapState: asObject(raw['mapState']),
     mapRoutes: {
       actual: asArray(asObject(raw['mapRoutes'])['actual']),
@@ -126,7 +197,43 @@ export function normalizeEventData(input: unknown): EventData {
       pillarCities: num(a['pillarCities']),
       pillarsPeak: num(a['pillarsPeak']),
       gates: num(a['gates']),
+      current: typeof a['current'] === 'number' ? (a['current'] as number) : null,
+      flagsBuilding: num(a['flagsBuilding']),
     })),
+    placer: {
+      cap: num(asObject(raw['placerGold'])['cap']) || 500000,
+      alliances: asArray(asObject(raw['placerGold'])['alliances']).map(a => ({
+        tag: str(a['tag']),
+        flags: num(a['flags']),
+        flagsPeak: num(a['flagsPeak']),
+        pillarCities: num(a['pillarCities']),
+        pillarsPeak: num(a['pillarsPeak']),
+        gates: num(a['gates']),
+        current: typeof a['current'] === 'number' ? (a['current'] as number) : null,
+        flagsBuilding: num(a['flagsBuilding']),
+      })),
+    },
+    mapRaw: {
+      state: asObject(raw['mapState']),
+      routes: {
+        actual: asArray(asObject(raw['mapRoutes'])['actual']),
+        planned: asArray(asObject(raw['mapRoutes'])['planned']),
+      },
+      strongholds: asArray(raw['strongholds']),
+    },
+    allianceServer,
+    nodeControl: asArray(raw['nodeControl']).map(n => {
+      const server = str(n['server']);
+      const k = kd(server);
+      return {
+        tag: str(n['tag']),
+        server,
+        color: k.color,
+        rgb: k.rgb,
+        buffs: Array.isArray(n['buffs']) ? (n['buffs'] as unknown[]).map(String) : [],
+        perHour: num(n['perHour']),
+      };
+    }),
   };
 }
 
@@ -134,7 +241,13 @@ function num(v: unknown): number {
   return typeof v === 'number' && Number.isFinite(v) ? v : 0;
 }
 
-function normalizeTiers(raw: Raw): TierMatrix {
+function colorMap(servers: string[], kd: KingdomLookup): Record<string, string> {
+  const colors: Record<string, string> = {};
+  for (const s of servers) colors[s] = kd(s).color;
+  return colors;
+}
+
+function normalizeTiers(raw: Raw, kd: KingdomLookup, ourServer: string): TierMatrix {
   const byServerRaw = asObject(raw['byServer']);
   const byServer: Record<string, number[]> = {};
   for (const [server, counts] of Object.entries(byServerRaw)) {
@@ -143,10 +256,12 @@ function normalizeTiers(raw: Raw): TierMatrix {
   return {
     labels: asArray(raw['labels']).map(String) as unknown as string[],
     byServer,
+    colors: colorMap(Object.keys(byServer), kd),
+    ourServer,
   };
 }
 
-function normalizeDepth(raw: Raw): DepthMatrix {
+function normalizeDepth(raw: Raw, kd: KingdomLookup, ourServer: string): DepthMatrix {
   const byServerRaw = asObject(raw['byServer']);
   const byServer: Record<string, { power: number[]; merits: number[] }> = {};
   for (const [server, curves] of Object.entries(byServerRaw)) {
@@ -159,5 +274,7 @@ function normalizeDepth(raw: Raw): DepthMatrix {
   return {
     ranks: asArray(raw['ranks']).map(n => (typeof n === 'number' ? n : 0)) as unknown as number[],
     byServer,
+    colors: colorMap(Object.keys(byServer), kd),
+    ourServer,
   };
 }

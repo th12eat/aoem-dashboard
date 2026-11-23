@@ -30,6 +30,11 @@ import { PageTitleService } from '@core/services/page-title.service';
           }
         </a>
       }
+      <a class="card card-history" data-kvk="generic" routerLink="/dashboards/history">
+        <span class="card-tag">📜</span>
+        <span class="card-title">{{ 'kvkHistory.title' | translate }}</span>
+        <span class="card-sub">{{ 'kvkHistory.subtitle' | translate }}</span>
+      </a>
     </main>
   `,
   styles: [
@@ -87,8 +92,9 @@ export class DashboardsHubPage {
   readonly dashboards = this.registry.list();
 
   constructor() {
-    // Hub shows no breadcrumb crumb (matches 1.0 home).
+    // Hub shows no breadcrumb crumb (matches 1.0 home) and the default accent.
     this.pageTitle.set(null);
+    this.pageTitle.setTheme('generic');
   }
 }
 

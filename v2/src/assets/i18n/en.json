@@ -1,10 +1,63 @@
 {
+  "auth": {
+    "errors": {
+      "required": "This field is required",
+      "usernameTooShort": "Username must be at least 3 characters",
+      "usernameTooLong": "Username is too long",
+      "usernameInvalidChars": "Only letters, numbers, _ and - are allowed",
+      "usernameExists": "That username is already taken",
+      "displayNameTooShort": "Display name is too short",
+      "displayNameTooLong": "Display name is too long",
+      "passwordTooShort": "Password must be at least 6 characters",
+      "passwordTooLong": "Password is too long",
+      "passwordPattern": "Password needs an upper- and lower-case letter and a number",
+      "passwordMismatch": "Passwords don't match",
+      "recoveryAnswerTooShort": "Answer is too short",
+      "invalidToken": "Invalid or expired invitation token",
+      "invalidCredentials": "Wrong username or password",
+      "loginFailed": "Sign-in failed. Please try again.",
+      "joinFailed": "Couldn't create your account. Please try again."
+    }
+  },
+  "recovery": {
+    "errors": {
+      "userNotFound": "No account found for that username",
+      "wrongAnswer": "That answer is incorrect",
+      "locked": "Too many attempts — recovery is locked. Try again later.",
+      "passwordTooShort": "Password must be at least 6 characters"
+    },
+    "questions": {
+      "q1": "What was the name of your first pet?",
+      "q2": "What city were you born in?",
+      "q3": "What was your first game?",
+      "q4": "What is your mother's maiden name?",
+      "q5": "What was the name of your first school?",
+      "q6": "What is your favorite movie?",
+      "q7": "What was your childhood nickname?",
+      "q8": "What is the name of your best friend?",
+      "q9": "What was the make of your first car?",
+      "q10": "What is your favorite food?"
+    }
+  },
+  "event": {
+    "awaiting": {
+      "title": "Awaiting Matchmaking…",
+      "body": "This event hasn't started yet. The full dashboard — scouting, points, map, and schedule — unlocks once matchmaking completes and an admin publishes it."
+    }
+  },
+  "kvkHistory": {
+    "tag": "Era 8 · Cross-server record",
+    "title": "KvK HISTORY",
+    "subtitle": "Past, live and upcoming events — win/loss, rosters and trends",
+    "empty": "No events recorded yet."
+  },
   "common": {
     "loading": "Loading…",
     "error": "Couldn't load event data.",
     "backToHub": "← All dashboards",
     "unknownDashboard": "That dashboard doesn't exist (yet).",
-    "us": "Us"
+    "us": "Us",
+    "missingData": "⚠ This section's data isn't available for this event yet."
   },
   "hub": {
     "title": "ERA 8 COMMAND CENTER",
@@ -56,6 +109,15 @@
       "server": "Server",
       "stance": "Stance"
     },
+    "depth": {
+      "rank": "Rank",
+      "power": "Power",
+      "merits": "Merits"
+    },
+    "tier": {
+      "threshold": "Threshold",
+      "foot": "Players at or above each power threshold (of 300 ranked). Green = most, red = fewest."
+    },
     "achievements": {
       "sub": "Progress toward each alliance-level achievement. ✓ = met. Personal requirements (met individually, not tracked here) shown at right. Fills in as the event progresses.",
       "achievement": "Achievement",
@@ -72,7 +134,29 @@
       "upcoming": "Upcoming"
     },
     "map": {
-      "empty": "Map coming soon — positions are being plotted."
+      "empty": "Map coming soon — positions are being plotted.",
+      "live": "Live",
+      "plan": "Plan",
+      "ssh": "Sub-Stronghold",
+      "connected": "connected",
+      "building": "building",
+      "disconnected": "disconnected",
+      "siege": "under siege"
+    },
+    "placer": {
+      "alliance": "Alliance",
+      "balance": "Placer Gold",
+      "gen": "Gen /h",
+      "gates": "Gates",
+      "pillars": "Pillars",
+      "flags": "Flags"
+    },
+    "nodeControl": {
+      "empty": "No node control yet — buffs light up here once alliances capture connected Energy Cities and Altars on the map.",
+      "energyCity": "Energy City",
+      "altar": "Altar",
+      "energyH": "Energy /h",
+      "foot": "Derived from map node control. A buff lights only if the alliance holds a connected node granting it (same buff doesn't stack). Energy /h counts all occupied gates/docks & Energy Cities."
     }
   },
   "stormlands": {
@@ -98,6 +182,8 @@
       "kingdoms": "Kingdom Standings",
       "timeline": "Event Timeline",
       "roe": "Rules of Engagement — Opposing Servers",
+      "nodeControl": "Node Control — Buffs & Storm Energy (all alliances)",
+      "objectives": "Daily Objectives (per player)",
       "erosion": "Storm Erosion — Daily Event",
       "incursion": "Storm Incursion — Day 4–8",
       "map": "The Map"
@@ -106,8 +192,7 @@
       "alliances": "Top Alliances",
       "players": "Top Players",
       "tiers": "Power Tier Distribution",
-      "depthPower": "Roster Depth by Rank — Power (millions)",
-      "depthMerits": "Roster Depth by Rank — Merits (millions)"
+      "depth": "Roster Depth by Rank"
     },
     "points": {
       "sources": "Storm Points Sources",
@@ -125,6 +210,54 @@
       "currencies": "Currencies & Resources",
       "debuff": "Storm Power Debuff — Scaling",
       "machines": "Storm Machines",
+      "buildings": "Alliance Buildings"
+    }
+  },
+  "desolate": {
+    "title": "DESOLATE DESERT",
+    "subtitle": "Season Finale · Four-Kingdom Land War",
+    "header": {
+      "aaru": "Aaru Palace Fight:",
+      "jumpObjectives": "Jump to Daily Objectives",
+      "whatIs": "What is Desolate Desert?",
+      "tower": "Tower",
+      "towerLive": "Tower LIVE",
+      "towerBefore": "Tower of Rotation opens Day 3 (Sep 30)",
+      "towerAfter": "Tower of Rotation has ended (ran Day 3–5)"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "research": "Scouting",
+      "points": "Points",
+      "pve": "PvE Guide"
+    },
+    "overview": {
+      "roe": "Rules of Engagement — Opposing Servers",
+      "nodeControl": "Node Control — Buffs & Placer Gold (all alliances)",
+      "objectives": "Daily Objectives (per player)",
+      "timeline": "Event Timeline",
+      "tower": "Tower of Rotation — Awakening Schedule",
+      "map": "The Map"
+    },
+    "research": {
+      "alliances": "Top Alliances",
+      "players": "Top Players",
+      "tiers": "Power Tier Distribution",
+      "depth": "Roster Depth by Rank"
+    },
+    "points": {
+      "sources": "Desert Points Sources",
+      "alliances": "Era 8 Alliance Desert Points",
+      "nodeYields": "Placer Gold — Node Capture Yields",
+      "balances": "Placer Gold — Estimated Balances",
+      "flagCost": "Flag Cost by Zone & Count",
+      "achievements": "Conquest Achievements — Alliance Progress"
+    },
+    "pve": {
+      "help": "How PvE Players Help Win",
+      "zones": "Zones",
+      "mechanics": "Key Mechanics",
+      "tower": "Tower of Rotation / Peaceful Riverland",
       "buildings": "Alliance Buildings"
     }
   }

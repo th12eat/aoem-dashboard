@@ -1,507 +1,163 @@
 {
   "schemaVersion": 1,
-  "oppServer": "Era 16",
-  "invasionTime": "19:00 UTC",
-  "prepStart": "2026-10-19",
-  "invasionStart": "2026-10-25",
-  "weWonPrep": true,
+  "oppServer": "Era 24",
+  "invasionTime": "TBD",
+  "prepStart": "2026-11-23",
+  "invasionStart": "2026-11-29",
+  "weWonPrep": null,
   "ourRank": null,
   "oppRank": null,
   "prepStarted": true,
-  "eventOver": true,
+  "eventOver": false,
   "alliances": [
     {
-      "tag": "eRa",
-      "name": "WorldClass",
+      "tag": "ʀ★ᴡ",
+      "name": "ʀᴀɢᴇᴡᴀʀʀɪᴏʀꜱ",
       "roleKey": "rolePrimaryStrike",
       "position": "NE-inner",
       "tower": "Swordsman (N) / Archer (E)",
       "color": "#3b82f6",
-      "allies": 169,
-      "power": "25,642,543,135",
-      "merits": "2,813,680,748",
-      "prepPoints": "79,834,198,658",
-      "crossBorder": "73,500,899,450"
+      "allies": 165,
+      "power": "26,312,885,607",
+      "merits": "3,276,870,670",
+      "prepPoints": "0"
     },
     {
-      "tag": "REU",
-      "name": "CourtOfGods",
+      "tag": "ʀ★ɢ",
+      "name": "ʀᴀɢᴇᴏꜰɢᴏᴅꜱ",
       "roleKey": "roleSecondaryStrike",
       "position": "SE-inner",
       "tower": "Cavalry (S)",
       "color": "#ef4444",
-      "allies": 158,
-      "power": "14,981,844,433",
-      "merits": "324,160,972",
-      "prepPoints": "22,792,043,922",
-      "crossBorder": "17,536,333,950"
+      "allies": 126,
+      "power": "13,073,698,341",
+      "merits": "355,429,850",
+      "prepPoints": "0"
     },
     {
-      "tag": "Myt",
-      "name": "Mythic",
+      "tag": "ʀ★ᴍ",
+      "name": "ᴍʏᴛʜɪᴄ",
       "roleKey": "roleFlanking",
       "position": "SE-outer",
       "tower": "Pikeman (W)",
       "color": "#22c55e",
-      "allies": 169,
-      "power": "11,575,914,281",
-      "merits": "533,716,644",
-      "prepPoints": "7,915,855,365",
-      "crossBorder": "8,906,883,070"
+      "allies": 121,
+      "power": "9,625,328,509",
+      "merits": "461,698,169",
+      "prepPoints": "0"
     },
     {
-      "tag": "001",
-      "name": "ReinoUno",
+      "tag": "ʀ★ᴜ",
+      "name": "ʀᴀɢᴇᴜɴɪᴏɴ",
       "roleKey": "roleReserve",
       "position": "reserve",
       "tower": "—",
       "color": "#94a3b8",
-      "allies": 52,
-      "power": "1,058,214,383",
-      "merits": "6,334,902",
-      "prepPoints": "1,755,600",
-      "crossBorder": "3,246,220"
+      "allies": 15,
+      "power": "661,203,225",
+      "merits": "381,684",
+      "prepPoints": "0"
     }
   ],
   "prepStages": [
-    {
-      "nameKey": "prepStage1",
-      "ourPts": 2.2,
-      "oppPts": 2.0,
-      "won": true
-    },
-    {
-      "nameKey": "prepStage2",
-      "ourPts": 16.3,
-      "oppPts": 13.5,
-      "won": true
-    },
-    {
-      "nameKey": "prepStage3",
-      "ourPts": 36.3,
-      "oppPts": 21.6,
-      "won": true
-    },
-    {
-      "nameKey": "prepStage4",
-      "ourPts": 55.2,
-      "oppPts": 50.2,
-      "won": true
-    },
-    {
-      "nameKey": "prepStage5",
-      "ourPts": 0,
-      "oppPts": 0,
-      "won": null
-    }
+    { "nameKey": "prepStage1", "ourPts": 0, "oppPts": 0, "won": null },
+    { "nameKey": "prepStage2", "ourPts": 0, "oppPts": 0, "won": null },
+    { "nameKey": "prepStage3", "ourPts": 0, "oppPts": 0, "won": null },
+    { "nameKey": "prepStage4", "ourPts": 0, "oppPts": 0, "won": null },
+    { "nameKey": "prepStage5", "ourPts": 0, "oppPts": 0, "won": null }
   ],
-  "totalOur": 211.0,
-  "totalOpp": 251.0,
-  "prepLastUpdated": "2026-10-25 — FINAL · Loss vs Era #016. Total event points 211B vs 251B (lost the Cross-Border invasion despite winning prep 110B vs 87.3B).",
+  "totalOur": 0,
+  "totalOpp": 0,
+  "prepLastUpdated": "2026-11-23 — Day 1 (Prep Stage 1 in progress). Matchmaking Sat 11/21; vs Era #024.",
   "oppAlliances": [
     {
-      "tag": "TKH",
-      "name": "KrakenHunters",
-      "allies": 165,
-      "power": "22,850,933,181",
-      "merits": "3,449,602,035",
-      "prepPoints": "46,320,231,872",
-      "crossBorder": "64,049,276,110"
+      "tag": "ROD",
+      "name": "FoxyRabbits",
+      "allies": 163,
+      "power": "19,840,099,109",
+      "merits": "1,097,258,216",
+      "prepPoints": "0"
     },
     {
-      "tag": "TWH",
-      "name": "WhaleHunters",
-      "allies": 165,
-      "power": "20,897,963,536",
-      "merits": "824,615,027",
-      "prepPoints": "33,779,954,767",
-      "crossBorder": "57,296,539,500"
+      "tag": "AOD",
+      "name": "AngelsOfDeath",
+      "allies": 169,
+      "power": "18,748,791,720",
+      "merits": "732,034,678",
+      "prepPoints": "0"
     },
     {
-      "tag": "TSH",
-      "name": "SharkHunters",
-      "allies": 143,
-      "power": "11,647,204,920",
-      "merits": "227,961,205",
-      "prepPoints": "9,325,849,231",
-      "crossBorder": "3,026,675,480"
+      "tag": "KRÜ",
+      "name": "KOR낭만제국",
+      "allies": 74,
+      "power": "1,858,750,985",
+      "merits": "48,844,500",
+      "prepPoints": "0"
     },
     {
-      "tag": "jxp",
-      "name": "帝國近衛軍",
-      "allies": 28,
-      "power": "965,482,278",
-      "merits": "790,999",
-      "prepPoints": "254,012,260",
-      "crossBorder": "322,142,580"
+      "tag": "FOX",
+      "name": "THEFOXORDER",
+      "allies": 26,
+      "power": "1,504,663,043",
+      "merits": "34,715,042",
+      "prepPoints": "0"
     }
   ],
   "krakens": [
-    {
-      "rank": 1,
-      "name": "Harleyquinnn",
-      "alliance": "TWH",
-      "power": "444,370,454",
-      "merits": "578,203,352",
-      "ratio": ""
-    },
-    {
-      "rank": 2,
-      "name": "BabyFrëya",
-      "alliance": "TWH",
-      "power": "308,611,909",
-      "merits": "496,875,515",
-      "ratio": ""
-    },
-    {
-      "rank": 3,
-      "name": "SunWuKrow",
-      "alliance": "TWH",
-      "power": "308,048,922",
-      "merits": "472,694,571",
-      "ratio": ""
-    },
-    {
-      "rank": 4,
-      "name": "~Photon~",
-      "alliance": "TWH",
-      "power": "300,379,704",
-      "merits": "114,156,976",
-      "ratio": ""
-    },
-    {
-      "rank": 5,
-      "name": "Houche",
-      "alliance": "TWH",
-      "power": "288,168,052",
-      "merits": "194,661,532",
-      "ratio": ""
-    },
-    {
-      "rank": 6,
-      "name": "drifty",
-      "alliance": "TKH",
-      "power": "276,477,271",
-      "merits": "236,731,110",
-      "ratio": ""
-    },
-    {
-      "rank": 7,
-      "name": "FengCN",
-      "alliance": "TWH",
-      "power": "275,400,069",
-      "merits": "141,555,691",
-      "ratio": ""
-    },
-    {
-      "rank": 8,
-      "name": "Metal76",
-      "alliance": "TKH",
-      "power": "274,209,532",
-      "merits": "298,837,890",
-      "ratio": ""
-    },
-    {
-      "rank": 9,
-      "name": "CaptFlint",
-      "alliance": "TKH",
-      "power": "269,622,750",
-      "merits": "376,243,953",
-      "ratio": ""
-    },
-    {
-      "rank": 10,
-      "name": "Hammers♜",
-      "alliance": "TKH",
-      "power": "268,101,754",
-      "merits": "119,542,400",
-      "ratio": ""
-    },
-    {
-      "rank": 11,
-      "name": "ħeráclius中",
-      "alliance": "TKH",
-      "power": "262,485,199",
-      "merits": "100,408,429",
-      "ratio": ""
-    },
-    {
-      "rank": 12,
-      "name": "ŴØØÐŸ",
-      "alliance": "TKH",
-      "power": "262,332,537",
-      "merits": "158,499,571",
-      "ratio": ""
-    },
-    {
-      "rank": 13,
-      "name": "Tiiiitoooos",
-      "alliance": "TWH",
-      "power": "261,840,675",
-      "merits": "169,961,897",
-      "ratio": ""
-    },
-    {
-      "rank": 14,
-      "name": "Elessarˢ²⁴",
-      "alliance": "TKH",
-      "power": "251,233,337",
-      "merits": "267,123,829",
-      "ratio": ""
-    },
-    {
-      "rank": 15,
-      "name": "Ticklepink",
-      "alliance": "--",
-      "power": "237,535,796",
-      "merits": "113,175,988",
-      "ratio": ""
-    }
+    { "rank": 1, "name": "Nickel", "alliance": "ROD", "power": "321,174,934", "merits": "77,754,385", "ratio": "" },
+    { "rank": 2, "name": "JIHN", "alliance": "AOD", "power": "286,774,411", "merits": "137,213,829", "ratio": "" },
+    { "rank": 3, "name": "Rebel4sale", "alliance": "ROD", "power": "281,909,931", "merits": "250,437,876", "ratio": "" },
+    { "rank": 4, "name": "Frickin~A", "alliance": "ROD", "power": "258,236,217", "merits": "153,438,868", "ratio": "" },
+    { "rank": 5, "name": "ĐÄRKÄñĐÚÈS", "alliance": "AOD", "power": "257,407,127", "merits": "125,611,760", "ratio": "" },
+    { "rank": 6, "name": "FunkyGibbons", "alliance": "ROD", "power": "244,086,844", "merits": "", "ratio": "" },
+    { "rank": 7, "name": "Notmethodman", "alliance": "ROD", "power": "243,551,998", "merits": "", "ratio": "" },
+    { "rank": 8, "name": "Arthur711", "alliance": "ROD", "power": "237,938,758", "merits": "", "ratio": "" },
+    { "rank": 9, "name": "RancherCru", "alliance": "ROD", "power": "236,814,353", "merits": "63,986,637", "ratio": "" },
+    { "rank": 10, "name": "Sunmingo", "alliance": "AOD", "power": "228,628,029", "merits": "", "ratio": "" },
+    { "rank": 11, "name": "BronaRabbit", "alliance": "ROD", "power": "224,432,821", "merits": "", "ratio": "" },
+    { "rank": 12, "name": "BlondBeast", "alliance": "ROD", "power": "219,582,707", "merits": "54,426,900", "ratio": "" },
+    { "rank": 13, "name": "Sanji✗⁰⁷¹ᴵᴶᶜ", "alliance": "ROD", "power": "219,134,437", "merits": "100,320,158", "ratio": "" },
+    { "rank": 14, "name": "ɱɑʈʈɦ̈ëω✗", "alliance": "AOD", "power": "217,343,037", "merits": "243,740,812", "ratio": "" },
+    { "rank": 15, "name": "GOBabyShark", "alliance": "AOD", "power": "214,081,671", "merits": "68,437,424", "ratio": "" }
   ],
   "ourTop": [
-    {
-      "rank": 1,
-      "name": "Collin6666",
-      "alliance": "eRa",
-      "power": "460,803,818",
-      "merits": "153,436,647"
-    },
-    {
-      "rank": 2,
-      "name": "Macklemore",
-      "alliance": "eRa",
-      "power": "356,678,420",
-      "merits": "151,503,454"
-    },
-    {
-      "rank": 3,
-      "name": "XnJinX",
-      "alliance": "eRa",
-      "power": "354,226,109",
-      "merits": "268,362,776"
-    },
-    {
-      "rank": 4,
-      "name": "Lumberjack",
-      "alliance": "eRa",
-      "power": "313,417,738",
-      "merits": "369,121,891"
-    },
-    {
-      "rank": 5,
-      "name": "BloodYoda",
-      "alliance": "eRa",
-      "power": "284,247,102",
-      "merits": "253,753,710"
-    },
-    {
-      "rank": 6,
-      "name": "ŠnipeŘ⊕",
-      "alliance": "eRa",
-      "power": "283,107,955",
-      "merits": "184,202,911"
-    },
-    {
-      "rank": 7,
-      "name": "Zen7",
-      "alliance": "eRa",
-      "power": "271,404,655",
-      "merits": "112,215,964"
-    },
-    {
-      "rank": 8,
-      "name": "ScubaPig",
-      "alliance": "eRa",
-      "power": "247,780,106",
-      "merits": "75,709,593"
-    },
-    {
-      "rank": 9,
-      "name": "BUSHMⱯSTɆЯ",
-      "alliance": "eRa",
-      "power": "246,740,094",
-      "merits": "129,282,545"
-    },
-    {
-      "rank": 10,
-      "name": "CⱭŇŇØNBⱭLLZZ",
-      "alliance": "eRa",
-      "power": "244,599,005",
-      "merits": "111,165,352"
-    },
-    {
-      "rank": 11,
-      "name": "TommyTorpedo",
-      "alliance": "eRa",
-      "power": "244,594,455",
-      "merits": "160,425,962"
-    },
-    {
-      "rank": 12,
-      "name": "Hermes++",
-      "alliance": "eRa",
-      "power": "243,009,302",
-      "merits": "98,710,990"
-    },
-    {
-      "rank": 13,
-      "name": "☙✿⛵Africa✗⛰☙",
-      "alliance": "eRa",
-      "power": "241,803,666",
-      "merits": "143,784,479"
-    },
-    {
-      "rank": 14,
-      "name": "DarthHelmet",
-      "alliance": "eRa",
-      "power": "239,320,236",
-      "merits": "182,150,477"
-    },
-    {
-      "rank": 15,
-      "name": "IntoxFr",
-      "alliance": "eRa",
-      "power": "226,475,325",
-      "merits": "74,549,114"
-    }
+    { "rank": 1, "name": "Collin6666", "alliance": "ʀ★ᴡ", "power": "523,850,478", "merits": "195,644,074" },
+    { "rank": 2, "name": "XnJinX", "alliance": "ʀ★ᴡ", "power": "403,689,804", "merits": "281,499,100" },
+    { "rank": 3, "name": "Macklemore", "alliance": "ʀ★ᴡ", "power": "350,791,418", "merits": "168,305,051" },
+    { "rank": 4, "name": "Lumberjack", "alliance": "ʀ★ᴡ", "power": "309,858,466", "merits": "385,151,015" },
+    { "rank": 5, "name": "ŠnipeŘ⊕", "alliance": "ʀ★ᴡ", "power": "301,501,745", "merits": "216,280,538" },
+    { "rank": 6, "name": "BloodYoda", "alliance": "ʀ★ᴡ", "power": "297,737,424", "merits": "258,204,298" },
+    { "rank": 7, "name": "Zen7", "alliance": "—", "power": "271,404,655", "merits": "112,215,964" },
+    { "rank": 8, "name": "BUSHMⱯSTɆЯ", "alliance": "ʀ★ᴡ", "power": "266,821,221", "merits": "146,758,563" },
+    { "rank": 9, "name": "ScubaPig", "alliance": "ʀ★ᴡ", "power": "260,667,097", "merits": "81,339,302" },
+    { "rank": 10, "name": "☙✿⛵Africa✗⛰☙", "alliance": "ʀ★ᴡ", "power": "258,578,706", "merits": "166,796,905" },
+    { "rank": 11, "name": "TommyTorpedo", "alliance": "ʀ★ᴡ", "power": "257,475,461", "merits": "165,120,324" },
+    { "rank": 12, "name": "DarkHelmet", "alliance": "ʀ★ᴡ", "power": "256,296,976", "merits": "201,801,212" },
+    { "rank": 13, "name": "Hermes++", "alliance": "ʀ★ᴡ", "power": "255,738,092", "merits": "104,568,563" },
+    { "rank": 14, "name": "CⱭÑÑØNBⱭLLZZ", "alliance": "ʀ★ᴡ", "power": "253,572,925", "merits": "127,337,211" },
+    { "rank": 15, "name": "IntoxFr", "alliance": "ʀ★ᴡ", "power": "233,855,121", "merits": "78,803,971" }
   ],
   "roles": {
-    "WC1": {
-      "rallyLead": "TBD",
-      "taxiRunners": [
-        "TBD",
-        "TBD",
-        "TBD",
-        "TBD"
-      ],
-      "siegeCoord": "TBD",
-      "siegeHelpers": [
-        "TBD",
-        "TBD",
-        "TBD",
-        "TBD"
-      ]
-    },
-    "MyT": {
-      "rallyLead": "TBD",
-      "taxiRunners": [
-        "TBD",
-        "TBD",
-        "TBD",
-        "TBD"
-      ],
-      "siegeCoord": "TBD",
-      "siegeHelpers": [
-        "TBD",
-        "TBD",
-        "TBD",
-        "TBD"
-      ]
-    },
-    "REU": {
-      "rallyLead": "TBD",
-      "taxiRunners": [
-        "TBD",
-        "TBD",
-        "TBD",
-        "TBD"
-      ],
-      "siegeCoord": "TBD",
-      "siegeHelpers": [
-        "TBD",
-        "TBD",
-        "TBD",
-        "TBD"
-      ]
-    },
-    "AGC": {
-      "rallyLead": "TBD",
-      "taxiRunners": [
-        "TBD",
-        "TBD",
-        "TBD",
-        "TBD"
-      ],
-      "siegeCoord": "TBD",
-      "siegeHelpers": [
-        "TBD",
-        "TBD",
-        "TBD",
-        "TBD"
-      ]
-    }
+    "ʀ★ᴡ": { "rallyLead": "TBD", "taxiRunners": ["TBD","TBD","TBD","TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD","TBD","TBD","TBD"] },
+    "ʀ★ᴍ": { "rallyLead": "TBD", "taxiRunners": ["TBD","TBD","TBD","TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD","TBD","TBD","TBD"] },
+    "ʀ★ɢ": { "rallyLead": "TBD", "taxiRunners": ["TBD","TBD","TBD","TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD","TBD","TBD","TBD"] },
+    "ʀ★ᴜ": { "rallyLead": "TBD", "taxiRunners": ["TBD","TBD","TBD","TBD"], "siegeCoord": "TBD", "siegeHelpers": ["TBD","TBD","TBD","TBD"] }
   },
-  "result": "Loss",
+  "result": null,
   "serverTiers": {
-    "labels": [
-      "100M+",
-      "200M+",
-      "300M+",
-      "400M+",
-      "500M+",
-      "600M+"
-    ],
-    "us": [
-      232,
-      22,
-      3,
-      1,
-      0,
-      0
-    ],
-    "opp": [
-      265,
-      31,
-      3,
-      1,
-      0,
-      0
-    ]
+    "labels": ["100M+", "200M+", "300M+", "400M+", "500M+", "600M+"],
+    "us": [273, 29, 5, 2, 1, 0],
+    "opp": [220, 17, 1, 0, 0, 0]
   },
   "serverDepth": {
-    "ranks": [
-      1,
-      10,
-      50,
-      100,
-      200,
-      300
-    ],
+    "ranks": [1, 10, 50, 100, 200, 300],
     "us": {
-      "power": [
-        460,
-        244,
-        161,
-        138,
-        113,
-        91
-      ],
-      "merits": [
-        369,
-        153,
-        43,
-        23,
-        8,
-        4
-      ]
+      "power": [523, 258, 171, 147, 118, 95],
+      "merits": [385, 168, 46, 24, 9, 4]
     },
     "opp": {
-      "power": [
-        444,
-        268,
-        183,
-        141,
-        119,
-        100
-      ],
-      "merits": [
-        578,
-        233,
-        54,
-        30,
-        13,
-        7
-      ]
+      "power": [321, 228, 159, 138, 106, 81],
+      "merits": [250, 109, 32, 13, 5, 2]
     }
   }
 }

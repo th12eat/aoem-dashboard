@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, computed, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { ClockService } from '@core/services/clock.service';
 import type { WidgetConfig } from '@shared/models/event-dashboard-config.model';
 
 interface TimeWindow {
@@ -174,12 +175,12 @@ type WindowState = 'live' | 'next' | 'passed' | 'upcoming';
     `,
   ],
 })
-export class ScheduleWindowsComponent implements OnDestroy {
+export class ScheduleWindowsComponent {
   readonly config = input.required<WidgetConfig>();
   readonly data = input.required<unknown>();
 
-  private readonly now = signal(Date.now());
-  private readonly timer = setInterval(() => this.now.set(Date.now()), 1000);
+  private readonly clock = inject(ClockService);
+  private readonly now = this.clock.now;
 
   private readonly opts = computed<ScheduleOptions>(() => (this.config().options as ScheduleOptions) ?? {});
   readonly title = computed(() => this.config().titleKey);
@@ -225,8 +226,4 @@ export class ScheduleWindowsComponent implements OnDestroy {
       return { label: w.label, state, countdown };
     });
   });
-
-  ngOnDestroy(): void {
-    clearInterval(this.timer);
-  }
 }

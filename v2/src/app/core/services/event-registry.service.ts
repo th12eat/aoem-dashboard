@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import type { EventDashboardConfig } from '@shared/models/event-dashboard-config.model';
 import { STORMLANDS_CONFIG } from '../../configs/stormlands.config';
+import { DESOLATE_CONFIG } from '../../configs/desolate.config';
+import { DESOLATE_STATETEST_CONFIG } from '../../configs/desolate-statetest.config';
 
 /**
  * Resolves an event slug to its EventDashboardConfig.
@@ -12,16 +14,23 @@ import { STORMLANDS_CONFIG } from '../../configs/stormlands.config';
  */
 @Injectable({ providedIn: 'root' })
 export class EventRegistryService {
+  /** Dashboards shown on the hub. */
   private readonly configs: Record<string, EventDashboardConfig> = {
     [STORMLANDS_CONFIG.slug]: STORMLANDS_CONFIG,
+    [DESOLATE_CONFIG.slug]: DESOLATE_CONFIG,
+  };
+
+  /** Resolvable but hidden from the hub (dev/sandbox occurrences). */
+  private readonly hidden: Record<string, EventDashboardConfig> = {
+    [DESOLATE_STATETEST_CONFIG.slug]: DESOLATE_STATETEST_CONFIG,
   };
 
   /** Return the config for a slug, or null if none is registered. */
   getConfig(slug: string): EventDashboardConfig | null {
-    return this.configs[slug] ?? null;
+    return this.configs[slug] ?? this.hidden[slug] ?? null;
   }
 
-  /** All registered configs — used by the hub to list available dashboards. */
+  /** Listed dashboards (hub). Hidden sandbox occurrences are excluded. */
   list(): EventDashboardConfig[] {
     return Object.values(this.configs);
   }

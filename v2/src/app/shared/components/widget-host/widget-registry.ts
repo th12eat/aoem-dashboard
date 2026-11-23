@@ -17,6 +17,8 @@ import { SpecTableComponent } from '../spec-table/spec-table.component';
 import { CardGridComponent } from '../card-grid/card-grid.component';
 import { ScheduleWindowsComponent } from '../schedule-windows/schedule-windows.component';
 import { AchievementsComponent } from '../achievements/achievements.component';
+import { NodeControlComponent } from '../node-control/node-control.component';
+import { PlacerBalancesComponent } from '../placer-balances/placer-balances.component';
 
 /**
  * The single source of truth mapping a WidgetKind to its component. Adding a
@@ -44,4 +46,6 @@ export const WIDGET_REGISTRY: Record<WidgetKind, Type<unknown>> = {
   cardGrid: CardGridComponent,
   scheduleWindows: ScheduleWindowsComponent,
   achievements: AchievementsComponent,
+  nodeControl: NodeControlComponent,
+  placerBalances: PlacerBalancesComponent,
 };

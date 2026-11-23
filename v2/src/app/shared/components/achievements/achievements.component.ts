@@ -14,7 +14,7 @@ interface Achievement {
   /** Verbatim personal-reward text. */
   personal: string;
   /** How to derive current progress: 'flags' | 'pillars' | 'points'. */
-  derive?: 'flags' | 'pillars' | 'points' | 'stronghold';
+  derive?: 'flags' | 'pillars' | 'gates' | 'points' | 'stronghold';
   /** Manual per-alliance override (wins over derive). */
   cur?: Record<string, number | boolean>;
 }
@@ -139,15 +139,39 @@ export class AchievementsComponent {
     return { text: (met ? '✓ ' : '') + label, met, none: false };
   }
 
-  /** 1.0 achievementCur(): manual cur wins, else derive from live data. */
+  /**
+   * Current value for an achievement/alliance, derived from the FEWEST data
+   * points (per the "calculate as much as we can" goal):
+   *   • flags/pillars/gates/stronghold — from the LIVE MAP (mapView.holdings),
+   *     max'd with the placerGold high-water peaks so an earned tier never
+   *     un-checks when territory is later lost.
+   *   • points — parsed from alliancePoints.
+   *   • manual `cur` — only for things the map can't know (Tower Master pts,
+   *     Aaru occupation pts); wins when present.
+   */
   private achievementCur(a: Achievement, tag: string): number | boolean | null {
     if (a.cur && a.cur[tag] != null) return a.cur[tag];
     if (a.derive) {
       const pg = this.event()?.placerGold.find(x => x.tag === tag);
+      const h = this.event()?.mapView?.holdings.find(x => x.tag === tag);
+      // flags live only in the tracked placer data (the map models routes, not
+      // individual flags), so use its count + peak.
       if (a.derive === 'flags') return Math.max(pg?.flags ?? 0, pg?.flagsPeak ?? 0);
-      if (a.derive === 'pillars') return Math.max(pg?.pillarCities ?? 0, pg?.pillarsPeak ?? 0);
-      if (a.derive === 'stronghold')
-        return (pg?.flags ?? 0) > 0 || (pg?.flagsPeak ?? 0) > 0 || (pg?.gates ?? 0) > 0 || (pg?.pillarCities ?? 0) > 0 ? 1 : 0;
+      // pillars/cities + gates are derivable straight from the map; take the
+      // best of live-map and recorded peak.
+      if (a.derive === 'pillars') return Math.max(h?.cities ?? 0, pg?.pillarCities ?? 0, pg?.pillarsPeak ?? 0);
+      if (a.derive === 'gates') return Math.max(h?.gates ?? 0, pg?.gates ?? 0);
+      if (a.derive === 'stronghold') {
+        const any =
+          (h?.cities ?? 0) > 0 ||
+          (h?.gates ?? 0) > 0 ||
+          (h?.towers ?? 0) > 0 ||
+          (pg?.flags ?? 0) > 0 ||
+          (pg?.flagsPeak ?? 0) > 0 ||
+          (pg?.gates ?? 0) > 0 ||
+          (pg?.pillarCities ?? 0) > 0;
+        return any ? 1 : 0;
+      }
       if (a.derive === 'points') {
         const ap = this.event()?.alliancePoints.find(x => x.tag === tag);
         return ap && Number.isFinite(ap.points.value) ? ap.points.value : null;

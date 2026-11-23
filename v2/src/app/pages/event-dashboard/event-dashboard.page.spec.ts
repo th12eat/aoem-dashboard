@@ -6,9 +6,9 @@ import { ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, BehaviorSubject, Observable } from 'rxjs';
 import { EventDashboardPage } from './event-dashboard.page';
-import { EVENT_DATA_SOURCE, EventDataSource } from '@core/services/event-dashboard.datasource';
+import { EVENT_DATA_SOURCE, EventDataSource, type LoadedEvent } from '@core/services/event-dashboard.datasource';
 import { normalizeEventData } from '@core/services/normalize-event-data';
-import type { EventData } from '@shared/models/event-data.model';
+import { PageTitleService } from '@core/services/page-title.service';
 
 // Minimal raw doc that routes through the real normalizer, so the test exercises
 // the production data path (not a hand-built EventData).
@@ -21,6 +21,10 @@ const RAW = {
     ourServer: 'Era 8',
     ourAlliances: ['eRa'],
     corners: {},
+    kingdoms: [
+      { server: 'Era 8', display: 'Era #008', color: '#9a6dd4', rgb: '154,109,212', us: true },
+      { server: 'Era #039', display: 'Era #039', color: '#5b8bc4', rgb: '91,139,196' },
+    ],
     notes: '',
     eventOver: false,
   },
@@ -39,8 +43,8 @@ const RAW = {
 };
 
 class StubDataSource implements EventDataSource {
-  load(): Observable<EventData> {
-    return of(normalizeEventData(RAW));
+  load(): Observable<LoadedEvent> {
+    return of({ data: normalizeEventData(RAW), status: 'published', occurrence: null });
   }
 }
 
@@ -77,11 +81,13 @@ describe('EventDashboardPage (config → data → widgets)', () => {
     // four tabs present
     expect(text).toContain('stormlands.tabs.overview');
     expect(text).toContain('stormlands.tabs.research');
-    // the overview scoreboard painted the real server names + our marker
+    // header crests render the data-driven kingdom displays (our server's
+    // display label comes from meta.kingdoms, proving the join landed)
+    expect(text).toContain('Era #008');
     expect(text).toContain('Era #039');
-    expect(text).toContain('Era 8');
-    // host [data-kvk] drives the accent
-    expect((fixture.nativeElement as HTMLElement).getAttribute('data-kvk')).toBe('stormlands');
+    // the event accent is published to the shell (drives [data-kvk] on the app
+    // root, shared by the frozen top bar + page)
+    expect(TestBed.inject(PageTitleService).kvkTheme()).toBe('stormlands');
   });
 
   it('shows the unknown-dashboard fallback for an unregistered slug', async () => {

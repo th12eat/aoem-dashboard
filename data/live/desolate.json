@@ -20,6 +20,42 @@
     "season": "Stellar Dynasty",
     "ourSdRank": null,
     "mapFormat": "Map splits in phases: quarters → halves → full.",
+    "kingdoms": [
+      {
+        "server": "Era 8",
+        "display": "Era #008",
+        "corner": "North",
+        "color": "#5b8bc4",
+        "rgb": "91,139,196",
+        "us": true,
+        "barColor": "#5b9bd8"
+      },
+      {
+        "server": "Era #068",
+        "display": "Era #068",
+        "corner": "West",
+        "color": "#d4934a",
+        "rgb": "212,147,74",
+        "barColor": "#f5731f"
+      },
+      {
+        "server": "Era #066",
+        "display": "Era #066",
+        "corner": "East",
+        "color": "#9a6dd4",
+        "rgb": "154,109,212",
+        "barColor": "#b18cff"
+      },
+      {
+        "server": "Era #028",
+        "display": "Era #028",
+        "corner": "South",
+        "color": "#5aa87a",
+        "rgb": "90,168,122",
+        "barColor": "#4fc386"
+      }
+    ],
+    "zeusTime": "19:00 UTC",
     "notes": "New matchup — matchmaking Sep 26. Us North/blue. Opponents: #068 West, #066 East, #028 South.",
     "aaruResult": "Era #028 won · we finished 2nd of 4 (Loss).",
     "eventOver": true
@@ -183,6 +219,7 @@
       "server": "Era #068",
       "alliance": "TBD",
       "relation": "ally",
+      "fronts": "none",
       "notes": "Ally — coordinate, no fighting anywhere."
     },
     {
@@ -190,6 +227,7 @@
       "server": "Era #066",
       "alliance": "TBD",
       "relation": "hostile",
+      "fronts": "all",
       "notes": "Enemy everywhere — fight on all fronts, including citadels."
     },
     {
@@ -197,6 +235,7 @@
       "server": "Era #028",
       "alliance": "TBD",
       "relation": "hostile",
+      "fronts": "all",
       "notes": "Enemy everywhere — fight on all fronts, including citadels."
     }
   ],
@@ -1307,5 +1346,130 @@
         "noLine": true
       }
     ]
+  },
+  "serverTiers": {
+    "_note": "SAMPLE placeholder data for display; replace with real scouting counts.",
+    "labels": [
+      "100M+",
+      "200M+",
+      "300M+",
+      "400M+",
+      "500M+"
+    ],
+    "byServer": {
+      "Era 8": [
+        258,
+        31,
+        5,
+        1,
+        0
+      ],
+      "Era #068": [
+        241,
+        22,
+        3,
+        1,
+        1
+      ],
+      "Era #066": [
+        268,
+        34,
+        6,
+        1,
+        0
+      ],
+      "Era #028": [
+        299,
+        58,
+        12,
+        2,
+        1
+      ]
+    }
+  },
+  "serverDepth": {
+    "_note": "SAMPLE placeholder data for display; replace with real scouting values (millions).",
+    "ranks": [
+      1,
+      10,
+      50,
+      100,
+      200,
+      300
+    ],
+    "byServer": {
+      "Era 8": {
+        "power": [
+          452,
+          241,
+          158,
+          132,
+          108,
+          88
+        ],
+        "merits": [
+          320,
+          150,
+          42,
+          22,
+          9,
+          4
+        ]
+      },
+      "Era #068": {
+        "power": [
+          410,
+          230,
+          150,
+          128,
+          102,
+          82
+        ],
+        "merits": [
+          280,
+          130,
+          38,
+          19,
+          7,
+          3
+        ]
+      },
+      "Era #066": {
+        "power": [
+          470,
+          255,
+          165,
+          138,
+          112,
+          92
+        ],
+        "merits": [
+          360,
+          165,
+          50,
+          25,
+          10,
+          5
+        ]
+      },
+      "Era #028": {
+        "power": [
+          590,
+          270,
+          178,
+          148,
+          118,
+          96
+        ],
+        "merits": [
+          1100,
+          195,
+          60,
+          27,
+          11,
+          5
+        ]
+      }
+    }
   }
 }

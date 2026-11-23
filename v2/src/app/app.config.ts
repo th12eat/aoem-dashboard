@@ -6,7 +6,10 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideServiceWorker } from '@angular/service-worker';
 import { routes } from './app.routes';
-import { EVENT_DATA_SOURCE, StaticEventDataSource } from '@core/services/event-dashboard.datasource';
+import { EVENT_DATA_SOURCE } from '@core/services/event-dashboard.datasource';
+import { SupabaseEventDataSource } from '@core/services/supabase-event.datasource';
+import { ACCESS } from '@core/access/access.service';
+import { SupabaseAccessService } from '@core/access/supabase-access.service';
 
 /**
  * Root application providers. Mirrors activity-tracker's app.config.ts so the
@@ -31,8 +34,14 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    // The data seam. Phase C swaps this to SupabaseEventDataSource — no
-    // component changes, since everything depends on the EVENT_DATA_SOURCE token.
-    { provide: EVENT_DATA_SOURCE, useExisting: StaticEventDataSource },
+    // The data seam — occurrence-aware Supabase source (DB-first, static-JSON
+    // fallback). Delegates to StaticEventDataSource for the fallback path.
+    // Components depend only on the EVENT_DATA_SOURCE token.
+    { provide: EVENT_DATA_SOURCE, useExisting: SupabaseEventDataSource },
+    // The access seam — now backed by Supabase (reads the signed-in user's
+    // dashboard_access role). Guards/components depend only on ACCESS, so this
+    // swap from DevAccessService needed no consumer changes. DevAccessService
+    // is still available (?role= override) for local work without signing in.
+    { provide: ACCESS, useExisting: SupabaseAccessService },
   ],
 };

@@ -1,30 +1,28 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import type { WidgetConfig } from '@shared/models/event-dashboard-config.model';
+import type { DiplomacyRow } from '@shared/models/event-data.model';
 
-/** A column in the escalating fight ladder (Open Field, Storm Erosion, …). */
+/** A column in the escalating fight ladder (Open Field, Storm Erosion, …). This
+ * is the FRONT VOCABULARY — the same for every occurrence, so it lives in the
+ * config (template), while who-fights-whom comes from the bound data. */
 interface RoeColumn {
   key: string;
   /** Verbatim column header. */
   label: string;
 }
 
-/** Per-server rules of engagement (carried verbatim from 1.0 DIPLOMACY_ROE). */
-interface RoeRow {
-  server: string;
-  /** Accent colour for the server name (its map corner). */
-  color?: string;
-  ally?: boolean;
-  neutral?: boolean;
-  /** Per-column fight flags, keyed by RoeColumn.key. */
-  fight?: Record<string, boolean>;
-  /** Columns where we're explicitly allied (shown with 🤝). */
-  allyCols?: string[];
-}
-
 interface RoeOptions {
   columns?: RoeColumn[];
-  rows?: RoeRow[];
+}
+
+/** Internal per-row model after expanding data `fronts` against the columns. */
+interface RoeRow {
+  server: string;
+  color: string;
+  ally: boolean;
+  neutral: boolean;
+  fight: Record<string, boolean>;
 }
 
 const GREEN = '#22c55e';
@@ -163,14 +161,33 @@ export class RoeTableComponent {
   private readonly opts = computed<RoeOptions>(() => (this.config().options as RoeOptions) ?? {});
   readonly title = computed(() => this.config().titleKey);
   readonly columns = computed<RoeColumn[]>(() => this.opts().columns ?? []);
-  readonly rows = computed<RoeRow[]>(() => this.opts().rows ?? []);
+
+  /** Rows come from the bound diplomacy data (per-occurrence), with each row's
+   * `fronts` expanded against the config's front columns. */
+  readonly rows = computed<RoeRow[]>(() => {
+    const diplomacy = (this.data() as DiplomacyRow[] | undefined) ?? [];
+    const cols = this.columns();
+    return diplomacy.map(d => {
+      const fight: Record<string, boolean> = {};
+      for (const c of cols) {
+        fight[c.key] = d.fronts === 'all' ? true : d.fronts === 'none' ? false : d.fronts.includes(c.key);
+      }
+      return {
+        server: d.server,
+        color: d.color,
+        ally: d.ally,
+        neutral: d.relation.toLowerCase() === 'neutral',
+        fight,
+      };
+    });
+  });
 
   /** Derive the stance chip from the fight-column count (verbatim 1.0 logic). */
   stance(row: RoeRow): { color: string; label: string; desc: string } {
     if (row.ally) return { color: GREEN, label: 'Ally', desc: 'Side with them everywhere' };
     if (row.neutral) return { color: GREY, label: 'Neutral', desc: 'No pact — avoid unprovoked engagements' };
     const cols = this.columns();
-    const n = cols.filter(c => row.fight?.[c.key]).length;
+    const n = cols.filter(c => row.fight[c.key]).length;
     const total = cols.length || 1;
     if (n === 0) return { color: GREY, label: 'Retaliate only', desc: "Don't initiate — hit back only" };
     if (n === total) return { color: RED, label: 'Hostile', desc: 'Fight on all fronts' };
@@ -179,10 +196,8 @@ export class RoeTableComponent {
   }
 
   cellFor(row: RoeRow, key: string): { color: string; glyph: string; title: string } {
-    const allyCol = row.ally || (row.allyCols ?? []).includes(key);
-    const fight = allyCol ? false : !!row.fight?.[key];
-    if (allyCol) return { color: GREEN, glyph: '🤝', title: 'Ally' };
-    if (fight) return { color: RED, glyph: '⚔️', title: 'Fight' };
+    if (row.ally) return { color: GREEN, glyph: '🤝', title: 'Ally' };
+    if (row.fight[key]) return { color: RED, glyph: '⚔️', title: 'Fight' };
     return { color: GREY, glyph: '✋', title: 'Leave alone / retaliate only' };
   }
 }

@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, computed, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { ClockService } from '@core/services/clock.service';
 import type { WidgetConfig } from '@shared/models/event-dashboard-config.model';
 import type { EventMeta } from '@shared/models/event-data.model';
 
@@ -97,13 +98,12 @@ import type { EventMeta } from '@shared/models/event-data.model';
     `,
   ],
 })
-export class CountdownComponent implements OnDestroy {
+export class CountdownComponent {
   readonly config = input.required<WidgetConfig>();
   readonly data = input.required<unknown>();
 
-  /** 1s heartbeat; recomputes the countdown. */
-  private readonly now = signal(Date.now());
-  private readonly timer = setInterval(() => this.now.set(Date.now()), 1000);
+  private readonly clock = inject(ClockService);
+  private readonly now = this.clock.now;
 
   readonly meta = computed<EventMeta>(
     () =>
@@ -114,6 +114,7 @@ export class CountdownComponent implements OnDestroy {
         ourServer: '',
         ourAlliances: [],
         corners: {},
+        kingdoms: [],
         notes: '',
         eventOver: false,
       },
@@ -140,8 +141,4 @@ export class CountdownComponent implements OnDestroy {
     const s = Math.floor((ms % 60000) / 1000);
     return `${d}d ${h}h ${m}m ${s}s`;
   });
-
-  ngOnDestroy(): void {
-    clearInterval(this.timer);
-  }
 }

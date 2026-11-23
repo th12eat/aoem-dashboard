@@ -172,6 +172,13 @@
   color: var(--text-secondary, #8a90a5);
   letter-spacing: 0.5px;
   cursor: pointer;
+  // Reset native button chrome so a <button class="ehdr-mi"> matches the <a> rows.
+  width: 100%;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-family: inherit;
+  text-decoration: none;
 }
 .ehdr-menu .ehdr-mi:hover {
   background: var(--bg-card2, #161a28);

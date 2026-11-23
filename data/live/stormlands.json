@@ -24,6 +24,42 @@
       "Era #015": "South/green",
       "Era #038": "West/orange"
     },
+    "kingdoms": [
+      {
+        "server": "Era 8",
+        "display": "Era #008",
+        "corner": "East",
+        "color": "#9a6dd4",
+        "rgb": "154,109,212",
+        "us": true,
+        "barColor": "#b18cff"
+      },
+      {
+        "server": "Era #039",
+        "display": "Era #039",
+        "corner": "North",
+        "color": "#5b8bc4",
+        "rgb": "91,139,196",
+        "barColor": "#5b9bd8"
+      },
+      {
+        "server": "Era #038",
+        "display": "Era #038",
+        "corner": "West",
+        "color": "#d4934a",
+        "rgb": "212,147,74",
+        "barColor": "#ef9f6b"
+      },
+      {
+        "server": "Era #015",
+        "display": "Era #015",
+        "corner": "South",
+        "color": "#5aa87a",
+        "rgb": "90,168,122",
+        "barColor": "#4fc386"
+      }
+    ],
+    "zeusTime": "11:00 UTC",
     "notes": "4-kingdom Stormlands. Us East/purple. Final: 4th of 4. E#039 won.",
     "eventOver": true
   },
@@ -77,6 +113,7 @@
       "server": "Era #039",
       "alliance": "TBD",
       "relation": "neutral",
+      "fronts": "none",
       "notes": "Neutral — no pact; avoid unprovoked engagements for now."
     },
     {
@@ -84,6 +121,7 @@
       "server": "Era #038",
       "alliance": "TBD",
       "relation": "neutral",
+      "fronts": "none",
       "notes": "Neutral — no pact; avoid unprovoked engagements for now."
     },
     {
@@ -91,6 +129,7 @@
       "server": "Era #015",
       "alliance": "TBD",
       "relation": "hostile",
+      "fronts": "all",
       "notes": "Hostile — treat as a target across all fronts (open field, riverland, farms, citadels, cities/gates)."
     }
   ],

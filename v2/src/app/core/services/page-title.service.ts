@@ -1,16 +1,25 @@
 import { Injectable, signal } from '@angular/core';
 
 /**
- * Holds the current page name shown in the frozen top bar's breadcrumb
- * (◆ Era 8 Command › <page>). The hub clears it (null → no crumb); the event
- * page sets it from its config title. Kept as a tiny service so the always-on
- * SiteHeaderComponent can read it without route coupling.
+ * Shell context shared between the always-on app chrome (frozen top bar) and
+ * the current page:
+ *   • pageName — breadcrumb crumb (◆ Era 8 Command › <page>); null on the hub.
+ *   • kvkTheme — the active event accent (drives [data-kvk] on the app root, so
+ *     the frozen bar AND the page share the event's accent instead of the
+ *     default gold). 'generic' off an event page.
+ *
+ * Kept as a tiny service so the shell can read it without route coupling.
  */
 @Injectable({ providedIn: 'root' })
 export class PageTitleService {
   readonly pageName = signal<string | null>(null);
+  readonly kvkTheme = signal<string>('generic');
 
   set(name: string | null): void {
     this.pageName.set(name);
+  }
+
+  setTheme(theme: string): void {
+    this.kvkTheme.set(theme);
   }
 }
