@@ -115,14 +115,20 @@ export function fmtB(n: number): string {
  *   kingdomFinal rank of "Era 8" → explicit `placement` → Win=1 / Loss=4 → null. */
 export function placementOf(e: RawHistoryEvent, ourServer = 'Era 8'): number | null {
   if (e.result === 'Live' || e.result === 'TBD') return null;
+  // An explicit v1.0 placement is the SOURCE OF TRUTH — prefer it over anything
+  // derived from scores (which can be partial/mis-keyed).
+  if (typeof e.placement === 'number') return e.placement;
   if (e.kingdomFinal) {
+    // Compare servers by their bare number, so "Era 008"/"E#008"/"Era 8" all
+    // match (adapter normalization once wrote leading zeros that broke this).
+    const numOf = (s: string) => s.replace(/\D/g, '').replace(/^0+/, '') || s;
+    const ours = numOf(ourServer);
     const ranked = Object.entries(e.kingdomFinal)
       .map(([server, pts]) => ({ server, v: toNumericValue(pts).value }))
       .sort((a, b) => (Number.isFinite(b.v) ? b.v : -Infinity) - (Number.isFinite(a.v) ? a.v : -Infinity));
-    const idx = ranked.findIndex(r => r.server === ourServer);
+    const idx = ranked.findIndex(r => numOf(r.server) === ours);
     if (idx >= 0) return idx + 1;
   }
-  if (typeof e.placement === 'number') return e.placement;
   if (e.result === 'Win') return 1;
   if (e.result === 'Loss') return 4;
   return null;

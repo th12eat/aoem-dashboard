@@ -104,7 +104,10 @@ export class HistoryService {
     h.ours = ours.power ? ours : h.ours;
     h.occurrenceSlug = occ.typeSlug;
     h.occurrenceDate = occ.startDate;
-    h.placement = live ? null : placementOf(raw);
+    // Placement: an explicit stored `placement` (stamped from v1.0) wins; else
+    // derive from the kingdom scores. Live events have none.
+    const storedPlacement = doc['placement'];
+    h.placement = live ? null : typeof storedPlacement === 'number' ? storedPlacement : placementOf(raw);
     return h;
   }
 }

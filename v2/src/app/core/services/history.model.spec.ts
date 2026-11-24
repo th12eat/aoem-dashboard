@@ -50,6 +50,24 @@ describe('history.model', () => {
     expect(placementOf({ event: 'x', date: 'd', opp: 'o', result: 'Live' })).toBeNull();
   });
 
+  it('explicit placement wins over score-derived rank', () => {
+    // scores would say 1st (we lead), but the recorded placement is 2 → trust it.
+    const e: RawHistoryEvent = {
+      event: 'x', date: 'd', opp: 'o', result: 'Loss', placement: 2,
+      kingdomFinal: { 'Era 8': '99', 'Era #030': '1' },
+    };
+    expect(placementOf(e)).toBe(2);
+  });
+
+  it('matches our server across "Era 008" / "Era 8" when ranking by score', () => {
+    // Primordial-style leading-zero server keys must still resolve to us.
+    const e: RawHistoryEvent = {
+      event: 'x', date: 'd', opp: 'o', result: 'Loss',
+      kingdomFinal: { 'Era 036': '49', 'Era 008': '46', 'Era 084': '34', 'Era 030': '20' },
+    };
+    expect(placementOf(e)).toBe(2); // 036 then us → 2nd
+  });
+
   it('normalizes a 1v1 event', () => {
     const e: RawHistoryEvent = {
       event: 'TME',

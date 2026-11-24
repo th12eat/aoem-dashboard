@@ -48,27 +48,45 @@ async function loadAdapters() {
   return import(pathToFileURL(out).href);
 }
 
-/** Minimal v2 doc from a history.json roster (index-only occurrences). Produces
- * research + a kingdomScoreboard floor so the dated dashboard shows figures. */
-function synthFromHistory(slug, hist) {
-  const num = s => Number(String(s ?? '').replace(/[,\s]/g, '')) || 0;
+/** Build a `research` block ({ours, opponents}) from a history.json entry's
+ * rosters. Each row is a [tag, power, merits] tuple. Returns null when the
+ * history entry carries no roster at all. The opponent server name comes from
+ * the entry's `opp` for 1v1 (oppA), or the oppRosters keys for multi. */
+function researchFromHistory(hist) {
   const toAlliance = r => ({ tag: String(r[0] ?? ''), name: String(r[0] ?? ''), power: r[1] ?? 0, merits: r[2] ?? 0 });
+  const normServer = s => (String(s).replace(/\D/g, '') ? `Era ${String(s).replace(/\D/g, '')}` : String(s));
   const ours = hist.ours ?? hist.ourRoster ?? [];
-  const oppServers = hist.oppRosters
-    ? Object.entries(hist.oppRosters).map(([server, rows]) => ({
-        server: server.replace(/[^0-9]/g, '') ? `Era ${server.replace(/\D/g, '')}` : server,
-        alliances: rows.map(toAlliance),
-        players: [],
-      }))
-    : hist.oppA
-      ? [{ server: 'Opponent', alliances: hist.oppA.map(toAlliance), players: [] }]
-      : [];
-  void num;
+  let opponents = [];
+  if (hist.oppRosters) {
+    opponents = Object.entries(hist.oppRosters).map(([server, rows]) => ({
+      server: normServer(server),
+      alliances: rows.map(toAlliance),
+      players: [],
+    }));
+  } else if (hist.oppA) {
+    // 1v1: the single opponent server comes from the entry's `opp` label.
+    opponents = [{ server: hist.opp ? normServer(hist.opp) : 'Opponent', alliances: hist.oppA.map(toAlliance), players: [] }];
+  }
+  if (!ours.length && !opponents.length) return null;
+  return { ours: { server: 'Era 8', alliances: ours.map(toAlliance), players: [] }, opponents };
+}
+
+/** Does a doc already carry a non-empty `research.ours`/opponents roster? */
+function hasResearch(doc) {
+  const r = doc && doc.research;
+  if (!r) return false;
+  const oursN = (r.ours && Array.isArray(r.ours.alliances) ? r.ours.alliances.length : 0);
+  const oppN = Array.isArray(r.opponents) ? r.opponents.reduce((a, o) => a + (o.alliances?.length ?? 0), 0) : 0;
+  return oursN > 0 || oppN > 0;
+}
+
+/** Minimal v2 doc from a history.json roster (index-only occurrences). */
+function synthFromHistory(slug, hist) {
   return {
     schemaVersion: 2,
     _recovered: 'index-only',
     eventConfig: { eventStart: hist.date, ourServer: 'Era 8', kingdoms: [] },
-    research: { ours: { server: 'Era 8', alliances: ours.map(toAlliance), players: [] }, opponents: oppServers },
+    research: researchFromHistory(hist) ?? { ours: { server: 'Era 8', alliances: [], players: [] }, opponents: [] },
   };
 }
 
@@ -102,6 +120,14 @@ async function main() {
     } else {
       doc = adaptLegacyDoc(m.slug, raw);
       doc._recovered = m.recovered;
+    }
+    // Some event JSONs (e.g. Behemoth) store only scalar scores — no rosters —
+    // so the adapter leaves `research` empty. history.json DOES carry the top-4
+    // rosters, so fold them in whenever the doc has none, so the dated dashboard
+    // + History ledger show real figures.
+    if (_history && !hasResearch(doc)) {
+      const research = researchFromHistory(_history);
+      if (research) doc.research = research;
     }
     // Stamp the recorded outcome (Win/Loss) from history.json so completed
     // events render a result even when the doc has no full kingdom scoreboard.

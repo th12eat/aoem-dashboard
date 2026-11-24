@@ -107,4 +107,25 @@ describe('adoptAdapters', () => {
     expect(n.meta.prepStarted).toBe(true);
     expect(n.meta.prepOursTotal).toBe(1.47);
   });
+
+  it('normalizes Primordial server codes to leading-zero-free "Era N"', () => {
+    const PRIMORDIAL_RAW = {
+      schemaVersion: 2,
+      event: { startISO: '2026-10-12T00:00:00Z', eventOver: true },
+      servers: [{ code: 'E#008', us: true }, { code: 'E#036' }],
+      research: {
+        'E#008': { alliances: [['eRa', 25410263087, 2642206985]], players: [] },
+        'E#036': { alliances: [['A36', 22820852118, 2253227966]], players: [] },
+      },
+      kingdomScoreboard: [{ server: 'E#008', points: 46600000000 }, { server: 'E#036', points: 49600000000 }],
+    };
+    const doc = adaptLegacyDoc('primordial', PRIMORDIAL_RAW) as Record<string, unknown>;
+    const ec = doc['eventConfig'] as Record<string, unknown>;
+    // "E#008" → "Era 8", NOT "Era 008" (the leading zero broke placement lookup).
+    expect(ec['ourServer']).toBe('Era 8');
+    const kb = doc['kingdomScoreboard'] as Record<string, unknown>[];
+    expect(kb.map(r => r['server'])).toEqual(['Era 8', 'Era 36']);
+    const research = doc['research'] as { opponents: Record<string, unknown>[] };
+    expect(research.opponents[0]['server']).toBe('Era 36');
+  });
 });

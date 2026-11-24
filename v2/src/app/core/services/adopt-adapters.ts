@@ -299,8 +299,11 @@ function adoptPrimordial(raw: Doc): Doc {
 
 /** "E#008" / "#008" / "Era 8" → canonical "Era 8" (spaced) for v2. */
 function normServer(s: string): string {
-  const n = s.replace(/\D/g, '');
-  return n ? `Era ${n}` : s;
+  const digits = s.replace(/\D/g, '');
+  if (!digits) return s;
+  // Strip leading zeros so "E#008" → "Era 8" (matches the rest of the app;
+  // "Era 008" !== "Era 8" was breaking placement lookups).
+  return `Era ${parseInt(digits, 10)}`;
 }
 /** ISO datetime → "YYYY-MM-DD" (or '' if absent/invalid). */
 function isoDate(v: unknown): string {
