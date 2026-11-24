@@ -74,6 +74,7 @@ for (const e of events) {
   const patch = {};
   if (e.result === 'Win' || e.result === 'Loss') patch.result = e.result;
   if (typeof e.placement === 'number') patch.placement = e.placement;
+  if (e.star === true) patch.star = true; // special no-troop-loss KvK flag
   const research = researchFromHistory(e);
   if (research) patch.research = research;
   if (!Object.keys(patch).length) continue; // nothing to stamp (e.g. a bare Live)

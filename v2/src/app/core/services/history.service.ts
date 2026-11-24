@@ -95,6 +95,8 @@ export class HistoryService {
       opp: Object.keys(oppRosters).join(' / '),
       result,
       multi: hasOpp,
+      // `star` flags a special no-troop-loss KvK (yellow * + footnote).
+      star: doc['star'] === true,
       ourRoster: toRoster(obj(research['ours'])['alliances']),
       oppRosters: hasOpp ? oppRosters : undefined,
       kingdomFinal: Object.keys(kingdomFinal).length ? kingdomFinal : undefined,

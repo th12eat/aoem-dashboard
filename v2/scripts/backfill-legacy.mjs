@@ -129,10 +129,12 @@ async function main() {
       const research = researchFromHistory(_history);
       if (research) doc.research = research;
     }
-    // Stamp the recorded outcome (Win/Loss) from history.json so completed
-    // events render a result even when the doc has no full kingdom scoreboard.
+    // Stamp the recorded outcome (Win/Loss), placement + special-KvK flag from
+    // history.json so completed events render correctly without a full scoreboard.
     const histResult = (_history && _history.result) || '';
     if (histResult && histResult !== 'Live' && histResult !== 'TBD') doc.result = histResult;
+    if (_history && typeof _history.placement === 'number') doc.placement = _history.placement;
+    if (_history && _history.star === true) doc.star = true;
     rows.push({ slug: m.slug, date: m.date, doc });
   }
 

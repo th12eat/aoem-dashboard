@@ -99,7 +99,7 @@ type Filter = 'all' | 'wins' | 'losses' | 'multi' | 'duo';
             </tbody>
           </table>
           @if (anyStar()) {
-            <p class="hx-foot">* Special KvK — no troop loss occurs (Primordial-style).</p>
+            <p class="hx-foot">* Special KvK — no troop loss occurs (units wounded in PvP are recovered).</p>
           }
         </div>
 
