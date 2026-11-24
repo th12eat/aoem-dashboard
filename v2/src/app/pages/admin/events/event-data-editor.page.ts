@@ -512,12 +512,19 @@ export class EventDataEditorPage {
     const rows = this.setup().map(s => ({
       num: s.num ? String(s.num) : '',
       corner: s.corner,
-      color: cornerColor(s.corner).color,
+      color: this.serverColor(s),
       alliances: s.alliances.join(', '),
     }));
-    // seed to the fixed count (first row defaults to ours)
+    // seed to the fixed count (first row defaults to ours). In a 1v1 the colour
+    // is us-blue (row 0) / opp-red; else neutral until a corner is chosen.
     while (rows.length < this.kCount()) {
-      rows.push({ num: rows.length === 0 ? String(this.ourNum) : '', corner: '', color: '#8a90a5', alliances: '' });
+      const isUs = rows.length === 0;
+      rows.push({
+        num: isUs ? String(this.ourNum) : '',
+        corner: '',
+        color: this.isDuel() ? (isUs ? US_BLUE : OPP_RED) : '#8a90a5',
+        alliances: '',
+      });
     }
     return rows.slice(0, this.kCount());
   }
@@ -797,7 +804,7 @@ export class EventDataEditorPage {
       return {
         key: s.num === this.ourNum ? 'ours' : `n${s.num}`,
         name: fmtServer(s.num, 'full'),
-        color: cornerColor(s.corner).color,
+        color: this.serverColor(s),
         tags: s.alliances,
         alliances: allianceRows.slice(0, 4),
         players: playerRows.slice(0, 15),
