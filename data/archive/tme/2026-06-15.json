@@ -1,0 +1,446 @@
+{
+  "oppServer": "Era 23",
+  "invasionTime": "19:00 UTC",
+  "weWonPrep": true,
+  "alliances": [
+    {
+      "tag": "WC1",
+      "roleKey": "rolePrimaryStrike",
+      "position": "NE-inner",
+      "tower": "Swordsman (N) / Pikeman (W)",
+      "color": "#3b82f6",
+      "allies": 0,
+      "power": "19,612,039,793",
+      "merits": "2,087,503,559",
+      "prepPoints": "51,239,504,746"
+    },
+    {
+      "tag": "MyT",
+      "roleKey": "roleFlanking",
+      "position": "SE-outer",
+      "tower": "Cavalry (S)",
+      "color": "#22c55e",
+      "allies": 0,
+      "power": "10,266,594,886",
+      "merits": "848,149,532",
+      "prepPoints": "11,752,185,376"
+    },
+    {
+      "tag": "REU",
+      "roleKey": "roleSecondaryStrike",
+      "position": "SE-inner",
+      "tower": "Archer (E)",
+      "color": "#f59e0b",
+      "allies": 0,
+      "power": "12,075,304,942",
+      "merits": "887,427,033",
+      "prepPoints": "15,447,547,229"
+    },
+    {
+      "tag": "AGC",
+      "roleKey": "roleTowerHold",
+      "position": "NE-outer",
+      "tower": "Archer (E)",
+      "color": "#ef4444",
+      "allies": 0,
+      "power": "11,296,408,344",
+      "merits": "177,822,588",
+      "prepPoints": "11,740,761,439"
+    }
+  ],
+  "prepStages": [
+    {
+      "nameKey": "prepStage1",
+      "ourPts": 2.2,
+      "oppPts": 2.1,
+      "won": true
+    },
+    {
+      "nameKey": "prepStage2",
+      "ourPts": 15.3,
+      "oppPts": 13.2,
+      "won": true
+    },
+    {
+      "nameKey": "prepStage3",
+      "ourPts": 23.8,
+      "oppPts": 21.9,
+      "won": true
+    },
+    {
+      "nameKey": "prepStage4",
+      "ourPts": 30.27,
+      "oppPts": 18.65,
+      "won": true
+    },
+    {
+      "nameKey": "prepStage5",
+      "ourPts": 13.43,
+      "oppPts": 13.15,
+      "won": true
+    }
+  ],
+  "totalOur": 85,
+  "totalOpp": 69,
+  "prepLastUpdated": "2026-06-21 (Prep complete)",
+  "oppAlliances": [
+    {
+      "tag": "LOD",
+      "name": "LegionOfDonuts",
+      "allies": 0,
+      "power": "17,173,032,779",
+      "merits": "2,132,765,554",
+      "prepPoints": "30,240,558,399"
+    },
+    {
+      "tag": "boi",
+      "name": "Jericho",
+      "allies": 0,
+      "power": "14,806,866,449",
+      "merits": "1,082,278,581",
+      "prepPoints": "19,797,829,322"
+    },
+    {
+      "tag": "R65",
+      "name": "Royalz65",
+      "allies": 0,
+      "power": "13,881,483,676",
+      "merits": "1,766,240,250",
+      "prepPoints": "17,612,668,621"
+    },
+    {
+      "tag": "ILF",
+      "name": "ImperiumLight",
+      "allies": 0,
+      "power": "4,866,546,542",
+      "merits": "92,039,230",
+      "prepPoints": "4,945,677,126"
+    }
+  ],
+  "krakens": [
+    {
+      "rank": 1,
+      "name": "Dax",
+      "alliance": "LOD",
+      "power": "309,156,351",
+      "merits": "254,130,946",
+      "ratio": "0.82"
+    },
+    {
+      "rank": 2,
+      "name": "冰scorpio",
+      "alliance": "LOD",
+      "power": "300,212,138",
+      "merits": "52,287,189",
+      "ratio": "0.17"
+    },
+    {
+      "rank": 3,
+      "name": "Triple3Crown",
+      "alliance": "R65",
+      "power": "269,233,300",
+      "merits": "276,039,378",
+      "ratio": "1.03"
+    },
+    {
+      "rank": 4,
+      "name": "KRMirae",
+      "alliance": "R65",
+      "power": "263,683,505",
+      "merits": "271,808,954",
+      "ratio": "1.03"
+    },
+    {
+      "rank": 5,
+      "name": "DiscoPeat",
+      "alliance": "LOD",
+      "power": "253,352,847",
+      "merits": "362,545,845",
+      "ratio": "1.43"
+    },
+    {
+      "rank": 6,
+      "name": "Class",
+      "alliance": "boi",
+      "power": "246,328,443",
+      "merits": "41,329,075",
+      "ratio": "0.17"
+    },
+    {
+      "rank": 7,
+      "name": "ZoroMihawk",
+      "alliance": "R65",
+      "power": "243,076,821",
+      "merits": "187,122,802",
+      "ratio": "0.77"
+    },
+    {
+      "rank": 8,
+      "name": "Hasumodo",
+      "alliance": "LOD",
+      "power": "226,281,307",
+      "merits": "142,387,030",
+      "ratio": "0.63"
+    },
+    {
+      "rank": 9,
+      "name": "Agimix",
+      "alliance": "LOD",
+      "power": "216,977,530",
+      "merits": "64,510,275",
+      "ratio": "0.30"
+    },
+    {
+      "rank": 10,
+      "name": "MonkeyDluffy",
+      "alliance": "LOD",
+      "power": "213,977,474",
+      "merits": "178,014,678",
+      "ratio": "0.83"
+    },
+    {
+      "rank": 11,
+      "name": "白马义从FL",
+      "alliance": "R65",
+      "power": "212,694,424",
+      "merits": "61,203,255",
+      "ratio": "0.29"
+    },
+    {
+      "rank": 12,
+      "name": "kaktesplant",
+      "alliance": "LOD",
+      "power": "199,333,524",
+      "merits": "162,318,764",
+      "ratio": "0.81"
+    },
+    {
+      "rank": 13,
+      "name": "JoreaOhJorea",
+      "alliance": "R65",
+      "power": "198,194,048",
+      "merits": "82,308,299",
+      "ratio": "0.42"
+    },
+    {
+      "rank": 14,
+      "name": "Gyuri",
+      "alliance": "LOD",
+      "power": "190,974,746",
+      "merits": "45,660,004",
+      "ratio": "0.24"
+    },
+    {
+      "rank": 15,
+      "name": "Magmar",
+      "alliance": "boi",
+      "power": "190,479,782",
+      "merits": "49,688,421",
+      "ratio": "0.26"
+    },
+    {
+      "rank": 16,
+      "name": "sunnyman",
+      "alliance": "R65",
+      "power": "188,411,270",
+      "merits": "115,781,639",
+      "ratio": "0.61"
+    },
+    {
+      "rank": 17,
+      "name": "KRBigMaru",
+      "alliance": "R65",
+      "power": "187,590,037",
+      "merits": "139,413,156",
+      "ratio": "0.74"
+    },
+    {
+      "rank": 18,
+      "name": "milanino",
+      "alliance": "boi",
+      "power": "184,287,122",
+      "merits": "140,468,104",
+      "ratio": "0.76"
+    },
+    {
+      "rank": 19,
+      "name": "Damisav",
+      "alliance": "boi",
+      "power": "178,860,141",
+      "merits": "49,854,163",
+      "ratio": "0.28"
+    },
+    {
+      "rank": 20,
+      "name": "DaDiscoShark",
+      "alliance": "LOD",
+      "power": "175,909,884",
+      "merits": "49,780,590",
+      "ratio": "0.28"
+    },
+    {
+      "rank": 21,
+      "name": "Alex1312AHR",
+      "alliance": "boi",
+      "power": "174,143,297",
+      "merits": "96,270,219",
+      "ratio": "0.55"
+    },
+    {
+      "rank": 22,
+      "name": "VicSSY",
+      "alliance": "LOD",
+      "power": "160,316,144",
+      "merits": "54,045,752",
+      "ratio": "0.34"
+    },
+    {
+      "rank": 23,
+      "name": "Leuname^AHR",
+      "alliance": "boi",
+      "power": "149,345,684",
+      "merits": "71,964,974",
+      "ratio": "0.48"
+    },
+    {
+      "rank": 24,
+      "name": "HomE",
+      "alliance": "R65",
+      "power": "141,611,353",
+      "merits": "43,779,506",
+      "ratio": "0.31"
+    },
+    {
+      "rank": 25,
+      "name": "DiscoGemme",
+      "alliance": "LOD",
+      "power": "138,328,620",
+      "merits": "67,390,214",
+      "ratio": "0.49"
+    },
+    {
+      "rank": 26,
+      "name": "Firehair",
+      "alliance": "boi",
+      "power": "137,855,587",
+      "merits": "41,417,943",
+      "ratio": "0.30"
+    }
+  ],
+  "roles": {
+    "WC1": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "MyT": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "REU": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "AGC": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    }
+  },
+  "_history": {
+    "event": "TME",
+    "date": "2026-06-15",
+    "opp": "Era #023",
+    "result": "Loss",
+    "ours": [
+      [
+        "WC1",
+        19612039793,
+        2087503559
+      ],
+      [
+        "REU",
+        12075304942,
+        887427033
+      ],
+      [
+        "AGC",
+        11296408344,
+        177822588
+      ],
+      [
+        "MyT",
+        10266594886,
+        848149532
+      ]
+    ],
+    "oppA": [
+      [
+        "LOD",
+        17173032779,
+        2132765554
+      ],
+      [
+        "boi",
+        14806866449,
+        1082278581
+      ],
+      [
+        "R65",
+        13881483676,
+        1766240250
+      ],
+      [
+        "ILF",
+        4866546542,
+        92039230
+      ]
+    ]
+  }
+}

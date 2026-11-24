@@ -14,6 +14,7 @@ import type { DataSourceRef } from '@shared/models/event-dashboard-config.model'
 import type { MapNodeState, MapRoute, StrongholdState } from '@shared/models/map.model';
 import { EventHeaderComponent } from '@shared/components/event-header/event-header.component';
 import { KingdomBarComponent } from '@shared/components/kingdom-bar/kingdom-bar.component';
+import { PrepTugComponent } from '@shared/components/prep-tug/prep-tug.component';
 import { TabBarComponent } from '@shared/components/tab-bar/tab-bar.component';
 import { WidgetHostComponent } from '@shared/components/widget-host/widget-host.component';
 import type { WidgetConfig } from '@shared/models/event-dashboard-config.model';
@@ -37,7 +38,7 @@ type LoadState =
  */
 @Component({
   selector: 'app-event-dashboard',
-  imports: [RouterLink, TranslateModule, EventHeaderComponent, KingdomBarComponent, TabBarComponent, WidgetHostComponent],
+  imports: [RouterLink, TranslateModule, EventHeaderComponent, KingdomBarComponent, PrepTugComponent, TabBarComponent, WidgetHostComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let cfg = config();
@@ -59,10 +60,17 @@ type LoadState =
         </main>
       } @else {
         @if (readyData(); as d) {
-          <!-- Persistent kingdom standings bar — above the tabs on every tab (1.0). -->
-          <div class="shell kb-wrap">
-            <app-kingdom-bar [config]="kingdomBarConfig()" [data]="d.kingdomScoreboard" />
-          </div>
+          <!-- Persistent bar — above the tabs on every tab (1.0). The kingdom
+               standings bar by default; TME's prep-war uses the prep tug. -->
+          @if (persistentBar() === 'prepTug' && d.prep) {
+            <div class="shell kb-wrap">
+              <app-prep-tug [config]="persistentBarConfig()" [data]="d.prep" />
+            </div>
+          } @else if (persistentBar() === 'kingdomBar') {
+            <div class="shell kb-wrap">
+              <app-kingdom-bar [config]="persistentBarConfig()" [data]="d.kingdomScoreboard" />
+            </div>
+          }
         }
 
         <app-tab-bar [tabs]="cfg.tabs" [activeId]="activeTabId()" (tabSelect)="selectTab($event)" />
@@ -76,8 +84,16 @@ type LoadState =
               <p class="muted">{{ 'common.error' | translate }}</p>
             }
             @case ('ready') {
-              @for (widget of activeWidgets(); track $index) {
-                <app-widget-host [config]="widget" [eventData]="viewData()!" />
+              @for (row of widgetRows(); track $index) {
+                @if (row.length > 1) {
+                  <div class="widget-row">
+                    @for (widget of row; track $index) {
+                      <app-widget-host class="widget-half" [config]="widget" [eventData]="viewData()!" />
+                    }
+                  </div>
+                } @else {
+                  <app-widget-host [config]="row[0]" [eventData]="viewData()!" />
+                }
               }
             }
           }
@@ -98,6 +114,22 @@ type LoadState =
       .kb-wrap {
         padding-top: 14px;
         padding-bottom: 4px;
+      }
+      /* side-by-side half-width widgets (e.g. tier + depth tables); stack on
+         narrow screens. Each half aligns to the top. */
+      .widget-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      @media (max-width: 760px) {
+        .widget-row {
+          grid-template-columns: 1fr;
+        }
+      }
+      .widget-half {
+        min-width: 0;
       }
       .muted {
         color: var(--text-muted);
@@ -147,10 +179,34 @@ export class EventDashboardPage {
   /** Which tab is active (seeded to the first tab; user-switchable). */
   private readonly activeTab = signal<string | null>(null);
   readonly activeTabId = computed(() => this.activeTab() ?? this.config()?.tabs[0]?.id ?? '');
-  readonly activeWidgets = computed(() => {
+  private readonly tabWidgets = computed(() => {
     const cfg = this.config();
     if (!cfg) return [];
     return (cfg.tabs.find(t => t.id === this.activeTabId()) ?? cfg.tabs[0])?.widgets ?? [];
+  });
+
+  /** Widgets grouped into rows: consecutive `halfWidth` widgets share a flex
+   * row (side-by-side on wide screens, stacked on narrow); everything else is a
+   * full-width row of one. */
+  readonly widgetRows = computed<WidgetConfig[][]>(() => {
+    const rows: WidgetConfig[][] = [];
+    let half: WidgetConfig[] = [];
+    const flush = () => {
+      if (half.length) {
+        rows.push(half);
+        half = [];
+      }
+    };
+    for (const w of this.tabWidgets()) {
+      if (w.halfWidth) {
+        half.push(w);
+      } else {
+        flush();
+        rows.push([w]);
+      }
+    }
+    flush();
+    return rows;
   });
 
   /** The data-source ref, occurrence-date-aware: a supabase config targets the
@@ -232,10 +288,14 @@ export class EventDashboardPage {
     });
   }
 
-  /** Minimal WidgetConfig for the persistent kingdom bar (card-less; its
-   * last-updated label comes from the loaded data). */
-  readonly kingdomBarConfig = computed<WidgetConfig>(() => ({
-    kind: 'kingdomBar',
+  /** Which persistent bar to pin above the tabs (config-chosen; defaults to the
+   * kingdom-standings bar). TME's prep-war opts into `prepTug`. */
+  readonly persistentBar = computed<'kingdomBar' | 'prepTug' | 'none'>(() => this.config()?.persistentBar ?? 'kingdomBar');
+
+  /** Minimal card-less WidgetConfig for whichever persistent bar renders; its
+   * last-updated label comes from the loaded data. */
+  readonly persistentBarConfig = computed<WidgetConfig>(() => ({
+    kind: this.persistentBar() === 'prepTug' ? 'prepTug' : 'kingdomBar',
     card: false,
     options: { updatedLabel: this.readyData()?.pointsUpdatedLabel },
   }));

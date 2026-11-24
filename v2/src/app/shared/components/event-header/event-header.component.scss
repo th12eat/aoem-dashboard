@@ -26,6 +26,34 @@
   color: var(--kvk-accent);
 }
 
+/* TME-style eyebrow + light title (1.0): a blue, letter-spaced "Command Center"
+   eyebrow over a near-white title. */
+:host .kvk-eyebrow {
+  margin: 0 0 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: var(--fs-label, 13px);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #5b9bd8;
+}
+:host .kvk-title-light {
+  color: #f8fafc;
+}
+
+/* dynamic ATTACKING / DEFENDING badge in the crest row */
+.hdr-ad {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #4ade80; /* attacking = green */
+}
+.hdr-ad.is-def {
+  color: #f59e0b; /* defending = amber */
+}
+
 /* top-right jump buttons */
 .hdr-pills-top {
   position: absolute;

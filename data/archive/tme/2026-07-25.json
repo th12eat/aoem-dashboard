@@ -1,0 +1,438 @@
+{
+  "schemaVersion": 1,
+  "oppServer": "Era 90",
+  "invasionTime": "TBD",
+  "prepStart": "2026-07-20",
+  "invasionStart": "2026-07-26",
+  "weWonPrep": false,
+  "ourRank": 16,
+  "oppRank": 11,
+  "prepStarted": true,
+  "eventOver": true,
+  "alliances": [
+    {
+      "tag": "WC1",
+      "name": "WorldClass",
+      "roleKey": "rolePrimaryStrike",
+      "position": "NE-inner",
+      "tower": "Swordsman (N) / Pikeman (W)",
+      "color": "#3b82f6",
+      "allies": 168,
+      "power": "20,827,415,718",
+      "merits": "2,371,887,410",
+      "prepPoints": "39,098,062,108"
+    },
+    {
+      "tag": "REU",
+      "name": "Reunions",
+      "roleKey": "roleSecondaryStrike",
+      "position": "SE-inner",
+      "tower": "Archer (E)",
+      "color": "#f59e0b",
+      "allies": 163,
+      "power": "13,053,184,859",
+      "merits": "906,771,349",
+      "prepPoints": "12,425,363,747"
+    },
+    {
+      "tag": "MyT",
+      "name": "Mythic",
+      "roleKey": "roleFlanking",
+      "position": "SE-outer",
+      "tower": "Cavalry (S)",
+      "color": "#22c55e",
+      "allies": 130,
+      "power": "10,331,763,047",
+      "merits": "842,687,800",
+      "prepPoints": "8,968,169,692"
+    },
+    {
+      "tag": "AGC",
+      "name": "AuroraGodCourt",
+      "roleKey": "roleTowerHold",
+      "position": "NE-outer",
+      "tower": "Archer (E)",
+      "color": "#ef4444",
+      "allies": 161,
+      "power": "11,717,361,838",
+      "merits": "197,923,475",
+      "prepPoints": "9,448,944,572"
+    }
+  ],
+  "prepStages": [
+    {
+      "nameKey": "prepStage1",
+      "ourPts": 1.33,
+      "oppPts": 1.3,
+      "won": true
+    },
+    {
+      "nameKey": "prepStage2",
+      "ourPts": 11.87,
+      "oppPts": 12.9,
+      "won": false
+    },
+    {
+      "nameKey": "prepStage3",
+      "ourPts": 17.4,
+      "oppPts": 19,
+      "won": false
+    },
+    {
+      "nameKey": "prepStage4",
+      "ourPts": 19,
+      "oppPts": 26.1,
+      "won": false
+    },
+    {
+      "nameKey": "prepStage5",
+      "ourPts": 17.8,
+      "oppPts": 18.1,
+      "won": false
+    }
+  ],
+  "totalOur": 67.4,
+  "totalOpp": 77.4,
+  "prepLastUpdated": "2026-07-25 — Final (prep 67.4B vs 77.4B; invasion lost 142B vs 210B)",
+  "oppAlliances": [
+    {
+      "tag": "RIP",
+      "name": "靈車特戰隊",
+      "allies": 170,
+      "power": "21,445,169,944",
+      "merits": "3,027,969,569",
+      "prepPoints": "41,129,009,975"
+    },
+    {
+      "tag": "INT",
+      "name": "英特榮耀",
+      "allies": 158,
+      "power": "15,085,606,880",
+      "merits": "972,408,570",
+      "prepPoints": "21,987,891,354"
+    },
+    {
+      "tag": "YFQ",
+      "name": "月落楓橋",
+      "allies": 162,
+      "power": "10,742,715,107",
+      "merits": "229,037,062",
+      "prepPoints": "12,829,543,782"
+    },
+    {
+      "tag": "OvO",
+      "name": "大秦御貓軍",
+      "allies": 117,
+      "power": "6,413,997,041",
+      "merits": "62,050,519",
+      "prepPoints": "5,232,702,212"
+    }
+  ],
+  "krakens": [
+    {
+      "rank": 1,
+      "name": "三秒蕉",
+      "alliance": "RIP",
+      "power": "448,177,572",
+      "merits": "305,247,667",
+      "ratio": ""
+    },
+    {
+      "rank": 2,
+      "name": "UBoo+GiGi",
+      "alliance": "RIP",
+      "power": "379,478,859",
+      "merits": "157,650,940",
+      "ratio": ""
+    },
+    {
+      "rank": 3,
+      "name": "Golden葛格",
+      "alliance": "RIP",
+      "power": "374,393,775",
+      "merits": "236,794,203",
+      "ratio": ""
+    },
+    {
+      "rank": 4,
+      "name": "韩陆彩",
+      "alliance": "RIP",
+      "power": "349,818,819",
+      "merits": "331,394,910",
+      "ratio": ""
+    },
+    {
+      "rank": 5,
+      "name": "歐特",
+      "alliance": "INT",
+      "power": "345,510,048",
+      "merits": "181,804,792",
+      "ratio": ""
+    },
+    {
+      "rank": 6,
+      "name": "君奉天",
+      "alliance": "RIP",
+      "power": "326,411,603",
+      "merits": "176,606,210",
+      "ratio": ""
+    },
+    {
+      "rank": 7,
+      "name": "蕉你社會事",
+      "alliance": "RIP",
+      "power": "306,629,797",
+      "merits": "179,552,080",
+      "ratio": ""
+    },
+    {
+      "rank": 8,
+      "name": "Ku78nN口蕉酒",
+      "alliance": "RIP",
+      "power": "296,276,727",
+      "merits": "221,802,444",
+      "ratio": ""
+    },
+    {
+      "rank": 9,
+      "name": "享蕉Pay",
+      "alliance": "RIP",
+      "power": "290,040,134",
+      "merits": "116,771,652",
+      "ratio": ""
+    },
+    {
+      "rank": 10,
+      "name": "武士刀",
+      "alliance": "INT",
+      "power": "288,291,217",
+      "merits": "115,001,998",
+      "ratio": ""
+    },
+    {
+      "rank": 11,
+      "name": "王子⁹⁰",
+      "alliance": "RIP",
+      "power": "281,449,888",
+      "merits": "19,129,530",
+      "ratio": ""
+    },
+    {
+      "rank": 12,
+      "name": "好色的大叔",
+      "alliance": "RIP",
+      "power": "277,307,949",
+      "merits": "193,253,787",
+      "ratio": ""
+    }
+  ],
+  "ourTop": [
+    {
+      "rank": 1,
+      "name": "時宗",
+      "alliance": "eRa",
+      "power": "440,185,887",
+      "merits": "360,131,965"
+    },
+    {
+      "rank": 2,
+      "name": "Collin6666",
+      "alliance": "eRa",
+      "power": "337,511,847",
+      "merits": "68,839,382"
+    },
+    {
+      "rank": 3,
+      "name": "민트",
+      "alliance": "REU",
+      "power": "329,942,625",
+      "merits": "314,698,755"
+    },
+    {
+      "rank": 4,
+      "name": "XnJinX",
+      "alliance": "eRa",
+      "power": "297,732,462",
+      "merits": "237,162,002"
+    },
+    {
+      "rank": 5,
+      "name": "Lumberjack",
+      "alliance": "eRa",
+      "power": "286,961,536",
+      "merits": "290,297,894"
+    },
+    {
+      "rank": 6,
+      "name": "Macklemore",
+      "alliance": "eRa",
+      "power": "280,354,358",
+      "merits": "114,614,480"
+    },
+    {
+      "rank": 7,
+      "name": "BloodYoda",
+      "alliance": "eRa",
+      "power": "265,543,369",
+      "merits": "235,681,063"
+    },
+    {
+      "rank": 8,
+      "name": "ibubu♣JP",
+      "alliance": "eRa",
+      "power": "257,317,747",
+      "merits": "85,169,895"
+    },
+    {
+      "rank": 9,
+      "name": "또라에몽",
+      "alliance": "REU",
+      "power": "246,603,863",
+      "merits": "41,463,917"
+    },
+    {
+      "rank": 10,
+      "name": "MuRageᴷᵀ✕",
+      "alliance": "eRa",
+      "power": "233,782,723",
+      "merits": "162,544,762"
+    },
+    {
+      "rank": 11,
+      "name": "TommyTorpedo",
+      "alliance": "eRa",
+      "power": "233,520,556",
+      "merits": "137,820,175"
+    },
+    {
+      "rank": 12,
+      "name": "상승칠성",
+      "alliance": "REU",
+      "power": "233,441,983",
+      "merits": "59,186,446"
+    }
+  ],
+  "roles": {
+    "WC1": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "MyT": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "REU": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "AGC": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    }
+  },
+  "result": "Loss",
+  "finalScore": {
+    "us": "142B",
+    "them": "210B",
+    "label": "Imperial City Domination — E#090"
+  },
+  "_history": {
+    "event": "TME",
+    "date": "2026-07-25",
+    "opp": "Era #090",
+    "result": "Loss",
+    "note": "Lost prep 67.4B vs 77.4B; lost invasion 142B vs 210B. WC1 finished #2 overall (39.1B), just behind RIP.",
+    "ours": [
+      [
+        "WC1",
+        20827415718,
+        2371887410
+      ],
+      [
+        "REU",
+        13053184859,
+        906771349
+      ],
+      [
+        "AGC",
+        11717361838,
+        197923475
+      ],
+      [
+        "MyT",
+        10331763047,
+        842687800
+      ]
+    ],
+    "oppA": [
+      [
+        "RIP",
+        21445169944,
+        3027969569
+      ],
+      [
+        "INT",
+        15085606880,
+        972408570
+      ],
+      [
+        "YFQ",
+        10742715107,
+        229037062
+      ],
+      [
+        "OvO",
+        6413997041,
+        62050519
+      ]
+    ]
+  }
+}

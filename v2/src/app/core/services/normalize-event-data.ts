@@ -10,6 +10,7 @@ import type {
   DepthMatrix,
   EventMeta,
   Kingdom,
+  PrepData,
 } from '@shared/models/event-data.model';
 import { toNumericValue } from '@shared/utils/numeric';
 
@@ -44,6 +45,9 @@ function normalizeKingdoms(raw: Raw): Kingdom[] {
 
 function normalizeMeta(raw: Raw): EventMeta {
   const c = asObject(raw['eventConfig']);
+  const prep = asObject(raw['prep']);
+  const prepStages = asArray(prep['stages']);
+  const hasPrep = prepStages.length > 0;
   return {
     eventStart: str(c['eventStart']),
     eventEnd: str(c['eventEnd']),
@@ -57,6 +61,11 @@ function normalizeMeta(raw: Raw): EventMeta {
     zeusTime: str(c['zeusTime']) || undefined,
     notes: str(c['notes']),
     eventOver: c['eventOver'] === true,
+    // Prep standing for the header's attack/defense badge: "started" once any
+    // stage has points; totals are the summed tug (already in billions).
+    prepStarted: hasPrep ? prepStages.some(s => num(s['ours']) > 0 || num(s['opp']) > 0) : undefined,
+    prepOursTotal: hasPrep ? num(prep['totalOurs']) : undefined,
+    prepOppTotal: hasPrep ? num(prep['totalOpp']) : undefined,
   };
 }
 
@@ -159,6 +168,7 @@ export function normalizeEventData(input: unknown): EventData {
         points: toNumericValue(r['points']),
       }),
     ),
+    prep: normalizePrep(asObject(raw['prep'])),
     diplomacy: asArray(raw['diplomacy']).map((r): DiplomacyRow => {
       const server = str(r['server']);
       const relation = str(r['relation']);
@@ -245,6 +255,33 @@ function colorMap(servers: string[], kd: KingdomLookup): Record<string, string> 
   const colors: Record<string, string> = {};
   for (const s of servers) colors[s] = kd(s).color;
   return colors;
+}
+
+/** Normalize the prep-war tug block (TME). Returns undefined when absent so the
+ * page only renders the prep bar for events that actually have stages. Point
+ * values pass through as plain numbers (already in the chart's billions unit). */
+function normalizePrep(raw: Raw): PrepData | undefined {
+  const stagesRaw = asArray(raw['stages']);
+  if (!stagesRaw.length) return undefined;
+  // Rankings: rank each side internally by prep points (desc), then carry both.
+  const rankSide = (list: Raw[], side: 'us' | 'opp') =>
+    list
+      .map(a => ({ tag: str(a['tag']), side, prepPoints: num(a['prepPoints']) }))
+      .sort((x, y) => y.prepPoints - x.prepPoints)
+      .map((a, i) => ({ ...a, serverRank: i + 1 }));
+  const rankings = [...rankSide(asArray(raw['ourRankings']), 'us'), ...rankSide(asArray(raw['oppRankings']), 'opp')];
+  return {
+    stages: stagesRaw.map(s => ({
+      label: str(s['label']),
+      ours: num(s['ours']),
+      opp: num(s['opp']),
+    })),
+    totalOurs: num(raw['totalOurs']),
+    totalOpp: num(raw['totalOpp']),
+    oppLabel: str(raw['oppLabel']) || 'Opponent',
+    ourLabel: str(raw['ourLabel']) || 'Us',
+    rankings: rankings.length ? rankings : undefined,
+  };
 }
 
 function normalizeTiers(raw: Raw, kd: KingdomLookup, ourServer: string): TierMatrix {

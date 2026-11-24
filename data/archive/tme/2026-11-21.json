@@ -1,0 +1,551 @@
+{
+  "schemaVersion": 1,
+  "oppServer": "Era 24",
+  "invasionTime": "19:00 UTC",
+  "prepStart": "2026-11-23",
+  "invasionStart": "2026-11-29",
+  "weWonPrep": null,
+  "ourRank": null,
+  "oppRank": null,
+  "prepStarted": true,
+  "eventOver": false,
+  "alliances": [
+    {
+      "tag": "ʀ★ᴡ",
+      "name": "ʀᴀɢᴇᴡᴀʀʀɪᴏʀꜱ",
+      "roleKey": "rolePrimaryStrike",
+      "position": "NE-inner",
+      "tower": "Swordsman (N) / Archer (E)",
+      "color": "#3b82f6",
+      "allies": 165,
+      "power": "26,312,885,607",
+      "merits": "3,276,870,670",
+      "prepPoints": "833,693,600"
+    },
+    {
+      "tag": "ʀ★ɢ",
+      "name": "ʀᴀɢᴇᴏꜰɢᴏᴅꜱ",
+      "roleKey": "roleSecondaryStrike",
+      "position": "SE-inner",
+      "tower": "Cavalry (S)",
+      "color": "#ef4444",
+      "allies": 126,
+      "power": "13,073,698,341",
+      "merits": "355,429,850",
+      "prepPoints": "416,965,200"
+    },
+    {
+      "tag": "ʀ★ᴍ",
+      "name": "ᴍʏᴛʜɪᴄ",
+      "roleKey": "roleFlanking",
+      "position": "SE-outer",
+      "tower": "Pikeman (W)",
+      "color": "#22c55e",
+      "allies": 121,
+      "power": "9,625,328,509",
+      "merits": "461,698,169",
+      "prepPoints": "217,432,800"
+    },
+    {
+      "tag": "ʀ★ᴜ",
+      "name": "ʀᴀɢᴇᴜɴɪᴏɴ",
+      "roleKey": "roleReserve",
+      "position": "reserve",
+      "tower": "—",
+      "color": "#94a3b8",
+      "allies": 15,
+      "power": "661,203,225",
+      "merits": "381,684",
+      "prepPoints": "6,673,600"
+    }
+  ],
+  "prepStages": [
+    {
+      "nameKey": "prepStage1",
+      "ourPts": 1.47,
+      "oppPts": 0.756,
+      "won": true
+    },
+    {
+      "nameKey": "prepStage2",
+      "ourPts": 0,
+      "oppPts": 0,
+      "won": null
+    },
+    {
+      "nameKey": "prepStage3",
+      "ourPts": 0,
+      "oppPts": 0,
+      "won": null
+    },
+    {
+      "nameKey": "prepStage4",
+      "ourPts": 0,
+      "oppPts": 0,
+      "won": null
+    },
+    {
+      "nameKey": "prepStage5",
+      "ourPts": 0,
+      "oppPts": 0,
+      "won": null
+    }
+  ],
+  "totalOur": 1.47,
+  "totalOpp": 0.756,
+  "prepLastUpdated": "2026-11-23 — Day 1 (Stage 1). Us 1.47B vs #024 0.756B. Matchmaking Sat 11/21; vs Era #024.",
+  "oppAlliances": [
+    {
+      "tag": "ROD",
+      "name": "FoxyRabbits",
+      "allies": 163,
+      "power": "19,840,099,109",
+      "merits": "1,097,258,216",
+      "prepPoints": "357,300,800"
+    },
+    {
+      "tag": "AOD",
+      "name": "AngelsOfDeath",
+      "allies": 169,
+      "power": "18,748,791,720",
+      "merits": "732,034,678",
+      "prepPoints": "359,113,600"
+    },
+    {
+      "tag": "KRÜ",
+      "name": "KOR낭만제국",
+      "allies": 74,
+      "power": "1,858,750,985",
+      "merits": "48,844,500",
+      "prepPoints": "1,651,200"
+    },
+    {
+      "tag": "FOX",
+      "name": "THEFOXORDER",
+      "allies": 26,
+      "power": "1,504,663,043",
+      "merits": "34,715,042",
+      "prepPoints": "17,539,200"
+    }
+  ],
+  "krakens": [
+    {
+      "rank": 1,
+      "name": "Nickel",
+      "alliance": "ROD",
+      "power": "321,174,934",
+      "merits": "77,754,385",
+      "ratio": ""
+    },
+    {
+      "rank": 2,
+      "name": "JIHN",
+      "alliance": "AOD",
+      "power": "286,774,411",
+      "merits": "137,213,829",
+      "ratio": ""
+    },
+    {
+      "rank": 3,
+      "name": "Rebel4sale",
+      "alliance": "ROD",
+      "power": "281,909,931",
+      "merits": "250,437,876",
+      "ratio": ""
+    },
+    {
+      "rank": 4,
+      "name": "Frickin~A",
+      "alliance": "ROD",
+      "power": "258,236,217",
+      "merits": "153,438,868",
+      "ratio": ""
+    },
+    {
+      "rank": 5,
+      "name": "ĐÄRKÄñĐÚÈS",
+      "alliance": "AOD",
+      "power": "257,407,127",
+      "merits": "125,611,760",
+      "ratio": ""
+    },
+    {
+      "rank": 6,
+      "name": "FunkyGibbons",
+      "alliance": "ROD",
+      "power": "244,086,844",
+      "merits": "14,679,076",
+      "ratio": ""
+    },
+    {
+      "rank": 7,
+      "name": "Notmethodman",
+      "alliance": "ROD",
+      "power": "243,551,998",
+      "merits": "50,116,230",
+      "ratio": ""
+    },
+    {
+      "rank": 8,
+      "name": "Arthur711",
+      "alliance": "ROD",
+      "power": "237,938,758",
+      "merits": "21,063,789",
+      "ratio": ""
+    },
+    {
+      "rank": 9,
+      "name": "RancherCru",
+      "alliance": "ROD",
+      "power": "236,814,353",
+      "merits": "63,986,637",
+      "ratio": ""
+    },
+    {
+      "rank": 10,
+      "name": "Sunmingo",
+      "alliance": "AOD",
+      "power": "228,628,029",
+      "merits": "511,675",
+      "ratio": ""
+    },
+    {
+      "rank": 11,
+      "name": "BronaRabbit",
+      "alliance": "ROD",
+      "power": "224,432,821",
+      "merits": "5,160,303",
+      "ratio": ""
+    },
+    {
+      "rank": 12,
+      "name": "BlondBeast",
+      "alliance": "ROD",
+      "power": "219,582,707",
+      "merits": "54,426,900",
+      "ratio": ""
+    },
+    {
+      "rank": 13,
+      "name": "Sanji✗⁰⁷¹ᴵᴶᶜ",
+      "alliance": "ROD",
+      "power": "219,134,437",
+      "merits": "100,320,158",
+      "ratio": ""
+    },
+    {
+      "rank": 14,
+      "name": "ɱɑʈʈɦ̈ëω✗",
+      "alliance": "AOD",
+      "power": "217,343,037",
+      "merits": "243,740,812",
+      "ratio": ""
+    },
+    {
+      "rank": 15,
+      "name": "GOBabyShark",
+      "alliance": "AOD",
+      "power": "214,081,671",
+      "merits": "68,437,424",
+      "ratio": ""
+    }
+  ],
+  "ourTop": [
+    {
+      "rank": 1,
+      "name": "Collin6666",
+      "alliance": "ʀ★ᴡ",
+      "power": "523,850,478",
+      "merits": "195,644,074"
+    },
+    {
+      "rank": 2,
+      "name": "XnJinX",
+      "alliance": "ʀ★ᴡ",
+      "power": "403,689,804",
+      "merits": "281,499,100"
+    },
+    {
+      "rank": 3,
+      "name": "Macklemore",
+      "alliance": "ʀ★ᴡ",
+      "power": "350,791,418",
+      "merits": "168,305,051"
+    },
+    {
+      "rank": 4,
+      "name": "Lumberjack",
+      "alliance": "ʀ★ᴡ",
+      "power": "309,858,466",
+      "merits": "385,151,015"
+    },
+    {
+      "rank": 5,
+      "name": "ŠnipeŘ⊕",
+      "alliance": "ʀ★ᴡ",
+      "power": "301,501,745",
+      "merits": "216,280,538"
+    },
+    {
+      "rank": 6,
+      "name": "BloodYoda",
+      "alliance": "ʀ★ᴡ",
+      "power": "297,737,424",
+      "merits": "258,204,298"
+    },
+    {
+      "rank": 7,
+      "name": "Zen7",
+      "alliance": "—",
+      "power": "271,404,655",
+      "merits": "112,215,964"
+    },
+    {
+      "rank": 8,
+      "name": "BUSHMⱯSTɆЯ",
+      "alliance": "ʀ★ᴡ",
+      "power": "266,821,221",
+      "merits": "146,758,563"
+    },
+    {
+      "rank": 9,
+      "name": "ScubaPig",
+      "alliance": "ʀ★ᴡ",
+      "power": "260,667,097",
+      "merits": "81,339,302"
+    },
+    {
+      "rank": 10,
+      "name": "☙✿⛵Africa✗⛰☙",
+      "alliance": "ʀ★ᴡ",
+      "power": "258,578,706",
+      "merits": "166,796,905"
+    },
+    {
+      "rank": 11,
+      "name": "TommyTorpedo",
+      "alliance": "ʀ★ᴡ",
+      "power": "257,475,461",
+      "merits": "165,120,324"
+    },
+    {
+      "rank": 12,
+      "name": "DarkHelmet",
+      "alliance": "ʀ★ᴡ",
+      "power": "256,296,976",
+      "merits": "201,801,212"
+    },
+    {
+      "rank": 13,
+      "name": "Hermes++",
+      "alliance": "ʀ★ᴡ",
+      "power": "255,738,092",
+      "merits": "104,568,563"
+    },
+    {
+      "rank": 14,
+      "name": "CⱭÑÑØNBⱭLLZZ",
+      "alliance": "ʀ★ᴡ",
+      "power": "253,572,925",
+      "merits": "127,337,211"
+    },
+    {
+      "rank": 15,
+      "name": "IntoxFr",
+      "alliance": "ʀ★ᴡ",
+      "power": "233,855,121",
+      "merits": "78,803,971"
+    }
+  ],
+  "roles": {
+    "ʀ★ᴡ": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "ʀ★ᴍ": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "ʀ★ɢ": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "ʀ★ᴜ": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    }
+  },
+  "result": null,
+  "serverTiers": {
+    "labels": [
+      "100M+",
+      "200M+",
+      "300M+",
+      "400M+",
+      "500M+",
+      "600M+"
+    ],
+    "us": [
+      273,
+      29,
+      5,
+      2,
+      1,
+      0
+    ],
+    "opp": [
+      220,
+      17,
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  "serverDepth": {
+    "ranks": [
+      1,
+      10,
+      50,
+      100,
+      200,
+      300
+    ],
+    "us": {
+      "power": [
+        523,
+        258,
+        171,
+        147,
+        118,
+        95
+      ],
+      "merits": [
+        385,
+        168,
+        46,
+        24,
+        9,
+        4
+      ]
+    },
+    "opp": {
+      "power": [
+        321,
+        228,
+        159,
+        138,
+        106,
+        81
+      ],
+      "merits": [
+        250,
+        109,
+        32,
+        13,
+        5,
+        2
+      ]
+    }
+  },
+  "_history": {
+    "event": "TME",
+    "date": "2026-11-21",
+    "opp": "Era #024",
+    "result": "Live",
+    "basis": "top-4 alliances (scouting)",
+    "note": "In progress — matchmaking Sat Nov 21, Day 1 prep Mon Nov 23. We rebranded: eRa→ʀᴀɢᴇᴡᴀʀʀɪᴏʀꜱ [ʀ★ᴡ], REU→ʀᴀɢᴇᴏꜰɢᴏᴅꜱ [ʀ★ɢ], Myt→ᴍʏᴛʜɪᴄ [ʀ★ᴍ], 4th→ᴀᴜʀᴏʀᴀ [ᴀᴜʀ]. Top-4 alliance power + total merits per server from scouting.",
+    "ours": [
+      [
+        "ʀ★ᴡ",
+        26312885607,
+        3276870670
+      ],
+      [
+        "ʀ★ɢ",
+        13073698341,
+        355429850
+      ],
+      [
+        "ʀ★ᴍ",
+        9625328509,
+        461698169
+      ],
+      [
+        "ᴀᴜʀ",
+        1086803509,
+        0
+      ]
+    ],
+    "oppA": [
+      [
+        "ROD",
+        19840099109,
+        1097258216
+      ],
+      [
+        "AOD",
+        18748791720,
+        732034678
+      ],
+      [
+        "KRÜ",
+        1858750985,
+        48844500
+      ],
+      [
+        "FOX",
+        1504663043,
+        34715042
+      ]
+    ]
+  }
+}

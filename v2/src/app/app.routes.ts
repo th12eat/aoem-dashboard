@@ -54,14 +54,17 @@ export const routes: Routes = [
     loadComponent: () => import('@pages/profile/profile.page').then(m => m.ProfilePage),
   },
   {
+    // /admin IS the control center: meta-settings + the single chronological
+    // list of all occurrences (create / publish / edit / delete). The old thin
+    // hub is retired; /admin/events stays as an alias for existing links.
     path: 'admin',
     canActivate: [requireAuth, requireCapability('edit-live-state')],
-    loadComponent: () => import('@pages/admin/admin-hub.page').then(m => m.AdminHubPage),
+    loadComponent: () => import('@pages/admin/events/admin-events.page').then(m => m.AdminEventsPage),
   },
   {
     path: 'admin/events',
-    canActivate: [requireAuth, requireCapability('edit-live-state')],
-    loadComponent: () => import('@pages/admin/events/admin-events.page').then(m => m.AdminEventsPage),
+    redirectTo: 'admin',
+    pathMatch: 'full',
   },
   {
     path: 'admin/:slug/data/:date',

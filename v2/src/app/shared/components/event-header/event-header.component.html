@@ -34,11 +34,13 @@
     }
   }
 
-  <!-- grey subtitle line above the accent-coloured title (1.0) -->
-  @if (subtitleKey()) {
+  <!-- eyebrow line above the title: 1.0-styled (TME) or the generic grey subtitle -->
+  @if (eyebrowKey()) {
+    <div class="kvk-eyebrow">{{ eyebrowKey()! | translate }}</div>
+  } @else if (subtitleKey()) {
     <div class="kvk-subtitle">{{ subtitleKey()! | translate }}</div>
   }
-  <h1 class="kvk-title kvk-title-accent">{{ titleKey() | translate }}</h1>
+  <h1 class="kvk-title" [class.kvk-title-accent]="!eyebrowKey()" [class.kvk-title-light]="eyebrowKey()">{{ titleKey() | translate }}</h1>
 
   @if (crests().length) {
     <div class="hdr-crests">
@@ -54,6 +56,9 @@
           >{{ c.label }}</span
         >
       }
+      @if (attackDefense(); as ad) {
+        <span class="hdr-ad" [class.is-def]="ad.defending">{{ ad.glyph }} {{ ad.labelKey | translate }}</span>
+      }
     </div>
   }
 
@@ -62,12 +67,12 @@
     <div class="evt-meta">
       <div class="evt-timerow">
         <div class="evt-cell">
-          <div class="evt-label">{{ 'widget.countdown.start' | translate }}</div>
+          <div class="evt-label">{{ startLabelKey() | translate }}</div>
           <div class="evt-val">{{ startLabel() }}</div>
         </div>
         <div class="evt-div"></div>
         <div class="evt-cell">
-          <div class="evt-label">{{ 'widget.countdown.end' | translate }}</div>
+          <div class="evt-label">{{ endLabelKey() | translate }}</div>
           <div class="evt-val">{{ endLabel() }}</div>
         </div>
         <div class="evt-div"></div>
@@ -92,7 +97,7 @@
             <b>{{ 'widget.countdown.pending' | translate }}</b>
           }
           @case ('live') {
-            <span class="evt-live-dot"></span><b>{{ 'widget.countdown.live' | translate }}</b>
+            <span class="evt-live-dot"></span><b>{{ liveLabelKey() | translate }}</b>
           }
           @case ('over') {
             <b>{{ 'widget.countdown.complete' | translate }}</b>

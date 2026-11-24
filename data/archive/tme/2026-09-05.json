@@ -1,0 +1,446 @@
+{
+  "schemaVersion": 1,
+  "oppServer": "Era 23",
+  "invasionTime": "11:00 UTC",
+  "prepStart": "2026-09-07",
+  "invasionStart": "2026-09-13",
+  "weWonPrep": false,
+  "ourRank": 2,
+  "oppRank": 1,
+  "prepStarted": true,
+  "eventOver": true,
+  "alliances": [
+    {
+      "tag": "eRa",
+      "name": "WorldClass",
+      "roleKey": "rolePrimaryStrike",
+      "position": "NE-inner",
+      "tower": "Swordsman (N) / Archer (E)",
+      "color": "#3b82f6",
+      "allies": 170,
+      "power": "23,655,582,897",
+      "merits": "2,581,858,394",
+      "prepPoints": "34,970,315,836",
+      "crossBorder": "59,843,027,540"
+    },
+    {
+      "tag": "REU",
+      "name": "CourtOfGods",
+      "roleKey": "roleSecondaryStrike",
+      "position": "SE-inner",
+      "tower": "Cavalry (S)",
+      "color": "#ef4444",
+      "allies": 162,
+      "power": "14,724,343,193",
+      "merits": "850,504,806",
+      "prepPoints": "14,584,642,314",
+      "crossBorder": "14,954,465,520"
+    },
+    {
+      "tag": "Myt",
+      "name": "Mythic",
+      "roleKey": "roleFlanking",
+      "position": "SE-outer",
+      "tower": "Pikeman (W)",
+      "color": "#22c55e",
+      "allies": 133,
+      "power": "9,560,087,946",
+      "merits": "874,216,312",
+      "prepPoints": "5,478,923,279",
+      "crossBorder": "11,336,605,530"
+    },
+    {
+      "tag": "FUN",
+      "name": "FunUnited",
+      "roleKey": "roleTowerHold",
+      "position": "NE-outer",
+      "tower": "",
+      "color": "#f59e0b",
+      "allies": 74,
+      "power": "3,577,684,687",
+      "merits": "",
+      "prepPoints": "3,011,475,455",
+      "crossBorder": "726,748,210"
+    }
+  ],
+  "prepStages": [
+    {
+      "nameKey": "prepStage1",
+      "ourPts": 1.51,
+      "oppPts": 2.1,
+      "won": false
+    },
+    {
+      "nameKey": "prepStage2",
+      "ourPts": 9.96,
+      "oppPts": 16,
+      "won": false
+    },
+    {
+      "nameKey": "prepStage3",
+      "ourPts": 13.23,
+      "oppPts": 20.3,
+      "won": false
+    },
+    {
+      "nameKey": "prepStage4",
+      "ourPts": 20.24,
+      "oppPts": 30.21,
+      "won": false
+    },
+    {
+      "nameKey": "prepStage5",
+      "ourPts": 5.66,
+      "oppPts": 6.79,
+      "won": false
+    }
+  ],
+  "totalOur": 50.6,
+  "totalOpp": 75.4,
+  "prepLastUpdated": "2026-09-14 — Final · Lost TME to Era #023. Invasion DEFEAT 145B vs 209B (Imperial City Domination, 11:00 UTC). Prep also lost 50.6B vs 75.4B. Alliance figures are final prep + cross-border points.",
+  "oppAlliances": [
+    {
+      "tag": "Đ23",
+      "name": "LegionOfDonuts",
+      "allies": 164,
+      "power": "22,146,584,169",
+      "merits": "2,767,713,854",
+      "prepPoints": "44,493,864,726",
+      "crossBorder": "72,510,459,350"
+    },
+    {
+      "tag": "Ᵽ23",
+      "name": "RoyalCrownKOR",
+      "allies": 148,
+      "power": "15,165,090,634",
+      "merits": "1,827,997,432",
+      "prepPoints": "24,229,606,814",
+      "crossBorder": "19,752,559,160"
+    },
+    {
+      "tag": "β23",
+      "name": "Jericho",
+      "allies": 154,
+      "power": "12,371,267,660",
+      "merits": "164,174,696",
+      "prepPoints": "11,356,821,306",
+      "crossBorder": "3,432,426,200"
+    },
+    {
+      "tag": "c23",
+      "name": "CornerERA23",
+      "allies": 135,
+      "power": "3,596,379,622",
+      "merits": "20,109,372",
+      "prepPoints": "5,955,652,155",
+      "crossBorder": "6,623,881,200"
+    }
+  ],
+  "krakens": [
+    {
+      "rank": 1,
+      "name": "Đax",
+      "alliance": "Đ23",
+      "power": "348,226,764",
+      "merits": "376,404,905",
+      "ratio": ""
+    },
+    {
+      "rank": 2,
+      "name": "TruBlu",
+      "alliance": "Đ23",
+      "power": "346,110,102",
+      "merits": "303,473,968",
+      "ratio": ""
+    },
+    {
+      "rank": 3,
+      "name": "冰scorpio",
+      "alliance": "Đ23",
+      "power": "334,549,952",
+      "merits": "67,600,960",
+      "ratio": ""
+    },
+    {
+      "rank": 4,
+      "name": "Bøyd",
+      "alliance": "Đ23",
+      "power": "329,697,525",
+      "merits": "562,951,129",
+      "ratio": ""
+    },
+    {
+      "rank": 5,
+      "name": "kaktesplant",
+      "alliance": "Đ23",
+      "power": "307,246,664",
+      "merits": "302,549,790",
+      "ratio": ""
+    },
+    {
+      "rank": 6,
+      "name": "Triple3Crown",
+      "alliance": "Ᵽ23",
+      "power": "297,816,711",
+      "merits": "392,111,025",
+      "ratio": ""
+    },
+    {
+      "rank": 7,
+      "name": "ZoroMihawk",
+      "alliance": "Ᵽ23",
+      "power": "295,575,710",
+      "merits": "274,492,702",
+      "ratio": ""
+    },
+    {
+      "rank": 8,
+      "name": "Class",
+      "alliance": "Đ23",
+      "power": "287,276,011",
+      "merits": "120,084,713",
+      "ratio": ""
+    },
+    {
+      "rank": 9,
+      "name": "SUPERLAZY5E",
+      "alliance": "Ᵽ23",
+      "power": "286,420,932",
+      "merits": "308,596,783",
+      "ratio": ""
+    },
+    {
+      "rank": 10,
+      "name": "KRMirae",
+      "alliance": "Ᵽ23",
+      "power": "278,472,593",
+      "merits": "324,085,861",
+      "ratio": ""
+    },
+    {
+      "rank": 11,
+      "name": "OhMyGosh",
+      "alliance": "Ᵽ23",
+      "power": "270,908,433",
+      "merits": "184,461,840",
+      "ratio": ""
+    },
+    {
+      "rank": 12,
+      "name": "TortaPounder",
+      "alliance": "--",
+      "power": "267,336,541",
+      "merits": "428,778,390",
+      "ratio": ""
+    }
+  ],
+  "ourTop": [
+    {
+      "rank": 1,
+      "name": "Collin6666",
+      "alliance": "eRa",
+      "power": "400,512,737",
+      "merits": "94,370,516"
+    },
+    {
+      "rank": 2,
+      "name": "XnJinX",
+      "alliance": "eRa",
+      "power": "348,957,777",
+      "merits": "254,397,161"
+    },
+    {
+      "rank": 3,
+      "name": "Macklemore",
+      "alliance": "eRa",
+      "power": "338,967,213",
+      "merits": "135,722,057"
+    },
+    {
+      "rank": 4,
+      "name": "abbybaby",
+      "alliance": "--",
+      "power": "282,830,353",
+      "merits": "155,783,791"
+    },
+    {
+      "rank": 5,
+      "name": "Lumberjack",
+      "alliance": "eRa",
+      "power": "281,222,340",
+      "merits": "349,953,019"
+    },
+    {
+      "rank": 6,
+      "name": "BloodYoda",
+      "alliance": "eRa",
+      "power": "275,811,292",
+      "merits": "240,980,530"
+    },
+    {
+      "rank": 7,
+      "name": "Zen7",
+      "alliance": "eRa",
+      "power": "271,284,748",
+      "merits": "112,029,973"
+    },
+    {
+      "rank": 8,
+      "name": "BUSHMASTER",
+      "alliance": "eRa",
+      "power": "238,459,229",
+      "merits": "98,165,073"
+    },
+    {
+      "rank": 9,
+      "name": "TommyTorpedo",
+      "alliance": "eRa",
+      "power": "236,440,925",
+      "merits": "149,059,962"
+    },
+    {
+      "rank": 10,
+      "name": "Hermes++",
+      "alliance": "eRa",
+      "power": "233,571,975",
+      "merits": "88,212,388"
+    },
+    {
+      "rank": 11,
+      "name": "☙♣▪Africa✕⛰☙",
+      "alliance": "eRa",
+      "power": "232,668,290",
+      "merits": "112,662,584"
+    },
+    {
+      "rank": 12,
+      "name": "ScubaPig",
+      "alliance": "eRa",
+      "power": "231,105,234",
+      "merits": "64,993,942"
+    }
+  ],
+  "roles": {
+    "WC1": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "MyT": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "REU": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    },
+    "AGC": {
+      "rallyLead": "TBD",
+      "taxiRunners": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "siegeCoord": "TBD",
+      "siegeHelpers": [
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD"
+      ]
+    }
+  },
+  "result": "Loss",
+  "finalScore": {
+    "us": "145B",
+    "them": "209B",
+    "label": "Imperial City Domination — E#023"
+  },
+  "_history": {
+    "event": "TME",
+    "date": "2026-09-05",
+    "opp": "Era #023",
+    "result": "Loss",
+    "note": "Lost to Era #023. Prep lost 50.6B vs 75.4B; invasion DEFEAT 145B vs 209B (Imperial City Domination, 11:00 UTC). Top-4 power + merits from this cycle's scouting.",
+    "ours": [
+      [
+        "eRa",
+        23655582897,
+        2101426455
+      ],
+      [
+        "REU",
+        14724343193,
+        303248680
+      ],
+      [
+        "Myt",
+        9560087946,
+        630248944
+      ],
+      [
+        "FUN",
+        3577684687,
+        23993806
+      ]
+    ],
+    "oppA": [
+      [
+        "Đ23",
+        22146584169,
+        2767713854
+      ],
+      [
+        "Ᵽ23",
+        15165090634,
+        1827997432
+      ],
+      [
+        "β23",
+        12371267660,
+        164174696
+      ],
+      [
+        "c23",
+        3596379622,
+        20109372
+      ]
+    ]
+  }
+}

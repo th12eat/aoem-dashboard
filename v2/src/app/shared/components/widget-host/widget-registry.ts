@@ -19,6 +19,9 @@ import { ScheduleWindowsComponent } from '../schedule-windows/schedule-windows.c
 import { AchievementsComponent } from '../achievements/achievements.component';
 import { NodeControlComponent } from '../node-control/node-control.component';
 import { PlacerBalancesComponent } from '../placer-balances/placer-balances.component';
+import { PrepTugComponent } from '../prep-tug/prep-tug.component';
+import { StageTabsComponent } from '../stage-tabs/stage-tabs.component';
+import { PrepRankingsComponent } from '../prep-rankings/prep-rankings.component';
 
 /**
  * The single source of truth mapping a WidgetKind to its component. Adding a
@@ -48,4 +51,7 @@ export const WIDGET_REGISTRY: Record<WidgetKind, Type<unknown>> = {
   achievements: AchievementsComponent,
   nodeControl: NodeControlComponent,
   placerBalances: PlacerBalancesComponent,
+  prepTug: PrepTugComponent,
+  stageTabs: StageTabsComponent,
+  prepRankings: PrepRankingsComponent,
 };

@@ -30,7 +30,10 @@ export type WidgetKind =
   | 'scheduleWindows'
   | 'achievements'
   | 'nodeControl'
-  | 'placerBalances';
+  | 'placerBalances'
+  | 'prepTug'
+  | 'stageTabs'
+  | 'prepRankings';
 
 /** Where a dashboard's data comes from. The DataSource seam branches on `kind`
  * so swapping static→Supabase is a config change, not a component change.
@@ -62,6 +65,15 @@ export interface WidgetConfig {
    * sets the initial state. */
   collapsible?: boolean;
   defaultOpen?: boolean;
+  /** When true, the widget takes half the content width and pairs side-by-side
+   * with the adjacent half-width widget(s) on wide screens (stacks on narrow).
+   * Consecutive half-width widgets form one responsive row. */
+  halfWidth?: boolean;
+  /** When true, the host keeps the card chrome but does NOT render the title
+   * row and does NOT strip `titleKey` — the inner widget renders its own title
+   * (so it can add an inline right-aligned control, e.g. the depth-table's
+   * Power/Merits toggle, or a dynamic suffix). */
+  ownTitle?: boolean;
   /** Widget-specific options (columns, map node schema, callout list, …).
    * Each widget narrows this to its own options interface. */
   options?: Record<string, unknown>;
@@ -132,10 +144,47 @@ export interface HeaderHelp {
   image?: string;
 }
 
+/** A stage in a multi-phase event's countdown (TME: Matchmaking → Prep →
+ * Invasion → Recovery). The header's event-meta box cycles its labels through
+ * these by wall-clock, instead of a flat Start/End. */
+export interface CountdownStage {
+  /** Stable id (e.g. 'prep'). */
+  id: string;
+  /** i18n key for the left-cell "from" label, e.g. "Prep Start". */
+  fromLabelKey: string;
+  /** i18n key for the right-cell "to" label, e.g. "Invasion Starts". */
+  toLabelKey: string;
+  /** i18n key for the in-progress status, e.g. "Prep Stage in Progress". */
+  liveLabelKey: string;
+  /** The ISO date this stage starts (YYYY-MM-DD); the first stage's start is
+   * also the overall event start. */
+  startDate: string;
+  /** The ISO date this stage ends / the next begins (YYYY-MM-DD). */
+  endDate: string;
+}
+
+/** A dynamic ATTACKING/DEFENDING badge driven by who leads the prep tug. The
+ * leader attacks; before prep starts, defaults to attacking. Sits under the
+ * title, right of the crest row (1.0 TME). */
+export interface AttackDefenseBadge {
+  attackLabelKey: string;
+  defendLabelKey: string;
+  attackGlyph: string;
+  defendGlyph: string;
+}
+
 /** Header configuration — the rich event header (bg, meta, buttons, crests). */
 export interface HeaderConfig {
   /** Background image (relative to app base), sets the header graphic. */
   backgroundAsset?: string;
+  /** i18n key for the small eyebrow line ABOVE the title (1.0 "headerSub"). When
+   * set it overrides the generic subtitle treatment with the 1.0 styling. */
+  eyebrowKey?: string;
+  /** Multi-stage countdown schedule. When present, the event-meta box cycles
+   * its Start/End labels + live status through these stages by wall-clock. */
+  stages?: CountdownStage[];
+  /** Dynamic attack/defense badge (prep-tug leader attacks). */
+  attackDefense?: AttackDefenseBadge;
   /** Timezone label shown in the meta box, e.g. "UTC+0". */
   timezone?: string;
   /** Verbatim "fight time" line value, e.g. "11:00 UTC" (Temple of Zeus). */
@@ -173,6 +222,10 @@ export interface EventDashboardConfig {
   /** Static interactive-map geometry (per-event layout). When present, the page
    * derives the live MapView from it + the data's mapState/mapRoutes. */
   mapGeometry?: import('./map.model').MapGeometry;
+  /** The persistent bar pinned above the tabs on every tab. Defaults to the
+   * kingdom-standings bar (`kingdomBar` bound to kingdomScoreboard). TME's
+   * prep-war uses `prepTug` (bound to the prep tug data). `none` hides it. */
+  persistentBar?: 'kingdomBar' | 'prepTug' | 'none';
   dataSource: DataSourceRef;
   tabs: TabConfig[];
 }
@@ -198,4 +251,7 @@ export const WIDGET_KINDS: readonly WidgetKind[] = [
   'achievements',
   'nodeControl',
   'placerBalances',
+  'prepTug',
+  'stageTabs',
+  'prepRankings',
 ] as const;

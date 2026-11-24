@@ -260,5 +260,148 @@
       "tower": "Tower of Rotation / Peaceful Riverland",
       "buildings": "Alliance Buildings"
     }
+  },
+  "tme": {
+    "title": "THE MIGHTIEST EMPIRE",
+    "tag": "Cross-server War · Era 8",
+    "subtitle": "Two-phase cross-server war — Preparation week, then Invasion Sunday",
+    "header": {
+      "eyebrow": "Age of Empires Mobile — Command Center",
+      "attacking": "Attacking",
+      "defending": "Defending",
+      "invasion": "Invasion",
+      "invasionLive": "Invasion LIVE",
+      "invasionBefore": "Invasion begins Sunday",
+      "invasionAfter": "The Invasion has ended",
+      "jumpDaily": "Jump to today's plan",
+      "whatIs": "What is TME?"
+    },
+    "stage": {
+      "prepStart": "Prep Start",
+      "invasionStarts": "Invasion Starts",
+      "recoveryEnds": "Recovery Ends",
+      "prepLive": "Prep Stage in Progress",
+      "invasionLive": "Invasion in Progress"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "research": "Scouting",
+      "battlefield": "Battlefield"
+    },
+    "overview": {
+      "timeline": "Event Timeline",
+      "plan": "Daily Plan",
+      "rankings": "TME Alliance Rankings"
+    },
+    "research": {
+      "alliances": "Top Alliances",
+      "players": "Top Players",
+      "tiers": "Power Tier Distribution",
+      "depth": "Roster Depth by Rank"
+    },
+    "battlefield": {
+      "layout": "Battlefield Layout",
+      "towers": "Tower Assignments",
+      "siege": "War Machines (per alliance)",
+      "icRules": "IC Hold Rules",
+      "icRule1": "4-hour IC contest window begins after the gates fall.",
+      "icRule2": "Win by holding the IC longest over the 4 hours, OR by holding it for 1 consecutive hour.",
+      "icRule3": "After 4 hours, the map reverts to open PvP for 2 more hours before the event ends."
+    }
+  },
+  "behemoth": {
+    "title": "BEHEMOTH CONQUEST",
+    "tag": "New Game Mode · Era 8",
+    "subtitle": "Awaken the bloodline · March into enemy empires · Cross-server war",
+    "header": {
+      "eyebrow": "Age of Empires Mobile — Command Center",
+      "scion": "Next Trial",
+      "scionLive": "Trial LIVE",
+      "scionBefore": "Trial of Scion opens with Beast Taming (Day 2)",
+      "scionAfter": "The Trial of Scion stage is over (ran Days 2–4)",
+      "jumpObjectives": "Jump to Daily Objectives",
+      "whatIs": "What is Behemoth Conquest?"
+    },
+    "stage": {
+      "tamingStart": "Beast Taming",
+      "atkDefStart": "Attack-Defense",
+      "ends": "Ends",
+      "tamingLive": "Beast Taming in Progress",
+      "atkDefLive": "Attack-Defense in Progress"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "research": "Scouting",
+      "taming": "Beast Taming",
+      "atkdef": "Attack-Defense"
+    },
+    "overview": {
+      "bigPicture": "The Big Picture",
+      "bigPictureBody": "Two servers clash, Behemoth vs Behemoth. Earn Awaken Runestones to grow ours, then invade the enemy while defending our own. Highest total score wins — but both sides earn Behemoth Crystals, so play even from behind.",
+      "bigPictureCallout": "Three ways to score: cultivate ours, defend ours, attack theirs. Spend Behemoth Crystals before the event ends — during Stellar Dynasty, trade them for Conquest Points instead.",
+      "timeline": "Event Timeline",
+      "objectives": "Daily Objectives (per player)",
+      "scionSchedule": "Daily Schedule — Trial of Scion"
+    },
+    "research": {
+      "alliances": "Top Alliances",
+      "players": "Top Players",
+      "tiers": "Power Tier Distribution",
+      "depth": "Roster Depth by Rank"
+    },
+    "taming": {
+      "goal": "Goal",
+      "goal1": "Earn Awaken Runestones daily and donate them to grow our Behemoth before the invasion.",
+      "goal2": "Donating tips Bloodline Purity our way and earns 10 personal points per runestone.",
+      "schedulePtr": "📅 The daily Trial of Scion schedule is on the Overview tab (also reachable via the 🦄 badge in the header).",
+      "blessings": "Bloodline Blessings — buffs unlocked",
+      "doEachDay": "Do Each Day (Days 2–4)"
+    },
+    "atkdef": {
+      "whatHappens": "What Happens",
+      "attacking": "Attacking the Enemy Behemoth",
+      "stunCycle": "The Stun / Undying Force Cycle",
+      "scoring": "How Points Are Scored"
+    }
+  },
+  "primordial": {
+    "title": "PRIMORDIAL CONFLICT",
+    "subtitle": "Four-Kingdom Round-Robin · Special KvK (No Troop Loss)",
+    "header": {
+      "workshop": "Workshop",
+      "workshopLive": "Workshop LIVE",
+      "workshopBefore": "The Order Workshop event opens on Battle Day 1 (Tue Oct 13, 19:00 UTC)",
+      "workshopAfter": "The Battle Stage is complete — Order Workshops have closed",
+      "jumpObjectives": "Jump to Daily Objectives",
+      "whatIs": "What is Primordial Conflict?"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "scouting": "Scouting",
+      "points": "Points",
+      "guide": "PVE Guide"
+    },
+    "overview": {
+      "timeline": "Event Timeline",
+      "structure": "Event Structure",
+      "structureP1": "A 4-server round-robin KvK. Three days of 1v1 battles (Days 2–4) where you face each opponent once, then a battlefield selection by the leading kingdom (Day 5), a 4-way showdown (Day 6), and partial troop recovery (Day 7).",
+      "coreLoop": "Core Loop — During battle days you earn Primordial Dew by gathering at Alchemy Pools and fighting over Order Workshops. Each day's 1v1 has two workshop events — one on each server (3 workshops each). Dew converts to Primordial Points for scoring. On the showdown day, Essence Refineries appear around the chosen Imperial City; holding them generates Primordial Essence and massive Kingdom Points.",
+      "objectives": "Daily Objectives (per player)",
+      "workshop": "Order Workshop — Schedule & Results"
+    },
+    "scouting": {
+      "alliances": "Top Alliances",
+      "players": "Top Players"
+    },
+    "points": {
+      "gathering": "Points from Gathering",
+      "gatheringBody": "For every 100 Personal Primordial Dew gathered, you earn 10,000 Personal Primordial Points. Workshop-participation Dew (30K) does not generate points.",
+      "objectives": "Points from Objectives",
+      "combat": "Points from Combat",
+      "combatBody": "Combat scores only when the tier difference is ≤ 2 (T9 vs T7 counts, T9 vs T6 does not). Points scale by enemy unit tier. In this no-troop-loss cycle, wounded units recover — combat carries no lasting cost."
+    },
+    "guide": {
+      "title": "PVE Guide"
+    }
   }
 }

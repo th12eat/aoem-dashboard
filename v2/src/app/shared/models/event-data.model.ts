@@ -56,6 +56,12 @@ export interface EventMeta {
   zeusTime?: string;
   notes: string;
   eventOver: boolean;
+  /** Prep-war standing (TME): whether prep has begun and the summed totals, so
+   * the header can render the dynamic attack/defense badge. Undefined for
+   * events without a prep phase. */
+  prepStarted?: boolean;
+  prepOursTotal?: number;
+  prepOppTotal?: number;
 }
 
 export interface ScoreboardRow {
@@ -144,6 +150,44 @@ export interface DepthMatrix {
   ourServer: string;
 }
 
+/** One prep stage of a two-phase war (TME): a us-vs-opponent point tug. */
+export interface PrepStage {
+  /** Verbatim stage label (e.g. "Forging Gear"). */
+  label: string;
+  /** Our points for this stage (already in the chart's unit — billions). */
+  ours: number;
+  /** Opponent points for this stage. */
+  opp: number;
+}
+
+/** One alliance in the prep rankings (TME): which side, its prep points, and
+ * its per-server rank (drives the teleport offset). */
+export interface PrepRankingAlliance {
+  tag: string;
+  /** 'us' or 'opp' — drives row colour. */
+  side: 'us' | 'opp';
+  /** Prep points (raw number) used to sort + rank. */
+  prepPoints: number;
+  /** Per-server rank (1-based) within its own side. */
+  serverRank: number;
+}
+
+/** The prep-war tug data (TME): per-stage + rolled-up totals. Empty stages ⇒
+ * the persistent prep bar shows "not started". */
+export interface PrepData {
+  stages: PrepStage[];
+  /** Our running total across all stages (billions). */
+  totalOurs: number;
+  /** Opponent running total (billions). */
+  totalOpp: number;
+  /** Opponent display label (e.g. "Era 24"). */
+  oppLabel: string;
+  /** Our display label (e.g. "Era #008"). */
+  ourLabel: string;
+  /** Merged us+opp alliance rankings (for the prepRankings table). */
+  rankings?: PrepRankingAlliance[];
+}
+
 export interface EventData {
   schemaVersion: number;
   meta: EventMeta;
@@ -151,6 +195,8 @@ export interface EventData {
   pointsUpdatedLabel?: string;
   kingdomScoreboard: ScoreboardRow[];
   alliancePoints: AlliancePointsRow[];
+  /** Two-phase prep-war tug (TME). Undefined for events without prep stages. */
+  prep?: PrepData;
   diplomacy: DiplomacyRow[];
   research: ResearchData;
   serverTiers: TierMatrix;

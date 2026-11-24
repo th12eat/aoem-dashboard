@@ -48,7 +48,7 @@ function isEmptyData(v: unknown): boolean {
       <ng-container *ngComponentOutlet="component()!; inputs: innerInputs()" />
     } @else {
       <section class="card" [id]="config().anchor || null">
-        @if (title()) {
+        @if (title() && !config().ownTitle) {
           @if (config().collapsible) {
             <button type="button" class="card-title card-toggle" (click)="toggle()">
               <span>{{ title()! | translate }}</span>
@@ -142,10 +142,11 @@ export class WidgetHostComponent {
   /** The bind-resolved data slice for the inner widget. */
   private readonly boundData = computed(() => getPath(this.eventData(), this.config().bind));
 
-  /** Inputs for the inner widget: the bind-resolved data slice, and a config
-   * with titleKey stripped (the card owns the title). */
+  /** Inputs for the inner widget: the bind-resolved data slice, and a config.
+   * The card normally owns the title (titleKey stripped), UNLESS `ownTitle` is
+   * set — then the widget renders its own title row (keeps titleKey). */
   readonly innerInputs = computed<Record<string, unknown>>(() => ({
-    config: { ...this.config(), titleKey: undefined },
+    config: this.config().ownTitle ? this.config() : { ...this.config(), titleKey: undefined },
     data: this.boundData(),
   }));
 

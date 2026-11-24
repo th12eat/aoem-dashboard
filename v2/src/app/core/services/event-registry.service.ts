@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import type { EventDashboardConfig } from '@shared/models/event-dashboard-config.model';
 import { STORMLANDS_CONFIG } from '../../configs/stormlands.config';
 import { DESOLATE_CONFIG } from '../../configs/desolate.config';
+import { TME_CONFIG } from '../../configs/tme.config';
+import { BEHEMOTH_CONFIG } from '../../configs/behemoth.config';
+import { PRIMORDIAL_CONFIG } from '../../configs/primordial.config';
 import { DESOLATE_STATETEST_CONFIG } from '../../configs/desolate-statetest.config';
 
 /**
@@ -18,6 +21,9 @@ export class EventRegistryService {
   private readonly configs: Record<string, EventDashboardConfig> = {
     [STORMLANDS_CONFIG.slug]: STORMLANDS_CONFIG,
     [DESOLATE_CONFIG.slug]: DESOLATE_CONFIG,
+    [TME_CONFIG.slug]: TME_CONFIG,
+    [BEHEMOTH_CONFIG.slug]: BEHEMOTH_CONFIG,
+    [PRIMORDIAL_CONFIG.slug]: PRIMORDIAL_CONFIG,
   };
 
   /** Resolvable but hidden from the hub (dev/sandbox occurrences). */

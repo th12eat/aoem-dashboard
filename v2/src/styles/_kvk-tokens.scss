@@ -421,7 +421,13 @@ body {
   border-bottom: 1px solid var(--border);
 }
 .cmp-tbl td {
-  padding: 7px 10px;
+  padding: 0 10px;
+  /* Fixed row height + vertical centring so superscript glyphs in our alliance
+     tags (e.g. ʀ★ᴡ, ²⁶⁹) don't stretch our rows taller than the opponent's
+     CJK-tagged rows — keeps the two side-by-side server cards aligned 1:1. */
+  height: 32px;
+  line-height: 1.2;
+  vertical-align: middle;
   border-bottom: 1px solid var(--border);
 }
 .cmp-tbl tr:last-child td {
@@ -448,6 +454,8 @@ body {
 .cmp-tbl .c-nm .tg {
   color: var(--text-muted);
   font-weight: 400;
+  /* Tall superscript ascenders shouldn't inflate the row's line box. */
+  line-height: 1;
 }
 .cmp-tbl.cmp-tbl-wrap {
   table-layout: auto;

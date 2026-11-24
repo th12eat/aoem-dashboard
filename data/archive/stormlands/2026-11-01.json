@@ -1,0 +1,929 @@
+{
+  "schemaVersion": 2,
+  "eventConfig": {
+    "eventStart": "2026-11-02",
+    "eventEnd": "2026-11-15",
+    "recoveryEnd": "2026-11-17",
+    "matchingStart": "2026-11-01",
+    "servers": [
+      "Era 8",
+      "Era #039",
+      "Era #038",
+      "Era #015"
+    ],
+    "ourServer": "Era 8",
+    "ourAlliances": [
+      "eRa",
+      "REU",
+      "Myt",
+      "AuR"
+    ],
+    "corners": {
+      "Era #039": "North/blue",
+      "Era 8": "East/purple",
+      "Era #015": "South/green",
+      "Era #038": "West/orange"
+    },
+    "kingdoms": [
+      {
+        "server": "Era 8",
+        "display": "Era #008",
+        "corner": "East",
+        "color": "#9a6dd4",
+        "rgb": "154,109,212",
+        "us": true,
+        "barColor": "#b18cff"
+      },
+      {
+        "server": "Era #039",
+        "display": "Era #039",
+        "corner": "North",
+        "color": "#5b8bc4",
+        "rgb": "91,139,196",
+        "barColor": "#5b9bd8"
+      },
+      {
+        "server": "Era #038",
+        "display": "Era #038",
+        "corner": "West",
+        "color": "#d4934a",
+        "rgb": "212,147,74",
+        "barColor": "#ef9f6b"
+      },
+      {
+        "server": "Era #015",
+        "display": "Era #015",
+        "corner": "South",
+        "color": "#5aa87a",
+        "rgb": "90,168,122",
+        "barColor": "#4fc386"
+      }
+    ],
+    "zeusTime": "11:00 UTC",
+    "notes": "4-kingdom Stormlands. Us East/purple. Final: 4th of 4. E#039 won.",
+    "eventOver": true
+  },
+  "kingdomPoints": {
+    "era8": "64,200,000,000",
+    "era039": "113,600,000,000",
+    "era038": "70,100,000,000",
+    "era015": "66,100,000,000",
+    "lastUpdated": "2026-11-15 — Final (4th of 4)"
+  },
+  "kingdomScoreboard": [
+    {
+      "server": "Era #039",
+      "points": 113600000000
+    },
+    {
+      "server": "Era #038",
+      "points": 70100000000
+    },
+    {
+      "server": "Era #015",
+      "points": 66100000000
+    },
+    {
+      "server": "Era 8",
+      "points": 64200000000
+    }
+  ],
+  "allianceScoreboard": [],
+  "alliancePoints": [
+    {
+      "tag": "eRa",
+      "points": "27,559,172,105"
+    },
+    {
+      "tag": "REU",
+      "points": "6,926,240,000"
+    },
+    {
+      "tag": "Myt",
+      "points": "6,870,084,670"
+    },
+    {
+      "tag": "AuR",
+      "points": "—"
+    }
+  ],
+  "diplomacy": [
+    {
+      "id": 1,
+      "server": "Era #039",
+      "alliance": "TBD",
+      "relation": "neutral",
+      "fronts": "none",
+      "notes": "Neutral — no pact; avoid unprovoked engagements for now."
+    },
+    {
+      "id": 2,
+      "server": "Era #038",
+      "alliance": "TBD",
+      "relation": "neutral",
+      "fronts": "none",
+      "notes": "Neutral — no pact; avoid unprovoked engagements for now."
+    },
+    {
+      "id": 3,
+      "server": "Era #015",
+      "alliance": "TBD",
+      "relation": "hostile",
+      "fronts": "all",
+      "notes": "Hostile — treat as a target across all fronts (open field, riverland, farms, citadels, cities/gates)."
+    }
+  ],
+  "contacts": [],
+  "mapState": {},
+  "mapRoutes": {
+    "actual": [],
+    "planned": []
+  },
+  "research": {
+    "ours": {
+      "server": "Era 8",
+      "sdRank": null,
+      "alliances": [
+        {
+          "tag": "eRa",
+          "name": "WorldClass",
+          "power": "26,189,743,346",
+          "merits": "3,043,208,404"
+        },
+        {
+          "tag": "REU",
+          "name": "CourtOfGods",
+          "power": "15,537,719,009",
+          "merits": "358,369,013"
+        },
+        {
+          "tag": "Myt",
+          "name": "Mythic",
+          "power": "11,456,399,862",
+          "merits": "502,663,963"
+        },
+        {
+          "tag": "AuR",
+          "name": "Aurora",
+          "power": "1,019,492,134",
+          "merits": "13,105,837"
+        }
+      ],
+      "players": [
+        {
+          "rank": 1,
+          "name": "Collin6666",
+          "alliance": "eRa",
+          "power": "487,855,154",
+          "merits": "168,086,566"
+        },
+        {
+          "rank": 2,
+          "name": "XnJinX",
+          "alliance": "eRa",
+          "power": "398,962,470",
+          "merits": "275,524,121"
+        },
+        {
+          "rank": 3,
+          "name": "Macklemore",
+          "alliance": "eRa",
+          "power": "354,553,120",
+          "merits": "160,848,876"
+        },
+        {
+          "rank": 4,
+          "name": "Lumberjack",
+          "alliance": "eRa",
+          "power": "316,083,794",
+          "merits": "375,839,456"
+        },
+        {
+          "rank": 5,
+          "name": "ŠnipeŘ⊕",
+          "alliance": "eRa",
+          "power": "295,406,522",
+          "merits": "196,889,948"
+        },
+        {
+          "rank": 6,
+          "name": "BloodYoda",
+          "alliance": "eRa",
+          "power": "294,475,716",
+          "merits": "258,203,953"
+        },
+        {
+          "rank": 7,
+          "name": "Zen7",
+          "alliance": "eRa",
+          "power": "271,404,655",
+          "merits": "112,215,964"
+        },
+        {
+          "rank": 8,
+          "name": "BUSHMⱯSTɆЯ",
+          "alliance": "eRa",
+          "power": "259,820,649",
+          "merits": "138,427,591"
+        },
+        {
+          "rank": 9,
+          "name": "☙✿⛵Africa✗⛰☙",
+          "alliance": "eRa",
+          "power": "257,425,669",
+          "merits": "152,668,050"
+        },
+        {
+          "rank": 10,
+          "name": "TommyTorpedo",
+          "alliance": "eRa",
+          "power": "253,993,014",
+          "merits": "163,069,105"
+        },
+        {
+          "rank": 11,
+          "name": "CⱭŇŇØNBⱭLLZZ",
+          "alliance": "eRa",
+          "power": "251,996,738",
+          "merits": "117,610,800"
+        },
+        {
+          "rank": 12,
+          "name": "ScubaPig",
+          "alliance": "eRa",
+          "power": "250,271,568",
+          "merits": "79,224,872"
+        },
+        {
+          "rank": 13,
+          "name": "Hermes++",
+          "alliance": "eRa",
+          "power": "250,178,999",
+          "merits": "101,743,463"
+        },
+        {
+          "rank": 14,
+          "name": "DarkHelmet",
+          "alliance": "eRa",
+          "power": "243,518,952",
+          "merits": "191,865,152"
+        },
+        {
+          "rank": 15,
+          "name": "IntoxFr",
+          "alliance": "eRa",
+          "power": "229,005,019",
+          "merits": "77,934,742"
+        }
+      ]
+    },
+    "opponents": [
+      {
+        "server": "Era #039",
+        "sdRank": null,
+        "priority": "TBD",
+        "note": "North corner (blue).",
+        "alliances": [
+          {
+            "tag": "③★⑨",
+            "name": "BestOfEmpire",
+            "power": "26,369,894,769",
+            "merits": "5,578,767,819"
+          },
+          {
+            "tag": "③∧⑨",
+            "name": "AgeofSpartans",
+            "power": "21,834,223,408",
+            "merits": "2,315,575,911"
+          },
+          {
+            "tag": "③✛⑨",
+            "name": "AegisVanguard",
+            "power": "12,643,658,563",
+            "merits": "194,614,655"
+          },
+          {
+            "tag": "LC°",
+            "name": "RABBIT",
+            "power": "761,339,841",
+            "merits": "13,554,600"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "127대장",
+            "alliance": "③★⑨",
+            "power": "411,526,013",
+            "merits": "1,173,438,238"
+          },
+          {
+            "rank": 2,
+            "name": "수원SuWon",
+            "alliance": "③★⑨",
+            "power": "382,706,819",
+            "merits": "558,345,876"
+          },
+          {
+            "rank": 3,
+            "name": "NickNickNick",
+            "alliance": "③∧⑨",
+            "power": "381,213,274",
+            "merits": "183,706,045"
+          },
+          {
+            "rank": 4,
+            "name": "AZD다크애플",
+            "alliance": "③∧⑨",
+            "power": "359,557,002",
+            "merits": "203,524,706"
+          },
+          {
+            "rank": 5,
+            "name": "KOR꼬꼬",
+            "alliance": "③★⑨",
+            "power": "338,087,718",
+            "merits": "78,684,765"
+          },
+          {
+            "rank": 6,
+            "name": "예진월드유주공주",
+            "alliance": "③★⑨",
+            "power": "320,619,376",
+            "merits": "556,977,057"
+          },
+          {
+            "rank": 7,
+            "name": "YeshuaIsLord",
+            "alliance": "③★⑨",
+            "power": "313,238,597",
+            "merits": "104,362,892"
+          },
+          {
+            "rank": 8,
+            "name": "Ecthelíon",
+            "alliance": "③∧⑨",
+            "power": "307,257,535",
+            "merits": "60,810,067"
+          },
+          {
+            "rank": 9,
+            "name": "닥치거라ㅋㅋ",
+            "alliance": "③★⑨",
+            "power": "305,379,295",
+            "merits": "270,472,311"
+          },
+          {
+            "rank": 10,
+            "name": "★TɛsTRoN",
+            "alliance": "③★⑨",
+            "power": "304,454,653",
+            "merits": "191,099,612"
+          },
+          {
+            "rank": 11,
+            "name": "디엠`",
+            "alliance": "③★⑨",
+            "power": "300,864,031",
+            "merits": "358,083,191"
+          },
+          {
+            "rank": 12,
+            "name": "이재경ㅋㅋ",
+            "alliance": "③★⑨",
+            "power": "293,354,428",
+            "merits": "260,520,667"
+          },
+          {
+            "rank": 13,
+            "name": "토마토",
+            "alliance": "③★⑨",
+            "power": "285,008,195",
+            "merits": "312,353,380"
+          },
+          {
+            "rank": 14,
+            "name": "K£raz³ʌ⁹",
+            "alliance": "③∧⑨",
+            "power": "283,199,969",
+            "merits": "185,876,037"
+          },
+          {
+            "rank": 15,
+            "name": "NPC123",
+            "alliance": "③★⑨",
+            "power": "276,514,420",
+            "merits": "161,019,238"
+          }
+        ]
+      },
+      {
+        "server": "Era #038",
+        "sdRank": null,
+        "priority": "TBD",
+        "note": "West corner (orange).",
+        "alliances": [
+          {
+            "tag": "TLW",
+            "name": "TheLastWolf",
+            "power": "24,535,424,476",
+            "merits": "3,552,399,790"
+          },
+          {
+            "tag": "Pbl",
+            "name": "Republic한국",
+            "power": "16,376,978,788",
+            "merits": "1,360,666,978"
+          },
+          {
+            "tag": "SOW",
+            "name": "ShadowsOfWar",
+            "power": "9,671,821,883",
+            "merits": "86,348,643"
+          },
+          {
+            "tag": "NL0",
+            "name": "NuclearLaunch",
+            "power": "1,273,495,311",
+            "merits": "44,237,400"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "ForSale$€",
+            "alliance": "TLW",
+            "power": "736,659,874",
+            "merits": "898,419,011"
+          },
+          {
+            "rank": 2,
+            "name": "Arcaneaura",
+            "alliance": "TLW",
+            "power": "399,152,023",
+            "merits": "557,146,164"
+          },
+          {
+            "rank": 3,
+            "name": "SAITAMAsun",
+            "alliance": "TLW",
+            "power": "357,730,108",
+            "merits": "235,010,630"
+          },
+          {
+            "rank": 4,
+            "name": "HungryJoker",
+            "alliance": "TLW",
+            "power": "349,298,545",
+            "merits": "694,451,447"
+          },
+          {
+            "rank": 5,
+            "name": "BàTriệu",
+            "alliance": "TLW",
+            "power": "327,788,048",
+            "merits": "329,592,946"
+          },
+          {
+            "rank": 6,
+            "name": "SlickWhiskey",
+            "alliance": "TLW",
+            "power": "323,720,875",
+            "merits": "111,790,612"
+          },
+          {
+            "rank": 7,
+            "name": "Safffaaarrrr",
+            "alliance": "TLW",
+            "power": "279,186,529",
+            "merits": "317,128,702"
+          },
+          {
+            "rank": 8,
+            "name": "Benson¹ˢᵗ",
+            "alliance": "Pbl",
+            "power": "277,569,098",
+            "merits": "167,145,229"
+          },
+          {
+            "rank": 9,
+            "name": "Vizièr",
+            "alliance": "TLW",
+            "power": "273,022,863",
+            "merits": "47,964,158"
+          },
+          {
+            "rank": 10,
+            "name": "Jollybaby®",
+            "alliance": "TLW",
+            "power": "266,826,068",
+            "merits": "379,049,443"
+          },
+          {
+            "rank": 11,
+            "name": "Bongosです",
+            "alliance": "TLW",
+            "power": "265,043,622",
+            "merits": "99,816,259"
+          },
+          {
+            "rank": 12,
+            "name": "Beaufort23",
+            "alliance": "TLW",
+            "power": "263,934,617",
+            "merits": "152,412,611"
+          },
+          {
+            "rank": 13,
+            "name": "Genaid",
+            "alliance": "TLW",
+            "power": "258,146,467",
+            "merits": "29,108,189"
+          },
+          {
+            "rank": 14,
+            "name": "THEGREAT1389",
+            "alliance": "Pbl",
+            "power": "254,140,852",
+            "merits": "304,419,174"
+          },
+          {
+            "rank": 15,
+            "name": "TheEnigma",
+            "alliance": "TLW",
+            "power": "246,437,984",
+            "merits": "204,669,239"
+          }
+        ]
+      },
+      {
+        "server": "Era #015",
+        "sdRank": null,
+        "priority": "TBD",
+        "note": "South corner (green).",
+        "alliances": [
+          {
+            "tag": "PrF",
+            "name": "Professional",
+            "power": "25,619,299,609",
+            "merits": "3,757,851,035"
+          },
+          {
+            "tag": "YUP",
+            "name": "Stönérš",
+            "power": "15,421,340,974",
+            "merits": "154,986,874"
+          },
+          {
+            "tag": "UpF",
+            "name": "Unprofessional",
+            "power": "2,566,696,065",
+            "merits": "6,205,007"
+          },
+          {
+            "tag": "SEF",
+            "name": "SecretFire",
+            "power": "1,788,800,278",
+            "merits": "8,368,424"
+          }
+        ],
+        "players": [
+          {
+            "rank": 1,
+            "name": "DiscoPeat",
+            "alliance": "PrF",
+            "power": "569,582,197",
+            "merits": "1,167,421,834"
+          },
+          {
+            "rank": 2,
+            "name": "AlexSada",
+            "alliance": "PrF",
+            "power": "333,480,579",
+            "merits": "627,231,807"
+          },
+          {
+            "rank": 3,
+            "name": "BrainWest",
+            "alliance": "PrF",
+            "power": "328,018,397",
+            "merits": "596,170,603"
+          },
+          {
+            "rank": 4,
+            "name": "MVZAlexR",
+            "alliance": "PrF",
+            "power": "297,228,149",
+            "merits": "83,702,620"
+          },
+          {
+            "rank": 5,
+            "name": "Caxotef2p",
+            "alliance": "PrF",
+            "power": "290,682,207",
+            "merits": "195,831,215"
+          },
+          {
+            "rank": 6,
+            "name": "FabiMeridius",
+            "alliance": "PrF",
+            "power": "283,286,746",
+            "merits": "248,341,867"
+          },
+          {
+            "rank": 7,
+            "name": "Marinien",
+            "alliance": "PrF",
+            "power": "281,074,797",
+            "merits": "213,689,297"
+          },
+          {
+            "rank": 8,
+            "name": "Thulhagiri",
+            "alliance": "PrF",
+            "power": "275,626,702",
+            "merits": "64,184,505"
+          },
+          {
+            "rank": 9,
+            "name": "ᵖᵗdr3ami",
+            "alliance": "PrF",
+            "power": "260,433,317",
+            "merits": "320,215,957"
+          },
+          {
+            "rank": 10,
+            "name": "Cassia",
+            "alliance": "PrF",
+            "power": "257,610,305",
+            "merits": "58,751,617"
+          },
+          {
+            "rank": 11,
+            "name": "g0dfath3r",
+            "alliance": "PrF",
+            "power": "226,941,023",
+            "merits": "139,636,413"
+          },
+          {
+            "rank": 12,
+            "name": "LΞVIΔTUS",
+            "alliance": "PrF",
+            "power": "222,344,982",
+            "merits": "210,555,194"
+          },
+          {
+            "rank": 13,
+            "name": "MoOoH",
+            "alliance": "PrF",
+            "power": "221,789,528",
+            "merits": "201,346,076"
+          },
+          {
+            "rank": 14,
+            "name": "EPIⒸ²¹k",
+            "alliance": "PrF",
+            "power": "219,624,346",
+            "merits": "180,777,167"
+          },
+          {
+            "rank": 15,
+            "name": "Kenewbie",
+            "alliance": "PrF",
+            "power": "217,519,866",
+            "merits": "41,457,622"
+          }
+        ]
+      }
+    ]
+  },
+  "serverTiers": {
+    "labels": [
+      "100M+",
+      "200M+",
+      "300M+",
+      "400M+",
+      "500M+"
+    ],
+    "byServer": {
+      "Era 8": [
+        264,
+        28,
+        4,
+        1,
+        0
+      ],
+      "Era #039": [
+        300,
+        56,
+        11,
+        1,
+        0
+      ],
+      "Era #038": [
+        272,
+        31,
+        6,
+        1,
+        1
+      ],
+      "Era #015": [
+        227,
+        21,
+        3,
+        1,
+        1
+      ]
+    }
+  },
+  "serverDepth": {
+    "ranks": [
+      1,
+      10,
+      50,
+      100,
+      200,
+      300
+    ],
+    "byServer": {
+      "Era 8": {
+        "power": [
+          487,
+          254,
+          167,
+          144,
+          115,
+          93
+        ],
+        "merits": [
+          376,
+          163,
+          44,
+          23,
+          9,
+          4
+        ]
+      },
+      "Era #039": {
+        "power": [
+          411,
+          304,
+          203,
+          168,
+          130,
+          105
+        ],
+        "merits": [
+          1173,
+          210,
+          73,
+          33,
+          13,
+          6
+        ]
+      },
+      "Era #038": {
+        "power": [
+          736,
+          266,
+          176,
+          140,
+          112,
+          94
+        ],
+        "merits": [
+          898,
+          175,
+          50,
+          26,
+          9,
+          4
+        ]
+      },
+      "Era #015": {
+        "power": [
+          569,
+          257,
+          162,
+          139,
+          106,
+          83
+        ],
+        "merits": [
+          1167,
+          180,
+          58,
+          24,
+          7,
+          3
+        ]
+      }
+    }
+  },
+  "_history": {
+    "event": "Stormlands",
+    "date": "2026-11-01",
+    "opp": "Era #039 / Era #038 / Era #015",
+    "result": "Loss",
+    "multi": true,
+    "placement": 4,
+    "basis": "top-4 alliances (scouting)",
+    "note": "Season finale — we finished 4th of 4. Final Kingdom Points: E#039 113.6B (1st), E#038 70.1B (2nd), E#015 66.1B (3rd), E#008 64.2B (us, 4th). 4-kingdom land war; us East (purple). Top-4 alliance power + total merits per server from scouting.",
+    "kingdomFinal": {
+      "Era 8": 64200000000,
+      "Era #039": 113600000000,
+      "Era #038": 70100000000,
+      "Era #015": 66100000000
+    },
+    "ourRoster": [
+      [
+        "eRa",
+        26189743346,
+        3043208404
+      ],
+      [
+        "REU",
+        15537719009,
+        358369013
+      ],
+      [
+        "Myt",
+        11456399862,
+        502663963
+      ],
+      [
+        "AuR",
+        1019492134,
+        13105837
+      ]
+    ],
+    "oppRosters": {
+      "Era #039": [
+        [
+          "③★⑨",
+          26369894769,
+          5578767819
+        ],
+        [
+          "③∧⑨",
+          21834223408,
+          2315575911
+        ],
+        [
+          "③✛⑨",
+          12643658563,
+          194614655
+        ],
+        [
+          "LC°",
+          761339841,
+          13554600
+        ]
+      ],
+      "Era #038": [
+        [
+          "TLW",
+          24535424476,
+          3552399790
+        ],
+        [
+          "Pbl",
+          16376978788,
+          1360666978
+        ],
+        [
+          "SOW",
+          9671821883,
+          86348643
+        ],
+        [
+          "NL0",
+          1273495311,
+          44237400
+        ]
+      ],
+      "Era #015": [
+        [
+          "PrF",
+          25619299609,
+          3757851035
+        ],
+        [
+          "YUP",
+          15421340974,
+          154986874
+        ],
+        [
+          "UpF",
+          2566696065,
+          6205007
+        ],
+        [
+          "SEF",
+          1788800278,
+          8368424
+        ]
+      ]
+    }
+  }
+}

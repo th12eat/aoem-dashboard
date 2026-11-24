@@ -6,7 +6,7 @@ import { fmtB, mpClass, mpPct, type HistoryEvent } from '@core/services/history.
 import { TrendChartComponent } from '@shared/components/trend-chart/trend-chart.component';
 import type { TrendSeries } from '@shared/components/trend-chart/trend-chart.geometry';
 
-type Filter = 'all' | 'wins' | 'losses' | 'multi';
+type Filter = 'all' | 'wins' | 'losses' | 'multi' | 'duo';
 
 /**
  * KvK History 2.0 — the merged ledger (legacy history.json + DB occurrences)
@@ -137,10 +137,18 @@ export class HistoryPage {
     { id: 'all', label: 'All' },
     { id: 'wins', label: 'Wins' },
     { id: 'losses', label: 'Losses' },
+    { id: 'duo', label: '2-kingdom' },
     { id: 'multi', label: '4-kingdom' },
   ];
 
-  readonly bFmt = (n: number) => fmtB(n);
+  /** Kingdom count = us + opponent servers (1v1 ⇒ 2; a 4-kingdom KvK ⇒ 4). */
+  private kingdomCount(e: HistoryEvent): number {
+    return e.multi ? (e.oppServers?.length ?? 0) + 1 : 2;
+  }
+
+  // Charts store Power/Merits in BILLIONS already (e.power/1e9), so the y-axis
+  // formatter just appends "B" — it must NOT divide again (that printed 0.00B).
+  readonly bFmt = (n: number) => `${n.toFixed(1)}B`;
   readonly pctFmt = (n: number) => `${n.toFixed(0)}%`;
 
   constructor() {
@@ -165,7 +173,8 @@ export class HistoryPage {
     return this.events().filter(e => {
       if (f === 'wins') return e.result === 'Win';
       if (f === 'losses') return e.result === 'Loss';
-      if (f === 'multi') return e.multi;
+      if (f === 'multi') return this.kingdomCount(e) >= 3;
+      if (f === 'duo') return this.kingdomCount(e) === 2;
       return true;
     });
   });
@@ -180,23 +189,24 @@ export class HistoryPage {
 
   readonly mpSeries = computed<TrendSeries[]>(() => {
     const ev = this.charted();
+    const pt = (e: HistoryEvent, y: number) => ({ label: e.date.slice(5), group: monthLabel(e.date), y });
     return [
-      { label: 'Era #008', color: '#5b8bc4', points: ev.map(e => ({ label: e.date.slice(5), y: round1(mpPct(e.ours)) })) },
-      { label: 'Opponent', color: '#c43d3d', points: ev.map(e => ({ label: e.date.slice(5), y: round1(mpPct(e.opp_)) })) },
+      { label: 'Era #008', color: '#5b8bc4', fmt: this.pctFmt, points: ev.map(e => pt(e, round1(mpPct(e.ours)))) },
+      { label: 'Opponent', color: '#c43d3d', fmt: this.pctFmt, points: ev.map(e => pt(e, round1(mpPct(e.opp_)))) },
     ];
   });
 
   readonly pmSeries = computed<TrendSeries[]>(() => {
     const ev = this.charted();
-    const d = (e: (typeof ev)[number]) => e.date.slice(5);
+    const pt = (e: HistoryEvent, y: number) => ({ label: e.date.slice(5), group: monthLabel(e.date), y });
     if (this.pmMode() === 'abs') {
-      // Absolute: Power/Merits in billions + M:P% as a secondary line (its own
-      // small magnitude reads fine on the shared axis next to the B values is
-      // poor — so we scale M:P ×1 but it sits low; acceptable as a trend cue).
+      // Absolute: Power/Merits in billions + M:P% as a secondary line. Each line
+      // carries its OWN last-value formatter (B vs %) so the mixed units read
+      // right even though they share the y-axis.
       return [
-        { label: 'Power (B)', color: '#fbbf24', points: ev.map(e => ({ label: d(e), y: round1(e.ours.power / 1e9) })) },
-        { label: 'Merits (B)', color: '#4ade80', points: ev.map(e => ({ label: d(e), y: round1(e.ours.merits / 1e9) })) },
-        { label: 'M:P %', color: '#9a6dd4', points: ev.map(e => ({ label: d(e), y: round1(mpPct(e.ours)) })) },
+        { label: 'Power (B)', color: '#fbbf24', fmt: this.bFmt, points: ev.map(e => pt(e, round1(e.ours.power / 1e9))) },
+        { label: 'Merits (B)', color: '#4ade80', fmt: this.bFmt, points: ev.map(e => pt(e, round1(e.ours.merits / 1e9))) },
+        { label: 'M:P %', color: '#9a6dd4', fmt: this.pctFmt, points: ev.map(e => pt(e, round1(mpPct(e.ours)))) },
       ];
     }
     // % growth vs the first charted event — Power, Merits AND M:P ratio.
@@ -204,9 +214,9 @@ export class HistoryPage {
     const pct = (v: number, b: number) => (b > 0 ? ((v - b) / b) * 100 : 0);
     const baseMp = base ? mpPct(base.ours) : 0;
     return [
-      { label: 'Power', color: '#fbbf24', points: ev.map(e => ({ label: d(e), y: round1(pct(e.ours.power, base?.ours.power ?? 0)) })) },
-      { label: 'Merits', color: '#4ade80', points: ev.map(e => ({ label: d(e), y: round1(pct(e.ours.merits, base?.ours.merits ?? 0)) })) },
-      { label: 'M:P', color: '#9a6dd4', points: ev.map(e => ({ label: d(e), y: round1(pct(mpPct(e.ours), baseMp)) })) },
+      { label: 'Power', color: '#fbbf24', fmt: this.pctFmt, points: ev.map(e => pt(e, round1(pct(e.ours.power, base?.ours.power ?? 0)))) },
+      { label: 'Merits', color: '#4ade80', fmt: this.pctFmt, points: ev.map(e => pt(e, round1(pct(e.ours.merits, base?.ours.merits ?? 0)))) },
+      { label: 'M:P', color: '#9a6dd4', fmt: this.pctFmt, points: ev.map(e => pt(e, round1(pct(mpPct(e.ours), baseMp)))) },
     ];
   });
 
@@ -221,8 +231,14 @@ export class HistoryPage {
     return t.power > 0 ? mpClass(mpPct(t)) : '';
   }
   resultLabel(e: HistoryEvent): string {
-    if (e.placement) return e.placement === 1 ? '1st' : e.placement === 2 ? '2nd' : e.placement === 3 ? '3rd' : '4th';
-    return e.result;
+    // 1v1 (2-kingdom) reads Win/Loss — NOT a rank. Only a true multi-kingdom
+    // KvK (3+) shows an explicit ordinal placement. (v1.0 stored Loss as
+    // placement=4 even for duels, which printed a bogus "4th".)
+    if (this.kingdomCount(e) >= 3 && e.placement) {
+      return e.placement === 1 ? '1st' : e.placement === 2 ? '2nd' : e.placement === 3 ? '3rd' : '4th';
+    }
+    if (e.result === 'Win' || e.result === 'Loss') return e.result;
+    return e.result; // Live / TBD
   }
   private keyOf(e: HistoryEvent): string {
     return `${e.type}|${e.date}`;
@@ -241,4 +257,13 @@ export class HistoryPage {
 
 function round1(n: number): number {
   return Math.round(n * 10) / 10;
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+/** "2026-11-23" → "Nov" (adds "'YY" at January so year rollovers stay clear). */
+function monthLabel(iso: string): string {
+  const [y, m] = iso.split('-');
+  const mi = Number(m) - 1;
+  const name = MONTHS[mi] ?? m;
+  return mi === 0 ? `${name} '${y.slice(2)}` : name;
 }

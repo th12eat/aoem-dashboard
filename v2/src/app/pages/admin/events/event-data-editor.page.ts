@@ -6,12 +6,14 @@ import { EventService } from '@core/services/event.service';
 import { MapStateStore } from '@core/services/map-state.store';
 import { EventRegistryService } from '@core/services/event-registry.service';
 import { ClockService } from '@core/services/clock.service';
+import { ServerRosterService, type RosterAllianceEntry } from '@core/services/server-roster.service';
 import { deriveMapView } from '@core/services/derive-map-view';
 import { isSectionMissing, type DataSection } from '@core/services/event-data-status';
 import { deriveEndDate, kingdomCount } from '@shared/utils/kvk-schedule';
 import { CORNER_NAMES, cornerColor, fmtServer, ourServerNumber, serverNumber } from '@shared/utils/corners';
 import { rankByDesc, relationNote } from '@shared/utils/derive-ranks';
 import { buildTemplate, applyCsv } from '@shared/utils/event-csv';
+import { reconcileStage } from '@shared/utils/stage-reconcile';
 import type { AllianceHoldings } from '@shared/models/map.model';
 import type { Kingdom } from '@shared/models/event-data.model';
 import { EditableGridComponent, type GridColumn, type GridRow } from './sections/editable-grid.component';
@@ -24,6 +26,10 @@ interface SectionDef {
 }
 
 type Doc = Record<string, unknown>;
+
+/** 1v1 side colours (match the v1.0 TME tug + the dashboard tables). */
+const US_BLUE = '#5b8def';
+const OPP_RED = '#f87171';
 
 /** A server as defined on the Event Setup page (the single source downstream
  * tabs derive from). */
@@ -45,7 +51,7 @@ interface SetupServer {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="de-bar">
-      <a routerLink="/admin/events" class="de-back">← Events</a>
+      <a routerLink="/admin" class="de-back">← Admin</a>
       <strong class="de-title">Edit data — {{ fmtServer(ourNum, 'full') }} · {{ slug() }} · {{ date() }}</strong>
       <span class="de-spacer"></span>
       <button type="button" class="de-ghost" (click)="downloadCsv()" [disabled]="!occId()" title="Download a CSV skeleton of the bulk data to fill in a spreadsheet">⬇ CSV template</button>
@@ -98,13 +104,43 @@ interface SetupServer {
               <app-map-editor [slug]="slug()" [eventId]="occId()" />
             }
             @case ('kingdomPoints') {
-              <h3>Kingdom points &amp; scoreboard</h3>
-              <p class="de-hint">Last updated {{ kpUpdated() || '—' }} (set automatically on Save). Rank is derived from points.</p>
-              <app-editable-grid [columns]="SCOREBOARD_COLS" [rows]="scoreboardRows()" [fixedRows]="kCount()" [hideMove]="true" (rowsChange)="setScoreboard($event)" />
+              @if (isPrep()) {
+                <h3>Stage points</h3>
+                <p class="de-hint">Per-stage prep totals (billions). Values are locked — use the reconciler below, which keeps them summing to the grand total. Toggle manual edit to override a cell.</p>
+
+                <!-- reconcile calculator -->
+                <div class="de-calc">
+                  <div class="de-calc-row">
+                    <label><span>Current stage</span>
+                      <select [value]="calcStage()" (change)="calcStage.set(+$any($event.target).value)">
+                        @for (st of prepStageList(); track $index; let i = $index) {
+                          <option [value]="i">{{ i + 1 }} · {{ st.label }}</option>
+                        }
+                      </select>
+                    </label>
+                    <label><span>This stage — Us (B)</span><input type="number" step="0.001" [value]="calcOursStage()" (input)="calcOursStage.set($any($event.target).value)" /></label>
+                    <label><span>Grand total — Us (B)</span><input type="number" step="0.001" [value]="calcOursTotal()" (input)="calcOursTotal.set($any($event.target).value)" /></label>
+                    <label><span>This stage — Opp (B)</span><input type="number" step="0.001" [value]="calcOppStage()" (input)="calcOppStage.set($any($event.target).value)" /></label>
+                    <label><span>Grand total — Opp (B)</span><input type="number" step="0.001" [value]="calcOppTotal()" (input)="calcOppTotal.set($any($event.target).value)" /></label>
+                    <button type="button" class="de-calc-btn" (click)="reconcileStages()">↻ Reconcile</button>
+                  </div>
+                  @if (calcMsg()) { <p class="de-calc-msg" [class.warn]="calcWarn()">{{ calcMsg() }}</p> }
+                  <label class="de-calc-manual"><input type="checkbox" [checked]="stageManual()" (change)="stageManual.set($any($event.target).checked)" /> Allow manual stage edits</label>
+                </div>
+
+                <app-editable-grid [columns]="stageCols()" [rows]="stageRows()" [fixedRows]="prepStageList().length" [hideMove]="true" (rowsChange)="setStages($event)" />
+              } @else {
+                <h3>Kingdom points &amp; scoreboard</h3>
+                <p class="de-hint">Last updated {{ kpUpdated() || '—' }} (set automatically on Save). Rank is derived from points.</p>
+                <app-editable-grid [columns]="SCOREBOARD_COLS" [rows]="scoreboardRows()" [fixedRows]="kCount()" [hideMove]="true" (rowsChange)="setScoreboard($event)" />
+              }
             }
             @case ('alliancePoints') {
-              <h3>Alliance points (our server)</h3>
-              <app-editable-grid [columns]="ALLIANCE_PTS_COLS" [rows]="alliancePtsRows()" [fixedRows]="4" [hideMove]="true" (rowsChange)="setAlliancePts($event)" />
+              <h3>Alliance points</h3>
+              @if (isPrep()) {
+                <p class="de-hint">Our alliances (blue) and the opponent's (red). Tags auto-populate from Event Setup; enter points only.</p>
+              }
+              <app-editable-grid [columns]="ALLIANCE_PTS_COLS" [rows]="alliancePtsRows()" [fixedRows]="alliancePtsRowCount()" [hideMove]="true" (rowsChange)="setAlliancePts($event)" />
             }
             @case ('diplomacy') {
               <h3>Diplomacy / Rules of Engagement</h3>
@@ -161,6 +197,11 @@ export class EventDataEditorPage {
   private readonly mapStore = inject(MapStateStore);
   private readonly registry = inject(EventRegistryService);
   private readonly clock = inject(ClockService);
+  private readonly rosters = inject(ServerRosterService);
+
+  /** Our server's canonical roster (tag+name) from the shared server_rosters
+   * table — used to prefill Event Setup + scouting for a fresh occurrence. */
+  private readonly ourRoster = signal<RosterAllianceEntry[]>([]);
 
   readonly slug = toSignal(this.route.paramMap.pipe(map(p => p.get('slug') ?? '')), { initialValue: '' });
   readonly date = toSignal(this.route.paramMap.pipe(map(p => p.get('date') ?? '')), { initialValue: '' });
@@ -190,6 +231,23 @@ export class EventDataEditorPage {
   readonly kCount = computed(() => kingdomCount(this.slug()));
   readonly oppCount = computed(() => this.kCount() - 1);
 
+  /** The event's static config (for map/prep detection). */
+  private readonly cfg = computed(() => this.registry.getConfig(this.slug()));
+  /** Only show the Map section when the event actually has map geometry. */
+  readonly hasMap = computed(() => !!this.cfg()?.mapGeometry);
+  /** Prep-war events (TME-style): stage points instead of a kingdom scoreboard,
+   * no diplomacy, both-sides alliance points. Detected via the prep-tug bar. */
+  readonly isPrep = computed(() => this.cfg()?.persistentBar === 'prepTug');
+  /** 1v1 events colour us blue / opponent red (vs. corner colours). */
+  readonly isDuel = computed(() => this.kCount() === 2);
+
+  /** Row swatch colour for a setup server: us=blue / opp=red in a 1v1, else the
+   * map-corner colour. */
+  private serverColor(s: SetupServer): string {
+    if (this.isDuel()) return s.num === this.ourNum ? US_BLUE : OPP_RED;
+    return cornerColor(s.corner).color;
+  }
+
   // ── column defs ──────────────────────────────────────────────────────────
   readonly SETUP_COLS: GridColumn[] = [
     { key: 'num', label: 'Server #', width: '90px' },
@@ -204,7 +262,7 @@ export class EventDataEditorPage {
     { key: 'points', label: 'Points' },
   ];
   readonly ALLIANCE_PTS_COLS: GridColumn[] = [
-    { key: 'rank', label: 'Rank', locked: true, width: '60px' },
+    { key: 'color', label: '', swatch: true, width: '46px' },
     { key: 'tag', label: 'Tag', locked: true },
     { key: 'points', label: 'Points' },
   ];
@@ -236,18 +294,27 @@ export class EventDataEditorPage {
   ];
 
   readonly sections = computed<SectionDef[]>(() => {
-    const base: SectionDef[] = [
-      { id: 'eventConfig', label: 'Event setup', missingKey: 'eventConfig' },
-      { id: 'map', label: 'Map' },
-      { id: 'kingdomPoints', label: 'Kingdom points', missingKey: 'kingdomScoreboard' },
-      { id: 'alliancePoints', label: 'Alliance points', missingKey: 'alliancePoints' },
-      { id: 'diplomacy', label: 'Diplomacy', missingKey: 'diplomacy' },
-      { id: 'scouting', label: 'Scouting', missingKey: 'scouting' },
-      { id: 'serverTiers', label: 'Server tiers', missingKey: 'serverTiers' },
-      { id: 'serverDepth', label: 'Server depth', missingKey: 'serverDepth' },
-    ];
+    const prep = this.isPrep();
+    const base: SectionDef[] = [{ id: 'eventConfig', label: 'Event setup', missingKey: 'eventConfig' }];
+    // Map only when the event actually has geometry.
+    if (this.hasMap()) base.push({ id: 'map', label: 'Map' });
+    // Prep events show stage points; land-war events show the kingdom scoreboard.
+    base.push({ id: 'kingdomPoints', label: prep ? 'Stage points' : 'Kingdom points', missingKey: 'kingdomScoreboard' });
+    base.push({ id: 'alliancePoints', label: 'Alliance points', missingKey: 'alliancePoints' });
+    // Diplomacy is land-war only (no diplomacy surface on a prep dashboard).
+    if (!prep) base.push({ id: 'diplomacy', label: 'Diplomacy', missingKey: 'diplomacy' });
+    base.push({ id: 'scouting', label: 'Scouting', missingKey: 'scouting' });
+    base.push({ id: 'serverTiers', label: 'Server tiers', missingKey: 'serverTiers' });
+    base.push({ id: 'serverDepth', label: 'Server depth', missingKey: 'serverDepth' });
     if (this.slug() === 'desolate') base.push({ id: 'placerGold', label: 'Placer economy', missingKey: 'placerGold' });
     return base;
+  });
+
+  /** Keep the active section valid when the section list changes per event
+   * type (e.g. Map hidden for TME) — snap back to Event setup if it vanished. */
+  private readonly activeGuard = effect(() => {
+    const ids = this.sections().map(s => s.id);
+    if (ids.length && !ids.includes(this.active())) this.active.set('eventConfig');
   });
 
   /** Per-occurrence draft key. Stable across reloads of the same event+date. */
@@ -331,20 +398,28 @@ export class EventDataEditorPage {
     this.resolved.set(true);
     if (!occ) return;
     this.occId.set(occ.id);
+    // Our server's canonical roster (shared across all event types) — prefills
+    // Event Setup + scouting so our four tags/names aren't retyped per event.
+    this.ourRoster.set(await this.rosters.forServer(this.ourNum));
     const dbDoc = await this.events.loadDoc(occ.id);
     if (dbDoc) {
       this.doc.set(dbDoc);
     } else {
-      // Fresh occurrence: start EMPTY — only this occurrence's own dates, blank
-      // kingdoms. Do NOT inherit the committed static JSON (that stays the
-      // dashboard fallback for legacy no-occurrence types only). Every other tab
-      // seeds its own fixed-count blank rows from kCount()/Event Setup.
+      // Fresh occurrence: start EMPTY except for this occurrence's own dates and
+      // OUR server pre-seeded (number + its roster tags) from server_rosters —
+      // so the admin only enters opponent data + points. Opponent kingdoms stay
+      // blank for the admin to fill. Static JSON is NOT inherited.
+      const ourTags = this.ourRoster().map(a => a.tag);
       this.doc.set({
         schemaVersion: 2,
         eventConfig: {
           eventStart: occ.startDate,
           eventEnd: deriveEndDate(this.slug(), occ.startDate),
-          kingdoms: [],
+          ourServer: fmtServer(this.ourNum, 'spaced'),
+          ourAlliances: ourTags,
+          kingdoms: ourTags.length
+            ? [{ server: fmtServer(this.ourNum, 'spaced'), display: fmtServer(this.ourNum, 'full'), us: true, alliances: ourTags }]
+            : [],
         },
       });
     }
@@ -473,6 +548,111 @@ export class EventDataEditorPage {
     this.patch('eventConfig', ec);
   }
 
+  // ── Stage points (prep events: TME) + reconcile calculator ──────────────────
+  /** Default prep stage labels when the doc has no prep block yet (fresh TME). */
+  private static readonly TME_STAGES = ['Forging Gear', 'Enhancing Buildings', 'Enhancing Technologies', 'Unit Training', 'Power Boost'];
+
+  /** The prep stages to render: the doc's own labels if present, else defaults. */
+  prepStageList(): { label: string; ours: number; opp: number }[] {
+    const prep = this.obj(this.doc()['prep']);
+    const stages = (prep['stages'] as Doc[] | undefined) ?? [];
+    if (stages.length) {
+      return stages.map(s => ({ label: String(s['label'] ?? ''), ours: Number(s['ours']) || 0, opp: Number(s['opp']) || 0 }));
+    }
+    return EventDataEditorPage.TME_STAGES.map(label => ({ label, ours: 0, opp: 0 }));
+  }
+
+  // reconcile calculator inputs
+  readonly calcStage = signal(0);
+  readonly calcOursStage = signal('');
+  readonly calcOursTotal = signal('');
+  readonly calcOppStage = signal('');
+  readonly calcOppTotal = signal('');
+  readonly calcMsg = signal<string | null>(null);
+  readonly calcWarn = signal(false);
+  /** When off (default) the stage cells are locked; the reconciler writes them. */
+  readonly stageManual = signal(false);
+
+  readonly oppLabel = computed(() => this.opponents()[0]?.num ? fmtServer(this.opponents()[0].num, 'full') : 'Opponent');
+
+  stageCols(): GridColumn[] {
+    const locked = !this.stageManual();
+    return [
+      { key: 'stage', label: 'Stage', locked: true },
+      { key: 'usColor', label: '', swatch: true, width: '34px' },
+      { key: 'ours', label: `Us (B)`, locked },
+      { key: 'oppColor', label: '', swatch: true, width: '34px' },
+      { key: 'opp', label: `${this.oppLabel()} (B)`, locked },
+    ];
+  }
+  stageRows(): GridRow[] {
+    const stages = this.prepStageList();
+    const rows: GridRow[] = stages.map((s, i) => ({
+      stage: `${i + 1} · ${s.label}`,
+      usColor: US_BLUE,
+      ours: s.ours ? String(s.ours) : '',
+      oppColor: OPP_RED,
+      opp: s.opp ? String(s.opp) : '',
+    }));
+    return rows;
+  }
+  setStages(rows: GridRow[]): void {
+    const labels = this.prepStageList().map(s => s.label);
+    const stages = rows.map((r, i) => ({ label: labels[i] ?? '', ours: Number(r['ours']) || 0, opp: Number(r['opp']) || 0 }));
+    this.writePrep(stages);
+  }
+
+  /** Persist the stage list + derived totals + kingdomScoreboard mirror. */
+  private writePrep(stages: { label: string; ours: number; opp: number }[]): void {
+    const totalOurs = round3(stages.reduce((a, s) => a + s.ours, 0));
+    const totalOpp = round3(stages.reduce((a, s) => a + s.opp, 0));
+    const prep = this.obj(this.doc()['prep']);
+    const ourRankings = (prep['ourRankings'] as unknown) ?? [];
+    const oppRankings = (prep['oppRankings'] as unknown) ?? [];
+    this.patch('prep', {
+      ...prep,
+      stages,
+      totalOurs,
+      totalOpp,
+      ourLabel: fmtServer(this.ourNum, 'full'),
+      oppLabel: this.oppLabel(),
+      ourRankings,
+      oppRankings,
+    });
+    // Mirror the tug totals into the kingdom scoreboard the persistent bar reads
+    // (us vs opponent, scaled to raw points — billions × 1e9).
+    this.patch('kingdomScoreboard', [
+      { server: fmtServer(this.ourNum, 'spaced'), points: totalOurs * 1e9 },
+      { server: fmtServer(this.opponents()[0]?.num ?? 0, 'spaced'), points: totalOpp * 1e9 },
+    ]);
+  }
+
+  /** Reconcile: set the current stage to the entered value, then true-up the
+   * PRIOR stage so the stages sum to the grand total (missing points land on
+   * yesterday). Stage 1 = grand total. Clamp negatives to 0 with a warning. */
+  reconcileStages(): void {
+    const stages = this.prepStageList().map(s => ({ ...s }));
+    const idx = Math.max(0, Math.min(this.calcStage(), stages.length - 1));
+    const num = (v: string) => (v.trim() === '' ? null : Number(v));
+    let warned = false;
+    const apply = (key: 'ours' | 'opp', stageVal: number | null, totalStr: string) => {
+      const total = num(totalStr);
+      if (total == null || !Number.isFinite(total)) return; // no grand total → skip this side
+      const r = reconcileStage(stages.map(s => s[key]), idx, stageVal, total);
+      r.values.forEach((v, i) => (stages[i][key] = v));
+      if (r.clamped) warned = true;
+    };
+    apply('ours', num(this.calcOursStage()), this.calcOursTotal());
+    apply('opp', num(this.calcOppStage()), this.calcOppTotal());
+    this.writePrep(stages);
+    this.calcWarn.set(warned);
+    this.calcMsg.set(
+      warned
+        ? '⚠ Totals don’t reconcile — the prior stage would go negative (clamped to 0). Check your numbers.'
+        : '✓ Stages reconciled to the grand total.',
+    );
+  }
+
   // ── Kingdom points / scoreboard ─────────────────────────────────────────────
   kpUpdated(): string {
     return String(this.obj(this.doc()['kingdomPoints'])['lastUpdated'] ?? '');
@@ -497,22 +677,40 @@ export class EventDataEditorPage {
   }
 
   // ── Alliance points ─────────────────────────────────────────────────────────
+  /** Rows = our 4 alliances (blue), plus the opponent's 4 (red) for prep events.
+   * Tags auto-populate from Event Setup (locked); only points are editable;
+   * colour is us-blue / opp-red; no rank (entry order is irrelevant). */
+  private alliancePtsSides(): { tag: string; side: 'us' | 'opp' }[] {
+    const sides: { tag: string; side: 'us' | 'opp' }[] = (this.ours()?.alliances ?? []).map(tag => ({ tag, side: 'us' }));
+    if (this.isPrep()) {
+      const opp = this.opponents()[0]?.alliances ?? [];
+      for (const tag of opp.slice(0, 4)) sides.push({ tag, side: 'opp' });
+    }
+    return sides;
+  }
+  alliancePtsRowCount(): number {
+    return this.isPrep() ? 8 : 4;
+  }
   alliancePtsRows(): GridRow[] {
-    const tags = this.ours()?.alliances ?? [];
+    const sides = this.alliancePtsSides();
     const existing = (this.doc()['alliancePoints'] as Doc[] | undefined) ?? [];
     const ptsByTag = new Map(existing.map(r => [String(r['tag'] ?? ''), String(r['points'] ?? '')]));
-    const rows = Array.from({ length: 4 }, (_, i) => ({
-      tag: tags[i] ?? '',
-      points: ptsByTag.get(tags[i] ?? '') ?? '',
-      rank: '',
-    }));
-    const ranks = rankByDesc(rows, 'points');
-    rows.forEach((r, i) => (r.rank = String(ranks[i])));
-    return rows;
+    const count = this.alliancePtsRowCount();
+    return Array.from({ length: count }, (_, i) => {
+      const s = sides[i];
+      return {
+        color: s ? (s.side === 'us' ? US_BLUE : OPP_RED) : '#8a90a5',
+        tag: s?.tag ?? '',
+        points: ptsByTag.get(s?.tag ?? '') ?? '',
+      };
+    });
   }
   setAlliancePts(rows: GridRow[]): void {
-    const tags = this.ours()?.alliances ?? [];
-    this.patch('alliancePoints', rows.map((r, i) => ({ tag: tags[i] ?? '', points: r['points'] })));
+    const sides = this.alliancePtsSides();
+    this.patch(
+      'alliancePoints',
+      rows.map((r, i) => ({ tag: sides[i]?.tag ?? '', points: r['points'], side: sides[i]?.side })),
+    );
   }
 
   // ── Diplomacy ────────────────────────────────────────────────────────────────
@@ -559,6 +757,7 @@ export class EventDataEditorPage {
       const opps = (research['opponents'] as Doc[] | undefined) ?? [];
       return this.obj(opps.find(o => serverNumber(String(o['server'] ?? '')) === num));
     };
+    const ourNameByTag = new Map(this.ourRoster().map(a => [a.tag, a.name]));
     return this.setup().map(s => {
       const roster = rosterFor(s.num);
       const allianceRows = ((roster['alliances'] as Doc[] | undefined) ?? []).map(a => ({
@@ -568,6 +767,17 @@ export class EventDataEditorPage {
         merits: String(a['merits'] ?? ''),
         rank: '',
       }));
+      // Prefill blank rows with this server's known tags from Event Setup (and
+      // our server's canonical names) so the admin isn't typing tags twice.
+      s.alliances.forEach((tag, i) => {
+        const r = allianceRows[i];
+        if (r && !r.tag) {
+          r.tag = tag;
+          if (!r.name) r.name = ourNameByTag.get(tag) ?? '';
+        } else if (!r) {
+          allianceRows.push({ tag, name: ourNameByTag.get(tag) ?? '', power: '', merits: '', rank: '' });
+        }
+      });
       while (allianceRows.length < 4) allianceRows.push({ tag: '', name: '', power: '', merits: '', rank: '' });
       const aRanks = rankByDesc(allianceRows, 'power');
       allianceRows.forEach((r, i) => (r['rank'] = String(aRanks[i])));
@@ -633,7 +843,7 @@ export class EventDataEditorPage {
     const byServer = this.obj(this.obj(this.doc()['serverTiers'])['byServer']);
     return this.setup().map(s => {
       const counts = (byServer[fmtServer(s.num, 'spaced')] as number[] | undefined) ?? [];
-      const row: GridRow = { color: cornerColor(s.corner).color, server: fmtServer(s.num, 'full') };
+      const row: GridRow = { color: this.serverColor(s), server: fmtServer(s.num, 'full') };
       this.tierLabels().forEach((_, i) => (row[`c${i}`] = counts[i] != null ? String(counts[i]) : ''));
       return row;
     });
@@ -667,7 +877,7 @@ export class EventDataEditorPage {
     return this.setup().map(s => {
       const entry = this.obj(byServer[fmtServer(s.num, 'spaced')]);
       const vals = (entry[metric] as number[] | undefined) ?? [];
-      const row: GridRow = { color: cornerColor(s.corner).color, server: fmtServer(s.num, 'full') };
+      const row: GridRow = { color: this.serverColor(s), server: fmtServer(s.num, 'full') };
       this.depthRanks().forEach((_, i) => (row[`r${i}`] = vals[i] != null ? String(vals[i]) : ''));
       return row;
     });
@@ -788,4 +998,9 @@ export class EventDataEditorPage {
       this.saveMsg.set('✓ Saved — live on the dashboard now.');
     }
   }
+}
+
+/** Round to 3 decimals (prep points are in billions, e.g. 1.472). */
+function round3(n: number): number {
+  return Math.round(n * 1000) / 1000;
 }

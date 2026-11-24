@@ -4,14 +4,17 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EventRegistryService } from '@core/services/event-registry.service';
 import { EventService, type EventOccurrence, type OccurrenceStatus } from '@core/services/event.service';
 import { ACCESS } from '@core/access/access.service';
+import { ServerRosterService, type RosterAllianceEntry } from '@core/services/server-roster.service';
 import { withPlacements } from '@shared/utils/placement';
+import { fmtServer, ourServerNumber } from '@shared/utils/corners';
 
 /**
- * Admin "Create Events" page (strategist+). Input one or more event occurrences
- * (type + start date), then manage their lifecycle: Publish (awaiting→published
- * reveals the full dashboard), Mark complete, View, and — developer only —
- * Delete. The actual per-section data-entry editor is the NEXT chunk; here the
- * "Edit data" link is a disabled stub. Native inputs, mirrors admin-hub/map-editor.
+ * Admin control center (strategist+). The single landing for event
+ * administration: a Settings panel (our server + roster, read from the shared
+ * server_rosters table), a "New occurrence" creator, and the one chronological
+ * list of EVERY occurrence — backfilled history + new — with lifecycle actions
+ * (publish / unpublish / mark complete / reopen / Edit data / delete). No
+ * per-type adopt button: all legacy events are already DB rows via the backfill.
  */
 @Component({
   selector: 'app-admin-events',
@@ -19,13 +22,36 @@ import { withPlacements } from '@shared/utils/placement';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header class="kvk-header" data-kvk="generic">
-      <div class="kvk-tag">Admin · Events</div>
-      <h1 class="kvk-title">EVENT LIFECYCLE</h1>
-      <div class="kvk-subtitle">Create occurrences · publish when matchmaking's done · archive when over</div>
+      <div class="kvk-tag">Admin · Control Center</div>
+      <h1 class="kvk-title">EVENT ADMIN</h1>
+      <div class="kvk-subtitle">Settings · every occurrence, past and present · create / publish / edit</div>
     </header>
 
     <main class="ae">
-      <a routerLink="/admin" class="ae-back">← Admin</a>
+      <!-- meta settings -->
+      <section class="ae-card">
+        <h3>Settings</h3>
+        <div class="ae-settings">
+          <div class="ae-setting">
+            <span class="ae-setting-k">Our server</span>
+            <span class="ae-setting-v">{{ fmtServer(ourNum, 'full') }}</span>
+          </div>
+          <div class="ae-setting">
+            <span class="ae-setting-k">Our alliances</span>
+            <span class="ae-setting-v">
+              @if (ourRoster().length) {
+                {{ rosterTags() }}
+              } @else {
+                <em class="ae-muted">none set — run supabase/06-server-rosters.sql</em>
+              }
+            </span>
+          </div>
+          <p class="ae-settings-note">
+            Our server number &amp; roster seed every event's data entry. Editing them (a super-admin roster
+            dashboard) is coming; today they're set in <code>server_rosters</code>.
+          </p>
+        </div>
+      </section>
 
       <!-- create -->
       <section class="ae-card">
@@ -48,7 +74,7 @@ import { withPlacements } from '@shared/utils/placement';
         @if (msg()) { <p class="ae-msg" [class.err]="err()">{{ msg() }}</p> }
       </section>
 
-      <!-- existing -->
+      <!-- every occurrence (backfilled history + new), newest first -->
       <section class="ae-card">
         <h3>Occurrences</h3>
         @if (occurrences().length === 0) {
@@ -97,10 +123,36 @@ import { withPlacements } from '@shared/utils/placement';
         margin: 0 auto;
         padding: 16px 20px 48px;
       }
-      .ae-back {
+      .ae-settings {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .ae-setting {
+        display: flex;
+        gap: 10px;
+        align-items: baseline;
+      }
+      .ae-setting-k {
+        min-width: 110px;
+        font-size: var(--fs-micro);
         color: var(--text-muted);
-        text-decoration: none;
-        font-size: var(--fs-label);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .ae-setting-v {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+      .ae-muted {
+        color: var(--text-muted);
+        font-weight: 400;
+      }
+      .ae-settings-note {
+        margin: 4px 0 0;
+        font-size: var(--fs-sub);
+        color: var(--text-muted);
+        line-height: 1.5;
       }
       .ae-card {
         background: var(--bg-card);
@@ -223,14 +275,6 @@ import { withPlacements } from '@shared/utils/placement';
         color: var(--accent-red);
         border-color: var(--accent-red);
       }
-      .ae-stub {
-        color: var(--text-muted);
-        opacity: 0.5;
-        padding: 4px 10px;
-        border: 1px dashed var(--border);
-        border-radius: 6px;
-        cursor: not-allowed;
-      }
     `,
   ],
 })
@@ -238,6 +282,10 @@ export class AdminEventsPage {
   private readonly registry = inject(EventRegistryService);
   private readonly events = inject(EventService);
   private readonly access = inject(ACCESS);
+  private readonly rosters = inject(ServerRosterService);
+
+  readonly fmtServer = fmtServer;
+  readonly ourNum = ourServerNumber();
 
   /** Known event types for the create dropdown (from the registry). */
   readonly types = this.registry.list().map(c => ({ slug: c.slug, titleKey: c.titleKey }));
@@ -248,11 +296,15 @@ export class AdminEventsPage {
   readonly msg = signal<string | null>(null);
   readonly err = signal(false);
   readonly occurrences = signal<EventOccurrence[]>([]);
+  /** Our server's roster (shared server_rosters table) for the Settings panel. */
+  readonly ourRoster = signal<RosterAllianceEntry[]>([]);
+  readonly rosterTags = computed(() => this.ourRoster().map(a => a.tag).join(' · '));
 
   readonly canDelete = computed(() => this.access.can('edit-geometry'));
 
   constructor() {
     void this.refresh();
+    void this.rosters.forServer(this.ourNum).then(r => this.ourRoster.set(r));
   }
 
   private async refresh(): Promise<void> {

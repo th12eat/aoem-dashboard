@@ -41,6 +41,25 @@ export class EventHeaderComponent {
   readonly header = computed(() => this.config().header ?? {});
   readonly titleKey = computed(() => this.config().titleKey);
   readonly subtitleKey = computed(() => this.config().subtitleKey);
+  /** 1.0-styled eyebrow line above the title (TME "Command Center"). When set,
+   * it replaces the generic grey subtitle treatment. */
+  readonly eyebrowKey = computed(() => this.header().eyebrowKey);
+
+  /** Dynamic ATTACKING/DEFENDING badge (prep-tug leader attacks; pre-start →
+   * attacking). Null for events without an attackDefense config. */
+  readonly attackDefense = computed(() => {
+    const cfg = this.header().attackDefense;
+    if (!cfg) return null;
+    const m = this.data();
+    const started = m?.prepStarted === true;
+    // Behind on summed prep points → defending; leading/tied/pre-start → attacking.
+    const defending = started && (m?.prepOursTotal ?? 0) < (m?.prepOppTotal ?? 0);
+    return {
+      defending,
+      labelKey: defending ? cfg.defendLabelKey : cfg.attackLabelKey,
+      glyph: defending ? cfg.defendGlyph : cfg.attackGlyph,
+    };
+  });
   /** Crests are data-driven: derived from meta.kingdoms (the per-event corner
    * identities/colours), falling back to any config-provided list. */
   readonly crests = computed(() => {
@@ -68,19 +87,87 @@ export class EventHeaderComponent {
   private readonly startMs = computed(() => Date.parse(this.data()?.eventStart ?? ''));
   private readonly endMs = computed(() => Date.parse(this.data()?.eventEnd ?? ''));
 
-  readonly startLabel = computed(() => this.fmt(this.data()?.eventStart));
-  readonly endLabel = computed(() => this.fmt(this.data()?.eventEnd));
+  /** The multi-stage schedule, if the config supplies one (TME). */
+  private readonly stages = computed(() => this.header().stages ?? []);
+
+  /** The active stage index by wall-clock: the last stage whose start ≤ now.
+   * -1 before the first stage starts; stages.length once all have ended. */
+  private readonly activeStageIdx = computed(() => {
+    const st = this.stages();
+    if (!st.length) return -1;
+    const t = this.now();
+    let idx = -1;
+    st.forEach((s, i) => {
+      if (t >= Date.parse(`${s.startDate}T00:00:00Z`)) idx = i;
+    });
+    // all ended?
+    const last = st[st.length - 1];
+    if (t >= Date.parse(`${last.endDate}T00:00:00Z`)) return st.length;
+    return idx;
+  });
+
+  /** Left/right date-cell labels + values. Stage-driven when a schedule exists,
+   * else the plain Start/End of the whole event. */
+  readonly startLabelKey = computed(() => {
+    const st = this.stages();
+    const i = this.activeStageIdx();
+    if (st.length && i >= 0 && i < st.length) return st[i].fromLabelKey;
+    return 'widget.countdown.start';
+  });
+  readonly endLabelKey = computed(() => {
+    const st = this.stages();
+    const i = this.activeStageIdx();
+    if (st.length && i >= 0 && i < st.length) return st[i].toLabelKey;
+    return 'widget.countdown.end';
+  });
+  readonly startLabel = computed(() => {
+    const st = this.stages();
+    const i = this.activeStageIdx();
+    if (st.length && i >= 0 && i < st.length) return this.fmt(st[i].startDate);
+    return this.fmt(this.data()?.eventStart);
+  });
+  readonly endLabel = computed(() => {
+    const st = this.stages();
+    const i = this.activeStageIdx();
+    if (st.length && i >= 0 && i < st.length) return this.fmt(st[i].endDate);
+    return this.fmt(this.data()?.eventEnd);
+  });
 
   readonly phase = computed<'before' | 'live' | 'over'>(() => {
     const t = this.now();
     if (this.data()?.eventOver) return 'over';
+    const st = this.stages();
+    if (st.length) {
+      const i = this.activeStageIdx();
+      if (i < 0) return 'before';
+      if (i >= st.length) return 'over';
+      return 'live';
+    }
     if (Number.isFinite(this.startMs()) && t < this.startMs()) return 'before';
     if (Number.isFinite(this.endMs()) && t >= this.endMs()) return 'over';
     return 'live';
   });
 
+  /** i18n key for the in-progress status line. Stage-specific when a schedule
+   * is set (e.g. "Prep Stage in Progress"), else the generic live label. */
+  readonly liveLabelKey = computed(() => {
+    const st = this.stages();
+    const i = this.activeStageIdx();
+    if (st.length && i >= 0 && i < st.length) return st[i].liveLabelKey;
+    return 'widget.countdown.live';
+  });
+
   readonly countdown = computed(() => {
-    const target = this.phase() === 'before' ? this.startMs() : this.endMs();
+    const st = this.stages();
+    const i = this.activeStageIdx();
+    // Count down to the end of the active stage (stage-driven), else to the
+    // event start (before) / end (live) as before.
+    let target: number;
+    if (st.length && i >= 0 && i < st.length) {
+      target = Date.parse(`${st[i].endDate}T00:00:00Z`);
+    } else {
+      target = this.phase() === 'before' ? this.startMs() : this.endMs();
+    }
     if (!Number.isFinite(target)) return null;
     const ms = Math.max(0, target - this.now());
     return {

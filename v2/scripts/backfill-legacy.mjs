@@ -1,0 +1,154 @@
+#!/usr/bin/env node
+/**
+ * backfill-legacy.mjs — convert the harvested archive into one idempotent SQL
+ * file that seeds every historical occurrence as a DB row.
+ *
+ * Reuses the IN-APP conversion seam: it esbuild-bundles `adopt-adapters.ts`
+ * (resolving the `@shared` path alias) to a temp ESM module and imports its
+ * `adaptLegacyDoc(slug, raw)` — so there's ONE source of truth for legacy→v2
+ * conversion (no duplicated logic here). Then for each occurrence in
+ * `data/archive/manifest.json` it:
+ *   - reads the archive doc, strips the `_history` helper,
+ *   - runs it through `adaptLegacyDoc`,
+ *   - for index-only occurrences (no live data) synthesizes a minimal doc from
+ *     the history roster so the dated dashboard still renders figures,
+ *   - emits an INSERT … ON CONFLICT upsert into `events` (status `complete`) +
+ *     `event_data` (the jsonb doc).
+ *
+ * Output: `supabase/07-backfill-events.sql` — paste + Run in the Supabase SQL
+ * editor (same workflow as 01–06). Idempotent (re-running changes nothing).
+ *
+ * Run: `node scripts/backfill-legacy.mjs` (uses the local esbuild binary).
+ */
+import { execFileSync } from 'node:child_process';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { tmpdir } from 'node:os';
+
+const V2 = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const ROOT = resolve(V2, '..');
+
+/** Bundle adopt-adapters.ts (+ its @shared deps) to a temp ESM file via the
+ * local esbuild, then import it. Keeps conversion logic single-sourced. */
+async function loadAdapters() {
+  const out = resolve(tmpdir(), `adopt-adapters.${process.pid}.mjs`);
+  execFileSync(
+    resolve(V2, 'node_modules/.bin/esbuild'),
+    [
+      resolve(V2, 'src/app/core/services/adopt-adapters.ts'),
+      '--bundle',
+      '--format=esm',
+      '--platform=node',
+      `--alias:@shared=${resolve(V2, 'src/app/shared')}`,
+      `--outfile=${out}`,
+    ],
+    { stdio: ['ignore', 'ignore', 'inherit'] },
+  );
+  return import(pathToFileURL(out).href);
+}
+
+/** Minimal v2 doc from a history.json roster (index-only occurrences). Produces
+ * research + a kingdomScoreboard floor so the dated dashboard shows figures. */
+function synthFromHistory(slug, hist) {
+  const num = s => Number(String(s ?? '').replace(/[,\s]/g, '')) || 0;
+  const toAlliance = r => ({ tag: String(r[0] ?? ''), name: String(r[0] ?? ''), power: r[1] ?? 0, merits: r[2] ?? 0 });
+  const ours = hist.ours ?? hist.ourRoster ?? [];
+  const oppServers = hist.oppRosters
+    ? Object.entries(hist.oppRosters).map(([server, rows]) => ({
+        server: server.replace(/[^0-9]/g, '') ? `Era ${server.replace(/\D/g, '')}` : server,
+        alliances: rows.map(toAlliance),
+        players: [],
+      }))
+    : hist.oppA
+      ? [{ server: 'Opponent', alliances: hist.oppA.map(toAlliance), players: [] }]
+      : [];
+  void num;
+  return {
+    schemaVersion: 2,
+    _recovered: 'index-only',
+    eventConfig: { eventStart: hist.date, ourServer: 'Era 8', kingdoms: [] },
+    research: { ours: { server: 'Era 8', alliances: ours.map(toAlliance), players: [] }, opponents: oppServers },
+  };
+}
+
+/** SQL-escape a string literal. */
+const q = s => `'${String(s).replace(/'/g, "''")}'`;
+/** JSONB literal: a single-quoted JSON string, quotes doubled. */
+const jsonb = obj => `${q(JSON.stringify(obj))}::jsonb`;
+
+async function main() {
+  const { adaptLegacyDoc } = await loadAdapters();
+
+  const manifestPath = resolve(ROOT, 'data/archive/manifest.json');
+  if (!existsSync(manifestPath)) {
+    console.error('No manifest — run `node scripts/harvest-legacy.mjs` first.');
+    process.exit(1);
+  }
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const occ = manifest.occurrences ?? [];
+
+  const rows = [];
+  for (const m of occ) {
+    const archivePath = resolve(ROOT, `data/archive/${m.slug}/${m.date}.json`);
+    if (!existsSync(archivePath)) continue;
+    const archive = JSON.parse(readFileSync(archivePath, 'utf8'));
+    const { _history, ...raw } = archive;
+
+    // Convert via the shared adapter, or synthesize from history if index-only.
+    let doc;
+    if (m.recovered === 'index-only' || Object.keys(raw).length === 0) {
+      doc = synthFromHistory(m.slug, _history ?? { date: m.date });
+    } else {
+      doc = adaptLegacyDoc(m.slug, raw);
+      doc._recovered = m.recovered;
+    }
+    rows.push({ slug: m.slug, date: m.date, doc });
+  }
+
+  // ── emit SQL ─────────────────────────────────────────────────────────────
+  const lines = [];
+  lines.push('-- ============================================================================');
+  lines.push('-- 07-backfill-events.sql — seed every historical occurrence as a DB row');
+  lines.push('-- ============================================================================');
+  lines.push('-- GENERATED by scripts/backfill-legacy.mjs from data/archive/ (git-harvested');
+  lines.push('-- legacy data, converted via the in-app adopt-adapters). Do not hand-edit —');
+  lines.push('-- re-run the script to regenerate. Idempotent: ON CONFLICT upserts, so running');
+  lines.push('-- it twice changes nothing. Paste + Run in the Supabase SQL editor.');
+  lines.push('--');
+  lines.push(`-- ${rows.length} occurrences. Depends on 04-events.sql. created_by left NULL.`);
+  lines.push('-- ============================================================================');
+  lines.push('');
+  lines.push('BEGIN;');
+  lines.push('');
+
+  for (const r of rows) {
+    lines.push(`-- ${r.slug} · ${r.date}`);
+    lines.push('WITH up AS (');
+    lines.push("  INSERT INTO events (type_slug, start_date, status)");
+    lines.push(`  VALUES (${q(r.slug)}, ${q(r.date)}, 'complete')`);
+    lines.push('  ON CONFLICT (type_slug, start_date) DO UPDATE SET status = EXCLUDED.status');
+    lines.push('  RETURNING id');
+    lines.push(')');
+    lines.push('INSERT INTO event_data (event_id, doc)');
+    lines.push(`SELECT id, ${jsonb(r.doc)} FROM up`);
+    lines.push('ON CONFLICT (event_id) DO UPDATE SET doc = EXCLUDED.doc;');
+    lines.push('');
+  }
+
+  lines.push('COMMIT;');
+  lines.push('');
+
+  const outPath = resolve(V2, 'supabase/07-backfill-events.sql');
+  writeFileSync(outPath, lines.join('\n'));
+  console.log(`Wrote ${rows.length} occurrence upserts → supabase/07-backfill-events.sql`);
+  for (const r of rows) {
+    const kb = Math.round(JSON.stringify(r.doc).length / 102.4) / 10;
+    console.log(`  ${r.slug.padEnd(11)} ${r.date}  (${kb} KB doc)`);
+  }
+}
+
+main().catch(e => {
+  console.error(e);
+  process.exit(1);
+});

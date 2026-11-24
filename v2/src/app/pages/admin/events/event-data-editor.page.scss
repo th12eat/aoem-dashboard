@@ -217,6 +217,67 @@
   font: inherit;
 }
 
+/* stage-points reconcile calculator */
+.de-calc {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 0 0 14px;
+}
+.de-calc-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+.de-calc-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.de-calc-row span {
+  font-size: var(--fs-micro);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.de-calc-row input,
+.de-calc-row select {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  padding: 7px 9px;
+  font: inherit;
+  width: 120px;
+}
+.de-calc-btn {
+  background: var(--kvk-accent);
+  color: #0a0c14;
+  border: 1px solid var(--kvk-accent);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.de-calc-msg {
+  margin: 10px 0 0;
+  font-size: var(--fs-label);
+  color: #22c55e;
+}
+.de-calc-msg.warn {
+  color: #f5b942;
+}
+.de-calc-manual {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: var(--fs-label);
+  color: var(--text-secondary);
+}
+
 .de-scout {
   border: 1px solid var(--border);
   border-radius: 10px;

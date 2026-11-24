@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "opponent": "#057",
+  "startLabel": "Aug 31",
+  "endLabel": "Sep 6",
+  "timezone": "UTC+0",
+  "eventStartISO": "2026-08-31T00:00:00Z",
+  "eventEndISO": "2026-09-06T00:00:00Z",
+  "scoreUs": "~32B",
+  "scoreThem": "~80B",
+  "purityUs": "415,741",
+  "purityThem": "596,529",
+  "result": "Loss",
+  "tamingStartISO": "2026-09-01T00:00:00Z",
+  "atkDefStartISO": "2026-09-04T00:00:00Z",
+  "tamingLabel": "Sep 1",
+  "atkDefLabel": "Sep 4",
+  "_history": {
+    "event": "Behemoth Conquest",
+    "date": "2026-08-31",
+    "opp": "Era #057",
+    "result": "Loss",
+    "note": "Lost Behemoth Conquest — final approximately 32B vs 80B (exact final not captured). Top-4 alliance scouting figures (power + total merits).",
+    "ours": [
+      [
+        "eRa",
+        23220142029,
+        1925023955
+      ],
+      [
+        "REU",
+        14191918629,
+        280865656
+      ],
+      [
+        "Myt",
+        9493353104,
+        604680514
+      ],
+      [
+        "FUN",
+        3204400961,
+        18128520
+      ]
+    ],
+    "oppA": [
+      [
+        "Ⓒ57",
+        23514771626,
+        2693860679
+      ],
+      [
+        "Ⓗ57",
+        20068429129,
+        1482557954
+      ],
+      [
+        "Ⓥ57",
+        10598553801,
+        210153930
+      ],
+      [
+        "TNT",
+        1643583919,
+        37724017
+      ]
+    ]
+  }
+}

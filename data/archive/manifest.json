@@ -1,0 +1,203 @@
+{
+  "generatedFrom": "data/history.json",
+  "occurrences": [
+    {
+      "slug": "tme",
+      "name": "TME",
+      "date": "2026-05-18",
+      "opp": "Era #038",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "dashboards/tme_command_center.html@0198a6acf (2026-05-23)"
+    },
+    {
+      "slug": "desolate",
+      "name": "Desolate Desert",
+      "date": "2026-06-01",
+      "opp": "Era #051 / #082 / #002",
+      "result": "Win",
+      "recovered": "index-only",
+      "source": "history.json only"
+    },
+    {
+      "slug": "primordial",
+      "name": "Primordial",
+      "date": "2026-06-11",
+      "opp": "Era #068 / Era #034 / Era #056",
+      "result": "Win",
+      "recovered": "partial",
+      "source": "data/live/primordial.json@ecb7cb76e (2026-06-29)"
+    },
+    {
+      "slug": "tme",
+      "name": "TME",
+      "date": "2026-06-15",
+      "opp": "Era #023",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "dashboards/tme_command_center.html@755567895 (2026-06-21)"
+    },
+    {
+      "slug": "behemoth",
+      "name": "Behemoth Conquest",
+      "date": "2026-06-30",
+      "opp": "Era #087",
+      "result": "Loss",
+      "recovered": "index-only",
+      "source": "history.json only"
+    },
+    {
+      "slug": "tme",
+      "name": "TME",
+      "date": "2026-07-05",
+      "opp": "Era #090",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/tme.json@c2cb3c2cb (2026-07-23)"
+    },
+    {
+      "slug": "desolate",
+      "name": "Desolate Desert",
+      "date": "2026-07-13",
+      "opp": "Era #019 / #014 / #023",
+      "result": "Loss",
+      "recovered": "index-only",
+      "source": "history.json only"
+    },
+    {
+      "slug": "tme",
+      "name": "TME",
+      "date": "2026-07-25",
+      "opp": "Era #090",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/tme.json@0bcf2a417 (2026-07-26)"
+    },
+    {
+      "slug": "behemoth",
+      "name": "Behemoth Conquest",
+      "date": "2026-07-27",
+      "opp": "Era #028",
+      "result": "Win",
+      "recovered": "full",
+      "source": "data/live/behemoth.json@63b08cd23 (2026-08-02)"
+    },
+    {
+      "slug": "tme",
+      "name": "TME",
+      "date": "2026-08-01",
+      "opp": "Era #073",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/tme.json@9f9592092 (2026-08-09)"
+    },
+    {
+      "slug": "desolate",
+      "name": "Desolate Desert",
+      "date": "2026-08-10",
+      "opp": "Era #042 / #039 / #038",
+      "result": "Loss",
+      "recovered": "index-only",
+      "source": "history.json only"
+    },
+    {
+      "slug": "primordial",
+      "name": "Primordial Conflict",
+      "date": "2026-08-16",
+      "opp": "Era #028 / Era #088 / Era #059",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/primordial.json@96c9cb515 (2026-08-19)"
+    },
+    {
+      "slug": "behemoth",
+      "name": "Behemoth Conquest",
+      "date": "2026-08-31",
+      "opp": "Era #057",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/behemoth.json@46a933dd4 (2026-09-08)"
+    },
+    {
+      "slug": "tme",
+      "name": "TME",
+      "date": "2026-09-05",
+      "opp": "Era #023",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/tme.json@e9ee1f3d5 (2026-09-14)"
+    },
+    {
+      "slug": "primordial",
+      "name": "Primordial Conflict",
+      "date": "2026-09-14",
+      "opp": "Era #012 / Era #017 / Era #013",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/primordial.json@6f3b6955f (2026-09-21)"
+    },
+    {
+      "slug": "tme",
+      "name": "TME",
+      "date": "2026-09-21",
+      "opp": "Era #087",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/tme.json@59e8b8af9 (2026-09-27)"
+    },
+    {
+      "slug": "desolate",
+      "name": "Desolate Desert",
+      "date": "2026-09-28",
+      "opp": "Era #068 / #066 / #028",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/desolate.json@44833265e (2026-11-23)"
+    },
+    {
+      "slug": "primordial",
+      "name": "Primordial Conflict",
+      "date": "2026-10-12",
+      "opp": "Era #030 / Era #036 / Era #084",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/primordial.json@818a0ee31 (2026-10-19)"
+    },
+    {
+      "slug": "tme",
+      "name": "TME",
+      "date": "2026-10-19",
+      "opp": "Era #016",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/tme.json@ed88ddef0 (2026-10-26)"
+    },
+    {
+      "slug": "behemoth",
+      "name": "Behemoth Conquest",
+      "date": "2026-10-26",
+      "opp": "Era #046",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/behemoth.json@708d506ad (2026-11-01)"
+    },
+    {
+      "slug": "stormlands",
+      "name": "Stormlands",
+      "date": "2026-11-01",
+      "opp": "Era #039 / Era #038 / Era #015",
+      "result": "Loss",
+      "recovered": "full",
+      "source": "data/live/stormlands.json@44833265e (2026-11-23)"
+    },
+    {
+      "slug": "tme",
+      "name": "TME",
+      "date": "2026-11-21",
+      "opp": "Era #024",
+      "result": "Live",
+      "recovered": "full",
+      "source": "data/live/tme.json@9b4da14f2 (2026-11-23)"
+    }
+  ]
+}
