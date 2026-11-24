@@ -24,10 +24,17 @@ export class SupabaseAccessService implements AccessService {
   private readonly roleSig = signal<Role>('member');
   readonly role: Signal<Role> = this.roleSig.asReadonly();
 
+  /** The user id the current role was fetched for — so the effect (which re-runs
+   * on every currentUser() emission during auth init) only hits the DB when the
+   * identity actually changes, not on every signal churn. */
+  private fetchedFor: string | null = null;
+
   constructor() {
-    // Re-fetch the access row whenever the signed-in user changes.
+    // Re-fetch the access row ONLY when the signed-in user id changes.
     effect(() => {
       const uid = this.auth.currentUser()?.id ?? null;
+      if (uid === this.fetchedFor) return;
+      this.fetchedFor = uid;
       if (!uid) {
         this.roleSig.set('member');
         return;

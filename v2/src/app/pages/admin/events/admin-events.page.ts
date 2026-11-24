@@ -346,6 +346,8 @@ export class AdminEventsPage {
       this.msg.set(`Update failed: ${error}`);
       return;
     }
+    // Update just this row locally instead of re-listing all occurrences.
+    this.occurrences.set(this.occurrences().map(e => (e.id === o.id ? { ...e, status } : e)));
     // On completion, compute + persist each server's final placement from the
     // kingdom scoreboard points (the history page + dashboard read it).
     if (status === 'complete') {
@@ -363,7 +365,6 @@ export class AdminEventsPage {
         }
       }
     }
-    await this.refresh();
   }
 
   async remove(o: EventOccurrence): Promise<void> {

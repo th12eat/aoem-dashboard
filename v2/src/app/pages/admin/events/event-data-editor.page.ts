@@ -398,10 +398,11 @@ export class EventDataEditorPage {
     this.resolved.set(true);
     if (!occ) return;
     this.occId.set(occ.id);
-    // Our server's canonical roster (shared across all event types) — prefills
-    // Event Setup + scouting so our four tags/names aren't retyped per event.
-    this.ourRoster.set(await this.rosters.forServer(this.ourNum));
-    const dbDoc = await this.events.loadDoc(occ.id);
+    // Roster (shared across event types) + the occurrence doc are independent —
+    // load them in parallel rather than serially. Roster prefills Event Setup +
+    // scouting; the doc is this occurrence's stored data.
+    const [roster, dbDoc] = await Promise.all([this.rosters.forServer(this.ourNum), this.events.loadDoc(occ.id)]);
+    this.ourRoster.set(roster);
     if (dbDoc) {
       this.doc.set(dbDoc);
     } else {
