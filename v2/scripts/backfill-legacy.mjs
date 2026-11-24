@@ -103,6 +103,10 @@ async function main() {
       doc = adaptLegacyDoc(m.slug, raw);
       doc._recovered = m.recovered;
     }
+    // Stamp the recorded outcome (Win/Loss) from history.json so completed
+    // events render a result even when the doc has no full kingdom scoreboard.
+    const histResult = (_history && _history.result) || '';
+    if (histResult && histResult !== 'Live' && histResult !== 'TBD') doc.result = histResult;
     rows.push({ slug: m.slug, date: m.date, doc });
   }
 

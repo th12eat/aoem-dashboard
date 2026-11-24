@@ -66,6 +66,14 @@ export function displayName(slug: string): string {
   return EVENT_DISPLAY_NAME[slug] ?? (slug ? slug.toUpperCase() : 'Unknown');
 }
 
+/** 4-kingdom (multi-server) event types — the ones with a per-server breakdown
+ * worth an expandable row. The rest (TME, Behemoth) are 1v1: a single row, no
+ * per-server rank/dropdown. */
+const FOUR_KINGDOM = new Set(['stormlands', 'desolate', 'primordial']);
+export function isFourKingdom(slug: string): boolean {
+  return FOUR_KINGDOM.has(slug);
+}
+
 /** Map a legacy event display name → (slug, theme, full name). Handles the
  * "Primordial" / "Primordial Conflict" drift. Unknown → ('', 'generic'). */
 export function typeInfo(name: string): { slug: string; theme: string; name: string } {
@@ -123,10 +131,15 @@ export function placementOf(e: RawHistoryEvent, ourServer = 'Era 8'): number | n
 /** Normalize a raw legacy event into a HistoryEvent. */
 export function normalizeLegacy(e: RawHistoryEvent): HistoryEvent {
   const info = typeInfo(e.event);
+  // Multi = a true 4-kingdom type (driven by the event type, NOT by whether an
+  // opponent roster happens to exist — a 1v1 TME has one opponent but is not
+  // "multi" and gets no per-server dropdown). Unknown legacy types fall back to
+  // the old heuristic so stray entries still expand if they carry oppRosters.
+  const multi = info.slug ? isFourKingdom(info.slug) : e.multi === true || !!e.oppRosters;
   const ours = topSum(e.ours ?? e.ourRoster);
   let opp_: SideTotals;
   let oppServers: HistoryEvent['oppServers'];
-  if (e.oppRosters) {
+  if (multi && e.oppRosters) {
     const entries = Object.entries(e.oppRosters);
     const kf = e.kingdomFinal ?? {};
     const ranked = Object.entries(kf)
@@ -143,6 +156,11 @@ export function normalizeLegacy(e: RawHistoryEvent): HistoryEvent {
       power: oppServers.reduce((a, s) => a + s.totals.power, 0) / n,
       merits: oppServers.reduce((a, s) => a + s.totals.merits, 0) / n,
     };
+  } else if (e.oppRosters) {
+    // 1v1 with an opponent roster (e.g. a DB TME/Behemoth): still compute the
+    // opponent's top-4 totals for the row, just no per-server breakdown.
+    const all = Object.values(e.oppRosters).flat();
+    opp_ = topSum(all);
   } else {
     opp_ = topSum(e.oppA);
   }
@@ -157,7 +175,7 @@ export function normalizeLegacy(e: RawHistoryEvent): HistoryEvent {
     placement: placementOf(e),
     star: e.star === true,
     note: e.note,
-    multi: e.multi === true || !!e.oppRosters,
+    multi,
     ours,
     opp_,
     oppServers,

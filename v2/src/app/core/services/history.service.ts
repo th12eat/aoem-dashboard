@@ -83,14 +83,17 @@ export class HistoryService {
       if (srv) kingdomFinal[srv] = str(obj(r)['points']);
     }
     const hasOpp = Object.keys(oppRosters).length > 0;
-    // A published (not-yet-complete) occurrence is LIVE — don't infer a
-    // win/loss from partial scores. Only a `complete` occurrence has a result.
+    // The occurrence STATUS is authoritative: only a non-complete occurrence is
+    // Live. A complete one never shows Live — use its stored `result`, else a
+    // win/loss inferred from kingdom scores, else a neutral "Done".
     const live = occ.status !== 'complete';
+    const storedResult = str(doc['result']);
+    const result = live ? 'Live' : storedResult || inferResult(doc, kingdomFinal);
     const raw: RawHistoryEvent = {
       event: info.slug ? info.name : occ.typeSlug,
       date: occ.startDate,
       opp: Object.keys(oppRosters).join(' / '),
-      result: live ? 'Live' : inferResult(doc, kingdomFinal),
+      result,
       multi: hasOpp,
       ourRoster: toRoster(obj(research['ours'])['alliances']),
       oppRosters: hasOpp ? oppRosters : undefined,
@@ -128,10 +131,10 @@ function toRoster(v: unknown): RosterEntry[] {
 }
 /** A finished occurrence is Win when Era 8 tops the kingdom scoreboard, else Loss. */
 function inferResult(doc: Doc, kingdomFinal: Record<string, string>): string {
-  const entries = Object.entries(kingdomFinal);
-  if (!entries.length) return 'Live';
-  const ranked = entries
-    .map(([s, p]) => ({ s, v: num(p) }))
-    .sort((a, b) => b.v - a.v);
+  const entries = Object.entries(kingdomFinal).filter(([, p]) => Number.isFinite(num(p)) && num(p) > 0);
+  // No usable scores on a COMPLETE event → neutral 'Done' (never 'Live', which
+  // is reserved for not-yet-complete occurrences).
+  if (!entries.length) return 'Done';
+  const ranked = entries.map(([s, p]) => ({ s, v: num(p) })).sort((a, b) => b.v - a.v);
   return ranked[0]?.s === 'Era 8' ? 'Win' : 'Loss';
 }
