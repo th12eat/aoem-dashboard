@@ -93,16 +93,20 @@ export const DESOLATE_CONFIG: EventDashboardConfig = {
           titleKey: 'desolate.overview.timeline',
           options: {
             zones: [
+              { id: 'mm', label: 'MM', bright: '#94a3b8', dark: '#3a4256' },
               { id: 'z1', label: 'Z1', bright: '#d4a574', dark: '#5a4a30' },
               { id: 'z2', label: 'Z2', bright: '#7c3aed', dark: '#2f1d52' },
               { id: 'z3', label: 'Z3', bright: '#f59e0b', dark: '#5f3e0a' },
             ],
+            // eventStart = the single MATCHMAKING day (Sunday, dayOffset 0);
+            // competition opens Monday, so Day 1 (Strongholds) = +1.
             stages: [
-              { dayLabel: 'Day 1', label: 'Strongholds in Z1', zone: 'z1', dayOffset: 0 },
-              { dayLabel: 'Day 2', label: 'Z2 Gates Open & Pillar Cities', zone: 'z2', dayOffset: 1 },
-              { dayLabel: 'Day 3–5', label: 'L/R Eye Gates Open & Tower of Rotation', zone: 'z2', dayOffset: 2 },
-              { dayLabel: 'Day 6', label: 'Z3 Gates Open', zone: 'z3', dayOffset: 5 },
-              { dayLabel: 'Day 7', label: 'Aaru Fight', zone: 'z3', dayOffset: 6 },
+              { dayLabel: 'Sun', label: 'Matchmaking', zone: 'mm', dayOffset: 0 },
+              { dayLabel: 'Day 1', label: 'Strongholds in Z1', zone: 'z1', dayOffset: 1 },
+              { dayLabel: 'Day 2', label: 'Z2 Gates Open & Pillar Cities', zone: 'z2', dayOffset: 2 },
+              { dayLabel: 'Day 3–5', label: 'L/R Eye Gates Open & Tower of Rotation', zone: 'z2', dayOffset: 3 },
+              { dayLabel: 'Day 6', label: 'Z3 Gates Open', zone: 'z3', dayOffset: 6 },
+              { dayLabel: 'Day 7', label: 'Aaru Fight', zone: 'z3', dayOffset: 7 },
             ],
           },
         },

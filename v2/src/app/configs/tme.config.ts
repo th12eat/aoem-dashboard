@@ -84,14 +84,16 @@ export const TME_CONFIG: EventDashboardConfig = {
               { id: 'prep', label: 'Preparation', bright: '#3b82f6', dark: '#1e3355' },
               { id: 'inv', label: 'Invasion', bright: '#ef4444', dark: '#5a2626' },
             ],
+            // eventStart = the first MATCHMAKING day (dayOffset 0). Matchmaking
+            // runs Sat+Sun, so Stage 1 (Mon) = +2, … Invasion (Sun) = +8.
             stages: [
-              { dayLabel: 'Sat & Sun', label: 'Matchmaking', zone: 'mm', dayOffset: -2 },
-              { dayLabel: 'Mon', label: 'Stage 1 — Forging Gear', zone: 'prep', dayOffset: 0 },
-              { dayLabel: 'Tue', label: 'Stage 2 — Enhancing Buildings', zone: 'prep', dayOffset: 1 },
-              { dayLabel: 'Wed', label: 'Stage 3 — Enhancing Technologies', zone: 'prep', dayOffset: 2 },
-              { dayLabel: 'Thu', label: 'Stage 4 — Unit Training', zone: 'prep', dayOffset: 3 },
-              { dayLabel: 'Fri & Sat', label: 'Stage 5 — Power Boost', zone: 'prep', dayOffset: 4 },
-              { dayLabel: 'Sun', label: 'Invasion', zone: 'inv', dayOffset: 6 },
+              { dayLabel: 'Sat & Sun', label: 'Matchmaking', zone: 'mm', dayOffset: 0 },
+              { dayLabel: 'Mon', label: 'Stage 1 — Forging Gear', zone: 'prep', dayOffset: 2 },
+              { dayLabel: 'Tue', label: 'Stage 2 — Enhancing Buildings', zone: 'prep', dayOffset: 3 },
+              { dayLabel: 'Wed', label: 'Stage 3 — Enhancing Technologies', zone: 'prep', dayOffset: 4 },
+              { dayLabel: 'Thu', label: 'Stage 4 — Unit Training', zone: 'prep', dayOffset: 5 },
+              { dayLabel: 'Fri & Sat', label: 'Stage 5 — Power Boost', zone: 'prep', dayOffset: 6 },
+              { dayLabel: 'Sun', label: 'Invasion', zone: 'inv', dayOffset: 8 },
             ],
           },
         },
@@ -108,7 +110,7 @@ export const TME_CONFIG: EventDashboardConfig = {
                 label: 'Matchmaking',
                 title: 'Matchmaking — Prep Ahead',
                 macro: 'Matchmaking',
-                dayOffset: -2,
+                dayOffset: 0,
                 blurb: 'No scoring yet — use today to prepare for Stage 1.',
                 nextPrep: 'Farm Iron Meteorite and save Stamina for Stage 1.',
               },
@@ -116,7 +118,7 @@ export const TME_CONFIG: EventDashboardConfig = {
                 label: 'Stage 1',
                 title: 'Stage 1 — Forging Gear',
                 macro: 'Preparation Week',
-                dayOffset: 0,
+                dayOffset: 2,
                 doList: [
                   'Craft gear — rare +10,000 · epic +30,000 · legendary +200,000 (per piece)',
                   'Defeat tribes, scaling by level: Lv.1-4 +4,000 → Lv.25-28 +20,800 → Lv.29-30 +24,000 (per kill)',
@@ -127,7 +129,7 @@ export const TME_CONFIG: EventDashboardConfig = {
                 label: 'Stage 2',
                 title: 'Stage 2 — Enhancing Buildings',
                 macro: 'Preparation Week',
-                dayOffset: 1,
+                dayOffset: 3,
                 buff: 'King applies the Building King’s Rights buff from 04:00 UTC today.',
                 doList: [
                   'Consume 1h of building speed-ups → +18,000',
@@ -140,7 +142,7 @@ export const TME_CONFIG: EventDashboardConfig = {
                 label: 'Stage 3',
                 title: 'Stage 3 — Enhancing Technologies',
                 macro: 'Preparation Week',
-                dayOffset: 2,
+                dayOffset: 4,
                 buff: 'King applies the Research King’s Rights buff from 04:00 UTC today.',
                 doList: [
                   'Participate in Starfall Vein 1 time → +3,000,000',
@@ -153,7 +155,7 @@ export const TME_CONFIG: EventDashboardConfig = {
                 label: 'Stage 4',
                 title: 'Stage 4 — Unit Training',
                 macro: 'Preparation Week',
-                dayOffset: 3,
+                dayOffset: 5,
                 buff: 'King applies the Unit Training King’s Rights buff from 04:00 UTC today.',
                 doList: [
                   'Initiate 1 legendary merchant ship trade → +1,000,000',
@@ -166,7 +168,7 @@ export const TME_CONFIG: EventDashboardConfig = {
                 label: 'Stage 5',
                 title: 'Stage 5 — Power Boost',
                 macro: 'Preparation Week',
-                dayOffset: 4,
+                dayOffset: 6,
                 buff: 'King applies the Gathering King’s Rights buff from 04:00 UTC today.',
                 doList: [
                   'Catch-all day — most of the prior stages’ methods score again:',
@@ -182,7 +184,7 @@ export const TME_CONFIG: EventDashboardConfig = {
                 label: 'Invasion',
                 title: 'Invasion Day',
                 macro: 'Invasion',
-                dayOffset: 6,
+                dayOffset: 8,
                 blurb:
                   'Prep is over — today is the battle. Teleport in at your alliance’s window, group up, and rally objectives. Each server’s top 3 alliances (by prep points) may enter early.',
               },

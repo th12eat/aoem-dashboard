@@ -83,10 +83,13 @@ export const BEHEMOTH_CONFIG: EventDashboardConfig = {
               { id: 'tame', label: 'Beast Taming', bright: '#8a2d54', dark: '#4a1f30' },
               { id: 'atk', label: 'Attack-Defense', bright: '#2dd4bf', dark: '#134e4a' },
             ],
+            // eventStart = the MATCHMAKING day (dayOffset 0, a Sunday). The
+            // competition proper starts Monday: Beast Taming = +1, Attack-
+            // Defense = +4 (bc: mm1 + tame3 + ad2 = 6 event-days).
             stages: [
-              { dayLabel: 'Day 1', label: 'Matchmaking', zone: 'mm', dayOffset: -1 },
-              { dayLabel: 'Days 2–4', label: 'Beast Taming', zone: 'tame', dayOffset: 0 },
-              { dayLabel: 'Days 5–6', label: 'Attack-Defense', zone: 'atk', dayOffset: 3 },
+              { dayLabel: 'Day 1', label: 'Matchmaking', zone: 'mm', dayOffset: 0 },
+              { dayLabel: 'Days 2–4', label: 'Beast Taming', zone: 'tame', dayOffset: 1 },
+              { dayLabel: 'Days 5–6', label: 'Attack-Defense', zone: 'atk', dayOffset: 4 },
             ],
           },
         },

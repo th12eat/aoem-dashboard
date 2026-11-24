@@ -106,19 +106,23 @@ export const STORMLANDS_CONFIG: EventDashboardConfig = {
           titleKey: 'stormlands.overview.timeline',
           options: {
             zones: [
+              { id: 'mm', label: 'MM', bright: '#94a3b8', dark: '#3a4256' },
               { id: 'z1', label: 'Zone 1', bright: '#c9a878', dark: '#5a4a30' },
               { id: 'z2', label: 'Zone 2', bright: '#5b9bd8', dark: '#273f5a' },
               { id: 'z3', label: 'Zone 3', bright: '#ef9f6b', dark: '#5f3e26' },
               { id: 'z4', label: 'Zone 4', bright: '#b06bd0', dark: '#432854' },
               { id: 'temple', label: 'Temple', bright: '#8fc4f0', dark: '#2a3f54' },
             ],
+            // eventStart = the single MATCHMAKING day (Sunday, dayOffset 0);
+            // competition opens Monday, so Day 1 (Eroded Wasteland) = +1.
             stages: [
-              { dayLabel: 'Day 1', label: 'Eroded Wasteland', zone: 'z1', dayOffset: 0 },
-              { dayLabel: 'Day 2–5', label: 'Zone 2 — Forts & Cities', zone: 'z2', dayOffset: 1 },
-              { dayLabel: 'Day 6–8', label: 'Zone 3 — Storm Eye', zone: 'z3', dayOffset: 5 },
-              { dayLabel: 'Day 9–11', label: 'Zone 4 — Oblivion', zone: 'z4', dayOffset: 8 },
-              { dayLabel: 'Day 12', label: 'Zeus Battle I', zone: 'temple', dayOffset: 11 },
-              { dayLabel: 'Day 13–14', label: 'Zeus Battle II', zone: 'temple', dayOffset: 12 },
+              { dayLabel: 'Sun', label: 'Matchmaking', zone: 'mm', dayOffset: 0 },
+              { dayLabel: 'Day 1', label: 'Eroded Wasteland', zone: 'z1', dayOffset: 1 },
+              { dayLabel: 'Day 2–5', label: 'Zone 2 — Forts & Cities', zone: 'z2', dayOffset: 2 },
+              { dayLabel: 'Day 6–8', label: 'Zone 3 — Storm Eye', zone: 'z3', dayOffset: 6 },
+              { dayLabel: 'Day 9–11', label: 'Zone 4 — Oblivion', zone: 'z4', dayOffset: 9 },
+              { dayLabel: 'Day 12', label: 'Zeus Battle I', zone: 'temple', dayOffset: 12 },
+              { dayLabel: 'Day 13–14', label: 'Zeus Battle II', zone: 'temple', dayOffset: 13 },
             ],
           },
         },
