@@ -242,6 +242,13 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
+/* Colour the Us/Opp field labels to match the dashboard's blue=us / red=them. */
+.de-calc-row span.de-us {
+  color: #5b8def;
+}
+.de-calc-row span.de-opp {
+  color: #f87171;
+}
 .de-calc-row input,
 .de-calc-row select {
   background: var(--bg-card2);

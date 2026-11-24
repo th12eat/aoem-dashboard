@@ -55,6 +55,40 @@ function researchFromHistory(e) {
 const history = JSON.parse(readFileSync(resolve(ROOT, 'data/history.json'), 'utf8'));
 const events = (Array.isArray(history) ? history : history.events).filter(e => slugFor(e.event) && e.date);
 
+// The backfill (07) already put RICH rosters (incl. per-player lists) into most
+// docs from each event's own JSON. history.json only has top-4 ALLIANCES (no
+// players), so stamping its research would WIPE those players. So we only patch
+// `research` for occurrences whose 07 doc genuinely lacks a roster (e.g.
+// Behemoth, which stores scalar scores only). Parse 07 to know which those are.
+const backfillDocs = new Map();
+try {
+  const bf = readFileSync(resolve(V2, 'supabase/07-backfill-events.sql'), 'utf8');
+  // Split into per-occurrence blocks FIRST (one `WITH up AS (` apiece) so a
+  // single mega-regex can't straddle block boundaries — the earlier one-shot
+  // pattern mis-captured across the escaped quotes in each doc. Within a block,
+  // pull the slug/date from the VALUES tuple and the jsonb doc literal.
+  for (const block of bf.split(/\bWITH up AS \(/).slice(1)) {
+    const head = block.match(/VALUES \('([a-z]+)', '([\d-]+)'/);
+    const body = block.match(/SELECT id, '((?:[^']|'')*)'::jsonb FROM up/);
+    if (!head || !body) continue;
+    try {
+      backfillDocs.set(`${head[1]}|${head[2]}`, JSON.parse(body[1].replace(/''/g, "'")));
+    } catch {
+      /* skip unparseable */
+    }
+  }
+} catch {
+  /* 07 not generated yet — fall back to always stamping research */
+}
+function backfillHasResearch(slug, date) {
+  const d = backfillDocs.get(`${slug}|${date}`);
+  const r = d && d.research;
+  if (!r) return false;
+  const oursN = r.ours && Array.isArray(r.ours.alliances) ? r.ours.alliances.length : 0;
+  const oppN = Array.isArray(r.opponents) ? r.opponents.reduce((a, o) => a + (o.alliances?.length ?? 0), 0) : 0;
+  return oursN > 0 || oppN > 0;
+}
+
 const lines = [];
 lines.push('-- ============================================================================');
 lines.push('-- 09-set-outcomes.sql — reconcile result + placement + rosters to v1.0');
@@ -75,8 +109,12 @@ for (const e of events) {
   if (e.result === 'Win' || e.result === 'Loss') patch.result = e.result;
   if (typeof e.placement === 'number') patch.placement = e.placement;
   if (e.star === true) patch.star = true; // special no-troop-loss KvK flag
-  const research = researchFromHistory(e);
-  if (research) patch.research = research;
+  // Only fill rosters from history.json when the backfill doc has NONE — else
+  // we'd clobber the richer per-player rosters 07 already wrote.
+  if (!backfillHasResearch(slug, e.date)) {
+    const research = researchFromHistory(e);
+    if (research) patch.research = research;
+  }
   if (!Object.keys(patch).length) continue; // nothing to stamp (e.g. a bare Live)
   n++;
   const bits = Object.keys(patch).join(' + ');
@@ -96,9 +134,13 @@ lines.push('');
 writeFileSync(resolve(V2, 'supabase/09-set-outcomes.sql'), lines.join('\n'));
 console.log(`Wrote ${n} occurrence outcome-merges → supabase/09-set-outcomes.sql`);
 for (const e of events) {
+  const slug = slugFor(e.event);
   const bits = [];
   if (e.result === 'Win' || e.result === 'Loss') bits.push(e.result);
   if (typeof e.placement === 'number') bits.push(`#${e.placement}`);
-  if (researchFromHistory(e)) bits.push('rosters');
-  if (bits.length) console.log(`  ${slugFor(e.event).padEnd(11)} ${e.date}  ${bits.join(' · ')}`);
+  if (e.star === true) bits.push('star');
+  // Only report `rosters` when we'd actually stamp them (07 doc lacks any) —
+  // matches the SQL so the summary can't imply a roster write that didn't happen.
+  if (!backfillHasResearch(slug, e.date) && researchFromHistory(e)) bits.push('rosters');
+  if (bits.length) console.log(`  ${slug.padEnd(11)} ${e.date}  ${bits.join(' · ')}`);
 }

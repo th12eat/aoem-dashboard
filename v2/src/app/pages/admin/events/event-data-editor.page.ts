@@ -30,6 +30,8 @@ type Doc = Record<string, unknown>;
 /** 1v1 side colours (match the v1.0 TME tug + the dashboard tables). */
 const US_BLUE = '#5b8def';
 const OPP_RED = '#f87171';
+const US_BLUE_RGB = '91,141,239';
+const OPP_RED_RGB = '248,113,113';
 
 /** A server as defined on the Event Setup page (the single source downstream
  * tabs derive from). */
@@ -97,8 +99,10 @@ interface SetupServer {
                 <label><span>Fight time (default 19:00 UTC)</span><input [value]="ec('zeusTime')" (input)="setEc('zeusTime', $any($event.target).value)" placeholder="19:00 UTC" /></label>
               </div>
               <h4>Kingdoms ({{ kCount() }} servers)</h4>
-              <p class="de-hint">Enter each server's number (e.g. <code>8</code>), its map corner, and that server's alliance tags (comma-separated). Colour is fixed by corner.</p>
-              <app-editable-grid [columns]="SETUP_COLS" [rows]="setupRows()" [fixedRows]="kCount()" [hideMove]="true" (rowsChange)="setSetupRows($event)" />
+              @if (!isDuel()) {
+                <p class="de-hint">Enter each server's number (e.g. <code>8</code>), its map corner, and that server's alliance tags (comma-separated). Colour is fixed by corner.</p>
+              }
+              <app-editable-grid [columns]="SETUP_COLS()" [rows]="setupRows()" [fixedRows]="kCount()" [hideMove]="true" (rowsChange)="setSetupRows($event)" />
             }
             @case ('map') {
               <app-map-editor [slug]="slug()" [eventId]="occId()" />
@@ -118,10 +122,10 @@ interface SetupServer {
                         }
                       </select>
                     </label>
-                    <label><span>This stage — Us (B)</span><input type="number" step="0.001" [value]="calcOursStage()" (input)="calcOursStage.set($any($event.target).value)" /></label>
-                    <label><span>Grand total — Us (B)</span><input type="number" step="0.001" [value]="calcOursTotal()" (input)="calcOursTotal.set($any($event.target).value)" /></label>
-                    <label><span>This stage — Opp (B)</span><input type="number" step="0.001" [value]="calcOppStage()" (input)="calcOppStage.set($any($event.target).value)" /></label>
-                    <label><span>Grand total — Opp (B)</span><input type="number" step="0.001" [value]="calcOppTotal()" (input)="calcOppTotal.set($any($event.target).value)" /></label>
+                    <label><span class="de-us">This stage — Us (B)</span><input type="number" step="0.001" [value]="calcOursStage()" (input)="calcOursStage.set($any($event.target).value)" /></label>
+                    <label><span class="de-us">Grand total — Us (B)</span><input type="number" step="0.001" [value]="calcOursTotal()" (input)="calcOursTotal.set($any($event.target).value)" /></label>
+                    <label><span class="de-opp">This stage — Opp (B)</span><input type="number" step="0.001" [value]="calcOppStage()" (input)="calcOppStage.set($any($event.target).value)" /></label>
+                    <label><span class="de-opp">Grand total — Opp (B)</span><input type="number" step="0.001" [value]="calcOppTotal()" (input)="calcOppTotal.set($any($event.target).value)" /></label>
                     <button type="button" class="de-calc-btn" (click)="reconcileStages()">↻ Reconcile</button>
                   </div>
                   @if (calcMsg()) { <p class="de-calc-msg" [class.warn]="calcWarn()">{{ calcMsg() }}</p> }
@@ -249,12 +253,16 @@ export class EventDataEditorPage {
   }
 
   // ── column defs ──────────────────────────────────────────────────────────
-  readonly SETUP_COLS: GridColumn[] = [
-    { key: 'num', label: 'Server #', width: '90px' },
-    { key: 'corner', label: 'Corner', type: 'select', options: CORNER_NAMES, width: '110px' },
-    { key: 'color', label: 'Colour', swatch: true, width: '70px' },
-    { key: 'alliances', label: 'Alliances (comma-separated tags)' },
-  ];
+  // In a 1v1 the corner is meaningless (colour is fixed blue=us / red=them and
+  // nothing reads the corner), so we drop that column. 4-kingdom events keep it
+  // — corner is what assigns each server its map colour there.
+  readonly SETUP_COLS = computed<GridColumn[]>(() => {
+    const cols: GridColumn[] = [{ key: 'num', label: 'Server #', width: '90px' }];
+    if (!this.isDuel()) cols.push({ key: 'corner', label: 'Corner', type: 'select', options: CORNER_NAMES, width: '110px' });
+    cols.push({ key: 'color', label: 'Colour', swatch: true, width: '70px' });
+    cols.push({ key: 'alliances', label: 'Alliances (comma-separated tags)' });
+    return cols;
+  });
   readonly SCOREBOARD_COLS: GridColumn[] = [
     { key: 'rank', label: 'Rank', locked: true, width: '60px' },
     { key: 'color', label: '', swatch: true, width: '46px' },
@@ -529,10 +537,18 @@ export class EventDataEditorPage {
     return rows.slice(0, this.kCount());
   }
   setSetupRows(rows: GridRow[]): void {
+    const duel = this.isDuel();
     const kingdoms = rows.map(r => {
       const num = serverNumber(r['num']);
-      const corner = r['corner'];
-      const cc = cornerColor(corner);
+      // 1v1 has no corner column; colour is fixed blue=us / red=them. 4-kingdom
+      // takes its colour (+rgb/bar) from the chosen corner.
+      const corner = r['corner'] ?? '';
+      const us = num === this.ourNum;
+      const cc = duel
+        ? us
+          ? { color: US_BLUE, rgb: US_BLUE_RGB, barColor: US_BLUE }
+          : { color: OPP_RED, rgb: OPP_RED_RGB, barColor: OPP_RED }
+        : cornerColor(corner);
       const alliances = (r['alliances'] ?? '').split(',').map(s => s.trim()).filter(Boolean);
       return {
         server: fmtServer(num, 'spaced'), // normalized "Era 8" for data compatibility
@@ -541,7 +557,7 @@ export class EventDataEditorPage {
         color: cc.color,
         rgb: cc.rgb,
         barColor: cc.barColor,
-        us: num === this.ourNum,
+        us,
         alliances,
       };
     });
