@@ -1411,7 +1411,7 @@
    "opp": "Era #024",
    "result": "Live",
    "basis": "top-4 alliances (scouting)",
-   "note": "In progress — matchmaking Sat Nov 21, Day 1 prep Mon Nov 23. We rebranded: eRa→ʀᴀɢᴇᴡᴀʀʀɪᴏʀꜱ [ʀ★ᴡ], REU→ʀᴀɢᴇᴏꜰɢᴏᴅꜱ [ʀ★ɢ], Myt→ᴍʏᴛʜɪᴄ [ʀ★ᴍ], 4th→ᴀᴜʀᴏʀᴀ [ᴀᴜʀ]. Top-4 alliance power + total merits per server from scouting.",
+   "note": "In progress — matchmaking Sat Nov 21, Day 1 prep Mon Nov 23. We rebranded: eRa→ʀᴀɢᴇᴡᴀʀʀɪᴏʀꜱ [ʀ★ᴡ], REU→ʀᴀɢᴇᴏꜰɢᴏᴅꜱ [ʀ★ɢ], Myt→ᴍʏᴛʜɪᴄ [ʀ★ᴍ], 4th→ʀᴀɢᴇᴜɴɪᴛᴇᴅ [ʀ★ᴜ] (the participating 4th, not ᴀᴜʀ which is 4th by raw power but didn't enter). Top-4 alliance power + total merits per server from scouting.",
    "ours": [
     [
      "ʀ★ᴡ",
@@ -1429,9 +1429,9 @@
      461698169
     ],
     [
-     "ᴀᴜʀ",
-     1086803509,
-     0
+     "ʀ★ᴜ",
+     661203225,
+     381684
     ]
    ],
    "oppA": [
