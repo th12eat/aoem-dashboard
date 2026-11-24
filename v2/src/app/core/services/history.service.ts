@@ -41,10 +41,14 @@ export class HistoryService {
       const h = normalizeLegacy(raw);
       byKey.set(keyOf(h.typeSlug || h.type, h.date), h);
     }
-    // …DB occurrences override (complete/published only; awaiting isn't history)
-    for (const occ of occurrences) {
-      if (occ.status === 'awaiting') continue;
-      const h = await this.fromOccurrence(occ);
+    // …DB occurrences override (complete/published only; awaiting isn't history).
+    // Build them in PARALLEL — each fromOccurrence is its own loadDoc round-trip,
+    // so a serial loop over ~22 occurrences cost seconds. Promise.all collapses
+    // that to one wave.
+    const built = await Promise.all(
+      occurrences.filter(o => o.status !== 'awaiting').map(o => this.fromOccurrence(o)),
+    );
+    for (const h of built) {
       if (h) byKey.set(keyOf(h.typeSlug, h.date), h);
     }
 
@@ -79,11 +83,14 @@ export class HistoryService {
       if (srv) kingdomFinal[srv] = str(obj(r)['points']);
     }
     const hasOpp = Object.keys(oppRosters).length > 0;
+    // A published (not-yet-complete) occurrence is LIVE — don't infer a
+    // win/loss from partial scores. Only a `complete` occurrence has a result.
+    const live = occ.status !== 'complete';
     const raw: RawHistoryEvent = {
-      event: info.slug ? capitalize(info.slug) : occ.typeSlug,
+      event: info.slug ? info.name : occ.typeSlug,
       date: occ.startDate,
       opp: Object.keys(oppRosters).join(' / '),
-      result: inferResult(doc, kingdomFinal),
+      result: live ? 'Live' : inferResult(doc, kingdomFinal),
       multi: hasOpp,
       ourRoster: toRoster(obj(research['ours'])['alliances']),
       oppRosters: hasOpp ? oppRosters : undefined,
@@ -94,7 +101,7 @@ export class HistoryService {
     h.ours = ours.power ? ours : h.ours;
     h.occurrenceSlug = occ.typeSlug;
     h.occurrenceDate = occ.startDate;
-    h.placement = placementOf(raw);
+    h.placement = live ? null : placementOf(raw);
     return h;
   }
 }
@@ -118,9 +125,6 @@ function toRoster(v: unknown): RosterEntry[] {
     const o = obj(a);
     return [str(o['tag']), num(o['power']), num(o['merits'])] as RosterEntry;
   });
-}
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
 }
 /** A finished occurrence is Win when Era 8 tops the kingdom scoreboard, else Loss. */
 function inferResult(doc: Doc, kingdomFinal: Record<string, string>): string {

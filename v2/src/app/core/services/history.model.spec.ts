@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeLegacy, placementOf, topSum, mpPct, mpClass, typeInfo, type RawHistoryEvent } from './history.model';
+import { normalizeLegacy, placementOf, topSum, mpPct, mpClass, typeInfo, displayName, type RawHistoryEvent } from './history.model';
 
 describe('history.model', () => {
   it('sums top-4 power + merits', () => {
@@ -15,12 +15,21 @@ describe('history.model', () => {
     expect(mpPct({ power: 0, merits: 5 })).toBe(0);
   });
 
-  it('resolves event type name drift → slug/theme', () => {
+  it('resolves event type name drift → slug/theme/full name', () => {
     expect(typeInfo('Primordial').slug).toBe('primordial');
     expect(typeInfo('Primordial Conflict').slug).toBe('primordial');
     expect(typeInfo('TME').slug).toBe('tme');
+    expect(typeInfo('TME').name).toBe('The Mightiest Empire');
     expect(typeInfo('Desolate Desert').slug).toBe('desolate');
     expect(typeInfo('Golden').slug).toBe('');
+  });
+
+  it('maps slug → full display name', () => {
+    expect(displayName('tme')).toBe('The Mightiest Empire');
+    expect(displayName('behemoth')).toBe('Behemoth Conquest');
+    expect(displayName('primordial')).toBe('Primordial Conflict');
+    expect(displayName('desolate')).toBe('Desolate Desert');
+    expect(displayName('')).toBe('Unknown');
   });
 
   it('placement: kingdomFinal rank of Era 8 wins over everything', () => {

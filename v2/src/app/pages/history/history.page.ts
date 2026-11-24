@@ -76,9 +76,9 @@ type Filter = 'all' | 'wins' | 'losses' | 'multi' | 'duo';
                   <td class="num" [class]="mpCls(e.opp_)">{{ mp(e.opp_) }}</td>
                   <td>
                     @if (e.occurrenceSlug) {
-                      <a class="hx-link" [routerLink]="['/dashboards', e.occurrenceSlug, 'history', e.occurrenceDate]" (click)="$event.stopPropagation()">{{ resultLabel(e) }} ↗</a>
+                      <a class="hx-link hx-res" [class]="resultClass(e)" [routerLink]="['/dashboards', e.occurrenceSlug, 'history', e.occurrenceDate]" (click)="$event.stopPropagation()">{{ resultLabel(e) }} ↗</a>
                     } @else {
-                      <span [class]="'hx-res hx-res-' + (e.placement ?? 0)">{{ resultLabel(e) }}</span>
+                      <span class="hx-res" [class]="resultClass(e)">{{ resultLabel(e) }}</span>
                     }
                   </td>
                 </tr>
@@ -159,11 +159,17 @@ export class HistoryPage {
   readonly wl = computed(() => {
     const c = { p1: 0, p2: 0, p3: 0, p4: 0, live: 0 };
     for (const e of this.events()) {
-      if (e.result === 'Live' || e.result === 'TBD') c.live++;
-      else if (e.placement === 1) c.p1++;
-      else if (e.placement === 2) c.p2++;
-      else if (e.placement === 3) c.p3++;
-      else if (e.placement === 4) c.p4++;
+      if (e.result === 'Live' || e.result === 'TBD') {
+        c.live++;
+        continue;
+      }
+      // Multi-kingdom → bucket by placement; 1v1 → Win=1st bucket, Loss=4th.
+      const multi = this.kingdomCount(e) >= 3;
+      const bucket = multi && e.placement ? e.placement : e.result === 'Win' ? 1 : e.result === 'Loss' ? 4 : 0;
+      if (bucket === 1) c.p1++;
+      else if (bucket === 2) c.p2++;
+      else if (bucket === 3) c.p3++;
+      else if (bucket === 4) c.p4++;
     }
     return c;
   });
@@ -231,6 +237,7 @@ export class HistoryPage {
     return t.power > 0 ? mpClass(mpPct(t)) : '';
   }
   resultLabel(e: HistoryEvent): string {
+    if (e.result === 'Live') return 'Live';
     // 1v1 (2-kingdom) reads Win/Loss — NOT a rank. Only a true multi-kingdom
     // KvK (3+) shows an explicit ordinal placement. (v1.0 stored Loss as
     // placement=4 even for duels, which printed a bogus "4th".)
@@ -238,7 +245,19 @@ export class HistoryPage {
       return e.placement === 1 ? '1st' : e.placement === 2 ? '2nd' : e.placement === 3 ? '3rd' : '4th';
     }
     if (e.result === 'Win' || e.result === 'Loss') return e.result;
-    return e.result; // Live / TBD
+    return e.result; // TBD / other
+  }
+
+  /** Stoplight class for the result cell, by OUTCOME not just placement:
+   *   Win / 1st → green · 2nd → yellow · 3rd → orange · Loss / 4th → red ·
+   *   Live → blue · else neutral. Works for both 1v1 and multi-kingdom. */
+  resultClass(e: HistoryEvent): string {
+    if (e.result === 'Live') return 'hx-res-live';
+    const multi = this.kingdomCount(e) >= 3;
+    if (multi && e.placement) return `hx-res-${e.placement}`;
+    if (e.result === 'Win') return 'hx-res-1';
+    if (e.result === 'Loss') return 'hx-res-4';
+    return 'hx-res-0';
   }
   private keyOf(e: HistoryEvent): string {
     return `${e.type}|${e.date}`;

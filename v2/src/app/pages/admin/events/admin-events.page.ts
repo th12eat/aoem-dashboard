@@ -5,6 +5,7 @@ import { EventRegistryService } from '@core/services/event-registry.service';
 import { EventService, type EventOccurrence, type OccurrenceStatus } from '@core/services/event.service';
 import { ACCESS } from '@core/access/access.service';
 import { ServerRosterService, type RosterAllianceEntry } from '@core/services/server-roster.service';
+import { displayName } from '@core/services/history.model';
 import { withPlacements } from '@shared/utils/placement';
 import { fmtServer, ourServerNumber } from '@shared/utils/corners';
 
@@ -312,7 +313,7 @@ export class AdminEventsPage {
   }
 
   titleFor(slug: string): string {
-    return this.types.find(t => t.slug === slug)?.slug ?? slug;
+    return displayName(slug);
   }
 
   viewLink(o: EventOccurrence): unknown[] {

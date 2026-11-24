@@ -138,21 +138,32 @@
   color: var(--text-muted);
 }
 .hx-link {
-  color: var(--kvk-accent);
   text-decoration: none;
   font-weight: 700;
 }
-.hx-res-1 {
+/* stoplight result colours (win/1st green · 2nd yellow · 3rd orange ·
+   loss/4th red · live blue). Chained with .hx-res for specificity so they win
+   over .hx-link on the deep-linked variant. */
+.hx-res {
+  font-weight: 700;
+}
+.hx-res.hx-res-1 {
   color: #22c55e;
 }
-.hx-res-2 {
+.hx-res.hx-res-2 {
   color: #eab308;
 }
-.hx-res-3 {
+.hx-res.hx-res-3 {
   color: #f97316;
 }
-.hx-res-4 {
+.hx-res.hx-res-4 {
   color: #ef4444;
+}
+.hx-res.hx-res-live {
+  color: #3b82f6;
+}
+.hx-res.hx-res-0 {
+  color: var(--text-muted);
 }
 .hx-foot {
   color: var(--text-muted);

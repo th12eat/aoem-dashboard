@@ -50,16 +50,33 @@ export interface HistoryEvent {
   occurrenceDate?: string;
 }
 
-/** Map a legacy event display name → (slug, theme). Handles the "Primordial" /
- * "Primordial Conflict" drift. Unknown names resolve to ('', 'generic'). */
-export function typeInfo(name: string): { slug: string; theme: string } {
+/** Canonical full display name per slug — the one place event names live, so
+ * History (and anywhere else) label them consistently. */
+export const EVENT_DISPLAY_NAME: Record<string, string> = {
+  stormlands: 'Stormlands',
+  desolate: 'Desolate Desert',
+  primordial: 'Primordial Conflict',
+  behemoth: 'Behemoth Conquest',
+  tme: 'The Mightiest Empire',
+};
+
+/** Full event name for a slug (falls back to the raw slug, uppercased, when
+ * unknown — so a stray type still reads sensibly). */
+export function displayName(slug: string): string {
+  return EVENT_DISPLAY_NAME[slug] ?? (slug ? slug.toUpperCase() : 'Unknown');
+}
+
+/** Map a legacy event display name → (slug, theme, full name). Handles the
+ * "Primordial" / "Primordial Conflict" drift. Unknown → ('', 'generic'). */
+export function typeInfo(name: string): { slug: string; theme: string; name: string } {
   const n = name.toLowerCase();
-  if (n.includes('storm')) return { slug: 'stormlands', theme: 'stormlands' };
-  if (n.includes('desolate')) return { slug: 'desolate', theme: 'desolate' };
-  if (n.includes('primordial')) return { slug: 'primordial', theme: 'primordial' };
-  if (n.includes('behemoth')) return { slug: 'behemoth', theme: 'behemoth' };
-  if (n === 'tme' || n.includes('mightiest empire')) return { slug: 'tme', theme: 'tme' };
-  return { slug: '', theme: 'generic' };
+  const of = (slug: string, theme: string) => ({ slug, theme, name: displayName(slug) });
+  if (n.includes('storm')) return of('stormlands', 'stormlands');
+  if (n.includes('desolate')) return of('desolate', 'desolate');
+  if (n.includes('primordial')) return of('primordial', 'primordial');
+  if (n.includes('behemoth')) return of('behemoth', 'behemoth');
+  if (n === 'tme' || n.includes('mightiest empire')) return of('tme', 'tme');
+  return { slug: '', theme: 'generic', name };
 }
 
 /** Sum the top-4 power+merits of a roster. */
@@ -130,7 +147,8 @@ export function normalizeLegacy(e: RawHistoryEvent): HistoryEvent {
     opp_ = topSum(e.oppA);
   }
   return {
-    type: e.event,
+    // Full canonical name when we recognise the type; else the raw event label.
+    type: info.slug ? info.name : e.event,
     typeSlug: info.slug,
     kvkTheme: info.theme,
     date: e.date,
