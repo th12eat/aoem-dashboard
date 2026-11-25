@@ -20,7 +20,7 @@
       "allies": 165,
       "power": "26,312,885,607",
       "merits": "3,276,870,670",
-      "prepPoints": "8,022,265,402"
+      "prepPoints": "23,907,962,492"
     },
     {
       "tag": "ʀ★ɢ",
@@ -32,7 +32,7 @@
       "allies": 126,
       "power": "13,073,698,341",
       "merits": "355,429,850",
-      "prepPoints": "3,834,401,019"
+      "prepPoints": "8,766,087,632"
     },
     {
       "tag": "ʀ★ᴍ",
@@ -44,7 +44,7 @@
       "allies": 121,
       "power": "9,625,328,509",
       "merits": "461,698,169",
-      "prepPoints": "1,795,013,483"
+      "prepPoints": "4,472,793,385"
     },
     {
       "tag": "ʀ★ᴜ",
@@ -56,19 +56,19 @@
       "allies": 15,
       "power": "661,203,225",
       "merits": "381,684",
-      "prepPoints": "136,519,159"
+      "prepPoints": "509,159,924"
     }
   ],
   "prepStages": [
     { "nameKey": "prepStage1", "ourPts": 1.5, "oppPts": 1.8, "won": false },
     { "nameKey": "prepStage2", "ourPts": 12.2, "oppPts": 3.75, "won": true },
-    { "nameKey": "prepStage3", "ourPts": 0, "oppPts": 0, "won": null },
+    { "nameKey": "prepStage3", "ourPts": 23.2, "oppPts": 6.74, "won": true },
     { "nameKey": "prepStage4", "ourPts": 0, "oppPts": 0, "won": null },
     { "nameKey": "prepStage5", "ourPts": 0, "oppPts": 0, "won": null }
   ],
-  "totalOur": 13.7,
-  "totalOpp": 5.55,
-  "prepLastUpdated": "2026-11-24 — Day 2 (Stage 2). Total us 13.7B vs #024 5.55B. Stage 2: us 12.2B vs 3.75B (won); Stage 1 (retro): us 1.5B vs 1.8B.",
+  "totalOur": 37.7,
+  "totalOpp": 12.6,
+  "prepLastUpdated": "2026-11-25 — Day 3 (Stage 3). Total us 37.7B vs #024 12.6B. Stage 3: us 23.2B vs 6.74B (won).",
   "oppAlliances": [
     {
       "tag": "ROD",
@@ -76,7 +76,7 @@
       "allies": 163,
       "power": "19,840,099,109",
       "merits": "1,097,258,216",
-      "prepPoints": "2,823,386,787"
+      "prepPoints": "5,486,234,560"
     },
     {
       "tag": "AOD",
@@ -84,7 +84,7 @@
       "allies": 169,
       "power": "18,748,791,720",
       "merits": "732,034,678",
-      "prepPoints": "2,454,179,654"
+      "prepPoints": "6,569,662,527"
     },
     {
       "tag": "KRÜ",
@@ -92,7 +92,7 @@
       "allies": 74,
       "power": "1,858,750,985",
       "merits": "48,844,500",
-      "prepPoints": "6,434,600"
+      "prepPoints": "20,834,600"
     },
     {
       "tag": "FOX",
@@ -100,7 +100,7 @@
       "allies": 26,
       "power": "1,504,663,043",
       "merits": "34,715,042",
-      "prepPoints": "126,858,577"
+      "prepPoints": "189,789,327"
     }
   ],
   "krakens": [
