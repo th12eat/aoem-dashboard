@@ -60,15 +60,15 @@
     }
   ],
   "prepStages": [
-    { "nameKey": "prepStage1", "ourPts": 1.5, "oppPts": 1.8, "won": false },
-    { "nameKey": "prepStage2", "ourPts": 12.2, "oppPts": 3.75, "won": true },
+    { "nameKey": "prepStage1", "ourPts": 1.5, "oppPts": 0.8, "won": true },
+    { "nameKey": "prepStage2", "ourPts": 12.2, "oppPts": 5.06, "won": true },
     { "nameKey": "prepStage3", "ourPts": 23.2, "oppPts": 6.74, "won": true },
     { "nameKey": "prepStage4", "ourPts": 0, "oppPts": 0, "won": null },
     { "nameKey": "prepStage5", "ourPts": 0, "oppPts": 0, "won": null }
   ],
   "totalOur": 37.7,
   "totalOpp": 12.6,
-  "prepLastUpdated": "2026-11-25 — Day 3 (Stage 3). Total us 37.7B vs #024 12.6B. Stage 3: us 23.2B vs 6.74B (won).",
+  "prepLastUpdated": "2026-11-25 — Day 3 (Stage 3). Total us 37.7B vs #024 12.6B. Stage 3: us 23.2B vs 6.74B (won). Stages 1-3 all won.",
   "oppAlliances": [
     {
       "tag": "ROD",
