@@ -22,78 +22,67 @@
     (click)="onSvgClick($any($event))"
   >
     <defs>
-      <!-- arrowheads, one per role colour is overkill; use currentColor markers -->
       <marker id="icm-head-solid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
         <path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke" />
       </marker>
       <marker id="icm-head-dash" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
         <path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke" />
       </marker>
+      <!-- clip the teleport tints to the exact shape of OUR tile -->
+      <clipPath id="icm-clip-us" clipPathUnits="userSpaceOnUse">
+        <polygon [attr.points]="ourZonePoly()" />
+      </clipPath>
     </defs>
 
     <g #scene [attr.transform]="sceneTransform()">
-      <!-- outer diamond -->
-      <polygon class="icm-diamond" [attr.points]="geo.diamond" />
+      <!-- game-art underlay: terrain base + structure sprites (towers/gates/IC) -->
+      <image
+        class="icm-img"
+        [attr.href]="geo.terrain.href"
+        [attr.x]="geo.terrain.x"
+        [attr.y]="geo.terrain.y"
+        [attr.width]="geo.terrain.width"
+        [attr.height]="geo.terrain.height"
+        preserveAspectRatio="none"
+      />
 
       <!-- the two halves: OUR zone blue, THEIR zone red (flips with side) -->
-      <polygon class="icm-zone icm-zone-us" [attr.points]="ourZonePoly()" />
       <polygon class="icm-zone icm-zone-them" [attr.points]="theirZonePoly()" />
+      <polygon class="icm-zone icm-zone-us" [attr.points]="ourZonePoly()" />
 
-      <!-- teleport-quarter tints (clipped visually to our zone bbox quarters) -->
-      @for (r of teleportRects(); track $index) {
-        <rect
-          class="icm-tele"
-          [attr.x]="r.x"
-          [attr.y]="r.y"
-          [attr.width]="r.w"
-          [attr.height]="r.h"
-          [attr.fill]="r.color"
-        />
-      }
+      <!-- teleport-quarter tints: real tile wedges, clipped to the tile outline -->
+      <g [attr.clip-path]="'url(#icm-clip-us)'">
+        @for (q of teleportWedges(); track $index) {
+          <polygon class="icm-tele" [attr.points]="q.points" [attr.fill]="q.color" />
+        }
+      </g>
 
-      <!-- courtyard wall + gate roads -->
-      <circle class="icm-wall" [attr.cx]="geo.courtyard.center.x" [attr.cy]="geo.courtyard.center.y" [attr.r]="geo.courtyard.wallRadius" />
-      <circle class="icm-plaza" [attr.cx]="geo.courtyard.center.x" [attr.cy]="geo.courtyard.center.y" [attr.r]="geo.courtyard.plazaRadius" />
-      @for (gid of gateIds; track gid) {
-        <line
-          class="icm-road"
-          [attr.x1]="geo.courtyard.roads[gid][0].x"
-          [attr.y1]="geo.courtyard.roads[gid][0].y"
-          [attr.x2]="geo.courtyard.roads[gid][1].x"
-          [attr.y2]="geo.courtyard.roads[gid][1].y"
-          [attr.stroke-width]="geo.courtyard.roadWidth"
-        />
-      }
+      <!-- structures sprite sheet drawn ABOVE the zone tint so the towers/gates/
+           IC read clearly on top of the coloured halves -->
+      <image
+        class="icm-img icm-structures"
+        [attr.href]="geo.structures.href"
+        [attr.x]="geo.structures.x"
+        [attr.y]="geo.structures.y"
+        [attr.width]="geo.structures.width"
+        [attr.height]="geo.structures.height"
+        preserveAspectRatio="none"
+      />
 
-      <!-- nodes -->
+      <!-- invisible node hit-areas (hover tooltip + arrow snapping); the art
+           already draws the towers/gates/IC, so no doubled-up markers -->
       @for (n of nodes(); track n.id) {
-        <g class="icm-node" (pointerenter)="showNode(n)" (pointerleave)="clearHover()">
-          @if (n.kind === 'gate') {
-            <!-- gate: a small square (destroy-to-pass), not occupiable -->
-            <rect
-              class="icm-gate"
-              [attr.x]="n.x - gateR"
-              [attr.y]="n.y - gateR"
-              [attr.width]="gateR * 2"
-              [attr.height]="gateR * 2"
-              rx="6"
-            />
-            <text class="icm-node-ico" [attr.x]="n.x" [attr.y]="n.y">🚪</text>
-          } @else if (n.kind === 'city') {
-            <circle class="icm-city" [attr.cx]="n.x" [attr.cy]="n.y" [attr.r]="n.r" />
-            <text class="icm-node-ico icm-city-ico" [attr.x]="n.x" [attr.y]="n.y">🏰</text>
-          } @else {
-            <!-- tower -->
-            <circle class="icm-tower" [attr.cx]="n.x" [attr.cy]="n.y" [attr.r]="n.r" />
-            <text class="icm-node-ico" [attr.x]="n.x" [attr.y]="n.y">🗼</text>
-            <text class="icm-tower-buff" [attr.x]="n.x" [attr.y]="n.y + (n.r ?? 40) + 26">+{{ n.buff }}</text>
-          }
-        </g>
+        <circle
+          class="icm-hit"
+          [attr.cx]="n.x"
+          [attr.cy]="n.y"
+          [attr.r]="n.r ?? gateR"
+          (pointerenter)="showNode(n)"
+          (pointerleave)="clearHover()"
+        />
       }
 
-      <!-- teleport-quarter labels / leaders / arrows draw above nodes -->
-
-      <!-- march arrows (rally solid, siege dashed + animated) -->
+      <!-- march arrows (rally solid, siege dashed + animated), parallel-offset -->
       @for (a of arrowPaths(); track $index) {
         <path
           class="icm-arrow"
@@ -149,6 +138,10 @@
       }
     </g>
   </svg>
+
+  @if (editable() && rejectHint()) {
+    <div class="icm-reject">⚠ Keep placements inside our (blue) tile — not in the enemy half, the Imperial City, or off-map.</div>
+  }
 
   <!-- legend -->
   <div class="icm-legend">

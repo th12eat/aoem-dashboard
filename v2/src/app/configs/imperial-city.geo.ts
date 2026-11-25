@@ -50,9 +50,23 @@ export interface IcPoint {
   y: number;
 }
 
+/** A raster layer placed at an explicit rect in battlefield-pixel space. */
+export interface IcImageLayer {
+  href: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export interface ImperialCityGeometry {
   /** Fitted SVG viewBox "minX minY width height". */
   viewBox: string;
+  /** Game-art underlay: the terrain base + the structures sprite sheet (towers,
+   * gates, IC, courtyard ring) at their exact rects — the same two layers the
+   * source export used. Drawn beneath the vector zones + plan overlay. */
+  terrain: IcImageLayer;
+  structures: IcImageLayer;
   /** Outer battlefield diamond (the fightable bounds). */
   diamond: string;
   /** The two halves. `left` is the NW half, `right` the SE half. By design the
@@ -87,6 +101,9 @@ const ZONE_RIGHT =
 
 export const IMPERIAL_CITY_GEOMETRY: ImperialCityGeometry = {
   viewBox: '76 -106 1571 1622',
+  // Rects verbatim from the source export's <image> elements.
+  terrain: { href: 'assets/ic-terrain.webp', x: -400, y: -400, width: 2571, height: 2239 },
+  structures: { href: 'assets/ic-structures.webp', x: 380, y: 40, width: 1120, height: 1160 },
   diamond: DIAMOND,
   zoneLeft: ZONE_LEFT,
   zoneRight: ZONE_RIGHT,

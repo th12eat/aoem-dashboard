@@ -388,16 +388,43 @@ export class EventDataEditorPage {
   onInvasionPlanChange(plan: InvasionPlan): void {
     this.patch('invasionPlan', plan);
   }
-  /** Flip/clear the explicit side override (null = auto from prep). */
+  /** Flip/clear the explicit side override (null = auto from prep). Changing the
+   * side mirrors the whole battlefield, so every existing placement would land
+   * in the wrong tile — confirm, then wipe the plan (keeping the new side). */
   icSetSide(side: InvasionSide | null): void {
-    const plan = { ...this.invasionPlan() };
-    if (side) plan.side = side;
-    else delete plan.side;
-    this.patch('invasionPlan', plan);
+    const current = this.icSide();
+    const next = side ?? this.icAutoSide();
+    const hasWork =
+      this.invasionPlan().leaders.length > 0 ||
+      this.invasionPlan().arrows.length > 0 ||
+      this.invasionPlan().hazards.length > 0 ||
+      this.invasionPlan().teleport.length > 0;
+    if (next !== current && hasWork) {
+      const ok = window.confirm(
+        'Switching side flips the battlefield (our blue half moves to the other side), so your current placements would all be on the wrong tile. Clear the plan and switch?',
+      );
+      if (!ok) return;
+    }
+    // Start fresh on the new side; keep the explicit override (or clear it for Auto).
+    const fresh = emptyInvasionPlan();
+    if (side) fresh.side = side;
+    this.patch('invasionPlan', fresh);
   }
-  /** Clear the whole plan. */
+  /** The side prep would pick automatically (no explicit override). */
+  private icAutoSide(): InvasionSide {
+    const prep = this.obj(this.doc()['prep']);
+    const n = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : 0);
+    const ours = n(prep['totalOurs']);
+    const opp = n(prep['totalOpp']);
+    return ours > 0 || opp > 0 ? (ours < opp ? 'defend' : 'attack') : 'attack';
+  }
+  /** Clear the whole plan (keeps the current side override). */
   icClearPlan(): void {
-    this.patch('invasionPlan', emptyInvasionPlan());
+    if (!window.confirm('Clear the entire invasion plan (leaders, lines, hazards, teleports)?')) return;
+    const side = this.invasionPlan().side;
+    const fresh = emptyInvasionPlan();
+    if (side) fresh.side = side;
+    this.patch('invasionPlan', fresh);
   }
 
   // ── column defs ──────────────────────────────────────────────────────────

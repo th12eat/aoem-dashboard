@@ -30,27 +30,15 @@ interface PtXY {
   y: number;
 }
 
+/** Perpendicular spacing (user units) between fanned parallel march lines. */
+const PARALLEL_GAP = 22;
+
 /** Parse an SVG points string "x,y x,y …" → [[x,y],…]. */
 function parsePoly(s: string): number[][] {
   return s
     .trim()
     .split(/\s+/)
     .map(p => p.split(',').map(Number));
-}
-
-/** Axis-aligned bounds of a polygon. */
-function bbox(poly: number[][]): { minX: number; minY: number; maxX: number; maxY: number; cx: number; cy: number } {
-  let minX = Infinity;
-  let minY = Infinity;
-  let maxX = -Infinity;
-  let maxY = -Infinity;
-  for (const [x, y] of poly) {
-    if (x < minX) minX = x;
-    if (y < minY) minY = y;
-    if (x > maxX) maxX = x;
-    if (y > maxY) maxY = y;
-  }
-  return { minX, minY, maxX, maxY, cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 };
 }
 
 /** Ray-cast point-in-polygon. */
@@ -63,6 +51,74 @@ function inPoly(x: number, y: number, poly: number[][]): boolean {
     if (hit) inside = !inside;
   }
   return inside;
+}
+
+/** Area-weighted centroid of a polygon (the shoelace centroid). Falls back to
+ * the vertex mean for a degenerate (zero-area) polygon. */
+function polygonCentroid(poly: number[][]): { x: number; y: number } {
+  let a = 0;
+  let cx = 0;
+  let cy = 0;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i];
+    const [xj, yj] = poly[j];
+    const cross = xj * yi - xi * yj;
+    a += cross;
+    cx += (xi + xj) * cross;
+    cy += (yi + yj) * cross;
+  }
+  a *= 0.5;
+  if (Math.abs(a) < 1e-6) {
+    const n = poly.length || 1;
+    return { x: poly.reduce((s, p) => s + p[0], 0) / n, y: poly.reduce((s, p) => s + p[1], 0) / n };
+  }
+  return { x: cx / (6 * a), y: cy / (6 * a) };
+}
+
+/** Clip a convex-ish half-plane out of a polygon (Sutherland–Hodgman against a
+ * single edge). `keep(p)` returns true for points to retain; `isect` finds the
+ * crossing of segment a→b with the clip line. Used to carve a quarter wedge. */
+function clipHalfPlane(
+  poly: number[][],
+  keep: (p: number[]) => boolean,
+  isect: (a: number[], b: number[]) => number[],
+): number[][] {
+  const out: number[][] = [];
+  for (let i = 0; i < poly.length; i++) {
+    const a = poly[i];
+    const b = poly[(i + 1) % poly.length];
+    const ain = keep(a);
+    const bin = keep(b);
+    if (ain) out.push(a);
+    if (ain !== bin) out.push(isect(a, b));
+  }
+  return out;
+}
+
+/** Carve one quarter wedge from a tile polygon: the set of tile points on the
+ * chosen side of BOTH axes through the centroid. `wantWest`/`wantNorth` pick the
+ * quarter. Returns the clipped sub-polygon's point string (may be empty). */
+function quarterWedge(poly: number[][], c: { x: number; y: number }, wantWest: boolean, wantNorth: boolean): string {
+  // vertical split at c.x
+  let p = clipHalfPlane(
+    poly,
+    pt => (wantWest ? pt[0] <= c.x : pt[0] >= c.x),
+    (a, b) => {
+      const t = (c.x - a[0]) / (b[0] - a[0]);
+      return [c.x, a[1] + t * (b[1] - a[1])];
+    },
+  );
+  if (!p.length) return '';
+  // horizontal split at c.y
+  p = clipHalfPlane(
+    p,
+    pt => (wantNorth ? pt[1] <= c.y : pt[1] >= c.y),
+    (a, b) => {
+      const t = (c.y - a[1]) / (b[1] - a[1]);
+      return [a[0] + t * (b[0] - a[0]), c.y];
+    },
+  );
+  return p.map(pt => `${Math.round(pt[0] * 10) / 10},${Math.round(pt[1] * 10) / 10}`).join(' ');
 }
 
 /**
@@ -128,6 +184,11 @@ export class IcInvasionMapComponent {
   readonly ourZonePoly = computed(() => (this.side() === 'attack' ? GEO.zoneLeft : GEO.zoneRight));
   readonly theirZonePoly = computed(() => (this.side() === 'attack' ? GEO.zoneRight : GEO.zoneLeft));
 
+  /** Our tile parsed to points + its area-centroid (for quarter wedges + the
+   * placement constraint). Recomputed only when the side flips. */
+  private readonly ourPoly = computed(() => parsePoly(this.ourZonePoly()));
+  private readonly ourCentroid = computed(() => polygonCentroid(this.ourPoly()));
+
   // ── colour lookup for an alliance tag ──────────────────────────────────────
   private readonly colorByTag = computed(() => {
     const m = new Map<string, string>();
@@ -151,16 +212,37 @@ export class IcInvasionMapComponent {
 
   // ── arrows (resolved to concrete geometry, IC routed through nearest gate) ──
   readonly arrowPaths = computed(() => {
+    const arrows = this.plan().arrows ?? [];
+    // Group arrows that converge on the SAME target (node id, or a rounded free
+    // point) AND the same role, so e.g. all four alliances marching through one
+    // gate to the IC get fanned out perpendicular instead of drawn on top of one
+    // another. Offset index is assigned within each group.
+    const groupKey = (a: InvasionArrow) => `${a.role}|${a.toNode ?? `${Math.round((a.to?.x ?? 0) / 20)},${Math.round((a.to?.y ?? 0) / 20)}`}`;
+    const groups = new Map<string, number>();
+    const seq = new Map<InvasionArrow, number>();
+    const counts = new Map<string, number>();
+    for (const a of arrows) counts.set(groupKey(a), (counts.get(groupKey(a)) ?? 0) + 1);
+    for (const a of arrows) {
+      const k = groupKey(a);
+      const i = groups.get(k) ?? 0;
+      seq.set(a, i);
+      groups.set(k, i + 1);
+    }
+
     const out: { tag: string; role: LeaderRole; color: string; d: string; siege: boolean }[] = [];
-    for (const a of this.plan().arrows ?? []) {
-      const from: PtXY = a.from;
+    for (const a of arrows) {
       const target = this.resolveArrowTarget(a);
       if (!target) continue;
+      const k = groupKey(a);
+      const n = counts.get(k) ?? 1;
+      // Centre the fan: offsets like -1.5,-0.5,0.5,1.5 × spacing for n=4.
+      const idx = seq.get(a) ?? 0;
+      const offset = n > 1 ? (idx - (n - 1) / 2) * PARALLEL_GAP : 0;
       out.push({
         tag: a.tag,
         role: a.role,
         color: this.colorFor(a.tag),
-        d: this.buildArrowPath(from, target, a.toNode),
+        d: this.buildArrowPath(a.from, target, a.toNode, offset),
         siege: a.role === 'siege',
       });
     }
@@ -177,34 +259,41 @@ export class IcInvasionMapComponent {
   }
 
   /** Build the march path. If the target is the walled Imperial City, bend the
-   * line through the gate nearest the SOURCE (can't hop the wall). Otherwise a
-   * straight segment. */
-  private buildArrowPath(from: PtXY, target: PtXY, toNode?: string): string {
-    if (toNode === 'imperial-city') {
-      const g = nearestGate(from);
-      return `M ${from.x} ${from.y} L ${g.x} ${g.y} L ${target.x} ${target.y}`;
-    }
-    return `M ${from.x} ${from.y} L ${target.x} ${target.y}`;
+   * line through the gate nearest the SOURCE (can't hop the wall). `offset` fans
+   * converging lines apart: each segment is shifted perpendicular to its own
+   * direction so parallel marches stay individually legible. */
+  private buildArrowPath(from: PtXY, target: PtXY, toNode: string | undefined, offset: number): string {
+    const waypoints: PtXY[] = toNode === 'imperial-city' ? [from, nearestGate(from), target] : [from, target];
+    if (!offset) return 'M ' + waypoints.map(p => `${p.x} ${p.y}`).join(' L ');
+    // Shift each segment sideways by `offset` along its own normal; join at the
+    // shifted endpoints (good enough for the short, few-segment marches here).
+    const shifted: PtXY[] = waypoints.map((p, i) => {
+      // use the direction of the segment this point leads into (or the previous
+      // one for the last point) to pick a stable normal.
+      const a = waypoints[Math.min(i, waypoints.length - 2)];
+      const b = waypoints[Math.min(i + 1, waypoints.length - 1)];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const len = Math.hypot(dx, dy) || 1;
+      const nx = -dy / len;
+      const ny = dx / len;
+      return { x: p.x + nx * offset, y: p.y + ny * offset };
+    });
+    return 'M ' + shifted.map(p => `${Math.round(p.x)} ${Math.round(p.y)}`).join(' L ');
   }
 
-  // ── teleport quarters (tinted rects clipped to the owned zone) ──────────────
-  readonly teleportRects = computed(() => {
-    const ours = parsePoly(this.ourZonePoly());
-    const bb = bbox(ours);
-    const rects: { tag: string; color: string; x: number; y: number; w: number; h: number }[] = [];
+  // ── teleport quarters (real tile wedges, split by area from the centroid) ──
+  readonly teleportWedges = computed(() => {
+    const poly = this.ourPoly();
+    const c = this.ourCentroid();
+    const out: { tag: string; color: string; points: string }[] = [];
     for (const t of this.plan().teleport ?? []) {
       const west = t.quarter === 'NW' || t.quarter === 'SW';
       const north = t.quarter === 'NW' || t.quarter === 'NE';
-      rects.push({
-        tag: t.tag,
-        color: this.colorFor(t.tag),
-        x: west ? bb.minX : bb.cx,
-        y: north ? bb.minY : bb.cy,
-        w: (bb.maxX - bb.minX) / 2,
-        h: (bb.maxY - bb.minY) / 2,
-      });
+      const points = quarterWedge(poly, c, west, north);
+      if (points) out.push({ tag: t.tag, color: this.colorFor(t.tag), points });
     }
-    return rects;
+    return out;
   });
 
   readonly hazards = computed(() => this.plan().hazards ?? []);
@@ -348,38 +437,75 @@ export class IcInvasionMapComponent {
     };
   }
 
+  /** True when a point is a legal place for OUR markers: inside our blue tile,
+   * and not inside the Imperial City courtyard wall (can't stage on the wall). */
+  private placeableHere(u: PtXY): boolean {
+    if (!inPoly(u.x, u.y, this.ourPoly())) return false;
+    const c = GEO.courtyard;
+    if (Math.hypot(u.x - c.center.x, u.y - c.center.y) <= c.wallRadius) return false;
+    return true;
+  }
+  /** Flash a brief "stay in your tile" hint when a placement is rejected. */
+  readonly rejectHint = signal(false);
+  private reject(): void {
+    this.rejectHint.set(true);
+    // cleared on the next successful action or tool change (no timer — keeps it
+    // resume-safe and avoids Date/setTimeout churn in tests).
+  }
+
   private placeLeader(role: LeaderRole, u: PtXY): void {
     const tag = this.armedTag();
     if (!tag) return;
+    if (!this.placeableHere(u)) {
+      this.reject();
+      return;
+    }
     const p = this.clone();
     // One leader per (tag, role): replace if it exists, else add.
     p.leaders = p.leaders.filter(l => !(l.tag === tag && l.role === role));
     p.leaders.push({ tag, role, x: Math.round(u.x), y: Math.round(u.y) });
+    this.rejectHint.set(false);
     this.emit(p);
   }
 
   private placeHazard(u: PtXY): void {
+    if (!this.placeableHere(u)) {
+      this.reject();
+      return;
+    }
     const p = this.clone();
     p.hazards.push({ x: Math.round(u.x), y: Math.round(u.y) });
+    this.rejectHint.set(false);
     this.emit(p);
   }
 
   private paintTeleport(u: PtXY): void {
     const tag = this.armedTag();
     if (!tag) return;
-    const ours = parsePoly(this.ourZonePoly());
-    if (!inPoly(u.x, u.y, ours)) return; // only paint inside our tile
-    const bb = bbox(ours);
-    const quarter: TeleportQuarter = (u.y < bb.cy ? (u.x < bb.cx ? 'NW' : 'NE') : u.x < bb.cx ? 'SW' : 'SE');
+    if (!inPoly(u.x, u.y, this.ourPoly())) {
+      this.reject();
+      return;
+    }
+    // Quarter by the SAME centroid split the wedges use, so the painted slice is
+    // exactly the one the click landed in.
+    const c = this.ourCentroid();
+    const quarter: TeleportQuarter = u.y < c.y ? (u.x < c.x ? 'NW' : 'NE') : u.x < c.x ? 'SW' : 'SE';
     const p = this.clone();
     const exists = p.teleport.some(t => t.tag === tag && t.quarter === quarter);
     // Toggle: clicking an owned quarter again clears it.
     p.teleport = exists ? p.teleport.filter(t => !(t.tag === tag && t.quarter === quarter)) : [...p.teleport, { tag, quarter }];
+    this.rejectHint.set(false);
     this.emit(p);
   }
 
   private commitArrow(lead: InvasionLeader, u: PtXY): void {
     const node = this.nodeAt(u);
+    // A march targets a NODE (allowed anywhere — that's the objective) or a free
+    // point, which must stay inside our tile (you don't rally into enemy ground).
+    if (!node && !this.placeableHere(u)) {
+      this.reject();
+      return;
+    }
     const p = this.clone();
     // One arrow per (tag, role) — replace any previous target for this leader.
     p.arrows = p.arrows.filter(a => !(a.tag === lead.tag && a.role === lead.role));
@@ -389,6 +515,7 @@ export class IcInvasionMapComponent {
       from: { x: lead.x, y: lead.y },
       ...(node ? { toNode: node.id } : { to: { x: Math.round(u.x), y: Math.round(u.y) } }),
     });
+    this.rejectHint.set(false);
     this.emit(p);
   }
 
