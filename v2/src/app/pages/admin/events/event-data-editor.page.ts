@@ -68,7 +68,13 @@ interface SetupServer {
     @if (saveMsg()) { <p class="de-msg" [class.err]="saveErr()">{{ saveMsg() }}</p> }
     @if (draftBanner()) {
       <div class="de-draft">
-        <span>⚠ Unsaved draft found from a previous session. Restore your in-progress edits?</span>
+        <span class="de-draft-text">
+          ⚠ Unsaved draft found from a previous session.
+          @if (draftChanges().length) {
+            Changes to: <strong>{{ draftChanges().join(', ') }}</strong>.
+          }
+          Restore your in-progress edits?
+        </span>
         <span class="de-draft-actions">
           <button type="button" class="de-draft-restore" (click)="restoreDraft()">Restore</button>
           <button type="button" class="de-draft-discard" (click)="discardDraft()">Discard</button>
@@ -221,9 +227,31 @@ export class EventDataEditorPage {
   readonly saveErr = signal(false);
   readonly showImport = signal(false);
 
-  /** A pending localStorage draft (newer than the DB doc) awaiting Restore/Discard. */
+  /** A pending localStorage draft (genuinely different from the DB doc) awaiting
+   * Restore/Discard. */
   private readonly pendingDraft = signal<Doc | null>(null);
+  /** The DB doc as loaded — the "truth" the draft is diffed against. A draft is
+   * only kept/flagged when it actually differs from this (see the persist effect
+   * + boot), so merely clicking through tabs no longer trips the banner. */
+  private readonly baseline = signal<Doc>({});
   readonly draftBanner = computed(() => this.pendingDraft() !== null);
+  /** Which sections the pending draft would change vs. the saved DB doc — shown
+   * in the banner so Restore is never a blind leap. */
+  readonly draftChanges = computed<string[]>(() => {
+    const draft = this.pendingDraft();
+    if (!draft) return [];
+    const keys = changedDocKeys(this.baseline(), draft);
+    const labels: string[] = [];
+    let unlabeled = false;
+    for (const k of keys) {
+      const label = DOC_KEY_LABELS[k];
+      if (label) labels.push(label);
+      else unlabeled = true;
+    }
+    const uniq = [...new Set(labels)];
+    if (unlabeled && !uniq.length) uniq.push('other data');
+    return uniq;
+  });
   /** Guards the persist effect from writing while we're still booting / restoring. */
   private draftReady = false;
 
@@ -332,14 +360,22 @@ export class EventDataEditorPage {
 
   constructor() {
     void this.boot();
-    // Persist the working doc to localStorage on every change (reload-survival).
-    // In-memory cross-tab update already works via the shared signal; this only
-    // adds durability. Gated by draftReady so boot()/restore don't self-trigger.
+    // Persist the working doc to localStorage on change (reload-survival), but
+    // ONLY when it genuinely differs from the saved DB doc. Clicking through
+    // tabs can rebuild the doc object (new reference, same content) or re-stamp
+    // derived values; persisting those produced a phantom "unsaved draft" banner
+    // on reload with nothing actually changed. Diffing against the baseline kills
+    // that false positive — and clears any stale key once edits are undone back
+    // to the saved state. Gated by draftReady so boot()/restore don't self-trigger.
     effect(() => {
       const d = this.doc();
       if (!this.draftReady || !this.occId()) return;
       try {
-        localStorage.setItem(this.draftKey(), JSON.stringify(d));
+        if (docsEqual(d, this.baseline())) {
+          localStorage.removeItem(this.draftKey());
+        } else {
+          localStorage.setItem(this.draftKey(), JSON.stringify(d));
+        }
       } catch {
         /* quota / unavailable — drafts are best-effort */
       }
@@ -413,13 +449,15 @@ export class EventDataEditorPage {
     this.ourRoster.set(roster);
     if (dbDoc) {
       this.doc.set(dbDoc);
+      // The DB doc is the truth the draft is diffed against.
+      this.baseline.set(dbDoc);
     } else {
       // Fresh occurrence: start EMPTY except for this occurrence's own dates and
       // OUR server pre-seeded (number + its roster tags) from server_rosters —
       // so the admin only enters opponent data + points. Opponent kingdoms stay
       // blank for the admin to fill. Static JSON is NOT inherited.
       const ourTags = this.ourRoster().map(a => a.tag);
-      this.doc.set({
+      const seed: Doc = {
         schemaVersion: 2,
         eventConfig: {
           eventStart: occ.startDate,
@@ -430,11 +468,22 @@ export class EventDataEditorPage {
             ? [{ server: fmtServer(this.ourNum, 'spaced'), display: fmtServer(this.ourNum, 'full'), us: true, alliances: ourTags }]
             : [],
         },
-      });
+      };
+      this.doc.set(seed);
+      // Nothing saved yet → the seeded doc is the baseline, so opening a brand-new
+      // occurrence doesn't instantly look like an unsaved draft.
+      this.baseline.set(seed);
     }
-    // A reload-surviving draft? Offer to restore it (don't auto-apply, so the
-    // admin can choose the DB truth). Draft becomes live only via Restore.
-    this.pendingDraft.set(this.readDraft());
+    // A reload-surviving draft? Offer to restore it — but ONLY if it genuinely
+    // differs from the saved doc (a no-op draft left by tab-clicking is dropped,
+    // not shown). Draft becomes live only via Restore; we never auto-apply.
+    const draft = this.readDraft();
+    if (draft && !docsEqual(draft, this.baseline())) {
+      this.pendingDraft.set(draft);
+    } else {
+      if (draft) this.discardDraft(); // stale no-op key — clean it up
+      this.pendingDraft.set(null);
+    }
     // From here on, doc changes are the user's — safe to persist.
     this.draftReady = true;
   }
@@ -1017,7 +1066,10 @@ export class EventDataEditorPage {
       this.saveErr.set(true);
       this.saveMsg.set(`Save failed: ${error}`);
     } else {
-      // Persisted to the DB → the local draft is now redundant; clear it.
+      // Persisted to the DB → it's the new baseline, and the local draft is now
+      // redundant; clear it. (Clearing baseline-first means the persist effect
+      // sees doc==baseline and removes the key cleanly.)
+      this.baseline.set(this.doc());
       this.discardDraft();
       this.saveMsg.set('✓ Saved — live on the dashboard now.');
     }
@@ -1028,3 +1080,59 @@ export class EventDataEditorPage {
 function round3(n: number): number {
   return Math.round(n * 1000) / 1000;
 }
+
+// ── draft diffing ────────────────────────────────────────────────────────────
+/** Structural deep-equality for plain doc values (objects/arrays/primitives).
+ * Used to tell a real draft apart from a byte-identical rebuild of the doc, so
+ * tab-clicking never produces a phantom "unsaved draft". Key ORDER is ignored. */
+function docsEqual(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') return false;
+  const aArr = Array.isArray(a);
+  const bArr = Array.isArray(b);
+  if (aArr !== bArr) return false;
+  if (aArr && bArr) {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) if (!docsEqual(a[i], b[i])) return false;
+    return true;
+  }
+  const ao = a as Record<string, unknown>;
+  const bo = b as Record<string, unknown>;
+  const aKeys = Object.keys(ao);
+  const bKeys = Object.keys(bo);
+  if (aKeys.length !== bKeys.length) return false;
+  for (const k of aKeys) {
+    if (!Object.prototype.hasOwnProperty.call(bo, k)) return false;
+    if (!docsEqual(ao[k], bo[k])) return false;
+  }
+  return true;
+}
+
+/** The top-level doc keys whose values differ between `base` and `draft`
+ * (added, removed, or changed). The basis for the banner's change summary. */
+function changedDocKeys(base: Record<string, unknown>, draft: Record<string, unknown>): string[] {
+  const keys = new Set([...Object.keys(base ?? {}), ...Object.keys(draft ?? {})]);
+  const out: string[] = [];
+  for (const k of keys) if (!docsEqual(base?.[k], draft?.[k])) out.push(k);
+  return out;
+}
+
+/** Friendly section names for the doc keys the editor writes — so the draft
+ * banner can say "Changes to: Scouting, Stage points" instead of raw keys.
+ * Keys not listed here (e.g. schemaVersion) fold into a generic "other data". */
+const DOC_KEY_LABELS: Record<string, string> = {
+  eventConfig: 'Event setup',
+  kingdomScoreboard: 'Kingdom points',
+  kingdomPoints: 'Kingdom points',
+  prep: 'Stage points',
+  alliancePoints: 'Alliance points',
+  diplomacy: 'Diplomacy',
+  research: 'Scouting',
+  serverTiers: 'Server tiers',
+  serverDepth: 'Server depth',
+  placerGold: 'Placer economy',
+  mapState: 'Map',
+  result: 'Result',
+  placement: 'Placement',
+  star: 'Special-KvK flag',
+};

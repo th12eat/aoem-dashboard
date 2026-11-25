@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ClockService } from '@core/services/clock.service';
 import type { EventDashboardConfig } from '@shared/models/event-dashboard-config.model';
 import type { EventMeta } from '@shared/models/event-data.model';
+import { fmtServer, serverNumber } from '@shared/utils/corners';
 
 /**
  * Rich event header — the 1:1 port of the 1.0 Stormlands header. Fed the full
@@ -65,7 +66,15 @@ export class EventHeaderComponent {
   readonly crests = computed(() => {
     const kingdoms = this.data()?.kingdoms;
     if (kingdoms && kingdoms.length) {
-      return kingdoms.map(k => ({ label: k.display, color: k.color, rgb: k.rgb, us: k.us }));
+      // Normalise every crest to ONE house style ("Era 8" / "Era 24"), so a
+      // mix of stored display formats (some padded "Era #008", some spaced
+      // "Era 24" from different adapters) can't show two conventions side by
+      // side. Fall back to the raw display if it has no parseable number.
+      return kingdoms.map(k => {
+        const n = serverNumber(k.display);
+        const label = Number.isFinite(n) ? fmtServer(n, 'spaced') : k.display;
+        return { label, color: k.color, rgb: k.rgb, us: k.us };
+      });
     }
     return this.header().crests ?? [];
   });
