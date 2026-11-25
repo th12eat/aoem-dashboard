@@ -298,3 +298,66 @@
 .de-scout h4 {
   margin-top: 0;
 }
+
+/* ── Invasion plan (IC map) editor ──────────────────────────────────────────── */
+.de-ic-side,
+.de-ic-tools,
+.de-ic-arm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.de-ic-k {
+  font-size: var(--fs-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-right: 2px;
+}
+.de-ic-side button,
+.de-ic-tools button {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--bg-card2);
+  color: var(--text-secondary);
+  padding: 6px 11px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.de-ic-side button.on,
+.de-ic-tools button.on {
+  color: #0a0c14;
+  background: var(--kvk-accent);
+  border-color: var(--kvk-accent);
+}
+.de-ic-auto,
+.de-ic-clear {
+  margin-left: auto;
+}
+.de-ic-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-card2);
+  color: var(--text-secondary);
+  padding: 4px 11px 4px 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.de-ic-chip.on {
+  border-color: var(--chip);
+  box-shadow: 0 0 0 1px var(--chip) inset;
+  color: var(--text-primary);
+}
+.de-ic-sw {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}

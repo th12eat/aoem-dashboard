@@ -2,7 +2,9 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, signal } f
 import { TranslateModule } from '@ngx-translate/core';
 import { ClockService } from '@core/services/clock.service';
 import type { WidgetConfig } from '@shared/models/event-dashboard-config.model';
-import type { EventMeta } from '@shared/models/event-data.model';
+import type { EventData, EventMeta } from '@shared/models/event-data.model';
+import { IcInvasionMapComponent, type IcAlliance } from '../ic-invasion-map/ic-invasion-map.component';
+import { invasionAllianceColor, type InvasionSide } from '@shared/models/invasion-plan.model';
 
 /** One stage tab's verbatim content (TME prep week). */
 interface StageTab {
@@ -25,6 +27,9 @@ interface StageTab {
   /** Macro-phase label appended to the widget title when this tab is active
    * (e.g. "Matchmaking" / "Preparation Week" / "Invasion"). */
   macro?: string;
+  /** When 'ic', this tab also renders the Imperial City invasion-plan map below
+   * its blurb (TME Invasion day). */
+  map?: 'ic';
 }
 
 interface StageTabsOptions {
@@ -41,7 +46,7 @@ interface StageTabsOptions {
  */
 @Component({
   selector: 'app-stage-tabs',
-  imports: [TranslateModule],
+  imports: [TranslateModule, IcInvasionMapComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (title()) {
@@ -74,6 +79,12 @@ interface StageTabsOptions {
 
           @if (a.blurb) {
             <p class="stt-blurb">{{ a.blurb }}</p>
+          }
+
+          @if (a.map === 'ic') {
+            <div class="stt-map">
+              <app-ic-invasion-map [plan]="invasionPlan()" [side]="invasionSide()" [alliances]="invasionAlliances()" />
+            </div>
           }
 
           @if (a.doList && a.doList.length) {
@@ -214,6 +225,9 @@ interface StageTabsOptions {
         color: #a7f3d0;
         line-height: 1.5;
       }
+      .stt-map {
+        margin-top: 12px;
+      }
     `,
   ],
 })
@@ -233,11 +247,37 @@ export class StageTabsComponent {
     return m ? ` — ${m}` : '';
   });
 
-  /** Event start ms (from the bound meta). */
-  private readonly startMs = computed(() => {
-    const m = this.data() as EventMeta | undefined;
-    return Date.parse(m?.eventStart ?? '');
+  /** The bound EventData (this widget now binds the whole object so it can reach
+   * both meta and the invasion plan). Older callers may still bind just meta —
+   * tolerate both by sniffing for a `meta` key. */
+  private readonly eventData = computed<EventData | null>(() => {
+    const d = this.data() as EventData | EventMeta | undefined;
+    if (d && typeof d === 'object' && 'meta' in d) return d as EventData;
+    return null;
   });
+  private readonly meta = computed<EventMeta | undefined>(() => {
+    const ed = this.eventData();
+    if (ed) return ed.meta;
+    return this.data() as EventMeta | undefined;
+  });
+
+  /** Event start ms (from the resolved meta). */
+  private readonly startMs = computed(() => Date.parse(this.meta()?.eventStart ?? ''));
+
+  // ── Imperial City invasion map inputs (Invasion tab only) ───────────────────
+  readonly invasionPlan = computed(() => this.eventData()?.invasionPlan ?? { leaders: [], arrows: [], hazards: [], teleport: [] });
+  /** Attacker holds blue; the prep LEADER attacks. An explicit plan.side wins. */
+  readonly invasionSide = computed<InvasionSide>(() => {
+    const explicit = this.eventData()?.invasionPlan?.side;
+    if (explicit) return explicit;
+    const m = this.meta();
+    // Behind on summed prep → defending; leading/tied/pre-start → attacking.
+    return m?.prepStarted && (m?.prepOursTotal ?? 0) < (m?.prepOppTotal ?? 0) ? 'defend' : 'attack';
+  });
+  /** Our alliances paired with the index-assigned marker palette for the legend. */
+  readonly invasionAlliances = computed<IcAlliance[]>(() =>
+    (this.meta()?.ourAlliances ?? []).map((tag, i) => ({ tag, color: invasionAllianceColor(i) })),
+  );
 
   /** Index of the tab matching "today" (by day offset from eventStart); the
    * closest tab at or before today, else the first. Drives the default + "now". */

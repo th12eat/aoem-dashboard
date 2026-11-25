@@ -244,6 +244,29 @@ export function normalizeEventData(input: unknown): EventData {
         perHour: num(n['perHour']),
       };
     }),
+    invasionPlan: normalizeInvasionPlan(asObject(raw['invasionPlan'])),
+  };
+}
+
+/** Normalize the TME Invasion plan (leaders/arrows/hazards/teleport). Pure +
+ * total: any missing field yields an empty-but-present plan so the IC map always
+ * has something to render. The one place that knows the raw plan shape. */
+function normalizeInvasionPlan(raw: Raw): import('@shared/models/invasion-plan.model').InvasionPlan {
+  const role = (v: unknown): 'rally' | 'siege' => (v === 'siege' ? 'siege' : 'rally');
+  const pt = (v: unknown): { x: number; y: number } => ({ x: num(asObject(v)['x']), y: num(asObject(v)['y']) });
+  const side = raw['side'] === 'defend' ? 'defend' : raw['side'] === 'attack' ? 'attack' : undefined;
+  return {
+    side,
+    leaders: asArray(raw['leaders']).map(l => ({ tag: str(l['tag']), role: role(l['role']), x: num(l['x']), y: num(l['y']) })),
+    arrows: asArray(raw['arrows']).map(a => {
+      const base = { tag: str(a['tag']), role: role(a['role']), from: pt(a['from']) };
+      return a['toNode'] ? { ...base, toNode: str(a['toNode']) } : { ...base, to: pt(a['to']) };
+    }),
+    hazards: asArray(raw['hazards']).map(h => ({ x: num(h['x']), y: num(h['y']), note: str(h['note']) || undefined })),
+    teleport: asArray(raw['teleport']).map(t => ({
+      tag: str(t['tag']),
+      quarter: (['NW', 'NE', 'SE', 'SW'].includes(str(t['quarter'])) ? str(t['quarter']) : 'NW') as 'NW' | 'NE' | 'SE' | 'SW',
+    })),
   };
 }
 

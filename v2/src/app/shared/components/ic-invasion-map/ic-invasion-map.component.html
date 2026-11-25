@@ -1,0 +1,164 @@
+<div class="icm-wrap">
+  <!-- zoom controls -->
+  <div class="icm-zoom">
+    <button type="button" (click)="zoomBy(1.2)" title="Zoom in">+</button>
+    <button type="button" (click)="zoomBy(1 / 1.2)" title="Zoom out">−</button>
+    <button type="button" (click)="resetView()" title="Reset view">⤾</button>
+  </div>
+
+  <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+  <svg
+    #svg
+    class="icm-svg"
+    [attr.viewBox]="geo.viewBox"
+    [class.editable]="editable()"
+    [class.tool-arrow]="editable() && tool() === 'arrow'"
+    [class.tool-place]="editable() && (tool() === 'rally' || tool() === 'siege' || tool() === 'hazard' || tool() === 'teleport')"
+    [class.tool-erase]="editable() && tool() === 'erase'"
+    (wheel)="onWheel($event)"
+    (pointerdown)="recordDown($event); onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)"
+    (click)="onSvgClick($any($event))"
+  >
+    <defs>
+      <!-- arrowheads, one per role colour is overkill; use currentColor markers -->
+      <marker id="icm-head-solid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke" />
+      </marker>
+      <marker id="icm-head-dash" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke" />
+      </marker>
+    </defs>
+
+    <g #scene [attr.transform]="sceneTransform()">
+      <!-- outer diamond -->
+      <polygon class="icm-diamond" [attr.points]="geo.diamond" />
+
+      <!-- the two halves: OUR zone blue, THEIR zone red (flips with side) -->
+      <polygon class="icm-zone icm-zone-us" [attr.points]="ourZonePoly()" />
+      <polygon class="icm-zone icm-zone-them" [attr.points]="theirZonePoly()" />
+
+      <!-- teleport-quarter tints (clipped visually to our zone bbox quarters) -->
+      @for (r of teleportRects(); track $index) {
+        <rect
+          class="icm-tele"
+          [attr.x]="r.x"
+          [attr.y]="r.y"
+          [attr.width]="r.w"
+          [attr.height]="r.h"
+          [attr.fill]="r.color"
+        />
+      }
+
+      <!-- courtyard wall + gate roads -->
+      <circle class="icm-wall" [attr.cx]="geo.courtyard.center.x" [attr.cy]="geo.courtyard.center.y" [attr.r]="geo.courtyard.wallRadius" />
+      <circle class="icm-plaza" [attr.cx]="geo.courtyard.center.x" [attr.cy]="geo.courtyard.center.y" [attr.r]="geo.courtyard.plazaRadius" />
+      @for (gid of gateIds; track gid) {
+        <line
+          class="icm-road"
+          [attr.x1]="geo.courtyard.roads[gid][0].x"
+          [attr.y1]="geo.courtyard.roads[gid][0].y"
+          [attr.x2]="geo.courtyard.roads[gid][1].x"
+          [attr.y2]="geo.courtyard.roads[gid][1].y"
+          [attr.stroke-width]="geo.courtyard.roadWidth"
+        />
+      }
+
+      <!-- nodes -->
+      @for (n of nodes(); track n.id) {
+        <g class="icm-node" (pointerenter)="showNode(n)" (pointerleave)="clearHover()">
+          @if (n.kind === 'gate') {
+            <!-- gate: a small square (destroy-to-pass), not occupiable -->
+            <rect
+              class="icm-gate"
+              [attr.x]="n.x - gateR"
+              [attr.y]="n.y - gateR"
+              [attr.width]="gateR * 2"
+              [attr.height]="gateR * 2"
+              rx="6"
+            />
+            <text class="icm-node-ico" [attr.x]="n.x" [attr.y]="n.y">🚪</text>
+          } @else if (n.kind === 'city') {
+            <circle class="icm-city" [attr.cx]="n.x" [attr.cy]="n.y" [attr.r]="n.r" />
+            <text class="icm-node-ico icm-city-ico" [attr.x]="n.x" [attr.y]="n.y">🏰</text>
+          } @else {
+            <!-- tower -->
+            <circle class="icm-tower" [attr.cx]="n.x" [attr.cy]="n.y" [attr.r]="n.r" />
+            <text class="icm-node-ico" [attr.x]="n.x" [attr.y]="n.y">🗼</text>
+            <text class="icm-tower-buff" [attr.x]="n.x" [attr.y]="n.y + (n.r ?? 40) + 26">+{{ n.buff }}</text>
+          }
+        </g>
+      }
+
+      <!-- teleport-quarter labels / leaders / arrows draw above nodes -->
+
+      <!-- march arrows (rally solid, siege dashed + animated) -->
+      @for (a of arrowPaths(); track $index) {
+        <path
+          class="icm-arrow"
+          [class.siege]="a.siege"
+          [attr.d]="a.d"
+          [attr.stroke]="a.color"
+          [attr.marker-end]="a.siege ? 'url(#icm-head-dash)' : 'url(#icm-head-solid)'"
+        />
+      }
+
+      <!-- ghost arrow while dragging -->
+      @if (ghostArrow(); as g) {
+        <line
+          class="icm-arrow icm-ghost"
+          [class.siege]="g.role === 'siege'"
+          [attr.x1]="g.from.x"
+          [attr.y1]="g.from.y"
+          [attr.x2]="g.to.x"
+          [attr.y2]="g.to.y"
+          [attr.stroke]="g.color"
+        />
+      }
+
+      <!-- hazard markers -->
+      @for (h of hazards(); track $index) {
+        <g class="icm-hazard-g">
+          <circle class="icm-hazard" [attr.cx]="h.x" [attr.cy]="h.y" [attr.r]="hazardR" />
+          <text class="icm-node-ico icm-hazard-ico" [attr.x]="h.x" [attr.y]="h.y">⚠️</text>
+        </g>
+      }
+
+      <!-- leaders -->
+      @for (l of leaders(); track $index) {
+        <g class="icm-leader">
+          <circle
+            class="icm-leader-dot"
+            [class.siege]="l.role === 'siege'"
+            [attr.cx]="l.x"
+            [attr.cy]="l.y"
+            [attr.r]="leaderR"
+            [attr.fill]="colorFor(l.tag)"
+          />
+          <text class="icm-node-ico" [attr.x]="l.x" [attr.y]="l.y">{{ roleGlyph(l.role) }}</text>
+          <text class="icm-leader-tag" [attr.x]="l.x" [attr.y]="l.y - leaderR - 8">{{ l.tag }}</text>
+        </g>
+      }
+
+      <!-- hover tooltip -->
+      @if (hover(); as hv) {
+        <g class="icm-tip" [attr.transform]="'translate(' + hv.x + ' ' + hv.y + ')'">
+          <text class="icm-tip-txt" text-anchor="middle">{{ hv.label }}</text>
+        </g>
+      }
+    </g>
+  </svg>
+
+  <!-- legend -->
+  <div class="icm-legend">
+    <span class="icm-leg-item"><span class="icm-leg-sw us"></span> Us ({{ side() === 'attack' ? 'attacking' : 'defending' }})</span>
+    <span class="icm-leg-item"><span class="icm-leg-sw them"></span> Them</span>
+    <span class="icm-leg-item"><span class="icm-leg-line"></span> Rally</span>
+    <span class="icm-leg-item"><span class="icm-leg-line dash"></span> Siege</span>
+    <span class="icm-leg-item">⚠️ Hazard</span>
+    @for (a of alliances(); track a.tag) {
+      <span class="icm-leg-item"><span class="icm-leg-sw" [style.background]="a.color"></span> {{ a.tag }}</span>
+    }
+  </div>
+</div>

@@ -18,9 +18,11 @@ import type { AllianceHoldings } from '@shared/models/map.model';
 import type { Kingdom } from '@shared/models/event-data.model';
 import { EditableGridComponent, type GridColumn, type GridRow } from './sections/editable-grid.component';
 import { MapEditorPage } from '../map-editor/map-editor.page';
+import { IcInvasionMapComponent, type IcAlliance, type IcTool } from '@shared/components/ic-invasion-map/ic-invasion-map.component';
+import { emptyInvasionPlan, invasionAllianceColor, type InvasionPlan, type InvasionSide } from '@shared/models/invasion-plan.model';
 
 interface SectionDef {
-  id: DataSection | 'kingdomPoints' | 'map';
+  id: DataSection | 'kingdomPoints' | 'map' | 'invasionPlan';
   label: string;
   missingKey?: DataSection;
 }
@@ -49,7 +51,7 @@ interface SetupServer {
  */
 @Component({
   selector: 'app-event-data-editor',
-  imports: [RouterLink, EditableGridComponent, MapEditorPage],
+  imports: [RouterLink, EditableGridComponent, MapEditorPage, IcInvasionMapComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="de-bar">
@@ -112,6 +114,63 @@ interface SetupServer {
             }
             @case ('map') {
               <app-map-editor [slug]="slug()" [eventId]="occId()" />
+            }
+            @case ('invasionPlan') {
+              <h3>Invasion plan — Imperial City</h3>
+              <p class="de-hint">
+                Draw the battle plan. Our half is <strong>blue</strong>, the enemy's <strong>red</strong> — this flips with the
+                attack/defence side. Pick a tool, pick an alliance, then act on the map:
+                place a <strong>rally</strong> 🚩 or <strong>siege</strong> 💥 leader (click), draw their march line with
+                <strong>Arrow</strong> (drag from a leader to a node or open point — a march on the Imperial City auto-routes
+                through the nearest gate), drop a <strong>Hazard</strong> ⚠️, or paint a <strong>Teleport</strong> quarter of our
+                tile. <strong>Erase</strong> removes a leader (and its line) or a hazard.
+              </p>
+
+              @if (icAlliances().length === 0) {
+                <p class="de-warn">Add our alliances on <strong>Event setup</strong> first — the plan's markers key off them.</p>
+              }
+
+              <!-- side override -->
+              <div class="de-ic-side">
+                <span class="de-ic-k">Side</span>
+                <button type="button" [class.on]="icSide() === 'attack'" (click)="icSetSide('attack')">⚔️ Attack (blue left)</button>
+                <button type="button" [class.on]="icSide() === 'defend'" (click)="icSetSide('defend')">🛡️ Defend (blue right)</button>
+                <button type="button" class="de-ic-auto" (click)="icSetSide(null)" title="Follow the prep leader automatically">Auto (prep)</button>
+              </div>
+
+              <!-- tool palette -->
+              <div class="de-ic-tools">
+                <button type="button" [class.on]="icTool() === 'none'" (click)="icPickTool('none')">🖐 View</button>
+                <button type="button" [class.on]="icTool() === 'rally'" (click)="icPickTool('rally')">🚩 Rally lead</button>
+                <button type="button" [class.on]="icTool() === 'siege'" (click)="icPickTool('siege')">💥 Siege lead</button>
+                <button type="button" [class.on]="icTool() === 'arrow'" (click)="icPickTool('arrow')">➴ Arrow</button>
+                <button type="button" [class.on]="icTool() === 'hazard'" (click)="icPickTool('hazard')">⚠️ Hazard</button>
+                <button type="button" [class.on]="icTool() === 'teleport'" (click)="icPickTool('teleport')">📍 Teleport</button>
+                <button type="button" [class.on]="icTool() === 'erase'" (click)="icPickTool('erase')">⌫ Erase</button>
+                <button type="button" class="de-ic-clear" (click)="icClearPlan()">Clear all</button>
+              </div>
+
+              <!-- armed alliance (for place/arrow/teleport) -->
+              @if (icTool() === 'rally' || icTool() === 'siege' || icTool() === 'arrow' || icTool() === 'teleport') {
+                <div class="de-ic-arm">
+                  <span class="de-ic-k">Alliance</span>
+                  @for (a of icAlliances(); track a.tag) {
+                    <button type="button" class="de-ic-chip" [class.on]="icArmed() === a.tag" [style.--chip]="a.color" (click)="icArm(a.tag)">
+                      <span class="de-ic-sw" [style.background]="a.color"></span>{{ a.tag }}
+                    </button>
+                  }
+                </div>
+              }
+
+              <app-ic-invasion-map
+                [editable]="true"
+                [plan]="invasionPlan()"
+                [side]="icSide()"
+                [alliances]="icAlliances()"
+                [tool]="icTool()"
+                [armedTag]="icArmed()"
+                (planChange)="onInvasionPlanChange($event)"
+              />
             }
             @case ('kingdomPoints') {
               @if (isPrep()) {
@@ -280,6 +339,67 @@ export class EventDataEditorPage {
     return cornerColor(s.corner).color;
   }
 
+  // ── Invasion plan (TME Imperial City map) ──────────────────────────────────
+  /** Active editor tool for the IC map (place rally/siege leaders, draw arrows,
+   * mark hazards, paint teleport quarters, erase). */
+  readonly icTool = signal<IcTool>('none');
+  /** Armed alliance tag for place/teleport tools. */
+  readonly icArmed = signal<string | null>(null);
+  /** The current invasion plan from the doc (empty-but-present fallback). */
+  readonly invasionPlan = computed<InvasionPlan>(() => {
+    const raw = this.obj(this.doc()['invasionPlan']);
+    return {
+      side: raw['side'] === 'defend' ? 'defend' : raw['side'] === 'attack' ? 'attack' : undefined,
+      leaders: Array.isArray(raw['leaders']) ? (raw['leaders'] as InvasionPlan['leaders']) : [],
+      arrows: Array.isArray(raw['arrows']) ? (raw['arrows'] as InvasionPlan['arrows']) : [],
+      hazards: Array.isArray(raw['hazards']) ? (raw['hazards'] as InvasionPlan['hazards']) : [],
+      teleport: Array.isArray(raw['teleport']) ? (raw['teleport'] as InvasionPlan['teleport']) : [],
+    };
+  });
+  /** Our alliances (from Event Setup) paired with the marker palette, for the
+   * editor legend + the map. */
+  readonly icAlliances = computed<IcAlliance[]>(() => {
+    const us = this.setup().find(s => s.num === this.ourNum);
+    return (us?.alliances ?? []).map((tag, i) => ({ tag, color: invasionAllianceColor(i) }));
+  });
+  /** Resolved side: explicit plan.side, else prep leader attacks (defaults to
+   * attack pre-start). Drives which half is blue in the editor preview. */
+  readonly icSide = computed<InvasionSide>(() => {
+    const explicit = this.invasionPlan().side;
+    if (explicit) return explicit;
+    const prep = this.obj(this.doc()['prep']);
+    const n = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : 0);
+    const ours = n(prep['totalOurs']);
+    const opp = n(prep['totalOpp']);
+    return ours > 0 || opp > 0 ? (ours < opp ? 'defend' : 'attack') : 'attack';
+  });
+
+  /** Pick a tool; some tools require an armed alliance (auto-arm the first). */
+  icPickTool(t: IcTool): void {
+    this.icTool.set(t);
+    if ((t === 'rally' || t === 'siege' || t === 'arrow' || t === 'teleport') && !this.icArmed()) {
+      this.icArmed.set(this.icAlliances()[0]?.tag ?? null);
+    }
+  }
+  icArm(tag: string): void {
+    this.icArmed.set(tag);
+  }
+  /** Persist a plan edit from the map into the doc. */
+  onInvasionPlanChange(plan: InvasionPlan): void {
+    this.patch('invasionPlan', plan);
+  }
+  /** Flip/clear the explicit side override (null = auto from prep). */
+  icSetSide(side: InvasionSide | null): void {
+    const plan = { ...this.invasionPlan() };
+    if (side) plan.side = side;
+    else delete plan.side;
+    this.patch('invasionPlan', plan);
+  }
+  /** Clear the whole plan. */
+  icClearPlan(): void {
+    this.patch('invasionPlan', emptyInvasionPlan());
+  }
+
   // ── column defs ──────────────────────────────────────────────────────────
   // In a 1v1 the corner is meaningless (colour is fixed blue=us / red=them and
   // nothing reads the corner), so we drop that column. 4-kingdom events keep it
@@ -343,6 +463,8 @@ export class EventDataEditorPage {
     base.push({ id: 'serverTiers', label: 'Server tiers', missingKey: 'serverTiers' });
     base.push({ id: 'serverDepth', label: 'Server depth', missingKey: 'serverDepth' });
     if (this.slug() === 'desolate') base.push({ id: 'placerGold', label: 'Placer economy', missingKey: 'placerGold' });
+    // TME has no zone map but DOES have the Imperial City invasion-plan overlay.
+    if (this.slug() === 'tme') base.push({ id: 'invasionPlan', label: 'Invasion plan' });
     return base;
   });
 
@@ -1132,6 +1254,7 @@ const DOC_KEY_LABELS: Record<string, string> = {
   serverDepth: 'Server depth',
   placerGold: 'Placer economy',
   mapState: 'Map',
+  invasionPlan: 'Invasion plan',
   result: 'Result',
   placement: 'Placement',
   star: 'Special-KvK flag',

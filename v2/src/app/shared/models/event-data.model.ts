@@ -235,6 +235,11 @@ export interface EventData {
   mapViewPlan?: import('./map.model').MapView;
   /** Both derived maps for the KvkMap widget's Live/Plan toggle. */
   mapViews?: { live: import('./map.model').MapView; plan: import('./map.model').MapView };
+  /** TME Invasion plan overlay (leaders, march arrows, hazards, teleport
+   * quarters) for the Imperial City map. Carried verbatim from the doc's
+   * `invasionPlan` key; empty-but-present so the map always has something to
+   * draw. */
+  invasionPlan: import('./invasion-plan.model').InvasionPlan;
 }
 
 /** Per-alliance flag/city economy used by achievement progress derives. */

@@ -100,8 +100,9 @@ export const TME_CONFIG: EventDashboardConfig = {
         {
           // Stage-tabbed plan aligned to the timeline: pick a stage, see its
           // buff schedule + do-list + prep-ahead blurb. Defaults to today.
+          // Binds the whole EventData (no `bind`) so the Invasion tab can also
+          // render the Imperial City invasion-plan map (needs meta + plan).
           kind: 'stageTabs',
-          bind: 'meta',
           titleKey: 'tme.overview.plan',
           anchor: 'daily-plan',
           options: {
@@ -186,7 +187,9 @@ export const TME_CONFIG: EventDashboardConfig = {
                 macro: 'Invasion',
                 dayOffset: 8,
                 blurb:
-                  'Prep is over — today is the battle. Teleport in at your alliance’s window, group up, and rally objectives. Each server’s top 3 alliances (by prep points) may enter early.',
+                  'Prep is over — today is the battle. Teleport in at your alliance’s window, group up, and rally objectives. Each server’s top 3 alliances (by prep points) may enter early. The plan below shows each alliance’s teleport quarter, rally/siege leaders, their march lines (siege dashed), and siege-hazard zones — our half is blue, theirs red (flips if we’re on defence).',
+                // Render the Imperial City invasion-plan map under this tab.
+                map: 'ic',
               },
             ],
           },
